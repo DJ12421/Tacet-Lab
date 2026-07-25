@@ -49,6 +49,7 @@ main { min-width: 0; position: relative; }
 .topbar .user-button { width: 31px; height: 31px; padding: 0; border: 1px solid var(--gold); color: var(--gold); border-radius: 50%; justify-content: center; margin-left: 8px; }
 .pulse { display: inline-block; width: 5px; height: 5px; margin-right: 7px; }
 .content { max-width: 1540px; margin: 0 auto; padding: 44px clamp(24px, 4vw, 64px) 70px; min-height: calc(100vh - 100px); }
+.content.teams-content { width: 100%; max-width: none; padding-right: 12px; padding-left: 12px; }
 .page-header { display: flex; justify-content: space-between; gap: 30px; align-items: flex-end; margin-bottom: 31px; }
 .eyebrow { color: var(--gold); font-size: 9px; letter-spacing: .2em; text-transform: uppercase; }
 h1, h2, h3, p { margin-top: 0; }

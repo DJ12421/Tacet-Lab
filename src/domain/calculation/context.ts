@@ -104,6 +104,7 @@ export function createBuildCalculationContext(input: BuildCalculationInput): Cal
   let conditionDefenseReduction = 0
   let conditionResistanceIgnore = 0
   let conditionResistanceReduction = 0
+  let conditionTuneBreakBoost = 0
   const targetAttackId = input.targetId?.startsWith(`${character.id}:`) ? input.targetId.slice(character.id.length + 1) : undefined
   const targetAttack = character.attacks.find((attack) => attack.id === targetAttackId)
   const targetAttackReference = targetAttack ? `${targetAttack.id} ${targetAttack.name}` : ''
@@ -159,6 +160,20 @@ export function createBuildCalculationContext(input: BuildCalculationInput): Cal
       else if (key === `ResistShred:${character.element}`) conditionResistanceReduction += value * 100
     }
   }
+  for (const condition of characterConditions(character)) {
+    if (condition.sequence && input.character.sequence < condition.sequence) continue
+    if (condition.stance && condition.stance !== selectedMode) continue
+    const inherentSkillIndex = characterConditionInherentSkillIndex(condition, character)
+    if (inherentSkillIndex !== undefined && !enabledSkillTreeNodes.has(inherentSkillBonusId(inherentSkillIndex))) continue
+    const raw = memberConditions[characterConditionId(condition)]
+    const sequenceAlwaysOn = condition.sequence > 0 && !characterConditionRequiresToggle(condition)
+    let factor = sequenceAlwaysOn ? 1 : condition.hasStacks ? numericInput(raw) : raw === true ? 1 : 0
+    if (condition.appliesOnEveryStep) factor = Math.floor(factor / condition.appliesOnEveryStep)
+    if (!(factor > 0)) continue
+    for (const modifier of condition.modifiers) {
+      if (modifier.modifier === 'tuneBreakBoost') conditionTuneBreakBoost += numericModifierValue(modifier, input.character) * factor * 100
+    }
+  }
   if (targetAttack) for (const condition of weaponPassiveConditions(weapon, input.weapon.rank)) {
     const raw = memberConditions[condition.id]
     const factor = condition.alwaysOn ? 1 : condition.type === 'stack' ? numericInput(raw) : raw === true ? 1 : 0
@@ -203,6 +218,8 @@ export function createBuildCalculationContext(input: BuildCalculationInput): Cal
     defenseMultiplier: defenseMultiplier(input.character.level, input.enemy.level, defenseIgnore, defenseReduction),
     resistanceMultiplier: resistanceMultiplier(input.enemy.resistance, resistanceReduction, resistanceIgnore),
     damageReduction: input.enemy.damageReduction,
+    characterLevel: input.character.level,
+    tuneBreakBoost: 10 + conditionTuneBreakBoost,
     defenseIgnore,
     defenseReduction,
     resistanceIgnore,

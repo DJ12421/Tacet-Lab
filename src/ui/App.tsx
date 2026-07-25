@@ -27,6 +27,7 @@ export default function App() {
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [toast, setToast] = useState('')
   const [scannerSessionAtRisk, setScannerSessionAtRisk] = useState(false)
+  const [teamsGalleryRequest, setTeamsGalleryRequest] = useState(0)
   const importRef = useRef<HTMLInputElement>(null)
   const data = useAppData()
 
@@ -81,12 +82,12 @@ export default function App() {
   return <div className="app-shell">
     <aside className="sidebar">
       <button className="brand" onClick={() => setView('dashboard')}><div className="brand-mark"><i/><i/><i/></div><div><strong>TACET LAB</strong><span>WUWA OPTIMIZER</span></div></button>
-      <nav>{nav.map((item) => <button key={item.view} className={view === item.view ? 'active' : ''} onClick={() => setView(item.view)}><Icon name={item.icon}/><span>{item.label}</span>{item.view === 'scanner' && <b>EN</b>}</button>)}</nav>
+      <nav>{nav.map((item) => <button key={item.view} className={view === item.view ? 'active' : ''} onClick={() => { if (item.view === 'teams') setTeamsGalleryRequest((request) => request + 1); setView(item.view) }}><Icon name={item.icon}/><span>{item.label}</span>{item.view === 'scanner' && <b>EN</b>}</button>)}</nav>
       <div className="side-bottom"><div className="local-status"><i/><div><strong>Local inventory</strong><span>{data.echoes.length} Echoes · {data.characters.length} characters · {data.weapons.length} weapons</span></div></div><button onClick={() => setSettingsOpen(true)}>⚙<span>Settings & data</span></button></div>
     </aside>
     <main>
       <div className="topbar"><div><span className="pulse"/>PRIVATE SESSION</div><div><button onClick={() => importRef.current?.click()}><Icon name="upload"/>Import</button><button onClick={backup}><Icon name="download"/>Backup</button><input ref={importRef} hidden type="file" accept="application/json" onChange={(event) => restore(event.target.files?.[0])}/><button className="user-button" onClick={() => setSettingsOpen(true)}>{data.settings.privacyMode ? 'P' : data.settings.displayName[0]?.toUpperCase()}</button></div></div>
-      <div className="content">
+      <div className={`content${view === 'teams' ? ' teams-content' : ''}`}>
         <Suspense fallback={<div className="boot view-loading"><div className="brand-mark"><i/><i/><i/></div><span>LOADING WORKSPACE</span></div>}>
           {view === 'dashboard' && <HomeView echoes={data.echoes} characters={data.characters} weapons={data.weapons} builds={data.builds} teams={data.teams} navigate={setView}/>}
           {view === 'archive' && <ArchiveView roverGender={data.settings.roverGender}/>}
@@ -94,7 +95,7 @@ export default function App() {
           {view === 'echoes' && <InventoryView echoes={data.echoes} builds={data.builds} refresh={data.refresh} openScanner={() => setView('scanner')}/>}
           {view === 'weapons' && <><PageHeader eyebrow="Local collection" title="Weapons" description="Manage every weapon copy stored in this browser."/><WeaponInventory owned={data.weapons} characters={data.characters} builds={data.builds} refresh={data.refresh}/></>}
           {view === 'characters' && <><PageHeader eyebrow="Local roster" title="Characters" description="Open a character to inspect their loadout and team links."/><CharacterInventory owned={data.characters} weapons={data.weapons} echoes={data.echoes} builds={data.builds} teams={data.teams} roverGender={data.settings.roverGender} refresh={data.refresh}/></>}
-          {view === 'teams' && <TeamsView echoes={data.echoes} builds={data.builds} teams={data.teams} characters={data.characters} weapons={data.weapons} refresh={data.refresh} openScanner={() => setView('scanner')}/>}
+          {view === 'teams' && <TeamsView echoes={data.echoes} builds={data.builds} teams={data.teams} characters={data.characters} weapons={data.weapons} refresh={data.refresh} openScanner={() => setView('scanner')} galleryRequest={teamsGalleryRequest}/>}
         </Suspense>
       </div>
       <footer className="site-footer"><span>Fan-made tool. Not affiliated with Kuro Games.</span><span>Catalog data: Nanoka 3.5</span></footer>

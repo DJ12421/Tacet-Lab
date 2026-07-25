@@ -126,7 +126,9 @@ function attackModels(catalog: CharacterCatalogEntry, character: OwnedCharacter)
   return catalog.attacks.flatMap((attack, index) => {
     if (isFixedSkillValueName(attack.name)) return []
     const level = Math.max(1, Math.min(attack.multipliers.length, character.skillLevels?.[attack.skillLevelIndex] ?? 1))
-    const skill = catalog.skillIcons[SKILL_KEYS[attack.skillLevelIndex] ?? 'forteCircuit']
+    const skill = attack.type === 'outro'
+      ? catalog.skillTreeExtras.outroSkill
+      : catalog.skillIcons[SKILL_KEYS[attack.skillLevelIndex] ?? 'forteCircuit']
     return [{
       id: attack.id,
       name: attack.name,
@@ -345,7 +347,7 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
   const warnings = [...new Set([
     ...baseMembers.flatMap((member) => member.warnings),
     ...actions.flatMap((action) => action.warnings),
-    'Weapon passives are reference-only. Only the limited Sonata bonuses already supported by the damage domain are applied; other generated Sonata descriptions are not simulated.'
+    'All Weapons, Sonata, Forte and Sequence effects are WIP. Please report anything abnormal in the discord server Bug Reports Channel.'
   ])]
   return {
     team: input.team,

@@ -19755,6 +19755,24 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
             3.5683
           ]
         ]
+      },
+      {
+        "id": "1301-8-outro",
+        "name": "Shadowy Raid - Outro Skill DMG",
+        "type": "outro",
+        "skillLevelIndex": 1,
+        "scalesWith": "atk",
+        "multipliers": [
+          5.8794
+        ],
+        "hitMultipliers": [
+          [
+            1.9598
+          ],
+          [
+            3.9196
+          ]
+        ]
       }
     ],
     "articleUrl": "https://ww.nanoka.cc/character/1301",
@@ -23418,6 +23436,21 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
             20.9557,
             21.9971,
             23.0385
+          ]
+        ]
+      },
+      {
+        "id": "1603-8-outro",
+        "name": "Twining - Outro Skill DMG",
+        "type": "outro",
+        "skillLevelIndex": 1,
+        "scalesWith": "atk",
+        "multipliers": [
+          3.2924
+        ],
+        "hitMultipliers": [
+          [
+            3.2924
           ]
         ]
       }
@@ -29514,6 +29547,21 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
             8.319700000000001,
             8.7332,
             9.1466
+          ]
+        ]
+      },
+      {
+        "id": "1107-8-outro",
+        "name": "Closing Remark - Outro Skill DMG",
+        "type": "outro",
+        "skillLevelIndex": 1,
+        "scalesWith": "atk",
+        "multipliers": [
+          7.942
+        ],
+        "hitMultipliers": [
+          [
+            7.942
           ]
         ]
       }
@@ -43135,6 +43183,21 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
             7.9819
           ]
         ]
+      },
+      {
+        "id": "1202-8-outro",
+        "name": "Leaping Flames - Outro Skill DMG",
+        "type": "outro",
+        "skillLevelIndex": 1,
+        "scalesWith": "atk",
+        "multipliers": [
+          5.3
+        ],
+        "hitMultipliers": [
+          [
+            5.3
+          ]
+        ]
       }
     ],
     "articleUrl": "https://ww.nanoka.cc/character/1202",
@@ -54862,6 +54925,21 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
             9.0368
           ]
         ]
+      },
+      {
+        "id": "1203-8-outro",
+        "name": "Thermal Field - Outro Skill DMG",
+        "type": "outro",
+        "skillLevelIndex": 1,
+        "scalesWith": "atk",
+        "multipliers": [
+          1.7675999999999998
+        ],
+        "hitMultipliers": [
+          [
+            1.7675999999999998
+          ]
+        ]
       }
     ],
     "articleUrl": "https://ww.nanoka.cc/character/1203",
@@ -65877,6 +65955,21 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
             0.5909
           ]
         ]
+      },
+      {
+        "id": "1410-8-outro",
+        "name": "From Gloom to Gleam - Outro Skill DMG",
+        "type": "outro",
+        "skillLevelIndex": 1,
+        "scalesWith": "atk",
+        "multipliers": [
+          1
+        ],
+        "hitMultipliers": [
+          [
+            1
+          ]
+        ]
       }
     ],
     "articleUrl": "https://ww.nanoka.cc/character/1410",
@@ -74572,6 +74665,21 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
             7.8236
           ]
         ]
+      },
+      {
+        "id": "1404-8-outro",
+        "name": "Discipline - Outro Skill DMG",
+        "type": "outro",
+        "skillLevelIndex": 1,
+        "scalesWith": "atk",
+        "multipliers": [
+          3.134
+        ],
+        "hitMultipliers": [
+          [
+            3.134
+          ]
+        ]
       }
     ],
     "articleUrl": "https://ww.nanoka.cc/character/1404",
@@ -77119,6 +77227,21 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
             2.9041,
             3.0485,
             3.1927999999999996
+          ]
+        ]
+      },
+      {
+        "id": "1104-8-outro",
+        "name": "Frosty Marks - Outro Skill DMG",
+        "type": "outro",
+        "skillLevelIndex": 1,
+        "scalesWith": "atk",
+        "multipliers": [
+          5.8794
+        ],
+        "hitMultipliers": [
+          [
+            5.8794
           ]
         ]
       }
@@ -92961,6 +93084,21 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
             5.600499999999999
           ]
         ]
+      },
+      {
+        "id": "1510-8-outro",
+        "name": "Bow to the Last Light - Outro Skill DMG",
+        "type": "outro",
+        "skillLevelIndex": 1,
+        "scalesWith": "atk",
+        "multipliers": [
+          5
+        ],
+        "hitMultipliers": [
+          [
+            5
+          ]
+        ]
       }
     ],
     "articleUrl": "https://ww.nanoka.cc/character/1510",
@@ -97467,6 +97605,21 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
             31.219,
             32.7704,
             34.3219
+          ]
+        ]
+      },
+      {
+        "id": "1509-8-outro",
+        "name": "Let's Hit the Road! - Outro Skill DMG",
+        "type": "outro",
+        "skillLevelIndex": 1,
+        "scalesWith": "atk",
+        "multipliers": [
+          1
+        ],
+        "hitMultipliers": [
+          [
+            1
           ]
         ]
       }
@@ -104885,6 +105038,21 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
             1.5089
           ]
         ]
+      },
+      {
+        "id": "1506-8-outro",
+        "name": "Attentive Heart - Outro Skill DMG",
+        "type": "outro",
+        "skillLevelIndex": 1,
+        "scalesWith": "atk",
+        "multipliers": [
+          5.2841
+        ],
+        "hitMultipliers": [
+          [
+            5.2841
+          ]
+        ]
       }
     ],
     "articleUrl": "https://ww.nanoka.cc/character/1506",
@@ -110280,6 +110448,21 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
             3.9728
           ]
         ]
+      },
+      {
+        "id": "1411-8-outro",
+        "name": "Strike Before Ready - Outro Skill DMG",
+        "type": "outro",
+        "skillLevelIndex": 1,
+        "scalesWith": "atk",
+        "multipliers": [
+          1
+        ],
+        "hitMultipliers": [
+          [
+            1
+          ]
+        ]
       }
     ],
     "articleUrl": "https://ww.nanoka.cc/character/1411",
@@ -113765,6 +113948,21 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
             4.6202,
             4.8498,
             5.0794
+          ]
+        ]
+      },
+      {
+        "id": "1308-8-outro",
+        "name": "Preem Choom - Outro Skill DMG",
+        "type": "outro",
+        "skillLevelIndex": 1,
+        "scalesWith": "atk",
+        "multipliers": [
+          0.025
+        ],
+        "hitMultipliers": [
+          [
+            0.025
           ]
         ]
       }
@@ -132726,6 +132924,21 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
             0.1815
           ]
         ]
+      },
+      {
+        "id": "1604-8-outro",
+        "name": "Soundweaver - Outro Skill DMG",
+        "type": "outro",
+        "skillLevelIndex": 1,
+        "scalesWith": "atk",
+        "multipliers": [
+          1.433
+        ],
+        "hitMultipliers": [
+          [
+            1.433
+          ]
+        ]
       }
     ],
     "articleUrl": "https://ww.nanoka.cc/character/1604",
@@ -135363,6 +135576,21 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
             0.16510000000000002,
             0.17329999999999998,
             0.1815
+          ]
+        ]
+      },
+      {
+        "id": "1605-8-outro",
+        "name": "Soundweaver - Outro Skill DMG",
+        "type": "outro",
+        "skillLevelIndex": 1,
+        "scalesWith": "atk",
+        "multipliers": [
+          1.433
+        ],
+        "hitMultipliers": [
+          [
+            1.433
           ]
         ]
       }
@@ -146724,6 +146952,21 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
             16.5812
           ]
         ]
+      },
+      {
+        "id": "1412-8-outro",
+        "name": "In This Very Moment - Outro Skill DMG",
+        "type": "outro",
+        "skillLevelIndex": 1,
+        "scalesWith": "atk",
+        "multipliers": [
+          7.95
+        ],
+        "hitMultipliers": [
+          [
+            7.95
+          ]
+        ]
       }
     ],
     "articleUrl": "https://ww.nanoka.cc/character/1412",
@@ -156843,6 +157086,21 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
             1.1973
           ]
         ]
+      },
+      {
+        "id": "1305-8-outro",
+        "name": "Chain Rule - Outro Skill DMG",
+        "type": "outro",
+        "skillLevelIndex": 1,
+        "scalesWith": "atk",
+        "multipliers": [
+          2.3763
+        ],
+        "hitMultipliers": [
+          [
+            2.3763
+          ]
+        ]
       }
     ],
     "articleUrl": "https://ww.nanoka.cc/character/1305",
@@ -162720,6 +162978,21 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
             4.6426,
             4.8732999999999995,
             5.104
+          ]
+        ]
+      },
+      {
+        "id": "1610-8-outro",
+        "name": "As the Wind Wills - Outro Skill DMG",
+        "type": "outro",
+        "skillLevelIndex": 1,
+        "scalesWith": "atk",
+        "multipliers": [
+          3
+        ],
+        "hitMultipliers": [
+          [
+            3
           ]
         ]
       }
@@ -173744,6 +174017,21 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
             7.039199999999999,
             7.388999999999999,
             7.7388
+          ]
+        ]
+      },
+      {
+        "id": "1507-8-outro",
+        "name": "Beacon For the Future - Outro Skill DMG",
+        "type": "outro",
+        "skillLevelIndex": 1,
+        "scalesWith": "atk",
+        "multipliers": [
+          1.5
+        ],
+        "hitMultipliers": [
+          [
+            1.5
           ]
         ]
       }

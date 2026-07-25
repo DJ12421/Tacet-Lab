@@ -87,6 +87,27 @@ const damageComponentHitMultipliers=components=>components.map(component=>(compo
 const damageLineValues=hitMultipliers=>{
   return hitMultipliers[0]?.map((_,levelIndex)=>hitMultipliers.reduce((total,hit)=>total+(hit[levelIndex]??0),0))??[]
 }
+const outroDescriptionAttack=(id,nodeId,skill)=>{
+  const description=formatEffect(skill?.desc,skill?.param).replace(/<[^>]+>/g,'')
+  const damageSentence=description.split(/(?<=[.!?])\s+|\n+/).find(sentence=>
+    /\b(?:deal(?:s|ing)?|suffering)\b/i.test(sentence)
+    && /\b(?:Aero|Electro|Fusion|Glacio|Havoc|Spectro)\s+DMG\b/i.test(sentence)
+    && percentageComponents(sentence).length
+  )
+  if(!damageSentence)return []
+  const hitMultipliers=percentageTerms(damageSentence).map(value=>[value/100])
+  const multipliers=damageLineValues(hitMultipliers)
+  const scalesWith=/\bDEF\b/i.test(damageSentence)?'def':/\b(?:max\s+)?HP\b/i.test(damageSentence)?'hp':'atk'
+  return [{
+    id:`${id}-${nodeId}-outro`,
+    name:`${skill.name} - Outro Skill DMG`,
+    type:'outro',
+    skillLevelIndex:skillLevelIndex(skill.type),
+    scalesWith,
+    multipliers,
+    hitMultipliers
+  }]
+}
 // Nanoka 3.5 formats this as 6.11% × 6 + 24.44%, but the two damage
 // components and the English in-game damage breakdown both show two hits.
 const verifiedComponentHitAttacks=new Set(['1511:1:Basic Attack Stage 1 DMG'])
@@ -154,6 +175,10 @@ const characters=Object.entries(rawCharacters).map(([id,c])=>{
       return [{id:`${id}-${nodeId}-${attackIndex++}`,name,type,skillLevelIndex:skillLevelIndex(skill.type),scalesWith:damage.related_property.toLowerCase(),multipliers,hitMultipliers}]
     })
   })
+  const outroEntry=skillEntries.find(([,node])=>(node.skill??node).type==='Outro Skill')
+  if(!attacks.some(attack=>attack.type==='outro')&&outroEntry){
+    attacks.push(...outroDescriptionAttack(id,outroEntry[0],outroEntry[1].skill??outroEntry[1]))
+  }
   const rawGender=String(detail?.chara_info?.sex??'').toLowerCase()
   const gender=rawGender==='male'||rawGender==='female'?rawGender:null
   const animatedSkin=Object.values(detail?.skin??{}).find(skin=>skin.formation_spine_skel&&skin.formation_spine_atlas)

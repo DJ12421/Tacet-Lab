@@ -60,11 +60,66 @@ const clampedPercent = (key: string, min: number, max: number) => formula.min(fo
 
 const elementKey = (element: string) => `${element.toLowerCase()}Damage`
 const typeKey = (type: DamageType) => type === 'basic' ? 'basicDamage' : type === 'heavy' ? 'heavyDamage' : type === 'skill' ? 'skillDamage' : type === 'liberation' ? 'liberationDamage' : undefined
-const attackGroup = (type: DamageType) => type === 'basic' || type === 'heavy' ? 'Basic Attack'
-  : type === 'skill' ? 'Resonance Skill / Forte'
-    : type === 'liberation' ? 'Resonance Liberation'
-      : type === 'intro' ? 'Intro Skill'
-        : type === 'outro' ? 'Outro Skill' : 'Damage'
+const tuneBreakLevelConstants = {
+  1: 2.215,
+  20: 5.932,
+  40: 29.357,
+  50: 60.934,
+  60: 130.868,
+  70: 249.715,
+  80: 437.085,
+  90: 716.22
+} as const
+const tuneBreakEnemyClasses = [
+  ['Common', 1],
+  ['Elite', 3],
+  ['Overlord / Calamity', 14]
+] as const
+const attackGroup = (attack: typeof characterCatalog[number]['attacks'][number]) => attack.type === 'outro' ? 'Outro Skill'
+  : attack.type === 'intro' ? 'Intro Skill'
+    : attack.skillLevelIndex === 0 ? 'Basic Attack'
+      : attack.skillLevelIndex === 1 ? 'Resonance Skill'
+        : attack.skillLevelIndex === 2 ? 'Forte Circuit'
+          : attack.skillLevelIndex === 3 ? 'Resonance Liberation'
+            : attack.type === 'basic' || attack.type === 'heavy' ? 'Basic Attack'
+              : attack.type === 'skill' ? 'Resonance Skill'
+                : attack.type === 'liberation' ? 'Resonance Liberation' : 'Damage'
+
+function tuneBreakTargets(characterId: string): FormulaTarget[] {
+  const supportedLevels = Object.keys(tuneBreakLevelConstants).map(Number)
+  const levelKey: FormulaNode = {
+    op: 'lookup',
+    key: formula.input('characterLevel', 90, 'Character level'),
+    values: Object.fromEntries(Array.from({ length: 90 }, (_, index) => {
+      const level = index + 1
+      const nearest = supportedLevels.reduce((best, candidate) => Math.abs(candidate - level) < Math.abs(best - level) ? candidate : best)
+      return [String(level), formula.constant(tuneBreakLevelConstants[nearest as keyof typeof tuneBreakLevelConstants])]
+    })),
+    fallback: formula.constant(tuneBreakLevelConstants[90]),
+    label: 'Tune Break level constant'
+  }
+  return tuneBreakEnemyClasses.map(([enemyClass, enemyMultiplier]) => {
+    const damage = formula.floor(formula.prod(
+      levelKey,
+      formula.constant(16, 'Tune Break motion value'),
+      formula.constant(enemyMultiplier, `${enemyClass} multiplier`),
+      addPercent(formula.input('tuneBreakBoost', 10, 'Tune Break Boost')),
+      formula.input('defenseMultiplier', 0.5, 'Enemy DEF multiplier'),
+      formula.input('resistanceMultiplier', 0.9, 'Physical RES multiplier'),
+      formula.sum(one, formula.prod(formula.input('damageReduction', 0, 'Damage reduction'), formula.constant(-0.01))),
+      addPercent(formula.input('specialMultiplier', 0, 'Special multiplier / vulnerability'))
+    ), 'Tune Break damage')
+    return {
+      id: `${characterId}:tune-break-${enemyClass.toLowerCase().replace(/[^a-z]+/g, '-')}`,
+      label: `Tune Break DMG · ${enemyClass}`,
+      group: 'Tune Break',
+      kind: 'damage',
+      normal: damage,
+      critical: damage,
+      expected: damage
+    }
+  })
+}
 
 function damageTarget(characterId: string, element: string, attack: typeof characterCatalog[number]['attacks'][number]): FormulaTarget {
   const multipliers = Object.fromEntries(attack.multipliers.map((value, index) => [String(index + 1), formula.constant(value)]))
@@ -105,7 +160,7 @@ function damageTarget(characterId: string, element: string, attack: typeof chara
   const expectedFactor: FormulaNode = { op: 'sum', operands: [one, formula.prod(critRate, formula.sum(critMultiplier, formula.constant(-1)))], label: 'Expected CRIT factor' }
   const expected = formula.floor(formula.prod(normal, expectedFactor), 'Average damage')
   return {
-    id: `${characterId}:${attack.id}`, label: attack.name, group: attackGroup(attack.type),
+    id: `${characterId}:${attack.id}`, label: attack.name, group: attackGroup(attack),
     kind: 'damage', damageType: attack.type, element: element.toLowerCase() as Element, normal, critical, expected
   }
 }
@@ -139,7 +194,11 @@ function characterSheet(character: typeof characterCatalog[number]): FormulaShee
       ...(modes.length ? [{ id: characterConditionModeId, label: 'Resonance Mode', type: 'enum' as const, defaultValue: modes[0], options: modes, scope: 'self' as const, source: 'wutheringtools' as const }] : []),
       ...sourcedConditions
     ],
-    entries: [], targets: character.attacks.filter((attack) => !isFixedSkillValueName(attack.name)).map((attack) => damageTarget(character.id, character.element, attack))
+    entries: [],
+    targets: [
+      ...character.attacks.filter((attack) => !isFixedSkillValueName(attack.name)).map((attack) => damageTarget(character.id, character.element, attack)),
+      ...tuneBreakTargets(character.id)
+    ]
   }
 }
 
