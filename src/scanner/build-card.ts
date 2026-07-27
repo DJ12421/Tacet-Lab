@@ -4,8 +4,8 @@ import { generatedCharacterSummaries as characterCatalog } from '../game-data/ch
 import { echoCatalog } from '../game-data/echoes'
 import { generatedWeaponSummaries as weaponCatalog } from '../game-data/weapon-summaries.generated'
 import { isMainStatAllowed, mainStatKeysByCost } from '../game-data/echo-main-stats'
-import { closestTunableRoll, exactTunableRoll } from '../game-data/tunable-rolls'
-import { imageFingerprint, normalizeOcrText, parseStatLine } from './parser'
+import { exactTunableRoll } from '../game-data/tunable-rolls'
+import { imageFingerprint, normalizeOcrText, parseStatLine, resolveTunableRoll } from './parser'
 import type { OcrPool } from './ocr-pool'
 import type { PreprocessClient } from './preprocess'
 import { recognizeSonataAt } from './visual'
@@ -133,7 +133,7 @@ export function parseBuildCardStats(text: string, cost: Echo['cost']) {
   const remaining = stats.filter((_, index) => index !== mainIndex)
   const subStats = remaining.slice(0, 5).map((stat) => {
     const corrected = stat.value >= 71 && stat.value < 72 ? { ...stat, value: stat.value - 64 } : stat
-    const roll = closestTunableRoll(corrected.key, corrected.value)
+    const roll = resolveTunableRoll(corrected.key, corrected.value)
     return { value: roll ? { ...corrected, value: roll.value } : corrected, confidence: roll ? (exactTunableRoll(corrected.key, corrected.value) ? .9 : .8) : .5, raw: String(stat.value) }
   })
   return { mainStat, mainConfidence: mainIndex >= 0 ? .88 : .25, subStats }

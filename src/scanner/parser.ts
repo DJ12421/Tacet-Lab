@@ -39,6 +39,23 @@ function restoreDroppedDecimal(key: StatKey, value: number) {
   return normalized
 }
 
+function exactRollAfterAmbiguousDigitSwap(key: StatKey, value: number) {
+  const text = String(value)
+  const matches = new Map<number, NonNullable<ReturnType<typeof exactTunableRoll>>>()
+  for (let index = 0; index < text.length; index += 1) {
+    if (text[index] !== '1' && text[index] !== '7') continue
+    const swapped = `${text.slice(0, index)}${text[index] === '1' ? '7' : '1'}${text.slice(index + 1)}`
+    const normalized = restoreDroppedDecimal(key, Number(swapped))
+    const roll = exactTunableRoll(key, normalized)
+    if (roll) matches.set(roll.value, roll)
+  }
+  return matches.size === 1 ? [...matches.values()][0] : undefined
+}
+
+export function resolveTunableRoll(key: StatKey, value: number) {
+  return closestTunableRoll(key, value) ?? exactRollAfterAmbiguousDigitSwap(key, value)
+}
+
 export function parseStatLine(line: string): StatLine | undefined {
   const valueMatch = line.match(/(-?\d+(?:[.,]\d+)?)\s*(%)?\s*$/)
   if (!valueMatch) return
@@ -135,7 +152,7 @@ export async function parseEchoText(text: string, imageDataUrl: string, source: 
   const fixedSecondary = fixedSecondaryMainStat({ cost, rarity, level })
   const secondaryMainIndex = remainingStats.findIndex((stat) => stat.key === fixedSecondary.key && Math.abs(stat.value - fixedSecondary.value) <= .51)
   const subStats = remainingStats.filter((_, index) => index !== secondaryMainIndex).slice(0, maxSubStatsForLevel(level)).map((stat) => {
-    const roll = closestTunableRoll(stat.key, stat.value)
+    const roll = resolveTunableRoll(stat.key, stat.value)
     return { value: roll ? { ...stat, value: roll.value } : stat, confidence: roll ? (exactTunableRoll(stat.key, stat.value) ? 0.92 : 0.84) : 0.52, raw: String(stat.value) }
   })
 

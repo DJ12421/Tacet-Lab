@@ -1,6 +1,7 @@
-import { useCallback, useDeferredValue, useEffect, useMemo, useState } from 'react'
+import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
-import { characterCatalog, sonataNames, statLabels, weaponCatalog, type CharacterCatalogEntry, type WeaponCatalogEntry } from '../game-data'
+import { toPng } from 'html-to-image'
+import { baseTuneBreakBoost, characterCatalog, sonataNames, statLabels, weaponCatalog, type CharacterCatalogEntry, type WeaponCatalogEntry } from '../game-data'
 import { generatedSonataIconSources } from '../game-data/sonatas.generated'
 import { effectiveSubStats, maxSubStatsForLevel } from '../game-data/echo-main-stats'
 import { echoRollGrade, echoRollPoints, echoRollQuality } from '../domain/echo-grade'
@@ -73,8 +74,8 @@ function formatBonusLines(lines: StatLine[]) {
   }).join(' · ')
 }
 
-function displayedStatValue(stats: AggregatedStats, key: ShowcaseStatKey) {
-  if (key === 'tuneBreakBoost') return 10
+function displayedStatValue(stats: AggregatedStats, key: ShowcaseStatKey, catalog: CharacterCatalogEntry) {
+  if (key === 'tuneBreakBoost') return baseTuneBreakBoost(catalog)
   return key in stats ? stats[key as keyof typeof stats] : 0
 }
 
@@ -85,6 +86,23 @@ function cleanSkillDescription(description: string) {
     .replace(/[ \t]+\n/g, '\n')
     .replace(/\n{3,}/g, '\n\n')
     .trim()
+}
+
+async function inlineImageSource(image: HTMLImageElement) {
+  const source = image.currentSrc || image.src
+  if (!source || source.startsWith('data:')) return
+  const response = await fetch(source, { cache: 'force-cache' })
+  if (!response.ok) throw new Error(`Image request failed with ${response.status}`)
+  const blob = await response.blob()
+  const dataUrl = await new Promise<string>((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(String(reader.result))
+    reader.onerror = () => reject(reader.error)
+    reader.readAsDataURL(blob)
+  })
+  image.src = dataUrl
+  await image.decode()
+  return source
 }
 
 export function richSkillDescription(description: string) {
@@ -195,6 +213,8 @@ function EchoPicker({ slot, build, echoes, refresh, onClose }: { slot: number; b
 
 export function CharacterShowcase({ character, catalog, weapons, echoes, builds, refresh, onBack }: CharacterShowcaseProps) {
   const [editing, setEditing] = useState(false)
+  const [exporting, setExporting] = useState(false)
+  const [exportMessage, setExportMessage] = useState('')
   const [weaponPickerOpen, setWeaponPickerOpen] = useState(false)
   const [echoSlot, setEchoSlot] = useState<number | null>(null)
   const [deleteArmed, setDeleteArmed] = useState(false)
@@ -202,6 +222,8 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
   const [animatedPortraitReady, setAnimatedPortraitReady] = useState(false)
   const [openSkillTooltip, setOpenSkillTooltip] = useState<string | null>(null)
   const [editingEcho, setEditingEcho] = useState<Echo | null>(null)
+  const exportRef = useRef<HTMLDivElement>(null)
+  const portraitRef = useRef<HTMLImageElement>(null)
   const showAnimatedPortrait = useCallback(() => setAnimatedPortraitReady(true), [])
   const showStaticPortrait = useCallback(() => setAnimatedPortraitReady(false), [])
 
@@ -249,10 +271,49 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
     onBack()
   }
   const currentBuild = builds.find((entry) => entry.resonatorId === character.catalogId)
+  const innateTuneBreakBoost = baseTuneBreakBoost(catalog)
   const statDetail = (key: ShowcaseStatKey, label: string): CalculationDetail => key === 'tuneBreakBoost'
-    ? { title: label, value: '10.0', formula: 'Current fixed Tune Break baseline', rows: [{ label: 'Base Tune Break Boost', value: '10.0' }] }
+    ? { title: label, value: innateTuneBreakBoost.toFixed(1), formula: 'Character Tune Break baseline', rows: [{ label: 'Base Tune Break Boost', value: innateTuneBreakBoost.toFixed(1) }] }
     : showcaseStatDetail(model, key, label)
   const toggleSkillTooltip = (id: string) => setOpenSkillTooltip((current) => current === id ? null : id)
+  const exportCharacterCard = async () => {
+    const frame = exportRef.current
+    if (!frame || exporting) return
+    setExporting(true)
+    setExportMessage('')
+    setOpenSkillTooltip(null)
+    frame.classList.add('is-exporting')
+    let originalPortraitSource: string | undefined
+    try {
+      if (portraitRef.current) {
+        try {
+          originalPortraitSource = await inlineImageSource(portraitRef.current)
+        } catch {
+          await portraitRef.current.decode().catch(() => undefined)
+        }
+      }
+      await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())))
+      const dataUrl = await toPng(frame, {
+        width: 1920,
+        height: 1080,
+        pixelRatio: 2,
+        cacheBust: true,
+        backgroundColor: '#030708',
+        style: { width: '1920px', height: '1080px', maxWidth: 'none' }
+      })
+      const anchor = document.createElement('a')
+      anchor.download = `${catalog.name.replace(/\W+/g, '-').replace(/^-|-$/g, '').toLowerCase()}-character-card.png`
+      anchor.href = dataUrl
+      anchor.click()
+      setExportMessage('Character card exported as a high-resolution PNG.')
+    } catch {
+      setExportMessage('Image export failed. Reload the page and try again.')
+    } finally {
+      if (originalPortraitSource && portraitRef.current) portraitRef.current.src = originalPortraitSource
+      frame.classList.remove('is-exporting')
+      setExporting(false)
+    }
+  }
   const enabledSkillTreeNodeIds = character.enabledSkillTreeBonusIds ?? defaultEnabledSkillTreeBonusIds(catalog)
   const toggleSkillTreeNode = async (id: string) => {
     const enabled = new Set(enabledSkillTreeNodeIds)
@@ -262,12 +323,16 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
   }
 
   return <section className={`cs-page cs-element-${catalog.element.toLowerCase()}`}>
-    <header className="cs-toolbar"><button className="cs-back" onClick={onBack}>← Back to roster</button><div><span className="eyebrow">Character showcase</span><strong>{catalog.name}</strong></div><div className="cs-toolbar-actions">{editing && <><button className={character.favorite ? 'cs-favorite active' : 'cs-favorite'} onClick={() => void updateCharacter({ favorite: !character.favorite })}>{character.favorite ? '♥ Favorited' : '♡ Favorite'}</button><button className={`danger ${deleteArmed ? 'is-armed' : ''}`} onClick={() => void removeCharacter()}><Icon name="trash"/>{deleteArmed ? 'Confirm delete' : 'Delete'}</button></>}<button className={editing ? 'primary' : 'secondary'} onClick={() => { setEditing(!editing); setDeleteArmed(false) }}>{editing ? 'Done editing' : 'Edit loadout'}</button></div></header>
+    <header className="cs-toolbar"><button className="cs-back" onClick={onBack}>← Back to roster</button><div><span className="eyebrow">Character showcase</span><strong>{catalog.name}</strong></div><div className={`cs-toolbar-actions ${editing ? 'is-editing' : ''}`}>{editing && <><button className={character.favorite ? 'cs-favorite active' : 'cs-favorite'} onClick={() => void updateCharacter({ favorite: !character.favorite })}>{character.favorite ? '♥ Favorited' : '♡ Favorite'}</button><button className={`danger ${deleteArmed ? 'is-armed' : ''}`} onClick={() => void removeCharacter()}><Icon name="trash"/>{deleteArmed ? 'Confirm delete' : 'Delete'}</button></>}<button className="secondary cs-export-button" disabled={exporting} onClick={() => void exportCharacterCard()}><Icon name="download"/><span>{exporting ? 'Rendering...' : 'Export image'}</span></button><button className={editing ? 'primary' : 'secondary'} onClick={() => { setEditing(!editing); setDeleteArmed(false) }}>{editing ? 'Done editing' : 'Edit loadout'}</button></div></header>
+    {exportMessage && <div className={`cs-export-message ${exportMessage.startsWith('Image export failed') ? 'is-error' : ''}`} role="status">{exportMessage}</div>}
 
+    <div className="cs-export-frame" ref={exportRef}>
+    <header className="cs-export-masthead"><div><span>Tacet Lab</span><strong>Character dossier</strong></div><div><b>{catalog.name}</b><small>{catalog.element} / {catalog.weaponType} / {catalog.role}</small></div></header>
     <div className="cs-layout">
       <section className="cs-character-panel cs-panel">
         <div className="cs-art-grid"/>
         <img
+          ref={portraitRef}
           className={`cs-character-art ${portraitFailed ? 'is-fallback' : ''} ${animatedPortraitReady ? 'is-live-hidden' : ''}`}
           src={portraitFailed ? catalog.iconSourceUrl : (catalog.portraitSourceUrl || catalog.iconSourceUrl)}
           alt={catalog.name}
@@ -287,7 +352,7 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
         <EchoWaveform element={catalog.element}/>
       </section>
 
-      <section className="cs-stats-panel cs-panel"><header><div><span className="eyebrow">Resonator statistics</span><h2>Current attributes</h2></div><span>Lv. {model.characterBaseStats.level}</span></header><div className="cs-stat-list">{statRows.map(([key, label]) => <div key={key}><StatIcon stat={key}/><span>{label}</span><i/><CalculatedValue detail={statDetail(key, label)}><b>{formatStat(key, displayedStatValue(model.finalStats, key))}</b></CalculatedValue></div>)}</div>{model.statBonusSources.length > 0 && <div className="cs-stat-sources"><span>Included bonuses</span>{model.statBonusSources.map((source) => <div key={source.id} title={source.description}><b>{source.label}</b><small>{source.lines.length ? formatBonusLines(source.lines) : 'No always-on stat'}{source.hasConditionalStats && ' · conditional effects excluded'}</small></div>)}</div>}<p className="cs-warning">{model.warning}</p></section>
+      <section className="cs-stats-panel cs-panel"><header><div><span className="eyebrow">Resonator statistics</span><h2>Current attributes</h2></div><span>Lv. {model.characterBaseStats.level}</span></header><div className="cs-stat-list">{statRows.map(([key, label]) => <div key={key}><StatIcon stat={key}/><span>{label}</span><i/><CalculatedValue detail={statDetail(key, label)}><b>{formatStat(key, displayedStatValue(model.finalStats, key, catalog))}</b></CalculatedValue></div>)}</div>{model.statBonusSources.length > 0 && <div className="cs-stat-sources"><span>Included bonuses</span>{model.statBonusSources.map((source) => <div key={source.id} title={source.description}><b>{source.label}</b><small>{source.lines.length ? formatBonusLines(source.lines) : 'No always-on stat'}{source.hasConditionalStats && ' · conditional effects excluded'}</small></div>)}</div>}<p className="cs-warning">{model.warning}</p></section>
 
       <section className={`cs-weapon-panel cs-panel ${editing ? 'is-editable' : ''}`} onClick={editing ? () => setWeaponPickerOpen(true) : undefined} role={editing ? 'button' : undefined} tabIndex={editing ? 0 : undefined}>
         {model.weapon ? <><div className="cs-weapon-copy"><span className="eyebrow">Equipped weapon</span><div className="cs-weapon-title"><h2>{model.weapon.catalog.name}</h2><b>LV. {model.weapon.owned.level} · R{model.weapon.owned.rank}</b></div><Stars rarity={model.weapon.catalog.rarity}/><div><span>Base ATK</span><b>{model.weapon.levelStats.baseAtk}</b></div><div><span>{model.weapon.catalog.secondaryStat}</span><b>{model.weapon.levelStats.secondaryStatValue}</b></div>{editing && <small>Select to replace</small>}</div><img src={model.weapon.catalog.iconSourceUrl} alt=""/></> : <div className="cs-empty-weapon"><span>+</span><strong>No weapon equipped</strong><small>{editing ? `Select a ${catalog.weaponType}` : catalog.weaponType}</small></div>}
@@ -313,6 +378,8 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
       </div></section>
 
       <section className="cs-echo-section"><header><div><span className="eyebrow">Equipped Echoes</span><h2>Echo loadout</h2></div><span>{model.equippedEchoes.length}/5 · {model.totalEchoCost}/12 cost</span></header><div className="cs-echo-row">{model.echoSlots.map((echo, index) => <EchoShowcaseCard key={echo?.id ?? `empty-${index}`} echo={echo} index={index} element={catalog.element} editing={editing} onOpen={() => void openEchoPicker(index)} onEdit={setEditingEcho}/>)}</div></section>
+    </div>
+    <footer className="cs-export-footer"><span>TACET LAB // LOCAL-FIRST BUILD ARCHIVE</span><span>{catalog.name.toUpperCase()} // LV. {character.level} // S{character.sequence}</span></footer>
     </div>
 
     {weaponPickerOpen && <WeaponPicker character={character} catalog={catalog} weapons={weapons} refresh={refresh} onClose={() => setWeaponPickerOpen(false)}/>}

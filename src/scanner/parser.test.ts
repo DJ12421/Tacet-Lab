@@ -86,4 +86,14 @@ describe('English Echo OCR parser', () => {
     expect(candidateErrors(candidate)).toContain('Each tunable substat must match an exact in-game roll value.')
     expect(tunableRolls.critRate?.find((roll) => roll.value === 6.3)?.probability).toBe(23.33)
   })
+
+  it('resolves an OCR-confused 1 or 7 only when the swap produces one exact roll', async () => {
+    const candidate = await parseEchoText('Hooscamp\nCost 1\nLv. 25\nLingering Tunes\nATK % 18.0%\nEnergy Regen 1.6%\nCrit. DMG 11.4%', 'data:image/png;base64,ambiguous-digits', 'screenshot')
+    expect(candidate.fields.subStats.map((field) => field.value)).toEqual([
+      { key: 'energyRegen', value: 7.6 },
+      { key: 'critDamage', value: 17.4 }
+    ])
+    expect(candidate.fields.subStats.map((field) => field.raw)).toEqual(['1.6', '11.4'])
+    expect(candidate.fields.subStats.map((field) => field.confidence)).toEqual([0.84, 0.84])
+  })
 })

@@ -30,4 +30,14 @@ describe('official build-card stat parsing', () => {
       { key: 'critRate', value: 6.3 }
     ])
   })
+
+  it('resolves a build-card 1/7 OCR confusion to the exact Energy Regen roll', () => {
+    const parsed = parseBuildCardStats('Fusion DMG 30.0%\nCrit. Rate 10.5%\nEnergy Regen 1.6%', 3)
+
+    expect(parsed.subStats.map((field) => field.value)).toEqual([
+      { key: 'critRate', value: 10.5 },
+      { key: 'energyRegen', value: 7.6 }
+    ])
+    expect(parsed.subStats[1]).toMatchObject({ raw: '1.6', confidence: .8 })
+  })
 })

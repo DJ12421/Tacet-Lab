@@ -3,6 +3,7 @@ export { characterCatalog, characterSummaries, weaponCatalog, weaponSummaries, s
 export type { CharacterCatalogEntry, CharacterSummary, WeaponCatalogEntry, WeaponSummary, SonataCatalogEntry } from './catalog'
 export { GAME_DATA_VERSION, defaultSettings, resonators, statAliases, statLabels, weapons } from './core'
 export { isFixedSkillValueName } from './attack-values'
+export { baseTuneBreakBoost } from './tune-break'
 export {
   weaponPassiveConditions,
   type WeaponConditionEffect, type WeaponPassiveCondition

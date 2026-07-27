@@ -1,7 +1,7 @@
 import { aggregateStats, applyBuffEffects, defenseMultiplier, floorGameValue, resistanceMultiplier } from '../damage'
 import type { AttackDefinition, BuffEffect, Build, Echo, EnemyConfig, OwnedCharacter, OwnedWeapon, Resonator, TeamScenario, Weapon } from '../types'
 import {
-  characterConditionId, characterConditionInherentSkillIndex, characterConditionModes, characterConditionRequiresToggle, characterConditions, characterCatalog,
+  baseTuneBreakBoost, characterConditionId, characterConditionInherentSkillIndex, characterConditionModes, characterConditionRequiresToggle, characterConditions, characterCatalog,
   isFixedSkillValueName, weaponCatalog, weaponPassiveConditions, type CharacterConditionModifier
 } from '../../game-data'
 import { defaultEnabledSkillTreeBonusIds, inherentSkillBonusId, resolveCharacterShowcaseModel, weaponSecondaryStat } from '../../ui/character-showcase-model'
@@ -219,7 +219,7 @@ export function createBuildCalculationContext(input: BuildCalculationInput): Cal
     resistanceMultiplier: resistanceMultiplier(input.enemy.resistance, resistanceReduction, resistanceIgnore),
     damageReduction: input.enemy.damageReduction,
     characterLevel: input.character.level,
-    tuneBreakBoost: 10 + conditionTuneBreakBoost,
+    tuneBreakBoost: baseTuneBreakBoost(character) + conditionTuneBreakBoost,
     defenseIgnore,
     defenseReduction,
     resistanceIgnore,

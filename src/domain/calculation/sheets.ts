@@ -1,6 +1,6 @@
 import {
   characterConditionCard, characterConditionId, characterConditionInherentSkillIndex, characterConditionModeId, characterConditionModes, characterConditionRequiresToggle, characterConditions,
-  characterCatalog, echoCatalog, isFixedSkillValueName, sonataCatalog, weaponCatalog,
+  baseTuneBreakBoost, characterCatalog, echoCatalog, isFixedSkillValueName, sonataCatalog, weaponCatalog,
   type CharacterConditionModifier, type CharacterSkillCardKey
 } from '../../game-data'
 import type { DamageType, Element } from '../types'
@@ -85,7 +85,7 @@ const attackGroup = (attack: typeof characterCatalog[number]['attacks'][number])
               : attack.type === 'skill' ? 'Resonance Skill'
                 : attack.type === 'liberation' ? 'Resonance Liberation' : 'Damage'
 
-function tuneBreakTargets(characterId: string): FormulaTarget[] {
+function tuneBreakTargets(characterId: string, baseBoost: number): FormulaTarget[] {
   const supportedLevels = Object.keys(tuneBreakLevelConstants).map(Number)
   const levelKey: FormulaNode = {
     op: 'lookup',
@@ -103,7 +103,7 @@ function tuneBreakTargets(characterId: string): FormulaTarget[] {
       levelKey,
       formula.constant(16, 'Tune Break motion value'),
       formula.constant(enemyMultiplier, `${enemyClass} multiplier`),
-      addPercent(formula.input('tuneBreakBoost', 10, 'Tune Break Boost')),
+      addPercent(formula.input('tuneBreakBoost', baseBoost, 'Tune Break Boost')),
       formula.input('defenseMultiplier', 0.5, 'Enemy DEF multiplier'),
       formula.input('resistanceMultiplier', 0.9, 'Physical RES multiplier'),
       formula.sum(one, formula.prod(formula.input('damageReduction', 0, 'Damage reduction'), formula.constant(-0.01))),
@@ -197,7 +197,7 @@ function characterSheet(character: typeof characterCatalog[number]): FormulaShee
     entries: [],
     targets: [
       ...character.attacks.filter((attack) => !isFixedSkillValueName(attack.name)).map((attack) => damageTarget(character.id, character.element, attack)),
-      ...tuneBreakTargets(character.id)
+      ...tuneBreakTargets(character.id, baseTuneBreakBoost(character))
     ]
   }
 }
