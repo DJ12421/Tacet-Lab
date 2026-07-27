@@ -50,4 +50,4 @@ export interface OptimizerRequest { requestId: string; echoes: Echo[]; resonator
 export interface OptimizerResult { requestId: string; echoIds: string[]; score: number; stats: AggregatedStats; damage: DamageResult; complete?: boolean; evaluations?: number; targetId?: string }
 export interface AccountDocument { schemaVersion: 1 | 2 | 3 | 4; gameDataVersion: string; exportedAt: string; echoes: Echo[]; characters: OwnedCharacter[]; weapons: OwnedWeapon[]; builds: Build[]; teams: Team[]; settings: AppSettings }
 export interface AppSettings { displayName: string; privacyMode: boolean; background: 'signal' | 'tacet' | 'plain'; scanIntervalMs: number; roverGender: 'male' | 'female'; scoreWeights: Record<string, Partial<Record<StatKey, number>>> }
-export type AppView = 'dashboard' | 'archive' | 'scanner' | 'echoes' | 'weapons' | 'characters' | 'teams' | 'builds'
+export type AppView = 'dashboard' | 'archive' | 'scanner' | 'echoes' | 'weapons' | 'characters' | 'teams' | 'builds' | 'legal'

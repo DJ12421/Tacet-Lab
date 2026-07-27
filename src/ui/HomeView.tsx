@@ -48,5 +48,14 @@ export function HomeView({ echoes, characters, weapons, builds, teams, navigate 
       <article className="home-showcase"><div><span className="eyebrow">Character-specific evaluation</span><h2>Build scoring system</h2><p>Compare complete loadouts against the stats and damage types each Resonator actually needs.</p><button className="secondary" onClick={() => navigate('characters')}>Open character builds <span>→</span></button></div><div className="home-score-visual"><div className="home-score-ring"><strong>{completeBuilds ? 'S' : '—'}</strong><span>Build grade</span></div><div className="home-score-bars"><i style={{ width: '88%' }}/><i style={{ width: '72%' }}/><i style={{ width: '94%' }}/><i style={{ width: '61%' }}/></div></div><EchoWaveform element={featured.element}/></article>
       <article className="home-archive-card"><span className="eyebrow">Nanoka 3.5 database</span><h2>Browse the complete archive</h2><p>Explore imported characters, weapons, Sonata sets, and Echo metadata.</p><div className="home-archive-counts"><span><b>{characterCatalog.length}</b>Characters</span><span><b>{weaponCatalog.length}</b>Weapons</span></div><button onClick={() => navigate('archive')}>Open database <span>→</span></button></article>
     </div>
+
+    <article className="home-community">
+      <div className="home-community-copy"><span className="eyebrow">Community signal</span><h2>Help shape Tacet Lab</h2><p>Have a suggestion? Found a bug? Want to test new scanner layouts, calculations, or features before release? Join the community and help make the project better.</p><div className="home-community-points"><span><b>01</b>Share feedback</span><span><b>02</b>Become a tester</span><span><b>03</b>Follow development</span></div></div>
+      <div className="home-community-actions">
+        <a className="home-community-primary" href="https://discord.gg/fy66NmapWb" target="_blank" rel="noreferrer"><span><strong>Join the Discord</strong><small>Suggestions, testing, and project chat</small></span><b>↗</b></a>
+        <a href="https://github.com/DhruvJ12421/WuWa-Optimizer" target="_blank" rel="noreferrer"><span><strong>View on GitHub</strong><small>Explore the source and development history</small></span><b>↗</b></a>
+        <a href="https://github.com/DhruvJ12421/WuWa-Optimizer/issues/new" target="_blank" rel="noreferrer"><span><strong>Report an issue</strong><small>Share a reproducible bug or problem</small></span><b>↗</b></a>
+      </div>
+    </article>
   </section>
 }

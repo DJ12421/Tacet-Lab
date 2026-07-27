@@ -8,6 +8,7 @@ const ArchiveView = lazy(() => import('./ArchiveView').then((module) => ({ defau
 const CharacterInventory = lazy(() => import('./CharacterInventoryView').then((module) => ({ default: module.CharacterInventory })))
 const HomeView = lazy(() => import('./HomeView').then((module) => ({ default: module.HomeView })))
 const InventoryView = lazy(() => import('./InventoryView').then((module) => ({ default: module.InventoryView })))
+const PrivacyLegalView = lazy(() => import('./PrivacyLegalView').then((module) => ({ default: module.PrivacyLegalView })))
 const ScannerView = lazy(() => import('./ScannerView').then((module) => ({ default: module.ScannerView })))
 const TeamsView = lazy(() => import('./TeamsView').then((module) => ({ default: module.TeamsView })))
 const WeaponInventory = lazy(() => import('./OwnedInventoryView').then((module) => ({ default: module.WeaponInventory })))
@@ -38,7 +39,7 @@ export default function App() {
     setScannerSessionAtRisk(false)
     setViewState(nextView)
   }
-  const backup = async () => {
+  const exportData = async () => {
     const account = await exportAccount()
     const blob = new Blob([JSON.stringify(account, null, 2)], { type: 'application/json' })
     const anchor = document.createElement('a')
@@ -46,7 +47,7 @@ export default function App() {
     anchor.download = 'tacet-lab-' + new Date().toISOString().slice(0, 10) + '.json'
     anchor.click()
     window.setTimeout(() => URL.revokeObjectURL(anchor.href), 1_000)
-    notify('Backup exported')
+    notify('Data exported')
   }
   const restore = async (file?: File) => {
     if (!file) return
@@ -83,10 +84,10 @@ export default function App() {
     <aside className="sidebar">
       <button className="brand" onClick={() => setView('dashboard')}><div className="brand-mark"><i/><i/><i/></div><div><strong>TACET LAB</strong><span>WUWA OPTIMIZER</span></div></button>
       <nav>{nav.map((item) => <button key={item.view} className={view === item.view ? 'active' : ''} onClick={() => { if (item.view === 'teams') setTeamsGalleryRequest((request) => request + 1); setView(item.view) }}><Icon name={item.icon}/><span>{item.label}</span>{item.view === 'scanner' && <b>EN</b>}</button>)}</nav>
-      <div className="side-bottom"><div className="local-status"><i/><div><strong>Local inventory</strong><span>{data.echoes.length} Echoes · {data.characters.length} characters · {data.weapons.length} weapons</span></div></div><button onClick={() => setSettingsOpen(true)}>⚙<span>Settings & data</span></button></div>
+      <div className="side-bottom"><div className="local-status"><i/><div><strong>Local inventory</strong><span>{data.echoes.length} Echoes · {data.characters.length} characters · {data.weapons.length} weapons</span></div></div><button className={view === 'legal' ? 'active' : ''} onClick={() => setView('legal')}><Icon name="lock"/><span>Privacy & Legal</span></button><button onClick={() => setSettingsOpen(true)}><Icon name="settings"/><span>Settings & data</span></button></div>
     </aside>
     <main>
-      <div className="topbar"><div><span className="pulse"/>PRIVATE SESSION</div><div><button onClick={() => importRef.current?.click()}><Icon name="upload"/>Import</button><button onClick={backup}><Icon name="download"/>Backup</button><input ref={importRef} hidden type="file" accept="application/json" onChange={(event) => restore(event.target.files?.[0])}/><button className="user-button" onClick={() => setSettingsOpen(true)}>{data.settings.privacyMode ? 'P' : data.settings.displayName[0]?.toUpperCase()}</button></div></div>
+      <div className="topbar"><div><span className="pulse"/>PRIVATE SESSION</div><div><button onClick={() => importRef.current?.click()}><Icon name="upload"/>Import</button><button onClick={exportData}><Icon name="download"/>Export</button><a className="discord-button" href="https://discord.gg/fy66NmapWb" target="_blank" rel="noreferrer" aria-label="Join the Tacet Lab Discord" title="Join the Tacet Lab Discord"><Icon name="discord"/></a><input ref={importRef} hidden type="file" accept="application/json" onChange={(event) => restore(event.target.files?.[0])}/><button className="settings-button" aria-label="Open settings" title="Settings" onClick={() => setSettingsOpen(true)}><Icon name="settings"/></button></div></div>
       <div className={`content${view === 'teams' ? ' teams-content' : ''}`}>
         <Suspense fallback={<div className="boot view-loading"><div className="brand-mark"><i/><i/><i/></div><span>LOADING WORKSPACE</span></div>}>
           {view === 'dashboard' && <HomeView echoes={data.echoes} characters={data.characters} weapons={data.weapons} builds={data.builds} teams={data.teams} navigate={setView}/>}
@@ -96,9 +97,10 @@ export default function App() {
           {view === 'weapons' && <><PageHeader eyebrow="Local collection" title="Weapons" description="Manage every weapon copy stored in this browser."/><WeaponInventory owned={data.weapons} characters={data.characters} builds={data.builds} refresh={data.refresh}/></>}
           {view === 'characters' && <><PageHeader eyebrow="Local roster" title="Characters" description="Open a character to inspect their loadout and team links."/><CharacterInventory owned={data.characters} weapons={data.weapons} echoes={data.echoes} builds={data.builds} teams={data.teams} roverGender={data.settings.roverGender} refresh={data.refresh}/></>}
           {view === 'teams' && <TeamsView echoes={data.echoes} builds={data.builds} teams={data.teams} characters={data.characters} weapons={data.weapons} refresh={data.refresh} openScanner={() => setView('scanner')} galleryRequest={teamsGalleryRequest}/>}
+          {view === 'legal' && <PrivacyLegalView/>}
         </Suspense>
       </div>
-      <footer className="site-footer"><span>Fan-made tool. Not affiliated with Kuro Games.</span><span>Catalog data: Nanoka 3.5</span></footer>
+      <footer className="site-footer"><span>This is an independent fan project not affiliated with/endorsed by Wuthering Waves or Kuro Games.</span><span>Catalog data: Nanoka 3.5</span></footer>
     </main>
     {settingsOpen && <div className="modal-backdrop" onMouseDown={() => setSettingsOpen(false)}><Panel className="settings-modal" onMouseDown={(event) => event.stopPropagation()}>
       <div className="section-heading"><div><span className="eyebrow">Local preferences</span><h2>Settings & data</h2></div><button className="close" onClick={() => setSettingsOpen(false)}>×</button></div>
