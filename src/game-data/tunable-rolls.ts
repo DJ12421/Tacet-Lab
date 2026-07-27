@@ -2,6 +2,7 @@ import type { StatKey } from '../domain/types'
 
 export interface TunableRoll { value: number; probability: number }
 
+// Official in-game substat roll values and probabilities supplied 2026-07-28.
 const commonPercent: TunableRoll[] = [
   [6.4, 6.8], [7.1, 7.77], [7.9, 20.39], [8.6, 24.27],
   [9.4, 17.48], [10.1, 14.56], [10.9, 5.83], [11.6, 2.91]

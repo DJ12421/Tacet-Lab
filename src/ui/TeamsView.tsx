@@ -1,11 +1,10 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { formatDamage } from '../domain/damage'
-import { echoRollGrade, echoRollPoints, echoRollQuality } from '../domain/echo-grade'
+import { echoRollRating } from '../domain/echo-grade'
 import { createLocalId } from '../domain/id'
 import type { BuffEffect, Build, Echo, FormulaResultMode, OwnedCharacter, OwnedWeapon, RotationAction, StatKey, Team } from '../domain/types'
 import { characterCatalog, statLabels, weaponCatalog, weaponPassiveConditions } from '../game-data'
-import { maxSubStatsForLevel } from '../game-data/echo-main-stats'
 import { generatedSonataIconSources } from '../game-data/sonatas.generated'
 import { characterFormulaSheets, FORMULA_SHEET_VERSION, getFormulaCoverage, type CalculationTrace, type ConditionDefinition } from '../domain/calculation'
 import { db } from '../storage/database'
@@ -720,11 +719,9 @@ function ForteWorkspace({ member, model, refresh, updateTeam }: { member: TeamMe
 }
 
 function TeamEchoCard({ echo, ownerName }: { echo: Echo; ownerName: string }) {
-  const score = echoRollQuality(echo)
   return <EchoMiniCard
     echo={echo}
-    grade={`${score.toFixed(1)} · ${echoRollGrade(score)}`}
-    scoreLabel={`${echoRollPoints(echo)}/${maxSubStatsForLevel(echo.level) * 8} ROLL POINTS`}
+    rollRating={echoRollRating(echo)}
     equipment={<EquippedCharacterLabel name={ownerName}/>}
   />
 }

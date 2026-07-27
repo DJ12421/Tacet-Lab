@@ -1,14 +1,43 @@
 import type { Echo, StatKey } from './types'
 import { tunableRolls } from '../game-data/tunable-rolls'
-import { effectiveSubStats, maxSubStatsForLevel } from '../game-data/echo-main-stats'
+import { effectiveSubStats } from '../game-data/echo-main-stats'
 
 export type EchoRollGrade = 'E' | 'D' | 'C' | 'B' | 'A' | 'S' | 'SS' | 'SSS'
+export type EchoRollColor = 'white' | 'green' | 'blue' | 'purple' | 'gold' | 'red'
 
 const FLAT_STAT_POINTS = 3
 const MAX_TIER_POINTS = 8
+const MAX_SUBSTATS = 5
+const FLAT_STATS = new Set<StatKey>(['hp', 'atk', 'def'])
+
+// These simple average cutoffs are the rounded, mentally calculable form of
+// the official substat-selection and roll-value probability distributions.
+// For five rolls they produce totals of 27, 24, 22, 20, 18, 16, and 13.
+const gradeBands: ReadonlyArray<{ minimumAverage: number; grade: EchoRollGrade; color: EchoRollColor }> = [
+  { minimumAverage: 5.4, grade: 'SSS', color: 'red' },
+  { minimumAverage: 4.8, grade: 'SS', color: 'gold' },
+  { minimumAverage: 4.4, grade: 'S', color: 'gold' },
+  { minimumAverage: 4, grade: 'A', color: 'purple' },
+  { minimumAverage: 3.6, grade: 'B', color: 'purple' },
+  { minimumAverage: 3.2, grade: 'C', color: 'blue' },
+  { minimumAverage: 2.6, grade: 'D', color: 'green' },
+  { minimumAverage: 0, grade: 'E', color: 'white' }
+]
+
+export interface EchoRollRating {
+  points: number
+  maximum: number
+  average: number
+  equivalentFiveRollPoints: number
+  revealedRolls: number
+  grade?: EchoRollGrade
+  color?: EchoRollColor
+  provisional: boolean
+  valid: boolean
+}
 
 export function substatTierPoints(key: StatKey, value: number) {
-  if (key === 'hp' || key === 'atk' || key === 'def') return FLAT_STAT_POINTS
+  if (FLAT_STATS.has(key)) return FLAT_STAT_POINTS
   const rolls = tunableRolls[key]
   if (!rolls?.length) return 0
   const tierIndex = rolls.findIndex((roll) => Math.abs(roll.value - value) < 0.001)
@@ -19,18 +48,24 @@ export function echoRollPoints(echo: Pick<Echo, 'level' | 'subStats'>) {
   return effectiveSubStats(echo).reduce((sum, stat) => sum + substatTierPoints(stat.key, stat.value), 0)
 }
 
-export function echoRollQuality(echo: Pick<Echo, 'level' | 'subStats'>) {
-  const maximum = maxSubStatsForLevel(echo.level) * MAX_TIER_POINTS
-  return maximum ? echoRollPoints(echo) / maximum * 100 : 0
-}
-
-export function echoRollGrade(score: number): EchoRollGrade {
-  if (score >= 93.75) return 'SSS'
-  if (score >= 81.25) return 'SS'
-  if (score >= 68.75) return 'S'
-  if (score >= 56.25) return 'A'
-  if (score >= 43.75) return 'B'
-  if (score >= 31.25) return 'C'
-  if (score >= 18.75) return 'D'
-  return 'E'
+export function echoRollRating(echo: Pick<Echo, 'level' | 'subStats'>): EchoRollRating {
+  const subStats = effectiveSubStats(echo)
+  const rollPoints = subStats.map((stat) => substatTierPoints(stat.key, stat.value))
+  const revealedRolls = rollPoints.length
+  const points = rollPoints.reduce((sum, value) => sum + value, 0)
+  const maximum = revealedRolls * MAX_TIER_POINTS
+  const valid = revealedRolls > 0 && rollPoints.every((value) => value > 0)
+  const average = valid ? points / revealedRolls : 0
+  const band = valid ? gradeBands.find((entry) => average >= entry.minimumAverage) : undefined
+  return {
+    points,
+    maximum,
+    average,
+    equivalentFiveRollPoints: average * MAX_SUBSTATS,
+    revealedRolls,
+    grade: band?.grade,
+    color: band?.color,
+    provisional: revealedRolls < MAX_SUBSTATS,
+    valid
+  }
 }
