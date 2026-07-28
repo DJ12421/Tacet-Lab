@@ -1,14 +1,14 @@
-import type { Echo, StatKey } from './types'
-import { tunableRolls } from '../game-data/tunable-rolls'
+import type { Echo } from './types'
 import { effectiveSubStats } from '../game-data/echo-main-stats'
+import { substatTierPoints } from './echo-roll-tier'
+
+export { substatTierPoints } from './echo-roll-tier'
 
 export type EchoRollGrade = 'E' | 'D' | 'C' | 'B' | 'A' | 'S' | 'SS' | 'SSS'
 export type EchoRollColor = 'white' | 'green' | 'blue' | 'purple' | 'gold' | 'red'
 
-const FLAT_STAT_POINTS = 3
 const MAX_TIER_POINTS = 8
 const MAX_SUBSTATS = 5
-const FLAT_STATS = new Set<StatKey>(['hp', 'atk', 'def'])
 
 // These simple average cutoffs are the rounded, mentally calculable form of
 // the official substat-selection and roll-value probability distributions.
@@ -34,14 +34,6 @@ export interface EchoRollRating {
   color?: EchoRollColor
   provisional: boolean
   valid: boolean
-}
-
-export function substatTierPoints(key: StatKey, value: number) {
-  if (FLAT_STATS.has(key)) return FLAT_STAT_POINTS
-  const rolls = tunableRolls[key]
-  if (!rolls?.length) return 0
-  const tierIndex = rolls.findIndex((roll) => Math.abs(roll.value - value) < 0.001)
-  return tierIndex < 0 ? 0 : tierIndex + 1
 }
 
 export function echoRollPoints(echo: Pick<Echo, 'level' | 'subStats'>) {

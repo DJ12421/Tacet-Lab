@@ -3,7 +3,7 @@ import { createLocalId } from '../domain/id'
 import { generatedCharacterSummaries as characterCatalog } from '../game-data/character-summaries.generated'
 import { echoCatalog } from '../game-data/echoes'
 import { generatedWeaponSummaries as weaponCatalog } from '../game-data/weapon-summaries.generated'
-import { isMainStatAllowed, mainStatKeysByCost } from '../game-data/echo-main-stats'
+import { isMainStatAllowed, mainStatKeysByCost, primaryMainStatValue } from '../game-data/echo-main-stats'
 import { exactTunableRoll } from '../game-data/tunable-rolls'
 import { imageFingerprint, normalizeOcrText, parseStatLine, resolveTunableRoll } from './parser'
 import type { OcrPool } from './ocr-pool'
@@ -99,10 +99,23 @@ async function matchEcho(imageDataUrl: string, cost: Echo['cost']) {
   return { value: best.name, confidence: Math.min(.94, .48 + best.score * .42 + Math.max(0, best.score - (runnerUp?.score ?? 0)) * 2) }
 }
 
-const region = (id: string, rect: ScanRect, recognition: ScanRegion['recognition']): ScanRegion => ({ id, kind: recognition === 'number' ? 'level' : 'name', label: id, rect, recognition })
+const region = (
+  id: string,
+  rect: ScanRect,
+  recognition: ScanRegion['recognition'],
+  kind: ScanRegion['kind'] = recognition === 'number' ? 'level' : 'name'
+): ScanRegion => ({ id, kind, label: id, rect, recognition })
 
-async function recognizeText(pool: OcrPool, preprocess: PreprocessClient, image: string, id: string, rect: ScanRect, recognition: ScanRegion['recognition'] = 'text') {
-  const configured = region(id, rect, recognition)
+async function recognizeText(
+  pool: OcrPool,
+  preprocess: PreprocessClient,
+  image: string,
+  id: string,
+  rect: ScanRect,
+  recognition: ScanRegion['recognition'] = 'text',
+  kind?: ScanRegion['kind']
+) {
+  const configured = region(id, rect, recognition, kind)
   const original = await preprocess.process(image, { ...configured, recognition: 'visual' })
   const processed = recognition === 'visual' ? original : await preprocess.process(image, configured)
   const result = await pool.recognize(processed.blob, configured, `build-card:${id}`)
@@ -129,14 +142,23 @@ function skillLevelField(raw: string): ScanField<number> {
 export function parseBuildCardStats(text: string, cost: Echo['cost']) {
   const stats = normalizeOcrText(text).map(parseStatLine).filter((value): value is StatLine => Boolean(value))
   const mainIndex = stats.findIndex((stat) => isMainStatAllowed(cost, stat.key))
-  const mainStat = stats[mainIndex] ?? { key: mainStatKeysByCost[cost][0], value: 0 }
+  const recognizedMainStat = stats[mainIndex]
+  const expectedMainStatValue = recognizedMainStat
+    ? primaryMainStatValue(cost, 5, 25, recognizedMainStat.key)
+    : undefined
+  const mainStat = recognizedMainStat
+    ? { ...recognizedMainStat, value: expectedMainStatValue ?? recognizedMainStat.value }
+    : { key: mainStatKeysByCost[cost][0], value: 0 }
+  const mainStatWasCorrected = recognizedMainStat !== undefined
+    && expectedMainStatValue !== undefined
+    && Math.abs(recognizedMainStat.value - expectedMainStatValue) > .051
   const remaining = stats.filter((_, index) => index !== mainIndex)
   const subStats = remaining.slice(0, 5).map((stat) => {
     const corrected = stat.value >= 71 && stat.value < 72 ? { ...stat, value: stat.value - 64 } : stat
     const roll = resolveTunableRoll(corrected.key, corrected.value)
     return { value: roll ? { ...corrected, value: roll.value } : corrected, confidence: roll ? (exactTunableRoll(corrected.key, corrected.value) ? .9 : .8) : .5, raw: String(stat.value) }
   })
-  return { mainStat, mainConfidence: mainIndex >= 0 ? .88 : .25, subStats }
+  return { mainStat, mainConfidence: mainIndex < 0 ? .25 : mainStatWasCorrected ? .8 : .88, subStats }
 }
 
 export async function looksLikeOfficialBuildCard(imageDataUrl: string) {
@@ -215,19 +237,43 @@ export async function recognizeBuildCard(frame: ScanFrame, profile: CalibrationP
     const statsRect = configuredRect(`echo-${index}-stats`, { x: x + .018, y: .815, width: .174, height: .17 })
     const mainStatLabelRect = configuredRect(`echo-${index}-main-stat-label`, { x: x + .018, y: .775, width: .108, height: .04 })
     const mainStatValueRect = configuredRect(`echo-${index}-main-stat-value`, { x: x + .129, y: .775, width: .063, height: .04 })
-    const [art, costOcr, mainStatLabelOcr, mainStatValueOcr, statsOcr] = await Promise.all([
+    const [art, costOcr, mainStatLabelOcr, mainStatValueOcr, initialStatsOcr] = await Promise.all([
       preprocess.crop(source, artRect),
       recognizeText(pool, preprocess, source, `echo-${index}-cost`, costRect, 'number'),
-      recognizeText(pool, preprocess, source, `echo-${index}-main-stat-label`, mainStatLabelRect),
+      recognizeText(pool, preprocess, source, `echo-${index}-main-stat-label`, mainStatLabelRect, 'text', 'main-stat-label'),
       recognizeText(pool, preprocess, source, `echo-${index}-main-stat-value`, mainStatValueRect, 'number'),
-      recognizeText(pool, preprocess, source, `echo-${index}-stats`, statsRect)
+      recognizeText(pool, preprocess, source, `echo-${index}-stats`, statsRect, 'text', 'substats-block')
     ])
     const parsedCost = Number(costOcr.text.match(/[134]/)?.[0] ?? (index === 0 ? 4 : index < 3 ? 3 : 1)) as Echo['cost']
     const echoIdentity = await matchEcho(art.dataUrl, parsedCost)
     const echoEntry = echoCatalog.find((entry) => entry.name === echoIdentity.value)
     const [sonata, sonataCrop] = await Promise.all([recognizeSonataAt(source, sonataRect, echoEntry?.sonatas), preprocess.crop(source, sonataRect)])
     const mainStatRaw = `${mainStatLabelOcr.text.trim()} ${mainStatValueOcr.text.trim()}`.trim()
-    const stats = parseBuildCardStats(`${mainStatRaw}\n${statsOcr.text}`, parsedCost)
+    let statsOcr = initialStatsOcr
+    let stats = parseBuildCardStats(`${mainStatRaw}\n${statsOcr.text}`, parsedCost)
+    if (stats.subStats.length < 5) {
+      const rowOcr = await Promise.all(Array.from({ length: 5 }, (_, rowIndex) => recognizeText(
+        pool,
+        preprocess,
+        source,
+        `echo-${index}-stats-row-${rowIndex}`,
+        { ...statsRect, y: statsRect.y + statsRect.height * rowIndex / 5, height: statsRect.height / 5 },
+        'text',
+        'substat-row'
+      )))
+      const rowText = rowOcr.map((result) => result.text.trim()).filter(Boolean).join('\n')
+      const rowStats = parseBuildCardStats(`${mainStatRaw}\n${rowText}`, parsedCost)
+      if (rowStats.subStats.length > stats.subStats.length) {
+        stats = rowStats
+        statsOcr = {
+          ...initialStatsOcr,
+          text: rowText,
+          confidence: Math.min(...rowOcr.map((result) => result.confidence)),
+          processingMs: rowOcr.reduce((total, result) => total + result.processingMs, 0),
+          preprocessing: rowOcr[0]?.preprocessing ?? initialStatsOcr.preprocessing
+        }
+      }
+    }
     const sonataField = sonata ?? { value: echoEntry?.sonatas.length === 1 ? echoEntry.sonatas[0] : 'Unknown Sonata', confidence: echoEntry?.sonatas.length === 1 ? .75 : .25 }
     const candidate: ScanCandidate = {
       id: createLocalId(), createdAt: Date.now(), imageDataUrl: art.dataUrl, fingerprint: await imageFingerprint(art.dataUrl), source: frame.source,

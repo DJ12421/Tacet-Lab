@@ -1,4 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import type { CalculationTrace } from '../domain/calculation'
 import './calculation-details.css'
 
@@ -57,28 +58,27 @@ function CalculationEquation({ detail }: { detail: CalculationDetail }) {
   const rows = compactDetailRows(detail.rows)
   const operator = detail.equationOperator ?? (detail.formula?.includes('÷') ? '÷' : detail.formula?.toLowerCase().includes('sum') ? '+' : '×')
   return <div className="calculation-equation">
-    <strong>{detail.title}</strong>
-    <b>{detail.value}</b>
-    <span className="calculation-equals">=</span>
-    {rows.length ? rows.map((row, index) => <span className="calculation-term" key={`${row.label}-${index}`}>
+    {detail.formula && <div className="calculation-formula"><span>Formula</span><code>{detail.formula}</code></div>}
+    {rows.length ? <div className="calculation-terms">{rows.map((row, index) => <span className="calculation-term" key={`${row.label}-${index}`}>
       {index > 0 && <i>{operator}</i>}
       <em>{row.label}</em>
       <b>{row.value}</b>
-    </span>) : <span className="calculation-formula-text">{detail.formula ?? detail.value}</span>}
+    </span>)}</div> : <span className="calculation-formula-text">{detail.formula ?? detail.value}</span>}
   </div>
 }
 
 function CalculationDialog({ detail, onClose }: { detail: CalculationDetail; onClose: () => void }) {
-  return <div className="calculation-backdrop" role="presentation" onMouseDown={onClose}>
+  return createPortal(<div className="calculation-backdrop" role="presentation" onMouseDown={onClose}>
     <article className="calculation-box" role="dialog" aria-modal="true" aria-label={`${detail.title} calculation`} onMouseDown={(event) => event.stopPropagation()}>
       <header>
-        <div><span>{detail.title}</span><strong>{detail.value}</strong></div>
-        <button type="button" onClick={onClose} aria-label="Close calculation">⌃</button>
+        <div><small>Calculation breakdown</small><span>{detail.title}</span></div>
+        <strong>{detail.value}</strong>
+        <button type="button" onClick={onClose} aria-label="Close calculation">×</button>
       </header>
       <CalculationEquation detail={detail}/>
       {detail.note && <p>{detail.note}</p>}
     </article>
-  </div>
+  </div>, document.body)
 }
 
 export function CalculatedValue({ children, detail, className = '', ariaLabel, presentation = 'dialog', tooltipValues }: { children: ReactNode; detail: CalculationDetail; className?: string; ariaLabel?: string; presentation?: 'dialog' | 'tooltip'; tooltipValues?: Array<string | number> }) {

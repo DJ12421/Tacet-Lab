@@ -23,7 +23,8 @@ const parametersFor = (region: ScanRegion) => {
   const normalizedInput = { preserve_interword_spaces: '1', user_defined_dpi: '300', tessedit_do_invert: '0' }
   if (region.recognition === 'number') return { ...normalizedInput, tessedit_pageseg_mode: PSM.SINGLE_LINE, tessedit_char_whitelist: numberWhitelist }
   if (region.kind === 'name') return { ...normalizedInput, tessedit_pageseg_mode: PSM.SINGLE_BLOCK, tessedit_char_whitelist: textWhitelist }
-  if (region.kind === 'main-stat-label' || region.kind === 'equipped-character') return { ...normalizedInput, tessedit_pageseg_mode: PSM.SINGLE_LINE, tessedit_char_whitelist: textWhitelist }
+  if (region.kind === 'main-stat-label') return { ...normalizedInput, tessedit_pageseg_mode: PSM.SPARSE_TEXT, tessedit_char_whitelist: textWhitelist }
+  if (region.kind === 'equipped-character') return { ...normalizedInput, tessedit_pageseg_mode: PSM.SINGLE_LINE, tessedit_char_whitelist: textWhitelist }
   if (region.kind === 'substats-block' || region.id === 'substats-block') return { ...normalizedInput, tessedit_pageseg_mode: PSM.SINGLE_BLOCK, tessedit_char_whitelist: textWhitelist }
   if (region.kind === 'substat-row') return { ...normalizedInput, tessedit_pageseg_mode: PSM.SINGLE_LINE, tessedit_char_whitelist: textWhitelist }
   return { ...normalizedInput, tessedit_pageseg_mode: PSM.SINGLE_BLOCK }

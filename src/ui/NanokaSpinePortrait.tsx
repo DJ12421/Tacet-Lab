@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import type { SkeletonData, TextureAtlas } from '@pixi-spine/all-4.1'
 
 type PortraitStatus = 'idle' | 'loading' | 'ready' | 'error' | 'reduced-motion'
@@ -21,6 +21,10 @@ interface NanokaSpinePortraitProps {
   onFallback: () => void
 }
 
+export interface NanokaSpinePortraitHandle {
+  captureFrame: () => string | undefined
+}
+
 interface SpineResource {
   spineData: SkeletonData
   spineAtlas?: TextureAtlas
@@ -38,9 +42,21 @@ function needsAtlasNormalization(atlasSourceUrl: string) {
   return NORMALIZED_ATLAS_FOLDERS.some((folder) => atlasSourceUrl.includes(`/portraits/${folder}/`))
 }
 
-export function NanokaSpinePortrait({ skeletonSourceUrl, atlasSourceUrl, onReady, onFallback }: NanokaSpinePortraitProps) {
+export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaSpinePortraitProps>(function NanokaSpinePortrait({ skeletonSourceUrl, atlasSourceUrl, onReady, onFallback }, ref) {
   const hostRef = useRef<HTMLDivElement>(null)
   const [status, setStatus] = useState<PortraitStatus>('idle')
+
+  useImperativeHandle(ref, () => ({
+    captureFrame: () => {
+      const canvas = hostRef.current?.querySelector('canvas')
+      if (!canvas) return
+      try {
+        return canvas.toDataURL('image/png')
+      } catch {
+        return
+      }
+    }
+  }), [])
 
   useEffect(() => {
     const host = hostRef.current
@@ -84,6 +100,7 @@ export function NanokaSpinePortrait({ skeletonSourceUrl, atlasSourceUrl, onReady
           backgroundAlpha: 0,
           antialias: true,
           autoDensity: true,
+          preserveDrawingBuffer: true,
           resolution: Math.min(window.devicePixelRatio || 1, 2)
         })
         app = runtimeApp
@@ -180,4 +197,4 @@ export function NanokaSpinePortrait({ skeletonSourceUrl, atlasSourceUrl, onReady
   }, [atlasSourceUrl, onFallback, onReady, skeletonSourceUrl])
 
   return <div ref={hostRef} className={`cs-live-portrait is-${status}`} data-status={status} aria-hidden="true" />
-}
+})

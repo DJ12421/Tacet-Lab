@@ -1,17 +1,18 @@
-import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useContext, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
 import { toPng } from 'html-to-image'
 import { baseTuneBreakBoost, characterCatalog, sonataNames, statLabels, weaponCatalog, type CharacterCatalogEntry, type WeaponCatalogEntry } from '../game-data'
 import { generatedSonataIconSources } from '../game-data/sonatas.generated'
 import { effectiveSubStats } from '../game-data/echo-main-stats'
 import { echoRollRating } from '../domain/echo-grade'
+import { resolveCharacterSubstatProfile, scoreCharacterSubstats } from '../domain/character-substat-score'
 import { createLocalId } from '../domain/id'
 import { db, setBuildEchoIds, setOwnedWeaponOwner } from '../storage/database'
-import type { AggregatedStats, Build, Echo, OwnedCharacter, OwnedWeapon, StatKey, StatLine } from '../domain/types'
-import { EchoMiniCard, Icon } from './components'
+import type { AggregatedStats, Build, Echo, OwnedCharacter, OwnedWeapon, StatKey } from '../domain/types'
+import { CharacterSubstatProfileContext, EchoMiniCard, Icon, Panel } from './components'
 import { EchoWaveform } from './EchoWaveform'
 import { EchoEditModal } from './EchoEditModal'
-import { NanokaSpinePortrait } from './NanokaSpinePortrait'
+import { NanokaSpinePortrait, type NanokaSpinePortraitHandle } from './NanokaSpinePortrait'
 import { CalculatedValue, type CalculationDetail } from './CalculationDetails'
 import { showcaseStatDetail } from './calculation-detail-model'
 import { defaultEnabledSkillTreeBonusIds, inherentSkillBonusId, resolveCharacterShowcaseModel, skillTreeBonusId } from './character-showcase-model'
@@ -61,17 +62,6 @@ function formatStat(key: ShowcaseStatKey, value: number) {
     ? Math.floor(value + 1e-9).toLocaleString('en-US')
     : key === 'tuneBreakBoost' ? value.toFixed(1)
     : `${value.toFixed(1)}%`
-}
-
-function formatBonusLines(lines: StatLine[]) {
-  const totals = lines.reduce<Partial<Record<StatKey, number>>>((result, line) => {
-    result[line.key] = (result[line.key] ?? 0) + line.value
-    return result
-  }, {})
-  return Object.entries(totals).map(([key, value]) => {
-    const label = statLabels[key as StatKey].replace(/\s*%$/, '')
-    return `+${Number(value).toFixed(2).replace(/\.00$/, '').replace(/(\.\d)0$/, '$1')}% ${label}`
-  }).join(' · ')
 }
 
 function displayedStatValue(stats: AggregatedStats, key: ShowcaseStatKey, catalog: CharacterCatalogEntry) {
@@ -167,6 +157,7 @@ function WeaponPicker({ character, catalog, weapons, refresh, onClose }: { chara
 }
 
 function EchoPicker({ slot, build, echoes, refresh, onClose }: { slot: number; build: Build; echoes: Echo[]; refresh: () => Promise<void>; onClose: () => void }) {
+  const characterSubstatProfile = useContext(CharacterSubstatProfileContext)
   const currentId = build.echoIds[slot]
   const [query, setQuery] = useState('')
   const [costs, setCosts] = useState<number[]>([])
@@ -192,7 +183,13 @@ function EchoPicker({ slot, build, echoes, refresh, onClose }: { slot: number; b
     (lockState === 'all' || echo.locked === (lockState === 'locked')) &&
     (assignment === 'all' || Boolean(echo.equippedBy) === (assignment === 'equipped')) &&
     (!deferredQuery || `${echo.name} ${echo.sonata} ${statLabels[echo.mainStat.key]} ${effectiveSubStats(echo).map((stat) => statLabels[stat.key]).join(' ')}`.toLowerCase().includes(deferredQuery))
-  ).sort((left, right) => echoRollRating(right).average - echoRollRating(left).average || left.name.localeCompare(right.name)), [assignment, build.id, costs, deferredQuery, echoes, lockState, mainStats, rarities, showExcluded, sonatas, subStats])
+  ).sort((left, right) => {
+    if (characterSubstatProfile) {
+      return scoreCharacterSubstats(right, characterSubstatProfile).percentage - scoreCharacterSubstats(left, characterSubstatProfile).percentage
+        || left.name.localeCompare(right.name)
+    }
+    return echoRollRating(right).average - echoRollRating(left).average || left.name.localeCompare(right.name)
+  }), [assignment, build.id, characterSubstatProfile, costs, deferredQuery, echoes, lockState, mainStats, rarities, showExcluded, sonatas, subStats])
   const choose = async (next?: Echo) => {
     const oldId = build.echoIds[slot]
     const echoIds = [...build.echoIds]
@@ -222,8 +219,10 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
   const [animatedPortraitReady, setAnimatedPortraitReady] = useState(false)
   const [openSkillTooltip, setOpenSkillTooltip] = useState<string | null>(null)
   const [editingEcho, setEditingEcho] = useState<Echo | null>(null)
+  const [scoreInfoOpen, setScoreInfoOpen] = useState(false)
   const exportRef = useRef<HTMLDivElement>(null)
   const portraitRef = useRef<HTMLImageElement>(null)
+  const livePortraitRef = useRef<NanokaSpinePortraitHandle>(null)
   const showAnimatedPortrait = useCallback(() => setAnimatedPortraitReady(true), [])
   const showStaticPortrait = useCallback(() => setAnimatedPortraitReady(false), [])
 
@@ -234,6 +233,10 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
 
   const model = resolveCharacterShowcaseModel({ character, catalog, weapons, echoes, builds })
   if (!model) return null
+  const characterSubstatProfile = resolveCharacterSubstatProfile(catalog)
+  const preferredSubstats = (Object.entries(characterSubstatProfile.weights) as Array<[StatKey, number]>)
+    .filter(([, weight]) => weight > 0)
+    .sort((left, right) => right[1] - left[1] || statLabels[left[0]].localeCompare(statLabels[right[0]]))
 
   const elementStat = `${catalog.element.toLowerCase()}Damage` as StatKey
   const statRows: Array<[ShowcaseStatKey, string]> = [
@@ -282,9 +285,10 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
     setExporting(true)
     setExportMessage('')
     setOpenSkillTooltip(null)
-    frame.classList.add('is-exporting')
     let originalPortraitSource: string | undefined
+    let exportHost: HTMLDivElement | undefined
     try {
+      const livePortraitSnapshot = animatedPortraitReady ? livePortraitRef.current?.captureFrame() : undefined
       if (portraitRef.current) {
         try {
           originalPortraitSource = await inlineImageSource(portraitRef.current)
@@ -292,14 +296,37 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
           await portraitRef.current.decode().catch(() => undefined)
         }
       }
+
+      const exportFrame = frame.cloneNode(true) as HTMLDivElement
+      const frameStyles = getComputedStyle(frame)
+      for (const property of ['--cs-accent', '--cs-accent-rgb']) {
+        exportFrame.style.setProperty(property, frameStyles.getPropertyValue(property))
+      }
+      exportFrame.classList.add('is-exporting')
+      const snapshotImage = exportFrame.querySelector<HTMLImageElement>('.cs-live-portrait-snapshot')
+      if (livePortraitSnapshot && snapshotImage) {
+        snapshotImage.src = livePortraitSnapshot
+        exportFrame.classList.add('has-live-portrait-snapshot')
+      }
+      exportHost = document.createElement('div')
+      exportHost.style.position = 'fixed'
+      exportHost.style.left = '-100000px'
+      exportHost.style.top = '0'
+      exportHost.style.width = '1600px'
+      exportHost.style.pointerEvents = 'none'
+      exportHost.style.zIndex = '-1'
+      exportHost.append(exportFrame)
+      document.body.append(exportHost)
+      if (snapshotImage?.src) await snapshotImage.decode()
       await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())))
-      const dataUrl = await toPng(frame, {
-        width: 1920,
-        height: 1080,
-        pixelRatio: 2,
+      const exportHeight = Math.ceil(exportFrame.scrollHeight)
+      const dataUrl = await toPng(exportFrame, {
+        width: 1600,
+        height: exportHeight,
+        pixelRatio: 1.5,
         cacheBust: true,
         backgroundColor: '#030708',
-        style: { width: '1920px', height: '1080px', maxWidth: 'none' }
+        style: { width: '1600px', height: `${exportHeight}px`, maxWidth: 'none' }
       })
       const anchor = document.createElement('a')
       anchor.download = `${catalog.name.replace(/\W+/g, '-').replace(/^-|-$/g, '').toLowerCase()}-character-card.png`
@@ -309,8 +336,8 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
     } catch {
       setExportMessage('Image export failed. Reload the page and try again.')
     } finally {
+      exportHost?.remove()
       if (originalPortraitSource && portraitRef.current) portraitRef.current.src = originalPortraitSource
-      frame.classList.remove('is-exporting')
       setExporting(false)
     }
   }
@@ -322,7 +349,7 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
     await updateCharacter({ enabledSkillTreeBonusIds: [...enabled].sort() })
   }
 
-  return <section className={`cs-page cs-element-${catalog.element.toLowerCase()}`}>
+  return <CharacterSubstatProfileContext.Provider value={characterSubstatProfile}><section className={`cs-page cs-element-${catalog.element.toLowerCase()}`}>
     <header className="cs-toolbar"><button className="cs-back" onClick={onBack}>← Back to roster</button><div><span className="eyebrow">Character showcase</span><strong>{catalog.name}</strong></div><div className={`cs-toolbar-actions ${editing ? 'is-editing' : ''}`}>{editing && <><button className={character.favorite ? 'cs-favorite active' : 'cs-favorite'} onClick={() => void updateCharacter({ favorite: !character.favorite })}>{character.favorite ? '♥ Favorited' : '♡ Favorite'}</button><button className={`danger ${deleteArmed ? 'is-armed' : ''}`} onClick={() => void removeCharacter()}><Icon name="trash"/>{deleteArmed ? 'Confirm delete' : 'Delete'}</button></>}<button className="secondary cs-export-button" disabled={exporting} onClick={() => void exportCharacterCard()}><Icon name="download"/><span>{exporting ? 'Rendering...' : 'Export image'}</span></button><button className={editing ? 'primary' : 'secondary'} onClick={() => { setEditing(!editing); setDeleteArmed(false) }}>{editing ? 'Done editing' : 'Edit loadout'}</button></div></header>
     {exportMessage && <div className={`cs-export-message ${exportMessage.startsWith('Image export failed') ? 'is-error' : ''}`} role="status">{exportMessage}</div>}
 
@@ -340,7 +367,9 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
             if (!portraitFailed && catalog.portraitSourceUrl && catalog.portraitSourceUrl !== catalog.iconSourceUrl) setPortraitFailed(true)
           }}
         />
+        <img className="cs-live-portrait-snapshot" alt="" aria-hidden="true"/>
         {catalog.spineSkeletonSourceUrl && catalog.spineAtlasSourceUrl && <NanokaSpinePortrait
+          ref={livePortraitRef}
           skeletonSourceUrl={catalog.spineSkeletonSourceUrl}
           atlasSourceUrl={catalog.spineAtlasSourceUrl}
           onReady={showAnimatedPortrait}
@@ -352,7 +381,7 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
         <EchoWaveform element={catalog.element}/>
       </section>
 
-      <section className="cs-stats-panel cs-panel"><header><div><span className="eyebrow">Resonator statistics</span><h2>Current attributes</h2></div><span>Lv. {model.characterBaseStats.level}</span></header><div className="cs-stat-list">{statRows.map(([key, label]) => <div key={key}><StatIcon stat={key}/><span>{label}</span><i/><CalculatedValue detail={statDetail(key, label)}><b>{formatStat(key, displayedStatValue(model.finalStats, key, catalog))}</b></CalculatedValue></div>)}</div>{model.statBonusSources.length > 0 && <div className="cs-stat-sources"><span>Included bonuses</span>{model.statBonusSources.map((source) => <div key={source.id} title={source.description}><b>{source.label}</b><small>{source.lines.length ? formatBonusLines(source.lines) : 'No always-on stat'}{source.hasConditionalStats && ' · conditional effects excluded'}</small></div>)}</div>}<p className="cs-warning">{model.warning}</p></section>
+      <section className="cs-stats-panel cs-panel"><header><div><span className="eyebrow">Resonator statistics</span><h2>Current attributes</h2></div><span>Lv. {model.characterBaseStats.level}</span></header><div className="cs-stat-list">{statRows.map(([key, label]) => <div key={key}><StatIcon stat={key}/><span>{label}</span><i/><CalculatedValue detail={statDetail(key, label)}><b>{formatStat(key, displayedStatValue(model.finalStats, key, catalog))}</b></CalculatedValue></div>)}</div><p className="cs-warning">{model.warning}</p></section>
 
       <section className={`cs-weapon-panel cs-panel ${editing ? 'is-editable' : ''}`} onClick={editing ? () => setWeaponPickerOpen(true) : undefined} role={editing ? 'button' : undefined} tabIndex={editing ? 0 : undefined}>
         {model.weapon ? <><div className="cs-weapon-copy"><span className="eyebrow">Equipped weapon</span><div className="cs-weapon-title"><h2>{model.weapon.catalog.name}</h2><b>LV. {model.weapon.owned.level} · R{model.weapon.owned.rank}</b></div><Stars rarity={model.weapon.catalog.rarity}/><div><span>Base ATK</span><b>{model.weapon.levelStats.baseAtk}</b></div><div><span>{model.weapon.catalog.secondaryStat}</span><b>{model.weapon.levelStats.secondaryStatValue}</b></div>{editing && <small>Select to replace</small>}</div><img src={model.weapon.catalog.iconSourceUrl} alt=""/></> : <div className="cs-empty-weapon"><span>+</span><strong>No weapon equipped</strong><small>{editing ? `Select a ${catalog.weaponType}` : catalog.weaponType}</small></div>}
@@ -377,7 +406,7 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
         })}
       </div></section>
 
-      <section className="cs-echo-section"><header><div><span className="eyebrow">Equipped Echoes</span><h2>Echo loadout</h2></div><span>{model.equippedEchoes.length}/5 · {model.totalEchoCost}/12 cost</span></header><div className="cs-echo-row">{model.echoSlots.map((echo, index) => <EchoShowcaseCard key={echo?.id ?? `empty-${index}`} echo={echo} index={index} element={catalog.element} editing={editing} onOpen={() => void openEchoPicker(index)} onEdit={setEditingEcho}/>)}</div></section>
+      <section className="cs-echo-section"><header><div><span className="eyebrow">Equipped Echoes</span><h2>Echo loadout</h2></div><span>{model.equippedEchoes.length}/5 · {model.totalEchoCost}/12 cost</span></header><div className="cs-substat-preferences"><span>Character substat priorities</span><div>{preferredSubstats.length ? preferredSubstats.map(([key, weight]) => <b className={`weight-${weight}`} key={key}>{statLabels[key]} <i>{weight}</i></b>) : <em>TODO — add this character to character-substat-preferences.ts</em>}</div><button type="button" className="roll-quality-help cs-score-help" onClick={() => setScoreInfoOpen(true)}>Substat score <span aria-hidden="true">ⓘ</span></button><small>Each substat scores roll tier × shown weight. Click an Echo score for its breakdown.</small></div><div className="cs-echo-row">{model.echoSlots.map((echo, index) => <EchoShowcaseCard key={echo?.id ?? `empty-${index}`} echo={echo} index={index} element={catalog.element} editing={editing} onOpen={() => void openEchoPicker(index)} onEdit={setEditingEcho}/>)}</div></section>
     </div>
     <footer className="cs-export-footer"><span>TACET LAB // LOCAL-FIRST BUILD ARCHIVE</span><span>{catalog.name.toUpperCase()} // LV. {character.level} // S{character.sequence}</span></footer>
     </div>
@@ -385,5 +414,12 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
     {weaponPickerOpen && <WeaponPicker character={character} catalog={catalog} weapons={weapons} refresh={refresh} onClose={() => setWeaponPickerOpen(false)}/>}
     {echoSlot !== null && currentBuild && <EchoPicker slot={echoSlot} build={currentBuild} echoes={echoes} refresh={refresh} onClose={() => setEchoSlot(null)}/>} 
     {editingEcho && <EchoEditModal echo={editingEcho} onClose={() => setEditingEcho(null)} onSave={async (updated) => { await db.echoes.put(updated); setEditingEcho(null); await refresh() }}/>}
-  </section>
+    {scoreInfoOpen && <div className="modal-backdrop roll-quality-backdrop" onMouseDown={() => setScoreInfoOpen(false)}><Panel className="roll-quality-modal cs-score-info-modal" role="dialog" aria-modal="true" aria-labelledby="substat-score-info-title" onMouseDown={(event) => event.stopPropagation()}>
+      <header><div><span className="eyebrow">Character-specific Echo evaluation</span><h2 id="substat-score-info-title">How Substat Score works</h2></div><button className="close" aria-label="Close Substat Score information" onClick={() => setScoreInfoOpen(false)}>×</button></header>
+      <p>Substat Score measures how useful an Echo's revealed rolls are for {catalog.name}. Unlike Roll Grade, it values the stats this character actually wants.</p>
+      <section><h3>1. Find the roll tier</h3><p>Percentage substats earn 1–8 tier points from their position among the eight fixed in-game roll values. Flat HP, ATK, and DEF use 3 tier points.</p><div className="roll-tier-legend"><span className="tier-low">1–2 Low</span><span className="tier-mid">3–4 Mid</span><span className="tier-high">5–6 High</span><span className="tier-perfect">7–8 Elite</span></div></section>
+      <section><h3>2. Apply this character's priority</h3><p>Every configured stat has a character-specific weight. Irrelevant or unconfigured stats contribute zero points.</p><div className="score-weight-legend"><span className="weight-4">4 Highest</span><span className="weight-3">3 Strong</span><span className="weight-2">2 Useful</span><span className="weight-1">1 Marginal</span></div><div className="quality-formula"><b>Roll tier</b><span>×</span><b>Character weight</b><span>= contribution</span></div></section>
+      <section><h3>3. Normalize the total</h3><p>Contributions are added and divided by the maximum configured score for this character. Fewer than five revealed substats produce a provisional score marked with an asterisk.</p><div className="quality-formula"><b>Earned weighted points</b><span>÷</span><b>Maximum weighted points</b><span>= score %</span></div><div className="score-grade-legend"><span className="grade-e">E<small>0–14.9%</small></span><span className="grade-d">D<small>15–24.9%</small></span><span className="grade-c">C<small>25–34.9%</small></span><span className="grade-b">B<small>35–44.9%</small></span><span className="grade-a">A<small>45–54.9%</small></span><span className="grade-s">S<small>55–64.9%</small></span><span className="grade-ss">SS<small>65–74.9%</small></span><span className="grade-sss">SSS<small>75–100%</small></span></div></section>
+    </Panel></div>}
+  </section></CharacterSubstatProfileContext.Provider>
 }

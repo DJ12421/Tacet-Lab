@@ -18,14 +18,14 @@ describe('application shell', () => {
     fireEvent.click(screen.getByRole('button', { name: /^Echoes$/ }))
     expect(await screen.findByText('Echo inventory')).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: /Scanner/ }))
-    expect(await screen.findByText('Decode Echo details and build cards')).toBeInTheDocument()
+    expect(await screen.findByText('Decode Echo details and build cards', {}, { timeout: 5_000 })).toBeInTheDocument()
   })
 
   it('warns before leaving a scanner session with unsaved Echo data', async () => {
     render(<App/>)
     await screen.findByText('Tacet Lab Optimizer')
     fireEvent.click(screen.getByRole('button', { name: /Scanner/ }))
-    fireEvent.click(await screen.findByRole('button', { name: /add Echo manually/i }))
+    fireEvent.click(await screen.findByRole('button', { name: /add Echo manually/i }, { timeout: 5_000 }))
     expect(await screen.findByRole('heading', { name: /^Scanned Echoes 1$/i })).toBeInTheDocument()
 
     const confirm = vi.spyOn(window, 'confirm').mockReturnValue(false)

@@ -119,8 +119,20 @@ function confidence(found: boolean, base: number) { return found ? base : 0.25 }
 
 export async function imageFingerprint(dataUrl: string) {
   const data = new TextEncoder().encode(dataUrl.slice(-6000))
-  const digest = await crypto.subtle.digest('SHA-256', data)
-  return Array.from(new Uint8Array(digest)).slice(0, 12).map((byte) => byte.toString(16).padStart(2, '0')).join('')
+  if (globalThis.crypto?.subtle) {
+    const digest = await globalThis.crypto.subtle.digest('SHA-256', data)
+    return Array.from(new Uint8Array(digest)).slice(0, 12).map((byte) => byte.toString(16).padStart(2, '0')).join('')
+  }
+
+  // Web Crypto is unavailable on plain-HTTP LAN origins used for phone access.
+  // Three independently seeded FNV-1a hashes retain a stable 96-bit duplicate key.
+  const hashes = [0x811c9dc5, 0x9e3779b9, 0x85ebca6b]
+  for (const byte of data) {
+    for (let index = 0; index < hashes.length; index += 1) {
+      hashes[index] = Math.imul(hashes[index] ^ byte, 0x01000193) >>> 0
+    }
+  }
+  return hashes.map((hash) => hash.toString(16).padStart(8, '0')).join('')
 }
 
 export async function parseEchoText(text: string, imageDataUrl: string, source: ScanCandidate['source'], visual: VisualRecognition = {}): Promise<ScanCandidate> {
