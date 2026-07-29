@@ -1,6 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import type { Echo } from '../domain/types'
+import type { BuildCardDetails, Echo } from '../domain/types'
 import { createLocalId } from '../domain/id'
+import { generatedCharacterSummaries as characterCatalog } from '../game-data/character-summaries.generated'
+import { generatedWeaponSummaries as weaponCatalog } from '../game-data/weapon-summaries.generated'
 import { candidateErrors, candidateToEcho, parseEchoText } from '../scanner/parser'
 import { saveScannedCandidate } from '../scanner/persistence'
 import { StableFrameDetector } from '../scanner/stability'
@@ -22,6 +24,39 @@ import { defaultPanelRectForLayout, regionsForLayout } from '../scanner/regions'
 import { echoRollRating } from '../domain/echo-grade'
 
 const manualText = `Unknown Echo\nCost 1\n5 Star\nLv. 0\nUnknown Sonata\nATK % 18.0%`
+
+function ScannedLoadoutCards({ details, onReview }: { details: BuildCardDetails; onReview: () => void }) {
+  const character = characterCatalog.find((entry) => entry.id === details.characterCatalogId)
+  const weapon = weaponCatalog.find((entry) => entry.id === details.weaponCatalogId)
+  return <>
+    <button type="button" className="scanned-loadout-card scanned-character-card" onClick={onReview}>
+      <div className="scanned-loadout-art">
+        {character?.iconSourceUrl ? <img src={character.iconSourceUrl} alt=""/> : <span>?</span>}
+      </div>
+      <div className="scanned-loadout-copy">
+        <span className="eyebrow">Scanned character</span>
+        <h3>{character?.name ?? (details.character.value || 'Unknown character')}</h3>
+        <p>{character ? `${character.element} · ${character.weaponType} · ${'★'.repeat(character.rarity)}` : 'Choose a character during review'}</p>
+        <dl><div><dt>Level</dt><dd>{details.characterLevel.value}/90</dd></div><div><dt>Sequence</dt><dd>S{details.sequence.value}</dd></div></dl>
+        <small>Review character details</small>
+      </div>
+    </button>
+    <button type="button" className={`scanned-loadout-card scanned-weapon-card rarity-${weapon?.rarity ?? 1}`} onClick={onReview}>
+      <div className="scanned-loadout-art">
+        {weapon?.iconSourceUrl ? <img src={weapon.iconSourceUrl} alt=""/> : <span>?</span>}
+        {weapon && <i className="scanned-weapon-rarity">{'★'.repeat(weapon.rarity)}</i>}
+      </div>
+      <div className="scanned-loadout-copy">
+        <span className="eyebrow">Scanned weapon</span>
+        <h3>{weapon?.name ?? (details.weapon.value || 'Unknown weapon')}</h3>
+        <p>{weapon ? `${weapon.type} · ${weapon.secondaryStat} ${weapon.secondaryStatValue}` : 'Choose a weapon during review'}</p>
+        <dl><div><dt>Level</dt><dd>{details.weaponLevel.value}/90</dd></div><div><dt>Rank</dt><dd>R1</dd></div></dl>
+        <small>Review weapon details</small>
+      </div>
+    </button>
+  </>
+}
+
 function feedbackTone(kind: 'new' | 'duplicate' | 'error') {
   const AudioContextClass = window.AudioContext || (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext
   if (!AudioContextClass) return
@@ -36,6 +71,7 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onSessionRiskChan
   const videoRef = useRef<HTMLVideoElement>(null), screenshotRef = useRef<HTMLInputElement>(null), videoFileRef = useRef<HTMLInputElement>(null)
   const streamRef = useRef<MediaStream | null>(null), controllerRef = useRef<ScanSessionController | null>(null), detector = useRef(new StableFrameDetector())
   const imageScanningRef = useRef(false)
+  const candidateTabsRef = useRef<HTMLDivElement>(null)
   const videoSource = useRef(new LocalVideoSource()), candidatesRef = useRef<DiagnosticScanCandidate[]>([]), echoesRef = useRef(echoes)
   const [streaming, setStreaming] = useState(false), [videoScanning, setVideoScanning] = useState(false), [imageScanning, setImageScanning] = useState(false)
   const [candidates, setCandidates] = useState<DiagnosticScanCandidate[]>([]), [session, setSession] = useState<ScanSession>()
@@ -50,6 +86,18 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onSessionRiskChan
 
   useEffect(() => { candidatesRef.current = candidates }, [candidates])
   useEffect(() => { echoesRef.current = echoes }, [echoes])
+  useEffect(() => {
+    const strip = candidateTabsRef.current
+    if (!reviewOpen || !strip) return
+    const captureCandidateWheel = (event: WheelEvent) => {
+      const delta = Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX
+      strip.scrollLeft += delta
+      event.preventDefault()
+      event.stopPropagation()
+    }
+    strip.addEventListener('wheel', captureCandidateWheel, { passive: false })
+    return () => strip.removeEventListener('wheel', captureCandidateWheel)
+  }, [reviewOpen, candidates.length])
   useLayoutEffect(() => { onSessionRiskChange?.(streaming || videoScanning || imageScanning || candidates.length > 0 || session?.status === 'running' || session?.status === 'stopping') })
 
   const acceptCandidate = (candidate: DiagnosticScanCandidate) => {
@@ -193,6 +241,8 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onSessionRiskChan
   const validCandidates = candidates.filter((candidate) => candidateErrors(candidate).length === 0)
   const approvableCandidates = validCandidates.filter((candidate) => !candidate.duplicateOf)
   const approvableDuplicates = validCandidates.filter((candidate) => candidate.duplicateOf)
+  const scannedBuildCards = candidates.flatMap((candidate) => candidate.buildCard ? [{ candidate, details: candidate.buildCard }] : [])
+    .filter((entry, index, entries) => entries.findIndex((candidate) => candidate.details.id === entry.details.id) === index)
   const approveCandidates = async (batch: DiagnosticScanCandidate[]) => {
     for (const candidate of batch) { await saveScannedCandidate(candidate); controllerRef.current?.markApproved() }
     const approvedIds = new Set(batch.map((candidate) => candidate.id))
@@ -245,8 +295,8 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onSessionRiskChan
     <ScanSessionSummary session={session}/>
     <section className="scanned-echoes">
       <div className="section-heading scanned-echoes-heading"><div><span className="eyebrow">Human checkpoint</span><h2>Scanned Echoes <b>{candidates.length}</b></h2></div><div className="scanned-echo-actions"><button className="secondary" disabled={!candidates.length} onClick={() => { setReviewOpen(true); setActiveReviewId(candidates[0]?.id) }}>Review queue</button><button className="primary" disabled={!approvableCandidates.length} onClick={() => void approveAll()}>Approve all</button><button className="secondary" disabled={!approvableDuplicates.length} onClick={() => void approveAllDuplicates()}>Approve all Duplicates</button><button className="danger" disabled={!candidates.length} onClick={discardAll}>Discard all</button></div></div>
-      {candidates.length ? <div className="scanned-echo-grid">{candidates.map((candidate) => { const duplicateBadge = candidate.duplicateOf ? <span className="scan-duplicate-badge">Duplicate</span> : null; if (candidateErrors(candidate).length > 0) return <button className={`scan-error-card${candidate.duplicateOf ? ' duplicate' : ''}`} key={candidate.id} onClick={() => { setActiveReviewId(candidate.id); setReviewOpen(true) }}>{duplicateBadge}<span>Needs review</span><strong>{candidate.fields.name.value || 'Unknown Echo'}</strong><small>{candidateErrors(candidate).join(' ')}</small></button>; const echo = candidateToEcho(candidate); return <div className={`scanned-echo-card${candidate.duplicateOf ? ' duplicate' : ''}`} key={candidate.id}>{duplicateBadge}<EchoMiniCard echo={echo} rollRating={echoRollRating(echo)} equipment={<EquippedCharacterLabel name={candidate.fields.equippedBy.value}/>} onClick={() => { setActiveReviewId(candidate.id); setReviewOpen(true) }}/><button className="text-button" onClick={() => { setActiveReviewId(candidate.id); setReviewOpen(true) }}>Review details</button></div> })}</div> : <Panel className="empty-state compact"><h3>No scanned Echoes yet</h3><p>Successful scans will appear here as cards ready for review.</p></Panel>}
+      {candidates.length ? <div className="scanned-echo-grid">{scannedBuildCards.map(({ candidate, details }) => <ScannedLoadoutCards key={details.id} details={details} onReview={() => { setActiveReviewId(candidate.id); setReviewOpen(true) }}/>)}{candidates.map((candidate) => { const duplicateBadge = candidate.duplicateOf ? <span className="scan-duplicate-badge">Duplicate</span> : null; if (candidateErrors(candidate).length > 0) return <button className={`scan-error-card${candidate.duplicateOf ? ' duplicate' : ''}`} key={candidate.id} onClick={() => { setActiveReviewId(candidate.id); setReviewOpen(true) }}>{duplicateBadge}<span>Needs review</span><strong>{candidate.fields.name.value || 'Unknown Echo'}</strong><small>{candidateErrors(candidate).join(' ')}</small></button>; const echo = candidateToEcho(candidate); return <div className={`scanned-echo-card${candidate.duplicateOf ? ' duplicate' : ''}`} key={candidate.id}>{duplicateBadge}<EchoMiniCard echo={echo} rollRating={echoRollRating(echo)} equipment={<EquippedCharacterLabel name={candidate.fields.equippedBy.value}/>} onClick={() => { setActiveReviewId(candidate.id); setReviewOpen(true) }}/></div> })}</div> : <Panel className="empty-state compact"><h3>No scanned Echoes yet</h3><p>Successful scans will appear here as cards ready for review.</p></Panel>}
     </section>
-    {reviewOpen && <div className="modal-backdrop scan-review-backdrop" role="dialog" aria-modal="true" aria-label="Human review"><Panel className="scan-review-popout"><header><div><span className="eyebrow">Human review</span><h2>Review scanned Echoes <b>{candidates.length}</b></h2></div><button className="close" aria-label="Close human review" onClick={() => setReviewOpen(false)}>×</button></header>{candidates.length > 1 && <div className="review-candidate-tabs">{candidates.map((candidate, index) => <button className={candidate.id === activeReview?.id ? 'active' : ''} onClick={() => setActiveReviewId(candidate.id)} key={candidate.id}>{index + 1}. {candidate.fields.name.value}</button>)}</div>}{activeReview ? <ScanReviewCard candidate={activeReview} onChange={updateCandidate} onDiscard={() => { discard(activeReview); setActiveReviewId(undefined) }} onSave={() => { void save(activeReview); setActiveReviewId(undefined) }} onRerunField={(regionId) => void rerunField(activeReview, regionId)} onCopyDiagnostic={(includeImages) => void copyDiagnosticReport(activeReview, includeImages)}/> : <div className="empty-state compact"><h3>No scans to review</h3><p>Close the review window and scan another Echo.</p></div>}</Panel></div>}
+    {reviewOpen && <div className="modal-backdrop scan-review-backdrop" role="dialog" aria-modal="true" aria-label="Human review"><Panel className="scan-review-popout"><header><div><span className="eyebrow">Human review</span><h2>Review scanned Echoes <b>{candidates.length}</b></h2></div><button className="close" aria-label="Close human review" onClick={() => setReviewOpen(false)}>×</button></header>{candidates.length > 1 && <div className="review-candidate-tabs" ref={candidateTabsRef}>{candidates.map((candidate, index) => <button className={candidate.id === activeReview?.id ? 'active' : ''} onClick={() => setActiveReviewId(candidate.id)} key={candidate.id}>{index + 1}. {candidate.fields.name.value}</button>)}</div>}{activeReview ? <ScanReviewCard candidate={activeReview} onChange={updateCandidate} onDiscard={() => { discard(activeReview); setActiveReviewId(undefined) }} onSave={() => { void save(activeReview); setActiveReviewId(undefined) }} onRerunField={(regionId) => void rerunField(activeReview, regionId)} onCopyDiagnostic={(includeImages) => void copyDiagnosticReport(activeReview, includeImages)}/> : <div className="empty-state compact"><h3>No scans to review</h3><p>Close the review window and scan another Echo.</p></div>}</Panel></div>}
   </div>
 }

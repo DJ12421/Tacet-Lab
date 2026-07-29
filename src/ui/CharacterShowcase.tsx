@@ -2,13 +2,14 @@ import { useCallback, useContext, useDeferredValue, useEffect, useMemo, useRef, 
 import type { CSSProperties, ReactNode } from 'react'
 import { toPng } from 'html-to-image'
 import { baseTuneBreakBoost, characterCatalog, sonataNames, statLabels, weaponCatalog, type CharacterCatalogEntry, type WeaponCatalogEntry } from '../game-data'
+import { characterSubstatScoreKeys } from '../game-data/character-substat-preferences'
 import { generatedSonataIconSources } from '../game-data/sonatas.generated'
 import { effectiveSubStats } from '../game-data/echo-main-stats'
 import { echoRollRating } from '../domain/echo-grade'
 import { resolveCharacterSubstatProfile, scoreCharacterSubstats } from '../domain/character-substat-score'
 import { createLocalId } from '../domain/id'
-import { db, setBuildEchoIds, setOwnedWeaponOwner } from '../storage/database'
-import type { AggregatedStats, Build, Echo, OwnedCharacter, OwnedWeapon, StatKey } from '../domain/types'
+import { db, saveSettings, setBuildEchoIds, setOwnedWeaponOwner } from '../storage/database'
+import type { AggregatedStats, AppSettings, Build, Echo, OwnedCharacter, OwnedWeapon, StatKey } from '../domain/types'
 import { CharacterSubstatProfileContext, EchoMiniCard, Icon, Panel } from './components'
 import { EchoWaveform } from './EchoWaveform'
 import { EchoEditModal } from './EchoEditModal'
@@ -35,6 +36,7 @@ interface CharacterShowcaseProps {
   weapons: OwnedWeapon[]
   echoes: Echo[]
   builds: Build[]
+  settings: AppSettings
   refresh: () => Promise<void>
   onBack: () => void
 }
@@ -208,7 +210,47 @@ function EchoPicker({ slot, build, echoes, refresh, onClose }: { slot: number; b
   return <div className="catalog-picker-backdrop cs-picker-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}><section className="catalog-picker cs-picker cs-echo-picker" role="dialog" aria-modal="true" aria-label={`Equip Echo slot ${slot + 1}`}><header><div><span className="eyebrow">Echo slot {slot + 1}</span><h2>Equip Echo</h2></div><button className="text-button" onClick={onClose}>Close</button></header><div className="cs-echo-picker-filters"><div className="filter-heading"><div><strong>Echo filters</strong><span>{options.length} / {echoes.length} shown</span></div><button className="text-button" onClick={resetFilters}>Reset</button></div><label className="search"><span>⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search Echo, Sonata, or stat..."/></label><div className="filter-body"><div className="filter-group"><span>Cost</span><div className="filter-chips">{[1,3,4].map((value) => <button className={costs.includes(value) ? 'active' : ''} onClick={() => toggleNumber(costs, value, setCosts)} key={value}>{value} cost</button>)}</div></div><div className="filter-group"><span>Rarity</span><div className="filter-chips">{[5,4,3,2,1].map((value) => <button className={rarities.includes(value) ? 'active' : ''} onClick={() => toggleNumber(rarities, value, setRarities)} key={value}>{value} ★</button>)}</div></div><EchoFilterSelect label="Sonata" values={sonatas} options={sonataNames.map((name) => ({ value: name, label: name }))} emptyLabel="All Sonatas" onChange={setSonatas} icon={(name) => <img src={generatedSonataIconSources[name]} alt=""/>}/><EchoFilterSelect label="Main stat" values={mainStats} options={statKeys.map((key) => ({ value: key, label: statLabels[key] }))} emptyLabel="Any main stat" onChange={setMainStats}/><EchoFilterSelect label="Substat" values={subStats} options={statKeys.map((key) => ({ value: key, label: statLabels[key] }))} emptyLabel="Any substat" onChange={setSubStats}/><label>Lock state<select value={lockState} onChange={(event) => setLockState(event.target.value as typeof lockState)}><option value="all">All</option><option value="locked">Locked</option><option value="unlocked">Unlocked</option></select></label><label>Equipped<select value={assignment} onChange={(event) => setAssignment(event.target.value as typeof assignment)}><option value="all">All</option><option value="equipped">Equipped here</option><option value="unequipped">Unequipped</option></select></label><label className="check"><input type="checkbox" checked={showExcluded} onChange={(event) => setShowExcluded(event.target.checked)}/>Include discarded</label></div></div><div className="echo-picker-list">{currentId && <button className="danger" onClick={() => void choose()}>Unequip current Echo</button>}{options.map((echo) => <EchoMiniCard key={echo.id} echo={echo} selected={echo.id === currentId} rollRating={echoRollRating(echo)} onClick={() => void choose(echo)}/>)}</div></section></div>
 }
 
-export function CharacterShowcase({ character, catalog, weapons, echoes, builds, refresh, onBack }: CharacterShowcaseProps) {
+function SubstatWeightEditor({ characterName, initialWeights, recommendedWeights, onSave, onReset, onClose }: {
+  characterName: string
+  initialWeights: Partial<Record<StatKey, number>>
+  recommendedWeights: Partial<Record<StatKey, number>>
+  onSave: (weights: Partial<Record<StatKey, number>>) => Promise<void>
+  onReset: () => Promise<void>
+  onClose: () => void
+}) {
+  const [weights, setWeights] = useState<Partial<Record<StatKey, number>>>(() => ({ ...initialWeights }))
+  const [saving, setSaving] = useState(false)
+  const setWeight = (key: StatKey, value: number) => setWeights((current) => ({ ...current, [key]: Math.min(4, Math.max(0, value)) }))
+  const submit = async () => {
+    setSaving(true)
+    try {
+      await onSave(Object.fromEntries(characterSubstatScoreKeys.flatMap((key) => {
+        const weight = Math.round(weights[key] ?? 0)
+        return weight > 0 ? [[key, weight]] : []
+      })))
+      onClose()
+    } finally {
+      setSaving(false)
+    }
+  }
+  const reset = async () => {
+    setSaving(true)
+    try {
+      await onReset()
+      onClose()
+    } finally {
+      setSaving(false)
+    }
+  }
+  return <div className="modal-backdrop cs-weight-editor-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}><Panel className="cs-weight-editor" role="dialog" aria-modal="true" aria-labelledby="substat-weight-editor-title">
+    <header><div><span className="eyebrow">Character substat priorities</span><h2 id="substat-weight-editor-title">Configure {characterName}</h2></div><button type="button" className="close" aria-label="Close substat priority editor" onClick={onClose}>×</button></header>
+    <p>Set a priority from 0 to 4. A stat at 0 is ignored; higher priorities award more points for each roll tier.</p>
+    <div className="cs-weight-grid">{characterSubstatScoreKeys.map((key) => <label key={key}><span>{statLabels[key]}<small>Recommended: {recommendedWeights[key] ?? 0}</small></span><div><button type="button" aria-label={`Decrease ${statLabels[key]} priority`} disabled={(weights[key] ?? 0) <= 0} onClick={() => setWeight(key, (weights[key] ?? 0) - 1)}>−</button><input aria-label={`${statLabels[key]} priority`} type="number" min="0" max="4" step="1" value={weights[key] ?? 0} onChange={(event) => setWeight(key, Math.round(Number(event.target.value) || 0))}/><button type="button" aria-label={`Increase ${statLabels[key]} priority`} disabled={(weights[key] ?? 0) >= 4} onClick={() => setWeight(key, (weights[key] ?? 0) + 1)}>+</button></div></label>)}</div>
+    <footer><button type="button" className="secondary" disabled={saving} onClick={() => void reset()}>Reset to recommended</button><div><button type="button" className="text-button" disabled={saving} onClick={onClose}>Cancel</button><button type="button" className="primary" disabled={saving} onClick={() => void submit()}>{saving ? 'Saving...' : 'Save priorities'}</button></div></footer>
+  </Panel></div>
+}
+
+export function CharacterShowcase({ character, catalog, weapons, echoes, builds, settings, refresh, onBack }: CharacterShowcaseProps) {
   const [editing, setEditing] = useState(false)
   const [exporting, setExporting] = useState(false)
   const [exportMessage, setExportMessage] = useState('')
@@ -220,6 +262,7 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
   const [openSkillTooltip, setOpenSkillTooltip] = useState<string | null>(null)
   const [editingEcho, setEditingEcho] = useState<Echo | null>(null)
   const [scoreInfoOpen, setScoreInfoOpen] = useState(false)
+  const [scoreEditorOpen, setScoreEditorOpen] = useState(false)
   const exportRef = useRef<HTMLDivElement>(null)
   const portraitRef = useRef<HTMLImageElement>(null)
   const livePortraitRef = useRef<NanokaSpinePortraitHandle>(null)
@@ -233,7 +276,9 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
 
   const model = resolveCharacterShowcaseModel({ character, catalog, weapons, echoes, builds })
   if (!model) return null
-  const characterSubstatProfile = resolveCharacterSubstatProfile(catalog)
+  const customSubstatWeights = settings.characterSubstatWeights[catalog.id]
+  const recommendedSubstatProfile = resolveCharacterSubstatProfile(catalog)
+  const characterSubstatProfile = resolveCharacterSubstatProfile(catalog, customSubstatWeights)
   const preferredSubstats = (Object.entries(characterSubstatProfile.weights) as Array<[StatKey, number]>)
     .filter(([, weight]) => weight > 0)
     .sort((left, right) => right[1] - left[1] || statLabels[left[0]].localeCompare(statLabels[right[0]]))
@@ -348,6 +393,19 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
     else enabled.add(id)
     await updateCharacter({ enabledSkillTreeBonusIds: [...enabled].sort() })
   }
+  const saveSubstatWeights = async (weights: Partial<Record<StatKey, number>>) => {
+    await saveSettings({
+      ...settings,
+      characterSubstatWeights: { ...settings.characterSubstatWeights, [catalog.id]: weights }
+    })
+    await refresh()
+  }
+  const resetSubstatWeights = async () => {
+    const characterSubstatWeights = { ...settings.characterSubstatWeights }
+    delete characterSubstatWeights[catalog.id]
+    await saveSettings({ ...settings, characterSubstatWeights })
+    await refresh()
+  }
 
   return <CharacterSubstatProfileContext.Provider value={characterSubstatProfile}><section className={`cs-page cs-element-${catalog.element.toLowerCase()}`}>
     <header className="cs-toolbar"><button className="cs-back" onClick={onBack}>← Back to roster</button><div><span className="eyebrow">Character showcase</span><strong>{catalog.name}</strong></div><div className={`cs-toolbar-actions ${editing ? 'is-editing' : ''}`}>{editing && <><button className={character.favorite ? 'cs-favorite active' : 'cs-favorite'} onClick={() => void updateCharacter({ favorite: !character.favorite })}>{character.favorite ? '♥ Favorited' : '♡ Favorite'}</button><button className={`danger ${deleteArmed ? 'is-armed' : ''}`} onClick={() => void removeCharacter()}><Icon name="trash"/>{deleteArmed ? 'Confirm delete' : 'Delete'}</button></>}<button className="secondary cs-export-button" disabled={exporting} onClick={() => void exportCharacterCard()}><Icon name="download"/><span>{exporting ? 'Rendering...' : 'Export image'}</span></button><button className={editing ? 'primary' : 'secondary'} onClick={() => { setEditing(!editing); setDeleteArmed(false) }}>{editing ? 'Done editing' : 'Edit loadout'}</button></div></header>
@@ -406,7 +464,7 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
         })}
       </div></section>
 
-      <section className="cs-echo-section"><header><div><span className="eyebrow">Equipped Echoes</span><h2>Echo loadout</h2></div><span>{model.equippedEchoes.length}/5 · {model.totalEchoCost}/12 cost</span></header><div className="cs-substat-preferences"><span>Character substat priorities</span><div>{preferredSubstats.length ? preferredSubstats.map(([key, weight]) => <b className={`weight-${weight}`} key={key}>{statLabels[key]} <i>{weight}</i></b>) : <em>TODO — add this character to character-substat-preferences.ts</em>}</div><button type="button" className="roll-quality-help cs-score-help" onClick={() => setScoreInfoOpen(true)}>Substat score <span aria-hidden="true">ⓘ</span></button><small>Each substat scores roll tier × shown weight. Click an Echo score for its breakdown.</small></div><div className="cs-echo-row">{model.echoSlots.map((echo, index) => <EchoShowcaseCard key={echo?.id ?? `empty-${index}`} echo={echo} index={index} element={catalog.element} editing={editing} onOpen={() => void openEchoPicker(index)} onEdit={setEditingEcho}/>)}</div></section>
+      <section className="cs-echo-section"><header><div><span className="eyebrow">Equipped Echoes</span><h2>Echo loadout</h2></div><span>{model.equippedEchoes.length}/5 · {model.totalEchoCost}/12 cost</span></header><div className="cs-substat-preferences"><span>Character substat priorities</span><div>{preferredSubstats.length ? preferredSubstats.map(([key, weight]) => <b className={`weight-${weight}`} key={key}>{statLabels[key]} <i>{weight}</i></b>) : <em>No stats currently receive points.</em>}</div><div className="cs-substat-actions"><button type="button" className="secondary cs-configure-score" onClick={() => setScoreEditorOpen(true)}><Icon name="settings"/>Configure</button><button type="button" className="roll-quality-help cs-score-help" onClick={() => setScoreInfoOpen(true)}>Substat score <span aria-hidden="true">ⓘ</span></button></div><small>Each substat scores roll tier × shown weight. {customSubstatWeights ? 'Using your custom priorities.' : 'Using bundled recommendations.'}</small></div><div className="cs-echo-row">{model.echoSlots.map((echo, index) => <EchoShowcaseCard key={echo?.id ?? `empty-${index}`} echo={echo} index={index} element={catalog.element} editing={editing} onOpen={() => void openEchoPicker(index)} onEdit={setEditingEcho}/>)}</div></section>
     </div>
     <footer className="cs-export-footer"><span>TACET LAB // LOCAL-FIRST BUILD ARCHIVE</span><span>{catalog.name.toUpperCase()} // LV. {character.level} // S{character.sequence}</span></footer>
     </div>
@@ -414,6 +472,7 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
     {weaponPickerOpen && <WeaponPicker character={character} catalog={catalog} weapons={weapons} refresh={refresh} onClose={() => setWeaponPickerOpen(false)}/>}
     {echoSlot !== null && currentBuild && <EchoPicker slot={echoSlot} build={currentBuild} echoes={echoes} refresh={refresh} onClose={() => setEchoSlot(null)}/>} 
     {editingEcho && <EchoEditModal echo={editingEcho} onClose={() => setEditingEcho(null)} onSave={async (updated) => { await db.echoes.put(updated); setEditingEcho(null); await refresh() }}/>}
+    {scoreEditorOpen && <SubstatWeightEditor characterName={catalog.name} initialWeights={characterSubstatProfile.weights} recommendedWeights={recommendedSubstatProfile.weights} onSave={saveSubstatWeights} onReset={resetSubstatWeights} onClose={() => setScoreEditorOpen(false)}/>}
     {scoreInfoOpen && <div className="modal-backdrop roll-quality-backdrop" onMouseDown={() => setScoreInfoOpen(false)}><Panel className="roll-quality-modal cs-score-info-modal" role="dialog" aria-modal="true" aria-labelledby="substat-score-info-title" onMouseDown={(event) => event.stopPropagation()}>
       <header><div><span className="eyebrow">Character-specific Echo evaluation</span><h2 id="substat-score-info-title">How Substat Score works</h2></div><button className="close" aria-label="Close Substat Score information" onClick={() => setScoreInfoOpen(false)}>×</button></header>
       <p>Substat Score measures how useful an Echo's revealed rolls are for {catalog.name}. Unlike Roll Grade, it values the stats this character actually wants.</p>

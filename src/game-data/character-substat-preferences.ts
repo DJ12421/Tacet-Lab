@@ -6,6 +6,13 @@ export interface CharacterSubstatPreference {
   weights: Partial<Record<StatKey, CharacterSubstatPreferenceWeight>>
 }
 
+export const characterSubstatScoreKeys: StatKey[] = [
+  'critRate', 'critDamage', 'energyRegen',
+  'atkPercent', 'hpPercent', 'defPercent',
+  'basicDamage', 'heavyDamage', 'skillDamage', 'liberationDamage',
+  'atk', 'hp', 'def'
+]
+
 // Edit this table to change character-specific Echo substat priorities.
 // 4 = highest, 3 = strong, 2 = useful, 1 = marginal, 0/omitted = irrelevant.
 //

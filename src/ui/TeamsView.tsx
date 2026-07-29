@@ -1,22 +1,23 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { formatDamage } from '../domain/damage'
+import { resolveCharacterSubstatProfile } from '../domain/character-substat-score'
 import { echoRollRating } from '../domain/echo-grade'
 import { createLocalId } from '../domain/id'
-import type { BuffEffect, Build, Echo, FormulaResultMode, OwnedCharacter, OwnedWeapon, RotationAction, StatKey, Team } from '../domain/types'
+import type { BuffEffect, Build, DamageType, Echo, FormulaResultMode, OwnedCharacter, OwnedWeapon, RotationAction, StatKey, Team } from '../domain/types'
 import { characterCatalog, statLabels, weaponCatalog, weaponPassiveConditions } from '../game-data'
 import { generatedSonataIconSources } from '../game-data/sonatas.generated'
 import { characterFormulaSheets, FORMULA_SHEET_VERSION, getFormulaCoverage, type CalculationTrace, type ConditionDefinition } from '../domain/calculation'
 import { db } from '../storage/database'
 import { EchoWaveform } from './EchoWaveform'
 import { richSkillDescription } from './CharacterShowcase'
-import { EchoMiniCard, EquippedCharacterLabel, Icon } from './components'
+import { CharacterSubstatProfileContext, EchoMiniCard, EquippedCharacterLabel, Icon } from './components'
 import { CalculatedValue, traceCalculationDetail } from './CalculationDetails'
 import { showcaseStatDetail, sumDetail } from './calculation-detail-model'
 import { OptimizerView } from './OptimizerView'
 import {
   echoArtwork, formatWorkspaceStat, resolveTeamWorkspace, teamBuffLabel,
-  type TeamMemberModel, type TeamWorkspaceModel
+  type TeamAttackGroup, type TeamMemberModel, type TeamWorkspaceModel
 } from './team-workspace-model'
 import { defaultEnabledSkillTreeBonusIds, inherentSkillBonusId, skillTreeBonusId } from './character-showcase-model'
 import './team-workspace.css'
@@ -35,6 +36,16 @@ const DAMAGE_RESULT_MODES: Array<{ id: FormulaResultMode; label: string }> = [
   { id: 'normal', label: 'Non-crit hit DMG' },
   { id: 'expected', label: 'Avg DMG' },
   { id: 'critical', label: 'Crit hit DMG' }
+]
+
+const ROTATION_ATTACK_GROUPS: Array<{ id: TeamAttackGroup; label: string }> = [
+  { id: 'basic', label: 'Basic' },
+  { id: 'skill', label: 'Skill' },
+  { id: 'forte', label: 'Forte Circuit' },
+  { id: 'liberation', label: 'Liberation' },
+  { id: 'intro', label: 'Intro' },
+  { id: 'outro', label: 'Outro' },
+  { id: 'tuneBreak', label: 'TuneBreak' }
 ]
 
 const CORE_STATS: Array<[StatKey, string]> = [
@@ -442,6 +453,14 @@ function BuffWorkspace({ model, updateTeam }: { model: TeamWorkspaceModel; updat
 }
 
 function RotationWorkspace({ model, updateTeam }: { model: TeamWorkspaceModel; updateTeam: (patch: Partial<Team>) => Promise<void> }) {
+  const forteGroupLabel = (group: TeamAttackGroup) => ROTATION_ATTACK_GROUPS.find((entry) => entry.id === group)?.label ?? group
+  const damageSourceLabel = (type: DamageType) => type === 'basic' ? 'Basic DMG'
+    : type === 'heavy' ? 'Heavy DMG'
+      : type === 'skill' ? 'Skill DMG'
+        : type === 'liberation' ? 'Liberation DMG'
+          : type === 'intro' ? 'Intro DMG'
+            : type === 'outro' ? 'Outro DMG'
+              : type === 'echo' ? 'Echo DMG' : 'Healing'
   const updateAction = (id: string, patch: Partial<RotationAction>) => updateTeam({ actions: model.team.actions.map((action) => action.id === id ? { ...action, ...patch } : action) })
   const addAction = async () => {
     const member = model.members.find((entry) => entry.build && entry.attacks.length)
@@ -449,12 +468,15 @@ function RotationWorkspace({ model, updateTeam }: { model: TeamWorkspaceModel; u
     await updateTeam({ actions: [...model.team.actions, { id: createLocalId(), timestamp: Math.min(model.team.rotationDuration, Math.ceil((model.team.actions.at(-1)?.timestamp ?? -1) + 1)), buildId: member.build.id, attackId: member.attacks[0].id, formulaTargetId: `${member.catalog?.id}:${member.attacks[0].id}` }] })
   }
   return <section className="tw-panel tw-rotation"><header><div><span className="eyebrow">Nanoka skill multipliers</span><h2>Rotation workspace</h2><p>Ordered actions calculate through the existing Tacet Lab damage domain.</p></div><button className="primary" onClick={() => void addAction()} disabled={!model.members.some((member) => member.build && member.attacks.length)}><Icon name="plus"/>Add action</button></header>
-    <div className="tw-rotation-head" aria-hidden="true"><span>Time</span><span>Character</span><span>Nanoka attack</span><span>Multiplier</span><span>Buff state</span><span>Normal</span><span>Critical</span><span>Expected</span><span/></div>
+    <div className="tw-rotation-head" aria-hidden="true"><span>Time</span><span>Character</span><span>Nanoka attack</span><span>Multiplier / Tags</span><span>Buff state</span><span>Normal</span><span>Critical</span><span>Expected</span><span/></div>
     <div className="tw-action-list">{model.actions.map((row) => <div className={`tw-action ${row.warnings.length ? 'is-invalid' : ''}`} key={row.action.id}>
       <input aria-label="Timestamp" type="number" min="0" max={model.team.rotationDuration} step="0.1" value={row.action.timestamp} onChange={(event) => void updateAction(row.action.id, { timestamp: Number(event.target.value) })}/>
       <select aria-label="Character" value={row.action.buildId} onChange={(event) => { const member = model.members.find((entry) => entry.build?.id === event.target.value); const attackId = member?.attacks[0]?.id ?? ''; void updateAction(row.action.id, { buildId: event.target.value, attackId, formulaTargetId: member?.catalog ? `${member.catalog.id}:${attackId}` : undefined }) }}>{model.members.flatMap((member) => member.build ? [<option value={member.build.id} key={member.build.id}>{teamMemberName(member)}</option>] : [])}</select>
-      <select aria-label="Nanoka attack" value={row.action.attackId} onChange={(event) => void updateAction(row.action.id, { attackId: event.target.value, formulaTargetId: row.member?.catalog ? `${row.member.catalog.id}:${event.target.value}` : undefined })}>{row.member?.attacks.map((attack) => <option value={attack.id} key={attack.id}>{attack.name}</option>)}</select>
-      <span className="tw-multiplier">{row.attack ? <><b>{row.attack.multiplierLabel}</b><small>Lv. {row.attack.skillLevel} · {row.attack.scalesWith.toUpperCase()}</small></> : 'Missing'}</span>
+      <select aria-label="Nanoka attack" value={row.action.attackId} onChange={(event) => void updateAction(row.action.id, { attackId: event.target.value, formulaTargetId: row.member?.catalog ? `${row.member.catalog.id}:${event.target.value}` : undefined })}>{ROTATION_ATTACK_GROUPS.map((group) => {
+        const attacks = row.member?.attacks.filter((attack) => attack.group === group.id) ?? []
+        return attacks.length ? <optgroup label={group.label} key={group.id}>{attacks.map((attack) => <option value={attack.id} key={attack.id}>{attack.name}</option>)}</optgroup> : null
+      })}</select>
+      <span className="tw-multiplier">{row.attack ? <><b>{row.attack.multiplierLabel}</b><span className="tw-action-tags"><em className="forte">Forte: {forteGroupLabel(row.attack.group)}</em><em className="damage">{damageSourceLabel(row.attack.type)}</em></span><small>Lv. {row.attack.skillLevel} · {row.attack.scalesWith.toUpperCase()}</small></> : 'Missing'}</span>
       <span className="tw-buff-state">{row.activeBuffs.map(teamBuffLabel).join(', ') || 'No active buffs'}{row.activates.length > 0 && <small>Activates: {row.activates.map((buff) => `${buff.name} until ${(row.action.timestamp + buff.duration).toFixed(1)}s`).join(', ')}</small>}</span>
       <CalculatedValue detail={row.traces ? traceCalculationDetail(row.traces.normal, `${row.attack?.name ?? 'Action'} · normal`) : sumDetail('Normal damage', row.normal, [{ label: 'Calculated action', value: row.normal }])}><strong>{formatDamage(row.normal)}</strong></CalculatedValue><CalculatedValue detail={row.traces ? traceCalculationDetail(row.traces.critical, `${row.attack?.name ?? 'Action'} · critical`) : sumDetail('Critical damage', row.critical, [{ label: 'Calculated action', value: row.critical }])}><strong>{formatDamage(row.critical)}</strong></CalculatedValue><CalculatedValue detail={row.traces ? traceCalculationDetail(row.traces.expected, `${row.attack?.name ?? 'Action'} · expected`) : sumDetail('Expected damage', row.expected, [{ label: 'Calculated action', value: row.expected }])}><strong className="expected">{formatDamage(row.expected)}</strong></CalculatedValue>
       <button className="tw-remove" aria-label="Remove action" onClick={() => void updateTeam({ actions: model.team.actions.filter((action) => action.id !== row.action.id) })}><Icon name="trash"/></button>
@@ -719,11 +741,15 @@ function ForteWorkspace({ member, model, refresh, updateTeam }: { member: TeamMe
 }
 
 function TeamEchoCard({ echo, ownerName }: { echo: Echo; ownerName: string }) {
-  return <EchoMiniCard
-    echo={echo}
-    rollRating={echoRollRating(echo)}
-    equipment={<EquippedCharacterLabel name={ownerName}/>}
-  />
+  const ownerCatalog = characterCatalog.find((candidate) => candidate.name === ownerName)
+  const characterSubstatProfile = ownerCatalog ? resolveCharacterSubstatProfile(ownerCatalog) : undefined
+  return <CharacterSubstatProfileContext.Provider value={characterSubstatProfile}>
+    <EchoMiniCard
+      echo={echo}
+      rollRating={characterSubstatProfile ? undefined : echoRollRating(echo)}
+      equipment={<EquippedCharacterLabel name={ownerName}/>}
+    />
+  </CharacterSubstatProfileContext.Provider>
 }
 
 function DetailedEchoCard({ echo, index, ownerName }: { echo?: Echo; index: number; ownerName: string }) {

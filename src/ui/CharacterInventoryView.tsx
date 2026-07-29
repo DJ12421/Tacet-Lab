@@ -4,7 +4,7 @@ import { characterCatalog, echoCatalog, weaponCatalog, type CharacterCatalogEntr
 import { createLocalId } from '../domain/id'
 import { generatedSonataIconSources } from '../game-data/sonatas.generated'
 import { db } from '../storage/database'
-import type { Build, Echo, OwnedCharacter, OwnedWeapon, Team } from '../domain/types'
+import type { AppSettings, Build, Echo, OwnedCharacter, OwnedWeapon, Team } from '../domain/types'
 import { Icon, Panel } from './components'
 import { CharacterShowcase } from './CharacterShowcase'
 
@@ -42,11 +42,12 @@ export interface CharacterInventoryProps {
   echoes?: Echo[]
   builds?: Build[]
   teams?: Team[]
+  settings: AppSettings
   roverGender: 'male' | 'female'
   refresh: () => Promise<void>
 }
 
-export function CharacterInventory({ owned, weapons = [], echoes = [], builds = [], roverGender, refresh }: CharacterInventoryProps) {
+export function CharacterInventory({ owned, weapons = [], echoes = [], builds = [], settings, roverGender, refresh }: CharacterInventoryProps) {
   const [query, setQuery] = useState('')
   const [element, setElement] = useState<string | 'all'>('all')
   const [rarity, setRarity] = useState<number | 'all'>('all')
@@ -83,7 +84,7 @@ export function CharacterInventory({ owned, weapons = [], echoes = [], builds = 
   }
   const selected = rows.find(({ item }) => item.id === selectedId)
 
-  if (selected) return <CharacterShowcase character={selected.item} catalog={selected.catalog} weapons={weapons} echoes={echoes} builds={builds} refresh={refresh} onBack={() => setSelectedId(null)}/>
+  if (selected) return <CharacterShowcase character={selected.item} catalog={selected.catalog} weapons={weapons} echoes={echoes} builds={builds} settings={settings} refresh={refresh} onBack={() => setSelectedId(null)}/>
 
   return <>
     <Panel className="owned-add"><div><span className="eyebrow">Character roster</span><strong>Favorites stay at the top. Select a character to view their full loadout.</strong></div><button type="button" className="primary" onClick={() => setPickerOpen(true)}><Icon name="plus"/>Add character</button></Panel>

@@ -107,7 +107,10 @@ export function ScanReviewCard({ candidate, onChange, onDiscard, onSave, selecte
   const [evidenceOpen, setEvidenceOpen] = useState(() => errors.length > 0 || lowConfidence)
 
   return <Panel className={`review-card ${candidate.buildCard ? 'build-card-review ' : ''}${errors.length === 0 && !lowConfidence && !evidenceOpen ? 'valid-compact' : ''}`}>
-    <div className="review-preview">{onSelect && <label className="review-select"><input type="checkbox" checked={Boolean(candidate.selected)} onChange={(event) => onSelect(event.target.checked)}/>Select</label>}{candidate.imageDataUrl ? <img src={candidate.imageDataUrl} alt="Captured Echo detail region"/> : <div className="manual-preview">MANUAL</div>}<button className="text-button" type="button" onClick={() => setEvidenceOpen((open) => !open)}>{evidenceOpen ? 'Hide field evidence' : 'Show field evidence'}</button></div>
+    <div className="review-topbar">
+      <div>{onSelect && <label className="review-select"><input type="checkbox" checked={Boolean(candidate.selected)} onChange={(event) => onSelect(event.target.checked)}/>Select</label>}<button className="text-button" type="button" onClick={() => setEvidenceOpen((open) => !open)}>{evidenceOpen ? 'Hide field evidence' : 'Show field evidence'}</button></div>
+      <div className="review-actions"><button className="review-discard" onClick={onDiscard}>Discard</button><button className="primary" disabled={errors.length > 0} onClick={onSave}>Approve & save</button></div>
+    </div>
     <div className="review-fields">
       {candidate.buildCard && <section className="scan-build-card-summary">
         <header><div><span className="eyebrow">Official Discord build card</span><h3>Character loadout</h3></div><img src={candidate.buildCard.sourceImageDataUrl} alt="Scanned build card"/></header>
@@ -136,6 +139,5 @@ export function ScanReviewCard({ candidate, onChange, onDiscard, onSave, selecte
       {errors.length > 0 && <div className="notice error">{errors.join(' ')}</div>}
       {evidenceOpen && candidate.evidence && <div className="scan-evidence-drawer"><header><div><span className="eyebrow">Local diagnostics</span><h3>Field evidence</h3></div><div>{onCopyDiagnostic && <><button type="button" className="text-button" onClick={() => onCopyDiagnostic(false)}>Copy report</button><button type="button" className="text-button" onClick={() => onCopyDiagnostic(true)}>Copy with images</button></>}</div></header><div className="scan-evidence-grid">{Object.values(candidate.evidence).map((evidence) => <article className={evidence.validation.valid ? '' : 'invalid'} key={evidence.region.id}><header><b>{evidence.region.label}</b><span>{Math.round(evidence.confidence * 100)}%</span></header><div><figure><img src={evidence.originalCrop} alt={`${evidence.region.label} original crop`}/><figcaption>Original</figcaption></figure><figure><img src={evidence.processedCrop} alt={`${evidence.region.label} processed crop`}/><figcaption>{evidence.preprocessing}</figcaption></figure></div><code>{evidence.rawOcr.trim() || 'Visual classifier'}</code><small>{evidence.workerId} · {Math.round(evidence.processingMs)} ms</small>{evidence.validation.messages.map((message) => <p key={message}>{message}</p>)}{onRerunField && !candidate.buildCard && <footer><button type="button" className="text-button" onClick={() => onRerunField(evidence.region.id)}>Re-run field</button></footer>}</article>)}</div></div>}
     </div>
-    <div className="review-actions"><button className="review-discard" onClick={onDiscard}>Discard</button><button className="primary" disabled={errors.length > 0} onClick={onSave}>Approve & save</button></div>
   </Panel>
 }

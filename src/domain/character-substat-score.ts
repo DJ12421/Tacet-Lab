@@ -46,9 +46,16 @@ const gradeBands: ReadonlyArray<{ minimum: number; grade: CharacterSubstatGrade 
   { minimum: 0, grade: 'E' }
 ]
 
-export function resolveCharacterSubstatProfile(catalog: CharacterCatalogEntry): CharacterSubstatProfile {
+export function resolveCharacterSubstatProfile(
+  catalog: CharacterCatalogEntry,
+  customWeights?: Partial<Record<StatKey, number>>
+): CharacterSubstatProfile {
   const preference = characterSubstatPreferences[catalog.name] ?? { weights: {} }
-  const weights: Partial<Record<StatKey, CharacterSubstatWeight>> = preference.weights
+  const weights: Partial<Record<StatKey, CharacterSubstatWeight>> = customWeights
+    ? Object.fromEntries(Object.entries(customWeights)
+      .filter((entry): entry is [StatKey, number] => Number.isFinite(entry[1]) && entry[1] >= 1)
+      .map(([key, weight]) => [key, Math.min(4, Math.max(1, Math.round(weight))) as CharacterSubstatWeight]))
+    : preference.weights
   const flatStats = new Set<StatKey>(['hp', 'atk', 'def'])
   const nonFlatWeights = Object.entries(weights)
     .filter(([key, weight]) => !flatStats.has(key as StatKey) && weight > 0)
@@ -60,13 +67,20 @@ export function resolveCharacterSubstatProfile(catalog: CharacterCatalogEntry): 
     .map(([, weight]) => weight)
     .sort((left, right) => right - left)[0] ?? 0
   const configuredWeightCount = nonFlatWeights.length + (flatWeight > 0 ? 1 : 0)
+  const customMaximum = Object.entries(weights)
+    .map(([key, weight]) => (flatStats.has(key as StatKey) ? 3 : 8) * weight)
+    .sort((left, right) => right - left)
+    .slice(0, 5)
+    .reduce((sum, points) => sum + points, 0)
   return {
     characterId: catalog.id,
     characterName: catalog.name,
     weights,
-    maximum: 8 * nonFlatWeights.reduce<number>((sum, weight) => sum + weight, 0) + 3 * flatWeight,
+    maximum: customWeights
+      ? customMaximum
+      : 8 * nonFlatWeights.reduce<number>((sum, weight) => sum + weight, 0) + 3 * flatWeight,
     basis: configuredWeightCount
-      ? 'Configured in character-substat-preferences.ts.'
+      ? customWeights ? 'Customized in local settings.' : 'Using bundled character recommendations.'
       : 'Not configured. Add weights in character-substat-preferences.ts.'
   }
 }

@@ -15,7 +15,7 @@ describe('character showcase passive stats', () => {
   it('includes enabled skill-tree nodes and the always-on weapon passive', () => {
     const catalog = characterCatalog.find((entry) => entry.id === ownedCharacter.catalogId)!
     const model = resolveCharacterShowcaseModel({ character: ownedCharacter, catalog, weapons: [ownedWeapon], echoes: [], builds: [] })!
-    expect(model.finalStats.hp).toBe(Math.floor(model.characterBaseStats.hp * 1.281))
+    expect(model.finalStats.hp).toBe(Math.floor(model.characterBaseStats.hp * 1.28))
     expect(model.finalStats.atk).toBe(Math.floor((model.characterBaseStats.atk + 33) * 1.12))
     expect(model.finalStats.critRate).toBeCloseTo(13)
   })

@@ -9,7 +9,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Gauntlets",
     "baseAtk": 587,
     "secondaryStat": "ATK",
-    "secondaryStatValue": "36.5%",
+    "secondaryStatValue": "36.4%",
     "levelStats": [
       {
         "level": 1,
@@ -24,7 +24,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "14.4%"
+        "secondaryStatValue": "14.3%"
       },
       {
         "level": 30,
@@ -34,7 +34,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "20.7%"
+        "secondaryStatValue": "20.6%"
       },
       {
         "level": 50,
@@ -44,7 +44,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "27%"
+        "secondaryStatValue": "26.9%"
       },
       {
         "level": 70,
@@ -54,12 +54,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 80,
         "baseAtk": 547,
-        "secondaryStatValue": "33.3%"
+        "secondaryStatValue": "33.2%"
       },
       {
         "level": 90,
         "baseAtk": 587,
-        "secondaryStatValue": "36.5%"
+        "secondaryStatValue": "36.4%"
       }
     ],
     "passiveName": "Stormy Resolution",
@@ -91,42 +91,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 58,
-        "secondaryStatValue": "12.5%"
+        "secondaryStatValue": "12.4%"
       },
       {
         "level": 20,
         "baseAtk": 107,
-        "secondaryStatValue": "16%"
+        "secondaryStatValue": "15.9%"
       },
       {
         "level": 30,
         "baseAtk": 135,
-        "secondaryStatValue": "19.5%"
+        "secondaryStatValue": "19.4%"
       },
       {
         "level": 40,
         "baseAtk": 185,
-        "secondaryStatValue": "23%"
+        "secondaryStatValue": "22.9%"
       },
       {
         "level": 50,
         "baseAtk": 235,
-        "secondaryStatValue": "26.5%"
+        "secondaryStatValue": "26.4%"
       },
       {
         "level": 60,
         "baseAtk": 285,
-        "secondaryStatValue": "30%"
+        "secondaryStatValue": "29.9%"
       },
       {
         "level": 70,
         "baseAtk": 334,
-        "secondaryStatValue": "33.5%"
+        "secondaryStatValue": "33.4%"
       },
       {
         "level": 80,
         "baseAtk": 384,
-        "secondaryStatValue": "37%"
+        "secondaryStatValue": "36.9%"
       },
       {
         "level": 90,
@@ -163,42 +163,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 82,
-        "secondaryStatValue": "7.5%"
+        "secondaryStatValue": "7.4%"
       },
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "9.6%"
+        "secondaryStatValue": "9.5%"
       },
       {
         "level": 30,
         "baseAtk": 193,
-        "secondaryStatValue": "11.7%"
+        "secondaryStatValue": "11.6%"
       },
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "13.8%"
+        "secondaryStatValue": "13.7%"
       },
       {
         "level": 50,
         "baseAtk": 335,
-        "secondaryStatValue": "15.9%"
+        "secondaryStatValue": "15.8%"
       },
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "18%"
+        "secondaryStatValue": "17.9%"
       },
       {
         "level": 70,
         "baseAtk": 476,
-        "secondaryStatValue": "20.1%"
+        "secondaryStatValue": "20%"
       },
       {
         "level": 80,
         "baseAtk": 547,
-        "secondaryStatValue": "22.2%"
+        "secondaryStatValue": "22.1%"
       },
       {
         "level": 90,
@@ -225,17 +225,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Gauntlets",
     "baseAtk": 337,
     "secondaryStat": "DEF",
-    "secondaryStatValue": "61.6%",
+    "secondaryStatValue": "61.5%",
     "levelStats": [
       {
         "level": 1,
         "baseAtk": 27,
-        "secondaryStatValue": "13.7%"
+        "secondaryStatValue": "13.6%"
       },
       {
         "level": 10,
         "baseAtk": 47,
-        "secondaryStatValue": "19%"
+        "secondaryStatValue": "18.9%"
       },
       {
         "level": 20,
@@ -250,17 +250,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 40,
         "baseAtk": 151,
-        "secondaryStatValue": "35%"
+        "secondaryStatValue": "34.9%"
       },
       {
         "level": 50,
         "baseAtk": 192,
-        "secondaryStatValue": "40.3%"
+        "secondaryStatValue": "40.2%"
       },
       {
         "level": 60,
         "baseAtk": 233,
-        "secondaryStatValue": "45.6%"
+        "secondaryStatValue": "45.5%"
       },
       {
         "level": 70,
@@ -275,7 +275,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 90,
         "baseAtk": 337,
-        "secondaryStatValue": "61.6%"
+        "secondaryStatValue": "61.5%"
       }
     ],
     "passiveName": "Camaraderie",
@@ -297,7 +297,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Rectifier",
     "baseAtk": 412,
     "secondaryStat": "Crit. Rate",
-    "secondaryStatValue": "20.3%",
+    "secondaryStatValue": "20.2%",
     "levelStats": [
       {
         "level": 1,
@@ -312,7 +312,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 20,
         "baseAtk": 107,
-        "secondaryStatValue": "8%"
+        "secondaryStatValue": "7.9%"
       },
       {
         "level": 30,
@@ -322,7 +322,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 40,
         "baseAtk": 185,
-        "secondaryStatValue": "11.5%"
+        "secondaryStatValue": "11.4%"
       },
       {
         "level": 50,
@@ -332,7 +332,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 285,
-        "secondaryStatValue": "15%"
+        "secondaryStatValue": "14.9%"
       },
       {
         "level": 70,
@@ -342,12 +342,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 80,
         "baseAtk": 384,
-        "secondaryStatValue": "18.5%"
+        "secondaryStatValue": "18.4%"
       },
       {
         "level": 90,
         "baseAtk": 412,
-        "secondaryStatValue": "20.3%"
+        "secondaryStatValue": "20.2%"
       }
     ],
     "passiveName": "Forgiving Resilience",
@@ -379,42 +379,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 58,
-        "secondaryStatValue": "12.5%"
+        "secondaryStatValue": "12.4%"
       },
       {
         "level": 20,
         "baseAtk": 107,
-        "secondaryStatValue": "16%"
+        "secondaryStatValue": "15.9%"
       },
       {
         "level": 30,
         "baseAtk": 135,
-        "secondaryStatValue": "19.5%"
+        "secondaryStatValue": "19.4%"
       },
       {
         "level": 40,
         "baseAtk": 185,
-        "secondaryStatValue": "23%"
+        "secondaryStatValue": "22.9%"
       },
       {
         "level": 50,
         "baseAtk": 235,
-        "secondaryStatValue": "26.5%"
+        "secondaryStatValue": "26.4%"
       },
       {
         "level": 60,
         "baseAtk": 285,
-        "secondaryStatValue": "30%"
+        "secondaryStatValue": "29.9%"
       },
       {
         "level": 70,
         "baseAtk": 334,
-        "secondaryStatValue": "33.5%"
+        "secondaryStatValue": "33.4%"
       },
       {
         "level": 80,
         "baseAtk": 384,
-        "secondaryStatValue": "37%"
+        "secondaryStatValue": "36.9%"
       },
       {
         "level": 90,
@@ -441,7 +441,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Broadblade",
     "baseAtk": 412,
     "secondaryStat": "Crit. Rate",
-    "secondaryStatValue": "20.3%",
+    "secondaryStatValue": "20.2%",
     "levelStats": [
       {
         "level": 1,
@@ -456,7 +456,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 20,
         "baseAtk": 107,
-        "secondaryStatValue": "8%"
+        "secondaryStatValue": "7.9%"
       },
       {
         "level": 30,
@@ -466,7 +466,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 40,
         "baseAtk": 185,
-        "secondaryStatValue": "11.5%"
+        "secondaryStatValue": "11.4%"
       },
       {
         "level": 50,
@@ -476,7 +476,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 285,
-        "secondaryStatValue": "15%"
+        "secondaryStatValue": "14.9%"
       },
       {
         "level": 70,
@@ -486,12 +486,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 80,
         "baseAtk": 384,
-        "secondaryStatValue": "18.5%"
+        "secondaryStatValue": "18.4%"
       },
       {
         "level": 90,
         "baseAtk": 412,
-        "secondaryStatValue": "20.3%"
+        "secondaryStatValue": "20.2%"
       }
     ],
     "passiveName": "Edge Direction",
@@ -523,42 +523,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 82,
-        "secondaryStatValue": "7.5%"
+        "secondaryStatValue": "7.4%"
       },
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "9.6%"
+        "secondaryStatValue": "9.5%"
       },
       {
         "level": 30,
         "baseAtk": 193,
-        "secondaryStatValue": "11.7%"
+        "secondaryStatValue": "11.6%"
       },
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "13.8%"
+        "secondaryStatValue": "13.7%"
       },
       {
         "level": 50,
         "baseAtk": 335,
-        "secondaryStatValue": "15.9%"
+        "secondaryStatValue": "15.8%"
       },
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "18%"
+        "secondaryStatValue": "17.9%"
       },
       {
         "level": 70,
         "baseAtk": 476,
-        "secondaryStatValue": "20.1%"
+        "secondaryStatValue": "20%"
       },
       {
         "level": 80,
         "baseAtk": 547,
-        "secondaryStatValue": "22.2%"
+        "secondaryStatValue": "22.1%"
       },
       {
         "level": 90,
@@ -595,12 +595,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 42,
-        "secondaryStatValue": "9.4%"
+        "secondaryStatValue": "9.3%"
       },
       {
         "level": 20,
         "baseAtk": 78,
-        "secondaryStatValue": "12%"
+        "secondaryStatValue": "11.9%"
       },
       {
         "level": 30,
@@ -620,7 +620,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 207,
-        "secondaryStatValue": "22.5%"
+        "secondaryStatValue": "22.4%"
       },
       {
         "level": 70,
@@ -667,42 +667,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 82,
-        "secondaryStatValue": "15%"
+        "secondaryStatValue": "14.9%"
       },
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "19.2%"
+        "secondaryStatValue": "19.1%"
       },
       {
         "level": 30,
         "baseAtk": 193,
-        "secondaryStatValue": "23.4%"
+        "secondaryStatValue": "23.3%"
       },
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "27.6%"
+        "secondaryStatValue": "27.5%"
       },
       {
         "level": 50,
         "baseAtk": 335,
-        "secondaryStatValue": "31.8%"
+        "secondaryStatValue": "31.7%"
       },
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "36%"
+        "secondaryStatValue": "35.9%"
       },
       {
         "level": 70,
         "baseAtk": 476,
-        "secondaryStatValue": "40.2%"
+        "secondaryStatValue": "40.1%"
       },
       {
         "level": 80,
         "baseAtk": 547,
-        "secondaryStatValue": "44.4%"
+        "secondaryStatValue": "44.3%"
       },
       {
         "level": 90,
@@ -739,42 +739,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 82,
-        "secondaryStatValue": "15%"
+        "secondaryStatValue": "14.9%"
       },
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "19.2%"
+        "secondaryStatValue": "19.1%"
       },
       {
         "level": 30,
         "baseAtk": 193,
-        "secondaryStatValue": "23.4%"
+        "secondaryStatValue": "23.3%"
       },
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "27.6%"
+        "secondaryStatValue": "27.5%"
       },
       {
         "level": 50,
         "baseAtk": 335,
-        "secondaryStatValue": "31.8%"
+        "secondaryStatValue": "31.7%"
       },
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "36%"
+        "secondaryStatValue": "35.9%"
       },
       {
         "level": 70,
         "baseAtk": 476,
-        "secondaryStatValue": "40.2%"
+        "secondaryStatValue": "40.1%"
       },
       {
         "level": 80,
         "baseAtk": 547,
-        "secondaryStatValue": "44.4%"
+        "secondaryStatValue": "44.3%"
       },
       {
         "level": 90,
@@ -801,7 +801,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Sword",
     "baseAtk": 587,
     "secondaryStat": "Energy Regen",
-    "secondaryStatValue": "38.9%",
+    "secondaryStatValue": "38.8%",
     "levelStats": [
       {
         "level": 1,
@@ -811,12 +811,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 82,
-        "secondaryStatValue": "12%"
+        "secondaryStatValue": "11.9%"
       },
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "15.4%"
+        "secondaryStatValue": "15.3%"
       },
       {
         "level": 30,
@@ -826,7 +826,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "22.1%"
+        "secondaryStatValue": "22%"
       },
       {
         "level": 50,
@@ -836,12 +836,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "28.8%"
+        "secondaryStatValue": "28.7%"
       },
       {
         "level": 70,
         "baseAtk": 476,
-        "secondaryStatValue": "32.2%"
+        "secondaryStatValue": "32.1%"
       },
       {
         "level": 80,
@@ -851,7 +851,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 90,
         "baseAtk": 587,
-        "secondaryStatValue": "38.9%"
+        "secondaryStatValue": "38.8%"
       }
     ],
     "passiveName": "Harmonious Vibrancy",
@@ -873,7 +873,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Rectifier",
     "baseAtk": 525,
     "secondaryStat": "Energy Regen",
-    "secondaryStatValue": "38.9%",
+    "secondaryStatValue": "38.8%",
     "levelStats": [
       {
         "level": 1,
@@ -883,12 +883,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 73,
-        "secondaryStatValue": "12%"
+        "secondaryStatValue": "11.9%"
       },
       {
         "level": 20,
         "baseAtk": 137,
-        "secondaryStatValue": "15.4%"
+        "secondaryStatValue": "15.3%"
       },
       {
         "level": 30,
@@ -898,7 +898,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 40,
         "baseAtk": 236,
-        "secondaryStatValue": "22.1%"
+        "secondaryStatValue": "22%"
       },
       {
         "level": 50,
@@ -908,12 +908,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 362,
-        "secondaryStatValue": "28.8%"
+        "secondaryStatValue": "28.7%"
       },
       {
         "level": 70,
         "baseAtk": 426,
-        "secondaryStatValue": "32.2%"
+        "secondaryStatValue": "32.1%"
       },
       {
         "level": 80,
@@ -923,7 +923,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 90,
         "baseAtk": 525,
-        "secondaryStatValue": "38.9%"
+        "secondaryStatValue": "38.8%"
       }
     ],
     "passiveName": "Path Observer",
@@ -955,42 +955,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 45,
-        "secondaryStatValue": "7.5%"
+        "secondaryStatValue": "7.4%"
       },
       {
         "level": 20,
         "baseAtk": 84,
-        "secondaryStatValue": "9.6%"
+        "secondaryStatValue": "9.5%"
       },
       {
         "level": 30,
         "baseAtk": 106,
-        "secondaryStatValue": "11.7%"
+        "secondaryStatValue": "11.6%"
       },
       {
         "level": 40,
         "baseAtk": 146,
-        "secondaryStatValue": "13.8%"
+        "secondaryStatValue": "13.7%"
       },
       {
         "level": 50,
         "baseAtk": 185,
-        "secondaryStatValue": "15.9%"
+        "secondaryStatValue": "15.8%"
       },
       {
         "level": 60,
         "baseAtk": 224,
-        "secondaryStatValue": "18%"
+        "secondaryStatValue": "17.9%"
       },
       {
         "level": 70,
         "baseAtk": 263,
-        "secondaryStatValue": "20.1%"
+        "secondaryStatValue": "20%"
       },
       {
         "level": 80,
         "baseAtk": 303,
-        "secondaryStatValue": "22.2%"
+        "secondaryStatValue": "22.1%"
       },
       {
         "level": 90,
@@ -1027,42 +1027,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 42,
-        "secondaryStatValue": "10%"
+        "secondaryStatValue": "9.9%"
       },
       {
         "level": 20,
         "baseAtk": 78,
-        "secondaryStatValue": "12.8%"
+        "secondaryStatValue": "12.7%"
       },
       {
         "level": 30,
         "baseAtk": 98,
-        "secondaryStatValue": "15.6%"
+        "secondaryStatValue": "15.5%"
       },
       {
         "level": 40,
         "baseAtk": 134,
-        "secondaryStatValue": "18.4%"
+        "secondaryStatValue": "18.3%"
       },
       {
         "level": 50,
         "baseAtk": 171,
-        "secondaryStatValue": "21.2%"
+        "secondaryStatValue": "21.1%"
       },
       {
         "level": 60,
         "baseAtk": 207,
-        "secondaryStatValue": "24%"
+        "secondaryStatValue": "23.9%"
       },
       {
         "level": 70,
         "baseAtk": 243,
-        "secondaryStatValue": "26.8%"
+        "secondaryStatValue": "26.7%"
       },
       {
         "level": 80,
         "baseAtk": 279,
-        "secondaryStatValue": "29.6%"
+        "secondaryStatValue": "29.5%"
       },
       {
         "level": 90,
@@ -1099,42 +1099,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 58,
-        "secondaryStatValue": "10%"
+        "secondaryStatValue": "9.9%"
       },
       {
         "level": 20,
         "baseAtk": 107,
-        "secondaryStatValue": "12.8%"
+        "secondaryStatValue": "12.7%"
       },
       {
         "level": 30,
         "baseAtk": 135,
-        "secondaryStatValue": "15.6%"
+        "secondaryStatValue": "15.5%"
       },
       {
         "level": 40,
         "baseAtk": 185,
-        "secondaryStatValue": "18.4%"
+        "secondaryStatValue": "18.3%"
       },
       {
         "level": 50,
         "baseAtk": 235,
-        "secondaryStatValue": "21.2%"
+        "secondaryStatValue": "21.1%"
       },
       {
         "level": 60,
         "baseAtk": 285,
-        "secondaryStatValue": "24%"
+        "secondaryStatValue": "23.9%"
       },
       {
         "level": 70,
         "baseAtk": 334,
-        "secondaryStatValue": "26.8%"
+        "secondaryStatValue": "26.7%"
       },
       {
         "level": 80,
         "baseAtk": 384,
-        "secondaryStatValue": "29.6%"
+        "secondaryStatValue": "29.5%"
       },
       {
         "level": 90,
@@ -1171,17 +1171,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 47,
-        "secondaryStatValue": "16%"
+        "secondaryStatValue": "15.9%"
       },
       {
         "level": 20,
         "baseAtk": 88,
-        "secondaryStatValue": "20.5%"
+        "secondaryStatValue": "20.4%"
       },
       {
         "level": 30,
         "baseAtk": 110,
-        "secondaryStatValue": "25%"
+        "secondaryStatValue": "24.9%"
       },
       {
         "level": 40,
@@ -1196,17 +1196,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 233,
-        "secondaryStatValue": "38.4%"
+        "secondaryStatValue": "38.3%"
       },
       {
         "level": 70,
         "baseAtk": 273,
-        "secondaryStatValue": "42.9%"
+        "secondaryStatValue": "42.8%"
       },
       {
         "level": 80,
         "baseAtk": 314,
-        "secondaryStatValue": "47.4%"
+        "secondaryStatValue": "47.3%"
       },
       {
         "level": 90,
@@ -1243,17 +1243,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 47,
-        "secondaryStatValue": "16%"
+        "secondaryStatValue": "15.9%"
       },
       {
         "level": 20,
         "baseAtk": 88,
-        "secondaryStatValue": "20.5%"
+        "secondaryStatValue": "20.4%"
       },
       {
         "level": 30,
         "baseAtk": 110,
-        "secondaryStatValue": "25%"
+        "secondaryStatValue": "24.9%"
       },
       {
         "level": 40,
@@ -1268,17 +1268,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 233,
-        "secondaryStatValue": "38.4%"
+        "secondaryStatValue": "38.3%"
       },
       {
         "level": 70,
         "baseAtk": 273,
-        "secondaryStatValue": "42.9%"
+        "secondaryStatValue": "42.8%"
       },
       {
         "level": 80,
         "baseAtk": 314,
-        "secondaryStatValue": "47.4%"
+        "secondaryStatValue": "47.3%"
       },
       {
         "level": 90,
@@ -1310,7 +1310,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 1,
         "baseAtk": 37,
-        "secondaryStatValue": "4.1%"
+        "secondaryStatValue": "4%"
       },
       {
         "level": 10,
@@ -1320,12 +1320,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 20,
         "baseAtk": 120,
-        "secondaryStatValue": "7.2%"
+        "secondaryStatValue": "7.1%"
       },
       {
         "level": 30,
         "baseAtk": 152,
-        "secondaryStatValue": "8.8%"
+        "secondaryStatValue": "8.7%"
       },
       {
         "level": 40,
@@ -1340,12 +1340,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 319,
-        "secondaryStatValue": "13.5%"
+        "secondaryStatValue": "13.4%"
       },
       {
         "level": 70,
         "baseAtk": 375,
-        "secondaryStatValue": "15.1%"
+        "secondaryStatValue": "15%"
       },
       {
         "level": 80,
@@ -1387,12 +1387,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 58,
-        "secondaryStatValue": "9.4%"
+        "secondaryStatValue": "9.3%"
       },
       {
         "level": 20,
         "baseAtk": 107,
-        "secondaryStatValue": "12%"
+        "secondaryStatValue": "11.9%"
       },
       {
         "level": 30,
@@ -1412,7 +1412,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 285,
-        "secondaryStatValue": "22.5%"
+        "secondaryStatValue": "22.4%"
       },
       {
         "level": 70,
@@ -1459,12 +1459,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 58,
-        "secondaryStatValue": "9.4%"
+        "secondaryStatValue": "9.3%"
       },
       {
         "level": 20,
         "baseAtk": 107,
-        "secondaryStatValue": "12%"
+        "secondaryStatValue": "11.9%"
       },
       {
         "level": 30,
@@ -1484,7 +1484,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 285,
-        "secondaryStatValue": "22.5%"
+        "secondaryStatValue": "22.4%"
       },
       {
         "level": 70,
@@ -1521,17 +1521,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Rectifier",
     "baseAtk": 500,
     "secondaryStat": "ATK",
-    "secondaryStatValue": "54%",
+    "secondaryStatValue": "53.9%",
     "levelStats": [
       {
         "level": 1,
         "baseAtk": 40,
-        "secondaryStatValue": "12%"
+        "secondaryStatValue": "11.9%"
       },
       {
         "level": 10,
         "baseAtk": 70,
-        "secondaryStatValue": "16.7%"
+        "secondaryStatValue": "16.6%"
       },
       {
         "level": 20,
@@ -1541,12 +1541,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 30,
         "baseAtk": 164,
-        "secondaryStatValue": "26%"
+        "secondaryStatValue": "25.9%"
       },
       {
         "level": 40,
         "baseAtk": 224,
-        "secondaryStatValue": "30.7%"
+        "secondaryStatValue": "30.6%"
       },
       {
         "level": 50,
@@ -1556,12 +1556,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 345,
-        "secondaryStatValue": "40%"
+        "secondaryStatValue": "39.9%"
       },
       {
         "level": 70,
         "baseAtk": 405,
-        "secondaryStatValue": "44.7%"
+        "secondaryStatValue": "44.6%"
       },
       {
         "level": 80,
@@ -1571,7 +1571,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 90,
         "baseAtk": 500,
-        "secondaryStatValue": "54%"
+        "secondaryStatValue": "53.9%"
       }
     ],
     "passiveName": "Stormy Resolution",
@@ -1593,17 +1593,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Broadblade",
     "baseAtk": 337,
     "secondaryStat": "DEF",
-    "secondaryStatValue": "61.6%",
+    "secondaryStatValue": "61.5%",
     "levelStats": [
       {
         "level": 1,
         "baseAtk": 27,
-        "secondaryStatValue": "13.7%"
+        "secondaryStatValue": "13.6%"
       },
       {
         "level": 10,
         "baseAtk": 47,
-        "secondaryStatValue": "19%"
+        "secondaryStatValue": "18.9%"
       },
       {
         "level": 20,
@@ -1618,17 +1618,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 40,
         "baseAtk": 151,
-        "secondaryStatValue": "35%"
+        "secondaryStatValue": "34.9%"
       },
       {
         "level": 50,
         "baseAtk": 192,
-        "secondaryStatValue": "40.3%"
+        "secondaryStatValue": "40.2%"
       },
       {
         "level": 60,
         "baseAtk": 233,
-        "secondaryStatValue": "45.6%"
+        "secondaryStatValue": "45.5%"
       },
       {
         "level": 70,
@@ -1643,7 +1643,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 90,
         "baseAtk": 337,
-        "secondaryStatValue": "61.6%"
+        "secondaryStatValue": "61.5%"
       }
     ],
     "passiveName": "Battlebound",
@@ -1675,42 +1675,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 82,
-        "secondaryStatValue": "7.5%"
+        "secondaryStatValue": "7.4%"
       },
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "9.6%"
+        "secondaryStatValue": "9.5%"
       },
       {
         "level": 30,
         "baseAtk": 193,
-        "secondaryStatValue": "11.7%"
+        "secondaryStatValue": "11.6%"
       },
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "13.8%"
+        "secondaryStatValue": "13.7%"
       },
       {
         "level": 50,
         "baseAtk": 335,
-        "secondaryStatValue": "15.9%"
+        "secondaryStatValue": "15.8%"
       },
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "18%"
+        "secondaryStatValue": "17.9%"
       },
       {
         "level": 70,
         "baseAtk": 476,
-        "secondaryStatValue": "20.1%"
+        "secondaryStatValue": "20%"
       },
       {
         "level": 80,
         "baseAtk": 547,
-        "secondaryStatValue": "22.2%"
+        "secondaryStatValue": "22.1%"
       },
       {
         "level": 90,
@@ -1742,12 +1742,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 1,
         "baseAtk": 33,
-        "secondaryStatValue": "16.1%"
+        "secondaryStatValue": "16%"
       },
       {
         "level": 10,
         "baseAtk": 58,
-        "secondaryStatValue": "22.3%"
+        "secondaryStatValue": "22.2%"
       },
       {
         "level": 20,
@@ -1757,7 +1757,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 30,
         "baseAtk": 135,
-        "secondaryStatValue": "34.8%"
+        "secondaryStatValue": "34.7%"
       },
       {
         "level": 40,
@@ -1767,12 +1767,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 50,
         "baseAtk": 235,
-        "secondaryStatValue": "47.3%"
+        "secondaryStatValue": "47.2%"
       },
       {
         "level": 60,
         "baseAtk": 285,
-        "secondaryStatValue": "53.5%"
+        "secondaryStatValue": "53.4%"
       },
       {
         "level": 70,
@@ -1782,7 +1782,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 80,
         "baseAtk": 384,
-        "secondaryStatValue": "66%"
+        "secondaryStatValue": "65.9%"
       },
       {
         "level": 90,
@@ -1819,17 +1819,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 47,
-        "secondaryStatValue": "16%"
+        "secondaryStatValue": "15.9%"
       },
       {
         "level": 20,
         "baseAtk": 88,
-        "secondaryStatValue": "20.5%"
+        "secondaryStatValue": "20.4%"
       },
       {
         "level": 30,
         "baseAtk": 110,
-        "secondaryStatValue": "25%"
+        "secondaryStatValue": "24.9%"
       },
       {
         "level": 40,
@@ -1844,17 +1844,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 233,
-        "secondaryStatValue": "38.4%"
+        "secondaryStatValue": "38.3%"
       },
       {
         "level": 70,
         "baseAtk": 273,
-        "secondaryStatValue": "42.9%"
+        "secondaryStatValue": "42.8%"
       },
       {
         "level": 80,
         "baseAtk": 314,
-        "secondaryStatValue": "47.4%"
+        "secondaryStatValue": "47.3%"
       },
       {
         "level": 90,
@@ -1891,42 +1891,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 82,
-        "secondaryStatValue": "7.5%"
+        "secondaryStatValue": "7.4%"
       },
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "9.6%"
+        "secondaryStatValue": "9.5%"
       },
       {
         "level": 30,
         "baseAtk": 193,
-        "secondaryStatValue": "11.7%"
+        "secondaryStatValue": "11.6%"
       },
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "13.8%"
+        "secondaryStatValue": "13.7%"
       },
       {
         "level": 50,
         "baseAtk": 335,
-        "secondaryStatValue": "15.9%"
+        "secondaryStatValue": "15.8%"
       },
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "18%"
+        "secondaryStatValue": "17.9%"
       },
       {
         "level": 70,
         "baseAtk": 476,
-        "secondaryStatValue": "20.1%"
+        "secondaryStatValue": "20%"
       },
       {
         "level": 80,
         "baseAtk": 547,
-        "secondaryStatValue": "22.2%"
+        "secondaryStatValue": "22.1%"
       },
       {
         "level": 90,
@@ -1963,42 +1963,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 82,
-        "secondaryStatValue": "7.5%"
+        "secondaryStatValue": "7.4%"
       },
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "9.6%"
+        "secondaryStatValue": "9.5%"
       },
       {
         "level": 30,
         "baseAtk": 193,
-        "secondaryStatValue": "11.7%"
+        "secondaryStatValue": "11.6%"
       },
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "13.8%"
+        "secondaryStatValue": "13.7%"
       },
       {
         "level": 50,
         "baseAtk": 335,
-        "secondaryStatValue": "15.9%"
+        "secondaryStatValue": "15.8%"
       },
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "18%"
+        "secondaryStatValue": "17.9%"
       },
       {
         "level": 70,
         "baseAtk": 476,
-        "secondaryStatValue": "20.1%"
+        "secondaryStatValue": "20%"
       },
       {
         "level": 80,
         "baseAtk": 547,
-        "secondaryStatValue": "22.2%"
+        "secondaryStatValue": "22.1%"
       },
       {
         "level": 90,
@@ -2030,7 +2030,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 1,
         "baseAtk": 37,
-        "secondaryStatValue": "4.1%"
+        "secondaryStatValue": "4%"
       },
       {
         "level": 10,
@@ -2040,12 +2040,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 20,
         "baseAtk": 120,
-        "secondaryStatValue": "7.2%"
+        "secondaryStatValue": "7.1%"
       },
       {
         "level": 30,
         "baseAtk": 152,
-        "secondaryStatValue": "8.8%"
+        "secondaryStatValue": "8.7%"
       },
       {
         "level": 40,
@@ -2060,12 +2060,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 319,
-        "secondaryStatValue": "13.5%"
+        "secondaryStatValue": "13.4%"
       },
       {
         "level": 70,
         "baseAtk": 375,
-        "secondaryStatValue": "15.1%"
+        "secondaryStatValue": "15%"
       },
       {
         "level": 80,
@@ -2107,42 +2107,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 82,
-        "secondaryStatValue": "7.5%"
+        "secondaryStatValue": "7.4%"
       },
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "9.6%"
+        "secondaryStatValue": "9.5%"
       },
       {
         "level": 30,
         "baseAtk": 193,
-        "secondaryStatValue": "11.7%"
+        "secondaryStatValue": "11.6%"
       },
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "13.8%"
+        "secondaryStatValue": "13.7%"
       },
       {
         "level": 50,
         "baseAtk": 335,
-        "secondaryStatValue": "15.9%"
+        "secondaryStatValue": "15.8%"
       },
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "18%"
+        "secondaryStatValue": "17.9%"
       },
       {
         "level": 70,
         "baseAtk": 476,
-        "secondaryStatValue": "20.1%"
+        "secondaryStatValue": "20%"
       },
       {
         "level": 80,
         "baseAtk": 547,
-        "secondaryStatValue": "22.2%"
+        "secondaryStatValue": "22.1%"
       },
       {
         "level": 90,
@@ -2174,7 +2174,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 1,
         "baseAtk": 37,
-        "secondaryStatValue": "4.1%"
+        "secondaryStatValue": "4%"
       },
       {
         "level": 10,
@@ -2184,12 +2184,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 20,
         "baseAtk": 120,
-        "secondaryStatValue": "7.2%"
+        "secondaryStatValue": "7.1%"
       },
       {
         "level": 30,
         "baseAtk": 152,
-        "secondaryStatValue": "8.8%"
+        "secondaryStatValue": "8.7%"
       },
       {
         "level": 40,
@@ -2204,12 +2204,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 319,
-        "secondaryStatValue": "13.5%"
+        "secondaryStatValue": "13.4%"
       },
       {
         "level": 70,
         "baseAtk": 375,
-        "secondaryStatValue": "15.1%"
+        "secondaryStatValue": "15%"
       },
       {
         "level": 80,
@@ -2241,7 +2241,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Sword",
     "baseAtk": 412,
     "secondaryStat": "Crit. Rate",
-    "secondaryStatValue": "20.3%",
+    "secondaryStatValue": "20.2%",
     "levelStats": [
       {
         "level": 1,
@@ -2256,7 +2256,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 20,
         "baseAtk": 107,
-        "secondaryStatValue": "8%"
+        "secondaryStatValue": "7.9%"
       },
       {
         "level": 30,
@@ -2266,7 +2266,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 40,
         "baseAtk": 185,
-        "secondaryStatValue": "11.5%"
+        "secondaryStatValue": "11.4%"
       },
       {
         "level": 50,
@@ -2276,7 +2276,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 285,
-        "secondaryStatValue": "15%"
+        "secondaryStatValue": "14.9%"
       },
       {
         "level": 70,
@@ -2286,12 +2286,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 80,
         "baseAtk": 384,
-        "secondaryStatValue": "18.5%"
+        "secondaryStatValue": "18.4%"
       },
       {
         "level": 90,
         "baseAtk": 412,
-        "secondaryStatValue": "20.3%"
+        "secondaryStatValue": "20.2%"
       }
     ],
     "passiveName": "Oath of Tide Hunters",
@@ -2323,7 +2323,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 58,
-        "secondaryStatValue": "23.8%"
+        "secondaryStatValue": "23.7%"
       },
       {
         "level": 20,
@@ -2333,12 +2333,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 30,
         "baseAtk": 135,
-        "secondaryStatValue": "37.1%"
+        "secondaryStatValue": "37%"
       },
       {
         "level": 40,
         "baseAtk": 185,
-        "secondaryStatValue": "43.8%"
+        "secondaryStatValue": "43.7%"
       },
       {
         "level": 50,
@@ -2348,7 +2348,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 285,
-        "secondaryStatValue": "57.1%"
+        "secondaryStatValue": "57%"
       },
       {
         "level": 70,
@@ -2358,7 +2358,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 80,
         "baseAtk": 384,
-        "secondaryStatValue": "70.4%"
+        "secondaryStatValue": "70.3%"
       },
       {
         "level": 90,
@@ -2415,22 +2415,22 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 50,
         "baseAtk": 285,
-        "secondaryStatValue": "23.6%"
+        "secondaryStatValue": "23.5%"
       },
       {
         "level": 60,
         "baseAtk": 345,
-        "secondaryStatValue": "26.7%"
+        "secondaryStatValue": "26.6%"
       },
       {
         "level": 70,
         "baseAtk": 405,
-        "secondaryStatValue": "29.8%"
+        "secondaryStatValue": "29.7%"
       },
       {
         "level": 80,
         "baseAtk": 466,
-        "secondaryStatValue": "32.9%"
+        "secondaryStatValue": "32.8%"
       },
       {
         "level": 90,
@@ -2467,42 +2467,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 82,
-        "secondaryStatValue": "7.5%"
+        "secondaryStatValue": "7.4%"
       },
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "9.6%"
+        "secondaryStatValue": "9.5%"
       },
       {
         "level": 30,
         "baseAtk": 193,
-        "secondaryStatValue": "11.7%"
+        "secondaryStatValue": "11.6%"
       },
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "13.8%"
+        "secondaryStatValue": "13.7%"
       },
       {
         "level": 50,
         "baseAtk": 335,
-        "secondaryStatValue": "15.9%"
+        "secondaryStatValue": "15.8%"
       },
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "18%"
+        "secondaryStatValue": "17.9%"
       },
       {
         "level": 70,
         "baseAtk": 476,
-        "secondaryStatValue": "20.1%"
+        "secondaryStatValue": "20%"
       },
       {
         "level": 80,
         "baseAtk": 547,
-        "secondaryStatValue": "22.2%"
+        "secondaryStatValue": "22.1%"
       },
       {
         "level": 90,
@@ -2539,42 +2539,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 82,
-        "secondaryStatValue": "7.5%"
+        "secondaryStatValue": "7.4%"
       },
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "9.6%"
+        "secondaryStatValue": "9.5%"
       },
       {
         "level": 30,
         "baseAtk": 193,
-        "secondaryStatValue": "11.7%"
+        "secondaryStatValue": "11.6%"
       },
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "13.8%"
+        "secondaryStatValue": "13.7%"
       },
       {
         "level": 50,
         "baseAtk": 335,
-        "secondaryStatValue": "15.9%"
+        "secondaryStatValue": "15.8%"
       },
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "18%"
+        "secondaryStatValue": "17.9%"
       },
       {
         "level": 70,
         "baseAtk": 476,
-        "secondaryStatValue": "20.1%"
+        "secondaryStatValue": "20%"
       },
       {
         "level": 80,
         "baseAtk": 547,
-        "secondaryStatValue": "22.2%"
+        "secondaryStatValue": "22.1%"
       },
       {
         "level": 90,
@@ -2606,7 +2606,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 1,
         "baseAtk": 37,
-        "secondaryStatValue": "4.1%"
+        "secondaryStatValue": "4%"
       },
       {
         "level": 10,
@@ -2616,12 +2616,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 20,
         "baseAtk": 120,
-        "secondaryStatValue": "7.2%"
+        "secondaryStatValue": "7.1%"
       },
       {
         "level": 30,
         "baseAtk": 152,
-        "secondaryStatValue": "8.8%"
+        "secondaryStatValue": "8.7%"
       },
       {
         "level": 40,
@@ -2636,12 +2636,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 319,
-        "secondaryStatValue": "13.5%"
+        "secondaryStatValue": "13.4%"
       },
       {
         "level": 70,
         "baseAtk": 375,
-        "secondaryStatValue": "15.1%"
+        "secondaryStatValue": "15%"
       },
       {
         "level": 80,
@@ -2683,42 +2683,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 45,
-        "secondaryStatValue": "7.5%"
+        "secondaryStatValue": "7.4%"
       },
       {
         "level": 20,
         "baseAtk": 84,
-        "secondaryStatValue": "9.6%"
+        "secondaryStatValue": "9.5%"
       },
       {
         "level": 30,
         "baseAtk": 106,
-        "secondaryStatValue": "11.7%"
+        "secondaryStatValue": "11.6%"
       },
       {
         "level": 40,
         "baseAtk": 146,
-        "secondaryStatValue": "13.8%"
+        "secondaryStatValue": "13.7%"
       },
       {
         "level": 50,
         "baseAtk": 185,
-        "secondaryStatValue": "15.9%"
+        "secondaryStatValue": "15.8%"
       },
       {
         "level": 60,
         "baseAtk": 224,
-        "secondaryStatValue": "18%"
+        "secondaryStatValue": "17.9%"
       },
       {
         "level": 70,
         "baseAtk": 263,
-        "secondaryStatValue": "20.1%"
+        "secondaryStatValue": "20%"
       },
       {
         "level": 80,
         "baseAtk": 303,
-        "secondaryStatValue": "22.2%"
+        "secondaryStatValue": "22.1%"
       },
       {
         "level": 90,
@@ -2745,7 +2745,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Gauntlets",
     "baseAtk": 325,
     "secondaryStat": "DEF",
-    "secondaryStatValue": "30.8%",
+    "secondaryStatValue": "30.7%",
     "levelStats": [
       {
         "level": 1,
@@ -2755,12 +2755,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 45,
-        "secondaryStatValue": "9.5%"
+        "secondaryStatValue": "9.4%"
       },
       {
         "level": 20,
         "baseAtk": 84,
-        "secondaryStatValue": "12.2%"
+        "secondaryStatValue": "12.1%"
       },
       {
         "level": 30,
@@ -2770,7 +2770,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 40,
         "baseAtk": 146,
-        "secondaryStatValue": "17.5%"
+        "secondaryStatValue": "17.4%"
       },
       {
         "level": 50,
@@ -2780,12 +2780,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 224,
-        "secondaryStatValue": "22.8%"
+        "secondaryStatValue": "22.7%"
       },
       {
         "level": 70,
         "baseAtk": 263,
-        "secondaryStatValue": "25.5%"
+        "secondaryStatValue": "25.4%"
       },
       {
         "level": 80,
@@ -2795,7 +2795,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 90,
         "baseAtk": 325,
-        "secondaryStatValue": "30.8%"
+        "secondaryStatValue": "30.7%"
       }
     ],
     "passiveName": "Crusade",
@@ -2817,7 +2817,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Gauntlets",
     "baseAtk": 387,
     "secondaryStat": "Energy Regen",
-    "secondaryStatValue": "38.9%",
+    "secondaryStatValue": "38.8%",
     "levelStats": [
       {
         "level": 1,
@@ -2827,12 +2827,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 54,
-        "secondaryStatValue": "12%"
+        "secondaryStatValue": "11.9%"
       },
       {
         "level": 20,
         "baseAtk": 101,
-        "secondaryStatValue": "15.4%"
+        "secondaryStatValue": "15.3%"
       },
       {
         "level": 30,
@@ -2842,7 +2842,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 40,
         "baseAtk": 174,
-        "secondaryStatValue": "22.1%"
+        "secondaryStatValue": "22%"
       },
       {
         "level": 50,
@@ -2852,12 +2852,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 267,
-        "secondaryStatValue": "28.8%"
+        "secondaryStatValue": "28.7%"
       },
       {
         "level": 70,
         "baseAtk": 314,
-        "secondaryStatValue": "32.2%"
+        "secondaryStatValue": "32.1%"
       },
       {
         "level": 80,
@@ -2867,7 +2867,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 90,
         "baseAtk": 387,
-        "secondaryStatValue": "38.9%"
+        "secondaryStatValue": "38.8%"
       }
     ],
     "passiveName": "Mastermind",
@@ -2899,42 +2899,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 45,
-        "secondaryStatValue": "7.5%"
+        "secondaryStatValue": "7.4%"
       },
       {
         "level": 20,
         "baseAtk": 84,
-        "secondaryStatValue": "9.6%"
+        "secondaryStatValue": "9.5%"
       },
       {
         "level": 30,
         "baseAtk": 106,
-        "secondaryStatValue": "11.7%"
+        "secondaryStatValue": "11.6%"
       },
       {
         "level": 40,
         "baseAtk": 146,
-        "secondaryStatValue": "13.8%"
+        "secondaryStatValue": "13.7%"
       },
       {
         "level": 50,
         "baseAtk": 185,
-        "secondaryStatValue": "15.9%"
+        "secondaryStatValue": "15.8%"
       },
       {
         "level": 60,
         "baseAtk": 224,
-        "secondaryStatValue": "18%"
+        "secondaryStatValue": "17.9%"
       },
       {
         "level": 70,
         "baseAtk": 263,
-        "secondaryStatValue": "20.1%"
+        "secondaryStatValue": "20%"
       },
       {
         "level": 80,
         "baseAtk": 303,
-        "secondaryStatValue": "22.2%"
+        "secondaryStatValue": "22.1%"
       },
       {
         "level": 90,
@@ -2961,22 +2961,22 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Gauntlets",
     "baseAtk": 300,
     "secondaryStat": "DEF",
-    "secondaryStatValue": "38.5%",
+    "secondaryStatValue": "38.4%",
     "levelStats": [
       {
         "level": 1,
         "baseAtk": 24,
-        "secondaryStatValue": "8.6%"
+        "secondaryStatValue": "8.5%"
       },
       {
         "level": 10,
         "baseAtk": 42,
-        "secondaryStatValue": "11.9%"
+        "secondaryStatValue": "11.8%"
       },
       {
         "level": 20,
         "baseAtk": 78,
-        "secondaryStatValue": "15.2%"
+        "secondaryStatValue": "15.1%"
       },
       {
         "level": 30,
@@ -2991,12 +2991,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 50,
         "baseAtk": 171,
-        "secondaryStatValue": "25.2%"
+        "secondaryStatValue": "25.1%"
       },
       {
         "level": 60,
         "baseAtk": 207,
-        "secondaryStatValue": "28.5%"
+        "secondaryStatValue": "28.4%"
       },
       {
         "level": 70,
@@ -3011,7 +3011,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 90,
         "baseAtk": 300,
-        "secondaryStatValue": "38.5%"
+        "secondaryStatValue": "38.4%"
       }
     ],
     "passiveName": "Collective Strength",
@@ -3043,12 +3043,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 42,
-        "secondaryStatValue": "9.4%"
+        "secondaryStatValue": "9.3%"
       },
       {
         "level": 20,
         "baseAtk": 78,
-        "secondaryStatValue": "12%"
+        "secondaryStatValue": "11.9%"
       },
       {
         "level": 30,
@@ -3068,7 +3068,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 207,
-        "secondaryStatValue": "22.5%"
+        "secondaryStatValue": "22.4%"
       },
       {
         "level": 70,
@@ -3115,42 +3115,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 45,
-        "secondaryStatValue": "7.5%"
+        "secondaryStatValue": "7.4%"
       },
       {
         "level": 20,
         "baseAtk": 84,
-        "secondaryStatValue": "9.6%"
+        "secondaryStatValue": "9.5%"
       },
       {
         "level": 30,
         "baseAtk": 106,
-        "secondaryStatValue": "11.7%"
+        "secondaryStatValue": "11.6%"
       },
       {
         "level": 40,
         "baseAtk": 146,
-        "secondaryStatValue": "13.8%"
+        "secondaryStatValue": "13.7%"
       },
       {
         "level": 50,
         "baseAtk": 185,
-        "secondaryStatValue": "15.9%"
+        "secondaryStatValue": "15.8%"
       },
       {
         "level": 60,
         "baseAtk": 224,
-        "secondaryStatValue": "18%"
+        "secondaryStatValue": "17.9%"
       },
       {
         "level": 70,
         "baseAtk": 263,
-        "secondaryStatValue": "20.1%"
+        "secondaryStatValue": "20%"
       },
       {
         "level": 80,
         "baseAtk": 303,
-        "secondaryStatValue": "22.2%"
+        "secondaryStatValue": "22.1%"
       },
       {
         "level": 90,
@@ -3187,12 +3187,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 42,
-        "secondaryStatValue": "9.4%"
+        "secondaryStatValue": "9.3%"
       },
       {
         "level": 20,
         "baseAtk": 78,
-        "secondaryStatValue": "12%"
+        "secondaryStatValue": "11.9%"
       },
       {
         "level": 30,
@@ -3212,7 +3212,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 207,
-        "secondaryStatValue": "22.5%"
+        "secondaryStatValue": "22.4%"
       },
       {
         "level": 70,
@@ -3259,12 +3259,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 58,
-        "secondaryStatValue": "9.4%"
+        "secondaryStatValue": "9.3%"
       },
       {
         "level": 20,
         "baseAtk": 107,
-        "secondaryStatValue": "12%"
+        "secondaryStatValue": "11.9%"
       },
       {
         "level": 30,
@@ -3284,7 +3284,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 285,
-        "secondaryStatValue": "22.5%"
+        "secondaryStatValue": "22.4%"
       },
       {
         "level": 70,
@@ -3331,12 +3331,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 58,
-        "secondaryStatValue": "9.4%"
+        "secondaryStatValue": "9.3%"
       },
       {
         "level": 20,
         "baseAtk": 107,
-        "secondaryStatValue": "12%"
+        "secondaryStatValue": "11.9%"
       },
       {
         "level": 30,
@@ -3356,7 +3356,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 285,
-        "secondaryStatValue": "22.5%"
+        "secondaryStatValue": "22.4%"
       },
       {
         "level": 70,
@@ -3393,7 +3393,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Rectifier",
     "baseAtk": 387,
     "secondaryStat": "ATK",
-    "secondaryStatValue": "36.5%",
+    "secondaryStatValue": "36.4%",
     "levelStats": [
       {
         "level": 1,
@@ -3408,7 +3408,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 20,
         "baseAtk": 101,
-        "secondaryStatValue": "14.4%"
+        "secondaryStatValue": "14.3%"
       },
       {
         "level": 30,
@@ -3418,7 +3418,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 40,
         "baseAtk": 174,
-        "secondaryStatValue": "20.7%"
+        "secondaryStatValue": "20.6%"
       },
       {
         "level": 50,
@@ -3428,7 +3428,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 267,
-        "secondaryStatValue": "27%"
+        "secondaryStatValue": "26.9%"
       },
       {
         "level": 70,
@@ -3438,12 +3438,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 80,
         "baseAtk": 361,
-        "secondaryStatValue": "33.3%"
+        "secondaryStatValue": "33.2%"
       },
       {
         "level": 90,
         "baseAtk": 387,
-        "secondaryStatValue": "36.5%"
+        "secondaryStatValue": "36.4%"
       }
     ],
     "passiveName": "Guardian",
@@ -3495,22 +3495,22 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 50,
         "baseAtk": 285,
-        "secondaryStatValue": "23.6%"
+        "secondaryStatValue": "23.5%"
       },
       {
         "level": 60,
         "baseAtk": 345,
-        "secondaryStatValue": "26.7%"
+        "secondaryStatValue": "26.6%"
       },
       {
         "level": 70,
         "baseAtk": 405,
-        "secondaryStatValue": "29.8%"
+        "secondaryStatValue": "29.7%"
       },
       {
         "level": 80,
         "baseAtk": 466,
-        "secondaryStatValue": "32.9%"
+        "secondaryStatValue": "32.8%"
       },
       {
         "level": 90,
@@ -3537,7 +3537,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Sword",
     "baseAtk": 587,
     "secondaryStat": "Energy Regen",
-    "secondaryStatValue": "38.9%",
+    "secondaryStatValue": "38.8%",
     "levelStats": [
       {
         "level": 1,
@@ -3547,12 +3547,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 82,
-        "secondaryStatValue": "12%"
+        "secondaryStatValue": "11.9%"
       },
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "15.4%"
+        "secondaryStatValue": "15.3%"
       },
       {
         "level": 30,
@@ -3562,7 +3562,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "22.1%"
+        "secondaryStatValue": "22%"
       },
       {
         "level": 50,
@@ -3572,12 +3572,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "28.8%"
+        "secondaryStatValue": "28.7%"
       },
       {
         "level": 70,
         "baseAtk": 476,
-        "secondaryStatValue": "32.2%"
+        "secondaryStatValue": "32.1%"
       },
       {
         "level": 80,
@@ -3587,7 +3587,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 90,
         "baseAtk": 587,
-        "secondaryStatValue": "38.9%"
+        "secondaryStatValue": "38.8%"
       }
     ],
     "passiveName": "Signal Catcher",
@@ -3614,7 +3614,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 1,
         "baseAtk": 37,
-        "secondaryStatValue": "4.1%"
+        "secondaryStatValue": "4%"
       },
       {
         "level": 10,
@@ -3624,12 +3624,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 20,
         "baseAtk": 120,
-        "secondaryStatValue": "7.2%"
+        "secondaryStatValue": "7.1%"
       },
       {
         "level": 30,
         "baseAtk": 152,
-        "secondaryStatValue": "8.8%"
+        "secondaryStatValue": "8.7%"
       },
       {
         "level": 40,
@@ -3644,12 +3644,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 319,
-        "secondaryStatValue": "13.5%"
+        "secondaryStatValue": "13.4%"
       },
       {
         "level": 70,
         "baseAtk": 375,
-        "secondaryStatValue": "15.1%"
+        "secondaryStatValue": "15%"
       },
       {
         "level": 80,
@@ -3691,42 +3691,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 82,
-        "secondaryStatValue": "7.5%"
+        "secondaryStatValue": "7.4%"
       },
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "9.6%"
+        "secondaryStatValue": "9.5%"
       },
       {
         "level": 30,
         "baseAtk": 193,
-        "secondaryStatValue": "11.7%"
+        "secondaryStatValue": "11.6%"
       },
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "13.8%"
+        "secondaryStatValue": "13.7%"
       },
       {
         "level": 50,
         "baseAtk": 335,
-        "secondaryStatValue": "15.9%"
+        "secondaryStatValue": "15.8%"
       },
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "18%"
+        "secondaryStatValue": "17.9%"
       },
       {
         "level": 70,
         "baseAtk": 476,
-        "secondaryStatValue": "20.1%"
+        "secondaryStatValue": "20%"
       },
       {
         "level": 80,
         "baseAtk": 547,
-        "secondaryStatValue": "22.2%"
+        "secondaryStatValue": "22.1%"
       },
       {
         "level": 90,
@@ -3753,7 +3753,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Sword",
     "baseAtk": 387,
     "secondaryStat": "ATK",
-    "secondaryStatValue": "36.5%",
+    "secondaryStatValue": "36.4%",
     "levelStats": [
       {
         "level": 1,
@@ -3768,7 +3768,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 20,
         "baseAtk": 101,
-        "secondaryStatValue": "14.4%"
+        "secondaryStatValue": "14.3%"
       },
       {
         "level": 30,
@@ -3778,7 +3778,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 40,
         "baseAtk": 174,
-        "secondaryStatValue": "20.7%"
+        "secondaryStatValue": "20.6%"
       },
       {
         "level": 50,
@@ -3788,7 +3788,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 267,
-        "secondaryStatValue": "27%"
+        "secondaryStatValue": "26.9%"
       },
       {
         "level": 70,
@@ -3798,12 +3798,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 80,
         "baseAtk": 361,
-        "secondaryStatValue": "33.3%"
+        "secondaryStatValue": "33.2%"
       },
       {
         "level": 90,
         "baseAtk": 387,
-        "secondaryStatValue": "36.5%"
+        "secondaryStatValue": "36.4%"
       }
     ],
     "passiveName": "Pale Gale",
@@ -3855,22 +3855,22 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 50,
         "baseAtk": 285,
-        "secondaryStatValue": "23.6%"
+        "secondaryStatValue": "23.5%"
       },
       {
         "level": 60,
         "baseAtk": 345,
-        "secondaryStatValue": "26.7%"
+        "secondaryStatValue": "26.6%"
       },
       {
         "level": 70,
         "baseAtk": 405,
-        "secondaryStatValue": "29.8%"
+        "secondaryStatValue": "29.7%"
       },
       {
         "level": 80,
         "baseAtk": 466,
-        "secondaryStatValue": "32.9%"
+        "secondaryStatValue": "32.8%"
       },
       {
         "level": 90,
@@ -3907,12 +3907,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 58,
-        "secondaryStatValue": "9.4%"
+        "secondaryStatValue": "9.3%"
       },
       {
         "level": 20,
         "baseAtk": 107,
-        "secondaryStatValue": "12%"
+        "secondaryStatValue": "11.9%"
       },
       {
         "level": 30,
@@ -3932,7 +3932,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 285,
-        "secondaryStatValue": "22.5%"
+        "secondaryStatValue": "22.4%"
       },
       {
         "level": 70,
@@ -3969,7 +3969,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Broadblade",
     "baseAtk": 587,
     "secondaryStat": "ATK",
-    "secondaryStatValue": "36.5%",
+    "secondaryStatValue": "36.4%",
     "levelStats": [
       {
         "level": 1,
@@ -3984,7 +3984,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "14.4%"
+        "secondaryStatValue": "14.3%"
       },
       {
         "level": 30,
@@ -3994,7 +3994,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "20.7%"
+        "secondaryStatValue": "20.6%"
       },
       {
         "level": 50,
@@ -4004,7 +4004,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "27%"
+        "secondaryStatValue": "26.9%"
       },
       {
         "level": 70,
@@ -4014,12 +4014,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 80,
         "baseAtk": 547,
-        "secondaryStatValue": "33.3%"
+        "secondaryStatValue": "33.2%"
       },
       {
         "level": 90,
         "baseAtk": 587,
-        "secondaryStatValue": "36.5%"
+        "secondaryStatValue": "36.4%"
       }
     ],
     "passiveName": "Stormy Resolution",
@@ -4051,42 +4051,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 82,
-        "secondaryStatValue": "15%"
+        "secondaryStatValue": "14.9%"
       },
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "19.2%"
+        "secondaryStatValue": "19.1%"
       },
       {
         "level": 30,
         "baseAtk": 193,
-        "secondaryStatValue": "23.4%"
+        "secondaryStatValue": "23.3%"
       },
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "27.6%"
+        "secondaryStatValue": "27.5%"
       },
       {
         "level": 50,
         "baseAtk": 335,
-        "secondaryStatValue": "31.8%"
+        "secondaryStatValue": "31.7%"
       },
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "36%"
+        "secondaryStatValue": "35.9%"
       },
       {
         "level": 70,
         "baseAtk": 476,
-        "secondaryStatValue": "40.2%"
+        "secondaryStatValue": "40.1%"
       },
       {
         "level": 80,
         "baseAtk": 547,
-        "secondaryStatValue": "44.4%"
+        "secondaryStatValue": "44.3%"
       },
       {
         "level": 90,
@@ -4123,17 +4123,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 47,
-        "secondaryStatValue": "16%"
+        "secondaryStatValue": "15.9%"
       },
       {
         "level": 20,
         "baseAtk": 88,
-        "secondaryStatValue": "20.5%"
+        "secondaryStatValue": "20.4%"
       },
       {
         "level": 30,
         "baseAtk": 110,
-        "secondaryStatValue": "25%"
+        "secondaryStatValue": "24.9%"
       },
       {
         "level": 40,
@@ -4148,17 +4148,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 233,
-        "secondaryStatValue": "38.4%"
+        "secondaryStatValue": "38.3%"
       },
       {
         "level": 70,
         "baseAtk": 273,
-        "secondaryStatValue": "42.9%"
+        "secondaryStatValue": "42.8%"
       },
       {
         "level": 80,
         "baseAtk": 314,
-        "secondaryStatValue": "47.4%"
+        "secondaryStatValue": "47.3%"
       },
       {
         "level": 90,
@@ -4190,7 +4190,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 1,
         "baseAtk": 37,
-        "secondaryStatValue": "4.1%"
+        "secondaryStatValue": "4%"
       },
       {
         "level": 10,
@@ -4200,12 +4200,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 20,
         "baseAtk": 120,
-        "secondaryStatValue": "7.2%"
+        "secondaryStatValue": "7.1%"
       },
       {
         "level": 30,
         "baseAtk": 152,
-        "secondaryStatValue": "8.8%"
+        "secondaryStatValue": "8.7%"
       },
       {
         "level": 40,
@@ -4220,12 +4220,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 319,
-        "secondaryStatValue": "13.5%"
+        "secondaryStatValue": "13.4%"
       },
       {
         "level": 70,
         "baseAtk": 375,
-        "secondaryStatValue": "15.1%"
+        "secondaryStatValue": "15%"
       },
       {
         "level": 80,
@@ -4287,22 +4287,22 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 50,
         "baseAtk": 285,
-        "secondaryStatValue": "23.6%"
+        "secondaryStatValue": "23.5%"
       },
       {
         "level": 60,
         "baseAtk": 345,
-        "secondaryStatValue": "26.7%"
+        "secondaryStatValue": "26.6%"
       },
       {
         "level": 70,
         "baseAtk": 405,
-        "secondaryStatValue": "29.8%"
+        "secondaryStatValue": "29.7%"
       },
       {
         "level": 80,
         "baseAtk": 466,
-        "secondaryStatValue": "32.9%"
+        "secondaryStatValue": "32.8%"
       },
       {
         "level": 90,
@@ -4339,12 +4339,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 58,
-        "secondaryStatValue": "9.4%"
+        "secondaryStatValue": "9.3%"
       },
       {
         "level": 20,
         "baseAtk": 107,
-        "secondaryStatValue": "12%"
+        "secondaryStatValue": "11.9%"
       },
       {
         "level": 30,
@@ -4364,7 +4364,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 285,
-        "secondaryStatValue": "22.5%"
+        "secondaryStatValue": "22.4%"
       },
       {
         "level": 70,
@@ -4406,7 +4406,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 1,
         "baseAtk": 37,
-        "secondaryStatValue": "4.1%"
+        "secondaryStatValue": "4%"
       },
       {
         "level": 10,
@@ -4416,12 +4416,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 20,
         "baseAtk": 120,
-        "secondaryStatValue": "7.2%"
+        "secondaryStatValue": "7.1%"
       },
       {
         "level": 30,
         "baseAtk": 152,
-        "secondaryStatValue": "8.8%"
+        "secondaryStatValue": "8.7%"
       },
       {
         "level": 40,
@@ -4436,12 +4436,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 319,
-        "secondaryStatValue": "13.5%"
+        "secondaryStatValue": "13.4%"
       },
       {
         "level": 70,
         "baseAtk": 375,
-        "secondaryStatValue": "15.1%"
+        "secondaryStatValue": "15%"
       },
       {
         "level": 80,
@@ -4473,22 +4473,22 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Broadblade",
     "baseAtk": 300,
     "secondaryStat": "DEF",
-    "secondaryStatValue": "38.5%",
+    "secondaryStatValue": "38.4%",
     "levelStats": [
       {
         "level": 1,
         "baseAtk": 24,
-        "secondaryStatValue": "8.6%"
+        "secondaryStatValue": "8.5%"
       },
       {
         "level": 10,
         "baseAtk": 42,
-        "secondaryStatValue": "11.9%"
+        "secondaryStatValue": "11.8%"
       },
       {
         "level": 20,
         "baseAtk": 78,
-        "secondaryStatValue": "15.2%"
+        "secondaryStatValue": "15.1%"
       },
       {
         "level": 30,
@@ -4503,12 +4503,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 50,
         "baseAtk": 171,
-        "secondaryStatValue": "25.2%"
+        "secondaryStatValue": "25.1%"
       },
       {
         "level": 60,
         "baseAtk": 207,
-        "secondaryStatValue": "28.5%"
+        "secondaryStatValue": "28.4%"
       },
       {
         "level": 70,
@@ -4523,7 +4523,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 90,
         "baseAtk": 300,
-        "secondaryStatValue": "38.5%"
+        "secondaryStatValue": "38.4%"
       }
     ],
     "passiveName": "Temperance",
@@ -4555,42 +4555,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 45,
-        "secondaryStatValue": "7.5%"
+        "secondaryStatValue": "7.4%"
       },
       {
         "level": 20,
         "baseAtk": 84,
-        "secondaryStatValue": "9.6%"
+        "secondaryStatValue": "9.5%"
       },
       {
         "level": 30,
         "baseAtk": 106,
-        "secondaryStatValue": "11.7%"
+        "secondaryStatValue": "11.6%"
       },
       {
         "level": 40,
         "baseAtk": 146,
-        "secondaryStatValue": "13.8%"
+        "secondaryStatValue": "13.7%"
       },
       {
         "level": 50,
         "baseAtk": 185,
-        "secondaryStatValue": "15.9%"
+        "secondaryStatValue": "15.8%"
       },
       {
         "level": 60,
         "baseAtk": 224,
-        "secondaryStatValue": "18%"
+        "secondaryStatValue": "17.9%"
       },
       {
         "level": 70,
         "baseAtk": 263,
-        "secondaryStatValue": "20.1%"
+        "secondaryStatValue": "20%"
       },
       {
         "level": 80,
         "baseAtk": 303,
-        "secondaryStatValue": "22.2%"
+        "secondaryStatValue": "22.1%"
       },
       {
         "level": 90,
@@ -4627,42 +4627,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 45,
-        "secondaryStatValue": "7.5%"
+        "secondaryStatValue": "7.4%"
       },
       {
         "level": 20,
         "baseAtk": 84,
-        "secondaryStatValue": "9.6%"
+        "secondaryStatValue": "9.5%"
       },
       {
         "level": 30,
         "baseAtk": 106,
-        "secondaryStatValue": "11.7%"
+        "secondaryStatValue": "11.6%"
       },
       {
         "level": 40,
         "baseAtk": 146,
-        "secondaryStatValue": "13.8%"
+        "secondaryStatValue": "13.7%"
       },
       {
         "level": 50,
         "baseAtk": 185,
-        "secondaryStatValue": "15.9%"
+        "secondaryStatValue": "15.8%"
       },
       {
         "level": 60,
         "baseAtk": 224,
-        "secondaryStatValue": "18%"
+        "secondaryStatValue": "17.9%"
       },
       {
         "level": 70,
         "baseAtk": 263,
-        "secondaryStatValue": "20.1%"
+        "secondaryStatValue": "20%"
       },
       {
         "level": 80,
         "baseAtk": 303,
-        "secondaryStatValue": "22.2%"
+        "secondaryStatValue": "22.1%"
       },
       {
         "level": 90,
@@ -4699,42 +4699,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 42,
-        "secondaryStatValue": "12.5%"
+        "secondaryStatValue": "12.4%"
       },
       {
         "level": 20,
         "baseAtk": 78,
-        "secondaryStatValue": "16%"
+        "secondaryStatValue": "15.9%"
       },
       {
         "level": 30,
         "baseAtk": 98,
-        "secondaryStatValue": "19.5%"
+        "secondaryStatValue": "19.4%"
       },
       {
         "level": 40,
         "baseAtk": 134,
-        "secondaryStatValue": "23%"
+        "secondaryStatValue": "22.9%"
       },
       {
         "level": 50,
         "baseAtk": 171,
-        "secondaryStatValue": "26.5%"
+        "secondaryStatValue": "26.4%"
       },
       {
         "level": 60,
         "baseAtk": 207,
-        "secondaryStatValue": "30%"
+        "secondaryStatValue": "29.9%"
       },
       {
         "level": 70,
         "baseAtk": 243,
-        "secondaryStatValue": "33.5%"
+        "secondaryStatValue": "33.4%"
       },
       {
         "level": 80,
         "baseAtk": 279,
-        "secondaryStatValue": "37%"
+        "secondaryStatValue": "36.9%"
       },
       {
         "level": 90,
@@ -4771,12 +4771,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 42,
-        "secondaryStatValue": "9.4%"
+        "secondaryStatValue": "9.3%"
       },
       {
         "level": 20,
         "baseAtk": 78,
-        "secondaryStatValue": "12%"
+        "secondaryStatValue": "11.9%"
       },
       {
         "level": 30,
@@ -4796,7 +4796,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 207,
-        "secondaryStatValue": "22.5%"
+        "secondaryStatValue": "22.4%"
       },
       {
         "level": 70,
@@ -4843,17 +4843,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 47,
-        "secondaryStatValue": "16%"
+        "secondaryStatValue": "15.9%"
       },
       {
         "level": 20,
         "baseAtk": 88,
-        "secondaryStatValue": "20.5%"
+        "secondaryStatValue": "20.4%"
       },
       {
         "level": 30,
         "baseAtk": 110,
-        "secondaryStatValue": "25%"
+        "secondaryStatValue": "24.9%"
       },
       {
         "level": 40,
@@ -4868,17 +4868,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 233,
-        "secondaryStatValue": "38.4%"
+        "secondaryStatValue": "38.3%"
       },
       {
         "level": 70,
         "baseAtk": 273,
-        "secondaryStatValue": "42.9%"
+        "secondaryStatValue": "42.8%"
       },
       {
         "level": 80,
         "baseAtk": 314,
-        "secondaryStatValue": "47.4%"
+        "secondaryStatValue": "47.3%"
       },
       {
         "level": 90,
@@ -4915,42 +4915,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 82,
-        "secondaryStatValue": "15%"
+        "secondaryStatValue": "14.9%"
       },
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "19.2%"
+        "secondaryStatValue": "19.1%"
       },
       {
         "level": 30,
         "baseAtk": 193,
-        "secondaryStatValue": "23.4%"
+        "secondaryStatValue": "23.3%"
       },
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "27.6%"
+        "secondaryStatValue": "27.5%"
       },
       {
         "level": 50,
         "baseAtk": 335,
-        "secondaryStatValue": "31.8%"
+        "secondaryStatValue": "31.7%"
       },
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "36%"
+        "secondaryStatValue": "35.9%"
       },
       {
         "level": 70,
         "baseAtk": 476,
-        "secondaryStatValue": "40.2%"
+        "secondaryStatValue": "40.1%"
       },
       {
         "level": 80,
         "baseAtk": 547,
-        "secondaryStatValue": "44.4%"
+        "secondaryStatValue": "44.3%"
       },
       {
         "level": 90,
@@ -4987,42 +4987,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 45,
-        "secondaryStatValue": "7.5%"
+        "secondaryStatValue": "7.4%"
       },
       {
         "level": 20,
         "baseAtk": 84,
-        "secondaryStatValue": "9.6%"
+        "secondaryStatValue": "9.5%"
       },
       {
         "level": 30,
         "baseAtk": 106,
-        "secondaryStatValue": "11.7%"
+        "secondaryStatValue": "11.6%"
       },
       {
         "level": 40,
         "baseAtk": 146,
-        "secondaryStatValue": "13.8%"
+        "secondaryStatValue": "13.7%"
       },
       {
         "level": 50,
         "baseAtk": 185,
-        "secondaryStatValue": "15.9%"
+        "secondaryStatValue": "15.8%"
       },
       {
         "level": 60,
         "baseAtk": 224,
-        "secondaryStatValue": "18%"
+        "secondaryStatValue": "17.9%"
       },
       {
         "level": 70,
         "baseAtk": 263,
-        "secondaryStatValue": "20.1%"
+        "secondaryStatValue": "20%"
       },
       {
         "level": 80,
         "baseAtk": 303,
-        "secondaryStatValue": "22.2%"
+        "secondaryStatValue": "22.1%"
       },
       {
         "level": 90,
@@ -5059,12 +5059,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 42,
-        "secondaryStatValue": "9.4%"
+        "secondaryStatValue": "9.3%"
       },
       {
         "level": 20,
         "baseAtk": 78,
-        "secondaryStatValue": "12%"
+        "secondaryStatValue": "11.9%"
       },
       {
         "level": 30,
@@ -5084,7 +5084,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 207,
-        "secondaryStatValue": "22.5%"
+        "secondaryStatValue": "22.4%"
       },
       {
         "level": 70,
@@ -5121,7 +5121,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Pistols",
     "baseAtk": 387,
     "secondaryStat": "ATK",
-    "secondaryStatValue": "36.5%",
+    "secondaryStatValue": "36.4%",
     "levelStats": [
       {
         "level": 1,
@@ -5136,7 +5136,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 20,
         "baseAtk": 101,
-        "secondaryStatValue": "14.4%"
+        "secondaryStatValue": "14.3%"
       },
       {
         "level": 30,
@@ -5146,7 +5146,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 40,
         "baseAtk": 174,
-        "secondaryStatValue": "20.7%"
+        "secondaryStatValue": "20.6%"
       },
       {
         "level": 50,
@@ -5156,7 +5156,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 267,
-        "secondaryStatValue": "27%"
+        "secondaryStatValue": "26.9%"
       },
       {
         "level": 70,
@@ -5166,12 +5166,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 80,
         "baseAtk": 361,
-        "secondaryStatValue": "33.3%"
+        "secondaryStatValue": "33.2%"
       },
       {
         "level": 90,
         "baseAtk": 387,
-        "secondaryStatValue": "36.5%"
+        "secondaryStatValue": "36.4%"
       }
     ],
     "passiveName": "Omniscient",
@@ -5203,42 +5203,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 82,
-        "secondaryStatValue": "7.5%"
+        "secondaryStatValue": "7.4%"
       },
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "9.6%"
+        "secondaryStatValue": "9.5%"
       },
       {
         "level": 30,
         "baseAtk": 193,
-        "secondaryStatValue": "11.7%"
+        "secondaryStatValue": "11.6%"
       },
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "13.8%"
+        "secondaryStatValue": "13.7%"
       },
       {
         "level": 50,
         "baseAtk": 335,
-        "secondaryStatValue": "15.9%"
+        "secondaryStatValue": "15.8%"
       },
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "18%"
+        "secondaryStatValue": "17.9%"
       },
       {
         "level": 70,
         "baseAtk": 476,
-        "secondaryStatValue": "20.1%"
+        "secondaryStatValue": "20%"
       },
       {
         "level": 80,
         "baseAtk": 547,
-        "secondaryStatValue": "22.2%"
+        "secondaryStatValue": "22.1%"
       },
       {
         "level": 90,
@@ -5275,42 +5275,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 82,
-        "secondaryStatValue": "15%"
+        "secondaryStatValue": "14.9%"
       },
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "19.2%"
+        "secondaryStatValue": "19.1%"
       },
       {
         "level": 30,
         "baseAtk": 193,
-        "secondaryStatValue": "23.4%"
+        "secondaryStatValue": "23.3%"
       },
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "27.6%"
+        "secondaryStatValue": "27.5%"
       },
       {
         "level": 50,
         "baseAtk": 335,
-        "secondaryStatValue": "31.8%"
+        "secondaryStatValue": "31.7%"
       },
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "36%"
+        "secondaryStatValue": "35.9%"
       },
       {
         "level": 70,
         "baseAtk": 476,
-        "secondaryStatValue": "40.2%"
+        "secondaryStatValue": "40.1%"
       },
       {
         "level": 80,
         "baseAtk": 547,
-        "secondaryStatValue": "44.4%"
+        "secondaryStatValue": "44.3%"
       },
       {
         "level": 90,
@@ -5347,42 +5347,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 58,
-        "secondaryStatValue": "12.5%"
+        "secondaryStatValue": "12.4%"
       },
       {
         "level": 20,
         "baseAtk": 107,
-        "secondaryStatValue": "16%"
+        "secondaryStatValue": "15.9%"
       },
       {
         "level": 30,
         "baseAtk": 135,
-        "secondaryStatValue": "19.5%"
+        "secondaryStatValue": "19.4%"
       },
       {
         "level": 40,
         "baseAtk": 185,
-        "secondaryStatValue": "23%"
+        "secondaryStatValue": "22.9%"
       },
       {
         "level": 50,
         "baseAtk": 235,
-        "secondaryStatValue": "26.5%"
+        "secondaryStatValue": "26.4%"
       },
       {
         "level": 60,
         "baseAtk": 285,
-        "secondaryStatValue": "30%"
+        "secondaryStatValue": "29.9%"
       },
       {
         "level": 70,
         "baseAtk": 334,
-        "secondaryStatValue": "33.5%"
+        "secondaryStatValue": "33.4%"
       },
       {
         "level": 80,
         "baseAtk": 384,
-        "secondaryStatValue": "37%"
+        "secondaryStatValue": "36.9%"
       },
       {
         "level": 90,
@@ -5419,42 +5419,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 45,
-        "secondaryStatValue": "7.5%"
+        "secondaryStatValue": "7.4%"
       },
       {
         "level": 20,
         "baseAtk": 84,
-        "secondaryStatValue": "9.6%"
+        "secondaryStatValue": "9.5%"
       },
       {
         "level": 30,
         "baseAtk": 106,
-        "secondaryStatValue": "11.7%"
+        "secondaryStatValue": "11.6%"
       },
       {
         "level": 40,
         "baseAtk": 146,
-        "secondaryStatValue": "13.8%"
+        "secondaryStatValue": "13.7%"
       },
       {
         "level": 50,
         "baseAtk": 185,
-        "secondaryStatValue": "15.9%"
+        "secondaryStatValue": "15.8%"
       },
       {
         "level": 60,
         "baseAtk": 224,
-        "secondaryStatValue": "18%"
+        "secondaryStatValue": "17.9%"
       },
       {
         "level": 70,
         "baseAtk": 263,
-        "secondaryStatValue": "20.1%"
+        "secondaryStatValue": "20%"
       },
       {
         "level": 80,
         "baseAtk": 303,
-        "secondaryStatValue": "22.2%"
+        "secondaryStatValue": "22.1%"
       },
       {
         "level": 90,
@@ -5491,42 +5491,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 42,
-        "secondaryStatValue": "10%"
+        "secondaryStatValue": "9.9%"
       },
       {
         "level": 20,
         "baseAtk": 78,
-        "secondaryStatValue": "12.8%"
+        "secondaryStatValue": "12.7%"
       },
       {
         "level": 30,
         "baseAtk": 98,
-        "secondaryStatValue": "15.6%"
+        "secondaryStatValue": "15.5%"
       },
       {
         "level": 40,
         "baseAtk": 134,
-        "secondaryStatValue": "18.4%"
+        "secondaryStatValue": "18.3%"
       },
       {
         "level": 50,
         "baseAtk": 171,
-        "secondaryStatValue": "21.2%"
+        "secondaryStatValue": "21.1%"
       },
       {
         "level": 60,
         "baseAtk": 207,
-        "secondaryStatValue": "24%"
+        "secondaryStatValue": "23.9%"
       },
       {
         "level": 70,
         "baseAtk": 243,
-        "secondaryStatValue": "26.8%"
+        "secondaryStatValue": "26.7%"
       },
       {
         "level": 80,
         "baseAtk": 279,
-        "secondaryStatValue": "29.6%"
+        "secondaryStatValue": "29.5%"
       },
       {
         "level": 90,
@@ -5563,17 +5563,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 47,
-        "secondaryStatValue": "16%"
+        "secondaryStatValue": "15.9%"
       },
       {
         "level": 20,
         "baseAtk": 88,
-        "secondaryStatValue": "20.5%"
+        "secondaryStatValue": "20.4%"
       },
       {
         "level": 30,
         "baseAtk": 110,
-        "secondaryStatValue": "25%"
+        "secondaryStatValue": "24.9%"
       },
       {
         "level": 40,
@@ -5588,17 +5588,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 233,
-        "secondaryStatValue": "38.4%"
+        "secondaryStatValue": "38.3%"
       },
       {
         "level": 70,
         "baseAtk": 273,
-        "secondaryStatValue": "42.9%"
+        "secondaryStatValue": "42.8%"
       },
       {
         "level": 80,
         "baseAtk": 314,
-        "secondaryStatValue": "47.4%"
+        "secondaryStatValue": "47.3%"
       },
       {
         "level": 90,
@@ -5635,42 +5635,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 82,
-        "secondaryStatValue": "7.5%"
+        "secondaryStatValue": "7.4%"
       },
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "9.6%"
+        "secondaryStatValue": "9.5%"
       },
       {
         "level": 30,
         "baseAtk": 193,
-        "secondaryStatValue": "11.7%"
+        "secondaryStatValue": "11.6%"
       },
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "13.8%"
+        "secondaryStatValue": "13.7%"
       },
       {
         "level": 50,
         "baseAtk": 335,
-        "secondaryStatValue": "15.9%"
+        "secondaryStatValue": "15.8%"
       },
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "18%"
+        "secondaryStatValue": "17.9%"
       },
       {
         "level": 70,
         "baseAtk": 476,
-        "secondaryStatValue": "20.1%"
+        "secondaryStatValue": "20%"
       },
       {
         "level": 80,
         "baseAtk": 547,
-        "secondaryStatValue": "22.2%"
+        "secondaryStatValue": "22.1%"
       },
       {
         "level": 90,
@@ -5702,7 +5702,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 1,
         "baseAtk": 37,
-        "secondaryStatValue": "4.1%"
+        "secondaryStatValue": "4%"
       },
       {
         "level": 10,
@@ -5712,12 +5712,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 20,
         "baseAtk": 120,
-        "secondaryStatValue": "7.2%"
+        "secondaryStatValue": "7.1%"
       },
       {
         "level": 30,
         "baseAtk": 152,
-        "secondaryStatValue": "8.8%"
+        "secondaryStatValue": "8.7%"
       },
       {
         "level": 40,
@@ -5732,12 +5732,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 319,
-        "secondaryStatValue": "13.5%"
+        "secondaryStatValue": "13.4%"
       },
       {
         "level": 70,
         "baseAtk": 375,
-        "secondaryStatValue": "15.1%"
+        "secondaryStatValue": "15%"
       },
       {
         "level": 80,
@@ -5789,12 +5789,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 30,
         "baseAtk": 164,
-        "secondaryStatValue": "34.7%"
+        "secondaryStatValue": "34.6%"
       },
       {
         "level": 40,
         "baseAtk": 224,
-        "secondaryStatValue": "40.9%"
+        "secondaryStatValue": "40.8%"
       },
       {
         "level": 50,
@@ -5809,12 +5809,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 70,
         "baseAtk": 405,
-        "secondaryStatValue": "59.6%"
+        "secondaryStatValue": "59.5%"
       },
       {
         "level": 80,
         "baseAtk": 466,
-        "secondaryStatValue": "65.8%"
+        "secondaryStatValue": "65.7%"
       },
       {
         "level": 90,
@@ -5846,7 +5846,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 1,
         "baseAtk": 37,
-        "secondaryStatValue": "4.1%"
+        "secondaryStatValue": "4%"
       },
       {
         "level": 10,
@@ -5856,12 +5856,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 20,
         "baseAtk": 120,
-        "secondaryStatValue": "7.2%"
+        "secondaryStatValue": "7.1%"
       },
       {
         "level": 30,
         "baseAtk": 152,
-        "secondaryStatValue": "8.8%"
+        "secondaryStatValue": "8.7%"
       },
       {
         "level": 40,
@@ -5876,12 +5876,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 319,
-        "secondaryStatValue": "13.5%"
+        "secondaryStatValue": "13.4%"
       },
       {
         "level": 70,
         "baseAtk": 375,
-        "secondaryStatValue": "15.1%"
+        "secondaryStatValue": "15%"
       },
       {
         "level": 80,
@@ -5933,12 +5933,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 30,
         "baseAtk": 164,
-        "secondaryStatValue": "34.7%"
+        "secondaryStatValue": "34.6%"
       },
       {
         "level": 40,
         "baseAtk": 224,
-        "secondaryStatValue": "40.9%"
+        "secondaryStatValue": "40.8%"
       },
       {
         "level": 50,
@@ -5953,12 +5953,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 70,
         "baseAtk": 405,
-        "secondaryStatValue": "59.6%"
+        "secondaryStatValue": "59.5%"
       },
       {
         "level": 80,
         "baseAtk": 466,
-        "secondaryStatValue": "65.8%"
+        "secondaryStatValue": "65.7%"
       },
       {
         "level": 90,
@@ -5985,7 +5985,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Pistols",
     "baseAtk": 412,
     "secondaryStat": "Crit. Rate",
-    "secondaryStatValue": "20.3%",
+    "secondaryStatValue": "20.2%",
     "levelStats": [
       {
         "level": 1,
@@ -6000,7 +6000,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 20,
         "baseAtk": 107,
-        "secondaryStatValue": "8%"
+        "secondaryStatValue": "7.9%"
       },
       {
         "level": 30,
@@ -6010,7 +6010,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 40,
         "baseAtk": 185,
-        "secondaryStatValue": "11.5%"
+        "secondaryStatValue": "11.4%"
       },
       {
         "level": 50,
@@ -6020,7 +6020,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 285,
-        "secondaryStatValue": "15%"
+        "secondaryStatValue": "14.9%"
       },
       {
         "level": 70,
@@ -6030,12 +6030,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 80,
         "baseAtk": 384,
-        "secondaryStatValue": "18.5%"
+        "secondaryStatValue": "18.4%"
       },
       {
         "level": 90,
         "baseAtk": 412,
-        "secondaryStatValue": "20.3%"
+        "secondaryStatValue": "20.2%"
       }
     ],
     "passiveName": "Oath of Tide Hunters",
@@ -6067,42 +6067,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 82,
-        "secondaryStatValue": "15%"
+        "secondaryStatValue": "14.9%"
       },
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "19.2%"
+        "secondaryStatValue": "19.1%"
       },
       {
         "level": 30,
         "baseAtk": 193,
-        "secondaryStatValue": "23.4%"
+        "secondaryStatValue": "23.3%"
       },
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "27.6%"
+        "secondaryStatValue": "27.5%"
       },
       {
         "level": 50,
         "baseAtk": 335,
-        "secondaryStatValue": "31.8%"
+        "secondaryStatValue": "31.7%"
       },
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "36%"
+        "secondaryStatValue": "35.9%"
       },
       {
         "level": 70,
         "baseAtk": 476,
-        "secondaryStatValue": "40.2%"
+        "secondaryStatValue": "40.1%"
       },
       {
         "level": 80,
         "baseAtk": 547,
-        "secondaryStatValue": "44.4%"
+        "secondaryStatValue": "44.3%"
       },
       {
         "level": 90,
@@ -6134,7 +6134,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 1,
         "baseAtk": 37,
-        "secondaryStatValue": "4.1%"
+        "secondaryStatValue": "4%"
       },
       {
         "level": 10,
@@ -6144,12 +6144,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 20,
         "baseAtk": 120,
-        "secondaryStatValue": "7.2%"
+        "secondaryStatValue": "7.1%"
       },
       {
         "level": 30,
         "baseAtk": 152,
-        "secondaryStatValue": "8.8%"
+        "secondaryStatValue": "8.7%"
       },
       {
         "level": 40,
@@ -6164,12 +6164,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 319,
-        "secondaryStatValue": "13.5%"
+        "secondaryStatValue": "13.4%"
       },
       {
         "level": 70,
         "baseAtk": 375,
-        "secondaryStatValue": "15.1%"
+        "secondaryStatValue": "15%"
       },
       {
         "level": 80,
@@ -6211,42 +6211,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 82,
-        "secondaryStatValue": "15%"
+        "secondaryStatValue": "14.9%"
       },
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "19.2%"
+        "secondaryStatValue": "19.1%"
       },
       {
         "level": 30,
         "baseAtk": 193,
-        "secondaryStatValue": "23.4%"
+        "secondaryStatValue": "23.3%"
       },
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "27.6%"
+        "secondaryStatValue": "27.5%"
       },
       {
         "level": 50,
         "baseAtk": 335,
-        "secondaryStatValue": "31.8%"
+        "secondaryStatValue": "31.7%"
       },
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "36%"
+        "secondaryStatValue": "35.9%"
       },
       {
         "level": 70,
         "baseAtk": 476,
-        "secondaryStatValue": "40.2%"
+        "secondaryStatValue": "40.1%"
       },
       {
         "level": 80,
         "baseAtk": 547,
-        "secondaryStatValue": "44.4%"
+        "secondaryStatValue": "44.3%"
       },
       {
         "level": 90,
@@ -6283,42 +6283,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 82,
-        "secondaryStatValue": "7.5%"
+        "secondaryStatValue": "7.4%"
       },
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "9.6%"
+        "secondaryStatValue": "9.5%"
       },
       {
         "level": 30,
         "baseAtk": 193,
-        "secondaryStatValue": "11.7%"
+        "secondaryStatValue": "11.6%"
       },
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "13.8%"
+        "secondaryStatValue": "13.7%"
       },
       {
         "level": 50,
         "baseAtk": 335,
-        "secondaryStatValue": "15.9%"
+        "secondaryStatValue": "15.8%"
       },
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "18%"
+        "secondaryStatValue": "17.9%"
       },
       {
         "level": 70,
         "baseAtk": 476,
-        "secondaryStatValue": "20.1%"
+        "secondaryStatValue": "20%"
       },
       {
         "level": 80,
         "baseAtk": 547,
-        "secondaryStatValue": "22.2%"
+        "secondaryStatValue": "22.1%"
       },
       {
         "level": 90,
@@ -6355,7 +6355,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 58,
-        "secondaryStatValue": "23.8%"
+        "secondaryStatValue": "23.7%"
       },
       {
         "level": 20,
@@ -6365,12 +6365,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 30,
         "baseAtk": 135,
-        "secondaryStatValue": "37.1%"
+        "secondaryStatValue": "37%"
       },
       {
         "level": 40,
         "baseAtk": 185,
-        "secondaryStatValue": "43.8%"
+        "secondaryStatValue": "43.7%"
       },
       {
         "level": 50,
@@ -6380,7 +6380,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 285,
-        "secondaryStatValue": "57.1%"
+        "secondaryStatValue": "57%"
       },
       {
         "level": 70,
@@ -6390,7 +6390,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 80,
         "baseAtk": 384,
-        "secondaryStatValue": "70.4%"
+        "secondaryStatValue": "70.3%"
       },
       {
         "level": 90,
@@ -6427,42 +6427,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 82,
-        "secondaryStatValue": "7.5%"
+        "secondaryStatValue": "7.4%"
       },
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "9.6%"
+        "secondaryStatValue": "9.5%"
       },
       {
         "level": 30,
         "baseAtk": 193,
-        "secondaryStatValue": "11.7%"
+        "secondaryStatValue": "11.6%"
       },
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "13.8%"
+        "secondaryStatValue": "13.7%"
       },
       {
         "level": 50,
         "baseAtk": 335,
-        "secondaryStatValue": "15.9%"
+        "secondaryStatValue": "15.8%"
       },
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "18%"
+        "secondaryStatValue": "17.9%"
       },
       {
         "level": 70,
         "baseAtk": 476,
-        "secondaryStatValue": "20.1%"
+        "secondaryStatValue": "20%"
       },
       {
         "level": 80,
         "baseAtk": 547,
-        "secondaryStatValue": "22.2%"
+        "secondaryStatValue": "22.1%"
       },
       {
         "level": 90,
@@ -6499,7 +6499,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 58,
-        "secondaryStatValue": "23.8%"
+        "secondaryStatValue": "23.7%"
       },
       {
         "level": 20,
@@ -6509,12 +6509,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 30,
         "baseAtk": 135,
-        "secondaryStatValue": "37.1%"
+        "secondaryStatValue": "37%"
       },
       {
         "level": 40,
         "baseAtk": 185,
-        "secondaryStatValue": "43.8%"
+        "secondaryStatValue": "43.7%"
       },
       {
         "level": 50,
@@ -6524,7 +6524,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 285,
-        "secondaryStatValue": "57.1%"
+        "secondaryStatValue": "57%"
       },
       {
         "level": 70,
@@ -6534,7 +6534,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 80,
         "baseAtk": 384,
-        "secondaryStatValue": "70.4%"
+        "secondaryStatValue": "70.3%"
       },
       {
         "level": 90,
@@ -6561,7 +6561,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Gauntlets",
     "baseAtk": 412,
     "secondaryStat": "Crit. Rate",
-    "secondaryStatValue": "20.3%",
+    "secondaryStatValue": "20.2%",
     "levelStats": [
       {
         "level": 1,
@@ -6576,7 +6576,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 20,
         "baseAtk": 107,
-        "secondaryStatValue": "8%"
+        "secondaryStatValue": "7.9%"
       },
       {
         "level": 30,
@@ -6586,7 +6586,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 40,
         "baseAtk": 185,
-        "secondaryStatValue": "11.5%"
+        "secondaryStatValue": "11.4%"
       },
       {
         "level": 50,
@@ -6596,7 +6596,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 285,
-        "secondaryStatValue": "15%"
+        "secondaryStatValue": "14.9%"
       },
       {
         "level": 70,
@@ -6606,12 +6606,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 80,
         "baseAtk": 384,
-        "secondaryStatValue": "18.5%"
+        "secondaryStatValue": "18.4%"
       },
       {
         "level": 90,
         "baseAtk": 412,
-        "secondaryStatValue": "20.3%"
+        "secondaryStatValue": "20.2%"
       }
     ],
     "passiveName": "Wallbreaker",
@@ -6663,22 +6663,22 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 50,
         "baseAtk": 285,
-        "secondaryStatValue": "23.6%"
+        "secondaryStatValue": "23.5%"
       },
       {
         "level": 60,
         "baseAtk": 345,
-        "secondaryStatValue": "26.7%"
+        "secondaryStatValue": "26.6%"
       },
       {
         "level": 70,
         "baseAtk": 405,
-        "secondaryStatValue": "29.8%"
+        "secondaryStatValue": "29.7%"
       },
       {
         "level": 80,
         "baseAtk": 466,
-        "secondaryStatValue": "32.9%"
+        "secondaryStatValue": "32.8%"
       },
       {
         "level": 90,
@@ -6715,42 +6715,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 45,
-        "secondaryStatValue": "7.5%"
+        "secondaryStatValue": "7.4%"
       },
       {
         "level": 20,
         "baseAtk": 84,
-        "secondaryStatValue": "9.6%"
+        "secondaryStatValue": "9.5%"
       },
       {
         "level": 30,
         "baseAtk": 106,
-        "secondaryStatValue": "11.7%"
+        "secondaryStatValue": "11.6%"
       },
       {
         "level": 40,
         "baseAtk": 146,
-        "secondaryStatValue": "13.8%"
+        "secondaryStatValue": "13.7%"
       },
       {
         "level": 50,
         "baseAtk": 185,
-        "secondaryStatValue": "15.9%"
+        "secondaryStatValue": "15.8%"
       },
       {
         "level": 60,
         "baseAtk": 224,
-        "secondaryStatValue": "18%"
+        "secondaryStatValue": "17.9%"
       },
       {
         "level": 70,
         "baseAtk": 263,
-        "secondaryStatValue": "20.1%"
+        "secondaryStatValue": "20%"
       },
       {
         "level": 80,
         "baseAtk": 303,
-        "secondaryStatValue": "22.2%"
+        "secondaryStatValue": "22.1%"
       },
       {
         "level": 90,
@@ -6787,42 +6787,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 42,
-        "secondaryStatValue": "10%"
+        "secondaryStatValue": "9.9%"
       },
       {
         "level": 20,
         "baseAtk": 78,
-        "secondaryStatValue": "12.8%"
+        "secondaryStatValue": "12.7%"
       },
       {
         "level": 30,
         "baseAtk": 98,
-        "secondaryStatValue": "15.6%"
+        "secondaryStatValue": "15.5%"
       },
       {
         "level": 40,
         "baseAtk": 134,
-        "secondaryStatValue": "18.4%"
+        "secondaryStatValue": "18.3%"
       },
       {
         "level": 50,
         "baseAtk": 171,
-        "secondaryStatValue": "21.2%"
+        "secondaryStatValue": "21.1%"
       },
       {
         "level": 60,
         "baseAtk": 207,
-        "secondaryStatValue": "24%"
+        "secondaryStatValue": "23.9%"
       },
       {
         "level": 70,
         "baseAtk": 243,
-        "secondaryStatValue": "26.8%"
+        "secondaryStatValue": "26.7%"
       },
       {
         "level": 80,
         "baseAtk": 279,
-        "secondaryStatValue": "29.6%"
+        "secondaryStatValue": "29.5%"
       },
       {
         "level": 90,
@@ -6849,7 +6849,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Sword",
     "baseAtk": 387,
     "secondaryStat": "ATK",
-    "secondaryStatValue": "36.5%",
+    "secondaryStatValue": "36.4%",
     "levelStats": [
       {
         "level": 1,
@@ -6864,7 +6864,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 20,
         "baseAtk": 101,
-        "secondaryStatValue": "14.4%"
+        "secondaryStatValue": "14.3%"
       },
       {
         "level": 30,
@@ -6874,7 +6874,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 40,
         "baseAtk": 174,
-        "secondaryStatValue": "20.7%"
+        "secondaryStatValue": "20.6%"
       },
       {
         "level": 50,
@@ -6884,7 +6884,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 267,
-        "secondaryStatValue": "27%"
+        "secondaryStatValue": "26.9%"
       },
       {
         "level": 70,
@@ -6894,12 +6894,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 80,
         "baseAtk": 361,
-        "secondaryStatValue": "33.3%"
+        "secondaryStatValue": "33.2%"
       },
       {
         "level": 90,
         "baseAtk": 387,
-        "secondaryStatValue": "36.5%"
+        "secondaryStatValue": "36.4%"
       }
     ],
     "passiveName": "Daybreak",
@@ -6941,12 +6941,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 30,
         "baseAtk": 164,
-        "secondaryStatValue": "34.7%"
+        "secondaryStatValue": "34.6%"
       },
       {
         "level": 40,
         "baseAtk": 224,
-        "secondaryStatValue": "40.9%"
+        "secondaryStatValue": "40.8%"
       },
       {
         "level": 50,
@@ -6961,12 +6961,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 70,
         "baseAtk": 405,
-        "secondaryStatValue": "59.6%"
+        "secondaryStatValue": "59.5%"
       },
       {
         "level": 80,
         "baseAtk": 466,
-        "secondaryStatValue": "65.8%"
+        "secondaryStatValue": "65.7%"
       },
       {
         "level": 90,
@@ -6993,7 +6993,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Pistols",
     "baseAtk": 387,
     "secondaryStat": "ATK",
-    "secondaryStatValue": "36.5%",
+    "secondaryStatValue": "36.4%",
     "levelStats": [
       {
         "level": 1,
@@ -7008,7 +7008,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 20,
         "baseAtk": 101,
-        "secondaryStatValue": "14.4%"
+        "secondaryStatValue": "14.3%"
       },
       {
         "level": 30,
@@ -7018,7 +7018,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 40,
         "baseAtk": 174,
-        "secondaryStatValue": "20.7%"
+        "secondaryStatValue": "20.6%"
       },
       {
         "level": 50,
@@ -7028,7 +7028,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 267,
-        "secondaryStatValue": "27%"
+        "secondaryStatValue": "26.9%"
       },
       {
         "level": 70,
@@ -7038,12 +7038,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 80,
         "baseAtk": 361,
-        "secondaryStatValue": "33.3%"
+        "secondaryStatValue": "33.2%"
       },
       {
         "level": 90,
         "baseAtk": 387,
-        "secondaryStatValue": "36.5%"
+        "secondaryStatValue": "36.4%"
       }
     ],
     "passiveName": "Unstoppable",
@@ -7065,7 +7065,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Broadblade",
     "baseAtk": 675,
     "secondaryStat": "Crit. Rate",
-    "secondaryStatValue": "12.2%",
+    "secondaryStatValue": "12.1%",
     "levelStats": [
       {
         "level": 1,
@@ -7080,7 +7080,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 20,
         "baseAtk": 176,
-        "secondaryStatValue": "4.8%"
+        "secondaryStatValue": "4.7%"
       },
       {
         "level": 30,
@@ -7090,7 +7090,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 40,
         "baseAtk": 303,
-        "secondaryStatValue": "6.9%"
+        "secondaryStatValue": "6.8%"
       },
       {
         "level": 50,
@@ -7100,7 +7100,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 466,
-        "secondaryStatValue": "9%"
+        "secondaryStatValue": "8.9%"
       },
       {
         "level": 70,
@@ -7110,12 +7110,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 80,
         "baseAtk": 629,
-        "secondaryStatValue": "11.1%"
+        "secondaryStatValue": "11%"
       },
       {
         "level": 90,
         "baseAtk": 675,
-        "secondaryStatValue": "12.2%"
+        "secondaryStatValue": "12.1%"
       }
     ],
     "passiveName": "Thunderblaze Eminence",
@@ -7147,42 +7147,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 82,
-        "secondaryStatValue": "7.5%"
+        "secondaryStatValue": "7.4%"
       },
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "9.6%"
+        "secondaryStatValue": "9.5%"
       },
       {
         "level": 30,
         "baseAtk": 193,
-        "secondaryStatValue": "11.7%"
+        "secondaryStatValue": "11.6%"
       },
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "13.8%"
+        "secondaryStatValue": "13.7%"
       },
       {
         "level": 50,
         "baseAtk": 335,
-        "secondaryStatValue": "15.9%"
+        "secondaryStatValue": "15.8%"
       },
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "18%"
+        "secondaryStatValue": "17.9%"
       },
       {
         "level": 70,
         "baseAtk": 476,
-        "secondaryStatValue": "20.1%"
+        "secondaryStatValue": "20%"
       },
       {
         "level": 80,
         "baseAtk": 547,
-        "secondaryStatValue": "22.2%"
+        "secondaryStatValue": "22.1%"
       },
       {
         "level": 90,
@@ -7209,7 +7209,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Broadblade",
     "baseAtk": 250,
     "secondaryStat": "ATK",
-    "secondaryStatValue": "11.5%",
+    "secondaryStatValue": "11.4%",
     "levelStats": [
       {
         "level": 1,
@@ -7244,22 +7244,22 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 172,
-        "secondaryStatValue": "8.5%"
+        "secondaryStatValue": "8.4%"
       },
       {
         "level": 70,
         "baseAtk": 202,
-        "secondaryStatValue": "9.5%"
+        "secondaryStatValue": "9.4%"
       },
       {
         "level": 80,
         "baseAtk": 233,
-        "secondaryStatValue": "10.5%"
+        "secondaryStatValue": "10.4%"
       },
       {
         "level": 90,
         "baseAtk": 250,
-        "secondaryStatValue": "11.5%"
+        "secondaryStatValue": "11.4%"
       }
     ],
     "passiveName": "Persevere",
@@ -7281,7 +7281,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Gauntlets",
     "baseAtk": 250,
     "secondaryStat": "ATK",
-    "secondaryStatValue": "11.5%",
+    "secondaryStatValue": "11.4%",
     "levelStats": [
       {
         "level": 1,
@@ -7316,22 +7316,22 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 172,
-        "secondaryStatValue": "8.5%"
+        "secondaryStatValue": "8.4%"
       },
       {
         "level": 70,
         "baseAtk": 202,
-        "secondaryStatValue": "9.5%"
+        "secondaryStatValue": "9.4%"
       },
       {
         "level": 80,
         "baseAtk": 233,
-        "secondaryStatValue": "10.5%"
+        "secondaryStatValue": "10.4%"
       },
       {
         "level": 90,
         "baseAtk": 250,
-        "secondaryStatValue": "11.5%"
+        "secondaryStatValue": "11.4%"
       }
     ],
     "passiveName": "Persevere",
@@ -7353,7 +7353,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Pistols",
     "baseAtk": 250,
     "secondaryStat": "ATK",
-    "secondaryStatValue": "11.5%",
+    "secondaryStatValue": "11.4%",
     "levelStats": [
       {
         "level": 1,
@@ -7388,22 +7388,22 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 172,
-        "secondaryStatValue": "8.5%"
+        "secondaryStatValue": "8.4%"
       },
       {
         "level": 70,
         "baseAtk": 202,
-        "secondaryStatValue": "9.5%"
+        "secondaryStatValue": "9.4%"
       },
       {
         "level": 80,
         "baseAtk": 233,
-        "secondaryStatValue": "10.5%"
+        "secondaryStatValue": "10.4%"
       },
       {
         "level": 90,
         "baseAtk": 250,
-        "secondaryStatValue": "11.5%"
+        "secondaryStatValue": "11.4%"
       }
     ],
     "passiveName": "Persevere",
@@ -7425,7 +7425,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Rectifier",
     "baseAtk": 250,
     "secondaryStat": "ATK",
-    "secondaryStatValue": "11.5%",
+    "secondaryStatValue": "11.4%",
     "levelStats": [
       {
         "level": 1,
@@ -7460,22 +7460,22 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 172,
-        "secondaryStatValue": "8.5%"
+        "secondaryStatValue": "8.4%"
       },
       {
         "level": 70,
         "baseAtk": 202,
-        "secondaryStatValue": "9.5%"
+        "secondaryStatValue": "9.4%"
       },
       {
         "level": 80,
         "baseAtk": 233,
-        "secondaryStatValue": "10.5%"
+        "secondaryStatValue": "10.4%"
       },
       {
         "level": 90,
         "baseAtk": 250,
-        "secondaryStatValue": "11.5%"
+        "secondaryStatValue": "11.4%"
       }
     ],
     "passiveName": "Persevere",
@@ -7497,7 +7497,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "type": "Sword",
     "baseAtk": 250,
     "secondaryStat": "ATK",
-    "secondaryStatValue": "11.5%",
+    "secondaryStatValue": "11.4%",
     "levelStats": [
       {
         "level": 1,
@@ -7532,22 +7532,22 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 172,
-        "secondaryStatValue": "8.5%"
+        "secondaryStatValue": "8.4%"
       },
       {
         "level": 70,
         "baseAtk": 202,
-        "secondaryStatValue": "9.5%"
+        "secondaryStatValue": "9.4%"
       },
       {
         "level": 80,
         "baseAtk": 233,
-        "secondaryStatValue": "10.5%"
+        "secondaryStatValue": "10.4%"
       },
       {
         "level": 90,
         "baseAtk": 250,
-        "secondaryStatValue": "11.5%"
+        "secondaryStatValue": "11.4%"
       }
     ],
     "passiveName": "Persevere",
@@ -7574,17 +7574,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 1,
         "baseAtk": 22,
-        "secondaryStatValue": "3.3%"
+        "secondaryStatValue": "3.2%"
       },
       {
         "level": 10,
         "baseAtk": 38,
-        "secondaryStatValue": "4.6%"
+        "secondaryStatValue": "4.5%"
       },
       {
         "level": 20,
         "baseAtk": 71,
-        "secondaryStatValue": "5.9%"
+        "secondaryStatValue": "5.8%"
       },
       {
         "level": 30,
@@ -7604,17 +7604,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 190,
-        "secondaryStatValue": "11%"
+        "secondaryStatValue": "10.9%"
       },
       {
         "level": 70,
         "baseAtk": 223,
-        "secondaryStatValue": "12.3%"
+        "secondaryStatValue": "12.2%"
       },
       {
         "level": 80,
         "baseAtk": 256,
-        "secondaryStatValue": "13.6%"
+        "secondaryStatValue": "13.5%"
       },
       {
         "level": 90,
@@ -7646,17 +7646,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 1,
         "baseAtk": 22,
-        "secondaryStatValue": "3.3%"
+        "secondaryStatValue": "3.2%"
       },
       {
         "level": 10,
         "baseAtk": 38,
-        "secondaryStatValue": "4.6%"
+        "secondaryStatValue": "4.5%"
       },
       {
         "level": 20,
         "baseAtk": 71,
-        "secondaryStatValue": "5.9%"
+        "secondaryStatValue": "5.8%"
       },
       {
         "level": 30,
@@ -7676,17 +7676,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 190,
-        "secondaryStatValue": "11%"
+        "secondaryStatValue": "10.9%"
       },
       {
         "level": 70,
         "baseAtk": 223,
-        "secondaryStatValue": "12.3%"
+        "secondaryStatValue": "12.2%"
       },
       {
         "level": 80,
         "baseAtk": 256,
-        "secondaryStatValue": "13.6%"
+        "secondaryStatValue": "13.5%"
       },
       {
         "level": 90,
@@ -7718,17 +7718,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 1,
         "baseAtk": 22,
-        "secondaryStatValue": "3.3%"
+        "secondaryStatValue": "3.2%"
       },
       {
         "level": 10,
         "baseAtk": 38,
-        "secondaryStatValue": "4.6%"
+        "secondaryStatValue": "4.5%"
       },
       {
         "level": 20,
         "baseAtk": 71,
-        "secondaryStatValue": "5.9%"
+        "secondaryStatValue": "5.8%"
       },
       {
         "level": 30,
@@ -7748,17 +7748,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 190,
-        "secondaryStatValue": "11%"
+        "secondaryStatValue": "10.9%"
       },
       {
         "level": 70,
         "baseAtk": 223,
-        "secondaryStatValue": "12.3%"
+        "secondaryStatValue": "12.2%"
       },
       {
         "level": 80,
         "baseAtk": 256,
-        "secondaryStatValue": "13.6%"
+        "secondaryStatValue": "13.5%"
       },
       {
         "level": 90,
@@ -7790,17 +7790,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 1,
         "baseAtk": 22,
-        "secondaryStatValue": "3.3%"
+        "secondaryStatValue": "3.2%"
       },
       {
         "level": 10,
         "baseAtk": 38,
-        "secondaryStatValue": "4.6%"
+        "secondaryStatValue": "4.5%"
       },
       {
         "level": 20,
         "baseAtk": 71,
-        "secondaryStatValue": "5.9%"
+        "secondaryStatValue": "5.8%"
       },
       {
         "level": 30,
@@ -7820,17 +7820,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 190,
-        "secondaryStatValue": "11%"
+        "secondaryStatValue": "10.9%"
       },
       {
         "level": 70,
         "baseAtk": 223,
-        "secondaryStatValue": "12.3%"
+        "secondaryStatValue": "12.2%"
       },
       {
         "level": 80,
         "baseAtk": 256,
-        "secondaryStatValue": "13.6%"
+        "secondaryStatValue": "13.5%"
       },
       {
         "level": 90,
@@ -7862,17 +7862,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 1,
         "baseAtk": 22,
-        "secondaryStatValue": "3.3%"
+        "secondaryStatValue": "3.2%"
       },
       {
         "level": 10,
         "baseAtk": 38,
-        "secondaryStatValue": "4.6%"
+        "secondaryStatValue": "4.5%"
       },
       {
         "level": 20,
         "baseAtk": 71,
-        "secondaryStatValue": "5.9%"
+        "secondaryStatValue": "5.8%"
       },
       {
         "level": 30,
@@ -7892,17 +7892,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 190,
-        "secondaryStatValue": "11%"
+        "secondaryStatValue": "10.9%"
       },
       {
         "level": 70,
         "baseAtk": 223,
-        "secondaryStatValue": "12.3%"
+        "secondaryStatValue": "12.2%"
       },
       {
         "level": 80,
         "baseAtk": 256,
-        "secondaryStatValue": "13.6%"
+        "secondaryStatValue": "13.5%"
       },
       {
         "level": 90,
@@ -7939,12 +7939,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 58,
-        "secondaryStatValue": "9.4%"
+        "secondaryStatValue": "9.3%"
       },
       {
         "level": 20,
         "baseAtk": 107,
-        "secondaryStatValue": "12%"
+        "secondaryStatValue": "11.9%"
       },
       {
         "level": 30,
@@ -7964,7 +7964,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 285,
-        "secondaryStatValue": "22.5%"
+        "secondaryStatValue": "22.4%"
       },
       {
         "level": 70,
@@ -8011,7 +8011,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 58,
-        "secondaryStatValue": "23.8%"
+        "secondaryStatValue": "23.7%"
       },
       {
         "level": 20,
@@ -8021,12 +8021,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 30,
         "baseAtk": 135,
-        "secondaryStatValue": "37.1%"
+        "secondaryStatValue": "37%"
       },
       {
         "level": 40,
         "baseAtk": 185,
-        "secondaryStatValue": "43.8%"
+        "secondaryStatValue": "43.7%"
       },
       {
         "level": 50,
@@ -8036,7 +8036,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 285,
-        "secondaryStatValue": "57.1%"
+        "secondaryStatValue": "57%"
       },
       {
         "level": 70,
@@ -8046,7 +8046,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 80,
         "baseAtk": 384,
-        "secondaryStatValue": "70.4%"
+        "secondaryStatValue": "70.3%"
       },
       {
         "level": 90,
@@ -8083,17 +8083,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 47,
-        "secondaryStatValue": "16%"
+        "secondaryStatValue": "15.9%"
       },
       {
         "level": 20,
         "baseAtk": 88,
-        "secondaryStatValue": "20.5%"
+        "secondaryStatValue": "20.4%"
       },
       {
         "level": 30,
         "baseAtk": 110,
-        "secondaryStatValue": "25%"
+        "secondaryStatValue": "24.9%"
       },
       {
         "level": 40,
@@ -8108,17 +8108,17 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 233,
-        "secondaryStatValue": "38.4%"
+        "secondaryStatValue": "38.3%"
       },
       {
         "level": 70,
         "baseAtk": 273,
-        "secondaryStatValue": "42.9%"
+        "secondaryStatValue": "42.8%"
       },
       {
         "level": 80,
         "baseAtk": 314,
-        "secondaryStatValue": "47.4%"
+        "secondaryStatValue": "47.3%"
       },
       {
         "level": 90,
@@ -8155,42 +8155,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 82,
-        "secondaryStatValue": "15%"
+        "secondaryStatValue": "14.9%"
       },
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "19.2%"
+        "secondaryStatValue": "19.1%"
       },
       {
         "level": 30,
         "baseAtk": 193,
-        "secondaryStatValue": "23.4%"
+        "secondaryStatValue": "23.3%"
       },
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "27.6%"
+        "secondaryStatValue": "27.5%"
       },
       {
         "level": 50,
         "baseAtk": 335,
-        "secondaryStatValue": "31.8%"
+        "secondaryStatValue": "31.7%"
       },
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "36%"
+        "secondaryStatValue": "35.9%"
       },
       {
         "level": 70,
         "baseAtk": 476,
-        "secondaryStatValue": "40.2%"
+        "secondaryStatValue": "40.1%"
       },
       {
         "level": 80,
         "baseAtk": 547,
-        "secondaryStatValue": "44.4%"
+        "secondaryStatValue": "44.3%"
       },
       {
         "level": 90,
@@ -8227,42 +8227,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 82,
-        "secondaryStatValue": "7.5%"
+        "secondaryStatValue": "7.4%"
       },
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "9.6%"
+        "secondaryStatValue": "9.5%"
       },
       {
         "level": 30,
         "baseAtk": 193,
-        "secondaryStatValue": "11.7%"
+        "secondaryStatValue": "11.6%"
       },
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "13.8%"
+        "secondaryStatValue": "13.7%"
       },
       {
         "level": 50,
         "baseAtk": 335,
-        "secondaryStatValue": "15.9%"
+        "secondaryStatValue": "15.8%"
       },
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "18%"
+        "secondaryStatValue": "17.9%"
       },
       {
         "level": 70,
         "baseAtk": 476,
-        "secondaryStatValue": "20.1%"
+        "secondaryStatValue": "20%"
       },
       {
         "level": 80,
         "baseAtk": 547,
-        "secondaryStatValue": "22.2%"
+        "secondaryStatValue": "22.1%"
       },
       {
         "level": 90,
@@ -8294,7 +8294,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 1,
         "baseAtk": 37,
-        "secondaryStatValue": "4.1%"
+        "secondaryStatValue": "4%"
       },
       {
         "level": 10,
@@ -8304,12 +8304,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 20,
         "baseAtk": 120,
-        "secondaryStatValue": "7.2%"
+        "secondaryStatValue": "7.1%"
       },
       {
         "level": 30,
         "baseAtk": 152,
-        "secondaryStatValue": "8.8%"
+        "secondaryStatValue": "8.7%"
       },
       {
         "level": 40,
@@ -8324,12 +8324,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 319,
-        "secondaryStatValue": "13.5%"
+        "secondaryStatValue": "13.4%"
       },
       {
         "level": 70,
         "baseAtk": 375,
-        "secondaryStatValue": "15.1%"
+        "secondaryStatValue": "15%"
       },
       {
         "level": 80,
@@ -8366,7 +8366,7 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 1,
         "baseAtk": 37,
-        "secondaryStatValue": "4.1%"
+        "secondaryStatValue": "4%"
       },
       {
         "level": 10,
@@ -8376,12 +8376,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 20,
         "baseAtk": 120,
-        "secondaryStatValue": "7.2%"
+        "secondaryStatValue": "7.1%"
       },
       {
         "level": 30,
         "baseAtk": 152,
-        "secondaryStatValue": "8.8%"
+        "secondaryStatValue": "8.7%"
       },
       {
         "level": 40,
@@ -8396,12 +8396,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 60,
         "baseAtk": 319,
-        "secondaryStatValue": "13.5%"
+        "secondaryStatValue": "13.4%"
       },
       {
         "level": 70,
         "baseAtk": 375,
-        "secondaryStatValue": "15.1%"
+        "secondaryStatValue": "15%"
       },
       {
         "level": 80,
@@ -8453,12 +8453,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 30,
         "baseAtk": 164,
-        "secondaryStatValue": "34.7%"
+        "secondaryStatValue": "34.6%"
       },
       {
         "level": 40,
         "baseAtk": 224,
-        "secondaryStatValue": "40.9%"
+        "secondaryStatValue": "40.8%"
       },
       {
         "level": 50,
@@ -8473,12 +8473,12 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 70,
         "baseAtk": 405,
-        "secondaryStatValue": "59.6%"
+        "secondaryStatValue": "59.5%"
       },
       {
         "level": 80,
         "baseAtk": 466,
-        "secondaryStatValue": "65.8%"
+        "secondaryStatValue": "65.7%"
       },
       {
         "level": 90,
@@ -8515,42 +8515,42 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 10,
         "baseAtk": 82,
-        "secondaryStatValue": "15%"
+        "secondaryStatValue": "14.9%"
       },
       {
         "level": 20,
         "baseAtk": 153,
-        "secondaryStatValue": "19.2%"
+        "secondaryStatValue": "19.1%"
       },
       {
         "level": 30,
         "baseAtk": 193,
-        "secondaryStatValue": "23.4%"
+        "secondaryStatValue": "23.3%"
       },
       {
         "level": 40,
         "baseAtk": 264,
-        "secondaryStatValue": "27.6%"
+        "secondaryStatValue": "27.5%"
       },
       {
         "level": 50,
         "baseAtk": 335,
-        "secondaryStatValue": "31.8%"
+        "secondaryStatValue": "31.7%"
       },
       {
         "level": 60,
         "baseAtk": 406,
-        "secondaryStatValue": "36%"
+        "secondaryStatValue": "35.9%"
       },
       {
         "level": 70,
         "baseAtk": 476,
-        "secondaryStatValue": "40.2%"
+        "secondaryStatValue": "40.1%"
       },
       {
         "level": 80,
         "baseAtk": 547,
-        "secondaryStatValue": "44.4%"
+        "secondaryStatValue": "44.3%"
       },
       {
         "level": 90,
@@ -8607,22 +8607,22 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
       {
         "level": 50,
         "baseAtk": 285,
-        "secondaryStatValue": "23.6%"
+        "secondaryStatValue": "23.5%"
       },
       {
         "level": 60,
         "baseAtk": 345,
-        "secondaryStatValue": "26.7%"
+        "secondaryStatValue": "26.6%"
       },
       {
         "level": 70,
         "baseAtk": 405,
-        "secondaryStatValue": "29.8%"
+        "secondaryStatValue": "29.7%"
       },
       {
         "level": 80,
         "baseAtk": 466,
-        "secondaryStatValue": "32.9%"
+        "secondaryStatValue": "32.8%"
       },
       {
         "level": 90,

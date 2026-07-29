@@ -14,8 +14,8 @@
 }
 
 .pwa-update-toast > div:first-child { display: grid; gap: 5px; }
-.pwa-update-toast strong { color: var(--gold); font-size: 13px; }
-.pwa-update-toast span { color: var(--muted); font-size: 11px; line-height: 1.5; }
+.pwa-update-toast strong { color: var(--gold); font-size: var(--font-size-small); }
+.pwa-update-toast span { color: var(--muted); font-size: var(--font-size-caption); line-height: 1.5; }
 .pwa-update-toast small { color: #ffb0aa; }
 .pwa-update-toast > div:last-child { display: flex; justify-content: flex-end; gap: 8px; }
 

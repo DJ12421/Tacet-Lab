@@ -1,9 +1,11 @@
 import { writeFile } from 'node:fs/promises'
 const version='3.5',base=`https://static.nanoka.cc/ww/${version}`
 const encoreBase='https://api-v2.encore.moe/api/en'
-const sources={characters:`${base}/character.json`,weapons:`${base}/weapon.json`,echoes:`${base}/echo.json`,titles:`${encoreBase}/title`}
+const wutheringToolsHome='https://www.wutheringtools.com/'
+const sources={characters:`${base}/character.json`,weapons:`${base}/weapon.json`,echoes:`${base}/echo.json`,titles:`${encoreBase}/title`,damageTypes:wutheringToolsHome}
 const names=['','Freezing Frost','Molten Rift','Void Thunder','Sierra Gale','Celestial Light','Havoc Eclipse','Rejuvenating Glow','Moonlit Clouds','Lingering Tunes','Frosty Resolve','Eternal Radiance','Midnight Veil','Empyrean Anthem','Tidebreaking Courage',,'Gusts of Welkin','Windward Pilgrimage','Flaming Clawprint','Dream of the Lost','Crown of Valor','Law of Harmony',"Flamewing's Shadow",'Thread of Severed Fate','Pact of Neonlight Leap','Halo of Starry Radiance','Rite of Gilded Revelation','Trailblazing Star','Chromatic Foam','Sound of True Name','Wishes of Quiet Snowfall','Reel of Spliced Memories','Shadow of Shattered Dreams','Song of Feathered Trace',"Heart of Evil's Purge",'Lamp of Nether Road']
 const load=async source=>{const response=await fetch(source);if(!response.ok)throw Error(`Nanoka ${response.status}: ${source}`);return response.json()}
+const loadText=async source=>{const response=await fetch(source);if(!response.ok)throw Error(`Source ${response.status}: ${source}`);return response.text()}
 const mapLimit=async(items,limit,mapper)=>{
   const output=new Array(items.length)
   let cursor=0
@@ -13,6 +15,67 @@ const mapLimit=async(items,limit,mapper)=>{
   return output
 }
 const [rawCharacters,rawWeapons,rawEchoes,rawTitles]=await Promise.all([sources.characters,sources.weapons,sources.echoes,sources.titles].map(load))
+const normalizedSourceKey=value=>String(value??'').normalize('NFKD').replace(/[^a-z0-9]+/gi,'').toLowerCase()
+const wutheringToolsTypeMap={
+  Basic:'basic',
+  Heavy:'heavy',
+  Skill:'skill',
+  Liberation:'liberation',
+  Intro:'intro',
+  Outro:'outro',
+  Healing:'healing'
+}
+const loadWutheringToolsDamageTypes=async characterNames=>{
+  const page=await loadText(wutheringToolsHome)
+  const mainAsset=page.match(/<script[^>]+src="([^"]*\/assets\/index-[^"]+\.js)"/i)?.[1]
+  if(!mainAsset)throw Error('Missing WutheringTools application bundle')
+  const mainBundle=await loadText(new URL(mainAsset,wutheringToolsHome))
+  const expectedKeys=[...new Set(characterNames.map(normalizedSourceKey))]
+  const chunkByCharacter=new Map([...mainBundle.matchAll(/"\.\/([^/"]+)\/index\.ts":[^"]+import\("\.\/([^"]+\.js)"\)/g)]
+    .map(([,characterKey,chunk])=>({characterKey,chunk}))
+    .filter(({characterKey})=>{
+      const normalizedKey=normalizedSourceKey(characterKey)
+      return expectedKeys.some(expected=>normalizedKey===expected||normalizedKey.startsWith(expected))
+    }).map(entry=>[normalizedSourceKey(entry.characterKey),entry]))
+  const chunks=[...chunkByCharacter.values()]
+  if(chunks.length<characterNames.length)throw Error(`Incomplete WutheringTools character modules: ${chunks.length}/${characterNames.length}`)
+  const entries=await mapLimit(chunks,8,async({characterKey,chunk})=>{
+    const moduleSource=await loadText(new URL(`assets/${chunk}`,wutheringToolsHome))
+    const types=new Map()
+    for(const match of moduleSource.matchAll(/label:("(?:\\.|[^"\\])*")[\s\S]{0,2000}?type:"(Basic|Heavy|Skill|Liberation|Intro|Outro|Healing|TuneBreak)"/g)){
+      const label=JSON.parse(match[1])
+      const type=wutheringToolsTypeMap[match[2]]
+      if(!type)continue
+      const key=normalizedSourceKey(label)
+      if(!types.has(key))types.set(key,new Set())
+      types.get(key).add(type)
+    }
+    return [normalizedSourceKey(characterKey),types]
+  })
+  const emptyCharacters=entries.filter(([,types])=>types.size===0).map(([characterKey])=>characterKey)
+  if(emptyCharacters.length)throw Error(`Missing WutheringTools attack types: ${emptyCharacters.join(', ')}`)
+  return new Map(entries)
+}
+const wutheringToolsDamageTypes=await loadWutheringToolsDamageTypes(Object.values(rawCharacters).map(character=>character.en))
+const wutheringToolsSourceTypeCount=[...wutheringToolsDamageTypes.values()].reduce((total,types)=>total+types.size,0)
+let wutheringToolsTypeMatches=0,wutheringToolsTypeMisses=0
+const wutheringToolsCombatType=(characterKey,attackName)=>{
+  const characterTypes=wutheringToolsDamageTypes.get(normalizedSourceKey(characterKey))
+  const normalizedName=normalizedSourceKey(attackName)
+  const exact=characterTypes?.get(normalizedName)
+  if(exact?.size===1){
+    wutheringToolsTypeMatches++
+    return [...exact][0]
+  }
+  const suffixMatches=[...(characterTypes??[])].filter(([label])=>label.length>=6&&(normalizedName.endsWith(label)||label.endsWith(normalizedName)))
+  const suffixTypes=new Set(suffixMatches.flatMap(([,types])=>[...types]))
+  if(suffixTypes.size===1){
+    wutheringToolsTypeMatches++
+    return [...suffixTypes][0]
+  }
+  wutheringToolsTypeMisses++
+  return undefined
+}
 const formatEffect=(desc='',param=[])=>desc.replace(/\{(\d+)\}/g,(_,index)=>param[Number(index)]??`{${index}}`)
 const asset=p=>`https://static.nanoka.cc/assets/ww/${p.replace(/^\/Game\/Aki\/UI\//,'').split('.')[0]}.webp`
 const spineAsset=path=>{
@@ -126,6 +189,9 @@ const showcaseSkillTypes={
 }
 const characters=Object.entries(rawCharacters).map(([id,c])=>{
   const detail=characterDetailById.get(id)
+  const rawGender=String(detail?.chara_info?.sex??'').toLowerCase()
+  const gender=rawGender==='male'||rawGender==='female'?rawGender:null
+  const wutheringToolsCharacterKey=/^Rover\b/i.test(c.en)?`${c.en} ${gender??''}`:c.en
   const levelStats=characterLevels.map(level=>characterStatsAtLevel(detail,level))
   const maxStats=levelStats.at(-1)??{hp:0,atk:0,def:0}
   const skillEntries=Object.entries(detail?.skill_trees??{})
@@ -171,7 +237,8 @@ const characters=Object.entries(rawCharacters).map(([id,c])=>{
       const name=line?.name?`${skill.name} - ${line.name}`:skill.name
       if(fixedSkillValuePattern.test(name))return []
       const isHealing=components.length>0&&components.every(component=>Number(component.element)===0)
-      const type=isHealing?'healing':combatType(skill.type,name)
+      const importedType=wutheringToolsCombatType(wutheringToolsCharacterKey,name)
+      const type=isHealing?'healing':importedType??combatType(skill.type,name)
       return [{id:`${id}-${nodeId}-${attackIndex++}`,name,type,skillLevelIndex:skillLevelIndex(skill.type),scalesWith:damage.related_property.toLowerCase(),multipliers,hitMultipliers}]
     })
   })
@@ -179,8 +246,6 @@ const characters=Object.entries(rawCharacters).map(([id,c])=>{
   if(!attacks.some(attack=>attack.type==='outro')&&outroEntry){
     attacks.push(...outroDescriptionAttack(id,outroEntry[0],outroEntry[1].skill??outroEntry[1]))
   }
-  const rawGender=String(detail?.chara_info?.sex??'').toLowerCase()
-  const gender=rawGender==='male'||rawGender==='female'?rawGender:null
   const animatedSkin=Object.values(detail?.skin??{}).find(skin=>skin.formation_spine_skel&&skin.formation_spine_atlas)
   const spineBaseUrl=spineAsset(animatedSkin?.formation_spine_skel)
   return {id,name:c.en,title:detail?.chara_info?.talent_name??c.nickname??c.en,nickname:c.nickname,description:c.desc.replace(/<[^>]+>/g,''),rarity:c.rank,element:elements[c.element]??'Unknown',weaponType:weaponTypes[c.weapon]??'Unknown',role:Object.values(detail?.tag??{})[0]?.name??'Resonator',gender,baseStats:{hp:maxStats.hp,atk:maxStats.atk,def:maxStats.def,critRate:5,critDamage:150},levelStats,skillIcons,skillTreeExtras,sequenceIcons,flatSkillValues,attacks,articleUrl:`https://ww.nanoka.cc/character/${id}`,iconSourceUrl:asset(c.icon),portraitSourceUrl:asset(detail?.background??detail?.background_stand??c.icon),titleCardSourceUrl:titleCardByCharacter.get(c.en)??'',spineSkeletonSourceUrl:spineBaseUrl?`${spineBaseUrl}.skel`:'',spineAtlasSourceUrl:spineBaseUrl?`${spineBaseUrl}.atlas`:''}
@@ -248,3 +313,4 @@ await Promise.all([
   writeFile('src/game-data/catalog.generated.ts',`${header}export * from './catalog-types.generated'\nexport { generatedCharacterCatalog } from './characters.generated'\nexport { generatedCharacterSummaries } from './character-summaries.generated'\nexport { generatedWeaponCatalog } from './weapons.generated'\nexport { generatedWeaponSummaries } from './weapon-summaries.generated'\nexport { generatedSonataCatalog, generatedSonataIconSources } from './sonatas.generated'\nexport { generatedEchoCatalog } from './echoes.generated'\nexport { catalogProvenance } from './catalog-provenance.generated'\n`)
 ])
 console.log(`Wrote ${characters.length} characters, ${weapons.length} weapons, ${sonatas.length} Sonatas, and ${echoes.length} Echoes from Nanoka ${version}`)
+console.log(`Imported ${wutheringToolsTypeMatches}/${wutheringToolsSourceTypeCount} matching attack damage types from WutheringTools; ${wutheringToolsTypeMisses} Nanoka-only or ambiguous attacks retained their category fallback`)

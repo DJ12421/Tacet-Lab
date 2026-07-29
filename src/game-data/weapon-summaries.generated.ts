@@ -8,7 +8,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Gauntlets",
     "baseAtk": 587,
     "secondaryStat": "ATK",
-    "secondaryStatValue": "36.5%",
+    "secondaryStatValue": "36.4%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21040015",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21040015_UI.webp"
   },
@@ -41,7 +41,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Gauntlets",
     "baseAtk": 337,
     "secondaryStat": "DEF",
-    "secondaryStatValue": "61.6%",
+    "secondaryStatValue": "61.5%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21040044",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21040044_UI.webp"
   },
@@ -52,7 +52,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Rectifier",
     "baseAtk": 412,
     "secondaryStat": "Crit. Rate",
-    "secondaryStatValue": "20.3%",
+    "secondaryStatValue": "20.2%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21050074",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21050074_UI.webp"
   },
@@ -74,7 +74,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Broadblade",
     "baseAtk": 412,
     "secondaryStat": "Crit. Rate",
-    "secondaryStatValue": "20.3%",
+    "secondaryStatValue": "20.2%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21010074",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21010074_UI.webp"
   },
@@ -129,7 +129,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Sword",
     "baseAtk": 587,
     "secondaryStat": "Energy Regen",
-    "secondaryStatValue": "38.9%",
+    "secondaryStatValue": "38.8%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21020046",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21020026_UI.webp"
   },
@@ -140,7 +140,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Rectifier",
     "baseAtk": 525,
     "secondaryStat": "Energy Regen",
-    "secondaryStatValue": "38.9%",
+    "secondaryStatValue": "38.8%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21050045",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon_21050045_UI.webp"
   },
@@ -239,7 +239,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Rectifier",
     "baseAtk": 500,
     "secondaryStat": "ATK",
-    "secondaryStatValue": "54%",
+    "secondaryStatValue": "53.9%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21050015",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21050015_UI.webp"
   },
@@ -250,7 +250,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Broadblade",
     "baseAtk": 337,
     "secondaryStat": "DEF",
-    "secondaryStatValue": "61.6%",
+    "secondaryStatValue": "61.5%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21010044",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21010044_UI.webp"
   },
@@ -349,7 +349,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Sword",
     "baseAtk": 412,
     "secondaryStat": "Crit. Rate",
-    "secondaryStatValue": "20.3%",
+    "secondaryStatValue": "20.2%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21020104",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21020104_UI.webp"
   },
@@ -426,7 +426,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Gauntlets",
     "baseAtk": 325,
     "secondaryStat": "DEF",
-    "secondaryStatValue": "30.8%",
+    "secondaryStatValue": "30.7%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21040043",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21040043_UI.webp"
   },
@@ -437,7 +437,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Gauntlets",
     "baseAtk": 387,
     "secondaryStat": "Energy Regen",
-    "secondaryStatValue": "38.9%",
+    "secondaryStatValue": "38.8%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21040034",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21040034_UI.webp"
   },
@@ -459,7 +459,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Gauntlets",
     "baseAtk": 300,
     "secondaryStat": "DEF",
-    "secondaryStatValue": "38.5%",
+    "secondaryStatValue": "38.4%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21040053",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21040053_UI.webp"
   },
@@ -525,7 +525,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Rectifier",
     "baseAtk": 387,
     "secondaryStat": "ATK",
-    "secondaryStatValue": "36.5%",
+    "secondaryStatValue": "36.4%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21050044",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21050044_UI.webp"
   },
@@ -547,7 +547,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Sword",
     "baseAtk": 587,
     "secondaryStat": "Energy Regen",
-    "secondaryStatValue": "38.9%",
+    "secondaryStatValue": "38.8%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21020045",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon_21020045_UI.webp"
   },
@@ -580,7 +580,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Sword",
     "baseAtk": 387,
     "secondaryStat": "ATK",
-    "secondaryStatValue": "36.5%",
+    "secondaryStatValue": "36.4%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21020074",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21020074_UI.webp"
   },
@@ -613,7 +613,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Broadblade",
     "baseAtk": 587,
     "secondaryStat": "ATK",
-    "secondaryStatValue": "36.5%",
+    "secondaryStatValue": "36.4%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21010015",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21010015_UI.webp"
   },
@@ -690,7 +690,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Broadblade",
     "baseAtk": 300,
     "secondaryStat": "DEF",
-    "secondaryStatValue": "38.5%",
+    "secondaryStatValue": "38.4%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21010023",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21010023_UI.webp"
   },
@@ -789,7 +789,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Pistols",
     "baseAtk": 387,
     "secondaryStat": "ATK",
-    "secondaryStatValue": "36.5%",
+    "secondaryStatValue": "36.4%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21030034",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21030034_UI.webp"
   },
@@ -921,7 +921,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Pistols",
     "baseAtk": 412,
     "secondaryStat": "Crit. Rate",
-    "secondaryStatValue": "20.3%",
+    "secondaryStatValue": "20.2%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21030104",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21030104_UI.webp"
   },
@@ -1009,7 +1009,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Gauntlets",
     "baseAtk": 412,
     "secondaryStat": "Crit. Rate",
-    "secondaryStatValue": "20.3%",
+    "secondaryStatValue": "20.2%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21040074",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21040074_UI.webp"
   },
@@ -1053,7 +1053,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Sword",
     "baseAtk": 387,
     "secondaryStat": "ATK",
-    "secondaryStatValue": "36.5%",
+    "secondaryStatValue": "36.4%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21020034",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21020034_UI.webp"
   },
@@ -1075,7 +1075,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Pistols",
     "baseAtk": 387,
     "secondaryStat": "ATK",
-    "secondaryStatValue": "36.5%",
+    "secondaryStatValue": "36.4%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21030074",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21030074_UI.webp"
   },
@@ -1086,7 +1086,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Broadblade",
     "baseAtk": 675,
     "secondaryStat": "Crit. Rate",
-    "secondaryStatValue": "12.2%",
+    "secondaryStatValue": "12.1%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21010046",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21010046_UI.webp"
   },
@@ -1108,7 +1108,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Broadblade",
     "baseAtk": 250,
     "secondaryStat": "ATK",
-    "secondaryStatValue": "11.5%",
+    "secondaryStatValue": "11.4%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21010011",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21010011_UI.webp"
   },
@@ -1119,7 +1119,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Gauntlets",
     "baseAtk": 250,
     "secondaryStat": "ATK",
-    "secondaryStatValue": "11.5%",
+    "secondaryStatValue": "11.4%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21040011",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21040011_UI.webp"
   },
@@ -1130,7 +1130,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Pistols",
     "baseAtk": 250,
     "secondaryStat": "ATK",
-    "secondaryStatValue": "11.5%",
+    "secondaryStatValue": "11.4%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21030011",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21030011_UI.webp"
   },
@@ -1141,7 +1141,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Rectifier",
     "baseAtk": 250,
     "secondaryStat": "ATK",
-    "secondaryStatValue": "11.5%",
+    "secondaryStatValue": "11.4%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21050011",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21050011_UI.webp"
   },
@@ -1152,7 +1152,7 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "type": "Sword",
     "baseAtk": 250,
     "secondaryStat": "ATK",
-    "secondaryStatValue": "11.5%",
+    "secondaryStatValue": "11.4%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21020011",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21020011_UI.webp"
   },

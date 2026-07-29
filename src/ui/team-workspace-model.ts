@@ -19,6 +19,7 @@ const ELEMENTS: Record<string, Element> = {
 }
 
 const SKILL_KEYS = ['normalAttack', 'resonanceSkill', 'forteCircuit', 'resonanceLiberation', 'introSkill'] as const
+export type TeamAttackGroup = 'basic' | 'skill' | 'forte' | 'liberation' | 'intro' | 'outro' | 'tuneBreak'
 
 export interface TeamWorkspaceInput {
   team: Team
@@ -39,6 +40,7 @@ export interface TeamAttackModel {
   skillLevel: number
   skillName: string
   iconSourceUrl: string
+  group: TeamAttackGroup
 }
 
 export interface TeamMemberModel {
@@ -126,9 +128,17 @@ function attackModels(catalog: CharacterCatalogEntry, character: OwnedCharacter)
   return catalog.attacks.flatMap((attack, index) => {
     if (isFixedSkillValueName(attack.name)) return []
     const level = Math.max(1, Math.min(attack.multipliers.length, character.skillLevels?.[attack.skillLevelIndex] ?? 1))
-    const skill = attack.type === 'outro'
-      ? catalog.skillTreeExtras.outroSkill
-      : catalog.skillIcons[SKILL_KEYS[attack.skillLevelIndex] ?? 'forteCircuit']
+    const isTuneBreak = Boolean(catalog.skillTreeExtras.tuneBreakSkill.name)
+      && attack.name.toLowerCase().startsWith(catalog.skillTreeExtras.tuneBreakSkill.name.toLowerCase())
+    const group: TeamAttackGroup = attack.type === 'outro' ? 'outro'
+      : isTuneBreak ? 'tuneBreak'
+        : attack.skillLevelIndex === 0 ? 'basic'
+          : attack.skillLevelIndex === 1 ? 'skill'
+            : attack.skillLevelIndex === 2 ? 'forte'
+              : attack.skillLevelIndex === 3 ? 'liberation' : 'intro'
+    const skill = group === 'outro' ? catalog.skillTreeExtras.outroSkill
+      : group === 'tuneBreak' ? catalog.skillTreeExtras.tuneBreakSkill
+        : catalog.skillIcons[SKILL_KEYS[attack.skillLevelIndex] ?? 'forteCircuit']
     return [{
       id: attack.id,
       name: attack.name,
@@ -139,7 +149,8 @@ function attackModels(catalog: CharacterCatalogEntry, character: OwnedCharacter)
       scalesWith: attack.scalesWith,
       skillLevel: level,
       skillName: skill.name,
-      iconSourceUrl: skill.iconSourceUrl
+      iconSourceUrl: skill.iconSourceUrl,
+      group
     }]
   })
 }

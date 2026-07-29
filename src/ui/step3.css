@@ -30,7 +30,7 @@
 .stat-editor.main > span {
   grid-column: 1 / -1;
   color: #899491;
-  font-size: 9px;
+  font-size: var(--font-size-caption);
   text-transform: uppercase;
   letter-spacing: .08em;
 }
@@ -61,7 +61,7 @@
   align-items: center;
   justify-content: space-between;
   color: #899491;
-  font-size: 9px;
+  font-size: var(--font-size-caption);
   text-transform: uppercase;
   letter-spacing: .08em;
 }
@@ -84,7 +84,7 @@
   display: grid;
   gap: 5px;
   color: #899491;
-  font-size: 9px;
+  font-size: var(--font-size-caption);
   text-transform: uppercase;
   letter-spacing: .08em;
 }
@@ -93,7 +93,7 @@
   display: flex;
   justify-content: space-between;
   color: var(--muted);
-  font-size: 9px;
+  font-size: var(--font-size-caption);
   padding-top: 5px;
   margin-top: 5px;
   border-top: 1px solid rgba(255, 255, 255, .05);
@@ -106,7 +106,7 @@
 
 .echo-grade {
   margin-left: auto;
-  font-size: 12px;
+  font-size: var(--font-size-caption);
 }
 
 .edit-grid input,
@@ -137,12 +137,12 @@
 .score-weights summary {
   color: var(--gold);
   cursor: pointer;
-  font-size: 10px;
+  font-size: var(--font-size-caption);
 }
 
 .score-weights p {
   color: var(--muted);
-  font-size: 9px;
+  font-size: var(--font-size-caption);
   line-height: 1.4;
   margin: 8px 0;
 }
@@ -218,7 +218,7 @@
 
 .muted-copy {
   color: var(--muted);
-  font-size: 11px;
+  font-size: var(--font-size-caption);
   line-height: 1.5;
 }
 

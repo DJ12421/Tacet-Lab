@@ -321,4 +321,7 @@ function isSettings(value: unknown) {
     && isFiniteNumber(value.scanIntervalMs) && value.scanIntervalMs >= 250 && value.scanIntervalMs <= 10_000
     && isRecord(value.scoreWeights) && Object.values(value.scoreWeights).every((weights) => isRecord(weights)
       && Object.entries(weights).every(([key, weight]) => key in statLabels && isFiniteNumber(weight)))
+    && (value.characterSubstatWeights === undefined || (isRecord(value.characterSubstatWeights)
+      && Object.values(value.characterSubstatWeights).every((weights) => isRecord(weights)
+        && Object.entries(weights).every(([key, weight]) => key in statLabels && isFiniteNumber(weight) && weight >= 0 && weight <= 4))))
 }
