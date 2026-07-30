@@ -1,11 +1,13 @@
 {
   "name": "wuwa-optimizer",
   "version": "0.1.0",
+  "license": "GPL-3.0-only",
   "private": true,
   "type": "module",
   "scripts": {
     "data:sync:echoes": "node scripts/sync-nanoka-echoes.mjs",
     "data:sync:conditions": "node scripts/sync-wutheringtools-conditions.mjs",
+    "data:sync:calculation-v2": "node scripts/sync-wutheringtools-calculation-v2.mjs",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",

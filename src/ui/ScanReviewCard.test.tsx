@@ -24,7 +24,7 @@ describe('scan review checkpoint', () => {
   it('blocks invalid OCR defaults from persistence', () => {
     render(<Harness initial={candidate(false)} onSave={vi.fn()}/>)
     expect(screen.getByRole('button', { name: 'Approve & save' })).toBeDisabled()
-    expect(screen.getByText(/Enter the Echo name/)).toBeInTheDocument()
+    expect(screen.getAllByText(/Enter the Echo name/).length).toBeGreaterThan(0)
   })
 
   it('allows corrected identity fields to pass review', () => {

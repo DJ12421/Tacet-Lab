@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import { useCallback, useMemo, useRef, useState, type ReactNode } from 'react'
 import { statLabels } from '../game-data/core'
 import { echoCatalog } from '../game-data/echoes'
 import { generatedSonataCatalog, generatedSonataIconSources } from '../game-data/sonatas.generated'
@@ -6,6 +6,7 @@ import { effectiveSubStats, fixedSecondaryMainStat, mainStatError, mainStatKeysB
 import { tunableRolls } from '../game-data/tunable-rolls'
 import type { Echo, StatKey } from '../domain/types'
 import { EchoMiniCard, formatStat, Panel } from './components'
+import { useDismissableLayer } from './useDismissableLayer'
 
 const sonataNames = generatedSonataCatalog.map((sonata) => sonata.name)
 const subStatKeys = Object.keys(tunableRolls) as StatKey[]
@@ -15,14 +16,10 @@ function SearchablePicker({ label, value, options, onChange }: { label: string; 
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const ref = useRef<HTMLDivElement>(null)
+  const close = useCallback(() => setOpen(false), [])
   const selected = options.find((option) => option.value === value)
   const visible = options.filter((option) => `${option.value} ${option.detail ?? ''}`.toLowerCase().includes(query.toLowerCase()))
-  useEffect(() => {
-    if (!open) return
-    const close = (event: PointerEvent) => { if (!ref.current?.contains(event.target as Node)) setOpen(false) }
-    document.addEventListener('pointerdown', close)
-    return () => document.removeEventListener('pointerdown', close)
-  }, [open])
+  useDismissableLayer(open, ref, close)
   return <label>{label}<div className="echo-search-picker" ref={ref}>
     <button type="button" className="echo-search-trigger" onClick={() => { setOpen((current) => !current); setQuery('') }}>{selected?.icon ? <img src={selected.icon} alt=""/> : <span>◇</span>}<b>{value}</b><i>⌄</i></button>
     {open && <div className="echo-search-menu"><input autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`Filter ${label.toLowerCase()}...`}/><div>{visible.map((option) => <button type="button" className={option.value === value ? 'active' : ''} key={option.value} onClick={() => { onChange(option.value); setOpen(false) }}>{option.icon ? <img src={option.icon} alt="" loading="lazy"/> : <span>◇</span>}<b>{option.value}</b>{option.detail && <small>{option.detail}</small>}</button>)}</div></div>}
@@ -34,16 +31,21 @@ function ReadOnlyStat({ label, children }: { label: string; children: ReactNode 
 }
 
 export function EchoEditModal({ echo, onClose, onSave }: { echo: Echo; onClose: () => void; onSave: (echo: Echo) => Promise<void> }) {
-  const [draft, setDraft] = useState<Echo>(() => ({ ...structuredClone(echo), mainStat: normalizeEchoMainStat(echo), subStats: effectiveSubStats(echo) }))
+  const [draft, setDraft] = useState<Echo>(() => {
+    const catalogEcho = echoCatalog.find((item) => item.name === echo.name)
+    const canonicalEcho = catalogEcho ? { ...structuredClone(echo), cost: catalogEcho.cost } : structuredClone(echo)
+    return { ...canonicalEcho, mainStat: normalizeEchoMainStat(canonicalEcho), subStats: effectiveSubStats(canonicalEcho) }
+  })
   const [error, setError] = useState('')
   const selectedEcho = echoCatalog.find((item) => item.name === draft.name)
+  const canonicalCost = selectedEcho?.cost ?? draft.cost
   const echoOptions = useMemo(() => echoCatalog
     .filter((item) => item.sonatas.includes(draft.sonata))
     .map((item) => ({ value: item.name, icon: item.iconSourceUrl, detail: `${item.cost} cost` })), [draft.sonata])
   const sonataOptions = sonataNames.map((name) => ({ value: name, icon: generatedSonataIconSources[name] }))
   const secondary = fixedSecondaryMainStat(draft)
   const maxSubStats = maxSubStatsForLevel(draft.level)
-  const updateCore = (patch: Partial<Pick<Echo, 'cost' | 'rarity' | 'level'>>, key = draft.mainStat.key) => setDraft((current) => {
+  const updateCore = (patch: Partial<Pick<Echo, 'rarity' | 'level'>>, key = draft.mainStat.key) => setDraft((current) => {
     const next = { ...current, ...patch }
     return { ...next, mainStat: normalizeEchoMainStat({ ...next, mainStat: { ...next.mainStat, key } }), subStats: current.subStats.slice(0, maxSubStatsForLevel(next.level)) }
   })
@@ -56,9 +58,12 @@ export function EchoEditModal({ echo, onClose, onSave }: { echo: Echo; onClose: 
   const submit = async () => {
     if (!draft.name.trim() || !draft.sonata.trim()) { setError('Name and Sonata are required.'); return }
     if (!selectedEcho?.sonatas.includes(draft.sonata)) { setError('Choose an Echo available for the selected Sonata.'); return }
-    const invalidMainStat = mainStatError(draft.cost, draft.rarity, draft.level, draft.mainStat)
+    const normalizedDraft = draft.cost === canonicalCost
+      ? draft
+      : { ...draft, cost: canonicalCost, mainStat: normalizeEchoMainStat({ ...draft, cost: canonicalCost }) }
+    const invalidMainStat = mainStatError(normalizedDraft.cost, normalizedDraft.rarity, normalizedDraft.level, normalizedDraft.mainStat)
     if (invalidMainStat) { setError(invalidMainStat); return }
-    await onSave(draft)
+    await onSave(normalizedDraft)
   }
 
   return <div className="modal-backdrop echo-editor-backdrop" onMouseDown={onClose}>
@@ -69,7 +74,7 @@ export function EchoEditModal({ echo, onClose, onSave }: { echo: Echo; onClose: 
           <div className="echo-editor-identity">
             <SearchablePicker label="Name" value={draft.name} options={echoOptions} onChange={(name) => { const entry = echoCatalog.find((item) => item.name === name); if (!entry) return; setDraft((current) => { const next = { ...current, name, cost: entry.cost }; return { ...next, mainStat: normalizeEchoMainStat(next) } }) }}/>
             <SearchablePicker label="Sonata" value={draft.sonata} options={sonataOptions} onChange={(sonata) => setDraft({ ...draft, sonata })}/>
-            <label>Cost<select value={draft.cost} onChange={(event) => updateCore({ cost: Number(event.target.value) as Echo['cost'] })}>{[1, 3, 4].map((value) => <option key={value} value={value}>{value}</option>)}</select></label>
+            <label>Cost<div className="echo-readonly-name echo-canonical-cost"><b>{canonicalCost}</b></div></label>
             <label>Rarity<select value={draft.rarity} onChange={(event) => { const rarity = Number(event.target.value) as Echo['rarity']; updateCore({ rarity, level: Math.min(draft.level, maxLevelByRarity[rarity]) }) }}>{[2, 3, 4, 5].map((value) => <option key={value} value={value}>{value} star</option>)}</select></label>
           </div>
           {selectedEcho && !selectedEcho.sonatas.includes(draft.sonata) && <div className="notice warning">Choose an Echo available for {draft.sonata}.</div>}

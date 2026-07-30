@@ -18,7 +18,7 @@ For Spectro Rover, Chixia, Baizhi, and each representative weapon:
 6. Validate normal and critical output against a target with known level and resistance.
 7. Add or update a hand-calculated test fixture before changing checked-in values.
 
-Do not use leaked or unreleased content. Do not copy implementation or data files from GPL projects. External sources require explicit approval and must have compatible redistribution terms.
+Do not use leaked or unreleased content. GPL-derived implementation or data may be incorporated only while the whole distributed project remains GPL-compatible and preserves the required source, license, attribution, and modification notices. External sources require explicit approval and compatible redistribution terms.
 
 ## Rounding
 

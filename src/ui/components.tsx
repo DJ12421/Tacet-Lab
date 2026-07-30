@@ -40,6 +40,36 @@ export function StatValue({ label, value, accent = false, detail }: { label: str
   return <div className="stat-value"><span>{label}</span>{detail ? <CalculatedValue detail={detail}>{output}</CalculatedValue> : output}</div>
 }
 
+export function FilterChips<T extends string | number>({ values, selected, label, onChange, renderValue }: {
+  values: readonly T[]
+  selected: readonly T[]
+  label: string
+  onChange: (values: T[]) => void
+  renderValue?: (value: T) => ReactNode
+}) {
+  const toggle = (value: T) => {
+    if (selected.length === values.length) onChange([value])
+    else onChange(selected.includes(value) ? selected.filter((entry) => entry !== value) : [...selected, value])
+  }
+  return <div className="owned-chip-filter"><span>{label}</span><div className="filter-chips">{values.map((value) => <button type="button" aria-pressed={selected.includes(value)} className={selected.includes(value) ? 'active' : ''} key={value} onClick={() => toggle(value)}>{renderValue?.(value) ?? value}</button>)}</div></div>
+}
+
+const elementSonataNames: Record<string, string> = {
+  Glacio: 'Freezing Frost',
+  Fusion: 'Molten Rift',
+  Electro: 'Void Thunder',
+  Aero: 'Sierra Gale',
+  Spectro: 'Celestial Light',
+  Havoc: 'Havoc Eclipse'
+}
+
+export function ElementFilterIcon({ element }: { element: string }) {
+  const source = generatedSonataIconSources[elementSonataNames[element]]
+  return source
+    ? <span className="filter-element-icon" title={element}><img src={source} alt={element} loading="lazy"/></span>
+    : <span>{element}</span>
+}
+
 export function EchoMiniCard({ echo, selected, onClick, actions, equipment, grade, rollRating, scoreLabel }: { echo: Echo; selected?: boolean; onClick?: () => void; actions?: ReactNode; equipment?: ReactNode; grade?: string; rollRating?: EchoRollRating; scoreLabel?: string }) {
   const characterProfile = useContext(CharacterSubstatProfileContext)
   const characterScore = characterProfile ? scoreCharacterSubstats(echo, characterProfile) : undefined

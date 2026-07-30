@@ -66,7 +66,7 @@
 .cs-echo-substats b{display:flex;align-items:center;gap:5px}
 .cs-echo-substats b>span{color:inherit}
 .cs-echo-substats em{min-width:34px;padding:2px 3px;border:1px solid currentColor;border-radius:3px;font-size:var(--font-size-caption);font-style:normal;text-align:center}
-.cs-echo-substats .roll-tier-0,.cs-echo-substats .roll-tier-1,.cs-echo-substats .roll-tier-2{color:#9aa5a8}
+.cs-echo-substats .roll-tier-0,.cs-echo-substats .roll-tier-1,.cs-echo-substats .roll-tier-2{color:#f1f4f3}
 .cs-echo-substats .roll-tier-3{color:#69cf7c}
 .cs-echo-substats .roll-tier-4{color:#65b9ff}
 .cs-echo-substats .roll-tier-5,.cs-echo-substats .roll-tier-6{color:#c374ff}

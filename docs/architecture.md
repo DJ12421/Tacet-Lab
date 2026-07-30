@@ -43,7 +43,7 @@ Every scan carries a session ID, frame sequence, frame ID, region ID, and job ID
 
 ## Formula engine
 
-`src/domain/calculation/` is a clean-room declarative engine. Formula nodes support constants, inputs, stats, arithmetic, lookups, comparisons, conditional branches, and tagged accumulation. Evaluation is deterministic, memoized, cycle checked, finite-number checked, and returns a nested trace suitable for UI explanation. The same generated character targets feed member result sheets, rotation actions, and optimizer objectives.
+`src/domain/calculation/` retains the original clean-room declarative engine for backward compatibility. The active Team damage path lives in `src/domain/calculation-v2/`: a GPL-compatible, source-attributed mechanics engine whose generated character, weapon, Sonata, Echo, sequence, and party effects feed member result sheets, rotation actions, and optimizer objectives through one calculation context.
 
 Formula data is labeled `nanoka-3.5-formula-v2`. This is reproducible from the pinned dataset; it is not a claim of independent verification against the live game.
 

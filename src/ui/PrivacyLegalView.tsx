@@ -1,6 +1,6 @@
 import { Icon, PageHeader, Panel } from './primitives'
 
-const effectiveDate = 'July 27, 2026'
+const effectiveDate = 'July 29, 2026'
 
 export function PrivacyLegalView() {
   return <div className="legal-page">
@@ -74,14 +74,22 @@ export function PrivacyLegalView() {
         <Panel>
           <header><span>06</span><div><p>Use and reliability</p><h2>Accuracy, availability, and acceptable use</h2></div></header>
           <div className="legal-copy">
-            <p>Tacet Lab is provided for personal, informational use. Calculations, OCR results, optimization suggestions, and catalog records may be incomplete, outdated, or incorrect. Nanoka-derived values are reproducible from the pinned dataset but are not represented as independently verified against the current English in-game UI.</p>
+            <p>Tacet Lab is provided for personal, informational use. Calculations, OCR results, optimization suggestions, and catalog records may be incomplete, outdated, or incorrect. Game-data values are reproducible from pinned sources but are not represented as independently verified against the current English in-game UI.</p>
             <p>Always review scan results and important calculations yourself. To the extent permitted by applicable law, the project is provided as-is and without warranties; you are responsible for your use of it and for maintaining backups of data you want to keep.</p>
             <p>Do not use Tacet Lab to violate applicable law, the rights of others, or the Wuthering Waves terms and policies. The tool is not designed for game automation, cheating, account access, or circumvention of technical protections.</p>
           </div>
         </Panel>
 
         <Panel>
-          <header><span>07</span><div><p>Updates and questions</p><h2>Policy changes and contact</h2></div></header>
+          <header><span>07</span><div><p>Open-source license</p><h2>Calculation-engine attribution</h2></div></header>
+          <div className="legal-copy">
+            <p>Tacet Lab is distributed under the GNU General Public License version 3. Its Calculation V2 mechanics catalog and calculator adapt work from <a href="https://github.com/ryanbenson/wuthering-waves-optimizer" target="_blank" rel="noreferrer">WutheringTools</a>, also licensed under GPL-3.0. The exact pinned revision and modification notice are recorded in this project&apos;s NOTICE and licensing documentation.</p>
+            <p>The GPL license, corresponding source, and attribution apply to the distributed application code. Wuthering Waves names, artwork, and other game materials remain the property of their respective owners.</p>
+          </div>
+        </Panel>
+
+        <Panel>
+          <header><span>08</span><div><p>Updates and questions</p><h2>Policy changes and contact</h2></div></header>
           <div className="legal-copy">
             <p>This notice may change when Tacet Lab&apos;s features, data flows, or legal obligations change. Material changes will be published on this page with a revised effective date.</p>
             <p>Questions, corrections, or rights concerns can be submitted through the project&apos;s <a href="https://github.com/DhruvJ12421/WuWa-Optimizer/issues" target="_blank" rel="noreferrer">GitHub issue tracker</a>. Do not include screenshots, exports, account details, or other private information in a public issue.</p>

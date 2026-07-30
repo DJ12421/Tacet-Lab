@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import { generatedCharacterSummaries as characterCatalog } from '../game-data/character-summaries.generated'
 import { statLabels } from '../game-data/core'
 import { echoCatalog } from '../game-data/echoes'
@@ -10,6 +10,7 @@ import { fixedSecondaryMainStat, mainStatKeysByCost, maxLevelByRarity, maxSubSta
 import { Confidence, formatStat, Panel } from './components'
 import { SonataPicker } from './SonataPicker'
 import type { DiagnosticScanCandidate } from '../scanner/types'
+import { useDismissableLayer } from './useDismissableLayer'
 
 const subStatKeys = Object.keys(tunableRolls) as StatKey[]
 const levelStops = [0, 5, 10, 15, 20, 25]
@@ -18,14 +19,10 @@ function EchoPicker({ value, onChange }: { value: string; onChange: (value: stri
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const ref = useRef<HTMLDivElement>(null)
+  const close = useCallback(() => setOpen(false), [])
   const selected = echoCatalog.find((entry) => entry.name === value)
   const options = useMemo(() => echoCatalog.filter((entry) => `${entry.name} ${entry.cost} ${entry.sonatas.join(' ')}`.toLowerCase().includes(query.toLowerCase())), [query])
-  useEffect(() => {
-    if (!open) return
-    const close = (event: PointerEvent) => { if (!ref.current?.contains(event.target as Node)) setOpen(false) }
-    document.addEventListener('pointerdown', close)
-    return () => document.removeEventListener('pointerdown', close)
-  }, [open])
+  useDismissableLayer(open, ref, close)
   return <div className="echo-search-picker scan-echo-picker" ref={ref}>
     <button type="button" className="echo-search-trigger" aria-label={`Name ${value}`} aria-expanded={open} onClick={() => { setOpen((current) => !current); setQuery('') }}>{selected?.iconSourceUrl ? <img src={selected.iconSourceUrl} alt=""/> : <span>◇</span>}<b>{value}</b><i>⌄</i></button>
     {open && <div className="echo-search-menu"><input autoFocus aria-label="Filter Echo names" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Filter Echoes by name, cost, or Sonata..."/><div>{options.map((entry) => <button type="button" className={entry.name === value ? 'active' : ''} key={entry.id ?? entry.name} onClick={() => { onChange(entry.name); setOpen(false) }}>{entry.iconSourceUrl ? <img src={entry.iconSourceUrl} alt="" loading="lazy"/> : <span>◇</span>}<b>{entry.name}</b><small>{entry.cost} cost · {entry.sonatas.join(' / ')}</small></button>)}</div></div>}
@@ -36,16 +33,12 @@ function CharacterPicker({ value, onChange }: { value: string; onChange: (value:
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const ref = useRef<HTMLDivElement>(null)
+  const close = useCallback(() => setOpen(false), [])
   const selected = characterCatalog.find((entry) => entry.name === value)
   const options = useMemo(() => characterCatalog
     .filter((entry, index, entries) => entries.findIndex((candidate) => candidate.name === entry.name) === index)
     .filter((entry) => `${entry.name} ${entry.element} ${entry.weaponType}`.toLowerCase().includes(query.toLowerCase())), [query])
-  useEffect(() => {
-    if (!open) return
-    const close = (event: PointerEvent) => { if (!ref.current?.contains(event.target as Node)) setOpen(false) }
-    document.addEventListener('pointerdown', close)
-    return () => document.removeEventListener('pointerdown', close)
-  }, [open])
+  useDismissableLayer(open, ref, close)
   return <div className="echo-search-picker scan-character-picker" ref={ref}>
     <button type="button" className="echo-search-trigger" aria-label={`Equipped by ${value || 'Unassigned'}`} aria-expanded={open} onClick={() => { setOpen((current) => !current); setQuery('') }}>{selected ? <img src={selected.iconSourceUrl} alt=""/> : <span>—</span>}<b>{value || 'Unassigned'}</b><i>⌄</i></button>
     {open && <div className="echo-search-menu"><input autoFocus aria-label="Filter characters" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Filter characters..."/><div><button type="button" className={!value ? 'active' : ''} onClick={() => { onChange(''); setOpen(false) }}><span>—</span><b>Unassigned</b><small>No character</small></button>{options.map((entry) => <button type="button" className={entry.name === value ? 'active' : ''} key={entry.name} onClick={() => { onChange(entry.name); setOpen(false) }}><img src={entry.iconSourceUrl} alt="" loading="lazy"/><b>{entry.name}</b><small>{entry.element} · {entry.weaponType}</small></button>)}</div></div>}
@@ -104,13 +97,20 @@ export function ScanReviewCard({ candidate, onChange, onDiscard, onSave, selecte
   }) })
   const setState = (field: 'locked' | 'excluded', value: boolean) => updateFields({ [field]: { value, confidence: 1 }, ...(value ? { [field === 'locked' ? 'excluded' : 'locked']: { value: false, confidence: 1 } } : {}) })
   const lowConfidence = Object.values(candidate.evidence ?? {}).some((entry) => entry.confidence < .55 || !entry.validation.valid)
-  const [evidenceOpen, setEvidenceOpen] = useState(() => errors.length > 0 || lowConfidence)
+  const lowConfidenceCount = Object.values(candidate.evidence ?? {}).filter((entry) => entry.confidence < .55 || !entry.validation.valid).length
+  const [evidenceOpen, setEvidenceOpen] = useState(false)
+  const sonataMissing = !candidate.fields.sonata.value.trim() || candidate.fields.sonata.value === 'Unknown Sonata'
 
   return <Panel className={`review-card ${candidate.buildCard ? 'build-card-review ' : ''}${errors.length === 0 && !lowConfidence && !evidenceOpen ? 'valid-compact' : ''}`}>
     <div className="review-topbar">
       <div>{onSelect && <label className="review-select"><input type="checkbox" checked={Boolean(candidate.selected)} onChange={(event) => onSelect(event.target.checked)}/>Select</label>}<button className="text-button" type="button" onClick={() => setEvidenceOpen((open) => !open)}>{evidenceOpen ? 'Hide field evidence' : 'Show field evidence'}</button></div>
       <div className="review-actions"><button className="review-discard" onClick={onDiscard}>Discard</button><button className="primary" disabled={errors.length > 0} onClick={onSave}>Approve & save</button></div>
     </div>
+    <section className={`review-attention ${errors.length ? 'needs-attention' : 'is-ready'}`}>
+      <div><strong>{errors.length ? `${errors.length} required ${errors.length === 1 ? 'fix' : 'fixes'}` : 'Required fields are ready'}</strong><small>{errors.length ? 'Resolve these before this Echo can be saved.' : 'Review the values below, then approve when they match the image.'}</small></div>
+      {errors.length > 0 && <ul>{errors.map((message) => <li key={message}>{message}</li>)}</ul>}
+      {lowConfidenceCount > 0 && <button type="button" className="text-button" onClick={() => setEvidenceOpen(true)}>{lowConfidenceCount} low-confidence {lowConfidenceCount === 1 ? 'field' : 'fields'} — inspect evidence</button>}
+    </section>
     <div className="review-fields">
       {candidate.buildCard && <section className="scan-build-card-summary">
         <header><div><span className="eyebrow">Official Discord build card</span><h3>Character loadout</h3></div><img src={candidate.buildCard.sourceImageDataUrl} alt="Scanned build card"/></header>
@@ -124,7 +124,7 @@ export function ScanReviewCard({ candidate, onChange, onDiscard, onSave, selecte
         <div className="scan-build-card-skills"><span>Skills</span>{['Normal', 'Skill', 'Forte', 'Liberation', 'Intro'].map((label, index) => <label key={label}>{label}<Confidence value={candidate.buildCard!.skillLevels[index]?.confidence ?? 0}/><input type="number" min="1" max="10" value={candidate.buildCard!.skillLevels[index]?.value ?? 1} onChange={(event) => updateBuildCard({ skillLevels: candidate.buildCard!.skillLevels.map((field, fieldIndex) => fieldIndex === index ? { value: Math.max(1, Math.min(10, Number(event.target.value))), confidence: 1 } : field) })}/></label>)}</div>
       </section>}
       <label className="scan-name-field">Name <Confidence value={candidate.fields.name.confidence}/><EchoPicker value={candidate.fields.name.value} onChange={selectEcho}/></label>
-      <label>Sonata <Confidence value={candidate.fields.sonata.confidence}/><SonataPicker id={`sonata-options-${candidate.id}`} value={candidate.fields.sonata.value} allowedNames={selectedEcho?.sonatas} onChange={(value) => updateFields({ sonata: { value, confidence: 1 } })}/></label>
+      <label className={sonataMissing ? 'field-needs-attention' : ''}>Sonata {sonataMissing && <b className="required-field-badge">Required</b>}<Confidence value={candidate.fields.sonata.confidence}/><SonataPicker id={`sonata-options-${candidate.id}`} value={candidate.fields.sonata.value} allowedNames={selectedEcho?.sonatas} onChange={(value) => updateFields({ sonata: { value, confidence: 1 } })}/></label>
       <label>Rarity <Confidence value={candidate.fields.rarity.confidence}/><select value={candidate.fields.rarity.value} onChange={(event) => setRarity(Number(event.target.value) as Echo['rarity'])}>{rarityOptions.map((value) => <option key={value} value={value}>{value} star</option>)}</select></label>
       <label>Cost <Confidence value={candidate.fields.cost.confidence}/><div className="scan-readonly-field"><b>{candidate.fields.cost.value}</b><small>From Echo catalog</small></div></label>
       <label>Equipped by <Confidence value={candidate.fields.equippedBy.confidence}/><CharacterPicker value={candidate.fields.equippedBy.value} onChange={(value) => updateFields({ equippedBy: { value, confidence: 1 } })}/></label>

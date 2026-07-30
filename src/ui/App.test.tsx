@@ -5,6 +5,7 @@ import App from './App'
 
 describe('application shell', () => {
   beforeEach(async () => {
+    window.history.replaceState({}, '', '/home')
     db.close()
     await db.delete()
     await db.open()

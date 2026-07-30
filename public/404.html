@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Opening Tacet Lab…</title>
+    <script>
+      (function () {
+        var segments = window.location.pathname.split('/').filter(Boolean)
+        var isProjectPage = segments.length > 1
+        var root = isProjectPage ? '/' + segments[0] + '/' : '/'
+        var route = (isProjectPage ? segments.slice(1) : segments).join('/')
+        window.location.replace(root + '?__route=' + encodeURIComponent(route) + window.location.hash)
+      })()
+    </script>
+  </head>
+  <body></body>
+</html>

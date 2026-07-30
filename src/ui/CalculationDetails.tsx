@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import type { CalculationTrace } from '../domain/calculation'
+import type { CalculationTraceV2 } from '../domain/calculation-v2'
 import './calculation-details.css'
 
 export interface CalculationDetailRow {
@@ -31,8 +32,8 @@ function compactDetailRows(rows: CalculationDetailRow[]) {
     .slice(0, 12)
 }
 
-export function traceCalculationDetail(trace: CalculationTrace, title = trace.label): CalculationDetail {
-  const traceValue = (node: CalculationTrace) => {
+export function traceCalculationDetail(trace: CalculationTrace | CalculationTraceV2, title = trace.label): CalculationDetail {
+  const traceValue = (node: CalculationTrace | CalculationTraceV2) => {
     if (typeof node.value !== 'number') return String(node.value)
     const value = node.value.toLocaleString('en-US', { maximumFractionDigits: 3 })
     if (/\bbonus\b/i.test(node.label) && !/\bmultiplier\b/i.test(node.label)) return `(100% + ${value}%)`
@@ -42,7 +43,7 @@ export function traceCalculationDetail(trace: CalculationTrace, title = trace.la
     if (/\b(?:rate|regen|ignore|reduction)\b/i.test(node.label) && !/%$/.test(value)) return `${value}%`
     return value
   }
-  const row = (node: CalculationTrace): CalculationDetailRow => ({
+  const row = (node: CalculationTrace | CalculationTraceV2): CalculationDetailRow => ({
     label: node.label,
     value: traceValue(node),
     children: node.children.map(row)

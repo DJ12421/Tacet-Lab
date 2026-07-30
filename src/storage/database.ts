@@ -42,6 +42,12 @@ class TacetDatabase extends Dexie {
       weapons: 'id, catalogId, level, rank, locked, equippedBy, createdAt',
       builds: 'id, resonatorId, weaponId', teams: 'id', settings: 'id'
     })
+    this.version(5).stores({
+      echoes: 'id, name, cost, sonata, locked, excluded, equippedBy, createdAt',
+      characters: 'id, catalogId, level, sequence, locked, createdAt',
+      weapons: 'id, catalogId, level, rank, locked, equippedBy, createdAt',
+      builds: 'id, resonatorId, weaponId', teams: 'id', settings: 'id'
+    })
   }
 }
 
@@ -58,12 +64,77 @@ export async function setBuildEchoIds(buildId: string, requestedIds: string[]) {
     if (!build) throw new Error('The selected build no longer exists.')
     const selected = echoIds.length ? await db.echoes.where('id').anyOf(echoIds).toArray() : []
     if (selected.length !== echoIds.length) throw new Error('One or more selected Echoes no longer exist.')
-    if (selected.some((echo) => echo.equippedBy && echo.equippedBy !== buildId)) throw new Error('One or more selected Echoes belong to another build.')
     if (selected.reduce((total, echo) => total + echo.cost, 0) > 12) throw new Error('This loadout exceeds the 12-cost limit.')
+    const selectedIds = new Set(echoIds)
+    const otherBuilds = await db.builds.toArray()
+    for (const otherBuild of otherBuilds) {
+      if (otherBuild.id === buildId || !otherBuild.echoIds.some((id) => selectedIds.has(id))) continue
+      await db.builds.update(otherBuild.id, { echoIds: otherBuild.echoIds.filter((id) => !selectedIds.has(id)) })
+    }
     const characterName = characterCatalog.find((entry) => entry.id === build.resonatorId)?.name
     await db.echoes.where('equippedBy').equals(buildId).modify({ equippedBy: undefined, equippedByName: undefined })
     if (echoIds.length) await db.echoes.where('id').anyOf(echoIds).modify({ equippedBy: buildId, equippedByName: characterName })
     await db.builds.update(buildId, { echoIds })
+  })
+}
+
+export async function switchBuildEcho(buildId: string, slot: number, nextEchoId?: string) {
+  if (!Number.isInteger(slot) || slot < 0 || slot > 4) throw new Error('The selected Echo slot is invalid.')
+  await db.transaction('rw', [db.echoes, db.builds], async () => {
+    const build = await db.builds.get(buildId)
+    if (!build) throw new Error('The selected build no longer exists.')
+    const oldEchoId = build.echoIds[slot]
+    if (oldEchoId === nextEchoId) return
+
+    const nextEcho = nextEchoId ? await db.echoes.get(nextEchoId) : undefined
+    if (nextEchoId && !nextEcho) throw new Error('The selected Echo no longer exists.')
+    if (nextEchoId && build.echoIds.some((id, index) => id === nextEchoId && index !== slot)) {
+      throw new Error('That Echo is already equipped in another slot on this build.')
+    }
+
+    const allBuilds = await db.builds.toArray()
+    const sourceBuild = nextEchoId
+      ? allBuilds.find((candidate) => candidate.id !== buildId && candidate.echoIds.includes(nextEchoId))
+      : undefined
+    const nextBuildEchoIds = [...build.echoIds]
+    if (nextEchoId) {
+      if (slot < nextBuildEchoIds.length) nextBuildEchoIds[slot] = nextEchoId
+      else nextBuildEchoIds.push(nextEchoId)
+    } else if (oldEchoId) {
+      nextBuildEchoIds.splice(slot, 1)
+    }
+
+    let nextSourceEchoIds: string[] | undefined
+    if (sourceBuild && nextEchoId) {
+      nextSourceEchoIds = [...sourceBuild.echoIds]
+      const sourceSlot = nextSourceEchoIds.indexOf(nextEchoId)
+      if (oldEchoId) nextSourceEchoIds[sourceSlot] = oldEchoId
+      else nextSourceEchoIds.splice(sourceSlot, 1)
+    }
+
+    const echoById = new Map((await db.echoes.toArray()).map((echo) => [echo.id, echo]))
+    const loadoutCost = (ids: string[]) => ids.reduce((total, id) => total + (echoById.get(id)?.cost ?? 0), 0)
+    if (nextBuildEchoIds.length > 5 || loadoutCost(nextBuildEchoIds) > 12) {
+      throw new Error('This switch would make the current build exceed the 12-cost limit.')
+    }
+    if (nextSourceEchoIds && (nextSourceEchoIds.length > 5 || loadoutCost(nextSourceEchoIds) > 12)) {
+      throw new Error('This switch would make the other character exceed the 12-cost limit.')
+    }
+
+    const affectedBuilds = [{ ...build, echoIds: nextBuildEchoIds }]
+    await db.builds.update(build.id, { echoIds: nextBuildEchoIds })
+    if (sourceBuild && nextSourceEchoIds) {
+      await db.builds.update(sourceBuild.id, { echoIds: nextSourceEchoIds })
+      affectedBuilds.push({ ...sourceBuild, echoIds: nextSourceEchoIds })
+    }
+
+    const affectedBuildIds = affectedBuilds.map((candidate) => candidate.id)
+    await db.echoes.where('equippedBy').anyOf(affectedBuildIds).modify({ equippedBy: undefined, equippedByName: undefined })
+    for (const affectedBuild of affectedBuilds) {
+      if (!affectedBuild.echoIds.length) continue
+      const characterName = characterCatalog.find((entry) => entry.id === affectedBuild.resonatorId)?.name
+      await db.echoes.where('id').anyOf(affectedBuild.echoIds).modify({ equippedBy: affectedBuild.id, equippedByName: characterName })
+    }
   })
 }
 
@@ -190,7 +261,7 @@ export async function saveSettings(settings: AppSettings) {
 
 export async function exportAccount(): Promise<AccountDocument> {
   return {
-    schemaVersion: 4,
+    schemaVersion: 5,
     gameDataVersion: GAME_DATA_VERSION,
     exportedAt: new Date().toISOString(),
     echoes: (await db.echoes.toArray()).map((echo) => ({ ...echo, subStats: effectiveSubStats(echo) })),
@@ -203,7 +274,7 @@ export async function exportAccount(): Promise<AccountDocument> {
 }
 
 export function validateAccount(value: unknown): value is AccountDocument {
-  if (!isRecord(value) || ![1, 2, 3, 4].includes(Number(value.schemaVersion)) || typeof value.gameDataVersion !== 'string' || typeof value.exportedAt !== 'string') return false
+  if (!isRecord(value) || ![1, 2, 3, 4, 5].includes(Number(value.schemaVersion)) || typeof value.gameDataVersion !== 'string' || typeof value.exportedAt !== 'string') return false
   return Array.isArray(value.echoes) && value.echoes.every(isEcho)
     && (value.schemaVersion === 1 || (Array.isArray(value.characters) && value.characters.every(isOwnedCharacter)))
     && (value.schemaVersion === 1 || (Array.isArray(value.weapons) && value.weapons.every(isOwnedWeapon)))
@@ -303,6 +374,7 @@ function isTeam(value: unknown) {
       && typeof buff.stat === 'string' && (buff.stat === 'amplify' || buff.stat in statLabels)
       && typeof buff.stackingGroup === 'string' && isFiniteNumber(buff.duration) && buff.duration >= 0 && isFiniteNumber(buff.value))))
     && (value.scenario === undefined || isTeamScenario(value.scenario))
+    && (value.calculationV2 === undefined || isCalculationScenarioV2(value.calculationV2))
 }
 
 function isTeamScenario(value: unknown) {
@@ -312,6 +384,22 @@ function isTeamScenario(value: unknown) {
     && isRecord(value.enemyConditions) && Object.values(value.enemyConditions).every(validValue)
     && isRecord(value.selectedTargetByBuild) && Object.values(value.selectedTargetByBuild).every((target) => typeof target === 'string')
     && (value.compareBuildId === undefined || typeof value.compareBuildId === 'string')
+}
+
+function isCalculationScenarioV2(value: unknown) {
+  if (!isRecord(value) || value.version !== 2 || !['normal', 'expected', 'critical'].includes(String(value.resultMode))) return false
+  const validSelection = (selection: unknown) => isRecord(selection)
+    && typeof selection.enabled === 'boolean'
+    && (selection.value === undefined || isFiniteNumber(selection.value) || typeof selection.value === 'string' || typeof selection.value === 'boolean')
+    && (selection.stacks === undefined || isFiniteNumber(selection.stacks))
+    && (selection.refinement === undefined || isFiniteNumber(selection.refinement))
+    && (selection.recipientBuildId === undefined || typeof selection.recipientBuildId === 'string')
+  const validEffectMap = (entry: unknown) => isRecord(entry)
+    && Object.values(entry).every((selection) => validSelection(selection))
+  return isRecord(value.memberEffects) && Object.values(value.memberEffects).every(validEffectMap)
+    && isRecord(value.partyEffects) && Object.values(value.partyEffects).every(validEffectMap)
+    && isRecord(value.enemyStatuses) && Object.values(value.enemyStatuses).every(isFiniteNumber)
+    && isRecord(value.selectedAttackByBuild) && Object.values(value.selectedAttackByBuild).every((attackId) => typeof attackId === 'string')
 }
 
 function isSettings(value: unknown) {

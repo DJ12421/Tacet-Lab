@@ -9,7 +9,7 @@ export interface Weapon { id: string; name: string; type: 'broadblade' | 'sword'
 export interface OwnedCharacter { id: string; catalogId: string; level: number; sequence: number; locked: boolean; favorite?: boolean; skillLevels?: number[]; enabledSkillTreeBonusIds?: string[]; createdAt: number }
 export interface OwnedWeapon { id: string; catalogId: string; level: number; rank: number; locked: boolean; equippedBy?: string; createdAt: number }
 export interface Build { id: string; name: string; resonatorId: string; weaponId: string; echoIds: string[]; level: number; skillLevel: number }
-export interface Team { id: string; name: string; buildIds: string[]; enemy: EnemyConfig; rotationDuration: number; actions: RotationAction[]; buffs?: BuffEffect[]; scenario?: TeamScenario }
+export interface Team { id: string; name: string; buildIds: string[]; enemy: EnemyConfig; rotationDuration: number; actions: RotationAction[]; buffs?: BuffEffect[]; scenario?: TeamScenario; calculationV2?: import('./calculation-v2/types').CalculationScenarioV2 }
 export type ScenarioValue = number | string | boolean
 export type FormulaResultMode = 'normal' | 'expected' | 'critical'
 export interface TeamScenario {
@@ -46,8 +46,19 @@ export interface OptimizerFormulaConfig {
   inputs: Record<string, ScenarioValue>
   entries: import('./calculation/engine').FormulaEntry[]
 }
-export interface OptimizerRequest { requestId: string; echoes: Echo[]; resonator: Resonator; weapon: Weapon; attack: AttackDefinition; enemy: EnemyConfig; objective: OptimizerObjective; minimumStats: Partial<Record<OptimizerStatKey, number>>; maximumStats?: Partial<Record<OptimizerStatKey, number>>; requiredSonata?: string; limit: number; maxEvaluations?: number; includeEquippedBy?: string; bonusStatLines?: StatLine[]; formula?: OptimizerFormulaConfig }
+export interface OptimizerCalculationV2Config {
+  build: Build
+  character: OwnedCharacter
+  characterCatalog: import('../game-data').CharacterCatalogEntry
+  weapon?: OwnedWeapon
+  weaponCatalog?: import('../game-data').WeaponCatalogEntry
+  attack: import('./calculation-v2/types').CalculationAttackDefinition
+  scenario?: import('./calculation-v2/types').CalculationScenarioV2
+  partyEffects?: import('./calculation-v2/types').CalculationEffectDefinition[]
+  roverGender?: 'male' | 'female'
+}
+export interface OptimizerRequest { requestId: string; echoes: Echo[]; resonator: Resonator; weapon: Weapon; attack: AttackDefinition; enemy: EnemyConfig; objective: OptimizerObjective; minimumStats: Partial<Record<OptimizerStatKey, number>>; maximumStats?: Partial<Record<OptimizerStatKey, number>>; requiredSonata?: string; limit: number; maxEvaluations?: number; includeEquippedBy?: string; bonusStatLines?: StatLine[]; formula?: OptimizerFormulaConfig; calculationV2?: OptimizerCalculationV2Config }
 export interface OptimizerResult { requestId: string; echoIds: string[]; score: number; stats: AggregatedStats; damage: DamageResult; complete?: boolean; evaluations?: number; targetId?: string }
-export interface AccountDocument { schemaVersion: 1 | 2 | 3 | 4; gameDataVersion: string; exportedAt: string; echoes: Echo[]; characters: OwnedCharacter[]; weapons: OwnedWeapon[]; builds: Build[]; teams: Team[]; settings: AppSettings }
+export interface AccountDocument { schemaVersion: 1 | 2 | 3 | 4 | 5; gameDataVersion: string; exportedAt: string; echoes: Echo[]; characters: OwnedCharacter[]; weapons: OwnedWeapon[]; builds: Build[]; teams: Team[]; settings: AppSettings }
 export interface AppSettings { displayName: string; privacyMode: boolean; background: 'signal' | 'tacet' | 'plain'; scanIntervalMs: number; roverGender: 'male' | 'female'; scoreWeights: Record<string, Partial<Record<StatKey, number>>>; characterSubstatWeights: Record<string, Partial<Record<StatKey, number>>> }
 export type AppView = 'dashboard' | 'archive' | 'scanner' | 'echoes' | 'weapons' | 'characters' | 'teams' | 'builds' | 'legal'

@@ -1,5 +1,13 @@
 import { calculateRotation } from '../domain/damage'
 import { createBuildCalculationContext, FormulaCalculator, characterFormulaSheets, resolveFormulaTarget, type CalculationTrace, type FormulaTarget } from '../domain/calculation'
+import {
+  calculateBuildAttackV2, createBuildCalculationV2Context, enemyV2, outgoingPartyEffectsV2,
+  resolveCharacterMechanicsV2, resolveEchoMechanicsV2, skillLevelForAttackV2
+} from '../domain/calculation-v2'
+import type {
+  CalculationAttackDefinition, CalculationEffectDefinition, CalculationResultV2,
+  CalculationTraceV2, CharacterCalculationMechanics
+} from '../domain/calculation-v2'
 import type {
   AttackDefinition, BuffEffect, Build, DamageType, Echo, Element, OwnedCharacter,
   OwnedWeapon, Resonator, RotationAction, StatKey, StatLine, Team, Weapon
@@ -27,6 +35,7 @@ export interface TeamWorkspaceInput {
   characters: OwnedCharacter[]
   weapons: OwnedWeapon[]
   echoes: Echo[]
+  roverGender?: 'male' | 'female'
 }
 
 export interface TeamAttackModel {
@@ -58,6 +67,10 @@ export interface TeamMemberModel {
   roles: string[]
   warnings: string[]
   formulaRows: TeamFormulaRow[]
+  calculationMechanicsV2?: CharacterCalculationMechanics
+  calculationEffectsV2: CalculationEffectDefinition[]
+  outgoingEffectsV2: CalculationEffectDefinition[]
+  calculationRowsV2: TeamCalculationRowV2[]
   conditionedStats?: Record<string, number>
 }
 
@@ -67,6 +80,11 @@ export interface TeamFormulaRow {
   critical: number
   expected: number
   traces: Record<'normal' | 'critical' | 'expected', CalculationTrace>
+}
+
+export interface TeamCalculationRowV2 {
+  attack: CalculationAttackDefinition
+  result: CalculationResultV2
 }
 
 export interface TeamActionModel {
@@ -81,6 +99,8 @@ export interface TeamActionModel {
   warnings: string[]
   trace?: CalculationTrace
   traces?: Record<'normal' | 'critical' | 'expected', CalculationTrace>
+  traceV2?: CalculationTraceV2
+  tracesV2?: CalculationResultV2['trace']
   formulaTargetId?: string
 }
 
@@ -152,6 +172,49 @@ function attackModels(catalog: CharacterCatalogEntry, character: OwnedCharacter)
       iconSourceUrl: skill.iconSourceUrl,
       group
     }]
+  })
+}
+
+function v2DamageType(attack: CalculationAttackDefinition): DamageType {
+  if (attack.type === 'basic' || attack.type === 'heavy' || attack.type === 'skill' || attack.type === 'liberation'
+    || attack.type === 'intro' || attack.type === 'outro' || attack.type === 'echo' || attack.type === 'healing') return attack.type
+  return attack.type === 'shield' ? 'healing' : 'skill'
+}
+
+function v2AttackGroup(attack: CalculationAttackDefinition): TeamAttackGroup {
+  const group = attack.group.toLowerCase()
+  if (attack.type === 'tuneBreak' || group.includes('tune break')) return 'tuneBreak'
+  if (attack.type === 'outro' || group.includes('outro')) return 'outro'
+  if (attack.type === 'intro' || group.includes('intro')) return 'intro'
+  if (attack.type === 'liberation' || group.includes('liberation')) return 'liberation'
+  if (attack.type === 'forte' || group.includes('forte')) return 'forte'
+  if (attack.type === 'basic' || attack.type === 'heavy' || group.includes('basic')) return 'basic'
+  return 'skill'
+}
+
+function v2AttackModels(catalog: CharacterCatalogEntry, character: OwnedCharacter, mechanics: CharacterCalculationMechanics): TeamAttackModel[] {
+  return mechanics.attacks.filter((attack) => attack.type !== 'utility').map((attack) => {
+    const level = skillLevelForAttackV2(character, attack)
+    const talent = attack.talents[String(level)] ?? attack.talents['1'] ?? '0%'
+    const multiplier = Number.parseFloat(talent) / 100
+    const group = v2AttackGroup(attack)
+    const skillIndex = group === 'basic' ? 0 : group === 'skill' ? 1 : group === 'forte' ? 2 : group === 'liberation' ? 3 : 4
+    const skill = group === 'outro' ? catalog.skillTreeExtras.outroSkill
+      : group === 'tuneBreak' ? catalog.skillTreeExtras.tuneBreakSkill
+        : catalog.skillIcons[SKILL_KEYS[skillIndex] ?? 'forteCircuit']
+    return {
+      id: attack.id,
+      name: attack.name,
+      type: v2DamageType(attack),
+      multiplier: Number.isFinite(multiplier) ? multiplier : 0,
+      multiplierLabel: talent,
+      hitMultipliers: [Number.isFinite(multiplier) ? multiplier : 0],
+      scalesWith: attack.attribute === 'hp' ? 'hp' : attack.attribute === 'defense' ? 'def' : 'atk',
+      skillLevel: level,
+      skillName: skill.name,
+      iconSourceUrl: skill.iconSourceUrl,
+      group
+    }
   })
 }
 
@@ -247,7 +310,15 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
     const showcase = character && catalog
       ? resolveCharacterShowcaseModel({ character, catalog, weapons: input.weapons, echoes: input.echoes, builds: build ? [build] : [] })
       : undefined
-    const attacks = catalog && character ? attackModels(catalog, character) : []
+    const characterMechanicsV2 = catalog && character ? resolveCharacterMechanicsV2(catalog, character, input.roverGender) : undefined
+    const mainEchoMechanicsV2 = resolveEchoMechanicsV2(showcase?.echoSlots[0])
+    const calculationMechanicsV2 = characterMechanicsV2 ? {
+      ...characterMechanicsV2,
+      attacks: [...characterMechanicsV2.attacks, ...(mainEchoMechanicsV2?.attacks ?? [])]
+    } : undefined
+    const attacks = catalog && character && calculationMechanicsV2
+      ? v2AttackModels(catalog, character, calculationMechanicsV2)
+      : catalog && character ? attackModels(catalog, character) : []
     const warnings: string[] = []
     if (!build) warnings.push('No build assigned to this slot.')
     else {
@@ -258,7 +329,8 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
     }
     return {
       slot, build, character, catalog, showcase, attacks, contribution: 0, contributionPercent: 0,
-      byType: {}, appliedBuffs: [], receivedBuffs: [], roles: inferRoles(catalog, attacks), warnings, formulaRows: []
+      byType: {}, appliedBuffs: [], receivedBuffs: [], roles: inferRoles(catalog, attacks), warnings, formulaRows: [],
+      calculationMechanicsV2, calculationEffectsV2: [], outgoingEffectsV2: [], calculationRowsV2: []
     }
   }) as [TeamMemberModel, TeamMemberModel, TeamMemberModel]
 
@@ -274,6 +346,13 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
     member.contributionPercent = rotation.total > 0 ? member.contribution / rotation.total * 100 : 0
     member.appliedBuffs = (input.team.buffs ?? []).filter((effect) => effect.sourceBuildId === member.build?.id)
     member.receivedBuffs = (input.team.buffs ?? []).filter((effect) => buffAppliesTo(effect, member))
+    member.outgoingEffectsV2 = outgoingPartyEffectsV2(
+      member.catalog,
+      member.showcase?.weapon?.catalog,
+      member.showcase?.echoSlots[0],
+      member.showcase?.sonatas ?? [],
+      member.calculationMechanicsV2?.key
+    ).filter((effect) => !effect.sequence || effect.sequence <= (member.character?.sequence ?? 0))
     const ownedWeapon = member.showcase?.weapon?.owned
     if (member.character && member.build && ownedWeapon) {
       const sheet = characterFormulaSheets.find((entry) => entry.id === member.character?.catalogId)
@@ -292,14 +371,59 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
     }
   }
 
+  const receivedPartyEffectsFor = (recipient: TeamMemberModel) => baseMembers.flatMap((source) => {
+    if (!source.build || !recipient.build || (source.build.id === recipient.build.id && !source.outgoingEffectsV2.some((effect) => effect.scope === 'team'))) return []
+    const sourceRank = source.showcase?.weapon?.owned.rank ?? 1
+    return source.outgoingEffectsV2
+      .filter((effect) => source.build?.id !== recipient.build?.id || effect.scope === 'team')
+      .map((effect): CalculationEffectDefinition => ({
+        ...effect,
+        sourceKind: 'party',
+        modifiers: effect.modifiers.map((modifier) => modifier.modifierByRefinement
+          ? {
+              ...modifier,
+              modifierValue: modifier.modifierByRefinement[String(sourceRank)] ?? 0,
+              modifierByRefinement: undefined
+            }
+          : modifier)
+      }))
+  })
+  const calculationEnemy = enemyV2(input.team.enemy, input.team.calculationV2)
+  for (const member of baseMembers) {
+    if (!member.build || !member.character || !member.catalog || !member.showcase || !member.calculationMechanicsV2) continue
+    const ownedWeapon = member.showcase.weapon?.owned
+    const receivedPartyEffects = receivedPartyEffectsFor(member)
+    const source = {
+      build: member.build,
+      character: member.character,
+      characterCatalog: member.catalog,
+      weapon: ownedWeapon,
+      weaponCatalog: member.showcase.weapon?.catalog,
+      showcase: member.showcase,
+      scenario: input.team.calculationV2,
+      partyEffects: receivedPartyEffects,
+      roverGender: input.roverGender
+    }
+    member.calculationEffectsV2 = createBuildCalculationV2Context(source)?.effects ?? []
+    member.calculationRowsV2 = member.calculationMechanicsV2.attacks.flatMap((attack) => {
+      const result = calculateBuildAttackV2(source, attack, calculationEnemy)
+      return result ? [{ attack, result }] : []
+    })
+    member.warnings.push(...member.calculationRowsV2.flatMap((row) => row.result.warnings))
+  }
+
   const sortedActions = [...input.team.actions].sort((left, right) => left.timestamp - right.timestamp)
   let resultIndex = 0
   const actions = sortedActions.map((action, index): TeamActionModel => {
     const member = baseMembers.find((entry) => entry.build?.id === action.buildId)
-    const attack = member?.attacks.find((entry) => entry.id === action.attackId)
+    const calculationAttack = member?.calculationMechanicsV2?.attacks.find((entry) =>
+      entry.id === action.attackId || entry.key === action.attackId || entry.id.endsWith(`:${action.attackId}`)
+    )
+    const attack = member?.attacks.find((entry) => entry.id === action.attackId || entry.id === calculationAttack?.id)
+      ?? (member?.catalog && member.character ? attackModels(member.catalog, member.character).find((entry) => entry.id === action.attackId) : undefined)
     const warnings: string[] = []
     if (!member?.build) warnings.push('Character is not assigned to this team.')
-    if (!attack) warnings.push('Nanoka attack data is missing for this action.')
+    if (!attack) warnings.push('Calculation V2 attack data is missing for this action.')
     if (!member?.showcase?.weapon) warnings.push('Damage skipped because no weapon is equipped.')
     if (action.timestamp < 0 || action.timestamp > input.team.rotationDuration) warnings.push('Timestamp is outside the rotation duration.')
     const valid = Boolean(member?.build && member.showcase?.weapon && attack)
@@ -309,7 +433,23 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
     const formulaTargetId = action.formulaTargetId ?? (member?.catalog && attack ? `${member.catalog.id}:${attack.id}` : undefined)
     const target = formulaTargetId && member?.catalog ? resolveFormulaTarget(member.catalog.id, formulaTargetId) : undefined
     let formulaResult: { normal: number; critical: number; expected: number; trace?: CalculationTrace; traces?: Record<'normal' | 'critical' | 'expected', CalculationTrace> } | undefined
+    let calculationResultV2: CalculationResultV2 | undefined
     const ownedWeapon = member?.showcase?.weapon?.owned
+    if (calculationAttack && member?.build && member.character && member.catalog && member.showcase) {
+      const receivedPartyEffects = receivedPartyEffectsFor(member)
+      calculationResultV2 = calculateBuildAttackV2({
+        build: member.build,
+        character: member.character,
+        characterCatalog: member.catalog,
+        weapon: ownedWeapon,
+        weaponCatalog: member.showcase.weapon?.catalog,
+        showcase: member.showcase,
+        scenario: input.team.calculationV2,
+        partyEffects: receivedPartyEffects,
+        activeCustomBuffs: activeBuffs,
+        roverGender: input.roverGender
+      }, calculationAttack, calculationEnemy)
+    }
     if (target && member?.build && member.character && ownedWeapon) {
       const calculator = new FormulaCalculator(createBuildCalculationContext({
         build: member.build, character: member.character, weapon: ownedWeapon,
@@ -321,9 +461,15 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
       const traces = { normal: normal.trace, critical: critical.trace, expected: expected.trace }
       formulaResult = { normal: Number(normal.value), critical: Number(critical.value), expected: Number(expected.value), trace: traces[mode], traces }
     }
+    const mode = input.team.calculationV2?.resultMode ?? input.team.scenario?.resultMode ?? 'expected'
     return {
-      action, member, attack, normal: formulaResult?.normal ?? result?.normal ?? 0, critical: formulaResult?.critical ?? result?.critical ?? 0,
-      expected: formulaResult?.expected ?? result?.expected ?? 0, activeBuffs, activates, warnings, trace: formulaResult?.trace, traces: formulaResult?.traces, formulaTargetId
+      action, member, attack, normal: calculationResultV2?.normal ?? formulaResult?.normal ?? result?.normal ?? 0,
+      critical: calculationResultV2?.critical ?? formulaResult?.critical ?? result?.critical ?? 0,
+      expected: calculationResultV2?.expected ?? formulaResult?.expected ?? result?.expected ?? 0,
+      activeBuffs, activates, warnings: [...warnings, ...(calculationResultV2?.warnings ?? [])],
+      trace: formulaResult?.trace, traces: formulaResult?.traces,
+      traceV2: calculationResultV2?.trace[mode], tracesV2: calculationResultV2?.trace,
+      formulaTargetId
     }
   })
 
@@ -357,8 +503,7 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
   const allAttacks = baseMembers.flatMap((member) => member.attacks)
   const warnings = [...new Set([
     ...baseMembers.flatMap((member) => member.warnings),
-    ...actions.flatMap((action) => action.warnings),
-    'All Weapons, Sonata, Forte and Sequence effects are WIP. Please report anything abnormal in the discord server Bug Reports Channel.'
+    ...actions.flatMap((action) => action.warnings)
   ])]
   return {
     team: input.team,

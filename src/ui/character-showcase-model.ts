@@ -46,6 +46,7 @@ export interface CharacterShowcaseModel {
   echoSlots: Array<Echo | undefined>
   equippedEchoes: Echo[]
   echoStatContributions: Partial<Record<StatKey, number>>
+  equipmentStats: AggregatedStats
   finalStats: AggregatedStats
   sonatas: SonataCount[]
   statBonusSources: CharacterStatBonusSource[]
@@ -231,6 +232,7 @@ export function resolveCharacterShowcaseModel(input: CharacterShowcaseInput): Ch
     echoSlots,
     equippedEchoes,
     echoStatContributions: totalLines(echoLines),
+    equipmentStats: calculateFinalStats(catalog, characterBaseStats, weapon, echoLines),
     finalStats: calculateFinalStats(catalog, characterBaseStats, weapon, [...echoLines, ...passiveLines]),
     sonatas,
     statBonusSources,

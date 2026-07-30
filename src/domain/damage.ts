@@ -14,7 +14,7 @@ function addStat(stats: AggregatedStats, key: StatKey, value: number) {
   if (key in stats) stats[key as keyof AggregatedStats] += value
 }
 
-export function aggregateStats(resonator: Resonator, weapon: Weapon, echoes: Echo[], bonusLines: StatLine[] = []): AggregatedStats {
+export function aggregateStats(resonator: Resonator, weapon: Weapon, echoes: Echo[], bonusLines: StatLine[] = [], includeLegacySonatas = true): AggregatedStats {
   const stats = emptyStats()
   const percent = { hp: 0, atk: 0, def: 0 }
   const flat = { hp: 0, atk: 0, def: 0 }
@@ -40,15 +40,17 @@ export function aggregateStats(resonator: Resonator, weapon: Weapon, echoes: Ech
     else addStat(stats, line.key, line.value)
   }
 
-  const sonatas = echoes.reduce<Record<string, number>>((sets, echo) => {
-    sets[echo.sonata] = (sets[echo.sonata] ?? 0) + 1
-    return sets
-  }, {})
-  if ((sonatas['Celestial Light'] ?? 0) >= 5) stats.spectroDamage += 30
-  if ((sonatas['Molten Rift'] ?? 0) >= 5) stats.fusionDamage += 30
-  if ((sonatas['Freezing Frost'] ?? 0) >= 5) stats.glacioDamage += 30
-  if ((sonatas['Lingering Tunes'] ?? 0) >= 5) percent.atk += 20
-  if ((sonatas['Rejuvenating Glow'] ?? 0) >= 5) stats.healingBonus += 10
+  if (includeLegacySonatas) {
+    const sonatas = echoes.reduce<Record<string, number>>((sets, echo) => {
+      sets[echo.sonata] = (sets[echo.sonata] ?? 0) + 1
+      return sets
+    }, {})
+    if ((sonatas['Celestial Light'] ?? 0) >= 5) stats.spectroDamage += 30
+    if ((sonatas['Molten Rift'] ?? 0) >= 5) stats.fusionDamage += 30
+    if ((sonatas['Freezing Frost'] ?? 0) >= 5) stats.glacioDamage += 30
+    if ((sonatas['Lingering Tunes'] ?? 0) >= 5) percent.atk += 20
+    if ((sonatas['Rejuvenating Glow'] ?? 0) >= 5) stats.healingBonus += 10
+  }
 
   stats.hp = floorGameValue(base.hp * (1 + percent.hp / 100) + flat.hp)
   stats.atk = floorGameValue(base.atk * (1 + percent.atk / 100) + flat.atk)

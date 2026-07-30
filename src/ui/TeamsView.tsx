@@ -5,9 +5,10 @@ import { resolveCharacterSubstatProfile } from '../domain/character-substat-scor
 import { echoRollRating } from '../domain/echo-grade'
 import { createLocalId } from '../domain/id'
 import type { BuffEffect, Build, DamageType, Echo, FormulaResultMode, OwnedCharacter, OwnedWeapon, RotationAction, StatKey, Team } from '../domain/types'
-import { characterCatalog, statLabels, weaponCatalog, weaponPassiveConditions } from '../game-data'
+import { characterCatalog, statLabels, weaponCatalog } from '../game-data'
 import { generatedSonataIconSources } from '../game-data/sonatas.generated'
-import { characterFormulaSheets, FORMULA_SHEET_VERSION, getFormulaCoverage, type CalculationTrace, type ConditionDefinition } from '../domain/calculation'
+import type { CalculationTrace } from '../domain/calculation'
+import { emptyCalculationScenarioV2, type CalculationEffectDefinition, type CalculationEffectSelection, type CalculationTraceV2 } from '../domain/calculation-v2'
 import { db } from '../storage/database'
 import { EchoWaveform } from './EchoWaveform'
 import { richSkillDescription } from './CharacterShowcase'
@@ -24,6 +25,7 @@ import './team-workspace.css'
 
 type WorkspaceTab = 'settings' | 0 | 1 | 2
 type MemberSection = 'overview' | 'forte' | 'optimizer' | 'rotation' | 'damage' | 'echoes'
+type TeamRouteSection = 'overview' | 'forte' | 'optimize' | 'rotation'
 
 const MEMBER_SECTIONS: Array<{ id: MemberSection; label: string }> = [
   { id: 'overview', label: 'Overview' },
@@ -98,7 +100,14 @@ interface TeamsViewProps {
   refresh: () => Promise<void>
   openScanner: () => void
   galleryRequest: number
+  roverGender: 'male' | 'female'
+  route?: { team?: string; character?: string; section?: TeamRouteSection }
+  onRouteChange?: (route: { team?: string; character?: string; section?: TeamRouteSection }) => void
 }
+
+const routeKey = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, '')
+const memberSectionFromRoute = (section?: TeamRouteSection): MemberSection => section === 'optimize' ? 'optimizer' : section ?? 'overview'
+const memberSectionToRoute = (section: MemberSection): TeamRouteSection => section === 'optimizer' ? 'optimize' : section === 'forte' || section === 'rotation' ? section : 'overview'
 
 function percent(value: number, total: number) {
   return total > 0 ? `${(value / total * 100).toFixed(1)}%` : '0.0%'
@@ -180,6 +189,13 @@ function TeamMemberColumn({ member, model, builds, onOpen, onAssign }: {
         </select>
       </label>}
     {member.build ? <>
+      <label className="tw-member-switcher"><span>Switch character</span><select value={member.build.id} onChange={(event) => void onAssign(event.target.value)} aria-label={`Switch member ${member.slot + 1}`}>
+        {builds.map((build) => {
+          const catalog = characterCatalog.find((entry) => entry.id === build.resonatorId)
+          return <option value={build.id} key={build.id} disabled={build.id !== member.build?.id && model.team.buildIds.includes(build.id)}>{catalog?.name ?? build.name} · {build.name}</option>
+        })}
+        <option value="">Remove member</option>
+      </select></label>
       <section className="tw-member-showcase" style={{ '--tw-member-element': ELEMENT_COLORS[member.catalog?.element ?? ''] ?? '#8de4d4' } as CSSProperties}>
         {member.catalog?.portraitSourceUrl && <img src={member.catalog.portraitSourceUrl} alt=""/>}
         <div className="tw-member-showcase-copy">
@@ -467,12 +483,12 @@ function RotationWorkspace({ model, updateTeam }: { model: TeamWorkspaceModel; u
     if (!member?.build || !member.attacks[0]) return
     await updateTeam({ actions: [...model.team.actions, { id: createLocalId(), timestamp: Math.min(model.team.rotationDuration, Math.ceil((model.team.actions.at(-1)?.timestamp ?? -1) + 1)), buildId: member.build.id, attackId: member.attacks[0].id, formulaTargetId: `${member.catalog?.id}:${member.attacks[0].id}` }] })
   }
-  return <section className="tw-panel tw-rotation"><header><div><span className="eyebrow">Nanoka skill multipliers</span><h2>Rotation workspace</h2><p>Ordered actions calculate through the existing Tacet Lab damage domain.</p></div><button className="primary" onClick={() => void addAction()} disabled={!model.members.some((member) => member.build && member.attacks.length)}><Icon name="plus"/>Add action</button></header>
-    <div className="tw-rotation-head" aria-hidden="true"><span>Time</span><span>Character</span><span>Nanoka attack</span><span>Multiplier / Tags</span><span>Buff state</span><span>Normal</span><span>Critical</span><span>Expected</span><span/></div>
+  return <section className="tw-panel tw-rotation"><header><div><span className="eyebrow">Calculation V2 mechanics</span><h2>Rotation workspace</h2><p>Ordered actions use the same character, weapon, Sonata, Echo, sequence, and party-effect calculation context as the damage sheet.</p></div><button className="primary" onClick={() => void addAction()} disabled={!model.members.some((member) => member.build && member.attacks.length)}><Icon name="plus"/>Add action</button></header>
+    <div className="tw-rotation-head" aria-hidden="true"><span>Time</span><span>Character</span><span>Attack</span><span>Multiplier / Tags</span><span>Buff state</span><span>Normal</span><span>Critical</span><span>Expected</span><span/></div>
     <div className="tw-action-list">{model.actions.map((row) => <div className={`tw-action ${row.warnings.length ? 'is-invalid' : ''}`} key={row.action.id}>
       <input aria-label="Timestamp" type="number" min="0" max={model.team.rotationDuration} step="0.1" value={row.action.timestamp} onChange={(event) => void updateAction(row.action.id, { timestamp: Number(event.target.value) })}/>
       <select aria-label="Character" value={row.action.buildId} onChange={(event) => { const member = model.members.find((entry) => entry.build?.id === event.target.value); const attackId = member?.attacks[0]?.id ?? ''; void updateAction(row.action.id, { buildId: event.target.value, attackId, formulaTargetId: member?.catalog ? `${member.catalog.id}:${attackId}` : undefined }) }}>{model.members.flatMap((member) => member.build ? [<option value={member.build.id} key={member.build.id}>{teamMemberName(member)}</option>] : [])}</select>
-      <select aria-label="Nanoka attack" value={row.action.attackId} onChange={(event) => void updateAction(row.action.id, { attackId: event.target.value, formulaTargetId: row.member?.catalog ? `${row.member.catalog.id}:${event.target.value}` : undefined })}>{ROTATION_ATTACK_GROUPS.map((group) => {
+      <select aria-label="Attack" value={row.attack?.id ?? row.action.attackId} onChange={(event) => void updateAction(row.action.id, { attackId: event.target.value, formulaTargetId: row.member?.catalog ? `${row.member.catalog.id}:${event.target.value}` : undefined })}>{ROTATION_ATTACK_GROUPS.map((group) => {
         const attacks = row.member?.attacks.filter((attack) => attack.group === group.id) ?? []
         return attacks.length ? <optgroup label={group.label} key={group.id}>{attacks.map((attack) => <option value={attack.id} key={attack.id}>{attack.name}</option>)}</optgroup> : null
       })}</select>
@@ -579,52 +595,119 @@ function flatValueLabel(valueName: string, skillName: string, sectionTitle: stri
 function ForteDamageRows({ attacks, member, resultMode, skillName }: { attacks: ForteAttackGroup[]; member: TeamMemberModel; resultMode: 'normal' | 'expected' | 'critical'; skillName: string }) {
   if (!attacks.length) return null
   return <dl className="tw-skill-damage-rows">{attacks.map((attack) => {
-    const formulaRows = attack.attackIds.flatMap((attackId) => member.formulaRows.filter((row) => row.target.id === `${member.catalog!.id}:${attackId}`))
-    const damage = formulaRows.reduce((total, row) => total + row[resultMode], 0)
-    const detail = formulaRows.length === 1
-      ? traceCalculationDetail(formulaRows[0].traces[resultMode], attack.name)
-      : sumDetail(`${attack.name} · ${resultMode}`, damage, formulaRows.map((row, rowIndex) => ({ label: String(rowIndex + 1), value: row[resultMode] })))
-    const hitValues = formulaRows.flatMap((row) => {
-      const sourceAttack = member.attacks.find((candidate) => row.target.id === `${member.catalog!.id}:${candidate.id}`)
-      const hitMultipliers = sourceAttack?.hitMultipliers.length ? sourceAttack.hitMultipliers : [sourceAttack?.multiplier ?? 1]
-      const totalMultiplier = hitMultipliers.reduce((total, multiplier) => total + multiplier, 0)
-      return hitMultipliers.map((multiplier) => totalMultiplier > 0 ? row[resultMode] * multiplier / totalMultiplier : row[resultMode])
-    })
+    const calculationRows = attack.attackIds.flatMap((attackId) => member.calculationRowsV2.filter((row) => row.attack.id === attackId))
+    const damage = calculationRows.reduce((total, row) => total + row.result[resultMode], 0)
+    const detail = calculationRows.length === 1
+      ? traceCalculationDetail(calculationRows[0].result.trace[resultMode], attack.name)
+      : sumDetail(`${attack.name} · ${resultMode}`, damage, calculationRows.map((row, rowIndex) => ({ label: row.attack.name || String(rowIndex + 1), value: row.result[resultMode] })))
+    const hitValues = calculationRows.flatMap((row) => row.result.instances.length
+      ? row.result.instances.flatMap((instance) => {
+          const resultScale = row.result.normal ? row.result[resultMode] / row.result.normal : 1
+          return Array.from({ length: instance.count }, () => instance.normal * resultScale)
+        })
+      : [row.result[resultMode]])
     const label = attack.name.startsWith(`${skillName} - `) ? attack.name.slice(skillName.length + 3) : attack.name
-    return <div key={`${attack.name}:${attack.type}`}><dt>{label}<small>{attack.type}{hitValues.length > 1 ? ` · ${hitValues.length}-hit sequence` : ''}</small></dt><dd><CalculatedValue detail={detail} presentation="tooltip" tooltipValues={hitValues.map(formatDamage)}><b>{formulaRows.length ? formatDamage(damage) : '—'}</b></CalculatedValue><small>{resultMode}</small></dd></div>
+    return <div key={`${attack.name}:${attack.type}`}><dt>{label}<small>{attack.type}{hitValues.length > 1 ? ` · ${hitValues.length}-hit sequence` : ''}</small></dt><dd><CalculatedValue detail={detail} presentation="tooltip" tooltipValues={hitValues.map(formatDamage)}><b>{calculationRows.length ? formatDamage(damage) : '—'}</b></CalculatedValue><small>{resultMode}</small></dd></div>
   })}</dl>
 }
 
-function ForteConditionControls({ conditions, values, mode, modes, disabled = false, setCondition }: {
-  conditions: ConditionDefinition[]
-  values: Record<string, boolean | number | string>
-  mode?: string
-  modes: string[]
+function CalculationEffectControls({ effects, member, model, updateTeam, disabled = false }: {
+  effects: CalculationEffectDefinition[]
+  member: TeamMemberModel
+  model: TeamWorkspaceModel
+  updateTeam: (patch: Partial<Team>) => Promise<void>
   disabled?: boolean
-  setCondition: (id: string, value: boolean | number | string) => void
 }) {
-  if (!conditions.length && modes.length < 2) return null
-  return <div className={`tw-card-conditions ${disabled ? 'is-disabled' : ''}`}>
-    {modes.length > 1 && <div className="tw-condition-mode"><span>Mode</span><div>{modes.map((option) => <button type="button" disabled={disabled} className={mode === option ? 'active' : ''} aria-pressed={mode === option} key={option} onClick={() => setCondition('wt:mode', option)}>{option}</button>)}</div></div>}
-    {conditions.map((condition) => {
-      const value = values[condition.id] ?? condition.defaultValue
-      const conditionDisabled = disabled || condition.disabled === true
-      const numeric = condition.type === 'stack' || condition.type === 'number'
-      const valueActive = numeric ? Number(value) > Number(condition.min ?? 0) : Boolean(value)
-      const active = condition.disabled ? valueActive : !disabled && valueActive
-      return <article className={active ? 'is-active' : ''} key={condition.id}>
-        <div><strong>{condition.label}</strong>{condition.description && <p>{condition.description}</p>}</div>
-        {numeric
-          ? <label className="tw-stack-condition"><span>{condition.type === 'stack' ? 'Stacks' : 'Value'}</span><select disabled={conditionDisabled} value={Number(value)} onChange={(event) => setCondition(condition.id, Number(event.target.value))}>{Array.from({ length: Math.max(1, (condition.max ?? condition.min ?? 0) - (condition.min ?? 0) + 1) }, (_, index) => (condition.min ?? 0) + index).map((option) => <option value={option} key={option}>{option}</option>)}</select><small>/{condition.max}</small></label>
-          : <button type="button" disabled={conditionDisabled} className="tw-condition-toggle" aria-pressed={active} onClick={() => setCondition(condition.id, !active)}><i/><span>{active ? 'On' : 'Off'}</span></button>}
+  const buildId = member.build?.id
+  if (!buildId || !effects.length) return null
+  const scenario = model.team.calculationV2 ?? emptyCalculationScenarioV2()
+  const selectionFor = (effect: CalculationEffectDefinition): CalculationEffectSelection => {
+    const bucket = effect.sourceKind === 'party' ? scenario.partyEffects : scenario.memberEffects
+    return bucket[buildId]?.[effect.id] ?? {
+      enabled: effect.alwaysEnabled || /^Stat Bonus:/i.test(effect.name),
+      ...(effect.hasStacks ? { stacks: effect.minStacks } : {}),
+      ...(effect.sourceKind === 'weapon' ? { refinement: member.showcase?.weapon?.owned.rank ?? 1 } : {})
+    }
+  }
+  const setEffect = (effect: CalculationEffectDefinition, patch: Partial<CalculationEffectSelection>) => {
+    const bucketKey = effect.sourceKind === 'party' ? 'partyEffects' : 'memberEffects'
+    const bucket = scenario[bucketKey]
+    void updateTeam({
+      calculationV2: {
+        ...scenario,
+        [bucketKey]: {
+          ...bucket,
+          [buildId]: {
+            ...bucket[buildId],
+            [effect.id]: { ...selectionFor(effect), ...patch }
+          }
+        }
+      }
+    })
+  }
+  return <div className={`tw-v2-effect-list ${disabled ? 'is-disabled' : ''}`}>
+    {effects.map((effect) => {
+      const selection = selectionFor(effect)
+      const fixed = effect.alwaysEnabled || /^Stat Bonus:/i.test(effect.name)
+      const active = fixed || selection.enabled
+      return <article className={active ? 'is-active' : ''} key={effect.id} title={effect.description}>
+        <button type="button" className="tw-condition-toggle" disabled={disabled || fixed} aria-pressed={active} onClick={() => setEffect(effect, {
+          enabled: !active,
+          ...(!active && effect.hasStacks && !(selection.stacks ?? 0) ? { stacks: effect.maxStacks } : {})
+        })}><i/><span>{active ? 'On' : 'Off'}</span></button>
+        <span><strong>{effect.sourceKind === 'party' ? `${effect.sourceId} · ${effect.name}` : effect.name}</strong>{effect.description && <small>{effect.description}</small>}</span>
+        {effect.hasStacks && <label><span>Stacks</span><select disabled={disabled || !active} value={selection.stacks ?? effect.minStacks} onChange={(event) => setEffect(effect, { enabled: true, stacks: Number(event.target.value) })}>{Array.from({ length: Math.max(1, effect.maxStacks - effect.minStacks + 1) }, (_, index) => effect.minStacks + index).map((stack) => <option value={stack} key={stack}>{stack}</option>)}</select><small>/{effect.maxStacks}</small></label>}
       </article>
     })}
   </div>
 }
 
-function sequenceConditionLabel(condition: ConditionDefinition) {
-  const trigger = condition.description?.match(/\b((?:After|When|While|Upon|Casting|Obtaining|Dealing|Using|If|Whenever|Once|In the)\b[^,.;]{0,80})/i)?.[1]
-  return trigger?.trim() || 'Conditional effect'
+function CalculationStanceControl({ member, model, updateTeam }: {
+  member: TeamMemberModel
+  model: TeamWorkspaceModel
+  updateTeam: (patch: Partial<Team>) => Promise<void>
+}) {
+  const buildId = member.build?.id
+  const mechanics = member.calculationMechanicsV2
+  if (!buildId || !mechanics || mechanics.stances.length < 2) return null
+  const scenario = model.team.calculationV2 ?? emptyCalculationScenarioV2()
+  const effectId = `character:${mechanics.key}:stance`
+  const current = String(scenario.memberEffects[buildId]?.[effectId]?.value ?? mechanics.stances[0])
+  return <label className="tw-v2-stance"><span>Calculation stance</span><select value={current} onChange={(event) => void updateTeam({
+    calculationV2: {
+      ...scenario,
+      memberEffects: {
+        ...scenario.memberEffects,
+        [buildId]: {
+          ...scenario.memberEffects[buildId],
+          [effectId]: { enabled: true, value: event.target.value }
+        }
+      }
+    }
+  })}>{mechanics.stances.map((stance) => <option value={stance} key={stance}>{stance}</option>)}</select></label>
+}
+
+function normalizedEffectTarget(value: string) {
+  return value.toLowerCase().replace(/[^a-z0-9]/g, '')
+}
+
+function effectTargetsAttacks(effect: CalculationEffectDefinition, attacks: NonNullable<TeamMemberModel['calculationMechanicsV2']>['attacks']) {
+  const attackTargets = attacks.flatMap((attack) => [attack.id, attack.key, attack.name]).map(normalizedEffectTarget).filter(Boolean)
+  const effectTargets = [effect.key, effect.name].map(normalizedEffectTarget).filter((target) => target.length > 4)
+  if (effectTargets.some((target) => attackTargets.some((attack) => target === attack || attack.includes(target)))) return true
+  return effect.modifiers.some((modifier) => {
+    const modifierTargets = [
+      ...(modifier.modifySpecificTalents ?? []),
+      ...(modifier.modifierTalentKey ? [modifier.modifierTalentKey] : [])
+    ].map(normalizedEffectTarget).filter(Boolean)
+    return modifierTargets.some((target) => attackTargets.some((attack) => target === attack || target.endsWith(attack) || attack.endsWith(target)))
+  })
+}
+
+function effectMatchesPassive(effect: CalculationEffectDefinition, passiveName: string) {
+  const passive = normalizedEffectTarget(passiveName)
+  if (!passive) return false
+  return normalizedEffectTarget(effect.name).includes(passive) || normalizedEffectTarget(effect.key).includes(passive)
 }
 
 function ForteWorkspace({ member, model, refresh, updateTeam }: { member: TeamMemberModel; model: TeamWorkspaceModel; refresh: () => Promise<void>; updateTeam: (patch: Partial<Team>) => Promise<void> }) {
@@ -640,17 +723,29 @@ function ForteWorkspace({ member, model, refresh, updateTeam }: { member: TeamMe
     ...member.catalog.skillTreeExtras.inherentSkills.map((skill, index) => ({ ...skill, eyebrow: `Inherent Skill ${index + 1}`, id: inherentSkillBonusId(index), inherentSkillIndex: index })),
     { ...member.catalog.skillTreeExtras.tuneBreakSkill, eyebrow: 'Tune Break', id: undefined, inherentSkillIndex: undefined }
   ].filter((skill) => skill.name || skill.description || skill.iconSourceUrl)
-  const resultMode = model.team.scenario?.resultMode ?? 'expected'
-  const sheet = characterFormulaSheets.find((entry) => entry.id === member.catalog!.id)
-  const scenario = model.team.scenario ?? { resultMode: 'expected' as const, memberConditions: {}, enemyConditions: {}, selectedTargetByBuild: {} }
-  const conditionValues = member.build ? scenario.memberConditions[member.build.id] ?? {} : {}
-  const modeDefinition = sheet?.conditions.find((condition) => condition.id === 'wt:mode')
-  const modes = modeDefinition?.options ?? []
-  const mode = String(conditionValues['wt:mode'] ?? modeDefinition?.defaultValue ?? '')
-  const setCondition = (id: string, value: boolean | number | string) => {
-    if (!member.build) return
-    void updateTeam({ scenario: { ...scenario, memberConditions: { ...scenario.memberConditions, [member.build.id]: { ...conditionValues, [id]: value } } } })
-  }
+  const resultMode = model.team.calculationV2?.resultMode ?? 'expected'
+  const characterEffects = member.calculationEffectsV2.filter((effect) => effect.sourceKind === 'character' || effect.sourceKind === 'inherent')
+  const skillEffects = new Map(skillEntries.map(({ key }) => [key, [] as CalculationEffectDefinition[]]))
+  const assignedEffectIds = new Set<string>()
+  skillEntries.forEach(({ key }) => {
+    const group = key === 'normalAttack' ? 'Basic Attack'
+      : key === 'resonanceSkill' ? 'Resonance Skill'
+        : key === 'forteCircuit' ? 'Forte Circuit'
+          : key === 'resonanceLiberation' ? 'Resonance Liberation'
+            : key === 'introSkill' ? 'Intro Skill'
+              : 'Outro Skill'
+    const attacks = member.calculationMechanicsV2?.attacks.filter((attack) => attack.group === group) ?? []
+    const matches = characterEffects.filter((effect) => !assignedEffectIds.has(effect.id) && effectTargetsAttacks(effect, attacks))
+    matches.forEach((effect) => assignedEffectIds.add(effect.id))
+    skillEffects.set(key, matches)
+  })
+  const passiveEffects = new Map(passiveCards.map((passive) => {
+    const matches = characterEffects.filter((effect) => !assignedEffectIds.has(effect.id) && effectMatchesPassive(effect, passive.name))
+    matches.forEach((effect) => assignedEffectIds.add(effect.id))
+    return [`${passive.eyebrow}-${passive.name}`, matches] as const
+  }))
+  const generalEffects = characterEffects.filter((effect) => !assignedEffectIds.has(effect.id) && !/^Stat Bonus:/i.test(effect.name))
+  const statBonusEffects = characterEffects.filter((effect) => !assignedEffectIds.has(effect.id) && /^Stat Bonus:/i.test(effect.name))
   const updateCharacter = async (patch: Partial<OwnedCharacter>) => {
     await db.characters.update(member.character!.id, patch)
     await refresh()
@@ -665,13 +760,15 @@ function ForteWorkspace({ member, model, refresh, updateTeam }: { member: TeamMe
   return <section className="tw-forte-workspace">
     <aside className="tw-sequence-column">
       <header><span>Sequence</span><b>S{member.character.sequence}</b></header>
-      {member.catalog.sequenceIcons.slice(0, 6).map((sequence) => { const active = member.character!.sequence >= sequence.sequence; const sequenceConditions = (sheet?.conditions ?? []).filter((condition) => condition.sequence === sequence.sequence && !condition.disabled && (condition.modifiers?.length ?? 0) > 0 && (!condition.stance || condition.stance === mode)).map((condition) => ({ ...condition, label: sequenceConditionLabel(condition), description: undefined })); return <article className={active ? 'unlocked' : ''} key={sequence.sequence}>
+      {member.catalog.sequenceIcons.slice(0, 6).map((sequence) => { const active = member.character!.sequence >= sequence.sequence; const sequenceEffects = member.calculationEffectsV2.filter((effect) => effect.sourceKind === 'sequence' && effect.sequence === sequence.sequence); return <article className={active ? 'unlocked' : ''} key={sequence.sequence}>
         <button type="button" className="tw-node-header" aria-pressed={active} onClick={() => void updateCharacter({ sequence: active ? sequence.sequence - 1 : sequence.sequence })}><img src={sequence.iconSourceUrl} alt=""/><span><strong>{sequence.name}</strong><small>Sequence Node {sequence.sequence}</small></span></button>
         <GameDescription value={sequence.description}/>
-        <ForteConditionControls conditions={sequenceConditions} values={conditionValues} mode={mode} modes={sequenceConditions.some((condition) => condition.stance) ? modes : []} disabled={!active} setCondition={setCondition}/>
+        <CalculationEffectControls effects={sequenceEffects} member={member} model={model} updateTeam={updateTeam} disabled={!active}/>
       </article>})}
     </aside>
     <div className="tw-skill-board">
+      <CalculationStanceControl member={member} model={model} updateTeam={updateTeam}/>
+      {generalEffects.length > 0 && <section className="tw-v2-character-effects"><header><span className="eyebrow">Character mechanics</span><h3>General skill effects</h3></header><CalculationEffectControls effects={generalEffects} member={member} model={model} updateTeam={updateTeam}/></section>}
       <div className="tw-skill-grid">{skillEntries.map(({ key, skill, level, skillLevelIndex }) => {
         const attacks = member.attacks.filter((attack) => attack.skillName === skill.name)
         const flatValues = member.catalog!.flatSkillValues.filter((value) => value.skillLevelIndex === skillLevelIndex)
@@ -708,17 +805,10 @@ function ForteWorkspace({ member, model, refresh, updateTeam }: { member: TeamMe
           else unmatchedFlatValues.push(value)
         })
         if (unmatchedAttacks.length || unmatchedFlatValues.length) sectionBlocks.push({ title: sectionBlocks.length > 1 ? 'Other Details' : '', description: '', attacks: unmatchedAttacks, flatValues: unmatchedFlatValues })
-        const allCardConditions = (sheet?.conditions ?? []).filter((condition) => condition.source === 'wutheringtools'
-          && condition.id !== 'wt:mode'
-          && condition.inherentSkillIndex === undefined
-          && !condition.sequence
-          && condition.card === key
-          && (!condition.sequence || member.character!.sequence >= condition.sequence))
-        const cardConditions = allCardConditions.filter((condition) => !condition.stance || condition.stance === mode)
         return <article className={`tw-skill-card skill-${key}`} key={key}>
           <header><span>{level === undefined ? 'Outro Skill' : `Skill Lv. ${level}`}</span></header>
           <div className="tw-skill-title"><img src={skill.iconSourceUrl} alt=""/><div><strong>{skill.name}</strong><small>{key.replace(/([A-Z])/g, ' $1')}</small></div></div>
-          <ForteConditionControls conditions={cardConditions} values={conditionValues} mode={mode} modes={allCardConditions.some((condition) => condition.stance) ? modes : []} setCondition={setCondition}/>
+          <CalculationEffectControls effects={skillEffects.get(key) ?? []} member={member} model={model} updateTeam={updateTeam}/>
           <div className="tw-skill-sections">{sectionBlocks.map((section, sectionIndex) => <section key={`${section.title}-${sectionIndex}`}>
             {section.title && <h3>{section.title}</h3>}
             {section.description && <GameDescription value={section.description}/>}
@@ -730,12 +820,12 @@ function ForteWorkspace({ member, model, refresh, updateTeam }: { member: TeamMe
           </section>)}</div>
         </article>
       })}</div>
-      <div className="tw-passive-grid">{passiveCards.map((skill) => { const active = skill.id ? enabledNodeIds.includes(skill.id) : undefined; const skillConditions = (sheet?.conditions ?? []).filter((condition) => condition.source === 'wutheringtools' && !condition.sequence && condition.inherentSkillIndex === skill.inherentSkillIndex && skill.inherentSkillIndex !== undefined && (!condition.stance || condition.stance === mode)); return <article className={`tw-passive-card ${active === true ? 'is-enabled' : active === false ? 'is-disabled' : ''}`} key={`${skill.eyebrow}-${skill.name}`}>
+      <div className="tw-passive-grid">{passiveCards.map((skill) => { const active = skill.id ? enabledNodeIds.includes(skill.id) : undefined; return <article className={`tw-passive-card ${active === true ? 'is-enabled' : active === false ? 'is-disabled' : ''}`} key={`${skill.eyebrow}-${skill.name}`}>
         {skill.id ? <button type="button" className="tw-skill-title tw-node-toggle" aria-pressed={active} onClick={() => void toggleNode(skill.id!)}><img src={skill.iconSourceUrl} alt=""/><span><strong>{skill.name}</strong><small>{skill.eyebrow}</small></span></button> : <div className="tw-skill-title"><img src={skill.iconSourceUrl} alt=""/><div><strong>{skill.name}</strong><small>{skill.eyebrow}</small></div></div>}
         <GameDescription value={skill.description}/>
-        <ForteConditionControls conditions={skillConditions} values={conditionValues} mode={mode} modes={skillConditions.some((condition) => condition.stance) ? modes : []} disabled={active === false} setCondition={setCondition}/>
+        <CalculationEffectControls effects={passiveEffects.get(`${skill.eyebrow}-${skill.name}`) ?? []} member={member} model={model} updateTeam={updateTeam} disabled={active === false}/>
       </article>})}</div>
-      {bonusNodes.length > 0 && <section className="tw-bonus-nodes"><header><span className="eyebrow">Skill tree</span><h3>Bonus stat nodes</h3></header><div>{bonusNodes.map((node) => { const active = enabledNodeIds.includes(node.id); return <article className={active ? 'is-enabled' : 'is-disabled'} key={node.id}><button type="button" className="tw-bonus-node-header" aria-pressed={active} onClick={() => void toggleNode(node.id)}><img src={node.iconSourceUrl} alt=""/><strong>{node.name}</strong></button><GameDescription value={node.description}/></article> })}</div></section>}
+      {bonusNodes.length > 0 && <section className="tw-bonus-nodes"><header><span className="eyebrow">Skill tree</span><h3>Bonus stat nodes</h3></header><div>{bonusNodes.map((node) => { const active = enabledNodeIds.includes(node.id); return <article className={active ? 'is-enabled' : 'is-disabled'} key={node.id}><button type="button" className="tw-bonus-node-header" aria-pressed={active} onClick={() => void toggleNode(node.id)}><img src={node.iconSourceUrl} alt=""/><strong>{node.name}</strong></button><GameDescription value={node.description}/></article> })}</div><CalculationEffectControls effects={statBonusEffects} member={member} model={model} updateTeam={updateTeam}/></section>}
     </div>
   </section>
 }
@@ -757,18 +847,17 @@ function DetailedEchoCard({ echo, index, ownerName }: { echo?: Echo; index: numb
   return <TeamEchoCard echo={echo} ownerName={ownerName}/>
 }
 
-function TraceBranch({ trace, depth = 0 }: { trace: CalculationTrace; depth?: number }) {
-  return <li style={{ '--trace-depth': depth } as CSSProperties}><span>{trace.label}</span><b>{typeof trace.value === 'number' ? (depth === 0 ? Math.floor(trace.value + 1e-9).toLocaleString('en-US') : Number(trace.value).toLocaleString('en-US', { maximumFractionDigits: 3 })) : String(trace.value)}</b>{trace.children.length > 0 && <ul>{trace.children.map((child, index) => <TraceBranch trace={child} depth={depth + 1} key={`${child.entryId ?? child.label}-${index}`}/>)}</ul>}</li>
+function TraceBranch({ trace, depth = 0 }: { trace: CalculationTrace | CalculationTraceV2; depth?: number }) {
+  return <li style={{ '--trace-depth': depth } as CSSProperties}><span>{trace.label}</span><b>{typeof trace.value === 'number' ? (depth === 0 ? Math.floor(trace.value + 1e-9).toLocaleString('en-US') : Number(trace.value).toLocaleString('en-US', { maximumFractionDigits: 3 })) : String(trace.value)}</b>{trace.children.length > 0 && <ul>{trace.children.map((child, index) => <TraceBranch trace={child} depth={depth + 1} key={`${'id' in child ? child.id : child.entryId ?? child.label}-${index}`}/>)}</ul>}</li>
 }
 
 function FormulaResultSheet({ member, model, updateTeam }: { member: TeamMemberModel; model: TeamWorkspaceModel; updateTeam: (patch: Partial<Team>) => Promise<void> }) {
-  const [trace, setTrace] = useState<CalculationTrace | null>(null)
-  const scenario = model.team.scenario ?? { resultMode: 'expected' as const, memberConditions: {}, enemyConditions: {}, selectedTargetByBuild: {} }
+  const [trace, setTrace] = useState<CalculationTraceV2 | null>(null)
+  const scenario = model.team.calculationV2 ?? emptyCalculationScenarioV2()
   const mode = scenario.resultMode
-  const sheet = characterFormulaSheets.find((entry) => entry.id === member.catalog?.id)
-  const conditions = member.build ? scenario.memberConditions[member.build.id] ?? {} : {}
-  const groups = [...new Set(member.formulaRows.map((row) => row.target.group))]
-  const rowsByGroup = new Map(groups.map((group) => [group, member.formulaRows.filter((row) => row.target.group === group)]))
+  const buildId = member.build?.id ?? ''
+  const groups = [...new Set(member.calculationRowsV2.map((row) => row.attack.group))]
+  const rowsByGroup = new Map(groups.map((group) => [group, member.calculationRowsV2.filter((row) => row.attack.group === group)]))
   const leftGroups = ['Basic Attack', 'Resonance Skill', 'Intro Skill'].filter((group) => rowsByGroup.has(group))
   const rightGroups = ['Forte Circuit', 'Resonance Liberation', 'Outro Skill'].filter((group) => rowsByGroup.has(group))
   const assignedGroups = new Set([...leftGroups, ...rightGroups, 'Tune Break'])
@@ -779,48 +868,34 @@ function FormulaResultSheet({ member, model, updateTeam }: { member: TeamMemberM
   if (rowsByGroup.has('Tune Break')) {
     (columnLength(leftGroups) <= columnLength(rightGroups) ? leftGroups : rightGroups).push('Tune Break')
   }
-  const updateScenario = (patch: Partial<typeof scenario>) => updateTeam({ scenario: { ...scenario, ...patch } })
-  const setCondition = (id: string, value: string | number | boolean) => {
-    if (!member.build) return
-    void updateScenario({ memberConditions: { ...scenario.memberConditions, [member.build.id]: { ...conditions, [id]: value } } })
-  }
-  const selectRow = (row: TeamMemberModel['formulaRows'][number]) => {
-    if (member.build) void updateScenario({ selectedTargetByBuild: { ...scenario.selectedTargetByBuild, [member.build.id]: row.target.id } })
-    setTrace(row.traces[mode])
+  const updateScenario = (patch: Partial<typeof scenario>) => updateTeam({ calculationV2: { ...scenario, ...patch } })
+  const selectRow = (row: TeamMemberModel['calculationRowsV2'][number]) => {
+    if (buildId) void updateScenario({ selectedAttackByBuild: { ...scenario.selectedAttackByBuild, [buildId]: row.attack.id } })
+    setTrace(row.result.trace[mode])
   }
   const renderGroup = (group: string) => <article className="tw-sheet-column" key={group}>
     <header><span>{group}</span><small>{mode}</small></header>
-    {rowsByGroup.get(group)?.map((row) => <button className={scenario.selectedTargetByBuild[member.build?.id ?? ''] === row.target.id ? 'selected' : ''} onClick={() => selectRow(row)} key={row.target.id}><span>{row.target.label}<small>{row.target.damageType ?? row.target.kind}</small></span><b>{formatDamage(row[mode])}</b></button>)}
+    {rowsByGroup.get(group)?.map((row) => <button className={scenario.selectedAttackByBuild[buildId] === row.attack.id ? 'selected' : ''} onClick={() => selectRow(row)} key={row.attack.id}><span>{row.attack.name}<small>{row.attack.type}{row.attack.subtype ? ` · ${row.attack.subtype}` : ''}</small></span><b>{formatDamage(row.result[mode])}</b></button>)}
   </article>
-  const coverage = getFormulaCoverage()
+  const partyEffects = member.calculationEffectsV2.filter((effect) => effect.sourceKind === 'party')
   return <>
-    <section className="tw-formula-toolbar tw-panel">
-      <div className="tw-condition-chips">{sheet?.conditions.filter((condition) => condition.source !== 'wutheringtools').map((condition) => condition.type === 'boolean'
-        ? <label className={Boolean(conditions[condition.id] ?? condition.defaultValue) ? 'active' : ''} key={condition.id}><input type="checkbox" checked={Boolean(conditions[condition.id] ?? condition.defaultValue)} onChange={(event) => setCondition(condition.id, event.target.checked)}/>{condition.label}</label>
-        : <label key={condition.id}><span>{condition.label}</span><input type="number" min={condition.min} max={condition.max} value={Number(conditions[condition.id] ?? condition.defaultValue)} onChange={(event) => setCondition(condition.id, Number(event.target.value))}/></label>)}</div>
-      <label className="tw-compare"><span>Compare</span><select value={scenario.compareBuildId ?? ''} onChange={(event) => void updateScenario({ compareBuildId: event.target.value || undefined })}><option value="">Current only</option>{model.members.filter((entry) => entry.build && entry.build.id !== member.build?.id).map((entry) => <option key={entry.build!.id} value={entry.build!.id}>{teamMemberName(entry)}</option>)}</select></label>
-      <span className="tw-provenance">{FORMULA_SHEET_VERSION}<b>{coverage.complete ? 'Full catalog classified' : 'Coverage incomplete'}</b></span>
-    </section>
     <section className="tw-formula-grid">
       <article className="tw-sheet-column tw-sheet-stats"><header><span>Basic Stats</span></header><dl>{CORE_STATS.map(([key, label]) => <div key={key}><dt>{label}</dt><dd>{member.showcase ? <CalculatedValue detail={showcaseStatDetail(member.showcase, key, label)}>{formatWorkspaceStat(key, member.conditionedStats?.[key] ?? member.showcase.finalStats[key as keyof typeof member.showcase.finalStats])}</CalculatedValue> : '—'}</dd></div>)}</dl><header><span>Bonus Stats</span></header><dl>{DAMAGE_STATS.map(([key, label]) => <div key={key}><dt>{label}</dt><dd>{member.showcase ? <CalculatedValue detail={showcaseStatDetail(member.showcase, key, label)}>{formatWorkspaceStat(key, member.conditionedStats?.[key] ?? member.showcase.finalStats[key as keyof typeof member.showcase.finalStats])}</CalculatedValue> : '—'}</dd></div>)}</dl></article>
       <div className="tw-sheet-results">
         <div className="tw-sheet-result-stack">{leftGroups.map(renderGroup)}</div>
         <div className="tw-sheet-result-stack">{rightGroups.map(renderGroup)}</div>
       </div>
-      <aside className="tw-sheet-side"><article className="tw-sheet-column"><header><span>Received Team Buffs</span></header>{member.receivedBuffs.map((buff) => <div className="tw-sheet-buff" key={buff.id}><span>{buff.name}</span><b>{buff.value.toFixed(1)}%</b></div>)}{!member.receivedBuffs.length && <p>No active custom team buffs.</p>}</article><article className="tw-sheet-column"><header><span>Enemy</span></header><label>Level<input type="number" min="1" max="200" value={model.team.enemy.level} onChange={(event) => void updateTeam({ enemy: { ...model.team.enemy, level: Number(event.target.value) } })}/></label><label>Resistance %<input type="number" min="-100" max="100" value={model.team.enemy.resistance} onChange={(event) => void updateTeam({ enemy: { ...model.team.enemy, resistance: Number(event.target.value) } })}/></label><label>Reduction %<input type="number" min="0" max="100" value={model.team.enemy.damageReduction} onChange={(event) => void updateTeam({ enemy: { ...model.team.enemy, damageReduction: Number(event.target.value) } })}/></label></article></aside>
+      <aside className="tw-sheet-side"><article className="tw-sheet-column"><header><span>Received Team Buffs</span><small>Calculation V2</small></header><CalculationEffectControls effects={partyEffects} member={member} model={model} updateTeam={updateTeam}/>{!partyEffects.length && <p className="tw-sheet-empty">No teammate buffs are available for this member.</p>}</article><article className="tw-sheet-column"><header><span>Enemy</span><small title="Calculation V2 uses the imported GPL mechanics catalog.">V2 mechanics</small></header><label>Level<input type="number" min="1" max="200" value={model.team.enemy.level} onChange={(event) => void updateTeam({ enemy: { ...model.team.enemy, level: Number(event.target.value) } })}/></label><label>Resistance %<input type="number" min="-100" max="100" value={model.team.enemy.resistance} onChange={(event) => void updateTeam({ enemy: { ...model.team.enemy, resistance: Number(event.target.value) } })}/></label><label>Reduction %<input type="number" min="0" max="100" value={model.team.enemy.damageReduction} onChange={(event) => void updateTeam({ enemy: { ...model.team.enemy, damageReduction: Number(event.target.value) } })}/></label></article></aside>
     </section>
     {trace && <div className="tw-trace-backdrop" onMouseDown={() => setTrace(null)}><article className="tw-trace tw-panel" onMouseDown={(event) => event.stopPropagation()}><header><div><span className="eyebrow">Calculation trace</span><h2>{trace.label}</h2></div><button className="close" onClick={() => setTrace(null)}>×</button></header><ul><TraceBranch trace={trace}/></ul></article></div>}
   </>
 }
 
-function CharacterOverviewWorkspace({ member, model, updateTeam, weaponPassive, weaponConditions, conditionValues, setCondition }: {
+function CharacterOverviewWorkspace({ member, model, updateTeam, weaponPassive }: {
   member: TeamMemberModel
   model: TeamWorkspaceModel
   updateTeam: (patch: Partial<Team>) => Promise<void>
   weaponPassive?: string
-  weaponConditions: ConditionDefinition[]
-  conditionValues: Record<string, boolean | number | string>
-  setCondition: (id: string, value: boolean | number | string) => void
 }) {
   if (!member.build || !member.catalog || !member.character || !member.showcase) return null
   const catalog = member.catalog
@@ -851,7 +926,7 @@ function CharacterOverviewWorkspace({ member, model, updateTeam, weaponPassive, 
         <article className="tw-overview-weapon-passive">
           <header><span className="eyebrow">Weapon passive</span><h2>{showcase.weapon?.catalog.passiveName ?? 'No weapon passive'}</h2></header>
           <p>{weaponPassive ?? 'Equip a supported weapon to display its generated passive text.'}</p>
-          <ForteConditionControls conditions={weaponConditions} values={conditionValues} modes={[]} setCondition={setCondition}/>
+          <CalculationEffectControls effects={member.calculationEffectsV2.filter((effect) => effect.sourceKind === 'weapon')} member={member} model={model} updateTeam={updateTeam}/>
         </article>
       </aside>
 
@@ -871,6 +946,12 @@ function CharacterOverviewWorkspace({ member, model, updateTeam, weaponPassive, 
         <article className="tw-overview-sonatas">
           <header><span className="eyebrow">Sonata effects</span><h2>Equipped sets</h2></header>
           <SonataChips member={member}/>
+          <CalculationEffectControls effects={member.calculationEffectsV2.filter((effect) => effect.sourceKind === 'sonata')} member={member} model={model} updateTeam={updateTeam}/>
+        </article>
+        <article className="tw-overview-sonatas tw-overview-echo-passive">
+          <header><span className="eyebrow">Main Echo passive</span><h2>{showcase.echoSlots[0]?.name ?? 'No main Echo'}</h2></header>
+          <CalculationEffectControls effects={member.calculationEffectsV2.filter((effect) => effect.sourceKind === 'echo')} member={member} model={model} updateTeam={updateTeam}/>
+          {!member.calculationEffectsV2.some((effect) => effect.sourceKind === 'echo') && <p>No supported Echo passive is available.</p>}
         </article>
       </aside>
       <div className="tw-overview-equipment-grid">
@@ -880,39 +961,28 @@ function CharacterOverviewWorkspace({ member, model, updateTeam, weaponPassive, 
   </>
 }
 
-function MemberWorkspace({ member, model, section, setSection, updateTeam, echoes, builds, characters, weapons, openScanner, refresh }: { member: TeamMemberModel; model: TeamWorkspaceModel; section: MemberSection; setSection: (section: MemberSection) => void; updateTeam: (patch: Partial<Team>) => Promise<void>; echoes: Echo[]; builds: Build[]; characters: OwnedCharacter[]; weapons: OwnedWeapon[]; openScanner: () => void; refresh: () => Promise<void> }) {
+function MemberWorkspace({ member, model, section, setSection, updateTeam, echoes, builds, characters, weapons, openScanner, refresh, roverGender }: { member: TeamMemberModel; model: TeamWorkspaceModel; section: MemberSection; setSection: (section: MemberSection) => void; updateTeam: (patch: Partial<Team>) => Promise<void>; echoes: Echo[]; builds: Build[]; characters: OwnedCharacter[]; weapons: OwnedWeapon[]; openScanner: () => void; refresh: () => Promise<void>; roverGender: 'male' | 'female' }) {
   if (!member.build || !member.catalog || !member.character || !member.showcase) return <section className="tw-member-empty tw-panel"><MemberAvatar member={member}/><h2>Member {member.slot + 1} is empty</h2><p>Return to Team Settings and click the empty member card to add a saved build.</p></section>
   const catalog = member.catalog
   const showcase = member.showcase
   const elementStat = `${member.catalog.element.toLowerCase()}Damage` as StatKey
   const weaponPassive = showcase.weapon?.catalog.passiveEffects[Math.max(0, (showcase.weapon?.owned.rank ?? 1) - 1)] ?? showcase.weapon?.catalog.passiveEffects[0]
   const scenario = model.team.scenario ?? { resultMode: 'expected' as const, memberConditions: {}, enemyConditions: {}, selectedTargetByBuild: {} }
-  const conditionValues = scenario.memberConditions[member.build.id] ?? {}
-  const weaponConditions: ConditionDefinition[] = showcase.weapon ? weaponPassiveConditions(showcase.weapon.catalog, showcase.weapon.owned.rank).map((condition) => ({
-    id: condition.id,
-    label: condition.label,
-    type: condition.type,
-    defaultValue: condition.defaultValue,
-    min: condition.min,
-    max: condition.max,
-    scope: 'self',
-    description: condition.description,
-    disabled: condition.alwaysOn
-  })) : []
-  const setCondition = (id: string, value: boolean | number | string) => void updateTeam({
-    scenario: { ...scenario, memberConditions: { ...scenario.memberConditions, [member.build!.id]: { ...conditionValues, [id]: value } } }
+  const calculationV2 = model.team.calculationV2 ?? emptyCalculationScenarioV2()
+  const setResultMode = (resultMode: FormulaResultMode) => updateTeam({
+    scenario: { ...scenario, resultMode },
+    calculationV2: { ...calculationV2, resultMode }
   })
-  const setResultMode = (resultMode: FormulaResultMode) => updateTeam({ scenario: { ...scenario, resultMode } })
   return <div className={`tw-member-page section-${section}`}>
     <nav className="tw-subnav" aria-label={`${member.catalog.name} sections`} role="tablist">
       {MEMBER_SECTIONS.map((item) => <button key={item.id} role="tab" className={section === item.id ? 'active' : ''} aria-selected={section === item.id} onClick={() => setSection(item.id)}>{item.label}</button>)}
       <div className="tw-nav-result-modes" role="group" aria-label="Damage result mode">
-        {DAMAGE_RESULT_MODES.map((mode) => <button type="button" aria-pressed={scenario.resultMode === mode.id} className={scenario.resultMode === mode.id ? 'active' : ''} key={mode.id} onClick={() => void setResultMode(mode.id)}>{mode.label}</button>)}
+        {DAMAGE_RESULT_MODES.map((mode) => <button type="button" aria-pressed={calculationV2.resultMode === mode.id} className={calculationV2.resultMode === mode.id ? 'active' : ''} key={mode.id} onClick={() => void setResultMode(mode.id)}>{mode.label}</button>)}
       </div>
     </nav>
-    {section === 'overview' ? <CharacterOverviewWorkspace member={member} model={model} updateTeam={updateTeam} weaponPassive={weaponPassive} weaponConditions={weaponConditions} conditionValues={conditionValues} setCondition={setCondition}/>
+    {section === 'overview' ? <CharacterOverviewWorkspace member={member} model={model} updateTeam={updateTeam} weaponPassive={weaponPassive}/>
       : section === 'rotation' ? <RotationWorkspace model={model} updateTeam={updateTeam}/>
-      : section === 'optimizer' ? <OptimizerView echoes={echoes} builds={builds} characters={characters} ownedWeapons={weapons} refresh={refresh} openScanner={openScanner} buildId={member.build.id} initialEnemy={model.team.enemy} damageMode={scenario.resultMode} scenario={scenario}/>
+      : section === 'optimizer' ? <OptimizerView echoes={echoes} builds={builds} characters={characters} ownedWeapons={weapons} refresh={refresh} openScanner={openScanner} buildId={member.build.id} initialEnemy={model.team.enemy} damageMode={calculationV2.resultMode} scenario={scenario} calculationScenarioV2={calculationV2} calculationAttacksV2={member.calculationMechanicsV2?.attacks} partyEffectsV2={member.calculationEffectsV2.filter((effect) => effect.sourceKind === 'party')} roverGender={roverGender}/>
       : <>
     <section className={`tw-member-hero tw-panel ${section === 'forte' ? 'forte-mode' : ''}`} style={{ '--tw-element': member.catalog.element.toLowerCase() } as CSSProperties}>
       <div className="tw-member-art"><img src={member.catalog.portraitSourceUrl || member.catalog.iconSourceUrl} alt=""/><div className="tw-sequence-rail">{member.catalog.sequenceIcons.slice(0, 6).map((sequence) => <span className={member.character && member.character.sequence >= sequence.sequence ? 'unlocked' : ''} key={sequence.sequence} title={sequence.name}><img src={sequence.iconSourceUrl} alt=""/><b>S{sequence.sequence}</b></span>)}</div><div><span>{member.catalog.element} · {member.catalog.weaponType}</span><h1>{member.catalog.name}</h1><p>{member.catalog.title}</p><strong>Lv. {member.character.level} · Sequence {member.character.sequence}</strong></div><EchoWaveform element={member.catalog.element}/></div>
@@ -938,13 +1008,13 @@ function MemberWorkspace({ member, model, section, setSection, updateTeam, echoe
   </div>
 }
 
-export function TeamsView({ echoes, builds, teams, characters, weapons, refresh, openScanner, galleryRequest }: TeamsViewProps) {
+export function TeamsView({ echoes, builds, teams, characters, weapons, refresh, openScanner, galleryRequest, roverGender, route, onRouteChange }: TeamsViewProps) {
   const [selectedId, setSelectedId] = useState<string | null>(teams[0]?.id ?? null)
   const [showGallery, setShowGallery] = useState(true)
   const [tab, setTab] = useState<WorkspaceTab>('settings')
   const [memberSection, setMemberSection] = useState<MemberSection>('overview')
   const team = teams.find((entry) => entry.id === selectedId) ?? teams[0]
-  const model = useMemo(() => team ? resolveTeamWorkspace({ team, builds, characters, weapons, echoes }) : undefined, [team, builds, characters, weapons, echoes])
+  const model = useMemo(() => team ? resolveTeamWorkspace({ team, builds, characters, weapons, echoes, roverGender }) : undefined, [team, builds, characters, weapons, echoes, roverGender])
 
   useEffect(() => { if (!team && teams[0]) setSelectedId(teams[0].id) }, [team, teams])
   useEffect(() => {
@@ -952,6 +1022,36 @@ export function TeamsView({ echoes, builds, teams, characters, weapons, refresh,
     setTab('settings')
     window.scrollTo({ top: 0 })
   }, [galleryRequest])
+  useEffect(() => {
+    if (!route?.team) {
+      setShowGallery(true)
+      setTab('settings')
+      return
+    }
+    const numbered = /^team_(\d+)$/i.exec(route.team)
+    const target = numbered
+      ? teams[Number(numbered[1]) - 1]
+      : teams.find((entry) => entry.id === route.team || routeKey(entry.name) === routeKey(route.team!))
+    if (!target) return
+    setSelectedId(target.id)
+    setShowGallery(false)
+    if (!route.character) {
+      setTab('settings')
+      return
+    }
+    const characterKey = routeKey(route.character)
+    const slot = target.buildIds.findIndex((buildId) => {
+      const build = builds.find((entry) => entry.id === buildId)
+      const catalog = characterCatalog.find((entry) => entry.id === build?.resonatorId)
+      return catalog?.id === route.character || (catalog ? routeKey(catalog.name) === characterKey : false)
+    })
+    if (slot < 0 || slot > 2) {
+      setTab('settings')
+      return
+    }
+    setTab(slot as 0 | 1 | 2)
+    setMemberSection(memberSectionFromRoute(route.section))
+  }, [builds, route?.character, route?.section, route?.team, teams])
 
   const updateTeamById = async (teamId: string, patch: Partial<Team>) => {
     await db.teams.update(teamId, patch)
@@ -962,8 +1062,9 @@ export function TeamsView({ echoes, builds, teams, characters, weapons, refresh,
     await updateTeamById(team.id, patch)
   }
   const createTeam = async () => {
-    const next: Team = { id: createLocalId(), name: `Team ${teams.length + 1}`, buildIds: [], enemy: { level: 90, resistance: 10, damageReduction: 0 }, rotationDuration: 20, actions: [], buffs: [], scenario: { resultMode: 'expected', memberConditions: {}, enemyConditions: {}, selectedTargetByBuild: {} } }
+    const next: Team = { id: createLocalId(), name: `Team ${teams.length + 1}`, buildIds: [], enemy: { level: 90, resistance: 10, damageReduction: 0 }, rotationDuration: 20, actions: [], buffs: [], scenario: { resultMode: 'expected', memberConditions: {}, enemyConditions: {}, selectedTargetByBuild: {} }, calculationV2: emptyCalculationScenarioV2() }
     await db.teams.add(next); await refresh(); setSelectedId(next.id); setTab('settings'); setShowGallery(false)
+    onRouteChange?.({ team: `team_${teams.length + 1}` })
   }
 
   const deleteGalleryTeam = async (target: Team) => {
@@ -973,15 +1074,38 @@ export function TeamsView({ echoes, builds, teams, characters, weapons, refresh,
     if (selectedId === target.id) setSelectedId(teams.find((entry) => entry.id !== target.id)?.id ?? null)
   }
 
-  if (showGallery) return <main className="team-workspace"><TeamGallery teams={teams} builds={builds} characters={characters} weapons={weapons} echoes={echoes} onCreate={createTeam} onOpen={(teamId) => { setSelectedId(teamId); setTab('settings'); setShowGallery(false) }} onRename={(teamId, name) => updateTeamById(teamId, { name })} onDelete={deleteGalleryTeam}/></main>
+  const teamRouteId = team ? `team_${teams.findIndex((entry) => entry.id === team.id) + 1}` : undefined
+  const openTeam = (teamId: string) => {
+    const index = teams.findIndex((entry) => entry.id === teamId)
+    setSelectedId(teamId)
+    setTab('settings')
+    setShowGallery(false)
+    onRouteChange?.({ team: index >= 0 ? `team_${index + 1}` : teamId })
+  }
+  const openMemberRoute = (slot: 0 | 1 | 2, section: MemberSection = 'overview') => {
+    const member = model?.members[slot]
+    setTab(slot)
+    setMemberSection(section)
+    onRouteChange?.({
+      team: teamRouteId,
+      character: member?.catalog ? routeKey(member.catalog.name) : undefined,
+      section: member?.catalog ? memberSectionToRoute(section) : undefined
+    })
+  }
+  const setMemberSectionRoute = (section: MemberSection) => {
+    if (typeof tab !== 'number') return
+    openMemberRoute(tab, section)
+  }
+
+  if (showGallery) return <main className="team-workspace"><TeamGallery teams={teams} builds={builds} characters={characters} weapons={weapons} echoes={echoes} onCreate={createTeam} onOpen={openTeam} onRename={(teamId, name) => updateTeamById(teamId, { name })} onDelete={deleteGalleryTeam}/></main>
 
   return <main className="team-workspace">
     <nav className="tw-primary-tabs" aria-label="Team workspace pages" role="tablist">
-      <button role="tab" className={tab === 'settings' ? 'active' : ''} aria-selected={tab === 'settings'} onClick={() => setTab('settings')}><span>Team Settings</span><small>Composition and enemy</small></button>
-      {Array.from({ length: 3 }, (_, slot) => { const member = model?.members[slot]; return <button role="tab" className={tab === slot ? 'active' : ''} aria-selected={tab === slot} key={slot} onClick={() => { setTab(slot as 0 | 1 | 2); setMemberSection('overview') }}><MemberAvatar member={member ?? { slot, attacks: [], contribution: 0, contributionPercent: 0, byType: {}, appliedBuffs: [], receivedBuffs: [], roles: [], warnings: [] }} compact/><span>Member {slot + 1}</span><small>{member?.catalog?.name ?? 'Empty slot'}</small></button> })}
+      <button role="tab" className={tab === 'settings' ? 'active' : ''} aria-selected={tab === 'settings'} onClick={() => { setTab('settings'); onRouteChange?.({ team: teamRouteId }) }}><span>Team Settings</span><small>Composition and enemy</small></button>
+      {Array.from({ length: 3 }, (_, slot) => { const member = model?.members[slot]; return <button role="tab" className={tab === slot ? 'active' : ''} aria-selected={tab === slot} key={slot} onClick={() => openMemberRoute(slot as 0 | 1 | 2)}><MemberAvatar member={member ?? { slot, attacks: [], contribution: 0, contributionPercent: 0, byType: {}, appliedBuffs: [], receivedBuffs: [], roles: [], warnings: [] }} compact/><span>Member {slot + 1}</span><small>{member?.catalog?.name ?? 'Empty slot'}</small></button> })}
     </nav>
     {!model ? <section className="tw-first-team tw-panel"><span className="eyebrow">No teams yet</span><h1>Start a team workspace</h1><p>Create a local team, assign up to three saved builds, and author its rotation without leaving this page.</p><button className="primary" onClick={() => void createTeam()}><Icon name="plus"/>Create team</button></section>
-      : tab === 'settings' ? <TeamOverview model={model} builds={builds} updateTeam={updateTeam} openMember={(slot) => { setTab(slot as 0 | 1 | 2); setMemberSection('overview') }}/>
-        : <MemberWorkspace member={model.members[tab]} model={model} section={memberSection} setSection={setMemberSection} updateTeam={updateTeam} echoes={echoes} builds={builds} characters={characters} weapons={weapons} openScanner={openScanner} refresh={refresh}/>}
+      : tab === 'settings' ? <TeamOverview model={model} builds={builds} updateTeam={updateTeam} openMember={(slot) => openMemberRoute(slot as 0 | 1 | 2)}/>
+        : <MemberWorkspace member={model.members[tab]} model={model} section={memberSection} setSection={setMemberSectionRoute} updateTeam={updateTeam} echoes={echoes} builds={builds} characters={characters} weapons={weapons} openScanner={openScanner} refresh={refresh} roverGender={roverGender}/>}
   </main>
 }

@@ -36,7 +36,11 @@ function resultScore(result: Omit<OptimizerResult, 'score'>, objective: Optimize
   return result.stats[objective]
 }
 
-export function optimizeBuilds(request: OptimizerRequest, maxEvaluations = request.maxEvaluations ?? 300_000): OptimizerResult[] {
+export function optimizeBuilds(
+  request: OptimizerRequest,
+  maxEvaluations = request.maxEvaluations ?? 300_000,
+  evaluateDamage?: (echoes: Echo[], stats: OptimizerResult['stats']) => OptimizerResult['damage'] | undefined
+): OptimizerResult[] {
   if (!request.requestId || request.limit < 1 || request.limit > 100 || maxEvaluations < 1) return []
   const seenIds = new Set<string>()
   const usable = request.echoes.filter((echo) => {
@@ -60,11 +64,11 @@ export function optimizeBuilds(request: OptimizerRequest, maxEvaluations = reque
     visitedNodes += 1
     if (visitedNodes > maxEvaluations) return
     if (selected.length === 5) {
-      const stats = aggregateStats(request.resonator, request.weapon, selected, request.bonusStatLines)
+      const stats = aggregateStats(request.resonator, request.weapon, selected, request.bonusStatLines, !request.calculationV2)
       if (!meetsMinimums(stats, request.minimumStats) || !meetsMaximums(stats, request.maximumStats)) return
-      const damage = calculateDamage(stats, request.attack, request.enemy)
+      const damage = evaluateDamage?.(selected, stats) ?? calculateDamage(stats, request.attack, request.enemy)
       const partial = { requestId: request.requestId, echoIds: selected.map((echo) => echo.id), stats, damage }
-      const score = request.formula
+      const score = request.formula && !evaluateDamage
         ? Number(new FormulaCalculator({ stats: { ...stats }, inputs: request.formula.inputs, entries: request.formula.entries }).evaluate(request.formula.node).value)
         : resultScore(partial, request.objective)
       if (!Number.isFinite(score)) return

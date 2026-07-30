@@ -8,15 +8,16 @@ import { effectiveSubStats } from '../game-data/echo-main-stats'
 import { echoRollRating } from '../domain/echo-grade'
 import { resolveCharacterSubstatProfile, scoreCharacterSubstats } from '../domain/character-substat-score'
 import { createLocalId } from '../domain/id'
-import { db, saveSettings, setBuildEchoIds, setOwnedWeaponOwner } from '../storage/database'
+import { db, saveSettings, setOwnedWeaponOwner, switchBuildEcho } from '../storage/database'
 import type { AggregatedStats, AppSettings, Build, Echo, OwnedCharacter, OwnedWeapon, StatKey } from '../domain/types'
-import { CharacterSubstatProfileContext, EchoMiniCard, Icon, Panel } from './components'
+import { CharacterSubstatProfileContext, EchoMiniCard, EquippedCharacterLabel, Icon, Panel } from './components'
 import { EchoWaveform } from './EchoWaveform'
 import { EchoEditModal } from './EchoEditModal'
 import { NanokaSpinePortrait, type NanokaSpinePortraitHandle } from './NanokaSpinePortrait'
 import { CalculatedValue, type CalculationDetail } from './CalculationDetails'
 import { showcaseStatDetail } from './calculation-detail-model'
 import { defaultEnabledSkillTreeBonusIds, inherentSkillBonusId, resolveCharacterShowcaseModel, skillTreeBonusId } from './character-showcase-model'
+import { useDismissableLayer } from './useDismissableLayer'
 import './character-showcase.css'
 
 const LEVELS = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90]
@@ -130,8 +131,11 @@ function EchoShowcaseCard({ echo, index, element, editing, onOpen, onEdit }: { e
 
 function EchoFilterSelect({ label, values, options, emptyLabel, onChange, icon }: { label: string; values: string[]; options: Array<{ value: string; label: string }>; emptyLabel: string; onChange: (values: string[]) => void; icon?: (value: string) => ReactNode }) {
   const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  const close = useCallback(() => setOpen(false), [])
+  useDismissableLayer(open, ref, close)
   const toggle = (value: string) => onChange(values.includes(value) ? values.filter((item) => item !== value) : [...values, value])
-  return <label className="multi-filter">{label}<div className="multi-select"><button type="button" className="multi-select-trigger" aria-expanded={open} onClick={() => setOpen((current) => !current)}><span className="multi-select-values">{values.length ? values.map((value) => <span className="multi-select-chip" key={value}>{icon?.(value)}<b>{options.find((option) => option.value === value)?.label ?? value}</b></span>) : <em>{emptyLabel}</em>}</span><strong>⌄</strong></button>{open && <div className="multi-select-menu"><div className="multi-select-options">{options.map((option) => <button type="button" className={values.includes(option.value) ? 'active' : ''} onClick={() => toggle(option.value)} key={option.value}>{icon?.(option.value)}<span>{option.label}</span><i>{values.includes(option.value) ? '✓' : ''}</i></button>)}</div><footer><button type="button" className="multi-select-clear" disabled={!values.length} onClick={() => onChange([])}>Clear selections</button></footer></div>}</div></label>
+  return <label className="multi-filter">{label}<div className="multi-select" ref={ref}><button type="button" className="multi-select-trigger" aria-expanded={open} onClick={() => setOpen((current) => !current)}><span className="multi-select-values">{values.length ? values.map((value) => <span className="multi-select-chip" key={value}>{icon?.(value)}<b>{options.find((option) => option.value === value)?.label ?? value}</b></span>) : <em>{emptyLabel}</em>}</span><strong>⌄</strong></button>{open && <div className="multi-select-menu"><div className="multi-select-options">{options.map((option) => <button type="button" className={values.includes(option.value) ? 'active' : ''} onClick={() => toggle(option.value)} key={option.value}>{icon?.(option.value)}<span>{option.label}</span><i>{values.includes(option.value) ? '✓' : ''}</i></button>)}</div><footer><button type="button" className="multi-select-clear" disabled={!values.length} onClick={() => onChange([])}>Clear selections</button></footer></div>}</div></label>
 }
 
 function WeaponPicker({ character, catalog, weapons, refresh, onClose }: { character: OwnedCharacter; catalog: CharacterCatalogEntry; weapons: OwnedWeapon[]; refresh: () => Promise<void>; onClose: () => void }) {
@@ -170,13 +174,13 @@ function EchoPicker({ slot, build, echoes, refresh, onClose }: { slot: number; b
   const [lockState, setLockState] = useState<'all' | 'locked' | 'unlocked'>('all')
   const [assignment, setAssignment] = useState<'all' | 'equipped' | 'unequipped'>('all')
   const [showExcluded, setShowExcluded] = useState(false)
+  const [error, setError] = useState('')
   const deferredQuery = useDeferredValue(query.trim().toLowerCase())
   const statKeys = Object.keys(statLabels) as StatKey[]
   const toggleNumber = (values: number[], value: number, change: (next: number[]) => void) => change(values.includes(value) ? values.filter((item) => item !== value) : [...values, value])
   const resetFilters = () => { setQuery(''); setCosts([]); setRarities([]); setSonatas([]); setMainStats([]); setSubStats([]); setLockState('all'); setAssignment('all'); setShowExcluded(false) }
   const options = useMemo(() => echoes.filter((echo) =>
     (showExcluded || !echo.excluded) &&
-    (!echo.equippedBy || echo.equippedBy === build.id) &&
     (!costs.length || costs.includes(echo.cost)) &&
     (!rarities.length || rarities.includes(echo.rarity)) &&
     (!sonatas.length || sonatas.includes(echo.sonata)) &&
@@ -191,23 +195,41 @@ function EchoPicker({ slot, build, echoes, refresh, onClose }: { slot: number; b
         || left.name.localeCompare(right.name)
     }
     return echoRollRating(right).average - echoRollRating(left).average || left.name.localeCompare(right.name)
-  }), [assignment, build.id, characterSubstatProfile, costs, deferredQuery, echoes, lockState, mainStats, rarities, showExcluded, sonatas, subStats])
+  }), [assignment, characterSubstatProfile, costs, deferredQuery, echoes, lockState, mainStats, rarities, showExcluded, sonatas, subStats])
   const choose = async (next?: Echo) => {
-    const oldId = build.echoIds[slot]
-    const echoIds = [...build.echoIds]
-    if (next) {
-      const duplicateSlot = echoIds.indexOf(next.id)
-      if (duplicateSlot >= 0 && duplicateSlot !== slot) return
-      if (slot < echoIds.length) echoIds[slot] = next.id
-      else echoIds.push(next.id)
-    } else if (oldId) echoIds.splice(slot, 1)
-    const cost = echoIds.reduce((total, id) => total + (echoes.find((echo) => echo.id === id)?.cost ?? 0), 0)
-    if (echoIds.length > 5 || cost > 12) return
-    await setBuildEchoIds(build.id, echoIds)
-    await refresh()
-    onClose()
+    setError('')
+    try {
+      await switchBuildEcho(build.id, slot, next?.id)
+      await refresh()
+      onClose()
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'The Echo could not be switched.')
+    }
   }
-  return <div className="catalog-picker-backdrop cs-picker-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}><section className="catalog-picker cs-picker cs-echo-picker" role="dialog" aria-modal="true" aria-label={`Equip Echo slot ${slot + 1}`}><header><div><span className="eyebrow">Echo slot {slot + 1}</span><h2>Equip Echo</h2></div><button className="text-button" onClick={onClose}>Close</button></header><div className="cs-echo-picker-filters"><div className="filter-heading"><div><strong>Echo filters</strong><span>{options.length} / {echoes.length} shown</span></div><button className="text-button" onClick={resetFilters}>Reset</button></div><label className="search"><span>⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search Echo, Sonata, or stat..."/></label><div className="filter-body"><div className="filter-group"><span>Cost</span><div className="filter-chips">{[1,3,4].map((value) => <button className={costs.includes(value) ? 'active' : ''} onClick={() => toggleNumber(costs, value, setCosts)} key={value}>{value} cost</button>)}</div></div><div className="filter-group"><span>Rarity</span><div className="filter-chips">{[5,4,3,2,1].map((value) => <button className={rarities.includes(value) ? 'active' : ''} onClick={() => toggleNumber(rarities, value, setRarities)} key={value}>{value} ★</button>)}</div></div><EchoFilterSelect label="Sonata" values={sonatas} options={sonataNames.map((name) => ({ value: name, label: name }))} emptyLabel="All Sonatas" onChange={setSonatas} icon={(name) => <img src={generatedSonataIconSources[name]} alt=""/>}/><EchoFilterSelect label="Main stat" values={mainStats} options={statKeys.map((key) => ({ value: key, label: statLabels[key] }))} emptyLabel="Any main stat" onChange={setMainStats}/><EchoFilterSelect label="Substat" values={subStats} options={statKeys.map((key) => ({ value: key, label: statLabels[key] }))} emptyLabel="Any substat" onChange={setSubStats}/><label>Lock state<select value={lockState} onChange={(event) => setLockState(event.target.value as typeof lockState)}><option value="all">All</option><option value="locked">Locked</option><option value="unlocked">Unlocked</option></select></label><label>Equipped<select value={assignment} onChange={(event) => setAssignment(event.target.value as typeof assignment)}><option value="all">All</option><option value="equipped">Equipped here</option><option value="unequipped">Unequipped</option></select></label><label className="check"><input type="checkbox" checked={showExcluded} onChange={(event) => setShowExcluded(event.target.checked)}/>Include discarded</label></div></div><div className="echo-picker-list">{currentId && <button className="danger" onClick={() => void choose()}>Unequip current Echo</button>}{options.map((echo) => <EchoMiniCard key={echo.id} echo={echo} selected={echo.id === currentId} rollRating={echoRollRating(echo)} onClick={() => void choose(echo)}/>)}</div></section></div>
+  return <div className="catalog-picker-backdrop cs-picker-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}>
+    <section className="catalog-picker cs-picker cs-echo-picker" role="dialog" aria-modal="true" aria-label={`Equip Echo slot ${slot + 1}`}>
+      <header><div><span className="eyebrow">Echo slot {slot + 1}</span><h2>Equip Echo</h2></div><button className="text-button" onClick={onClose}>Close</button></header>
+      <div className="cs-echo-picker-filters">
+        <div className="filter-heading"><div><strong>Echo filters</strong><span>{options.length} / {echoes.length} shown</span></div><button className="text-button" onClick={resetFilters}>Reset</button></div>
+        <label className="search"><span>⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search Echo, Sonata, or stat..."/></label>
+        <div className="filter-body">
+          <div className="filter-group"><span>Cost</span><div className="filter-chips">{[1,3,4].map((value) => <button className={costs.includes(value) ? 'active' : ''} onClick={() => toggleNumber(costs, value, setCosts)} key={value}>{value} cost</button>)}</div></div>
+          <div className="filter-group"><span>Rarity</span><div className="filter-chips">{[5,4,3,2,1].map((value) => <button className={rarities.includes(value) ? 'active' : ''} onClick={() => toggleNumber(rarities, value, setRarities)} key={value}>{value} ★</button>)}</div></div>
+          <EchoFilterSelect label="Sonata" values={sonatas} options={sonataNames.map((name) => ({ value: name, label: name }))} emptyLabel="All Sonatas" onChange={setSonatas} icon={(name) => <img src={generatedSonataIconSources[name]} alt=""/>}/>
+          <EchoFilterSelect label="Main stat" values={mainStats} options={statKeys.map((key) => ({ value: key, label: statLabels[key] }))} emptyLabel="Any main stat" onChange={setMainStats}/>
+          <EchoFilterSelect label="Substat" values={subStats} options={statKeys.map((key) => ({ value: key, label: statLabels[key] }))} emptyLabel="Any substat" onChange={setSubStats}/>
+          <label>Lock state<select value={lockState} onChange={(event) => setLockState(event.target.value as typeof lockState)}><option value="all">All</option><option value="locked">Locked</option><option value="unlocked">Unlocked</option></select></label>
+          <label>Equipped<select value={assignment} onChange={(event) => setAssignment(event.target.value as typeof assignment)}><option value="all">All</option><option value="equipped">Equipped anywhere</option><option value="unequipped">Unequipped</option></select></label>
+          <label className="check"><input type="checkbox" checked={showExcluded} onChange={(event) => setShowExcluded(event.target.checked)}/>Include discarded</label>
+        </div>
+      </div>
+      <div className="echo-picker-list">
+        {error && <div className="notice error">{error}</div>}
+        {currentId && <button className="danger" onClick={() => void choose()}>Unequip current Echo</button>}
+        {options.map((echo) => <EchoMiniCard key={echo.id} echo={echo} selected={echo.id === currentId} rollRating={echoRollRating(echo)} onClick={() => void choose(echo)} equipment={echo.equippedBy && echo.equippedBy !== build.id ? <EquippedCharacterLabel name={echo.equippedByName ?? 'Another build'}/> : undefined}/>)}
+      </div>
+    </section>
+  </div>
 }
 
 function SubstatWeightEditor({ characterName, initialWeights, recommendedWeights, onSave, onReset, onClose }: {
