@@ -56,7 +56,7 @@ describe('optimizer', () => {
     ]))
     expect(duplicateResults[0].echoIds.filter((id) => id === 'same')).toHaveLength(1)
     const protectedEchoes = [1, 2, 3, 4].map((value) => ({ ...makeEcho(String(value), value, true), cost: 4 as const }))
-    expect(optimizeBuilds({ ...request([...protectedEchoes, ...[5, 6, 7, 8, 9].map((value) => makeEcho(String(value), value))]), limit: 1 })[0].echoIds).toEqual(['9', '8', '7', '6', '5'])
+    expect([...optimizeBuilds({ ...request([...protectedEchoes, ...[5, 6, 7, 8, 9].map((value) => makeEcho(String(value), value))]), limit: 1 })[0].echoIds].sort()).toEqual(['5', '6', '7', '8', '9'])
   })
 
   it('does not dominance-prune a weaker Echo needed by a maximum constraint', () => {

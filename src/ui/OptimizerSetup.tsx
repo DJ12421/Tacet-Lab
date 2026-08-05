@@ -1,13 +1,42 @@
 import { useMemo, useState, type Dispatch, type SetStateAction } from 'react'
 import { echoMatchesOptimizerProfile } from '../domain/optimizer'
 import type { AggregatedStats, Echo, OptimizerProfile, OptimizerStatKey, StatKey } from '../domain/types'
-import { sonataCatalog, statLabels } from '../game-data'
+import { echoCatalog, sonataCatalog, statLabels } from '../game-data'
+import { generatedSonataIconSources } from '../game-data/sonatas.generated'
 import { mainStatKeysByCost } from '../game-data/echo-main-stats'
 import { EchoMiniCard, formatStat, Icon, Panel } from './components'
 
 const CORE_STATS: OptimizerStatKey[] = ['hp', 'atk', 'def', 'critRate', 'critDamage', 'energyRegen', 'basicDamage', 'heavyDamage', 'skillDamage', 'liberationDamage']
 const RESULT_LIMITS = [5, 10, 20, 50, 100]
 const WORKER_COUNTS: Array<number | 'auto'> = ['auto', 1, 2, 4, 8, 12, 16]
+const STAT_ICON_NAMES: Partial<Record<StatKey, string>> = {
+  hp: 'Icon_Attribute_Health.webp', hpPercent: 'Icon_Attribute_Health.webp',
+  atk: 'Icon_Attribute_Attack.webp', atkPercent: 'Icon_Attribute_Attack.webp',
+  def: 'Icon_Attribute_Defense.webp', defPercent: 'Icon_Attribute_Defense.webp',
+  critRate: 'Icon_Attribute_Crit_Rate.webp', critDamage: 'Icon_Attribute_Crit_DMG.webp',
+  energyRegen: 'Icon_Attribute_Energy_Regen.webp', healingBonus: 'Icon_Attribute_Healing.webp',
+  basicDamage: 'Icon_Basic_Attack_DMG_Amplification.webp', heavyDamage: 'Icon_Heavy_Attack_DMG_Amplification.webp',
+  skillDamage: 'Icon_Resonance_Skill_DMG_Amplification.webp', liberationDamage: 'Icon_Resonance_Liberation_DMG_Amplification.webp',
+  glacioDamage: 'Icon_Glacio_DMG_Bonus.webp', fusionDamage: 'Icon_Fusion_DMG_Bonus.webp',
+  electroDamage: 'Icon_Electro_DMG_Bonus.webp', aeroDamage: 'Icon_Aero_DMG_Bonus.webp',
+  spectroDamage: 'Icon_Spectro_DMG_Bonus.webp', havocDamage: 'Icon_Havoc_DMG_Bonus.webp'
+}
+
+function optimizerStatIconSource(stat: StatKey) {
+  return `https://wuwa-optimizer.com/images/icons/${STAT_ICON_NAMES[stat] ?? 'Icon_Attribute_Attack.webp'}`
+}
+
+function OptimizerEchoThumb({ echo, main }: { echo?: Echo; main?: boolean }) {
+  if (!echo) return <span className="optimizer-echo-thumb is-empty" aria-label="Empty Echo slot"><b>+</b></span>
+  const artwork = echoCatalog.find((entry) => entry.name === echo.name)?.iconSourceUrl
+  const sonataIcon = generatedSonataIconSources[echo.sonata]
+  return <span className={`optimizer-echo-thumb${main ? ' is-main' : ''}`} title={`${echo.name} · +${echo.level} · ${echo.cost} cost`}>
+    {artwork ? <img className="optimizer-echo-thumb-art" src={artwork} alt={echo.name} loading="lazy"/> : <b className="optimizer-echo-thumb-fallback">◇</b>}
+    <strong>+{echo.level}</strong><b className={`cost-${echo.cost}`}>{echo.cost}</b>
+    <img className="optimizer-echo-stat-icon" src={optimizerStatIconSource(echo.mainStat.key)} alt="" title={statLabels[echo.mainStat.key]} aria-hidden="true"/>
+    {sonataIcon && <img className="optimizer-echo-sonata-icon" src={sonataIcon} alt="" title={echo.sonata}/>}
+  </span>
+}
 const SONATA_MODE_COPY: Record<OptimizerProfile['sonataMode'], string> = {
   any: 'Allow every legal set shape that uses the enabled Sonata effects.',
   highest: 'Require the highest generated set effect for at least one enabled Sonata.',
@@ -88,7 +117,7 @@ export function OptimizerSetup(props: OptimizerSetupProps) {
           {portraitUrl ? <img src={portraitUrl} alt=""/> : <div className="optimizer-portrait-placeholder"><Icon name="build"/></div>}
           <div><span className="eyebrow">Current loadout</span><h2>{characterName}</h2><strong>{buildName}</strong><small>{weaponName}</small></div>
         </div>
-        <div className="optimizer-current-echoes">{currentEchoes.map((echo) => <EchoMiniCard echo={echo} key={echo.id}/>)}</div>
+        <div className="optimizer-current-echoes" aria-label="Current Echo loadout">{Array.from({ length: 5 }, (_, index) => <OptimizerEchoThumb echo={currentEchoes[index]} main={index === 0} key={currentEchoes[index]?.id ?? index}/>)}</div>
         <dl className="optimizer-current-stats">{CORE_STATS.slice(0, 8).map((key) => <div key={key}><dt>{statLabels[key]}</dt><dd>{currentStats ? formatStat(key, currentStats[key]) : 'Unavailable'}</dd></div>)}</dl>
         <div className="optimizer-current-target"><span>{objectiveLabel}</span><b>{currentScore === undefined ? 'Unavailable' : Math.floor(currentScore).toLocaleString('en-US')}</b></div>
       </Panel>

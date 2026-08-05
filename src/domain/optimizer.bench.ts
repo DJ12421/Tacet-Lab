@@ -58,10 +58,10 @@ export function optimizerBenchmarkRequest(
 }
 
 describe('optimizer realistic inventory benchmark', () => {
-  bench('compile and prune 500 Echo work plan', () => createOptimizerWorkPlan(optimizerBenchmarkRequest(500)), { iterations: 1, warmupIterations: 0 })
-  bench('60 Echo exact search', () => optimizeBuildPartition(optimizerBenchmarkRequest(60, 'exact')), { iterations: 1, warmupIterations: 0 })
+  bench('compile and prune 500 Echo work plan', () => { createOptimizerWorkPlan(optimizerBenchmarkRequest(500)) }, { iterations: 1, warmupIterations: 0 })
+  bench('60 Echo exact search', () => { optimizeBuildPartition(optimizerBenchmarkRequest(60, 'exact')) }, { iterations: 1, warmupIterations: 0 })
   for (const size of [100, 250, 500] as const) {
-    bench(`${size} Echoes / 100k evaluation budget`, () => optimizeBuildPartition(optimizerBenchmarkRequest(size)), { iterations: 1, warmupIterations: 0 })
+    bench(`${size} Echoes / 100k evaluation budget`, () => { optimizeBuildPartition(optimizerBenchmarkRequest(size)) }, { iterations: 1, warmupIterations: 0 })
   }
-  bench('250 Echoes / 1m evaluation budget', () => optimizeBuildPartition(optimizerBenchmarkRequest(250, 'fast', 1_000_000)), { iterations: 1, warmupIterations: 0 })
+  bench('250 Echoes / 1m evaluation budget', () => { optimizeBuildPartition(optimizerBenchmarkRequest(250, 'fast', 1_000_000)) }, { iterations: 1, warmupIterations: 0 })
 })

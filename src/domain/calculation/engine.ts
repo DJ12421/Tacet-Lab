@@ -191,6 +191,7 @@ export function evaluateFormulaValue(node: FormulaNode, context: CalculationCont
     }
     if (current.op === 'compare') return compare(compute(current.left, currentTag), compute(current.right, currentTag), current.comparator)
     if (current.op === 'if') return compute(compute(current.condition, currentTag) ? current.then : current.else, currentTag)
+    if (current.op !== 'query') throw new Error(`Unsupported formula operation: ${current.op}`)
     const queryTag = mergeTag(currentTag, current.tag)
     const memoKey = `${tagKey(queryTag)}#${current.accumulator ?? 'sum'}`
     const cached = memo.get(memoKey)
