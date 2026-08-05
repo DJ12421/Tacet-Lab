@@ -1,5 +1,5 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import { db, ensureSeedData, exportAccount, importAccount, requestPersistentStorage, validateAccount } from './database'
+import { db, ensureSeedData, exportAccount, importAccount, previewAccountImport, requestPersistentStorage, validateAccount } from './database'
 
 describe('local account persistence', () => {
   beforeEach(async () => {
@@ -27,10 +27,37 @@ describe('local account persistence', () => {
   it('round-trips a versioned account document atomically', async () => {
     await ensureSeedData()
     const exported = await exportAccount()
-    expect(exported.schemaVersion).toBe(5)
+    expect(exported.schemaVersion).toBe(6)
+    expect(exported.optimizerProfiles).toEqual([])
+    expect(exported.optimizerRuns).toEqual([])
     expect(validateAccount(exported)).toBe(true)
     await importAccount(exported)
     expect((await exportAccount()).builds).toHaveLength(0)
+  })
+
+  it('previews duplicates and appends imports without deleting current data or preferences', async () => {
+    await ensureSeedData()
+    const echo = (id: string, locked = false) => ({
+      id, name: 'Fusion Drake', cost: 1 as const, rarity: 5 as const, level: 25, sonata: 'Windward Pilgrimage',
+      mainStat: { key: 'atkPercent' as const, value: 18 }, subStats: [{ key: 'critRate' as const, value: 6.3 }],
+      locked, excluded: false, createdAt: id.length, source: 'manual' as const
+    })
+    await db.echoes.bulkAdd([echo('duplicate'), echo('update'), echo('local-only')])
+    const base = await exportAccount()
+    const incoming = {
+      ...base,
+      echoes: [echo('duplicate'), echo('update', true), echo('new-echo')],
+      settings: { ...base.settings, displayName: 'Imported name' }
+    }
+
+    const preview = await previewAccountImport(incoming)
+    expect(preview.collections.find((entry) => entry.key === 'echoes')).toMatchObject({ added: 1, updated: 1, duplicates: 1, result: 4 })
+
+    await importAccount(incoming)
+    expect(await db.echoes.count()).toBe(4)
+    expect(await db.echoes.get('local-only')).toBeDefined()
+    expect((await db.echoes.get('update'))?.locked).toBe(true)
+    expect((await exportAccount()).settings.displayName).not.toBe('Imported name')
   })
 
   it('accepts schema-2 teams and preserves calculation scenarios in the current schema', async () => {
@@ -41,7 +68,7 @@ describe('local account persistence', () => {
     await importAccount(legacy)
     await db.teams.update('legacy', { scenario: { resultMode: 'critical', memberConditions: {}, enemyConditions: { staggered: true }, selectedTargetByBuild: {} } })
     const roundTrip = await exportAccount()
-    expect(roundTrip.schemaVersion).toBe(5)
+    expect(roundTrip.schemaVersion).toBe(6)
     expect(roundTrip.teams[0].scenario?.resultMode).toBe('critical')
   })
 

@@ -28,7 +28,8 @@ Use the top-bar controls to export or restore a JSON backup. Open **Settings & d
 - Build five-Echo, 12-cost character loadouts and connect them to three-member teams.
 - Inspect Nanoka-derived normal, average, and critical results for every generated character attack, with saved team conditions and calculation traces.
 - Author timestamped actions and advanced custom buffs for deterministic formula-driven rotation damage.
-- Optimize one character's Echoes against a selected ability or stat without truncating cost groups; capped searches are labeled best found.
+- Optimize one character's Echoes against the live team scenario with level, rarity, main-stat, Sonata, equipment-source, main-Echo, and stat constraints; a dynamic worker pool skips provably irrelevant branches, exact searches retain a completeness guarantee, and capped searches are labeled best found.
+- Compare ranked loadouts in an interactive build-distribution chart, inspect main-Echo placement and swap plans, borrow disclosed Echoes from saved builds, and restore compatible local optimizer profiles and runs.
 - Export and restore versioned account backups as JSON.
 - Install the site as a PWA after opening it in a supported browser.
 

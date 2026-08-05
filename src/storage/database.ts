@@ -3,7 +3,7 @@ import { generatedCharacterSummaries as characterCatalog } from '../game-data/ch
 import { defaultSettings, GAME_DATA_VERSION, statLabels } from '../game-data/core'
 import { generatedWeaponSummaries as weaponCatalog } from '../game-data/weapon-summaries.generated'
 import { effectiveSubStats, maxSubStatsForLevel, normalizeEchoMainStat } from '../game-data/echo-main-stats'
-import type { AccountDocument, AppSettings, Build, Echo, OwnedCharacter, OwnedWeapon, Team } from '../domain/types'
+import type { AccountDocument, AppSettings, Build, Echo, OptimizerProfile, OptimizerRun, OwnedCharacter, OwnedWeapon, Team } from '../domain/types'
 import { createLocalId } from '../domain/id'
 
 type SettingsRow = AppSettings & { id: 'settings' }
@@ -14,6 +14,8 @@ class TacetDatabase extends Dexie {
   weapons!: EntityTable<OwnedWeapon, 'id'>
   builds!: EntityTable<Build, 'id'>
   teams!: EntityTable<Team, 'id'>
+  optimizerProfiles!: EntityTable<OptimizerProfile, 'id'>
+  optimizerRuns!: EntityTable<OptimizerRun, 'id'>
   settings!: EntityTable<SettingsRow, 'id'>
 
   constructor() {
@@ -47,6 +49,15 @@ class TacetDatabase extends Dexie {
       characters: 'id, catalogId, level, sequence, locked, createdAt',
       weapons: 'id, catalogId, level, rank, locked, equippedBy, createdAt',
       builds: 'id, resonatorId, weaponId', teams: 'id', settings: 'id'
+    })
+    this.version(6).stores({
+      echoes: 'id, name, cost, sonata, locked, excluded, equippedBy, createdAt',
+      characters: 'id, catalogId, level, sequence, locked, createdAt',
+      weapons: 'id, catalogId, level, rank, locked, equippedBy, createdAt',
+      builds: 'id, resonatorId, weaponId', teams: 'id',
+      optimizerProfiles: 'id, buildId, updatedAt',
+      optimizerRuns: 'id, buildId, profileId, createdAt',
+      settings: 'id'
     })
   }
 }
@@ -261,7 +272,7 @@ export async function saveSettings(settings: AppSettings) {
 
 export async function exportAccount(): Promise<AccountDocument> {
   return {
-    schemaVersion: 5,
+    schemaVersion: 6,
     gameDataVersion: GAME_DATA_VERSION,
     exportedAt: new Date().toISOString(),
     echoes: (await db.echoes.toArray()).map((echo) => ({ ...echo, subStats: effectiveSubStats(echo) })),
@@ -269,31 +280,261 @@ export async function exportAccount(): Promise<AccountDocument> {
     weapons: await db.weapons.toArray(),
     builds: await db.builds.toArray(),
     teams: await db.teams.toArray(),
+    optimizerProfiles: await db.optimizerProfiles.toArray(),
+    optimizerRuns: await db.optimizerRuns.toArray(),
     settings: await getSettings()
   }
 }
 
 export function validateAccount(value: unknown): value is AccountDocument {
-  if (!isRecord(value) || ![1, 2, 3, 4, 5].includes(Number(value.schemaVersion)) || typeof value.gameDataVersion !== 'string' || typeof value.exportedAt !== 'string') return false
+  if (!isRecord(value) || ![1, 2, 3, 4, 5, 6].includes(Number(value.schemaVersion)) || typeof value.gameDataVersion !== 'string' || typeof value.exportedAt !== 'string') return false
   return Array.isArray(value.echoes) && value.echoes.every(isEcho)
     && (value.schemaVersion === 1 || (Array.isArray(value.characters) && value.characters.every(isOwnedCharacter)))
     && (value.schemaVersion === 1 || (Array.isArray(value.weapons) && value.weapons.every(isOwnedWeapon)))
     && Array.isArray(value.builds) && value.builds.every(isBuild)
     && Array.isArray(value.teams) && value.teams.every(isTeam)
+    && (Number(value.schemaVersion) < 6 || (Array.isArray(value.optimizerProfiles) && value.optimizerProfiles.every(isOptimizerProfile)))
+    && (Number(value.schemaVersion) < 6 || (Array.isArray(value.optimizerRuns) && value.optimizerRuns.every(isOptimizerRun)))
     && isSettings(value.settings)
 }
 
-export async function importAccount(document: AccountDocument) {
-  if (!validateAccount(document)) throw new Error('The account backup is invalid or unsupported.')
-  await db.transaction('rw', [db.echoes, db.characters, db.weapons, db.builds, db.teams, db.settings], async () => {
-    await Promise.all([db.echoes.clear(), db.characters.clear(), db.weapons.clear(), db.builds.clear(), db.teams.clear(), db.settings.clear()])
-    await db.echoes.bulkPut(document.echoes.map((echo) => ({ ...echo, mainStat: normalizeEchoMainStat(echo), subStats: effectiveSubStats(echo), source: 'import' })))
-    await db.characters.bulkPut(document.characters ?? [])
-    await db.weapons.bulkPut(document.weapons ?? [])
-    await db.builds.bulkPut(document.builds)
-    await db.teams.bulkPut(document.teams)
-    await saveSettings(document.settings)
+export type AccountImportCollectionKey = 'echoes' | 'characters' | 'weapons' | 'builds' | 'teams' | 'optimizerProfiles' | 'optimizerRuns'
+
+export interface AccountImportCollectionSummary {
+  key: AccountImportCollectionKey
+  label: string
+  current: number
+  incoming: number
+  added: number
+  updated: number
+  duplicates: number
+  result: number
+}
+
+export interface AccountImportPreview {
+  schemaVersion: AccountDocument['schemaVersion']
+  gameDataVersion: string
+  exportedAt: string
+  collections: AccountImportCollectionSummary[]
+  added: number
+  updated: number
+  duplicates: number
+}
+
+type ImportEntity = Echo | OwnedCharacter | OwnedWeapon | Build | Team | OptimizerProfile | OptimizerRun
+type ImportEntityWithId = ImportEntity & { id: string }
+type ImportIdMaps = Record<AccountImportCollectionKey, Map<string, string>>
+interface PlannedCollection<T extends ImportEntityWithId> {
+  summary: AccountImportCollectionSummary
+  records: T[]
+}
+
+const importCollectionLabels: Record<AccountImportCollectionKey, string> = {
+  echoes: 'Echoes',
+  characters: 'Characters',
+  weapons: 'Weapons',
+  builds: 'Builds',
+  teams: 'Teams',
+  optimizerProfiles: 'Optimizer profiles',
+  optimizerRuns: 'Saved optimizer runs'
+}
+
+function canonicalImportValue(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(canonicalImportValue)
+  if (!isRecord(value)) return value
+  return Object.fromEntries(Object.keys(value).sort().flatMap((key) => value[key] === undefined ? [] : [[key, canonicalImportValue(value[key])]]))
+}
+
+function importFingerprint(value: ImportEntityWithId, ignoredKeys: string[] = ['id']) {
+  const filtered = Object.fromEntries(Object.entries(value).filter(([key]) => !ignoredKeys.includes(key)))
+  return JSON.stringify(canonicalImportValue(filtered))
+}
+
+function resolveImportIds<T extends ImportEntityWithId>(
+  current: T[],
+  incoming: T[],
+  identity: (record: T) => string
+) {
+  const ids = new Map<string, string>()
+  const byId = new Map(current.map((record) => [record.id, record]))
+  const byIdentity = new Map(current.map((record) => [identity(record), record.id]))
+  for (const record of incoming) {
+    const targetId = byId.has(record.id) ? record.id : byIdentity.get(identity(record)) ?? record.id
+    ids.set(record.id, targetId)
+    if (!byId.has(targetId)) {
+      const targetRecord = { ...record, id: targetId }
+      byId.set(targetId, targetRecord)
+      byIdentity.set(identity(targetRecord), targetId)
+    }
+  }
+  return ids
+}
+
+function planImportCollection<T extends ImportEntityWithId>(
+  key: AccountImportCollectionKey,
+  current: T[],
+  incoming: T[],
+  ids: Map<string, string>,
+  remap: (record: T) => T,
+  comparisonIgnoredKeys: string[] = ['id']
+): PlannedCollection<T> {
+  const working = new Map(current.map((record) => [record.id, record]))
+  const records: T[] = []
+  let added = 0
+  let updated = 0
+  let duplicates = 0
+
+  for (const source of incoming) {
+    const record = { ...remap(source), id: ids.get(source.id) ?? source.id }
+    const existing = working.get(record.id)
+    if (!existing) {
+      added += 1
+      records.push(record)
+      working.set(record.id, record)
+      continue
+    }
+    if (importFingerprint(existing, comparisonIgnoredKeys) === importFingerprint(record, comparisonIgnoredKeys)) {
+      duplicates += 1
+      continue
+    }
+    updated += 1
+    records.push(record)
+    working.set(record.id, record)
+  }
+
+  return {
+    summary: { key, label: importCollectionLabels[key], current: current.length, incoming: incoming.length, added, updated, duplicates, result: current.length + added },
+    records
+  }
+}
+
+function remapOptionalId(map: Map<string, string>, id?: string) {
+  return id ? map.get(id) ?? id : undefined
+}
+
+function remapTeam(team: Team, buildIds: Map<string, string>): Team {
+  const remapBuildId = (id: string) => buildIds.get(id) ?? id
+  const remapEffectSelections = (selections: Record<string, import('../domain/calculation-v2/types').CalculationEffectSelection>) => Object.fromEntries(
+    Object.entries(selections).map(([id, selection]) => [id, { ...selection, recipientBuildId: remapOptionalId(buildIds, selection.recipientBuildId) }])
+  )
+  const scenario = team.scenario ? {
+    ...team.scenario,
+    memberConditions: Object.fromEntries(Object.entries(team.scenario.memberConditions).map(([id, value]) => [remapBuildId(id), value])),
+    selectedTargetByBuild: Object.fromEntries(Object.entries(team.scenario.selectedTargetByBuild).map(([id, value]) => [remapBuildId(id), value])),
+    compareBuildId: remapOptionalId(buildIds, team.scenario.compareBuildId)
+  } : undefined
+  const calculationV2 = team.calculationV2 ? {
+    ...team.calculationV2,
+    memberEffects: Object.fromEntries(Object.entries(team.calculationV2.memberEffects).map(([id, value]) => [remapBuildId(id), remapEffectSelections(value)])),
+    partyEffects: Object.fromEntries(Object.entries(team.calculationV2.partyEffects).map(([id, value]) => [id, remapEffectSelections(value)])),
+    selectedAttackByBuild: Object.fromEntries(Object.entries(team.calculationV2.selectedAttackByBuild).map(([id, value]) => [remapBuildId(id), value]))
+  } : undefined
+  return {
+    ...team,
+    buildIds: team.buildIds.map(remapBuildId),
+    actions: team.actions.map((action) => ({ ...action, buildId: remapBuildId(action.buildId) })),
+    buffs: team.buffs?.map((buff) => ({ ...buff, sourceBuildId: remapBuildId(buff.sourceBuildId) })),
+    scenario,
+    calculationV2
+  }
+}
+
+async function createAccountImportPlan(document: AccountDocument) {
+  const current = await exportAccount()
+  const incomingEchoes = document.echoes.map((echo) => ({ ...echo, mainStat: normalizeEchoMainStat(echo), subStats: effectiveSubStats(echo), source: 'import' as const }))
+  const incomingCharacters = document.characters ?? []
+  const incomingWeapons = document.weapons ?? []
+  const incomingBuilds = document.builds
+  const incomingTeams = document.teams
+  const incomingProfiles = document.optimizerProfiles ?? []
+  const incomingRuns = document.optimizerRuns ?? []
+
+  const maps = {} as ImportIdMaps
+  maps.echoes = resolveImportIds(current.echoes, incomingEchoes, (echo) => importFingerprint(echo, ['id', 'source', 'equippedBy', 'equippedByName']))
+  maps.characters = resolveImportIds(current.characters, incomingCharacters, (character) => character.catalogId)
+  maps.weapons = resolveImportIds(current.weapons, incomingWeapons, (weapon) => importFingerprint(weapon, ['id', 'equippedBy']))
+
+  const remapBuild = (build: Build): Build => ({
+    ...build,
+    weaponId: remapOptionalId(maps.weapons, build.weaponId) ?? '',
+    echoIds: build.echoIds.map((id) => maps.echoes.get(id) ?? id)
   })
+  maps.builds = resolveImportIds(current.builds, incomingBuilds.map(remapBuild), (build) => importFingerprint(build))
+  const remappedTeams = incomingTeams.map((team) => remapTeam(team, maps.builds))
+  maps.teams = resolveImportIds(current.teams, remappedTeams, (team) => importFingerprint(team))
+
+  const remapProfile = (profile: OptimizerProfile): OptimizerProfile => ({
+    ...profile,
+    buildId: maps.builds.get(profile.buildId) ?? profile.buildId,
+    teamBuildIds: profile.teamBuildIds.map((id) => maps.builds.get(id) ?? id),
+    excludedEchoIds: profile.excludedEchoIds.map((id) => maps.echoes.get(id) ?? id),
+    selectedMainEchoId: remapOptionalId(maps.echoes, profile.selectedMainEchoId)
+  })
+  const remappedProfiles = incomingProfiles.map(remapProfile)
+  maps.optimizerProfiles = resolveImportIds(current.optimizerProfiles ?? [], remappedProfiles, (profile) => importFingerprint(profile))
+
+  const remapRun = (run: OptimizerRun): OptimizerRun => ({
+    ...run,
+    buildId: maps.builds.get(run.buildId) ?? run.buildId,
+    profileId: maps.optimizerProfiles.get(run.profileId) ?? run.profileId,
+    results: run.results.map((result) => ({
+      ...result,
+      echoIds: result.echoIds.map((id) => maps.echoes.get(id) ?? id),
+      mainEchoId: remapOptionalId(maps.echoes, result.mainEchoId)
+    })),
+    plot: run.plot.map((point) => ({
+      ...point,
+      echoIds: point.echoIds.map((id) => maps.echoes.get(id) ?? id),
+      mainEchoId: maps.echoes.get(point.mainEchoId) ?? point.mainEchoId
+    }))
+  })
+  const remappedRuns = incomingRuns.map(remapRun)
+  maps.optimizerRuns = resolveImportIds(current.optimizerRuns ?? [], remappedRuns, (run) => importFingerprint(run))
+
+  const echoes = planImportCollection('echoes', current.echoes, incomingEchoes, maps.echoes, (echo) => ({
+    ...echo,
+    equippedBy: remapOptionalId(maps.builds, echo.equippedBy)
+  }), ['id', 'source'])
+  const characters = planImportCollection('characters', current.characters, incomingCharacters, maps.characters, (character) => character)
+  const weapons = planImportCollection('weapons', current.weapons, incomingWeapons, maps.weapons, (weapon) => ({
+    ...weapon,
+    equippedBy: remapOptionalId(maps.characters, weapon.equippedBy)
+  }))
+  const builds = planImportCollection('builds', current.builds, incomingBuilds, maps.builds, remapBuild)
+  const teams = planImportCollection('teams', current.teams, incomingTeams, maps.teams, (team) => remapTeam(team, maps.builds))
+  const optimizerProfiles = planImportCollection('optimizerProfiles', current.optimizerProfiles ?? [], incomingProfiles, maps.optimizerProfiles, remapProfile)
+  const optimizerRuns = planImportCollection('optimizerRuns', current.optimizerRuns ?? [], incomingRuns, maps.optimizerRuns, remapRun)
+  const collections = [echoes, characters, weapons, builds, teams, optimizerProfiles, optimizerRuns]
+  const preview: AccountImportPreview = {
+    schemaVersion: document.schemaVersion,
+    gameDataVersion: document.gameDataVersion,
+    exportedAt: document.exportedAt,
+    collections: collections.map((collection) => collection.summary),
+    added: collections.reduce((sum, collection) => sum + collection.summary.added, 0),
+    updated: collections.reduce((sum, collection) => sum + collection.summary.updated, 0),
+    duplicates: collections.reduce((sum, collection) => sum + collection.summary.duplicates, 0)
+  }
+  return { preview, echoes, characters, weapons, builds, teams, optimizerProfiles, optimizerRuns }
+}
+
+export async function previewAccountImport(document: AccountDocument): Promise<AccountImportPreview> {
+  if (!validateAccount(document)) throw new Error('The account backup is invalid or unsupported.')
+  return (await createAccountImportPlan(document)).preview
+}
+
+export async function importAccount(document: AccountDocument): Promise<AccountImportPreview> {
+  if (!validateAccount(document)) throw new Error('The account backup is invalid or unsupported.')
+  const plan = await createAccountImportPlan(document)
+  await db.transaction('rw', [db.echoes, db.characters, db.weapons, db.builds, db.teams, db.optimizerProfiles, db.optimizerRuns], async () => {
+    await db.echoes.bulkPut(plan.echoes.records)
+    await db.characters.bulkPut(plan.characters.records)
+    await db.weapons.bulkPut(plan.weapons.records)
+    await db.builds.bulkPut(plan.builds.records)
+    await db.teams.bulkPut(plan.teams.records)
+    await db.optimizerProfiles.bulkPut(plan.optimizerProfiles.records)
+    await db.optimizerRuns.bulkPut(plan.optimizerRuns.records)
+  })
+  return plan.preview
 }
 
 function isOwnedCharacter(value: unknown) {
@@ -375,6 +616,65 @@ function isTeam(value: unknown) {
       && typeof buff.stackingGroup === 'string' && isFiniteNumber(buff.duration) && buff.duration >= 0 && isFiniteNumber(buff.value))))
     && (value.scenario === undefined || isTeamScenario(value.scenario))
     && (value.calculationV2 === undefined || isCalculationScenarioV2(value.calculationV2))
+}
+
+function isOptimizerProfile(value: unknown) {
+  if (!isRecord(value)) return false
+  const validStats = (entry: unknown) => isRecord(entry) && Object.entries(entry).every(([key, amount]) => key in statLabels && isFiniteNumber(amount))
+  const mainStatsByCost = value.mainStatsByCost
+  return typeof value.id === 'string' && typeof value.buildId === 'string'
+    && (value.targetId === undefined || typeof value.targetId === 'string')
+    && isFiniteNumber(value.levelLow) && isFiniteNumber(value.levelHigh)
+    && Array.isArray(value.rarities) && value.rarities.every((rarity) => [1, 2, 3, 4, 5].includes(Number(rarity)))
+    && isRecord(mainStatsByCost) && ['1', '3', '4'].every((cost) => Array.isArray(mainStatsByCost[cost]) && (mainStatsByCost[cost] as unknown[]).every((key) => typeof key === 'string' && key in statLabels))
+    && Array.isArray(value.excludedEchoIds) && value.excludedEchoIds.every((id) => typeof id === 'string')
+    && ['current', 'team', 'all'].includes(String(value.equippedPolicy))
+    && Array.isArray(value.teamBuildIds) && value.teamBuildIds.every((id) => typeof id === 'string')
+    && ['current', 'any', 'selected'].includes(String(value.mainEchoPolicy))
+    && (value.selectedMainEchoId === undefined || typeof value.selectedMainEchoId === 'string')
+    && Array.isArray(value.allowedSonatas) && value.allowedSonatas.every((name) => typeof name === 'string')
+    && ['any', 'highest', 'dual', 'custom'].includes(String(value.sonataMode))
+    && typeof value.allowNoSonata === 'boolean'
+    && Array.isArray(value.requiredSonataEffects) && value.requiredSonataEffects.every((entry) => isRecord(entry) && typeof entry.sonata === 'string' && isFiniteNumber(entry.pieces))
+    && validStats(value.minimumStats) && validStats(value.maximumStats)
+    && (value.minimumScore === undefined || isFiniteNumber(value.minimumScore))
+    && (value.maximumScore === undefined || isFiniteNumber(value.maximumScore))
+    && isFiniteNumber(value.resultLimit) && typeof value.plotStat === 'string' && value.plotStat in statLabels
+    && (value.workerCount === 'auto' || isFiniteNumber(value.workerCount))
+    && ['exact', 'fast'].includes(String(value.searchMode)) && isFiniteNumber(value.maxEvaluations)
+    && typeof value.allowPartial === 'boolean' && isFiniteNumber(value.updatedAt)
+}
+
+function isOptimizerRun(value: unknown) {
+  return isRecord(value) && typeof value.id === 'string' && typeof value.buildId === 'string'
+    && typeof value.profileId === 'string' && typeof value.requestId === 'string'
+    && isFiniteNumber(value.createdAt) && typeof value.gameDataVersion === 'string'
+    && typeof value.inventoryFingerprint === 'string' && typeof value.profileFingerprint === 'string' && typeof value.contextFingerprint === 'string'
+    && Array.isArray(value.results) && value.results.every(isOptimizerResult)
+    && Array.isArray(value.plot) && value.plot.every(isOptimizerPlotPoint)
+    && (value.highlightedBuildKeys === undefined || (Array.isArray(value.highlightedBuildKeys) && value.highlightedBuildKeys.every((key) => typeof key === 'string')))
+    && typeof value.complete === 'boolean' && isOptimizerProgress(value.progress)
+}
+
+function isOptimizerResult(value: unknown) {
+  return isRecord(value) && typeof value.requestId === 'string'
+    && Array.isArray(value.echoIds) && value.echoIds.every((id) => typeof id === 'string')
+    && (value.mainEchoId === undefined || typeof value.mainEchoId === 'string')
+    && isFiniteNumber(value.score) && isRecord(value.stats) && Object.values(value.stats).every(isFiniteNumber)
+    && isRecord(value.damage) && isFiniteNumber(value.damage.normal) && isFiniteNumber(value.damage.critical) && isFiniteNumber(value.damage.expected)
+    && isFiniteNumber(value.damage.hits) && typeof value.damage.attackId === 'string'
+}
+
+function isOptimizerPlotPoint(value: unknown) {
+  return isRecord(value) && isFiniteNumber(value.x) && isFiniteNumber(value.y)
+    && Array.isArray(value.echoIds) && value.echoIds.every((id) => typeof id === 'string')
+    && typeof value.mainEchoId === 'string'
+    && (value.stats === undefined || (isRecord(value.stats) && Object.values(value.stats).every(isFiniteNumber)))
+}
+
+function isOptimizerProgress(value: unknown) {
+  return isRecord(value) && typeof value.requestId === 'string'
+    && ['total', 'processed', 'tested', 'rejected', 'skipped', 'elapsedMs', 'testedPerSecond'].every((key) => isFiniteNumber(value[key]))
 }
 
 function isTeamScenario(value: unknown) {

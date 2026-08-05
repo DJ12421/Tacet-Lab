@@ -16,7 +16,7 @@ Screen share / screenshot / local video
   -> explicit user approval
   -> Dexie / IndexedDB
   -> pure calculation modules
-  -> optimizer Web Worker
+  -> partitioned optimizer Web Workers
   -> React views and local PNG/JSON exports
 ```
 
@@ -25,8 +25,8 @@ Screen share / screenshot / local video
 - `src/domain/` owns serializable types, the tagged formula graph, calculation contexts and traces, stat aggregation, rotations, buffs, and optimization. Domain functions do not access the DOM or storage.
 - `src/game-data/` owns the pinned Nanoka 3.5 display and numeric source data. `src/domain/calculation/sheets.ts` classifies every generated character, weapon, Sonata, and Echo record for formula coverage.
 - `src/scanner/` owns local capture sources, calibration profiles, named field regions, worker preprocessing, the adaptive English OCR pool, session cancellation/backpressure, parsing, validation, duplicate detection, diagnostics, and fixture accuracy/performance accounting.
-- `src/storage/` owns IndexedDB tables, seed repair, schema validation, atomic import, export, and reset.
-- `src/workers/` isolates expensive optimization from the render thread. Scanner image preprocessing runs in `src/scanner/preprocess.worker.ts`; Tesseract workers are serialized through one-worker schedulers managed by `OcrPool`.
+- `src/storage/` owns IndexedDB tables, seed repair, schema validation, optimizer profiles and run history, atomic import, export, and reset.
+- `src/workers/` isolates partitioned optimization from the render thread and reports aggregate progress to the UI. Scanner image preprocessing runs in `src/scanner/preprocess.worker.ts`; Tesseract workers are serialized through one-worker schedulers managed by `OcrPool`.
 
 ## Scanner privacy and ordering
 
@@ -39,7 +39,7 @@ Every scan carries a session ID, frame sequence, frame ID, region ID, and job ID
 
 ## Persistence
 
-`AccountDocument` is the portable public format. Schema 3 adds saved team calculation scenarios, formula target IDs, and per-action inputs. Schema-1 and schema-2 backups remain importable. Every export includes `schemaVersion`, `gameDataVersion`, and `exportedAt`; imports are deeply validated before an atomic replacement transaction starts.
+`AccountDocument` is the portable public format. Schema 3 adds saved team calculation scenarios, formula target IDs, and per-action inputs. Schema 6 adds per-build optimizer profiles and a bounded history of compatible optimizer runs. Earlier backups remain importable. Every export includes `schemaVersion`, `gameDataVersion`, and `exportedAt`; imports are deeply validated before an atomic replacement transaction starts.
 
 ## Formula engine
 
@@ -49,7 +49,9 @@ Formula data is labeled `nanoka-3.5-formula-v2`. This is reproducible from the p
 
 ## Optimizer
 
-The optimizer filters excluded/assigned items, applies locked items first, and explores every legal candidate in deterministic order without truncating cost groups. It enforces five Echoes, 12 total cost, optional five-piece Sonata, min/max calculated stats, and formula targets. Completed searches are exact for the supplied inventory and constraints. A search that reaches its visited-node budget is labeled `best found`, never as a global optimum.
+The optimizer compiles each Echo into a reusable stat vector, prunes the filtered candidate frontier, and splits deterministic main-Echo and secondary-Echo tasks into bounded work units. A dynamic background-worker pool pulls those units as workers become idle, reuses compiled suffix bounds and Calculation V2 contexts, and shares the live global top-N cutoff between units. Filters cover Echo level, rarity, cost-specific main stats, manual exclusions, assignment sources, main-Echo policy, generated Sonata thresholds, partial-loadout policy, min/max calculated stats, and min/max target score. Cost-impossible, Sonata-impossible, stat-impossible, and objective-bounded subtrees are counted and skipped without leaf evaluation; the Calculation V2 evaluator receives the selected main Echo in slot one.
+
+Exact mode explores the complete filtered search space. Fast mode reserves one coordinator-owned evaluation budget across bounded work units and is labeled `best found`, never as a global optimum. The coordinator merges and de-duplicates worker results, broadcasts stronger score cutoffs, samples the build distribution for interactive analysis, persists the five newest runs per build, fingerprints inventory state before equipping, discloses borrowed Echoes, and applies cross-build assignment changes in one IndexedDB transaction.
 
 ## Offline behavior
 

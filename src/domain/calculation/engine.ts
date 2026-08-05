@@ -171,12 +171,57 @@ export class FormulaCalculator {
   }
 }
 
-export function estimateFormulaRange(node: FormulaNode, context: CalculationContext, inputRanges: Record<string, FormulaRange> = {}): FormulaRange {
+/** Evaluate a formula without constructing the user-facing trace tree. */
+export function evaluateFormulaValue(node: FormulaNode, context: CalculationContext, initialTag: FormulaTag = {}): FormulaScalar {
+  const memo = new Map<string, FormulaScalar>()
+  const active = new Set<string>()
+  const compute = (current: FormulaNode, currentTag: FormulaTag): FormulaScalar => {
+    if (current.op === 'constant') return current.value
+    if (current.op === 'input') return context.inputs[current.key] ?? current.fallback ?? 0
+    if (current.op === 'stat') return context.stats[current.key] ?? current.fallback ?? 0
+    if (current.op === 'floor') return Math.floor(numeric(compute(current.operand, currentTag), current.label ?? current.op) + 1e-9)
+    if (current.op === 'sum' || current.op === 'prod' || current.op === 'min' || current.op === 'max') {
+      return accumulate(current.operands.map((operand) => numeric(compute(operand, currentTag), current.label ?? current.op)), current.op)
+    }
+    if (current.op === 'lookup') {
+      const key = compute(current.key, currentTag)
+      const branch = current.values[String(key)] ?? current.fallback
+      if (!branch) throw new Error(`No lookup branch exists for ${String(key)}.`)
+      return compute(branch, currentTag)
+    }
+    if (current.op === 'compare') return compare(compute(current.left, currentTag), compute(current.right, currentTag), current.comparator)
+    if (current.op === 'if') return compute(compute(current.condition, currentTag) ? current.then : current.else, currentTag)
+    const queryTag = mergeTag(currentTag, current.tag)
+    const memoKey = `${tagKey(queryTag)}#${current.accumulator ?? 'sum'}`
+    const cached = memo.get(memoKey)
+    if (cached !== undefined) return cached
+    if (active.has(memoKey)) throw new Error(`Formula query cycle detected at ${memoKey}.`)
+    active.add(memoKey)
+    try {
+      const values = context.entries
+        .filter((entry) => tagMatches(entry.tag, queryTag))
+        .map((entry) => numeric(compute(entry.value, queryTag), entry.label ?? entry.id))
+      const value = accumulate(values, current.accumulator ?? 'sum')
+      memo.set(memoKey, value)
+      return value
+    } finally {
+      active.delete(memoKey)
+    }
+  }
+  return compute(node, initialTag)
+}
+
+export function estimateFormulaRange(
+  node: FormulaNode,
+  context: CalculationContext,
+  inputRanges: Record<string, FormulaRange> = {},
+  statRanges: Record<string, FormulaRange> = {}
+): FormulaRange {
   const exact = (value: number): FormulaRange => ({ min: value, max: value, monotonic: true })
   if (node.op === 'constant') return typeof node.value === 'number' ? exact(node.value) : { min: -Infinity, max: Infinity, monotonic: false }
-  if (node.op === 'stat') return exact(context.stats[node.key] ?? node.fallback ?? 0)
+  if (node.op === 'stat') return statRanges[node.key] ?? exact(context.stats[node.key] ?? node.fallback ?? 0)
   if (node.op === 'floor') {
-    const range = estimateFormulaRange(node.operand, context, inputRanges)
+    const range = estimateFormulaRange(node.operand, context, inputRanges, statRanges)
     return { min: Math.floor(range.min + 1e-9), max: Math.floor(range.max + 1e-9), monotonic: range.monotonic }
   }
   if (node.op === 'input') {
@@ -184,11 +229,11 @@ export function estimateFormulaRange(node: FormulaNode, context: CalculationCont
     return inputRanges[node.key] ?? (typeof value === 'number' ? exact(value) : { min: -Infinity, max: Infinity, monotonic: false })
   }
   if (node.op === 'sum') {
-    const ranges = node.operands.map((operand) => estimateFormulaRange(operand, context, inputRanges))
+    const ranges = node.operands.map((operand) => estimateFormulaRange(operand, context, inputRanges, statRanges))
     return { min: ranges.reduce((sum, range) => sum + range.min, 0), max: ranges.reduce((sum, range) => sum + range.max, 0), monotonic: ranges.every((range) => range.monotonic) }
   }
   if (node.op === 'prod') {
-    const ranges = node.operands.map((operand) => estimateFormulaRange(operand, context, inputRanges))
+    const ranges = node.operands.map((operand) => estimateFormulaRange(operand, context, inputRanges, statRanges))
     let result = exact(1)
     for (const range of ranges) {
       const values = [result.min * range.min, result.min * range.max, result.max * range.min, result.max * range.max]
@@ -197,10 +242,13 @@ export function estimateFormulaRange(node: FormulaNode, context: CalculationCont
     return result
   }
   if (node.op === 'min' || node.op === 'max') {
-    const ranges = node.operands.map((operand) => estimateFormulaRange(operand, context, inputRanges))
+    const ranges = node.operands.map((operand) => estimateFormulaRange(operand, context, inputRanges, statRanges))
     const select = node.op === 'min' ? Math.min : Math.max
     return { min: select(...ranges.map((range) => range.min)), max: select(...ranges.map((range) => range.max)), monotonic: ranges.every((range) => range.monotonic) }
   }
+  // Unsupported control-flow/query nodes cannot be evaluated at one endpoint
+  // when ranged stats are present: that could underestimate another branch.
+  if (Object.keys(statRanges).length) return { min: -Infinity, max: Infinity, monotonic: false }
   try {
     const value = new FormulaCalculator(context).evaluate(node).value
     return typeof value === 'number' ? exact(value) : { min: -Infinity, max: Infinity, monotonic: false }

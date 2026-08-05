@@ -96,6 +96,7 @@ export interface TeamActionModel {
   expected: number
   activeBuffs: BuffEffect[]
   activates: BuffEffect[]
+  activePartyEffectsV2: CalculationEffectDefinition[]
   warnings: string[]
   trace?: CalculationTrace
   traces?: Record<'normal' | 'critical' | 'expected', CalculationTrace>
@@ -413,6 +414,30 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
   }
 
   const sortedActions = [...input.team.actions].sort((left, right) => left.timestamp - right.timestamp)
+  const normalizedTrigger = (value = '') => value.toLowerCase().replace(/[^a-z0-9]+/g, '')
+  const partyEffectIsActive = (effect: CalculationEffectDefinition, recipient: TeamMemberModel, currentIndex: number) => {
+    if (!effect.trigger) return true
+    const source = baseMembers.find((member) => member.outgoingEffectsV2.some((candidate) => candidate.id === effect.id))
+    if (!source?.build || !recipient.build) return false
+    const trigger = normalizedTrigger(effect.trigger)
+    if (!trigger) return true
+    let activationIndex = -1
+    for (let index = 0; index <= currentIndex; index += 1) {
+      const action = sortedActions[index]
+      if (action.buildId !== source.build.id) continue
+      const attack = source.attacks.find((candidate) => candidate.id === action.attackId)
+      const attackKeys = [action.attackId, attack?.id ?? '', attack?.name ?? '', attack?.skillName ?? ''].map(normalizedTrigger).filter(Boolean)
+      if (attackKeys.some((key) => key === trigger || key.includes(trigger) || trigger.includes(key))) activationIndex = index
+    }
+    if (activationIndex < 0) return false
+    const activationTime = sortedActions[activationIndex].timestamp
+    const currentTime = sortedActions[currentIndex].timestamp
+    if (effect.duration !== undefined && currentTime > activationTime + effect.duration) return false
+    if (effect.scope !== 'next') return true
+    const firstIncomingIndex = sortedActions.findIndex((action, index) => index > activationIndex && action.buildId !== source.build?.id)
+    if (firstIncomingIndex < 0 || sortedActions[firstIncomingIndex].buildId !== recipient.build.id || currentIndex < firstIncomingIndex) return false
+    return !sortedActions.slice(firstIncomingIndex, currentIndex + 1).some((action) => action.buildId !== recipient.build?.id)
+  }
   let resultIndex = 0
   const actions = sortedActions.map((action, index): TeamActionModel => {
     const member = baseMembers.find((entry) => entry.build?.id === action.buildId)
@@ -435,8 +460,8 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
     let formulaResult: { normal: number; critical: number; expected: number; trace?: CalculationTrace; traces?: Record<'normal' | 'critical' | 'expected', CalculationTrace> } | undefined
     let calculationResultV2: CalculationResultV2 | undefined
     const ownedWeapon = member?.showcase?.weapon?.owned
+    const activePartyEffectsV2 = member ? receivedPartyEffectsFor(member).filter((effect) => partyEffectIsActive(effect, member, index)) : []
     if (calculationAttack && member?.build && member.character && member.catalog && member.showcase) {
-      const receivedPartyEffects = receivedPartyEffectsFor(member)
       calculationResultV2 = calculateBuildAttackV2({
         build: member.build,
         character: member.character,
@@ -445,7 +470,7 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
         weaponCatalog: member.showcase.weapon?.catalog,
         showcase: member.showcase,
         scenario: input.team.calculationV2,
-        partyEffects: receivedPartyEffects,
+        partyEffects: activePartyEffectsV2,
         activeCustomBuffs: activeBuffs,
         roverGender: input.roverGender
       }, calculationAttack, calculationEnemy)
@@ -466,7 +491,7 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
       action, member, attack, normal: calculationResultV2?.normal ?? formulaResult?.normal ?? result?.normal ?? 0,
       critical: calculationResultV2?.critical ?? formulaResult?.critical ?? result?.critical ?? 0,
       expected: calculationResultV2?.expected ?? formulaResult?.expected ?? result?.expected ?? 0,
-      activeBuffs, activates, warnings: [...warnings, ...(calculationResultV2?.warnings ?? [])],
+      activeBuffs, activates, activePartyEffectsV2, warnings: [...warnings, ...(calculationResultV2?.warnings ?? [])],
       trace: formulaResult?.trace, traces: formulaResult?.traces,
       traceV2: calculationResultV2?.trace[mode], tracesV2: calculationResultV2?.trace,
       formulaTargetId
@@ -475,13 +500,15 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
 
   const formulaByType: Partial<Record<DamageType, number>> = {}
   let formulaTotal = 0
+  const resultMode = input.team.calculationV2?.resultMode ?? input.team.scenario?.resultMode ?? 'expected'
   for (const member of baseMembers) { member.byType = {}; member.contribution = 0 }
   for (const row of actions) {
     if (!row.member || !row.attack) continue
-    row.member.byType[row.attack.type] = (row.member.byType[row.attack.type] ?? 0) + row.expected
-    formulaByType[row.attack.type] = (formulaByType[row.attack.type] ?? 0) + row.expected
-    row.member.contribution += row.expected
-    formulaTotal += row.expected
+    const value = row[resultMode]
+    row.member.byType[row.attack.type] = (row.member.byType[row.attack.type] ?? 0) + value
+    formulaByType[row.attack.type] = (formulaByType[row.attack.type] ?? 0) + value
+    row.member.contribution += value
+    formulaTotal += value
   }
   for (const member of baseMembers) member.contributionPercent = formulaTotal > 0 ? member.contribution / formulaTotal * 100 : 0
 

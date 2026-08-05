@@ -123,6 +123,34 @@ function resultFromUpstream(
   }
 }
 
+export interface CompactCalculationResultV2 {
+  attackId: string
+  normal: number
+  critical: number
+  expected: number
+}
+
+function compactResultFromUpstream(
+  attack: CalculationAttackDefinition,
+  raw: {
+    totalDamage?: number
+    critDamage?: number
+    avgDamage?: number
+    healAmount?: number
+    shieldAmount?: number
+  },
+  damageReduction = 0
+): CompactCalculationResultV2 {
+  const reductionMultiplier = Math.max(0, 1 - damageReduction / 100)
+  const baseRaw = raw.totalDamage ?? raw.healAmount ?? raw.shieldAmount ?? 0
+  return {
+    attackId: attack.id,
+    normal: floorGameValue(baseRaw * reductionMultiplier),
+    critical: floorGameValue((raw.critDamage ?? baseRaw) * reductionMultiplier),
+    expected: floorGameValue((raw.avgDamage ?? baseRaw) * reductionMultiplier)
+  }
+}
+
 export interface CalculateAttackV2Input {
   attack: CalculationAttackDefinition
   talentLevel: number
@@ -131,7 +159,9 @@ export interface CalculateAttackV2Input {
   enemy: CalculationEnemyV2
 }
 
-export function calculateAttackV2(input: CalculateAttackV2Input): CalculationResultV2 {
+function calculateAttackV2Internal(input: CalculateAttackV2Input, compact: false): CalculationResultV2
+function calculateAttackV2Internal(input: CalculateAttackV2Input, compact: true): CompactCalculationResultV2
+function calculateAttackV2Internal(input: CalculateAttackV2Input, compact: boolean): CalculationResultV2 | CompactCalculationResultV2 {
   const { attack, accumulator, enemy } = input
   const adjustment = accumulator.attackAdjustments[attack.key] ?? accumulator.attackAdjustments[attack.id]
   const effectiveAttack = adjustment?.typeOverride
@@ -157,21 +187,26 @@ export function calculateAttackV2(input: CalculateAttackV2Input): CalculationRes
   const specialMultiply = (adjustment?.specialMotionValueMultiplier ?? 0) / 100
 
   if (attack.type === 'healing') {
-    return resultFromUpstream(attack, accumulator, calcHeal(
+    const raw = calcHeal(
       talent, scaling, accumulator.stats.healingBonus / 100, specificBonus / 100,
       add, multiply, specialMultiply, attack.count
-    ))
+    )
+    return compact ? compactResultFromUpstream(attack, raw) : resultFromUpstream(attack, accumulator, raw)
   }
   if (attack.type === 'shield') {
-    return resultFromUpstream(attack, accumulator, calcShield(
+    const raw = calcShield(
       talent, scaling, accumulator.stats.shieldBonus / 100, specificBonus / 100,
       add, multiply, attack.count
-    ))
+    )
+    return compact ? compactResultFromUpstream(attack, raw) : resultFromUpstream(attack, accumulator, raw)
   }
-  if (attack.type === 'fixed') return resultFromUpstream(attack, accumulator, calcFixedDamage(talent, attack.count), enemy.damageReduction)
+  if (attack.type === 'fixed') {
+    const raw = calcFixedDamage(talent, attack.count)
+    return compact ? compactResultFromUpstream(attack, raw, enemy.damageReduction) : resultFromUpstream(attack, accumulator, raw, enemy.damageReduction)
+  }
   if (attack.type === 'tuneBreak') {
     const enemyClass = enemy.enemyClass === 'common' ? 'Common' : enemy.enemyClass === 'elite' ? 'Elite' : 'Overlord'
-    return resultFromUpstream(attack, accumulator, calcTuneBreak(
+    const raw = calcTuneBreak(
       talent,
       String(input.characterLevel),
       enemy.level,
@@ -188,7 +223,8 @@ export function calculateAttackV2(input: CalculateAttackV2Input): CalculationRes
       critDamage,
       attack.count,
       resistanceIgnore / 100
-    ), enemy.damageReduction)
+    )
+    return compact ? compactResultFromUpstream(attack, raw, enemy.damageReduction) : resultFromUpstream(attack, accumulator, raw, enemy.damageReduction)
   }
 
   const raw = calcDamage(
@@ -216,7 +252,15 @@ export function calculateAttackV2(input: CalculateAttackV2Input): CalculationRes
     defReduction / 100,
     resistanceIgnore / 100
   )
-  return resultFromUpstream(attack, accumulator, raw, enemy.damageReduction)
+  return compact ? compactResultFromUpstream(attack, raw, enemy.damageReduction) : resultFromUpstream(attack, accumulator, raw, enemy.damageReduction)
+}
+
+export function calculateAttackV2(input: CalculateAttackV2Input): CalculationResultV2 {
+  return calculateAttackV2Internal(input, false)
+}
+
+export function calculateAttackV2Compact(input: CalculateAttackV2Input): CompactCalculationResultV2 {
+  return calculateAttackV2Internal(input, true)
 }
 
 export function elementFromString(value: string | undefined): Element | undefined {

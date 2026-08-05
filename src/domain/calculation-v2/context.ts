@@ -2,7 +2,7 @@ import type { AggregatedStats, BuffEffect, Build, Echo, EnemyConfig, OwnedCharac
 import { calculationCatalogV2 } from '../../game-data/calculation-v2.generated'
 import type { CharacterCatalogEntry, WeaponCatalogEntry } from '../../game-data'
 import { applyCalculationEffects, createEffectAccumulator } from './effects'
-import { calculateAttackV2 } from './damage'
+import { calculateAttackV2, calculateAttackV2Compact, type CompactCalculationResultV2 } from './damage'
 import { calculationStatsFromAggregated } from './stats'
 import type {
   CalculationAttackDefinition,
@@ -50,9 +50,23 @@ export function resolveWeaponMechanicsV2(catalog: WeaponCatalogEntry | undefined
 
 export function resolveSonataMechanicsV2(name: string, pieces: number): SonataCalculationMechanics[] {
   const target = normalized(name)
-  return calculationCatalogV2.sonatas.filter((entry) =>
+  const matches = calculationCatalogV2.sonatas.filter((entry) =>
     normalized(entry.name) === target && entry.pieces <= pieces
   )
+  const unique = new Map<string, SonataCalculationMechanics>()
+  for (const entry of matches) {
+    const current = unique.get(entry.id)
+    if (!current) {
+      unique.set(entry.id, entry)
+      continue
+    }
+    const effectIds = new Set(current.effects.map((effect) => effect.id))
+    unique.set(entry.id, {
+      ...current,
+      effects: [...current.effects, ...entry.effects.filter((effect) => !effectIds.has(effect.id))]
+    })
+  }
+  return [...unique.values()]
 }
 
 export function resolveEchoMechanicsV2(echo: Echo | undefined): EchoCalculationMechanics | undefined {
@@ -170,11 +184,14 @@ export function createBuildCalculationV2Context(input: BuildCalculationV2Sources
   const effects = [...ownEffects, ...partyEffects, ...customEffects]
   const memberSelections = input.scenario?.memberEffects[input.build.id] ?? {}
   const partySelections = input.scenario?.partyEffects[input.build.id] ?? {}
-  const selections = {
+  const selections: Record<string, CalculationEffectSelection> = {
     ...defaultSelections(effects, input.weapon?.rank ?? 1),
     ...memberSelections,
     ...partySelections,
     ...Object.fromEntries(customEffects.map((effect) => [effect.id, { enabled: true }]))
+  }
+  for (const effect of effects) {
+    if (/^Stat Bonus:/i.test(effect.name)) selections[effect.id] = { ...selections[effect.id], enabled: true }
   }
   return { mechanics, weapon, sonatas, mainEcho, effects, selections }
 }
@@ -226,6 +243,71 @@ export function calculateBuildAttackV2(
     characterLevel: input.character.level,
     accumulator,
     enemy
+  })
+}
+
+export interface PreparedBuildAttackV2 {
+  attack: CalculationAttackDefinition
+  enemy: CalculationEnemyV2
+  effects: CalculationEffectDefinition[]
+  selections: Record<string, CalculationEffectSelection>
+  skillLevels: ReturnType<typeof skillLevelMap>
+  sequence: number
+  stance: string
+  talentLevel: number
+  characterLevel: number
+}
+
+/** Resolve invariant mechanics once for optimizer builds that share a main Echo and Sonata signature. */
+export function prepareBuildAttackV2(
+  input: BuildCalculationV2Sources,
+  attack: CalculationAttackDefinition,
+  enemy: CalculationEnemyV2
+): PreparedBuildAttackV2 | undefined {
+  const context = createBuildCalculationV2Context(input)
+  if (!context) return undefined
+  const recipientIds = new Set([normalized(input.characterCatalog.name), normalized(input.character.catalogId)])
+  const effects = context.effects.flatMap((effect) => {
+    if (attack.excludeTeamBuffs && effect.sourceKind === 'party') return []
+    if (attack.excludeWeaponBuffs && effect.sourceKind === 'weapon') return []
+    if (attack.excludeEchoes && (effect.sourceKind === 'echo' || effect.sourceKind === 'sonata')) return []
+    const modifiers = effect.modifiers.filter((modifier) => !modifier.specificCharacters?.length
+      || modifier.specificCharacters.some((character) => recipientIds.has(normalized(character))))
+    return modifiers.length ? [{ ...effect, modifiers }] : []
+  })
+  return {
+    attack,
+    enemy,
+    effects,
+    selections: context.selections,
+    skillLevels: skillLevelMap(input.character),
+    sequence: input.character.sequence,
+    stance: String(context.selections[`character:${context.mechanics.key}:stance`]?.value ?? ''),
+    talentLevel: skillLevelForAttackV2(input.character, attack),
+    characterLevel: input.character.level
+  }
+}
+
+export function calculatePreparedBuildAttackV2(
+  prepared: PreparedBuildAttackV2,
+  equipmentStats: AggregatedStats
+): CompactCalculationResultV2 {
+  const accumulator = createEffectAccumulator(calculationStatsFromAggregated(equipmentStats))
+  applyCalculationEffects(
+    accumulator,
+    prepared.effects,
+    prepared.selections,
+    prepared.attack,
+    prepared.skillLevels,
+    prepared.sequence,
+    prepared.stance
+  )
+  return calculateAttackV2Compact({
+    attack: prepared.attack,
+    talentLevel: prepared.talentLevel,
+    characterLevel: prepared.characterLevel,
+    accumulator,
+    enemy: prepared.enemy
   })
 }
 

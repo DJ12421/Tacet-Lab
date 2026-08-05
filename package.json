@@ -13,6 +13,7 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
+    "benchmark:optimizer": "vitest bench src/domain/optimizer.bench.ts --run",
     "typecheck": "tsc -b --pretty false"
   },
   "dependencies": {

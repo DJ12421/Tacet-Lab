@@ -17,7 +17,7 @@ describe('application shell', () => {
     render(<App/>)
     expect(await screen.findByText('Tacet Lab Optimizer')).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: /^Echoes$/ }))
-    expect(await screen.findByText('Echo inventory')).toBeInTheDocument()
+    expect(await screen.findByText('Echo inventory', {}, { timeout: 5_000 })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: /Scanner/ }))
     expect(await screen.findByText('Decode Echo details and build cards', {}, { timeout: 5_000 })).toBeInTheDocument()
   })

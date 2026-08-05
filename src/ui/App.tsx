@@ -1,6 +1,7 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import type { AppView } from '../domain/types'
-import { clearAccount, exportAccount, importAccount, saveSettings, validateAccount } from '../storage/database'
+import { clearAccount, exportAccount, saveSettings } from '../storage/database'
+import { ImportDataModal } from './ImportDataModal'
 import { Icon, PageHeader, Panel } from './primitives'
 import { useAppData } from './useAppData'
 
@@ -116,10 +117,10 @@ export default function App() {
   const [route, setRouteState] = useState<AppRoute>(() => routeFromLocation())
   const view = route.view
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const [importOpen, setImportOpen] = useState(false)
   const [toast, setToast] = useState('')
   const [scannerSessionAtRisk, setScannerSessionAtRisk] = useState(false)
   const [teamsGalleryRequest, setTeamsGalleryRequest] = useState(0)
-  const importRef = useRef<HTMLInputElement>(null)
   const data = useAppData()
 
   const notify = (message: string) => { setToast(message); window.setTimeout(() => setToast(''), 2600) }
@@ -164,18 +165,6 @@ export default function App() {
     window.setTimeout(() => URL.revokeObjectURL(anchor.href), 1_000)
     notify('Data exported')
   }
-  const restore = async (file?: File) => {
-    if (!file) return
-    try {
-      const document: unknown = JSON.parse(await file.text())
-      if (!validateAccount(document)) throw new Error('Unsupported backup format.')
-      await importAccount(document)
-      await data.refresh()
-      notify('Backup restored')
-    } catch (error) {
-      notify(error instanceof Error ? error.message : 'Import failed')
-    }
-  }
   const savePreferences = async (form: HTMLFormElement) => {
     const values = new FormData(form)
     const scanIntervalMs = Math.min(10_000, Math.max(250, Number(values.get('scanIntervalMs')) || 900))
@@ -202,7 +191,7 @@ export default function App() {
       <div className="side-bottom"><div className="local-status"><i/><div><strong>Local inventory</strong><span>{data.echoes.length} Echoes · {data.characters.length} characters · {data.weapons.length} weapons</span></div></div><button className={view === 'legal' ? 'active' : ''} onClick={() => setView('legal')}><Icon name="lock"/><span>Privacy & Legal</span></button><button onClick={() => setSettingsOpen(true)}><Icon name="settings"/><span>Settings & data</span></button></div>
     </aside>
     <main>
-      <div className="topbar"><div className="local-only-status" title="Inventory, builds, settings, and captured frames stay in this browser."><span className="pulse"/><span><strong>LOCAL ONLY</strong><small>Data stays on this device</small></span></div><div><button onClick={() => importRef.current?.click()}><Icon name="upload"/>Import</button><button onClick={exportData}><Icon name="download"/>Export</button><a className="discord-button" href="https://discord.gg/fy66NmapWb" target="_blank" rel="noreferrer" aria-label="Join the Tacet Lab Discord" title="Join the Tacet Lab Discord"><Icon name="discord"/></a><input ref={importRef} hidden type="file" accept="application/json" onChange={(event) => restore(event.target.files?.[0])}/><button className="settings-button" aria-label="Open settings" title="Settings" onClick={() => setSettingsOpen(true)}><Icon name="settings"/></button></div></div>
+      <div className="topbar"><div className="local-only-status" title="Inventory, builds, settings, and captured frames stay in this browser."><span className="pulse"/><span><strong>LOCAL ONLY</strong><small>Data stays on this device</small></span></div><div><button onClick={() => setImportOpen(true)}><Icon name="upload"/>Import</button><button onClick={exportData}><Icon name="download"/>Export</button><a className="discord-button" href="https://discord.gg/fy66NmapWb" target="_blank" rel="noreferrer" aria-label="Join the Tacet Lab Discord" title="Join the Tacet Lab Discord"><Icon name="discord"/></a><button className="settings-button" aria-label="Open settings" title="Settings" onClick={() => setSettingsOpen(true)}><Icon name="settings"/></button></div></div>
       <div className={`content${view === 'teams' ? ' teams-content' : ''}`}>
         <Suspense fallback={<div className="boot view-loading"><div className="brand-mark"><i/><i/><i/></div><span>LOADING WORKSPACE</span></div>}>
           {view === 'dashboard' && <HomeView echoes={data.echoes} characters={data.characters} weapons={data.weapons} builds={data.builds} teams={data.teams} navigate={setView}/>}
@@ -217,6 +206,7 @@ export default function App() {
       </div>
       <footer className="site-footer"><span>This is an independent fan project not affiliated with/endorsed by Wuthering Waves or Kuro Games.</span><span>Catalog data: Nanoka 3.5</span></footer>
     </main>
+    {importOpen && <ImportDataModal onClose={() => setImportOpen(false)} onImported={async (preview) => { await data.refresh(); notify(`Import merged: ${preview.added} new, ${preview.updated} updated, ${preview.duplicates} duplicates skipped`) }}/>} 
     {settingsOpen && <div className="modal-backdrop" onMouseDown={() => setSettingsOpen(false)}><Panel className="settings-modal" onMouseDown={(event) => event.stopPropagation()}>
       <div className="section-heading"><div><span className="eyebrow">Local preferences</span><h2>Settings & data</h2></div><button className="close" onClick={() => setSettingsOpen(false)}>×</button></div>
       <form onSubmit={(event) => { event.preventDefault(); void savePreferences(event.currentTarget) }}>

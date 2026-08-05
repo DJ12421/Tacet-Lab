@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { FormulaCalculator, estimateFormulaRange, formula, type CalculationContext } from './engine'
+import { FormulaCalculator, estimateFormulaRange, evaluateFormulaValue, formula, type CalculationContext } from './engine'
 
 describe('declarative formula engine', () => {
   const context: CalculationContext = {
@@ -38,5 +38,14 @@ describe('declarative formula engine', () => {
     const result = new FormulaCalculator(context).evaluate(formula.floor(formula.prod(formula.constant(10.9), formula.constant(1.5)), 'Damage'))
     expect(result.value).toBe(16)
     expect(result.trace.children[0].value).toBeCloseTo(16.35)
+  })
+
+  it('matches traced evaluation in the compact optimizer path', () => {
+    const node = formula.sum(
+      formula.stat('atk'),
+      formula.query({ actor: 'self', scope: 'bonus', ability: 'skill' }),
+      { op: 'if', condition: formula.input('enabled'), then: formula.constant(20), else: formula.constant(0) }
+    )
+    expect(evaluateFormulaValue(node, context)).toBe(new FormulaCalculator(context).evaluate(node).value)
   })
 })

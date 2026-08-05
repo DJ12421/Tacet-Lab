@@ -57,8 +57,105 @@ export interface OptimizerCalculationV2Config {
   partyEffects?: import('./calculation-v2/types').CalculationEffectDefinition[]
   roverGender?: 'male' | 'female'
 }
-export interface OptimizerRequest { requestId: string; echoes: Echo[]; resonator: Resonator; weapon: Weapon; attack: AttackDefinition; enemy: EnemyConfig; objective: OptimizerObjective; minimumStats: Partial<Record<OptimizerStatKey, number>>; maximumStats?: Partial<Record<OptimizerStatKey, number>>; requiredSonata?: string; limit: number; maxEvaluations?: number; includeEquippedBy?: string; bonusStatLines?: StatLine[]; formula?: OptimizerFormulaConfig; calculationV2?: OptimizerCalculationV2Config }
-export interface OptimizerResult { requestId: string; echoIds: string[]; score: number; stats: AggregatedStats; damage: DamageResult; complete?: boolean; evaluations?: number; targetId?: string }
-export interface AccountDocument { schemaVersion: 1 | 2 | 3 | 4 | 5; gameDataVersion: string; exportedAt: string; echoes: Echo[]; characters: OwnedCharacter[]; weapons: OwnedWeapon[]; builds: Build[]; teams: Team[]; settings: AppSettings }
+export type OptimizerEquippedPolicy = 'current' | 'team' | 'all'
+export type OptimizerMainEchoPolicy = 'current' | 'any' | 'selected'
+export type OptimizerSearchMode = 'exact' | 'fast'
+export type OptimizerSonataMode = 'any' | 'highest' | 'dual' | 'custom'
+export interface OptimizerSonataRequirement { sonata: string; pieces: number }
+export interface OptimizerProfile {
+  id: string
+  buildId: string
+  targetId?: string
+  levelLow: number
+  levelHigh: number
+  rarities: Echo['rarity'][]
+  mainStatsByCost: Record<'1' | '3' | '4', StatKey[]>
+  excludedEchoIds: string[]
+  equippedPolicy: OptimizerEquippedPolicy
+  teamBuildIds: string[]
+  mainEchoPolicy: OptimizerMainEchoPolicy
+  selectedMainEchoId?: string
+  allowedSonatas: string[]
+  sonataMode: OptimizerSonataMode
+  allowNoSonata: boolean
+  requiredSonataEffects: OptimizerSonataRequirement[]
+  minimumStats: Partial<Record<OptimizerStatKey, number>>
+  maximumStats: Partial<Record<OptimizerStatKey, number>>
+  minimumScore?: number
+  maximumScore?: number
+  resultLimit: number
+  plotStat: OptimizerStatKey
+  workerCount: number | 'auto'
+  searchMode: OptimizerSearchMode
+  maxEvaluations: number
+  allowPartial: boolean
+  updatedAt: number
+}
+export interface OptimizerProgress {
+  requestId: string
+  total: number
+  processed: number
+  tested: number
+  rejected: number
+  skipped: number
+  skippedCost?: number
+  skippedSonata?: number
+  skippedBounds?: number
+  elapsedMs: number
+  testedPerSecond: number
+}
+export interface OptimizerPlotPoint { x: number; y: number; echoIds: string[]; mainEchoId: string; stats?: AggregatedStats }
+export interface OptimizerRequest {
+  requestId: string
+  echoes: Echo[]
+  resonator: Resonator
+  weapon: Weapon
+  attack: AttackDefinition
+  enemy: EnemyConfig
+  objective: OptimizerObjective
+  minimumStats: Partial<Record<OptimizerStatKey, number>>
+  maximumStats?: Partial<Record<OptimizerStatKey, number>>
+  requiredSonata?: string
+  limit: number
+  maxEvaluations?: number
+  includeEquippedBy?: string
+  currentMainEchoId?: string
+  bonusStatLines?: StatLine[]
+  formula?: OptimizerFormulaConfig
+  calculationV2?: OptimizerCalculationV2Config
+  profile?: OptimizerProfile
+  partition?: { index: number; count: number }
+  /** Global top-N cutoff supplied by the coordinator. Branches must beat it. */
+  scoreThreshold?: number
+}
+export interface OptimizerResult {
+  requestId: string
+  echoIds: string[]
+  mainEchoId?: string
+  score: number
+  plot?: number
+  stats: AggregatedStats
+  damage: DamageResult
+  complete?: boolean
+  evaluations?: number
+  targetId?: string
+}
+export interface OptimizerRun {
+  id: string
+  buildId: string
+  profileId: string
+  requestId: string
+  createdAt: number
+  gameDataVersion: string
+  inventoryFingerprint: string
+  profileFingerprint: string
+  contextFingerprint: string
+  results: OptimizerResult[]
+  plot: OptimizerPlotPoint[]
+  complete: boolean
+  progress: OptimizerProgress
+  highlightedBuildKeys?: string[]
+}
+export interface AccountDocument { schemaVersion: 1 | 2 | 3 | 4 | 5 | 6; gameDataVersion: string; exportedAt: string; echoes: Echo[]; characters: OwnedCharacter[]; weapons: OwnedWeapon[]; builds: Build[]; teams: Team[]; optimizerProfiles?: OptimizerProfile[]; optimizerRuns?: OptimizerRun[]; settings: AppSettings }
 export interface AppSettings { displayName: string; privacyMode: boolean; background: 'signal' | 'tacet' | 'plain'; scanIntervalMs: number; roverGender: 'male' | 'female'; scoreWeights: Record<string, Partial<Record<StatKey, number>>>; characterSubstatWeights: Record<string, Partial<Record<StatKey, number>>> }
 export type AppView = 'dashboard' | 'archive' | 'scanner' | 'echoes' | 'weapons' | 'characters' | 'teams' | 'builds' | 'legal'
