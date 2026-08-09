@@ -1,9 +1,11 @@
+import { useState } from 'react'
 import { generatedCharacterSummaries as characterCatalog } from '../game-data/character-summaries.generated'
 import { generatedWeaponSummaries as weaponCatalog } from '../game-data/weapon-summaries.generated'
 import type { AppView, Build, Echo, OwnedCharacter, OwnedWeapon, Team } from '../domain/types'
 import { EchoWaveform } from './EchoWaveform'
 import { Icon } from './primitives'
 import './home-view.css'
+import './home-changelog.css'
 
 interface HomeViewProps {
   echoes: Echo[]
@@ -20,7 +22,45 @@ const featureCards = [
   { view: 'echoes' as const, icon: 'echo' as const, tone: 'green', title: 'Echo Management', subtitle: 'Analyze your collection', description: 'Filter every saved Echo, compare its rolls, and prepare inventory for optimizer searches.', points: ['Complete local inventory', 'Advanced filtering', 'Editable stats and locks'], action: 'View Echoes' }
 ]
 
+const changelogEntries = [
+  { hash: 'c198e19', date: 'Aug 10, 2026', title: 'Improve teams, Echo inventory, calculations, and app updates' },
+  { hash: 'f947d9a', date: 'Aug 6, 2026', title: 'Fix sidebar auto-hide behavior' },
+  { hash: 'a91225c', date: 'Aug 6, 2026', title: 'Stabilize optimizer and refine team UI' },
+  { hash: '644b989', date: 'Aug 6, 2026', title: 'Expand optimizer and team workflows' },
+  { hash: '6310093', date: 'Jul 30, 2026', title: 'Extend home cards to right edge' },
+  { hash: '4957c53', date: 'Jul 30, 2026', title: 'Add Calculation V2 and route-aware UI' },
+  { hash: '4e1e21a', date: 'Jul 29, 2026', title: 'Refresh game data and refine optimizer UI' },
+  { hash: '6c52ea1', date: 'Jul 28, 2026', title: 'Update default scanner calibrations' },
+  { hash: '609dfd3', date: 'Jul 28, 2026', title: 'Improve Echo scoring and scanner reliability' },
+  { hash: '7ab7694', date: 'Jul 28, 2026', title: 'Revise Echo roll grading system' },
+  { hash: 'b9e7965', date: 'Jul 28, 2026', title: 'Add privacy and community resources' },
+  { hash: '54665ca', date: 'Jul 27, 2026', title: 'Improve scanner, Tune Break, and character exports' },
+  { hash: 'c1ce98f', date: 'Jul 26, 2026', title: 'Add team gallery and character overview calculations' },
+  { hash: '18b338a', date: 'Jul 25, 2026', title: 'Update team formula trace assertion' },
+  { hash: 'ffb4bfe', date: 'Jul 25, 2026', title: 'Improve damage calculations and formula details' },
+  { hash: 'b5c4f85', date: 'Jul 25, 2026', title: 'Refactor optimizer data and calculation architecture' },
+  { hash: 'bbcf8e9', date: 'Jul 23, 2026', title: 'Add shared character condition calculations' },
+  { hash: 'ee8e8a4', date: 'Jul 19, 2026', title: 'Fix Crit stat sentence parsing' },
+  { hash: '31fa9e7', date: 'Jul 19, 2026', title: 'Fix missing Vitest imports' },
+  { hash: '71959d3', date: 'Jul 19, 2026', title: 'Add clipboard pasting and multi-import to scanner' },
+  { hash: '21f4dd0', date: 'Jul 19, 2026', title: 'Add passive stats and calculation details' },
+  { hash: '27d76da', date: 'Jul 18, 2026', title: 'Add safe PWA update prompt' },
+  { hash: '9e025cf', date: 'Jul 18, 2026', title: 'Add formula engine and scanner persistence' },
+  { hash: 'a33c24d', date: 'Jul 15, 2026', title: 'Expand character and team workspaces' },
+  { hash: '1b2707f', date: 'Jul 15, 2026', title: 'Fix scan review picker test' },
+  { hash: '8527551', date: 'Jul 15, 2026', title: 'Overhaul Echo scanning pipeline' },
+  { hash: 'de6e072', date: 'Jul 14, 2026', title: 'Expand character builds and team management' },
+  { hash: 'fec4838', date: 'Jul 13, 2026', title: 'Update README for current Tacet Lab experience' },
+  { hash: '4544918', date: 'Jul 13, 2026', title: 'Expand local archive and catalog support' },
+  { hash: '21600e6', date: 'Jul 13, 2026', title: 'Improve live Echo scanning responsiveness' },
+  { hash: '2036e54', date: 'Jul 13, 2026', title: 'Fix Nanoka-backed Echo parsing' },
+  { hash: '1b23720', date: 'Jul 12, 2026', title: 'Add Echo data and update scanner support' },
+  { hash: '6abe006', date: 'Jul 12, 2026', title: 'Enable GitHub Pages setup' },
+  { hash: '88384ae', date: 'Jul 12, 2026', title: 'Initial Tacet Lab implementation' }
+]
+
 export function HomeView({ echoes, characters, weapons, builds, teams, navigate }: HomeViewProps) {
+  const [showAllChanges, setShowAllChanges] = useState(false)
   const featured = characterCatalog.find((entry) => entry.name === 'Phoebe') ?? characterCatalog[0]
   const ownedEntries = characters.flatMap((owned) => {
     const catalog = characterCatalog.find((entry) => entry.id === owned.catalogId)
@@ -56,6 +96,17 @@ export function HomeView({ echoes, characters, weapons, builds, teams, navigate 
         <a href="https://github.com/DhruvJ12421/WuWa-Optimizer" target="_blank" rel="noreferrer"><span><strong>View on GitHub</strong><small>Explore the source and development history</small></span><b>↗</b></a>
         <a href="https://github.com/DhruvJ12421/WuWa-Optimizer/issues/new" target="_blank" rel="noreferrer"><span><strong>Report an issue</strong><small>Share a reproducible bug or problem</small></span><b>↗</b></a>
       </div>
+    </article>
+
+    <article className="home-changelog">
+      <header className="home-changelog-header">
+        <div><span className="eyebrow">Development log</span><h2>Recent changes</h2><p>Highlights from the latest Tacet Lab updates.</p></div>
+        <a href="https://github.com/DhruvJ12421/WuWa-Optimizer/commits/main/" target="_blank" rel="noreferrer">View full history <span aria-hidden="true">↗</span></a>
+      </header>
+      <ol className="home-changelog-list">
+        {(showAllChanges ? changelogEntries : changelogEntries.slice(0, 3)).map((entry) => <li key={entry.hash}><time>{entry.date}</time><div><h3>{entry.title}</h3><a href={`https://github.com/DhruvJ12421/WuWa-Optimizer/commit/${entry.hash}`} target="_blank" rel="noreferrer">{entry.hash} <span aria-hidden="true">↗</span></a></div></li>)}
+      </ol>
+      <button className="home-changelog-toggle" type="button" aria-expanded={showAllChanges} onClick={() => setShowAllChanges((current) => !current)}>{showAllChanges ? 'Show recent only' : `Show all ${changelogEntries.length} changes`}</button>
     </article>
   </section>
 }

@@ -1,0 +1,118 @@
+.home-changelog {
+  padding: 28px 32px;
+  border: 1px solid color-mix(in srgb, var(--home-accent) 30%, rgba(255, 255, 255, .08));
+  border-radius: 0 0 13px 0;
+  background: linear-gradient(145deg, rgba(14, 20, 22, .98), rgba(4, 7, 8, .99));
+  box-shadow: inset 0 0 45px rgba(0, 0, 0, .22);
+}
+
+.home-changelog-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.home-changelog-header h2 {
+  margin: 6px 0 5px;
+  font-size: var(--font-size-heading-large);
+}
+
+.home-changelog-header p {
+  margin: 0;
+  color: #8d9996;
+  font-size: var(--font-size-caption);
+}
+
+.home-changelog-header > a {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border: 1px solid color-mix(in srgb, var(--home-accent) 42%, transparent);
+  background: color-mix(in srgb, var(--home-accent) 9%, transparent);
+  color: color-mix(in srgb, var(--home-accent) 78%, #fff);
+  font-size: var(--font-size-caption);
+  text-decoration: none;
+}
+
+.home-changelog-header > a:hover {
+  background: color-mix(in srgb, var(--home-accent) 17%, transparent);
+}
+
+.home-changelog-list {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-changelog-list li {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 24px;
+  padding: 17px 0;
+  border-top: 1px solid rgba(255, 255, 255, .08);
+}
+
+.home-changelog-list time {
+  padding-top: 2px;
+  color: var(--home-accent);
+  font-size: var(--font-size-caption);
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+
+.home-changelog-list h3 {
+  margin: 0 0 5px;
+  color: #dbe4e1;
+  font-size: var(--font-size-small);
+}
+
+.home-changelog-list a {
+  color: #899692;
+  font-size: var(--font-size-caption);
+  text-decoration: none;
+}
+
+.home-changelog-list a:hover {
+  color: var(--home-accent);
+}
+
+.home-changelog-toggle {
+  width: 100%;
+  margin-top: 4px;
+  padding: 11px 14px;
+  border: 1px solid color-mix(in srgb, var(--home-accent) 30%, transparent);
+  background: color-mix(in srgb, var(--home-accent) 7%, transparent);
+  color: color-mix(in srgb, var(--home-accent) 78%, #fff);
+  cursor: pointer;
+}
+
+.home-changelog-toggle:hover {
+  background: color-mix(in srgb, var(--home-accent) 14%, transparent);
+}
+
+@media (max-width: 650px) {
+  .home-changelog {
+    padding: 22px 18px;
+  }
+
+  .home-changelog-header {
+    align-items: flex-start;
+    flex-direction: column;
+    margin-bottom: 18px;
+  }
+
+  .home-changelog-header h2 {
+    font-size: var(--font-size-heading);
+  }
+
+  .home-changelog-list li {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 15px 0;
+  }
+}
