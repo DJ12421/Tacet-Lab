@@ -7,8 +7,8 @@ import packageJson from './package.json'
 const githubSha = (globalThis as typeof globalThis & { process?: { env?: Record<string, string | undefined> } }).process?.env?.GITHUB_SHA
 const appVersion = githubSha ? `${packageJson.version}+${githubSha.slice(0, 7)}` : packageJson.version
 
-export default defineConfig({
-  base: './',
+export default defineConfig(({ command }) => ({
+  base: command === 'build' ? '/WuWa-Optimizer/' : '/',
   define: {
     __APP_VERSION__: JSON.stringify(appVersion)
   },
@@ -62,4 +62,4 @@ export default defineConfig({
     fileParallelism: false,
     restoreMocks: true
   }
-})
+}))
