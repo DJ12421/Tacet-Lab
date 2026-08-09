@@ -4,7 +4,7 @@ export const generatedSonataCatalog:GeneratedSonataCatalogEntry[]=[
   {
     "id": "1",
     "name": "Freezing Frost",
-    "echoCount": 14,
+    "echoCount": 15,
     "effects": [
       {
         "pieces": 2,
@@ -19,7 +19,7 @@ export const generatedSonataCatalog:GeneratedSonataCatalogEntry[]=[
   {
     "id": "2",
     "name": "Molten Rift",
-    "echoCount": 14,
+    "echoCount": 15,
     "effects": [
       {
         "pieces": 2,
@@ -34,7 +34,7 @@ export const generatedSonataCatalog:GeneratedSonataCatalogEntry[]=[
   {
     "id": "3",
     "name": "Void Thunder",
-    "echoCount": 16,
+    "echoCount": 17,
     "effects": [
       {
         "pieces": 2,
@@ -49,7 +49,7 @@ export const generatedSonataCatalog:GeneratedSonataCatalogEntry[]=[
   {
     "id": "4",
     "name": "Sierra Gale",
-    "echoCount": 14,
+    "echoCount": 15,
     "effects": [
       {
         "pieces": 2,
@@ -64,7 +64,7 @@ export const generatedSonataCatalog:GeneratedSonataCatalogEntry[]=[
   {
     "id": "5",
     "name": "Celestial Light",
-    "echoCount": 15,
+    "echoCount": 16,
     "effects": [
       {
         "pieces": 2,
@@ -79,7 +79,7 @@ export const generatedSonataCatalog:GeneratedSonataCatalogEntry[]=[
   {
     "id": "6",
     "name": "Havoc Eclipse",
-    "echoCount": 13,
+    "echoCount": 14,
     "effects": [
       {
         "pieces": 2,

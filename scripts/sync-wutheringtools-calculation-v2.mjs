@@ -194,6 +194,9 @@ function effectDefinition(raw, {
     ...(inferredSequence ? { sequence: inferredSequence } : {}),
     ...(raw.stance ? { stance: String(raw.stance) } : {}),
     ...(raw.appliesOnEveryStep ? { appliesOnEveryStep: Number(raw.appliesOnEveryStep) } : {}),
+    ...(raw.trigger || raw.triggerAttackId ? { trigger: String(raw.trigger ?? raw.triggerAttackId) } : {}),
+    ...(raw.duration !== undefined && Number.isFinite(Number(raw.duration)) ? { duration: Number(raw.duration) } : {}),
+    ...(raw.stackingGroup ? { stackingGroup: String(raw.stackingGroup) } : {}),
     modifiers: modifiers.filter(Boolean)
   }
 }

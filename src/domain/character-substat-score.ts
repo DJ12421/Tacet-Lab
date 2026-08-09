@@ -53,8 +53,8 @@ export function resolveCharacterSubstatProfile(
   const preference = characterSubstatPreferences[catalog.name] ?? { weights: {} }
   const weights: Partial<Record<StatKey, CharacterSubstatWeight>> = customWeights
     ? Object.fromEntries(Object.entries(customWeights)
-      .filter((entry): entry is [StatKey, number] => Number.isFinite(entry[1]) && entry[1] >= 1)
-      .map(([key, weight]) => [key, Math.min(4, Math.max(1, Math.round(weight))) as CharacterSubstatWeight]))
+      .filter((entry): entry is [StatKey, number] => Number.isFinite(entry[1]) && entry[1] >= 0.5)
+      .map(([key, weight]) => [key, Math.min(4, Math.max(0.5, Math.round(weight * 2) / 2)) as CharacterSubstatWeight]))
     : preference.weights
   const flatStats = new Set<StatKey>(['hp', 'atk', 'def'])
   const nonFlatWeights = Object.entries(weights)

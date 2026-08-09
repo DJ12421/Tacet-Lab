@@ -213,10 +213,12 @@
 .cs-echo-picker-filters .filter-group{min-width:0}
 .cs-echo-picker-filters .multi-select-menu{z-index:120}
 .cs-echo-picker .echo-picker-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px;overflow:auto}
+.cs-echo-picker .echo-picker-options{display:grid;grid-column:1/-1;grid-template-columns:subgrid;gap:10px}.cs-echo-picker .echo-picker-options>*{min-width:0}
 
 @media(max-width:760px){
   .cs-weapon-panel>img{top:4px;right:4px;bottom:auto;width:162px;height:152px}
   .cs-sequence-rail .cs-skill-tooltip{position:fixed;left:10px;right:10px;top:90px;width:auto;max-height:65vh}
   .cs-echo-picker-filters .filter-body{grid-template-columns:1fr}
   .cs-echo-picker .echo-picker-list{grid-template-columns:1fr}
+  .cs-echo-picker .echo-picker-options{grid-template-columns:1fr}
 }

@@ -17,6 +17,7 @@
 
 /* Staggered dense collections */
 :where(.metric-grid,.echo-grid,.owned-grid,.catalog-grid,.character-candy-grid,.picker-list,.optimizer-build-list,.tw-gallery-grid,.tw-skill-grid,.tw-passive-grid,.tw-overview-equipment-grid,.legal-highlights)>*{animation:tl-card-in .46s var(--motion-emphasized) both}
+.echo-grid>.echo-card,.echo-grid .substats>*{animation:none!important}
 :where(.metric-grid,.echo-grid,.owned-grid,.catalog-grid,.character-candy-grid,.picker-list,.optimizer-build-list,.tw-gallery-grid,.tw-skill-grid,.tw-passive-grid,.tw-overview-equipment-grid,.legal-highlights)>:nth-child(2){animation-delay:35ms}
 :where(.metric-grid,.echo-grid,.owned-grid,.catalog-grid,.character-candy-grid,.picker-list,.optimizer-build-list,.tw-gallery-grid,.tw-skill-grid,.tw-passive-grid,.tw-overview-equipment-grid,.legal-highlights)>:nth-child(3){animation-delay:70ms}
 :where(.metric-grid,.echo-grid,.owned-grid,.catalog-grid,.character-candy-grid,.picker-list,.optimizer-build-list,.tw-gallery-grid,.tw-skill-grid,.tw-passive-grid,.tw-overview-equipment-grid,.legal-highlights)>:nth-child(4){animation-delay:105ms}

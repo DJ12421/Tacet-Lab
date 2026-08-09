@@ -1,5 +1,6 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
-import type { SkeletonData, TextureAtlas } from '@pixi-spine/all-4.1'
+import { AtlasAttachmentLoader, SkeletonBinary, Spine, TextureAtlas, type SkeletonData } from '@pixi-spine/all-4.1'
+import { Application, Assets, BaseTexture } from 'pixi.js'
 
 type PortraitStatus = 'idle' | 'loading' | 'ready' | 'error' | 'reduced-motion'
 
@@ -72,7 +73,7 @@ export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaS
     }
 
     let disposed = false
-    let app: import('pixi.js').Application | undefined
+    let app: Application | undefined
     let spineAtlas: TextureAtlas | undefined
     let resizeObserver: ResizeObserver | undefined
     const disposeRuntime = () => {
@@ -88,12 +89,6 @@ export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaS
 
     void (async () => {
       try {
-        const [{ Application, Assets, BaseTexture }, { AtlasAttachmentLoader, SkeletonBinary, Spine, TextureAtlas }] = await Promise.all([
-          import('pixi.js'),
-          import('@pixi-spine/all-4.1')
-        ])
-        if (disposed) return
-
         const runtimeApp = new Application({
           width: Math.max(host.clientWidth, 1),
           height: Math.max(host.clientHeight, 1),

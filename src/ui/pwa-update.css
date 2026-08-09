@@ -19,6 +19,18 @@
 .pwa-update-toast small { color: #ffb0aa; }
 .pwa-update-toast > div:last-child { display: flex; justify-content: flex-end; gap: 8px; }
 
+.pwa-update-toast.updated,
+.pwa-update-toast.update-error {
+  width: auto;
+  max-width: min(360px, calc(100vw - 32px));
+  padding: 11px 14px;
+  border-color: rgba(141, 228, 212, .55);
+  background: rgba(19, 29, 28, .96);
+}
+
+.pwa-update-toast.updated strong { color: var(--mint); }
+.pwa-update-toast.update-error { border-color: rgba(239, 118, 110, .45); }
+
 @media (max-width: 520px) {
   .pwa-update-toast { right: 16px; bottom: 16px; }
 }

@@ -35,11 +35,15 @@ export interface CalculationModifier {
 
 export interface CalculationEffectDefinition {
   id: string
+  /** Stable catalog id retained when a team provider gets a runtime-unique effect id. */
+  definitionId?: string
   key: string
   name: string
   description: string
   sourceKind: CalculationSourceKind
   sourceId: string
+  /** Runtime provider identity. Generated catalog effects intentionally omit this. */
+  sourceBuildId?: string
   scope: CalculationEffectScope
   valueUnit: CalculationValueUnit
   alwaysEnabled: boolean
@@ -191,6 +195,8 @@ export interface CalculationEffectAccumulator {
   appliedEffects: AppliedCalculationEffect[]
   unhandledModifiers: string[]
 }
+
+export type CalculationSourceStats = Record<string, CalculationStatsV2>
 
 export interface AppliedCalculationEffect {
   effectId: string

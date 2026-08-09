@@ -4,6 +4,7 @@ import type {
   CalculationEffectDefinition,
   CalculationEffectSelection,
   CalculationModifier,
+  CalculationSourceStats,
   CalculationStatsV2,
   CalculationValueUnit
 } from './types'
@@ -56,6 +57,59 @@ function selectionFactor(effect: CalculationEffectDefinition, selection: Calcula
   if (!effect.hasStacks) return 1
   const stacks = Math.max(effect.minStacks, Math.min(effect.maxStacks, selection.stacks ?? Number(selection.value ?? effect.minStacks)))
   return effect.appliesOnEveryStep ? Math.floor(stacks / effect.appliesOnEveryStep) : stacks
+}
+
+/** Resolve a provider-stat-scaled modifier in its catalog unit before display/application conversion. */
+export function resolveSourceScaledModifierValue(
+  effect: CalculationEffectDefinition,
+  modifier: CalculationModifier,
+  selection: CalculationEffectSelection,
+  sourceStats: CalculationSourceStats,
+  fallbackStats?: CalculationStatsV2,
+  skillLevels: Record<string, number> = {}
+) {
+  if (!modifier.modifierBasedOn || !modifier.modifierStep) return undefined
+  const dependencyStats = (effect.sourceBuildId ? sourceStats[effect.sourceBuildId] : undefined) ?? fallbackStats
+  if (!dependencyStats) return undefined
+  const dependency = modifier.modifierBasedOn === 'EnergyRegen' ? dependencyStats.energyRegen / 100
+    : modifier.modifierBasedOn === 'CritRate' ? dependencyStats.critRate / 100
+      : undefined
+  if (dependency === undefined) return undefined
+  const additionalAmount = dependency * 100 - (modifier.minStatValue ?? 0) * 100
+  const steps = Math.max(0, Math.floor(additionalAmount / modifier.modifierStep))
+  const raw = resolveRawValue(modifier, selection, skillLevels)
+  const rawValue = typeof raw === 'number' ? raw : Number.parseFloat(raw)
+  if (!Number.isFinite(rawValue)) return 0
+  return Math.min(modifier.maximumValue ?? Number.POSITIVE_INFINITY, Math.max(0, steps * rawValue * selectionFactor(effect, selection)))
+}
+
+function stackingMagnitude(effect: CalculationEffectDefinition, selection: CalculationEffectSelection, skillLevels: Record<string, number>) {
+  const factor = selectionFactor(effect, selection)
+  return effect.modifiers.reduce((total, modifier) => {
+    const raw = modifier.maximumValue ?? resolveRawValue(modifier, selection, skillLevels)
+    const numeric = typeof raw === 'number' ? raw : Number.parseFloat(raw)
+    return total + (Number.isFinite(numeric) ? Math.abs(numeric * factor) : 0)
+  }, 0)
+}
+
+function strongestStackingEffects(
+  effects: CalculationEffectDefinition[],
+  selections: Record<string, CalculationEffectSelection>,
+  skillLevels: Record<string, number>
+) {
+  const ungrouped: CalculationEffectDefinition[] = []
+  const grouped = new Map<string, { effect: CalculationEffectDefinition; magnitude: number }>()
+  for (const effect of effects) {
+    if (!effect.stackingGroup) { ungrouped.push(effect); continue }
+    const selection = selections[effect.id] ?? { enabled: effect.alwaysEnabled }
+    if (!(selectionFactor(effect, selection) > 0)) continue
+    const magnitude = stackingMagnitude(effect, selection, skillLevels)
+    const current = grouped.get(effect.stackingGroup)
+    if (!current || magnitude > current.magnitude || (magnitude === current.magnitude && effect.id.localeCompare(current.effect.id) < 0)) {
+      grouped.set(effect.stackingGroup, { effect, magnitude })
+    }
+  }
+  return [...ungrouped, ...[...grouped.values()].map((entry) => entry.effect)]
 }
 
 function targetsAttack(modifier: CalculationModifier, attackKey: string, attackName: string) {
@@ -163,7 +217,8 @@ export function applyCalculationEffects(
   attack: { key: string; name: string; group?: string },
   skillLevels: Record<string, number>,
   sequence: number,
-  stance?: string
+  stance?: string,
+  sourceStats: CalculationSourceStats = {}
 ) {
   const attackSkillKey = attack.group === 'Basic Attack' ? 'basic'
     : attack.group === 'Resonance Skill' ? 'skill'
@@ -171,8 +226,9 @@ export function applyCalculationEffects(
         : attack.group === 'Resonance Liberation' ? 'liberation'
           : attack.group === 'Intro Skill' ? 'intro' : ''
   const resolvedSkillLevels = { ...skillLevels, '': skillLevels[attackSkillKey] ?? 1 }
+  const resolvedEffects = strongestStackingEffects(effects, selections, resolvedSkillLevels)
   const selfBuffMultipliers = new Map<string, number>()
-  for (const effect of effects) {
+  for (const effect of resolvedEffects) {
     if (effect.sequence && sequence < effect.sequence) continue
     if (effect.stance && effect.stance !== stance) continue
     const selection = selections[effect.id] ?? { enabled: effect.alwaysEnabled }
@@ -186,7 +242,7 @@ export function applyCalculationEffects(
       }
     }
   }
-  for (const effect of effects) {
+  for (const effect of resolvedEffects) {
     if (effect.sequence && sequence < effect.sequence) continue
     if (effect.stance && effect.stance !== stance) continue
     const selection = selections[effect.id] ?? { enabled: effect.alwaysEnabled }
@@ -196,14 +252,7 @@ export function applyCalculationEffects(
       const raw = resolveRawValue(modifier, selection, resolvedSkillLevels)
       const modifierKey = modifier.modifier ?? ''
       if (modifier.modifierBasedOn && modifier.modifierStep) {
-        const current = modifier.modifierBasedOn === 'EnergyRegen'
-          ? accumulator.stats.energyRegen / 100
-          : modifier.modifierBasedOn === 'CritRate' ? accumulator.stats.critRate / 100 : 0
-        const additionalAmount = current * 100 - (modifier.minStatValue ?? 0) * 100
-        const steps = Math.max(0, Math.floor(additionalAmount / modifier.modifierStep))
-        const rawValue = typeof raw === 'number' ? raw : Number.parseFloat(raw)
-        const rawMaximum = modifier.maximumValue ?? Number.POSITIVE_INFINITY
-        const computed = Math.min(rawMaximum, Math.max(0, steps * (Number.isFinite(rawValue) ? rawValue : 0) * factor))
+        const computed = resolveSourceScaledModifierValue(effect, modifier, selection, sourceStats, accumulator.stats, resolvedSkillLevels) ?? 0
         const targetModifier = modifier.modifierTargetAttr ?? modifierKey.replace(/:AdditionalBase$/, '')
         applyModifier(accumulator, effect, { ...modifier, modifier: targetModifier }, numericValue(computed, effect.valueUnit, targetModifier), attack.key, attack.name)
         continue

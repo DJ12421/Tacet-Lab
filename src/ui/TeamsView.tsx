@@ -8,7 +8,7 @@ import type { BuffEffect, Build, DamageType, Echo, FormulaResultMode, OwnedChara
 import { characterCatalog, statLabels, weaponCatalog } from '../game-data'
 import { generatedSonataIconSources } from '../game-data/sonatas.generated'
 import type { CalculationTrace } from '../domain/calculation'
-import { emptyCalculationScenarioV2, type CalculationEffectDefinition, type CalculationEffectSelection, type CalculationModifier, type CalculationTraceV2 } from '../domain/calculation-v2'
+import { emptyCalculationScenarioV2, resolveSourceScaledModifierValue, type CalculationEffectDefinition, type CalculationEffectSelection, type CalculationModifier, type CalculationSourceStats, type CalculationTraceV2 } from '../domain/calculation-v2'
 import { db } from '../storage/database'
 import { EchoWaveform } from './EchoWaveform'
 import { richSkillDescription } from './CharacterShowcase'
@@ -59,6 +59,33 @@ const DAMAGE_STATS: Array<[StatKey, string]> = [
   ['basicDamage', 'Basic Attack'], ['heavyDamage', 'Heavy Attack'], ['skillDamage', 'Resonance Skill'],
   ['liberationDamage', 'Resonance Liberation'], ['healingBonus', 'Healing Bonus']
 ]
+
+function resolvedMemberStat(member: TeamMemberModel, key: StatKey) {
+  const fallback = member.conditionedStats?.[key]
+    ?? (member.showcase ? member.showcase.finalStats[key as keyof typeof member.showcase.finalStats] : 0)
+  const stats = member.resolvedStatsV2
+  if (!stats) return fallback
+  if (key === 'basicDamage') return stats.typeDamage.basic ?? 0
+  if (key === 'heavyDamage') return stats.typeDamage.heavy ?? 0
+  if (key === 'skillDamage') return stats.typeDamage.skill ?? 0
+  if (key === 'liberationDamage') return stats.typeDamage.liberation ?? 0
+  const direct = stats[key as keyof typeof stats]
+  return typeof direct === 'number' ? direct : fallback
+}
+
+function resolvedMemberStatDetail(member: TeamMemberModel, key: StatKey, label: string) {
+  if (!member.showcase) return sumDetail(label, 0, [])
+  const baseDetail = showcaseStatDetail(member.showcase, key, label)
+  const resolved = Number(resolvedMemberStat(member, key) ?? 0)
+  const base = Number(member.conditionedStats?.[key]
+    ?? member.showcase.finalStats[key as keyof typeof member.showcase.finalStats]
+    ?? 0)
+  if (!member.resolvedStatsV2 || Math.abs(resolved - base) < 1e-9) return baseDetail
+  return sumDetail(`${label} with active team effects`, resolved, [
+    { label: 'Equipment, skills, and self effects', value: base },
+    { label: 'Active team effects', value: resolved - base }
+  ])
+}
 
 const ELEMENT_COLORS: Record<string, string> = {
   Aero: '#73d9c6', Electro: '#a98bf5', Fusion: '#ef7662', Glacio: '#78bde8', Havoc: '#c06ddb', Spectro: '#e6c96b'
@@ -297,7 +324,7 @@ function CharacterFilterPicker({ value, options, onChange }: {
         <span className="tw-character-filter-all">ALL</span><b>All characters</b>
       </button>
       {options.map((option) => <button type="button" className={value === option.catalogId ? 'active' : ''} key={option.catalogId} onClick={() => choose(option.catalogId)}>
-        <img src={option.iconSourceUrl} alt="" loading="lazy"/>
+        <img src={option.iconSourceUrl} alt=""/>
         <b>{option.name}</b>
         {option.favorite && <span className="tw-character-filter-heart" aria-label="Favorite">♥</span>}
       </button>)}
@@ -490,6 +517,7 @@ function TeamOverview({ model, builds, updateTeam, openMember }: {
     </details>
 
     <section className="tw-member-columns">{model.members.map((member) => <TeamMemberColumn key={member.slot} member={member} model={model} builds={builds} onOpen={() => openMember(member.slot)} onAssign={(buildId) => chooseMember(member.slot, buildId)}/>)}</section>
+    <TeamBuffWorkspace model={model} updateTeam={updateTeam}/>
     <BuffWorkspace model={model} updateTeam={updateTeam}/>
     <WarningList warnings={model.warnings}/>
   </div>
@@ -523,6 +551,34 @@ function BuffWorkspace({ model, updateTeam }: { model: TeamWorkspaceModel; updat
     })}{!buffs.length && <p className="tw-empty-state">No authored modifiers. The supported weapon, character, sequence, Sonata, Echo and teammate effects remain automatic or are controlled in their relevant member sections.</p>}</div>
     </div>
   </details>
+}
+
+function TeamBuffWorkspace({ model, updateTeam }: { model: TeamWorkspaceModel; updateTeam: (patch: Partial<Team>) => Promise<void> }) {
+  const providers = model.members.filter((member) => member.build && member.outgoingEffectsV2.length)
+  const effectCount = providers.reduce((total, member) => total + member.outgoingEffectsV2.length, 0)
+  const setProviderEffects = (member: TeamMemberModel, enabled: boolean) => {
+    if (!member.build) return
+    const scenario = model.team.calculationV2 ?? emptyCalculationScenarioV2()
+    const current = scenario.partyEffects[member.build.id] ?? {}
+    const next = Object.fromEntries(member.outgoingEffectsV2.map((effect) => [effect.id, {
+      ...current[effect.id],
+      enabled: effect.alwaysEnabled || enabled,
+      ...(effect.hasStacks && enabled ? { stacks: effect.maxStacks } : {}),
+      ...(effect.scope === 'next' && !current[effect.id]?.recipientBuildId ? { recipientBuildId: model.members.find((entry) => entry.build && entry.build.id !== member.build!.id)?.build?.id } : {})
+    }]))
+    void updateTeam({ calculationV2: { ...scenario, partyEffects: { ...scenario.partyEffects, [member.build.id]: { ...current, ...next } } } })
+  }
+  return <section className="tw-panel tw-team-buffs">
+    <header><div><span className="eyebrow">Team mechanics</span><h2>Team Buffs</h2><p>Configure every supported outgoing character, sequence, weapon, Sonata and Echo effect once at its source. The same state feeds Overview, Forte, Rotation and Optimize.</p></div><b>{effectCount} effects</b></header>
+    <div className="tw-team-buff-providers">{providers.map((member) => {
+      const buildId = member.build!.id
+      const stats = model.sourceStatsV2[buildId]
+      return <article className="tw-team-buff-provider" style={{ '--tw-member-accent': member.catalog ? ELEMENT_COLORS[member.catalog.element] ?? '#c8d0ce' : '#c8d0ce' } as CSSProperties} key={buildId}>
+        <header><span>{member.catalog?.iconSourceUrl && <img src={member.catalog.iconSourceUrl} alt=""/>}<span><strong>{teamMemberName(member)}</strong><small>{member.outgoingEffectsV2.length} outgoing effects</small></span></span><div className="tw-team-buff-provider-tools">{stats && <dl><div><dt>ER</dt><dd>{stats.energyRegen.toFixed(1)}%</dd></div><div><dt>ATK</dt><dd>{Math.floor(stats.atk).toLocaleString('en-US')}</dd></div><div><dt>HP</dt><dd>{Math.floor(stats.hp).toLocaleString('en-US')}</dd></div></dl>}<span><button type="button" onClick={() => setProviderEffects(member, true)}>Enable all</button><button type="button" onClick={() => setProviderEffects(member, false)}>Clear</button></span></div></header>
+        <CalculationEffectControls effects={member.outgoingEffectsV2} member={member} model={model} updateTeam={updateTeam}/>
+      </article>
+    })}{!providers.length && <p className="tw-empty-state">Assign supported builds to discover their outgoing team effects.</p>}</div>
+  </section>
 }
 
 function RotationWorkspace({ model, updateTeam, focusBuildId }: { model: TeamWorkspaceModel; updateTeam: (patch: Partial<Team>) => Promise<void>; focusBuildId?: string }) {
@@ -786,7 +842,7 @@ function effectModifierValue(modifier: CalculationModifier, selection: Calculati
   return undefined
 }
 
-function conciseEffectRows(effect: CalculationEffectDefinition, selection: CalculationEffectSelection) {
+function conciseEffectRows(effect: CalculationEffectDefinition, selection: CalculationEffectSelection, sourceStats: CalculationSourceStats) {
   const stacks = effect.hasStacks ? Math.max(1, selection.stacks ?? effect.maxStacks) : 1
   const rows = effect.modifiers.flatMap((modifier, index) => {
     const key = modifier.modifier ?? ''
@@ -796,14 +852,15 @@ function conciseEffectRows(effect: CalculationEffectDefinition, selection: Calcu
     if (rawValue === undefined || !Number.isFinite(rawValue)) return [{ key: `${key}-${index}`, label, value: '' }]
     const isFlat = effect.valueUnit === 'flat' || /^(?:ATK|HP|DEF)_FLAT/.test(key)
     const maximum = modifier.maximumValue
-    const scaled = modifier.modifierBasedOn && maximum !== undefined
-      ? maximum
+    const resolvedSourceValue = resolveSourceScaledModifierValue(effect, modifier, selection, sourceStats)
+    const scaled = resolvedSourceValue !== undefined
+      ? resolvedSourceValue
       : maximum !== undefined ? Math.min(rawValue * stacks, maximum) : rawValue * stacks
     const value = isFlat ? scaled : effect.valueUnit === 'decimal' ? scaled * 100 : scaled
     const rounded = Math.round(value * 100) / 100
     return [{
       key: `${key}-${index}`,
-      label: `${modifier.modifierBasedOn && maximum !== undefined ? 'Up to ' : ''}${label}`,
+      label: `${modifier.modifierBasedOn && resolvedSourceValue === undefined && maximum !== undefined ? 'Up to ' : ''}${label}`,
       value: `${rounded >= 0 ? '+' : ''}${rounded}${isFlat ? '' : '%'}`
     }]
   })
@@ -812,7 +869,6 @@ function conciseEffectRows(effect: CalculationEffectDefinition, selection: Calcu
 
 function conciseEffectTitle(effect: CalculationEffectDefinition) {
   if (effect.sourceKind === 'sonata') return readableEffectText(effect.sourceId).replace(/\s+\d+\s+Set$/i, '')
-  if (effect.sourceKind === 'party') return effect.sourceId
   const rawName = effect.name.startsWith(effect.sourceId) ? effect.name.slice(effect.sourceId.length) : effect.name
   return readableEffectText(rawName)
     .replace(/^Stat Bonus:\s*/i, '')
@@ -831,44 +887,14 @@ function conciseEffectBadge(effect: CalculationEffectDefinition) {
   return ''
 }
 
-function conciseEffectCondition(effect: CalculationEffectDefinition, title: string) {
+function conciseEffectCondition(effect: CalculationEffectDefinition) {
   if (effect.trigger) return `After ${readableEffectText(effect.trigger)}`
-  return title || 'Apply this buff'
+  return 'Apply this buff'
 }
 
-function conciseEffectSummary(effect: CalculationEffectDefinition, selection: CalculationEffectSelection) {
-  const stacks = effect.hasStacks ? Math.max(1, selection.stacks ?? effect.maxStacks) : 1
-  const summaries = effect.modifiers.flatMap((modifier) => {
-    const key = modifier.modifier ?? ''
-    const label = effectModifierLabel(key)
-    const rawValue = effectModifierValue(modifier, selection)
-    if (!label) return []
-    if (rawValue === undefined || !Number.isFinite(rawValue)) return [label]
-    const isFlat = effect.valueUnit === 'flat' || /^(?:ATK|HP|DEF)_FLAT/.test(key)
-    const maximum = modifier.maximumValue
-    const scaled = modifier.modifierBasedOn && maximum !== undefined
-      ? maximum
-      : maximum !== undefined ? Math.min(rawValue * stacks, maximum) : rawValue * stacks
-    const value = isFlat ? scaled : effect.valueUnit === 'decimal' ? scaled * 100 : scaled
-    const rounded = Math.round(value * 100) / 100
-    return [`${modifier.modifierBasedOn && maximum !== undefined ? 'Up to ' : ''}${label} ${rounded >= 0 ? '+' : ''}${rounded}${isFlat ? '' : '%'}`]
-  })
-  return [...new Set(summaries)].join(' · ') || readableEffectText(effect.name)
-}
-
-function conciseEffectContext(effect: CalculationEffectDefinition, summary: string) {
-  const rawName = effect.name.startsWith(effect.sourceId) ? effect.name.slice(effect.sourceId.length) : effect.name
-  const name = readableEffectText(rawName)
-    .replace(/^Stat Bonus:\s*/i, '')
-    .replace(/^Sequence Node (\d+):/i, 'Sequence $1 ·')
-    .replace(/^Inherent Skill:\s*/i, '')
-  const trigger = effect.trigger ? `After ${readableEffectText(effect.trigger)}` : ''
+function conciseEffectContext(effect: CalculationEffectDefinition) {
   const setPieces = effect.sourceKind === 'sonata' ? effect.sourceId.match(/(\d+)Set/i)?.[1] : undefined
-  const parts = [
-    setPieces ? `${setPieces}-piece set` : effect.sourceKind === 'party' ? effect.sourceId : '',
-    trigger || (name && !summary.toLowerCase().includes(name.toLowerCase()) ? name : '')
-  ].filter(Boolean)
-  return parts.join(' · ')
+  return setPieces ? `${setPieces}-piece set` : ''
 }
 
 function CalculationEffectControls({ effects, member, model, updateTeam, disabled = false }: {
@@ -882,23 +908,36 @@ function CalculationEffectControls({ effects, member, model, updateTeam, disable
   if (!buildId || !effects.length) return null
   const scenario = model.team.calculationV2 ?? emptyCalculationScenarioV2()
   const selectionFor = (effect: CalculationEffectDefinition): CalculationEffectSelection => {
-    const bucket = effect.sourceKind === 'party' ? scenario.partyEffects : scenario.memberEffects
-    return bucket[buildId]?.[effect.id] ?? {
+    const isPartyEffect = effect.sourceKind === 'party' || Boolean(effect.sourceBuildId)
+    const bucket = isPartyEffect ? scenario.partyEffects : scenario.memberEffects
+    const ownerBuildId = isPartyEffect ? effect.sourceBuildId ?? buildId : buildId
+    const defaults: CalculationEffectSelection = {
       enabled: effect.alwaysEnabled || /^Stat Bonus:/i.test(effect.name),
       ...(effect.hasStacks ? { stacks: effect.minStacks } : {}),
+      ...(effect.scope === 'next' ? { recipientBuildId: model.members.find((entry) => entry.build && entry.build.id !== ownerBuildId)?.build?.id } : {}),
       ...(effect.sourceKind === 'weapon' ? { refinement: member.showcase?.weapon?.owned.rank ?? 1 } : {})
+    }
+    return {
+      ...defaults,
+      ...(bucket[ownerBuildId]?.[effect.id]
+        ?? (effect.definitionId ? bucket[ownerBuildId]?.[effect.definitionId] : undefined)
+        ?? bucket[buildId]?.[effect.id]
+        ?? (effect.definitionId ? bucket[buildId]?.[effect.definitionId] : undefined)
+        ?? {})
     }
   }
   const setEffect = (effect: CalculationEffectDefinition, patch: Partial<CalculationEffectSelection>) => {
-    const bucketKey = effect.sourceKind === 'party' ? 'partyEffects' : 'memberEffects'
+    const isPartyEffect = effect.sourceKind === 'party' || Boolean(effect.sourceBuildId)
+    const bucketKey = isPartyEffect ? 'partyEffects' : 'memberEffects'
     const bucket = scenario[bucketKey]
+    const ownerBuildId = isPartyEffect ? effect.sourceBuildId ?? buildId : buildId
     void updateTeam({
       calculationV2: {
         ...scenario,
         [bucketKey]: {
           ...bucket,
-          [buildId]: {
-            ...bucket[buildId],
+          [ownerBuildId]: {
+            ...bucket[ownerBuildId],
             [effect.id]: { ...selectionFor(effect), ...patch }
           }
         }
@@ -910,22 +949,24 @@ function CalculationEffectControls({ effects, member, model, updateTeam, disable
       const selection = selectionFor(effect)
       const fixed = effect.alwaysEnabled || /^Stat Bonus:/i.test(effect.name)
       const active = fixed || selection.enabled
-      const summary = conciseEffectSummary(effect, selection)
-      const context = conciseEffectContext(effect, summary)
-      const rows = conciseEffectRows(effect, selection)
+      const context = conciseEffectContext(effect)
+      const rows = conciseEffectRows(effect, selection, model.sourceStatsV2)
       const title = conciseEffectTitle(effect)
       const badge = conciseEffectBadge(effect)
-      const condition = conciseEffectCondition(effect, title)
+      const condition = conciseEffectCondition(effect)
+      const inlineToggle = !fixed && !effect.trigger
+      const toggleEffect = () => setEffect(effect, {
+        enabled: !active,
+        ...(!active && effect.hasStacks && !(selection.stacks ?? 0) ? { stacks: effect.maxStacks } : {})
+      })
       return <article className={fixed ? 'is-fixed' : active ? 'is-active' : 'is-inactive'} key={effect.id} title={effect.description || undefined}>
-        <header className="tw-effect-copy"><span><strong>{title}</strong>{context && <small>{context}</small>}</span>{badge && <b>{badge}</b>}</header>
-        {(!fixed || effect.hasStacks) && <div className="tw-effect-condition">
-          {!fixed && <button type="button" className="tw-condition-toggle" disabled={disabled} aria-pressed={active} onClick={() => setEffect(effect, {
-            enabled: !active,
-            ...(!active && effect.hasStacks && !(selection.stacks ?? 0) ? { stacks: effect.maxStacks } : {})
-          })}><i aria-hidden="true"/><strong>{condition}</strong></button>}
-          {effect.hasStacks && <label><span>Stacks</span><select disabled={disabled || !active} value={selection.stacks ?? effect.minStacks} onChange={(event) => setEffect(effect, { enabled: true, stacks: Number(event.target.value) })}>{Array.from({ length: Math.max(1, effect.maxStacks - effect.minStacks + 1) }, (_, index) => effect.minStacks + index).map((stack) => <option value={stack} key={stack}>{stack}</option>)}</select><small>/{effect.maxStacks}</small></label>}
+        <header className="tw-effect-copy"><span>{inlineToggle ? <button type="button" className="tw-effect-title-toggle" disabled={disabled} aria-label={`Toggle ${title}`} aria-pressed={active} onClick={toggleEffect}><i aria-hidden="true"/><strong>{title}</strong></button> : <strong>{title}</strong>}{context && <small>{context}</small>}</span>{badge && <b>{badge}</b>}</header>
+        {((!fixed && Boolean(effect.trigger)) || (effect.hasStacks && active) || (effect.scope === 'next' && active)) && <div className="tw-effect-condition">
+          {!fixed && !inlineToggle && <button type="button" className="tw-condition-toggle" disabled={disabled} aria-pressed={active} onClick={toggleEffect}><i aria-hidden="true"/><strong>{condition}</strong></button>}
+          {effect.hasStacks && active && <label><span>Stacks</span><select disabled={disabled} value={selection.stacks ?? effect.minStacks} onChange={(event) => setEffect(effect, { enabled: true, stacks: Number(event.target.value) })}>{Array.from({ length: Math.max(1, effect.maxStacks - effect.minStacks + 1) }, (_, index) => effect.minStacks + index).map((stack) => <option value={stack} key={stack}>{stack}</option>)}</select><small>/{effect.maxStacks}</small></label>}
+          {effect.scope === 'next' && active && <label><span>Recipient</span><select disabled={disabled} value={selection.recipientBuildId ?? ''} onChange={(event) => setEffect(effect, { enabled: true, recipientBuildId: event.target.value })}>{model.members.flatMap((entry) => entry.build && entry.build.id !== (effect.sourceBuildId ?? buildId) ? [<option value={entry.build.id} key={entry.build.id}>{teamMemberName(entry)}</option>] : [])}</select></label>}
         </div>}
-        {rows.length > 0 && <dl className="tw-effect-results">{rows.map((row) => <div key={row.key}><dt className={member.catalog?.element && row.label.toLowerCase().includes(member.catalog.element.toLowerCase()) ? 'is-character-element' : ''}>{row.label}</dt><dd>{row.value}</dd></div>)}</dl>}
+        {active && rows.length > 0 && <dl className="tw-effect-results">{rows.map((row) => <div key={row.key}><dt className={member.catalog?.element && row.label.toLowerCase().includes(member.catalog.element.toLowerCase()) ? 'is-character-element' : ''}>{row.label}</dt><dd>{row.value}</dd></div>)}</dl>}
       </article>
     })}
   </div>
@@ -1144,7 +1185,7 @@ function FormulaResultSheet({ member, model, updateTeam }: { member: TeamMemberM
   const partyEffects = member.calculationEffectsV2.filter((effect) => effect.sourceKind === 'party')
   return <>
     <section className="tw-formula-grid">
-      <article className="tw-sheet-column tw-sheet-stats"><header><span>Basic Stats</span></header><dl>{CORE_STATS.map(([key, label]) => <div key={key}><dt>{label}</dt><dd>{member.showcase ? <CalculatedValue detail={showcaseStatDetail(member.showcase, key, label)}>{formatWorkspaceStat(key, member.conditionedStats?.[key] ?? member.showcase.finalStats[key as keyof typeof member.showcase.finalStats])}</CalculatedValue> : '—'}</dd></div>)}</dl><header><span>Bonus Stats</span></header><dl>{DAMAGE_STATS.map(([key, label]) => <div key={key}><dt>{label}</dt><dd>{member.showcase ? <CalculatedValue detail={showcaseStatDetail(member.showcase, key, label)}>{formatWorkspaceStat(key, member.conditionedStats?.[key] ?? member.showcase.finalStats[key as keyof typeof member.showcase.finalStats])}</CalculatedValue> : '—'}</dd></div>)}</dl></article>
+      <article className="tw-sheet-column tw-sheet-stats"><header><span>Basic Stats</span></header><dl>{CORE_STATS.map(([key, label]) => <div key={key}><dt>{label}</dt><dd>{member.showcase ? <CalculatedValue detail={resolvedMemberStatDetail(member, key, label)}>{formatWorkspaceStat(key, resolvedMemberStat(member, key))}</CalculatedValue> : '—'}</dd></div>)}</dl><header><span>Bonus Stats</span></header><dl>{DAMAGE_STATS.map(([key, label]) => <div key={key}><dt>{label}</dt><dd>{member.showcase ? <CalculatedValue detail={resolvedMemberStatDetail(member, key, label)}>{formatWorkspaceStat(key, resolvedMemberStat(member, key))}</CalculatedValue> : '—'}</dd></div>)}</dl></article>
       <div className="tw-sheet-results">
         <div className="tw-sheet-result-stack">{leftGroups.map(renderGroup)}</div>
         <div className="tw-sheet-result-stack">{rightGroups.map(renderGroup)}</div>
@@ -1244,7 +1285,7 @@ function MemberWorkspace({ member, model, section, setSection, updateTeam, echoe
     </nav>
     {section === 'overview' ? <CharacterOverviewWorkspace member={member} model={model} updateTeam={updateTeam} weaponPassive={weaponPassive}/>
       : section === 'rotation' ? <RotationWorkspace model={model} updateTeam={updateTeam} focusBuildId={member.build.id}/>
-      : section === 'optimizer' ? <OptimizerView echoes={echoes} builds={builds} characters={characters} ownedWeapons={weapons} refresh={refresh} openScanner={openScanner} buildId={member.build.id} teamBuildIds={model.members.flatMap((entry) => entry.build ? [entry.build.id] : [])} initialEnemy={model.team.enemy} damageMode={calculationV2.resultMode} scenario={scenario} calculationScenarioV2={calculationV2} calculationAttacksV2={member.calculationMechanicsV2?.attacks} partyEffectsV2={member.calculationEffectsV2.filter((effect) => effect.sourceKind === 'party')} roverGender={roverGender}/>
+      : section === 'optimizer' ? <OptimizerView echoes={echoes} builds={builds} characters={characters} ownedWeapons={weapons} refresh={refresh} openScanner={openScanner} buildId={member.build.id} teamBuildIds={model.members.flatMap((entry) => entry.build ? [entry.build.id] : [])} initialEnemy={model.team.enemy} damageMode={calculationV2.resultMode} scenario={scenario} calculationScenarioV2={calculationV2} calculationAttacksV2={member.calculationMechanicsV2?.attacks} partyEffectsV2={member.calculationEffectsV2.filter((effect) => effect.sourceKind === 'party')} partyEffectSourceStatsV2={model.sourceStatsV2} roverGender={roverGender}/>
       : <section className="tw-member-hero tw-panel forte-mode" style={{ '--tw-element': member.catalog.element.toLowerCase() } as CSSProperties}>
       <div className="tw-member-art"><img src={member.catalog.portraitSourceUrl || member.catalog.iconSourceUrl} alt=""/><div className="tw-sequence-rail">{member.catalog.sequenceIcons.slice(0, 6).map((sequence) => <span className={member.character && member.character.sequence >= sequence.sequence ? 'unlocked' : ''} key={sequence.sequence} title={sequence.name}><img src={sequence.iconSourceUrl} alt=""/><b>S{sequence.sequence}</b></span>)}</div><div><span>{member.catalog.element} · {member.catalog.weaponType}</span><h1>{member.catalog.name}</h1><p>{member.catalog.title}</p><strong>Lv. {member.character.level} · Sequence {member.character.sequence}</strong></div><EchoWaveform element={member.catalog.element}/></div>
       <div className="tw-member-summary">

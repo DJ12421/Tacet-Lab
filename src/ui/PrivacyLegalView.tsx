@@ -1,6 +1,6 @@
 import { Icon, PageHeader, Panel } from './primitives'
 
-const effectiveDate = 'July 29, 2026'
+const effectiveDate = 'August 10, 2026'
 
 export function PrivacyLegalView() {
   return <div className="legal-page">
@@ -11,7 +11,7 @@ export function PrivacyLegalView() {
     />
 
     <section className="legal-highlights" aria-label="Privacy highlights">
-      <Panel><Icon name="lock"/><span>Storage</span><strong>Your account data stays in this browser.</strong><p>No Tacet Lab account, backend, cloud sync, analytics, or telemetry.</p></Panel>
+      <Panel><Icon name="lock"/><span>Storage</span><strong>Your account data stays in this browser.</strong><p>No Tacet Lab account, backend, cloud sync, or scan uploads. Only aggregate page analytics leave the browser.</p></Panel>
       <Panel><Icon name="scan"/><span>Scanning</span><strong>Capture begins only when you approve it.</strong><p>Frames are processed locally, without audio, and every OCR result requires review before saving.</p></Panel>
       <Panel><Icon name="download"/><span>Control</span><strong>You can export or delete your data.</strong><p>Use Export for a portable JSON copy or Settings & data to clear the local database.</p></Panel>
     </section>
@@ -37,14 +37,15 @@ export function PrivacyLegalView() {
         <Panel>
           <header><span>03</span><div><p>Network boundary</p><h2>External resources</h2></div></header>
           <div className="legal-copy">
-            <p>Tacet Lab has no account service, advertising system, analytics service, telemetry collector, or image-upload endpoint. The published website and some visual or OCR resources still require ordinary network requests.</p>
+            <p>Tacet Lab has no account service, advertising system, first-party backend, cloud sync, or image-upload endpoint. The published website uses privacy-focused aggregate analytics, and some visual or OCR resources require ordinary network requests.</p>
             <ul>
               <li><strong>GitHub Pages</strong> hosts the website.</li>
+              <li><strong>Cloudflare Web Analytics</strong> reports aggregate page views, visits, referrers, and browser performance. Its beacon does not use cookies or access local storage, session storage, or IndexedDB. Cloudflare states that source IP addresses received during request handling are discarded at the nearest data center rather than stored in its core databases or logs.</li>
               <li><strong>Nanoka and referenced asset hosts</strong> provide catalog data, artwork, and selected character portrait files.</li>
               <li><strong>Google Fonts</strong> provides the Cinzel typeface.</li>
               <li><strong>Tesseract.js distribution hosts</strong> may provide the OCR worker, WebAssembly runtime, and English language model on first use.</li>
             </ul>
-            <p>Those providers may receive standard connection information such as your IP address, browser details, and the requested resource under their own policies. Tacet Lab does not receive or combine that information. Previously requested resources may be kept in normal browser or PWA caches.</p>
+            <p>The analytics beacon does not receive Echo inventory, builds, screenshots, shared-window frames, OCR results, preferences, or exported files. Other providers may receive standard connection information such as your IP address, browser details, and the requested resource under their own policies. Tacet Lab does not combine that information with your locally stored data. Previously requested resources may be kept in normal browser or PWA caches.</p>
           </div>
         </Panel>
 
@@ -104,7 +105,8 @@ export function PrivacyLegalView() {
             <div><dt>Effective</dt><dd>{effectiveDate}</dd></div>
             <div><dt>Accounts</dt><dd>None</dd></div>
             <div><dt>Cloud storage</dt><dd>None</dd></div>
-            <div><dt>Analytics / ads</dt><dd>None</dd></div>
+            <div><dt>Analytics</dt><dd>Aggregate only</dd></div>
+            <div><dt>Advertising</dt><dd>None</dd></div>
             <div><dt>Audio capture</dt><dd>Never</dd></div>
             <div><dt>Saved data</dt><dd>Browser only</dd></div>
           </dl>
@@ -119,6 +121,7 @@ export function PrivacyLegalView() {
           <a href="https://wutheringwaves.kurogames.com/p/language_en/privacy_policy.html" target="_blank" rel="noreferrer">Wuthering Waves Privacy Policy <span>↗</span></a>
           <a href="https://wutheringwaves.kurogames.com/p/language_en/terms_of_service.html" target="_blank" rel="noreferrer">Wuthering Waves Terms of Service <span>↗</span></a>
           <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noreferrer">GitHub Privacy Statement <span>↗</span></a>
+          <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noreferrer">Cloudflare Privacy Policy <span>↗</span></a>
           <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer">Google Privacy Policy <span>↗</span></a>
           <a href="https://ww.nanoka.cc/" target="_blank" rel="noreferrer">Nanoka <span>↗</span></a>
         </Panel>

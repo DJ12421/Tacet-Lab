@@ -1,9 +1,9 @@
 .cs-echo-waveform{--wave-color:var(--wave-accent,var(--cs-accent,#d1aa4c));position:absolute;z-index:3;left:0;right:0;bottom:0;width:100%;height:38px;pointer-events:none;overflow:visible}
 .cs-echo-wave-fill{fill:#020405}
-.cs-echo-wave-path{transform-box:fill-box;transform-origin:center;animation:cs-echo-wave-pulse 2.8s ease-in-out infinite}
+.cs-echo-wave-path{transform-box:fill-box;transform-origin:center}
 .cs-echo-wave-gold-dark{stroke:color-mix(in srgb,var(--wave-color) 48%,#07090a)}
 .cs-echo-wave-gold{stroke:color-mix(in srgb,var(--wave-color) 72%,#d7d2c6);animation-delay:-1.2s}
-.cs-echo-wave-gold-light{stroke:color-mix(in srgb,var(--wave-color) 88%,#fff);filter:drop-shadow(0 0 2px color-mix(in srgb,var(--wave-color) 55%,transparent));animation-delay:-2.3s}
+.cs-echo-wave-gold-light{stroke:color-mix(in srgb,var(--wave-color) 88%,#fff);animation:cs-echo-wave-pulse 2.8s -2.3s ease-in-out infinite}
 .cs-echo-wave-gold-mid{stroke:var(--wave-color);animation-delay:-3.1s}
 .cs-echo-wave-white{stroke:color-mix(in srgb,var(--wave-color) 36%,#fff);animation-delay:-4.2s}
 @keyframes cs-echo-wave-pulse{0%,100%{transform:translateY(-1px)}35%{transform:translateY(2px)}70%{transform:translateY(-2px)}}

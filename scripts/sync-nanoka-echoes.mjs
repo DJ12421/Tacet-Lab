@@ -272,7 +272,9 @@ const weapons=weaponEntries.map(([id,w])=>{
   const passiveEffects=Array.from({length:5},(_,rank)=>formatEffect(detail?.effect,(detail?.param??[]).map(values=>values[rank])))
   return {id,name:w.en,description:w.desc,rarity:w.rank,type:weaponTypes[w.type]??'Unknown',baseAtk:floorWeaponAtk(maxStats[0]?.value??w.atk),secondaryStat:w.sub??secondary?.name??'Unreleased',secondaryStatValue:formatWeaponStat(secondary),levelStats,passiveName:detail?.effect_name??'',passiveEffects,articleUrl:`https://ww.nanoka.cc/weapon/${id}`,iconSourceUrl:asset(w.icon)}
 }).sort((a,b)=>a.name.localeCompare(b.name))
-const echoes=Object.entries(rawEchoes).map(([id,e])=>({id,name:e.en,cost:e.intensity===0?1:e.intensity===1?3:4,sonatas:e.group.map(g=>names[g]),rarities:e.rank,intensity:e.intensity,articleUrl:`https://ww.nanoka.cc/echo/${id}`,iconPath:e.icon,iconSourceUrl:asset(e.icon)})).sort((a,b)=>a.name.localeCompare(b.name))
+// Corrections verified from user-provided in-game catalog evidence but not yet reflected in Nanoka.
+const additionalEchoSonataGroups={6000085:[1,2,3,4,5,6]}
+const echoes=Object.entries(rawEchoes).map(([id,e])=>({id,name:e.en,cost:e.intensity===0?1:e.intensity===1?3:4,sonatas:[...new Set([...e.group,...(additionalEchoSonataGroups[id]??[])])].map(g=>names[g]),rarities:e.rank,intensity:e.intensity,articleUrl:`https://ww.nanoka.cc/echo/${id}`,iconPath:e.icon,iconSourceUrl:asset(e.icon)})).sort((a,b)=>a.name.localeCompare(b.name))
 if(echoes.length<170||echoes.some(e=>e.sonatas.includes(undefined)))throw Error('Incomplete Nanoka data')
 const representativeEchoByGroup=new Map()
 for(const [echoId,echo] of Object.entries(rawEchoes))for(const groupId of echo.group)if(!representativeEchoByGroup.has(groupId))representativeEchoByGroup.set(groupId,echoId)

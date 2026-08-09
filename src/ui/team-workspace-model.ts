@@ -1,12 +1,12 @@
 import { calculateRotation } from '../domain/damage'
 import { createBuildCalculationContext, FormulaCalculator, characterFormulaSheets, resolveFormulaTarget, type CalculationTrace, type FormulaTarget } from '../domain/calculation'
 import {
-  calculateBuildAttackV2, createBuildCalculationV2Context, enemyV2, outgoingPartyEffectsV2,
+  calculateBuildAttackV2, calculateBuildStatsV2, createBuildCalculationV2Context, enemyV2, outgoingPartyEffectsV2,
   resolveCharacterMechanicsV2, resolveEchoMechanicsV2, skillLevelForAttackV2
 } from '../domain/calculation-v2'
 import type {
   CalculationAttackDefinition, CalculationEffectDefinition, CalculationResultV2,
-  CalculationTraceV2, CharacterCalculationMechanics
+  CalculationSourceStats, CalculationStatsV2, CalculationTraceV2, CharacterCalculationMechanics
 } from '../domain/calculation-v2'
 import type {
   AttackDefinition, BuffEffect, Build, DamageType, Echo, Element, OwnedCharacter,
@@ -71,6 +71,7 @@ export interface TeamMemberModel {
   calculationEffectsV2: CalculationEffectDefinition[]
   outgoingEffectsV2: CalculationEffectDefinition[]
   calculationRowsV2: TeamCalculationRowV2[]
+  resolvedStatsV2?: CalculationStatsV2
   conditionedStats?: Record<string, number>
 }
 
@@ -125,6 +126,7 @@ export interface TeamWorkspaceModel {
   introCount: number
   outroCount: number
   warnings: string[]
+  sourceStatsV2: CalculationSourceStats
 }
 
 function elementFor(catalog: CharacterCatalogEntry): Element {
@@ -354,6 +356,20 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
       member.showcase?.sonatas ?? [],
       member.calculationMechanicsV2?.key
     ).filter((effect) => !effect.sequence || effect.sequence <= (member.character?.sequence ?? 0))
+      .map((effect) => ({
+        ...effect,
+        definitionId: effect.definitionId ?? effect.id,
+        id: `${effect.id}:provider:${member.build!.id}`,
+        sourceKind: 'party',
+        sourceBuildId: member.build!.id,
+        modifiers: effect.modifiers.map((modifier) => modifier.modifierByRefinement
+          ? {
+              ...modifier,
+              modifierValue: modifier.modifierByRefinement[String(member.showcase?.weapon?.owned.rank ?? 1)] ?? 0,
+              modifierByRefinement: undefined
+            }
+          : modifier)
+      }))
     const ownedWeapon = member.showcase?.weapon?.owned
     if (member.character && member.build && ownedWeapon) {
       const sheet = characterFormulaSheets.find((entry) => entry.id === member.character?.catalogId)
@@ -372,11 +388,34 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
     }
   }
 
-  const receivedPartyEffectsFor = (recipient: TeamMemberModel) => baseMembers.flatMap((source) => {
-    if (!source.build || !recipient.build || (source.build.id === recipient.build.id && !source.outgoingEffectsV2.some((effect) => effect.scope === 'team'))) return []
+  const baseSourceStats: CalculationSourceStats = {}
+  for (const member of baseMembers) {
+    if (!member.build || !member.character || !member.catalog || !member.showcase) continue
+    const stats = calculateBuildStatsV2({
+      build: member.build,
+      character: member.character,
+      characterCatalog: member.catalog,
+      weapon: member.showcase.weapon?.owned,
+      weaponCatalog: member.showcase.weapon?.catalog,
+      showcase: member.showcase,
+      scenario: input.team.calculationV2,
+      roverGender: input.roverGender
+    })
+    if (stats) baseSourceStats[member.build.id] = stats
+  }
+
+  const receivedPartyEffectsFor = (recipient: TeamMemberModel, temporal = false) => baseMembers.flatMap((source) => {
+    if (!source.build || !recipient.build || (source.build.id === recipient.build.id && !source.outgoingEffectsV2.some((effect) => effect.scope === 'team' || effect.scope === 'enemy'))) return []
     const sourceRank = source.showcase?.weapon?.owned.rank ?? 1
     return source.outgoingEffectsV2
-      .filter((effect) => source.build?.id !== recipient.build?.id || effect.scope === 'team')
+      .filter((effect) => {
+        if (source.build?.id === recipient.build?.id) return effect.scope === 'team' || effect.scope === 'enemy'
+        if (effect.scope !== 'next' || temporal) return true
+        const selection = input.team.calculationV2?.partyEffects[source.build!.id]?.[effect.id]
+          ?? (effect.definitionId ? input.team.calculationV2?.partyEffects[source.build!.id]?.[effect.definitionId] : undefined)
+        const fallbackRecipient = baseMembers.find((member) => member.build && member.build.id !== source.build!.id)?.build?.id
+        return (selection?.recipientBuildId ?? fallbackRecipient) === recipient.build!.id
+      })
       .map((effect): CalculationEffectDefinition => ({
         ...effect,
         sourceKind: 'party',
@@ -389,6 +428,23 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
           : modifier)
       }))
   })
+  const sourceStatsV2: CalculationSourceStats = { ...baseSourceStats }
+  for (const member of baseMembers) {
+    if (!member.build || !member.character || !member.catalog || !member.showcase) continue
+    const stats = calculateBuildStatsV2({
+      build: member.build,
+      character: member.character,
+      characterCatalog: member.catalog,
+      weapon: member.showcase.weapon?.owned,
+      weaponCatalog: member.showcase.weapon?.catalog,
+      showcase: member.showcase,
+      scenario: input.team.calculationV2,
+      partyEffects: receivedPartyEffectsFor(member),
+      sourceStats: baseSourceStats,
+      roverGender: input.roverGender
+    })
+    if (stats) sourceStatsV2[member.build.id] = stats
+  }
   const calculationEnemy = enemyV2(input.team.enemy, input.team.calculationV2)
   for (const member of baseMembers) {
     if (!member.build || !member.character || !member.catalog || !member.showcase || !member.calculationMechanicsV2) continue
@@ -403,9 +459,11 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
       showcase: member.showcase,
       scenario: input.team.calculationV2,
       partyEffects: receivedPartyEffects,
+      sourceStats: sourceStatsV2,
       roverGender: input.roverGender
     }
     member.calculationEffectsV2 = createBuildCalculationV2Context(source)?.effects ?? []
+    member.resolvedStatsV2 = calculateBuildStatsV2(source)
     member.calculationRowsV2 = member.calculationMechanicsV2.attacks.flatMap((attack) => {
       const result = calculateBuildAttackV2(source, attack, calculationEnemy)
       return result ? [{ attack, result }] : []
@@ -416,9 +474,15 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
   const sortedActions = [...input.team.actions].sort((left, right) => left.timestamp - right.timestamp)
   const normalizedTrigger = (value = '') => value.toLowerCase().replace(/[^a-z0-9]+/g, '')
   const partyEffectIsActive = (effect: CalculationEffectDefinition, recipient: TeamMemberModel, currentIndex: number) => {
-    if (!effect.trigger) return true
     const source = baseMembers.find((member) => member.outgoingEffectsV2.some((candidate) => candidate.id === effect.id))
     if (!source?.build || !recipient.build) return false
+    if (!effect.trigger) {
+      if (effect.scope !== 'next') return true
+      const selection = input.team.calculationV2?.partyEffects[source.build.id]?.[effect.id]
+        ?? (effect.definitionId ? input.team.calculationV2?.partyEffects[source.build.id]?.[effect.definitionId] : undefined)
+      const fallbackRecipient = baseMembers.find((member) => member.build && member.build.id !== source.build?.id)?.build?.id
+      return (selection?.recipientBuildId ?? fallbackRecipient) === recipient.build.id
+    }
     const trigger = normalizedTrigger(effect.trigger)
     if (!trigger) return true
     let activationIndex = -1
@@ -460,7 +524,7 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
     let formulaResult: { normal: number; critical: number; expected: number; trace?: CalculationTrace; traces?: Record<'normal' | 'critical' | 'expected', CalculationTrace> } | undefined
     let calculationResultV2: CalculationResultV2 | undefined
     const ownedWeapon = member?.showcase?.weapon?.owned
-    const activePartyEffectsV2 = member ? receivedPartyEffectsFor(member).filter((effect) => partyEffectIsActive(effect, member, index)) : []
+    const activePartyEffectsV2 = member ? receivedPartyEffectsFor(member, true).filter((effect) => partyEffectIsActive(effect, member, index)) : []
     if (calculationAttack && member?.build && member.character && member.catalog && member.showcase) {
       calculationResultV2 = calculateBuildAttackV2({
         build: member.build,
@@ -471,6 +535,7 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
         showcase: member.showcase,
         scenario: input.team.calculationV2,
         partyEffects: activePartyEffectsV2,
+        sourceStats: sourceStatsV2,
         activeCustomBuffs: activeBuffs,
         roverGender: input.roverGender
       }, calculationAttack, calculationEnemy)
@@ -543,7 +608,8 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
     roles,
     introCount: allAttacks.filter((attack) => /intro/i.test(attack.name)).length,
     outroCount: allAttacks.filter((attack) => /outro/i.test(attack.name)).length,
-    warnings
+    warnings,
+    sourceStatsV2
   }
 }
 

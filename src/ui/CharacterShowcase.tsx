@@ -179,23 +179,32 @@ function EchoPicker({ slot, build, echoes, refresh, onClose }: { slot: number; b
   const statKeys = Object.keys(statLabels) as StatKey[]
   const toggleNumber = (values: number[], value: number, change: (next: number[]) => void) => change(values.includes(value) ? values.filter((item) => item !== value) : [...values, value])
   const resetFilters = () => { setQuery(''); setCosts([]); setRarities([]); setSonatas([]); setMainStats([]); setSubStats([]); setLockState('all'); setAssignment('all'); setShowExcluded(false) }
+  const echoMeta = useMemo(() => new Map(echoes.map((echo) => {
+    const substats = effectiveSubStats(echo)
+    return [echo.id, {
+      substats,
+      rollRating: echoRollRating(echo),
+      characterScore: characterSubstatProfile ? scoreCharacterSubstats(echo, characterSubstatProfile).percentage : undefined,
+      searchText: `${echo.name} ${echo.sonata} ${statLabels[echo.mainStat.key]} ${substats.map((stat) => statLabels[stat.key]).join(' ')}`.toLowerCase()
+    }] as const
+  })), [characterSubstatProfile, echoes])
   const options = useMemo(() => echoes.filter((echo) =>
     (showExcluded || !echo.excluded) &&
     (!costs.length || costs.includes(echo.cost)) &&
     (!rarities.length || rarities.includes(echo.rarity)) &&
     (!sonatas.length || sonatas.includes(echo.sonata)) &&
     (!mainStats.length || mainStats.includes(echo.mainStat.key)) &&
-    (!subStats.length || subStats.every((key) => effectiveSubStats(echo).some((stat) => stat.key === key))) &&
+    (!subStats.length || subStats.every((key) => echoMeta.get(echo.id)?.substats.some((stat) => stat.key === key))) &&
     (lockState === 'all' || echo.locked === (lockState === 'locked')) &&
     (assignment === 'all' || Boolean(echo.equippedBy) === (assignment === 'equipped')) &&
-    (!deferredQuery || `${echo.name} ${echo.sonata} ${statLabels[echo.mainStat.key]} ${effectiveSubStats(echo).map((stat) => statLabels[stat.key]).join(' ')}`.toLowerCase().includes(deferredQuery))
+    (!deferredQuery || echoMeta.get(echo.id)?.searchText.includes(deferredQuery))
   ).sort((left, right) => {
     if (characterSubstatProfile) {
-      return scoreCharacterSubstats(right, characterSubstatProfile).percentage - scoreCharacterSubstats(left, characterSubstatProfile).percentage
+      return (echoMeta.get(right.id)?.characterScore ?? 0) - (echoMeta.get(left.id)?.characterScore ?? 0)
         || left.name.localeCompare(right.name)
     }
-    return echoRollRating(right).average - echoRollRating(left).average || left.name.localeCompare(right.name)
-  }), [assignment, characterSubstatProfile, costs, deferredQuery, echoes, lockState, mainStats, rarities, showExcluded, sonatas, subStats])
+    return (echoMeta.get(right.id)?.rollRating.average ?? 0) - (echoMeta.get(left.id)?.rollRating.average ?? 0) || left.name.localeCompare(right.name)
+  }), [assignment, characterSubstatProfile, costs, deferredQuery, echoes, echoMeta, lockState, mainStats, rarities, showExcluded, sonatas, subStats])
   const choose = async (next?: Echo) => {
     setError('')
     try {
@@ -226,7 +235,7 @@ function EchoPicker({ slot, build, echoes, refresh, onClose }: { slot: number; b
       <div className="echo-picker-list">
         {error && <div className="notice error">{error}</div>}
         {currentId && <button className="danger" onClick={() => void choose()}>Unequip current Echo</button>}
-        {options.map((echo) => <EchoMiniCard key={echo.id} echo={echo} selected={echo.id === currentId} rollRating={echoRollRating(echo)} onClick={() => void choose(echo)} equipment={echo.equippedBy && echo.equippedBy !== build.id ? <EquippedCharacterLabel name={echo.equippedByName ?? 'Another build'}/> : undefined}/>)}
+        <div className="echo-picker-options">{options.map((echo) => <EchoMiniCard key={echo.id} echo={echo} selected={echo.id === currentId} rollRating={echoMeta.get(echo.id)?.rollRating} onClick={() => void choose(echo)} equipment={echo.equippedBy && echo.equippedBy !== build.id ? <EquippedCharacterLabel name={echo.equippedByName ?? 'Another build'}/> : undefined}/>)}</div>
       </div>
     </section>
   </div>
@@ -242,12 +251,15 @@ function SubstatWeightEditor({ characterName, initialWeights, recommendedWeights
 }) {
   const [weights, setWeights] = useState<Partial<Record<StatKey, number>>>(() => ({ ...initialWeights }))
   const [saving, setSaving] = useState(false)
-  const setWeight = (key: StatKey, value: number) => setWeights((current) => ({ ...current, [key]: Math.min(4, Math.max(0, value)) }))
+  const setWeight = (key: StatKey, value: number) => setWeights((current) => ({
+    ...current,
+    [key]: Math.min(4, Math.max(0, Math.round(value * 2) / 2))
+  }))
   const submit = async () => {
     setSaving(true)
     try {
       await onSave(Object.fromEntries(characterSubstatScoreKeys.flatMap((key) => {
-        const weight = Math.round(weights[key] ?? 0)
+        const weight = Math.round((weights[key] ?? 0) * 2) / 2
         return weight > 0 ? [[key, weight]] : []
       })))
       onClose()
@@ -266,8 +278,8 @@ function SubstatWeightEditor({ characterName, initialWeights, recommendedWeights
   }
   return <div className="modal-backdrop cs-weight-editor-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}><Panel className="cs-weight-editor" role="dialog" aria-modal="true" aria-labelledby="substat-weight-editor-title">
     <header><div><span className="eyebrow">Character substat priorities</span><h2 id="substat-weight-editor-title">Configure {characterName}</h2></div><button type="button" className="close" aria-label="Close substat priority editor" onClick={onClose}>×</button></header>
-    <p>Set a priority from 0 to 4. A stat at 0 is ignored; higher priorities award more points for each roll tier.</p>
-    <div className="cs-weight-grid">{characterSubstatScoreKeys.map((key) => <label key={key}><span>{statLabels[key]}<small>Recommended: {recommendedWeights[key] ?? 0}</small></span><div><button type="button" aria-label={`Decrease ${statLabels[key]} priority`} disabled={(weights[key] ?? 0) <= 0} onClick={() => setWeight(key, (weights[key] ?? 0) - 1)}>−</button><input aria-label={`${statLabels[key]} priority`} type="number" min="0" max="4" step="1" value={weights[key] ?? 0} onChange={(event) => setWeight(key, Math.round(Number(event.target.value) || 0))}/><button type="button" aria-label={`Increase ${statLabels[key]} priority`} disabled={(weights[key] ?? 0) >= 4} onClick={() => setWeight(key, (weights[key] ?? 0) + 1)}>+</button></div></label>)}</div>
+    <p>Set a priority from 0 to 4 in 0.5 intervals. A stat at 0 is ignored; higher priorities award more points for each roll tier.</p>
+    <div className="cs-weight-grid">{characterSubstatScoreKeys.map((key) => <label key={key}><span>{statLabels[key]}<small>Recommended: {recommendedWeights[key] ?? 0}</small></span><div><button type="button" aria-label={`Decrease ${statLabels[key]} priority`} disabled={(weights[key] ?? 0) <= 0} onClick={() => setWeight(key, (weights[key] ?? 0) - 0.5)}>−</button><input aria-label={`${statLabels[key]} priority`} type="number" min="0" max="4" step="0.5" value={weights[key] ?? 0} onChange={(event) => setWeight(key, Number(event.target.value) || 0)}/><button type="button" aria-label={`Increase ${statLabels[key]} priority`} disabled={(weights[key] ?? 0) >= 4} onClick={() => setWeight(key, (weights[key] ?? 0) + 0.5)}>+</button></div></label>)}</div>
     <footer><button type="button" className="secondary" disabled={saving} onClick={() => void reset()}>Reset to recommended</button><div><button type="button" className="text-button" disabled={saving} onClick={onClose}>Cancel</button><button type="button" className="primary" disabled={saving} onClick={() => void submit()}>{saving ? 'Saving...' : 'Save priorities'}</button></div></footer>
   </Panel></div>
 }

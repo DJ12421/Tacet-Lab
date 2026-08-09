@@ -1,18 +1,18 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { AppView } from '../domain/types'
 import { clearAccount, exportAccount, saveSettings } from '../storage/database'
+import { ArchiveView } from './ArchiveView'
+import { CharacterInventory } from './CharacterInventoryView'
+import { HomeView } from './HomeView'
 import { ImportDataModal } from './ImportDataModal'
+import { InventoryView } from './InventoryView'
+import { WeaponInventory } from './OwnedInventoryView'
 import { Icon, PageHeader, Panel } from './primitives'
+import { PrivacyLegalView } from './PrivacyLegalView'
+import { PwaUpdatePrompt } from './PwaUpdatePrompt'
+import { ScannerView } from './ScannerView'
+import { TeamsView } from './TeamsView'
 import { useAppData } from './useAppData'
-
-const ArchiveView = lazy(() => import('./ArchiveView').then((module) => ({ default: module.ArchiveView })))
-const CharacterInventory = lazy(() => import('./CharacterInventoryView').then((module) => ({ default: module.CharacterInventory })))
-const HomeView = lazy(() => import('./HomeView').then((module) => ({ default: module.HomeView })))
-const InventoryView = lazy(() => import('./InventoryView').then((module) => ({ default: module.InventoryView })))
-const PrivacyLegalView = lazy(() => import('./PrivacyLegalView').then((module) => ({ default: module.PrivacyLegalView })))
-const ScannerView = lazy(() => import('./ScannerView').then((module) => ({ default: module.ScannerView })))
-const TeamsView = lazy(() => import('./TeamsView').then((module) => ({ default: module.TeamsView })))
-const WeaponInventory = lazy(() => import('./OwnedInventoryView').then((module) => ({ default: module.WeaponInventory })))
 
 const nav: Array<{ view: AppView; label: string; icon: Parameters<typeof Icon>[0]['name'] }> = [
   { view: 'dashboard', label: 'Home', icon: 'home' },
@@ -121,6 +121,7 @@ export default function App() {
   const [toast, setToast] = useState('')
   const [scannerSessionAtRisk, setScannerSessionAtRisk] = useState(false)
   const [teamsGalleryRequest, setTeamsGalleryRequest] = useState(0)
+  const [navigationVersion, setNavigationVersion] = useState(0)
   const data = useAppData()
 
   const notify = (message: string) => { setToast(message); window.setTimeout(() => setToast(''), 2600) }
@@ -131,6 +132,7 @@ export default function App() {
     setScannerSessionAtRisk(false)
     setRouteState(nextRoute)
     window.history[historyMode === 'replace' ? 'replaceState' : 'pushState']({ route: nextRoute }, '', pathForRoute(nextRoute))
+    setNavigationVersion((version) => version + 1)
   }
   const setView = (nextView: AppView) => {
     const nextRoute: AppRoute = nextView === 'archive'
@@ -147,6 +149,7 @@ export default function App() {
       }
       setScannerSessionAtRisk(false)
       setRouteState(nextRoute)
+      setNavigationVersion((version) => version + 1)
     }
     window.addEventListener('popstate', handleHistoryNavigation)
     return () => window.removeEventListener('popstate', handleHistoryNavigation)
@@ -193,16 +196,14 @@ export default function App() {
     <main>
       <div className="topbar"><div className="local-only-status" title="Inventory, builds, settings, and captured frames stay in this browser."><span className="pulse"/><span><strong>LOCAL ONLY</strong><small>Data stays on this device</small></span></div><div><button onClick={() => setImportOpen(true)}><Icon name="upload"/>Import</button><button onClick={exportData}><Icon name="download"/>Export</button><a className="discord-button" href="https://discord.gg/fy66NmapWb" target="_blank" rel="noreferrer" aria-label="Join the Tacet Lab Discord" title="Join the Tacet Lab Discord"><Icon name="discord"/></a><button className="settings-button" aria-label="Open settings" title="Settings" onClick={() => setSettingsOpen(true)}><Icon name="settings"/></button></div></div>
       <div className={`content${view === 'teams' ? ' teams-content' : ''}`}>
-        <Suspense fallback={<div className="boot view-loading"><div className="brand-mark"><i/><i/><i/></div><span>LOADING WORKSPACE</span></div>}>
-          {view === 'dashboard' && <HomeView echoes={data.echoes} characters={data.characters} weapons={data.weapons} builds={data.builds} teams={data.teams} navigate={setView}/>}
-          {view === 'archive' && <ArchiveView roverGender={data.settings.roverGender} tab={route.archiveTab ?? 'characters'} onTabChange={(archiveTab) => setRoute({ view: 'archive', archiveTab })}/>}
-          {view === 'scanner' && <ScannerView echoes={data.echoes} refresh={data.refresh} scanIntervalMs={data.settings.scanIntervalMs} onSessionRiskChange={setScannerSessionAtRisk}/>}
-          {view === 'echoes' && <InventoryView echoes={data.echoes} builds={data.builds} refresh={data.refresh} openScanner={() => setView('scanner')}/>}
-          {view === 'weapons' && <><PageHeader eyebrow="Local collection" title="Weapons" description="Manage every weapon copy stored in this browser."/><WeaponInventory owned={data.weapons} characters={data.characters} builds={data.builds} refresh={data.refresh}/></>}
-          {view === 'characters' && <><PageHeader eyebrow="Local roster" title="Characters" description="Open a character to inspect their loadout and team links."/><CharacterInventory owned={data.characters} weapons={data.weapons} echoes={data.echoes} builds={data.builds} teams={data.teams} settings={data.settings} roverGender={data.settings.roverGender} refresh={data.refresh} characterIdentifier={route.character} onCharacterChange={(entry) => setRoute({ view: 'characters', character: entry ? characterSlug(entry.name) : undefined })}/></>}
-          {view === 'teams' && <TeamsView echoes={data.echoes} builds={data.builds} teams={data.teams} characters={data.characters} weapons={data.weapons} refresh={data.refresh} openScanner={() => setView('scanner')} galleryRequest={teamsGalleryRequest} roverGender={data.settings.roverGender} route={{ team: route.team, character: route.teamCharacter, section: route.teamSection }} onRouteChange={(next) => setRoute({ view: 'teams', team: next.team, teamCharacter: next.character, teamSection: next.section })}/>}
-          {view === 'legal' && <PrivacyLegalView/>}
-        </Suspense>
+        {view === 'dashboard' && <HomeView echoes={data.echoes} characters={data.characters} weapons={data.weapons} builds={data.builds} teams={data.teams} navigate={setView}/>}
+        {view === 'archive' && <ArchiveView roverGender={data.settings.roverGender} tab={route.archiveTab ?? 'characters'} onTabChange={(archiveTab) => setRoute({ view: 'archive', archiveTab })}/>}
+        {view === 'scanner' && <ScannerView echoes={data.echoes} refresh={data.refresh} scanIntervalMs={data.settings.scanIntervalMs} onSessionRiskChange={setScannerSessionAtRisk}/>}
+        {view === 'echoes' && <InventoryView echoes={data.echoes} builds={data.builds} refresh={data.refresh} openScanner={() => setView('scanner')}/>}
+        {view === 'weapons' && <><PageHeader eyebrow="Local collection" title="Weapons" description="Manage every weapon copy stored in this browser."/><WeaponInventory owned={data.weapons} characters={data.characters} builds={data.builds} refresh={data.refresh}/></>}
+        {view === 'characters' && <><PageHeader eyebrow="Local roster" title="Characters" description="Open a character to inspect their loadout and team links."/><CharacterInventory owned={data.characters} weapons={data.weapons} echoes={data.echoes} builds={data.builds} teams={data.teams} settings={data.settings} roverGender={data.settings.roverGender} refresh={data.refresh} characterIdentifier={route.character} onCharacterChange={(entry) => setRoute({ view: 'characters', character: entry ? characterSlug(entry.name) : undefined })}/></>}
+        {view === 'teams' && <TeamsView echoes={data.echoes} builds={data.builds} teams={data.teams} characters={data.characters} weapons={data.weapons} refresh={data.refresh} openScanner={() => setView('scanner')} galleryRequest={teamsGalleryRequest} roverGender={data.settings.roverGender} route={{ team: route.team, character: route.teamCharacter, section: route.teamSection }} onRouteChange={(next) => setRoute({ view: 'teams', team: next.team, teamCharacter: next.character, teamSection: next.section })}/>}
+        {view === 'legal' && <PrivacyLegalView/>}
       </div>
       <footer className="site-footer"><span>This is an independent fan project not affiliated with/endorsed by Wuthering Waves or Kuro Games.</span><span>Catalog data: Nanoka 3.5</span></footer>
     </main>
@@ -219,5 +220,6 @@ export default function App() {
       </form>
     </Panel></div>}
     {toast && <div className="toast">{toast}</div>}
+    <PwaUpdatePrompt safeToActivate={!scannerSessionAtRisk && !importOpen && !settingsOpen} navigationVersion={navigationVersion}/>
   </div>
 }

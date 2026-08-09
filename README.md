@@ -35,7 +35,7 @@ Use the top-bar controls to export or restore a JSON backup. Open **Settings & d
 
 ## Privacy and network access
 
-There are no accounts, backend services, analytics, telemetry, cloud sync, image uploads, audio capture, or game-process access.
+There are no accounts, backend services, cloud sync, image uploads, audio capture, or game-process access. The published site uses Cloudflare Web Analytics for aggregate page-view, visit, referrer, and performance reporting. It does not use cookies or browser storage, and it does not receive Echo inventory, builds, screenshots, shared-window frames, OCR results, or exported files.
 
 ```text
 WuWa window -> browser MediaStream -> local crop -> local English OCR

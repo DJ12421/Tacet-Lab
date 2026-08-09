@@ -1,27 +1,41 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useRegisterSW } from 'virtual:pwa-register/react'
 import './pwa-update.css'
 
 const UPDATE_CHECK_INTERVAL_MS = 60 * 60 * 1_000
+const UPDATE_RELOAD_MARKER = 'tacet-lab:update-reload'
 
-export function PwaUpdatePrompt() {
+export function PwaUpdatePrompt({ safeToActivate, navigationVersion }: { safeToActivate: boolean; navigationVersion: number }) {
   const registrationRef = useRef<ServiceWorkerRegistration | undefined>(undefined)
-  const [updating, setUpdating] = useState(false)
-  const [dismissed, setDismissed] = useState(false)
+  const pendingSinceNavigationRef = useRef<number | undefined>(undefined)
+  const applyingRef = useRef(false)
+  const launchWindowRef = useRef(true)
+  const [waitingAtLaunch, setWaitingAtLaunch] = useState(false)
+  const [updatedVersion, setUpdatedVersion] = useState('')
   const [error, setError] = useState('')
-  const {
-    needRefresh: [needRefresh],
-    updateServiceWorker
-  } = useRegisterSW({
+  const { needRefresh: [needRefresh], updateServiceWorker } = useRegisterSW({
     immediate: true,
     onRegisteredSW: (_serviceWorkerUrl, registration) => {
       registrationRef.current = registration
+      setWaitingAtLaunch(Boolean(registration?.waiting && navigator.serviceWorker.controller))
       void registration?.update()
     },
-    onRegisterError: (registrationError) => {
-      console.error('Service worker registration failed.', registrationError)
-    }
+    onRegisterError: (registrationError) => console.error('Service worker registration failed.', registrationError)
   })
+
+  useEffect(() => {
+    if (sessionStorage.getItem(UPDATE_RELOAD_MARKER) !== 'pending') return
+    sessionStorage.removeItem(UPDATE_RELOAD_MARKER)
+    setUpdatedVersion(__APP_VERSION__)
+    const timeout = window.setTimeout(() => setUpdatedVersion(''), 4_000)
+    return () => window.clearTimeout(timeout)
+  }, [])
+
+  useEffect(() => {
+    if (navigationVersion > 0) launchWindowRef.current = false
+    const timeout = window.setTimeout(() => { launchWindowRef.current = false }, 15_000)
+    return () => window.clearTimeout(timeout)
+  }, [navigationVersion])
 
   useEffect(() => {
     const checkForUpdate = () => {
@@ -37,22 +51,33 @@ export function PwaUpdatePrompt() {
     }
   }, [])
 
-  if (!needRefresh || dismissed) return null
-
-  const applyUpdate = async () => {
-    setUpdating(true)
+  const applyUpdate = useCallback(async () => {
+    if (applyingRef.current) return
+    applyingRef.current = true
     setError('')
+    sessionStorage.setItem(UPDATE_RELOAD_MARKER, 'pending')
     try {
       await updateServiceWorker(true)
     } catch (updateError) {
       console.error('Service worker update failed.', updateError)
-      setError('Update failed. Check your connection and try again.')
-      setUpdating(false)
+      sessionStorage.removeItem(UPDATE_RELOAD_MARKER)
+      setError('Automatic update failed. It will retry on the next navigation.')
+      applyingRef.current = false
     }
-  }
+  }, [updateServiceWorker])
 
-  return <aside className="pwa-update-toast" role="status" aria-live="polite">
-    <div><strong>New version available</strong><span>Reload to update Tacet Lab. Saved inventory and settings stay safe; finish any unapproved scan first.</span>{error && <small>{error}</small>}</div>
-    <div><button type="button" className="text-button" disabled={updating} onClick={() => { setDismissed(true); window.setTimeout(() => setDismissed(false), 30 * 60 * 1_000) }}>Later</button><button type="button" className="primary" disabled={updating} onClick={() => void applyUpdate()}>{updating ? 'Updating...' : 'Reload now'}</button></div>
-  </aside>
+  useEffect(() => {
+    if (!needRefresh) {
+      pendingSinceNavigationRef.current = undefined
+      return
+    }
+    pendingSinceNavigationRef.current ??= navigationVersion
+    const reachedSafeNavigation = navigationVersion > pendingSinceNavigationRef.current
+    const discoveredOnFreshLaunch = launchWindowRef.current && navigationVersion === 0
+    if (safeToActivate && (waitingAtLaunch || discoveredOnFreshLaunch || reachedSafeNavigation)) void applyUpdate()
+  }, [applyUpdate, navigationVersion, needRefresh, safeToActivate, waitingAtLaunch])
+
+  if (updatedVersion) return <aside className="pwa-update-toast updated" role="status" aria-live="polite"><strong>Updated to version {updatedVersion}</strong></aside>
+  if (error) return <aside className="pwa-update-toast update-error" role="status" aria-live="polite"><span>{error}</span></aside>
+  return null
 }

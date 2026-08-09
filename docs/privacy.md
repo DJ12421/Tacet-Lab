@@ -16,7 +16,9 @@ Stopping capture calls `stop()` on every media track and disconnects the video e
 
 ## Network behavior
 
-The application has no API, account service, telemetry, analytics, or image-upload endpoint. Catalog artwork is loaded from Nanoka, and opening a character loadout downloads that character's Spine skeleton, atlas, and texture from Nanoka for local browser rendering. Tesseract.js may fetch its worker, WASM runtime, and English language model from its configured public distribution hosts on the first OCR run. The PWA caches OCR resources after they are requested; other remote assets rely on the browser's normal HTTP cache.
+The application has no API, account service, advertising system, cloud sync, or image-upload endpoint. The published site uses Cloudflare Web Analytics to report aggregate page views, visits, referrers, and browser performance. Its beacon does not use cookies or access local storage, session storage, or IndexedDB. Cloudflare receives the source IP address as part of ordinary request handling, then states that it discards the address at the nearest data center rather than storing it in its core databases or logs. The beacon does not receive Echo inventory, builds, screenshots, shared-window frames, OCR results, preferences, or exported files.
+
+Catalog artwork is loaded from Nanoka, and opening a character loadout downloads that character's Spine skeleton, atlas, and texture from Nanoka for local browser rendering. Tesseract.js may fetch its worker, WASM runtime, and English language model from its configured public distribution hosts on the first OCR run. The PWA caches OCR resources after they are requested; other remote assets rely on the browser's normal HTTP cache.
 
 ## User controls
 

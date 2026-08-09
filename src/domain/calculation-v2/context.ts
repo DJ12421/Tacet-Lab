@@ -11,6 +11,8 @@ import type {
   CalculationEnemyV2,
   CalculationResultV2,
   CalculationScenarioV2,
+  CalculationSourceStats,
+  CalculationStatsV2,
   CharacterCalculationMechanics,
   EchoCalculationMechanics,
   SonataCalculationMechanics,
@@ -147,6 +149,7 @@ export interface BuildCalculationV2Sources {
   }
   scenario?: CalculationScenarioV2
   partyEffects?: CalculationEffectDefinition[]
+  sourceStats?: CalculationSourceStats
   activeCustomBuffs?: BuffEffect[]
   roverGender?: 'male' | 'female'
 }
@@ -172,7 +175,7 @@ export function createBuildCalculationV2Context(input: BuildCalculationV2Sources
     ...(weapon?.effects ?? []),
     ...sonatas.flatMap((sonata) => sonata.effects),
     ...(mainEcho?.effects ?? [])
-  ]
+  ].filter((effect) => effect.scope === 'self')
   const partyEffects = input.partyEffects ?? []
   const strongestCustomBuffs = new Map<string, BuffEffect>()
   for (const effect of input.activeCustomBuffs ?? []) {
@@ -183,7 +186,15 @@ export function createBuildCalculationV2Context(input: BuildCalculationV2Sources
   const customEffects = [...strongestCustomBuffs.values()].map(customEffect)
   const effects = [...ownEffects, ...partyEffects, ...customEffects]
   const memberSelections = input.scenario?.memberEffects[input.build.id] ?? {}
-  const partySelections = input.scenario?.partyEffects[input.build.id] ?? {}
+  const recipientPartySelections = input.scenario?.partyEffects[input.build.id] ?? {}
+  const partySelections = Object.fromEntries(effects.flatMap((effect) => {
+    if (!effect.sourceBuildId) return []
+    const sourceSelection = input.scenario?.partyEffects[effect.sourceBuildId]?.[effect.id]
+      ?? (effect.definitionId ? input.scenario?.partyEffects[effect.sourceBuildId]?.[effect.definitionId] : undefined)
+      ?? recipientPartySelections[effect.id]
+      ?? (effect.definitionId ? recipientPartySelections[effect.definitionId] : undefined)
+    return sourceSelection ? [[effect.id, sourceSelection] as const] : []
+  }))
   const selections: Record<string, CalculationEffectSelection> = {
     ...defaultSelections(effects, input.weapon?.rank ?? 1),
     ...memberSelections,
@@ -235,7 +246,8 @@ export function calculateBuildAttackV2(
     attack,
     skillLevelMap(input.character),
     input.character.sequence,
-    String(context.selections[`character:${context.mechanics.key}:stance`]?.value ?? '')
+    String(context.selections[`character:${context.mechanics.key}:stance`]?.value ?? ''),
+    input.sourceStats
   )
   return calculateAttackV2({
     attack,
@@ -256,6 +268,7 @@ export interface PreparedBuildAttackV2 {
   stance: string
   talentLevel: number
   characterLevel: number
+  sourceStats: CalculationSourceStats
 }
 
 /** Resolve invariant mechanics once for optimizer builds that share a main Echo and Sonata signature. */
@@ -284,7 +297,8 @@ export function prepareBuildAttackV2(
     sequence: input.character.sequence,
     stance: String(context.selections[`character:${context.mechanics.key}:stance`]?.value ?? ''),
     talentLevel: skillLevelForAttackV2(input.character, attack),
-    characterLevel: input.character.level
+    characterLevel: input.character.level,
+    sourceStats: input.sourceStats ?? {}
   }
 }
 
@@ -300,7 +314,8 @@ export function calculatePreparedBuildAttackV2(
     prepared.attack,
     prepared.skillLevels,
     prepared.sequence,
-    prepared.stance
+    prepared.stance,
+    prepared.sourceStats
   )
   return calculateAttackV2Compact({
     attack: prepared.attack,
@@ -309,6 +324,24 @@ export function calculatePreparedBuildAttackV2(
     accumulator,
     enemy: prepared.enemy
   })
+}
+
+/** Resolve the global stat snapshot used by Overview and by source-scaled team effects. */
+export function calculateBuildStatsV2(input: BuildCalculationV2Sources): CalculationStatsV2 | undefined {
+  const context = createBuildCalculationV2Context(input)
+  if (!context) return undefined
+  const accumulator = createEffectAccumulator(calculationStatsFromAggregated(input.showcase.equipmentStats))
+  applyCalculationEffects(
+    accumulator,
+    context.effects,
+    context.selections,
+    { key: '', name: '', group: '' },
+    skillLevelMap(input.character),
+    input.character.sequence,
+    String(context.selections[`character:${context.mechanics.key}:stance`]?.value ?? ''),
+    input.sourceStats
+  )
+  return accumulator.stats
 }
 
 export function outgoingPartyEffectsV2(
@@ -327,12 +360,29 @@ export function outgoingPartyEffectsV2(
   const weaponNames = new Set(weaponCatalog ? [normalized(weaponCatalog.name)] : [])
   const echoNames = new Set(mainEcho ? [normalized(mainEcho.name)] : [])
   const sonataNames = new Set(sonatas.map((sonata) => normalized(sonata.name)))
-  return calculationCatalogV2.partyEffects.filter((effect) => {
+  const importedPartyEffects = calculationCatalogV2.partyEffects.filter((effect) => {
     const source = normalized(effect.sourceId)
     if (source.startsWith('weapon')) return [...weaponNames].some((name) => source.includes(name))
     if (source.startsWith('echo')) return [...echoNames, ...sonataNames].some((name) => source.includes(name))
     return characterNames.has(source)
   })
+  const characterMechanics = calculationCatalogV2.characters.find((entry) => characterNames.has(normalized(entry.key)) || characterNames.has(normalized(entry.name)))
+  const weaponMechanics = weaponCatalog ? resolveWeaponMechanicsV2(weaponCatalog) : undefined
+  const sonataMechanics = sonatas.flatMap((sonata) => resolveSonataMechanicsV2(sonata.name, sonata.count))
+  const echoMechanics = resolveEchoMechanicsV2(mainEcho)
+  const sourceOwnedEffects = [
+    ...(characterMechanics?.effects ?? []),
+    ...(characterMechanics?.sequences ?? []),
+    ...(weaponMechanics?.effects ?? []),
+    ...sonataMechanics.flatMap((sonata) => sonata.effects),
+    ...(echoMechanics?.effects ?? [])
+  ].filter((effect) => effect.scope !== 'self')
+  const resolved = new Map(sourceOwnedEffects.map((effect) => [effect.id, effect]))
+  for (const importedEffect of importedPartyEffects) {
+    const duplicate = [...resolved.entries()].find(([, effect]) => normalized(effect.key) === normalized(importedEffect.key))
+    if (!duplicate) resolved.set(importedEffect.id, importedEffect)
+  }
+  return [...resolved.values()]
 }
 
 export { calculationCatalogV2 }

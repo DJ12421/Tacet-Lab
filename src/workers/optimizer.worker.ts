@@ -3,6 +3,7 @@ import { createOptimizerWorkPlan, optimizeOptimizerWorkUnit, type OptimizerWorkP
 import type { AggregatedStats, DamageResult, Echo, OptimizerRequest } from '../domain/types'
 import {
   calculatePreparedBuildAttackV2,
+  calculateBuildStatsV2,
   enemyV2,
   prepareBuildAttackV2,
   type PreparedBuildAttackV2
@@ -63,17 +64,46 @@ function damageEvaluator(request: OptimizerRequest) {
   if (!config) return undefined
   const enemy = enemyV2(request.enemy, config.scenario)
   const evaluatePrepared = (echoes: Echo[], stats: AggregatedStats, sonatas: Array<{ name: string; count: number }>, prefix = '', requireSafeBound = false): DamageResult | undefined => {
-    const key = `${prefix}${echoes[0]?.id ?? ''}|${sonatas.map((entry) => `${entry.name}:${entry.count}`).join('|')}`
+    const providerFingerprint = [stats.hp, stats.atk, stats.def, stats.critRate, stats.critDamage, stats.energyRegen].join(':')
+    const key = `${prefix}${echoes[0]?.id ?? ''}|${sonatas.map((entry) => `${entry.name}:${entry.count}`).join('|')}|${providerFingerprint}`
     let prepared = preparedEvaluators.get(key)
     if (prepared === undefined) {
-      prepared = prepareBuildAttackV2({
-        build: { ...config.build, echoIds: echoes.map((echo) => echo.id) },
+      const sourceStats = { ...(config.sourceStats ?? {}) }
+      delete sourceStats[config.build.id]
+      const candidateBuild = { ...config.build, echoIds: echoes.map((echo) => echo.id) }
+      const candidateBaseStats = calculateBuildStatsV2({
+        build: candidateBuild,
+        character: config.character,
+        characterCatalog: config.characterCatalog,
+        weapon: config.weapon,
+        weaponCatalog: config.weaponCatalog,
+        scenario: config.scenario,
+        roverGender: config.roverGender,
+        showcase: { equipmentStats: stats, sonatas, echoSlots: echoes }
+      })
+      if (candidateBaseStats) sourceStats[config.build.id] = candidateBaseStats
+      const candidateResolvedStats = calculateBuildStatsV2({
+        build: candidateBuild,
         character: config.character,
         characterCatalog: config.characterCatalog,
         weapon: config.weapon,
         weaponCatalog: config.weaponCatalog,
         scenario: config.scenario,
         partyEffects: config.partyEffects,
+        sourceStats,
+        roverGender: config.roverGender,
+        showcase: { equipmentStats: stats, sonatas, echoSlots: echoes }
+      })
+      if (candidateResolvedStats) sourceStats[config.build.id] = candidateResolvedStats
+      prepared = prepareBuildAttackV2({
+        build: candidateBuild,
+        character: config.character,
+        characterCatalog: config.characterCatalog,
+        weapon: config.weapon,
+        weaponCatalog: config.weaponCatalog,
+        scenario: config.scenario,
+        partyEffects: config.partyEffects,
+        sourceStats,
         roverGender: config.roverGender,
         showcase: { equipmentStats: stats, sonatas, echoSlots: echoes }
       }, config.attack, enemy) ?? null

@@ -1296,7 +1296,13 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
     "name": "Hecate",
     "cost": 4,
     "sonatas": [
-      "Empyrean Anthem"
+      "Empyrean Anthem",
+      "Freezing Frost",
+      "Molten Rift",
+      "Void Thunder",
+      "Sierra Gale",
+      "Celestial Light",
+      "Havoc Eclipse"
     ],
     "rarities": [
       2,

@@ -28,7 +28,7 @@ import type {
   TeamScenario
 } from '../domain/types'
 import { characterFormulaSheets, createBuildCalculationContext, FormulaCalculator, resolveRuntimeBuild } from '../domain/calculation'
-import { calculateBuildAttackV2, enemyV2, type CalculationAttackDefinition, type CalculationEffectDefinition, type CalculationScenarioV2 } from '../domain/calculation-v2'
+import { calculateBuildAttackV2, calculateBuildStatsV2, enemyV2, type CalculationAttackDefinition, type CalculationEffectDefinition, type CalculationScenarioV2, type CalculationSourceStats } from '../domain/calculation-v2'
 import { aggregateStats, formatDamage } from '../domain/damage'
 import { createLocalId } from '../domain/id'
 import { EchoMiniCard, EquippedCharacterLabel, formatStat, Icon, Panel } from './components'
@@ -102,12 +102,13 @@ type OptimizerViewProps = {
   calculationScenarioV2?: CalculationScenarioV2
   calculationAttacksV2?: CalculationAttackDefinition[]
   partyEffectsV2?: CalculationEffectDefinition[]
+  partyEffectSourceStatsV2?: CalculationSourceStats
   roverGender?: 'male' | 'female'
 }
 
 export function OptimizerView({
   echoes, builds, characters, ownedWeapons, refresh, openScanner, buildId, teamBuildIds = [], initialEnemy,
-  damageMode, scenario, calculationScenarioV2, calculationAttacksV2 = [], partyEffectsV2 = [], roverGender
+  damageMode, scenario, calculationScenarioV2, calculationAttacksV2 = [], partyEffectsV2 = [], partyEffectSourceStatsV2 = {}, roverGender
 }: OptimizerViewProps) {
   const objective: OptimizerObjective = damageMode ?? 'expected'
   const [attackId, setAttackId] = useState('')
@@ -160,13 +161,13 @@ export function OptimizerView({
     const enemy = enemyV2(optimizerEnemy(), calculationScenarioV2)
     if (calculationAttackV2 && showcase) return calculateBuildAttackV2({
       build, character: runtime.character, characterCatalog: showcase.catalog, weapon: showcase.weapon?.owned,
-      weaponCatalog: showcase.weapon?.catalog, showcase, scenario: calculationScenarioV2, partyEffects: partyEffectsV2, roverGender
+      weaponCatalog: showcase.weapon?.catalog, showcase, scenario: calculationScenarioV2, partyEffects: partyEffectsV2, sourceStats: partyEffectSourceStatsV2, roverGender
     }, calculationAttackV2, enemy)
     if (!formulaTarget) return undefined
     const context = createBuildCalculationContext({ build, character: runtime.character, weapon: runtime.weapon, echoes: currentEchoes, enemy: optimizerEnemy(), scenario, targetId: formulaTarget.id })
     const calculator = new FormulaCalculator(context)
     return { normal: Number(calculator.evaluate(formulaTarget.normal).value), critical: Number(calculator.evaluate(formulaTarget.critical).value), expected: Number(calculator.evaluate(formulaTarget.expected).value) }
-  }, [attack, build, calculationAttackV2, calculationScenarioV2, currentEchoes, formulaTarget, partyEffectsV2, roverGender, runtime, showcase])
+  }, [attack, build, calculationAttackV2, calculationScenarioV2, currentEchoes, formulaTarget, partyEffectsV2, partyEffectSourceStatsV2, roverGender, runtime, showcase])
   const currentScore = currentDamage && (objective === 'normal' || objective === 'critical' || objective === 'expected') ? currentDamage[objective] : currentStats?.[objective as OptimizerStatKey]
   const scalesWith = useMemo(() => {
     const labels = new Set<string>()
@@ -183,9 +184,10 @@ export function OptimizerView({
     initialEnemy,
     scenario,
     calculationScenarioV2,
+    partyEffectSourceStatsV2,
     roverGender,
     gameDataVersion: GAME_DATA_VERSION
-  }), [attack?.id, calculationAttackV2?.id, calculationScenarioV2, initialEnemy, objective, roverGender, scenario])
+  }), [attack?.id, calculationAttackV2?.id, calculationScenarioV2, initialEnemy, objective, partyEffectSourceStatsV2, roverGender, scenario])
 
   const terminateWorkers = () => { for (const worker of workersRef.current) worker.terminate(); workersRef.current = [] }
   const clearResults = () => { setResults([]); setPlotPoints([]); setSelectedKey(undefined); setHighlightedKeys([]); setActiveRunId(undefined); setExpandedResult(null); setGeneratedAt(undefined); setRunFingerprint('') }
@@ -287,7 +289,7 @@ export function OptimizerView({
       maximumStats: profile.maximumStats, limit: profile.resultLimit, maxEvaluations: profile.maxEvaluations,
       includeEquippedBy: build.id, currentMainEchoId: build.echoIds[0], bonusStatLines: calculationAttackV2 ? [] : bonusStatLines, profile: { ...profile, teamBuildIds: [...new Set(teamBuildIds)] },
       formula: !calculationAttackV2 && mode && formulaTarget ? { target: { id: formulaTarget.id, label: formulaTarget.label, kind: formulaTarget.kind, mode }, node: formulaTarget[mode], inputs: baseContext.inputs, entries: baseContext.entries } : undefined,
-      calculationV2: calculationAttackV2 ? { build, character: runtime.character, characterCatalog: showcase.catalog, weapon: showcase.weapon?.owned, weaponCatalog: showcase.weapon?.catalog, attack: calculationAttackV2, scenario: calculationScenarioV2, partyEffects: partyEffectsV2, roverGender } : undefined
+      calculationV2: calculationAttackV2 ? { build, character: runtime.character, characterCatalog: showcase.catalog, weapon: showcase.weapon?.owned, weaponCatalog: showcase.weapon?.catalog, attack: calculationAttackV2, scenario: calculationScenarioV2, partyEffects: partyEffectsV2, sourceStats: partyEffectSourceStatsV2, roverGender } : undefined
     }
     const mergedProgress = () => {
       const combined = mergeProgress(requestId, [...outputs.map((output) => output.progress), ...workerProgress])
@@ -435,7 +437,13 @@ export function OptimizerView({
     if (build && runtime && calculationAttackV2) {
       const candidateBuild = { ...build, echoIds: result.echoIds }
       const candidateShowcase = resolveCharacterShowcaseModel({ character: runtime.character, weapons: ownedWeapons, echoes: resultEchoes, builds: [candidateBuild] })
-      const snapshot = candidateShowcase ? calculateBuildAttackV2({ build: candidateBuild, character: runtime.character, characterCatalog: candidateShowcase.catalog, weapon: candidateShowcase.weapon?.owned, weaponCatalog: candidateShowcase.weapon?.catalog, showcase: candidateShowcase, scenario: calculationScenarioV2, partyEffects: partyEffectsV2, roverGender }, calculationAttackV2, enemyV2(optimizerEnemy(), calculationScenarioV2)) : undefined
+      const candidateSourceStats = { ...partyEffectSourceStatsV2 }
+      delete candidateSourceStats[build.id]
+      const candidateBaseStats = candidateShowcase ? calculateBuildStatsV2({ build: candidateBuild, character: runtime.character, characterCatalog: candidateShowcase.catalog, weapon: candidateShowcase.weapon?.owned, weaponCatalog: candidateShowcase.weapon?.catalog, showcase: candidateShowcase, scenario: calculationScenarioV2, roverGender }) : undefined
+      if (candidateBaseStats) candidateSourceStats[build.id] = candidateBaseStats
+      const candidateResolvedStats = candidateShowcase ? calculateBuildStatsV2({ build: candidateBuild, character: runtime.character, characterCatalog: candidateShowcase.catalog, weapon: candidateShowcase.weapon?.owned, weaponCatalog: candidateShowcase.weapon?.catalog, showcase: candidateShowcase, scenario: calculationScenarioV2, partyEffects: partyEffectsV2, sourceStats: candidateSourceStats, roverGender }) : undefined
+      if (candidateResolvedStats) candidateSourceStats[build.id] = candidateResolvedStats
+      const snapshot = candidateShowcase ? calculateBuildAttackV2({ build: candidateBuild, character: runtime.character, characterCatalog: candidateShowcase.catalog, weapon: candidateShowcase.weapon?.owned, weaponCatalog: candidateShowcase.weapon?.catalog, showcase: candidateShowcase, scenario: calculationScenarioV2, partyEffects: partyEffectsV2, sourceStats: candidateSourceStats, roverGender }, calculationAttackV2, enemyV2(optimizerEnemy(), calculationScenarioV2)) : undefined
       if (snapshot) return traceCalculationDetail(snapshot.trace[objective], `${calculationAttackV2.name} · ${objective}`)
     }
     if (!build || !runtime || !formulaTarget) return { title: `${calculationAttackV2?.name ?? attack?.name ?? 'Formula target'} · ${objective}`, value: String(result.score), rows: [{ label: 'Optimizer result', value: String(result.score) }] }

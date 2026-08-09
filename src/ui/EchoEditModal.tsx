@@ -22,7 +22,7 @@ function SearchablePicker({ label, value, options, onChange }: { label: string; 
   useDismissableLayer(open, ref, close)
   return <label>{label}<div className="echo-search-picker" ref={ref}>
     <button type="button" className="echo-search-trigger" onClick={() => { setOpen((current) => !current); setQuery('') }}>{selected?.icon ? <img src={selected.icon} alt=""/> : <span>◇</span>}<b>{value}</b><i>⌄</i></button>
-    {open && <div className="echo-search-menu"><input autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`Filter ${label.toLowerCase()}...`}/><div>{visible.map((option) => <button type="button" className={option.value === value ? 'active' : ''} key={option.value} onClick={() => { onChange(option.value); setOpen(false) }}>{option.icon ? <img src={option.icon} alt="" loading="lazy"/> : <span>◇</span>}<b>{option.value}</b>{option.detail && <small>{option.detail}</small>}</button>)}</div></div>}
+    {open && <div className="echo-search-menu"><input autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`Filter ${label.toLowerCase()}...`}/><div>{visible.map((option) => <button type="button" className={option.value === value ? 'active' : ''} key={option.value} onClick={() => { onChange(option.value); setOpen(false) }}>{option.icon ? <img src={option.icon} alt=""/> : <span>◇</span>}<b>{option.value}</b>{option.detail && <small>{option.detail}</small>}</button>)}</div></div>}
   </div></label>
 }
 

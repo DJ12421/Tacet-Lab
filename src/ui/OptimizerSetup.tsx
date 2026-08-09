@@ -31,7 +31,7 @@ function OptimizerEchoThumb({ echo, main }: { echo?: Echo; main?: boolean }) {
   const artwork = echoCatalog.find((entry) => entry.name === echo.name)?.iconSourceUrl
   const sonataIcon = generatedSonataIconSources[echo.sonata]
   return <span className={`optimizer-echo-thumb${main ? ' is-main' : ''}`} title={`${echo.name} · +${echo.level} · ${echo.cost} cost`}>
-    {artwork ? <img className="optimizer-echo-thumb-art" src={artwork} alt={echo.name} loading="lazy"/> : <b className="optimizer-echo-thumb-fallback">◇</b>}
+    {artwork ? <img className="optimizer-echo-thumb-art" src={artwork} alt={echo.name}/> : <b className="optimizer-echo-thumb-fallback">◇</b>}
     <strong>+{echo.level}</strong><b className={`cost-${echo.cost}`}>{echo.cost}</b>
     <img className="optimizer-echo-stat-icon" src={optimizerStatIconSource(echo.mainStat.key)} alt="" title={statLabels[echo.mainStat.key]} aria-hidden="true"/>
     {sonataIcon && <img className="optimizer-echo-sonata-icon" src={sonataIcon} alt="" title={echo.sonata}/>}

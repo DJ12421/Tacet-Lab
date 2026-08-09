@@ -55,6 +55,7 @@ export interface OptimizerCalculationV2Config {
   attack: import('./calculation-v2/types').CalculationAttackDefinition
   scenario?: import('./calculation-v2/types').CalculationScenarioV2
   partyEffects?: import('./calculation-v2/types').CalculationEffectDefinition[]
+  sourceStats?: import('./calculation-v2/types').CalculationSourceStats
   roverGender?: 'male' | 'female'
 }
 export type OptimizerEquippedPolicy = 'current' | 'team' | 'all'
