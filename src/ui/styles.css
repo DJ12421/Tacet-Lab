@@ -551,7 +551,7 @@ img,video,canvas,svg{max-width:100%}
   .sidebar nav button,.sidebar .side-bottom>button{justify-content:flex-start;padding:12px 13px}
   .sidebar nav button b{position:static;margin-left:auto}
   .sidebar .local-status{justify-content:flex-start}
-  .app-shell.is-home{grid-template-columns:0 minmax(0,1fr)}
+  .app-shell.is-home{grid-template-columns:238px minmax(0,1fr)}
   .app-shell.is-home .sidebar{transform:translateX(0);box-shadow:none}
   .app-shell.is-home .sidebar::after{display:none}
 }

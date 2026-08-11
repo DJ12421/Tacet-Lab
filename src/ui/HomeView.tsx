@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { generatedCharacterSummaries as characterCatalog } from '../game-data/character-summaries.generated'
 import { generatedWeaponSummaries as weaponCatalog } from '../game-data/weapon-summaries.generated'
-import type { AppView, Build, Echo, OwnedCharacter, OwnedWeapon, Team } from '../domain/types'
+import type { AppSettings, AppView, Build, Echo, OwnedCharacter, OwnedWeapon, Team } from '../domain/types'
+import { getSettings, saveSettings } from '../storage/database'
 import { EchoWaveform } from './EchoWaveform'
 import { Icon } from './primitives'
 import './home-view.css'
@@ -16,10 +17,12 @@ interface HomeViewProps {
   navigate: (view: AppView) => void
 }
 
-const featureCards = [
-  { view: 'scanner' as const, icon: 'scan' as const, tone: 'gold', title: 'Auto Import', subtitle: 'Scan your collection', description: 'Capture Echo detail screens with local OCR and approve every result before it enters your archive.', points: ['English OCR scanning', 'Review before saving', 'No uploads or accounts'], action: 'Start scanning' },
-  { view: 'characters' as const, icon: 'team' as const, tone: 'blue', title: 'Character Management', subtitle: 'Optimize your builds', description: 'Create character loadouts, tune skill levels, equip weapons, and inspect complete combat statistics.', points: ['Character-specific loadouts', 'Five-branch Forte trees', 'Weapon and Echo assignment'], action: 'View characters' },
-  { view: 'echoes' as const, icon: 'echo' as const, tone: 'green', title: 'Echo Management', subtitle: 'Analyze your collection', description: 'Filter every saved Echo, compare its rolls, and prepare inventory for optimizer searches.', points: ['Complete local inventory', 'Advanced filtering', 'Editable stats and locks'], action: 'View Echoes' }
+type HomeSettings = AppSettings & { homeFeaturedCharacterId?: string }
+
+const quickStarts = [
+  { view: 'scanner' as const, icon: 'scan' as const, number: '01', title: 'Scan your collection', description: 'Import Echoes and character build cards.' },
+  { view: 'characters' as const, icon: 'team' as const, number: '02', title: 'Check their builds', description: 'Review equipment, stats, and damage.' },
+  { view: 'teams' as const, icon: 'optimize' as const, number: '03', title: 'See what works', description: 'Compare builds, damage, and teams.' }
 ]
 
 const changelogEntries = [
@@ -59,54 +62,87 @@ const changelogEntries = [
   { hash: '88384ae', date: 'Jul 12, 2026', title: 'Initial Tacet Lab implementation' }
 ]
 
-export function HomeView({ echoes, characters, weapons, builds, teams, navigate }: HomeViewProps) {
+export function HomeView({ echoes, characters, builds, teams, navigate }: HomeViewProps) {
   const [showAllChanges, setShowAllChanges] = useState(false)
-  const featured = characterCatalog.find((entry) => entry.name === 'Phoebe') ?? characterCatalog[0]
-  const ownedEntries = characters.flatMap((owned) => {
-    const catalog = characterCatalog.find((entry) => entry.id === owned.catalogId)
-    return catalog ? [catalog] : []
-  })
-  const roster = [...ownedEntries, ...characterCatalog.filter((entry) => !ownedEntries.some((owned) => owned.id === entry.id))].slice(0, 10)
-  const weaponStrip = weaponCatalog.slice(0, 4)
-  const assignedEchoes = echoes.filter((echo) => echo.equippedBy).length
+  const [heroPickerOpen, setHeroPickerOpen] = useState(false)
+  const [heroControlDismissed, setHeroControlDismissed] = useState(false)
+  const [featuredCharacterId, setFeaturedCharacterId] = useState('1506')
+  useEffect(() => { void getSettings().then((settings) => setFeaturedCharacterId((settings as HomeSettings).homeFeaturedCharacterId ?? '1506')) }, [])
+  const featured = characterCatalog.find((entry) => entry.id === featuredCharacterId)
+    ?? characterCatalog.find((entry) => entry.name === 'Phoebe')
+    ?? characterCatalog[0]
+  const hasStarted = characters.length + echoes.length + builds.length + teams.length > 0
   const completeBuilds = builds.filter((build) => build.echoIds.length === 5).length
+  const primaryView: AppView = hasStarted ? 'characters' : 'scanner'
+  const changeFeaturedCharacter = async (characterId: string) => {
+    const previous = featuredCharacterId
+    setFeaturedCharacterId(characterId)
+    try {
+      const settings = await getSettings()
+      await saveSettings({ ...settings, homeFeaturedCharacterId: characterId } as HomeSettings)
+    } catch {
+      setFeaturedCharacterId(previous)
+    }
+  }
+  const closeHeroPicker = () => {
+    setHeroPickerOpen(false)
+    setHeroControlDismissed(true)
+  }
 
   return <section className={`home-view home-element-${featured.element.toLowerCase()}`}>
     <article className="home-hero">
       <div className="home-hero-grid"/>
       <img className="home-hero-art" src={featured.portraitSourceUrl || featured.iconSourceUrl} alt=""/>
-      <div className="home-hero-copy"><span className="home-kicker">|| Local-first Wuthering Waves toolkit</span><h1>Tacet Lab Optimizer</h1><p>Optimize builds, evaluate Echoes, and maximize your characters without sending account data anywhere.</p><div className="home-hero-actions"><button className="primary" onClick={() => navigate('scanner')}><Icon name="scan"/>Start import</button><button className="secondary" onClick={() => navigate('characters')}><Icon name="team"/>Open roster</button></div></div>
-      <div className="home-release-strip">{roster.map((entry) => <button key={entry.id} title={entry.name} onClick={() => navigate('characters')}><img src={entry.iconSourceUrl} alt=""/><span>{entry.name}</span></button>)}{weaponStrip.map((entry) => <button className="is-weapon" key={entry.id} title={entry.name} onClick={() => navigate('weapons')}><img src={entry.iconSourceUrl} alt=""/><span>{entry.name}</span></button>)}</div>
+      <div className="home-hero-art-zone" onMouseLeave={() => { setHeroPickerOpen(false); setHeroControlDismissed(false) }} onClick={(event) => { if (event.target === event.currentTarget) setHeroControlDismissed(false) }}>
+        <div className={`home-hero-character-control${heroPickerOpen ? ' is-open' : ''}${heroControlDismissed ? ' is-dismissed' : ''}`}>
+          <label><select aria-label="Home hero character" value={featured.id} onChange={(event) => { closeHeroPicker(); void changeFeaturedCharacter(event.target.value) }}>{characterCatalog.map((entry) => <option value={entry.id} key={entry.id}>{entry.name}</option>)}</select></label>
+          <button type="button" aria-label="Change home character" title="Change home character" aria-expanded={heroPickerOpen} onClick={() => { if (heroPickerOpen) closeHeroPicker(); else setHeroPickerOpen(true) }}><Icon name="settings"/></button>
+        </div>
+      </div>
+      <div className="home-hero-copy">
+        <span className="home-kicker">Tacet Lab Optimizer</span>
+        <h1>Build stronger teams.<br/><em>Without the guesswork.</em></h1>
+        <p>Pick a character, add your Echoes, and see what improves your damage.</p>
+        <div className="home-hero-actions">
+          <button className="primary" onClick={() => navigate(primaryView)}>{hasStarted ? 'Continue your build' : 'Start scanning'}<span aria-hidden="true">→</span></button>
+          <button className="secondary" onClick={() => navigate(hasStarted ? 'scanner' : 'archive')}><Icon name={hasStarted ? 'scan' : 'team'}/>{hasStarted ? 'Add my Echoes' : 'Browse characters'}</button>
+        </div>
+        <div className="home-trust-line"><Icon name="lock"/><span>Free · No account · Your data stays on this device</span></div>
+      </div>
       <EchoWaveform element={featured.element}/>
     </article>
 
-    <div className="home-features">{featureCards.map((feature) => <article className={`home-feature home-tone-${feature.tone}`} key={feature.view}><header><span><Icon name={feature.icon}/></span><div><h2>{feature.title}</h2><small>{feature.subtitle}</small></div></header><p>{feature.description}</p><ul>{feature.points.map((point) => <li key={point}><b>✓</b>{point}</li>)}</ul><button onClick={() => navigate(feature.view)}>{feature.action}<span>→</span></button></article>)}</div>
+    <section className="home-start" aria-labelledby="home-start-title">
+      <div className="home-section-heading"><span className="eyebrow">New here?</span><h2 id="home-start-title">Start in three simple steps</h2></div>
+      <div className="home-steps">{quickStarts.map((item) => <button key={item.view} className="home-step" onClick={() => navigate(item.view)}><span className="home-step-number">{item.number}</span><span className="home-step-icon"><Icon name={item.icon}/></span><span className="home-step-copy"><strong>{item.title}</strong><small>{item.description}</small></span><b aria-hidden="true">→</b></button>)}</div>
+    </section>
 
-    <article className="home-account-band"><div><span className="eyebrow">Local account overview</span><h2>Your archive at a glance</h2><p>All values come from this browser’s IndexedDB archive.</p></div><dl><div><dt>Characters</dt><dd>{characters.length}</dd></div><div><dt>Weapons</dt><dd>{weapons.length}</dd></div><div><dt>Echoes</dt><dd>{echoes.length}</dd><small>{assignedEchoes} equipped</small></div><div><dt>Builds</dt><dd>{builds.length}</dd><small>{completeBuilds} complete</small></div><div><dt>Teams</dt><dd>{teams.length}</dd></div></dl></article>
+    <article className="home-account-band">
+      <div><span className="eyebrow">Your collection</span><h2>{hasStarted ? 'Welcome back' : 'Ready when you are'}</h2></div>
+      <dl><div><dd>{characters.length}</dd><dt>Characters</dt></div><div><dd>{echoes.length}</dd><dt>Echoes</dt></div><div><dd>{completeBuilds}</dd><dt>Full builds</dt></div><div><dd>{teams.length}</dd><dt>Teams</dt></div></dl>
+      <button className="home-collection-action" onClick={() => navigate(hasStarted ? 'characters' : 'scanner')}>{hasStarted ? 'Open collection' : 'Add your first Echo'}<span aria-hidden="true">→</span></button>
+    </article>
 
-    <div className="home-lower-grid">
-      <article className="home-showcase"><div><span className="eyebrow">Character-specific evaluation</span><h2>Build scoring system</h2><p>Compare complete loadouts against the stats and damage types each Resonator actually needs.</p><button className="secondary" onClick={() => navigate('characters')}>Open character builds <span>→</span></button></div><div className="home-score-visual"><div className="home-score-ring"><strong>{completeBuilds ? 'S' : '—'}</strong><span>Build grade</span></div><div className="home-score-bars"><i style={{ width: '88%' }}/><i style={{ width: '72%' }}/><i style={{ width: '94%' }}/><i style={{ width: '61%' }}/></div></div><EchoWaveform element={featured.element}/></article>
-      <article className="home-archive-card"><span className="eyebrow">Nanoka 3.5 database</span><h2>Browse the complete archive</h2><p>Explore imported characters, weapons, Sonata sets, and Echo metadata.</p><div className="home-archive-counts"><span><b>{characterCatalog.length}</b>Characters</span><span><b>{weaponCatalog.length}</b>Weapons</span></div><button onClick={() => navigate('archive')}>Open database <span>→</span></button></article>
+    <div className="home-discover">
+      <button onClick={() => navigate('archive')}><span><Icon name="home"/></span><div><strong>Explore the game database</strong><small>{characterCatalog.length} characters · {weaponCatalog.length} weapons</small></div><b aria-hidden="true">→</b></button>
+      <button onClick={() => navigate('echoes')}><span><Icon name="echo"/></span><div><strong>Browse your Echoes</strong><small>Filter, compare, and edit your collection</small></div><b aria-hidden="true">→</b></button>
+      <button onClick={() => navigate('teams')}><span><Icon name="team"/></span><div><strong>Plan a team</strong><small>Put three characters together</small></div><b aria-hidden="true">→</b></button>
     </div>
 
     <article className="home-community">
-      <div className="home-community-copy"><span className="eyebrow">Community signal</span><h2>Help shape Tacet Lab</h2><p>Have a suggestion? Found a bug? Want to test new scanner layouts, calculations, or features before release? Join the community and help make the project better.</p><div className="home-community-points"><span><b>01</b>Share feedback</span><span><b>02</b>Become a tester</span><span><b>03</b>Follow development</span></div></div>
-      <div className="home-community-actions">
-        <a className="home-community-primary" href="https://discord.gg/fy66NmapWb" target="_blank" rel="noreferrer"><span><strong>Join the Discord</strong><small>Suggestions, testing, and project chat</small></span><b>↗</b></a>
-        <a href="https://github.com/DhruvJ12421/WuWa-Optimizer" target="_blank" rel="noreferrer"><span><strong>View on GitHub</strong><small>Explore the source and development history</small></span><b>↗</b></a>
-        <a href="https://github.com/DhruvJ12421/WuWa-Optimizer/issues/new" target="_blank" rel="noreferrer"><span><strong>Report an issue</strong><small>Share a reproducible bug or problem</small></span><b>↗</b></a>
-      </div>
+      <div><Icon name="discord"/><span><strong>Tacet Lab community</strong><small>Questions, feedback, and updates</small></span></div>
+      <nav aria-label="Community links"><a href="https://discord.gg/fy66NmapWb" target="_blank" rel="noreferrer">Join Discord</a><a href="https://github.com/DhruvJ12421/WuWa-Optimizer/issues/new" target="_blank" rel="noreferrer">Report a bug</a><a href="https://github.com/DhruvJ12421/WuWa-Optimizer" target="_blank" rel="noreferrer">GitHub</a></nav>
     </article>
 
     <article className="home-changelog">
       <header className="home-changelog-header">
-        <div><span className="eyebrow">Development log</span><h2>Recent changes</h2><p>Highlights from the latest Tacet Lab updates.</p></div>
-        <a href="https://github.com/DhruvJ12421/WuWa-Optimizer/commits/main/" target="_blank" rel="noreferrer">View full history <span aria-hidden="true">↗</span></a>
+        <div><span className="eyebrow">What’s new</span><h2>Recent updates</h2></div>
+        <a href="https://github.com/DhruvJ12421/WuWa-Optimizer/commits/main/" target="_blank" rel="noreferrer">Full history <span aria-hidden="true">→</span></a>
       </header>
       <ol className="home-changelog-list">
-        {(showAllChanges ? changelogEntries : changelogEntries.slice(0, 3)).map((entry) => <li key={entry.hash}><time>{entry.date}</time><div><h3>{entry.title}</h3><a href={`https://github.com/DhruvJ12421/WuWa-Optimizer/commit/${entry.hash}`} target="_blank" rel="noreferrer">{entry.hash} <span aria-hidden="true">↗</span></a></div></li>)}
+        {(showAllChanges ? changelogEntries : changelogEntries.slice(0, 3)).map((entry) => <li key={entry.hash}><time>{entry.date}</time><div><h3>{entry.title}</h3><a href={`https://github.com/DhruvJ12421/WuWa-Optimizer/commit/${entry.hash}`} target="_blank" rel="noreferrer">{entry.hash} <span aria-hidden="true">→</span></a></div></li>)}
       </ol>
-      <button className="home-changelog-toggle" type="button" aria-expanded={showAllChanges} onClick={() => setShowAllChanges((current) => !current)}>{showAllChanges ? 'Show recent only' : `Show all ${changelogEntries.length} changes`}</button>
+      <button className="home-changelog-toggle" type="button" aria-expanded={showAllChanges} onClick={() => setShowAllChanges((current) => !current)}>{showAllChanges ? 'Show less' : `See all ${changelogEntries.length} updates`}</button>
     </article>
   </section>
 }
