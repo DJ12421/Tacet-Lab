@@ -129,6 +129,16 @@ function scopeFromDescription(description, fallback = 'self') {
   return fallback
 }
 
+function echoTimingFromDescription(description) {
+  const cooldown = description.match(/\bCD\s*:\s*(\d+(?:\.\d+)?)s\b/i)
+  const duration = description.match(/\b(?:lasts?|for)\s+(\d+(?:\.\d+)?)s\b/i)
+  return {
+    cooldown: cooldown ? Number(cooldown[1]) : undefined,
+    duration: duration ? Number(duration[1]) : undefined,
+    mainSlotPassive: /\bequipped\s+in\s+(?:the|their)\s+main\s+slot[^.]{0,24}\bgains?\b/i.test(description)
+  }
+}
+
 const numericLiteral = (value) => typeof value === 'string' && value.trim() !== '' && Number.isFinite(Number(value))
   ? Number(value)
   : value
@@ -326,21 +336,37 @@ for (const exportName of ['setBonusEffectsOnePiece', 'setBonusEffectsOne', 'setB
 }
 
 const echoSource = await parseFile(path.join(sourceRoot, 'src', 'echoes', 'index.ts'))
-const echoes = Object.entries(echoSource.value('mainEchoesData') ?? {}).map(([key, echo]) => ({
-  id: normalized(echo.name ?? key),
-  key,
-  name: String(echo.name ?? key),
-  effects: echo.modifiers?.length ? [effectDefinition({
-    key: `${key}Passive`,
-    name: echo.name ?? key,
-    details: echo.details,
-    hasStacks: echo.hasStacks,
-    minStacks: echo.minStacks,
-    maxStacks: echo.maxStacks,
-    modifiers: echo.modifiers
-  }, { sourceKind: 'echo', sourceId: key, valueUnit: 'decimal' })] : [],
-  attacks: (echo.actions ?? []).map((attack) => attackDefinition(attack, key, 'Echo Skill', attack.element))
-}))
+const echoes = Object.entries(echoSource.value('mainEchoesData') ?? {}).map(([key, echo]) => {
+  const description = cleanDescription(echo.details ?? '')
+  const timing = echoTimingFromDescription(description)
+  const attackIds = new Map()
+  const attacks = (echo.actions ?? []).map((attack) => {
+    const definition = attackDefinition(attack, key, 'Echo Skill', attack.element)
+    const occurrence = attackIds.get(definition.id) ?? 0
+    attackIds.set(definition.id, occurrence + 1)
+    return occurrence === 0 ? definition : { ...definition, id: `${definition.id}:${normalized(definition.name) || occurrence + 1}` }
+  })
+  return {
+    id: normalized(echo.name ?? key),
+    key,
+    name: String(echo.name ?? key),
+    ...(description ? { description } : {}),
+    ...(timing.cooldown !== undefined ? { cooldown: timing.cooldown } : {}),
+    effects: echo.modifiers?.length ? [effectDefinition({
+      key: `${key}Passive`,
+      name: echo.name ?? key,
+      details: description,
+      alwaysEnabled: timing.mainSlotPassive,
+      trigger: timing.mainSlotPassive ? undefined : attacks[0]?.key,
+      duration: timing.mainSlotPassive ? undefined : timing.duration,
+      hasStacks: echo.hasStacks,
+      minStacks: echo.minStacks,
+      maxStacks: echo.maxStacks,
+      modifiers: echo.modifiers
+    }, { sourceKind: 'echo', sourceId: key, valueUnit: 'decimal' })] : [],
+    attacks
+  }
+})
 
 const partySource = await parseFile(path.join(sourceRoot, 'src', 'buffs', 'index.ts'))
 const partyEffects = []

@@ -1,0 +1,246 @@
+.site-footer {
+  min-height: 40px;
+  border-top: 1px solid var(--line);
+  padding: 0 34px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #56615e;
+  font-size: var(--font-size-caption);
+  letter-spacing: .08em;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: rgba(0,0,0,.72);
+  backdrop-filter: blur(8px);
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+.settings-modal {
+  width: min(560px, 100%);
+  padding: 0;
+  overflow: hidden;
+}
+
+.settings-modal form {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 22px 16px;
+  border-bottom: 1px solid var(--line);
+  background: radial-gradient(circle at 15% 0,rgba(228,187,94,.12),transparent 42%),#0c1112;
+}
+
+.settings-header h2 {
+  margin: 4px 0 0;
+  font-size: var(--font-size-heading);
+  font-weight: 600;
+}
+
+.settings-section {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012));
+}
+
+.settings-section-title {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.settings-section-title>div {
+  display: grid;
+  gap: 2px;
+}
+
+.settings-section-title strong {
+  color: #edf3f1;
+  font-size: var(--font-size-body);
+}
+
+.settings-section-title small {
+  color: var(--muted);
+  font-size: var(--font-size-caption);
+}
+
+.settings-section-icon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  flex: none;
+  border: 1px solid rgba(228,187,94,.3);
+  border-radius: 50%;
+  background: rgba(228,187,94,.08);
+  color: var(--gold);
+  font-size: var(--font-size-body-large);
+}
+
+.settings-section-icon .icon {
+  width: 16px;
+}
+
+.settings-choice {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+}
+
+.settings-modal .settings-choice label {
+  display: block;
+  cursor: pointer;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.settings-choice input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.settings-choice label>span {
+  min-height: 66px;
+  display: grid;
+  align-content: center;
+  gap: 3px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 5px;
+  background: #090c0d;
+  transition: border-color .16s,background .16s,transform .16s;
+}
+
+.settings-choice label:hover>span {
+  border-color: rgba(228,187,94,.42);
+  transform: translateY(-1px);
+}
+
+.settings-choice input:checked+span {
+  border-color: var(--gold);
+  background: linear-gradient(135deg,rgba(228,187,94,.15),rgba(228,187,94,.04));
+  box-shadow: inset 3px 0 var(--gold);
+}
+
+.settings-choice b {
+  color: #e8efec;
+  font-size: var(--font-size-small);
+}
+
+.settings-choice small {
+  color: var(--muted);
+  font-size: var(--font-size-caption);
+}
+
+.settings-data-section {
+  grid-template-columns: minmax(0,1fr) auto;
+  align-items: center;
+}
+
+.settings-data-section .settings-section-title {
+  grid-column: 1;
+}
+
+.settings-data-actions {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  gap: 6px;
+}
+
+.settings-data-actions button {
+  min-height: 36px;
+  gap: 6px;
+}
+
+.settings-data-actions .icon {
+  width: 14px;
+}
+
+.settings-delete {
+  grid-column: 1/-1;
+  justify-self: start;
+  color: #d77775;
+  font-size: var(--font-size-caption);
+}
+
+.settings-save {
+  display: flex;
+  justify-content: flex-end;
+  padding: 2px 2px 3px;
+}
+
+.settings-save button {
+  min-width: 150px;
+}
+
+.settings-modal .check {
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.close {
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: var(--font-size-heading);
+  cursor: pointer;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+  margin-top: 4px;
+}
+
+.danger.text {
+  border: 0;
+  background: none;
+  padding: 0;
+}
+
+.toast {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 30;
+  background: #18201f;
+  border: 1px solid var(--mint);
+  color: #c7f1e9;
+  padding: 12px 18px;
+  box-shadow: 0 15px 60px #000;
+}
+
+.boot {
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 15px;
+  color: var(--gold);
+  letter-spacing: .17em;
+  font-size: var(--font-size-caption);
+}
+
+.boot .brand-mark {
+  animation: spin 4s linear infinite;
+}

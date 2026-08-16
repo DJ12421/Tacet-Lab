@@ -1,0 +1,239 @@
+/* Clear local-only status, consistent chip filters, and concise supporting copy. */
+
+.local-only-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: .06em;
+}
+
+.local-only-status>span:last-child {
+  display: grid;
+  line-height: 1.15;
+}
+
+.local-only-status strong {
+  color: #dce6e2;
+  font-size: var(--font-size-caption);
+  letter-spacing: .13em;
+}
+
+.local-only-status small {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: var(--font-size-caption);
+  letter-spacing: 0;
+}
+
+.settings-modal label>small {
+  color: var(--muted);
+  font-size: var(--font-size-caption);
+  line-height: 1.45;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.settings-modal {
+  max-height: calc(100dvh - 40px);
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-modal form {
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.settings-choice input:focus-visible+span {
+  outline: 2px solid var(--mint);
+  outline-offset: 2px;
+}
+
+.settings-modal .settings-name-field {
+  gap: 6px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.settings-name-field>span {
+  color: #aeb8b5;
+  font-size: var(--font-size-caption);
+}
+
+.settings-modal .settings-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 11px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: #090c0d;
+  text-transform: none;
+  letter-spacing: 0;
+  cursor: pointer;
+}
+
+.settings-toggle input {
+  width: 17px;
+  min-height: 17px;
+  accent-color: var(--gold);
+}
+
+.settings-toggle>span {
+  display: grid;
+  gap: 1px;
+}
+
+.settings-toggle b {
+  color: #dfe7e4;
+  font-size: var(--font-size-caption);
+}
+
+.settings-toggle small {
+  color: var(--muted);
+  font-size: var(--font-size-caption);
+}
+
+@media (max-width:540px) {
+  .settings-header {
+    padding: 16px;
+  }
+  .settings-modal form {
+    padding: 10px;
+  }
+  .settings-choice {
+    grid-template-columns: 1fr;
+  }
+  .settings-data-section {
+    grid-template-columns: 1fr;
+  }
+  .settings-data-actions {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .settings-data-actions button {
+    flex: 1;
+  }
+  .settings-save button {
+    width: 100%;
+  }
+}
+
+.chip-toolbar {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  gap: 10px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+.chip-toolbar>.search {
+  flex: 1 1 260px;
+  min-width: 240px;
+}
+
+.owned-chip-filter {
+  min-width: 0;
+  max-width: 100%;
+  display: grid;
+  gap: 5px;
+  flex: 0 0 auto;
+}
+
+.owned-chip-filter>span {
+  color: #899491;
+  font-size: var(--font-size-caption);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.owned-chip-filter .filter-chips {
+  width: max-content;
+  max-width: 100%;
+  min-width: 0;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+.owned-chip-filter .filter-chips button {
+  flex: 0 0 auto;
+  min-width: 56px;
+  white-space: nowrap;
+}
+
+.filter-element-icon {
+  width: 25px;
+  height: 25px;
+  display: grid;
+  place-items: center;
+  margin-inline: auto;
+}
+
+.filter-element-icon img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.owned-chip-filter:has(.filter-element-icon) {
+  width: fit-content;
+  max-width: none;
+  justify-self: center;
+  flex: 0 0 auto;
+}
+
+.owned-chip-filter:has(.filter-element-icon)>span {
+  text-align: center;
+}
+
+.owned-chip-filter:has(.filter-element-icon) .filter-chips {
+  display: grid;
+  grid-template-columns: repeat(6,48px);
+  width: fit-content;
+  max-width: none;
+  margin-inline: auto;
+  overflow: visible;
+}
+
+.owned-chip-filter:has(.filter-element-icon) .filter-chips button {
+  width: 48px;
+  min-width: 0;
+  padding: 4px 0;
+}
+
+.archive-toolbar.chip-toolbar {
+  display: flex;
+  align-items: flex-end;
+}
+
+.archive-toolbar.chip-toolbar>.search {
+  order: 0;
+  flex: 1 1 260px;
+}
+
+.archive-toolbar.chip-toolbar>.archive-count {
+  order: 3;
+  margin-left: auto;
+}
+
+.archive-toolbar.chip-toolbar>.owned-chip-filter,.archive-toolbar.chip-toolbar>.sonata-picker {
+  order: 1;
+  flex: 0 0 auto;
+}
+
+.echo-canonical-cost {
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.echo-canonical-cost b {
+  color: var(--gold);
+  font-size: var(--font-size-body);
+}
+
+.echo-canonical-cost small {
+  color: var(--muted);
+  font-size: var(--font-size-caption);
+}

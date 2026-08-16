@@ -1,0 +1,16 @@
+/* Keep the visible guide and review preview aligned with the compact OCR crop. */
+
+.active .crop-guide {
+  left: 77%;
+  top: 12%;
+  right: auto;
+  bottom: auto;
+  width: 22%;
+  height: 86%;
+}
+
+.review-card>img {
+  aspect-ratio: 22/86;
+  max-height: 420px;
+  object-fit: contain;
+}

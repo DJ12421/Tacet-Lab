@@ -247,7 +247,12 @@ const characters=Object.entries(rawCharacters).map(([id,c])=>{
     attacks.push(...outroDescriptionAttack(id,outroEntry[0],outroEntry[1].skill??outroEntry[1]))
   }
   const animatedSkin=Object.values(detail?.skin??{}).find(skin=>skin.formation_spine_skel&&skin.formation_spine_atlas)
-  const spineBaseUrl=spineAsset(animatedSkin?.formation_spine_skel)
+  // Nanoka's character-page "Luckdraw" viewer resolves gacha animations from
+  // the character audio key. Older characters without that key do not expose a
+  // Luckdraw asset, so preserve their formation Spine render as the fallback.
+  const luckdrawId=String(detail?.audio??'').trim().toLowerCase()
+  const formationSpineBaseUrl=spineAsset(animatedSkin?.formation_spine_skel)
+  const spineBaseUrl=luckdrawId?`https://static.nanoka.cc/assets/ww/luckdraw/${luckdrawId}/${luckdrawId}`:formationSpineBaseUrl
   return {id,name:c.en,title:detail?.chara_info?.talent_name??c.nickname??c.en,nickname:c.nickname,description:c.desc.replace(/<[^>]+>/g,''),rarity:c.rank,element:elements[c.element]??'Unknown',weaponType:weaponTypes[c.weapon]??'Unknown',role:Object.values(detail?.tag??{})[0]?.name??'Resonator',gender,baseStats:{hp:maxStats.hp,atk:maxStats.atk,def:maxStats.def,critRate:5,critDamage:150},levelStats,skillIcons,skillTreeExtras,sequenceIcons,flatSkillValues,attacks,articleUrl:`https://ww.nanoka.cc/character/${id}`,iconSourceUrl:asset(c.icon),portraitSourceUrl:asset(detail?.background??detail?.background_stand??c.icon),titleCardSourceUrl:titleCardByCharacter.get(c.en)??'',spineSkeletonSourceUrl:spineBaseUrl?`${spineBaseUrl}.skel`:'',spineAtlasSourceUrl:spineBaseUrl?`${spineBaseUrl}.atlas`:''}
 }).sort((a,b)=>a.name.localeCompare(b.name))
 const weaponEntries=Object.entries(rawWeapons).filter(([,weapon])=>!/^Projection(?:\s*[-:]|\b)/i.test(weapon.en))

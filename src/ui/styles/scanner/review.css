@@ -1,0 +1,165 @@
+/* Imported images stay compact until a live window is actually being shared. */
+
+.capture-panel-compact {
+  min-height: 0;
+  display: grid;
+  gap: 9px;
+  align-content: start;
+}
+
+.capture-panel-compact .capture-head {
+  padding-bottom: 2px;
+}
+
+.capture-panel-compact>p {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  overflow-x: auto;
+  color: var(--muted);
+  font-size: var(--font-size-small);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.scanner-calibration-notice {
+  margin: 0 0 2px;
+}
+
+/* Scan review owns one scroll region; the page beneath remains locked. */
+
+.scanner-view:has(.scan-review-backdrop) {
+  animation: none!important;
+  transform: none!important;
+  filter: none!important;
+}
+
+.scan-review-backdrop {
+  --scan-review-viewport-gutter: clamp(12px,2dvh,24px);
+  align-items: center;
+  padding-block: var(--scan-review-viewport-gutter);
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+.scan-review-popout {
+  display: grid;
+  grid-template-rows: auto auto minmax(0,1fr);
+  height: calc(100dvh - var(--scan-review-viewport-gutter) - var(--scan-review-viewport-gutter));
+  min-height: 0;
+  max-height: calc(100dvh - var(--scan-review-viewport-gutter) - var(--scan-review-viewport-gutter));
+  margin: 0;
+  overflow: hidden;
+  scrollbar-width: auto;
+}
+
+.scan-review-popout::-webkit-scrollbar {
+  display: initial;
+}
+
+.scan-review-scroll {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 4px;
+}
+
+.scan-review-scroll>.review-card {
+  min-height: 100%;
+}
+
+.review-topbar {
+  top: 0;
+}
+
+.review-attention {
+  grid-column: 1/-1;
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 1px solid rgba(141,228,212,.28);
+  background: rgba(141,228,212,.055);
+}
+
+.review-attention>div {
+  display: grid;
+  gap: 2px;
+}
+
+.review-attention strong {
+  color: var(--mint);
+  font-size: var(--font-size-body);
+}
+
+.review-attention small {
+  color: #9ba7a4;
+  font-size: var(--font-size-small);
+}
+
+.review-attention ul {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  padding-left: 20px;
+  color: #ffd1cd;
+  font-size: var(--font-size-small);
+}
+
+.review-attention.needs-attention {
+  border-color: rgba(239,118,110,.55);
+  background: rgba(239,118,110,.08);
+}
+
+.review-attention.needs-attention strong {
+  color: #ffaaa4;
+}
+
+.review-attention .text-button {
+  justify-self: start;
+  padding: 0;
+  color: var(--gold);
+}
+
+.field-needs-attention {
+  padding: 8px;
+  border: 1px solid rgba(239,118,110,.55);
+  background: rgba(239,118,110,.06);
+}
+
+.required-field-badge {
+  justify-self: start;
+  padding: 2px 6px;
+  background: var(--danger);
+  color: #170908;
+  font-size: var(--font-size-caption);
+  letter-spacing: .05em;
+}
+
+@media (max-width:900px) {
+  .archive-toolbar.chip-toolbar>.archive-count {
+    margin-left: 0;
+  }
+}
+
+@media (max-width:650px) {
+  .local-only-status small {
+    display: none;
+  }
+  .chip-toolbar>.owned-chip-filter,.archive-toolbar.chip-toolbar>.owned-chip-filter,.archive-toolbar.chip-toolbar>.sonata-picker {
+    width: auto;
+    flex-basis: auto;
+    overflow: visible;
+  }
+  .scan-review-backdrop {
+    --scan-review-viewport-gutter: 0px;
+    padding-block: 0;
+  }
+  .scan-review-popout {
+    height: 100dvh;
+    min-height: 100dvh;
+    max-height: 100dvh;
+  }
+  .scan-review-scroll {
+    padding-right: 0;
+  }
+}

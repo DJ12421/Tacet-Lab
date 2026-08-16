@@ -6,12 +6,13 @@ import {
 } from '../domain/calculation-v2'
 import type {
   CalculationAttackDefinition, CalculationEffectDefinition, CalculationResultV2,
-  CalculationSourceStats, CalculationStatsV2, CalculationTraceV2, CharacterCalculationMechanics
+  CalculationSourceStats, CalculationStatsV2, CalculationTraceV2, CharacterCalculationMechanics, EchoCalculationMechanics
 } from '../domain/calculation-v2'
 import type {
-  AttackDefinition, BuffEffect, Build, DamageType, Echo, Element, OwnedCharacter,
-  OwnedWeapon, Resonator, RotationAction, StatKey, StatLine, Team, Weapon
+  AttackDefinition, BuffEffect, Build, DamageType, Echo, Element, EquippedLoadout, LoadoutSourceRef, OwnedCharacter,
+  OwnedWeapon, Resonator, RotationAction, StatKey, StatLine, Team, TheorycraftBuild, Weapon
 } from '../domain/types'
+import { resolveLoadout } from '../domain/loadouts'
 import {
   characterCatalog, echoCatalog, isFixedSkillValueName, sonataCatalog, statLabels, weaponCatalog,
   type CharacterCatalogEntry
@@ -27,7 +28,8 @@ const ELEMENTS: Record<string, Element> = {
 }
 
 const SKILL_KEYS = ['normalAttack', 'resonanceSkill', 'forteCircuit', 'resonanceLiberation', 'introSkill'] as const
-export type TeamAttackGroup = 'basic' | 'skill' | 'forte' | 'liberation' | 'intro' | 'outro' | 'tuneBreak'
+const normalizedCatalogName = (value = '') => value.toLowerCase().replace(/[^a-z0-9]+/g, '')
+export type TeamAttackGroup = 'basic' | 'skill' | 'forte' | 'liberation' | 'intro' | 'outro' | 'echo' | 'tuneBreak'
 
 export interface TeamWorkspaceInput {
   team: Team
@@ -35,6 +37,8 @@ export interface TeamWorkspaceInput {
   characters: OwnedCharacter[]
   weapons: OwnedWeapon[]
   echoes: Echo[]
+  equippedLoadouts?: EquippedLoadout[]
+  theorycraftBuilds?: TheorycraftBuild[]
   roverGender?: 'male' | 'female'
 }
 
@@ -54,6 +58,7 @@ export interface TeamAttackModel {
 
 export interface TeamMemberModel {
   slot: number
+  source?: LoadoutSourceRef
   build?: Build
   character?: OwnedCharacter
   catalog?: CharacterCatalogEntry
@@ -68,11 +73,16 @@ export interface TeamMemberModel {
   warnings: string[]
   formulaRows: TeamFormulaRow[]
   calculationMechanicsV2?: CharacterCalculationMechanics
+  mainEchoMechanicsV2?: EchoCalculationMechanics
   calculationEffectsV2: CalculationEffectDefinition[]
   outgoingEffectsV2: CalculationEffectDefinition[]
   calculationRowsV2: TeamCalculationRowV2[]
   resolvedStatsV2?: CalculationStatsV2
   conditionedStats?: Record<string, number>
+  resolvedEchoes: Echo[]
+  resolvedWeapon?: OwnedWeapon
+  comparisonSource?: LoadoutSourceRef
+  comparisonShowcase?: CharacterShowcaseModel
 }
 
 export interface TeamFormulaRow {
@@ -98,6 +108,8 @@ export interface TeamActionModel {
   activeBuffs: BuffEffect[]
   activates: BuffEffect[]
   activePartyEffectsV2: CalculationEffectDefinition[]
+  activeSelfEffectsV2: CalculationEffectDefinition[]
+  activatesSelfEffectsV2: CalculationEffectDefinition[]
   warnings: string[]
   trace?: CalculationTrace
   traces?: Record<'normal' | 'critical' | 'expected', CalculationTrace>
@@ -186,6 +198,7 @@ function v2DamageType(attack: CalculationAttackDefinition): DamageType {
 
 function v2AttackGroup(attack: CalculationAttackDefinition): TeamAttackGroup {
   const group = attack.group.toLowerCase()
+  if (group.includes('echo skill')) return 'echo'
   if (attack.type === 'tuneBreak' || group.includes('tune break')) return 'tuneBreak'
   if (attack.type === 'outro' || group.includes('outro')) return 'outro'
   if (attack.type === 'intro' || group.includes('intro')) return 'intro'
@@ -195,14 +208,16 @@ function v2AttackGroup(attack: CalculationAttackDefinition): TeamAttackGroup {
   return 'skill'
 }
 
-function v2AttackModels(catalog: CharacterCatalogEntry, character: OwnedCharacter, mechanics: CharacterCalculationMechanics): TeamAttackModel[] {
+function v2AttackModels(catalog: CharacterCatalogEntry, character: OwnedCharacter, mechanics: CharacterCalculationMechanics, mainEcho?: Echo): TeamAttackModel[] {
   return mechanics.attacks.filter((attack) => attack.type !== 'utility').map((attack) => {
-    const level = skillLevelForAttackV2(character, attack)
+    const level = skillLevelForAttackV2(character, attack, mainEcho?.rarity)
     const talent = attack.talents[String(level)] ?? attack.talents['1'] ?? '0%'
     const multiplier = Number.parseFloat(talent) / 100
     const group = v2AttackGroup(attack)
     const skillIndex = group === 'basic' ? 0 : group === 'skill' ? 1 : group === 'forte' ? 2 : group === 'liberation' ? 3 : 4
-    const skill = group === 'outro' ? catalog.skillTreeExtras.outroSkill
+    const mainEchoCatalog = mainEcho ? echoCatalog.find((entry) => normalizedCatalogName(entry.name) === normalizedCatalogName(mainEcho.name)) : undefined
+    const skill = group === 'echo' ? { name: mainEcho?.name ?? 'Main Echo', iconSourceUrl: mainEchoCatalog?.iconSourceUrl ?? '' }
+      : group === 'outro' ? catalog.skillTreeExtras.outroSkill
       : group === 'tuneBreak' ? catalog.skillTreeExtras.tuneBreakSkill
         : catalog.skillIcons[SKILL_KEYS[skillIndex] ?? 'forteCircuit']
     return {
@@ -278,8 +293,12 @@ function buffAppliesTo(effect: BuffEffect, member: TeamMemberModel) {
 
 function activeBuffsAt(team: Team, sortedActions: RotationAction[], currentIndex: number) {
   const active: Array<{ effect: BuffEffect; activatedAt: number }> = []
+  const currentTimestamp = sortedActions[currentIndex]?.timestamp ?? 0
   for (let index = 0; index < currentIndex; index += 1) {
     const action = sortedActions[index]
+    // Actions at one timestamp are atomic: they cannot activate or consume an
+    // effect for another action in the same group.
+    if (action.timestamp >= currentTimestamp) continue
     for (let activeIndex = active.length - 1; activeIndex >= 0; activeIndex -= 1) {
       if (action.timestamp > active[activeIndex].activatedAt + active[activeIndex].effect.duration) active.splice(activeIndex, 1)
     }
@@ -290,8 +309,7 @@ function activeBuffsAt(team: Team, sortedActions: RotationAction[], currentIndex
       if (active[activeIndex].effect.target === 'next' && active[activeIndex].effect.sourceBuildId !== action.buildId) active.splice(activeIndex, 1)
     }
   }
-  const timestamp = sortedActions[currentIndex]?.timestamp ?? 0
-  return active.filter((entry) => timestamp <= entry.activatedAt + entry.effect.duration).map((entry) => entry.effect)
+  return active.filter((entry) => currentTimestamp <= entry.activatedAt + entry.effect.duration).map((entry) => entry.effect)
 }
 
 export function formatWorkspaceStat(key: StatKey, value: number) {
@@ -306,13 +324,32 @@ export function teamBuffLabel(effect: BuffEffect) {
 }
 
 export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceModel {
+  const collections = { builds: input.builds, characters: input.characters, weapons: input.weapons, echoes: input.echoes, equippedLoadouts: input.equippedLoadouts ?? [], theorycraftBuilds: input.theorycraftBuilds ?? [] }
+  const resolvedMembers = Array.from({ length: 3 }, (_, slot) => {
+    const member = input.team.members?.[slot]
+    const legacyBuildId = input.team.buildIds[slot]
+    const source: LoadoutSourceRef | undefined = member?.loadoutSource ?? (legacyBuildId ? { type: 'saved', buildId: legacyBuildId } : undefined)
+    return source ? resolveLoadout(source, collections, member?.memberId ?? legacyBuildId) : undefined
+  })
+  const resolvedComparisons = Array.from({ length: 3 }, (_, slot) => {
+    const member = input.team.members?.[slot]
+    return member?.compareSource ? resolveLoadout(member.compareSource, collections, `compare:${member.memberId}`) : undefined
+  })
+  const allResolved = [...resolvedMembers, ...resolvedComparisons]
+  const runtimeOwnedWeapons = [...input.weapons, ...allResolved.flatMap((entry) => entry?.weapon && !input.weapons.some((weapon) => weapon.id === entry.weapon?.id) ? [entry.weapon] : [])]
+  const runtimeEchoes = [...input.echoes, ...allResolved.flatMap((entry) => entry?.echoes.filter((echo) => !input.echoes.some((owned) => owned.id === echo.id)) ?? [])]
+  const runtimeBuilds = resolvedMembers.flatMap((entry) => entry?.build ? [entry.build] : [])
   const baseMembers = Array.from({ length: 3 }, (_, slot): TeamMemberModel => {
-    const build = input.builds.find((entry) => entry.id === input.team.buildIds[slot])
+    const resolved = resolvedMembers[slot]
+    const build = resolved?.build
     const catalog = characterCatalog.find((entry) => entry.id === build?.resonatorId)
-    const character = input.characters.find((entry) => entry.catalogId === build?.resonatorId)
+    const character = resolved?.character
     const showcase = character && catalog
-      ? resolveCharacterShowcaseModel({ character, catalog, weapons: input.weapons, echoes: input.echoes, builds: build ? [build] : [] })
+      ? resolveCharacterShowcaseModel({ character, catalog, weapons: runtimeOwnedWeapons, echoes: runtimeEchoes, builds: build ? [build] : [] })
       : undefined
+    const comparison = resolvedComparisons[slot]
+    const comparisonShowcase = comparison?.build && character && catalog
+      ? resolveCharacterShowcaseModel({ character, catalog, weapons: runtimeOwnedWeapons, echoes: runtimeEchoes, builds: [comparison.build] }) : undefined
     const characterMechanicsV2 = catalog && character ? resolveCharacterMechanicsV2(catalog, character, input.roverGender) : undefined
     const mainEchoMechanicsV2 = resolveEchoMechanicsV2(showcase?.echoSlots[0])
     const calculationMechanicsV2 = characterMechanicsV2 ? {
@@ -320,9 +357,9 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
       attacks: [...characterMechanicsV2.attacks, ...(mainEchoMechanicsV2?.attacks ?? [])]
     } : undefined
     const attacks = catalog && character && calculationMechanicsV2
-      ? v2AttackModels(catalog, character, calculationMechanicsV2)
+      ? v2AttackModels(catalog, character, calculationMechanicsV2, showcase?.echoSlots[0])
       : catalog && character ? attackModels(catalog, character) : []
-    const warnings: string[] = []
+    const warnings: string[] = [...(resolved?.warnings ?? [])]
     if (!build) warnings.push('No build assigned to this slot.')
     else {
       if (!catalog || !character) warnings.push('Owned character or Nanoka catalog data is missing.')
@@ -331,17 +368,18 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
       if ((showcase?.totalEchoCost ?? 0) > 12) warnings.push('Echo cost exceeds the 12-cost limit.')
     }
     return {
-      slot, build, character, catalog, showcase, attacks, contribution: 0, contributionPercent: 0,
+      slot, source: resolved?.source, comparisonSource: comparison?.source, comparisonShowcase, build, character, catalog, showcase, resolvedEchoes: resolved?.echoes ?? [], resolvedWeapon: resolved?.weapon, attacks, contribution: 0, contributionPercent: 0,
       byType: {}, appliedBuffs: [], receivedBuffs: [], roles: inferRoles(catalog, attacks), warnings, formulaRows: [],
-      calculationMechanicsV2, calculationEffectsV2: [], outgoingEffectsV2: [], calculationRowsV2: []
+      calculationMechanicsV2, mainEchoMechanicsV2, calculationEffectsV2: [], outgoingEffectsV2: [], calculationRowsV2: []
     }
   }) as [TeamMemberModel, TeamMemberModel, TeamMemberModel]
 
   const resonators = baseMembers.flatMap((member) => member.catalog && member.character
     ? [runtimeResonator(member.catalog, member.character)] : [])
   const runtimeWeapons = baseMembers.flatMap((member) => member.build
-    ? [runtimeWeapon(member.build, input.weapons)].filter((entry): entry is Weapon => Boolean(entry)) : [])
-  const rotation = calculateRotation(input.team, input.builds, resonators, runtimeWeapons, input.echoes)
+    ? [runtimeWeapon(member.build, runtimeOwnedWeapons)].filter((entry): entry is Weapon => Boolean(entry)) : [])
+  const runtimeTeam = { ...input.team, buildIds: runtimeBuilds.map((entry) => entry.id) }
+  const rotation = calculateRotation(runtimeTeam, runtimeBuilds, resonators, runtimeWeapons, runtimeEchoes)
 
   for (const member of baseMembers) {
     if (!member.build) continue
@@ -377,7 +415,7 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
       member.formulaRows = (sheet?.targets ?? []).map((target) => {
         const context = createBuildCalculationContext({
           build: member.build!, character: member.character!, weapon: ownedWeapon,
-          echoes: member.build!.echoIds.map((id) => input.echoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)),
+          echoes: member.build!.echoIds.map((id) => runtimeEchoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)),
           enemy: input.team.enemy, scenario: input.team.scenario, buffs: member.receivedBuffs, targetId: target.id
         })
         if (!member.conditionedStats || target.id === selectedTargetId) member.conditionedStats = context.stats
@@ -473,6 +511,14 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
 
   const sortedActions = [...input.team.actions].sort((left, right) => left.timestamp - right.timestamp)
   const normalizedTrigger = (value = '') => value.toLowerCase().replace(/[^a-z0-9]+/g, '')
+  const actionMatchesTrigger = (member: TeamMemberModel, action: RotationAction, trigger: string) => {
+    const calculationAttack = member.calculationMechanicsV2?.attacks.find((attack) => attack.id === action.attackId || attack.key === action.attackId)
+    const attack = member.attacks.find((candidate) => candidate.id === action.attackId || candidate.id === calculationAttack?.id)
+    const keys = [action.attackId, calculationAttack?.id ?? '', calculationAttack?.key ?? '', calculationAttack?.name ?? '', attack?.name ?? '', attack?.skillName ?? '']
+      .map(normalizedTrigger).filter(Boolean)
+    const normalizedEffectTrigger = normalizedTrigger(trigger)
+    return keys.some((key) => key === normalizedEffectTrigger || key.includes(normalizedEffectTrigger) || normalizedEffectTrigger.includes(key))
+  }
   const partyEffectIsActive = (effect: CalculationEffectDefinition, recipient: TeamMemberModel, currentIndex: number) => {
     const source = baseMembers.find((member) => member.outgoingEffectsV2.some((candidate) => candidate.id === effect.id))
     if (!source?.build || !recipient.build) return false
@@ -485,9 +531,11 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
     }
     const trigger = normalizedTrigger(effect.trigger)
     if (!trigger) return true
+    const currentTime = sortedActions[currentIndex].timestamp
     let activationIndex = -1
-    for (let index = 0; index <= currentIndex; index += 1) {
+    for (let index = 0; index < currentIndex; index += 1) {
       const action = sortedActions[index]
+      if (action.timestamp >= currentTime) continue
       if (action.buildId !== source.build.id) continue
       const attack = source.attacks.find((candidate) => candidate.id === action.attackId)
       const attackKeys = [action.attackId, attack?.id ?? '', attack?.name ?? '', attack?.skillName ?? ''].map(normalizedTrigger).filter(Boolean)
@@ -495,12 +543,11 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
     }
     if (activationIndex < 0) return false
     const activationTime = sortedActions[activationIndex].timestamp
-    const currentTime = sortedActions[currentIndex].timestamp
     if (effect.duration !== undefined && currentTime > activationTime + effect.duration) return false
     if (effect.scope !== 'next') return true
-    const firstIncomingIndex = sortedActions.findIndex((action, index) => index > activationIndex && action.buildId !== source.build?.id)
-    if (firstIncomingIndex < 0 || sortedActions[firstIncomingIndex].buildId !== recipient.build.id || currentIndex < firstIncomingIndex) return false
-    return !sortedActions.slice(firstIncomingIndex, currentIndex + 1).some((action) => action.buildId !== recipient.build?.id)
+    const firstIncomingTime = sortedActions.find((action) => action.timestamp > activationTime && action.buildId !== source.build?.id)?.timestamp
+    if (firstIncomingTime === undefined || currentTime !== firstIncomingTime) return false
+    return sortedActions.some((action) => action.timestamp === firstIncomingTime && action.buildId === recipient.build.id)
   }
   let resultIndex = 0
   const actions = sortedActions.map((action, index): TeamActionModel => {
@@ -515,6 +562,17 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
     if (!attack) warnings.push('Calculation V2 attack data is missing for this action.')
     if (!member?.showcase?.weapon) warnings.push('Damage skipped because no weapon is equipped.')
     if (action.timestamp < 0 || action.timestamp > input.team.rotationDuration) warnings.push('Timestamp is outside the rotation duration.')
+    if (action.duration !== undefined && action.timestamp + action.duration > input.team.rotationDuration) warnings.push('Clip extends past the rotation duration.')
+    if (calculationAttack?.group === 'Echo Skill' && member?.mainEchoMechanicsV2?.cooldown) {
+      const previousEchoAction = sortedActions.slice(0, index).reverse().find((candidate) => {
+        if (candidate.buildId !== action.buildId || candidate.timestamp >= action.timestamp) return false
+        const previousAttack = member.calculationMechanicsV2?.attacks.find((entry) => entry.id === candidate.attackId || entry.key === candidate.attackId)
+        return previousAttack?.group === 'Echo Skill'
+      })
+      if (previousEchoAction && action.timestamp - previousEchoAction.timestamp < member.mainEchoMechanicsV2.cooldown) {
+        warnings.push(`Main Echo is still on cooldown (${member.mainEchoMechanicsV2.cooldown}s).`)
+      }
+    }
     const valid = Boolean(member?.build && member.showcase?.weapon && attack)
     const result = valid ? rotation.actions[resultIndex++] : undefined
     const activeBuffs = activeBuffsAt(input.team, sortedActions, index).filter((effect) => member ? buffAppliesTo(effect, member) : false)
@@ -525,6 +583,16 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
     let calculationResultV2: CalculationResultV2 | undefined
     const ownedWeapon = member?.showcase?.weapon?.owned
     const activePartyEffectsV2 = member ? receivedPartyEffectsFor(member, true).filter((effect) => partyEffectIsActive(effect, member, index)) : []
+    const effectActivationOverrides = member ? Object.fromEntries(member.calculationEffectsV2.flatMap((effect) => {
+      if (effect.sourceKind !== 'echo' || effect.alwaysEnabled || !effect.trigger || effect.duration === undefined) return []
+      const activations = sortedActions.slice(0, index).filter((candidate) => candidate.buildId === member.build?.id
+        && candidate.timestamp < action.timestamp && actionMatchesTrigger(member, candidate, effect.trigger!))
+      const activation = activations[activations.length - 1]
+      return [[effect.id, Boolean(activation && action.timestamp <= activation.timestamp + effect.duration)] as const]
+    })) : undefined
+    const activeSelfEffectsV2 = member?.calculationEffectsV2.filter((effect) => effectActivationOverrides?.[effect.id]) ?? []
+    const activatesSelfEffectsV2 = member?.calculationEffectsV2.filter((effect) => effect.sourceKind === 'echo' && !effect.alwaysEnabled
+      && Boolean(effect.trigger) && actionMatchesTrigger(member, action, effect.trigger!)) ?? []
     if (calculationAttack && member?.build && member.character && member.catalog && member.showcase) {
       calculationResultV2 = calculateBuildAttackV2({
         build: member.build,
@@ -537,13 +605,14 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
         partyEffects: activePartyEffectsV2,
         sourceStats: sourceStatsV2,
         activeCustomBuffs: activeBuffs,
+        effectActivationOverrides,
         roverGender: input.roverGender
       }, calculationAttack, calculationEnemy)
     }
     if (target && member?.build && member.character && ownedWeapon) {
       const calculator = new FormulaCalculator(createBuildCalculationContext({
         build: member.build, character: member.character, weapon: ownedWeapon,
-        echoes: member.build.echoIds.map((id) => input.echoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)),
+        echoes: member.build.echoIds.map((id) => runtimeEchoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)),
         enemy: input.team.enemy, scenario: input.team.scenario, buffs: activeBuffs, actionInputs: action.inputs, targetId: target.id
       }))
       const normal = calculator.evaluate(target.normal), critical = calculator.evaluate(target.critical), expected = calculator.evaluate(target.expected)
@@ -552,11 +621,15 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
       formulaResult = { normal: Number(normal.value), critical: Number(critical.value), expected: Number(expected.value), trace: traces[mode], traces }
     }
     const mode = input.team.calculationV2?.resultMode ?? input.team.scenario?.resultMode ?? 'expected'
+    const multiplier = Math.max(1, Math.min(99, Math.floor(action.multiplier ?? 1)))
+    const repeatedValue = (v2: number | undefined, formula: number | undefined, legacy: number | undefined) =>
+      v2 !== undefined ? v2 * multiplier : formula !== undefined ? formula * multiplier : legacy ?? 0
     return {
-      action, member, attack, normal: calculationResultV2?.normal ?? formulaResult?.normal ?? result?.normal ?? 0,
-      critical: calculationResultV2?.critical ?? formulaResult?.critical ?? result?.critical ?? 0,
-      expected: calculationResultV2?.expected ?? formulaResult?.expected ?? result?.expected ?? 0,
-      activeBuffs, activates, activePartyEffectsV2, warnings: [...warnings, ...(calculationResultV2?.warnings ?? [])],
+      action, member, attack, normal: repeatedValue(calculationResultV2?.normal, formulaResult?.normal, result?.normal),
+      critical: repeatedValue(calculationResultV2?.critical, formulaResult?.critical, result?.critical),
+      expected: repeatedValue(calculationResultV2?.expected, formulaResult?.expected, result?.expected),
+      activeBuffs, activates, activePartyEffectsV2, activeSelfEffectsV2, activatesSelfEffectsV2,
+      warnings: [...warnings, ...(calculationResultV2?.warnings ?? [])],
       trace: formulaResult?.trace, traces: formulaResult?.traces,
       traceV2: calculationResultV2?.trace[mode], tracesV2: calculationResultV2?.trace,
       formulaTargetId

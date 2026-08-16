@@ -58,43 +58,56 @@ function ScannedLoadoutCards({ details, onReview }: { details: BuildCardDetails;
   </>
 }
 
-function feedbackTone(kind: 'new' | 'duplicate' | 'error') {
+function createFeedbackAudio() {
   const AudioContextClass = window.AudioContext || (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext
-  if (!AudioContextClass) return
-  const context = new AudioContextClass(), oscillator = context.createOscillator(), gain = context.createGain()
-  oscillator.frequency.value = kind === 'new' ? 720 : kind === 'duplicate' ? 420 : 220
-  gain.gain.setValueAtTime(.045, context.currentTime); gain.gain.exponentialRampToValueAtTime(.001, context.currentTime + .13)
-  oscillator.connect(gain); gain.connect(context.destination); oscillator.start(); oscillator.stop(context.currentTime + .14)
-  oscillator.addEventListener('ended', () => void context.close())
+  return AudioContextClass ? new AudioContextClass() : undefined
 }
 
-export function ScannerView({ echoes, refresh, scanIntervalMs, onSessionRiskChange }: { echoes: Echo[]; refresh: () => Promise<void>; scanIntervalMs: number; onSessionRiskChange?: (atRisk: boolean) => void }) {
+function feedbackTone(context: AudioContext, kind: 'new' | 'duplicate' | 'error') {
+  if (context.state !== 'running') return
+  const oscillator = context.createOscillator(), gain = context.createGain()
+  oscillator.frequency.value = kind === 'new' ? 720 : kind === 'duplicate' ? 420 : 220
+  gain.gain.setValueAtTime(.085, context.currentTime); gain.gain.exponentialRampToValueAtTime(.001, context.currentTime + .18)
+  oscillator.connect(gain); gain.connect(context.destination); oscillator.start(); oscillator.stop(context.currentTime + .19)
+}
+
+export function ScannerView({ echoes, refresh, scanIntervalMs, onScanIntervalChange, onSessionRiskChange }: { echoes: Echo[]; refresh: () => Promise<void>; scanIntervalMs: number; onScanIntervalChange: (scanIntervalMs: number) => Promise<void>; onSessionRiskChange?: (atRisk: boolean) => void }) {
   const videoRef = useRef<HTMLVideoElement>(null), screenshotRef = useRef<HTMLInputElement>(null), videoFileRef = useRef<HTMLInputElement>(null)
   const streamRef = useRef<MediaStream | null>(null), controllerRef = useRef<ScanSessionController | null>(null), detector = useRef(new StableFrameDetector())
+  const feedbackAudioRef = useRef<AudioContext | null>(null), audioFeedbackRef = useRef(true)
   const imageScanningRef = useRef(false)
   const candidateTabsRef = useRef<HTMLDivElement>(null)
-  const layoutPickerRef = useRef<HTMLDetailsElement>(null), reviewRef = useRef<HTMLElement>(null)
+  const reviewRef = useRef<HTMLElement>(null)
   const videoSource = useRef(new LocalVideoSource()), candidatesRef = useRef<DiagnosticScanCandidate[]>([]), echoesRef = useRef(echoes)
   const [streaming, setStreaming] = useState(false), [videoScanning, setVideoScanning] = useState(false), [imageScanning, setImageScanning] = useState(false)
   const [candidates, setCandidates] = useState<DiagnosticScanCandidate[]>([]), [session, setSession] = useState<ScanSession>()
   const [progress, setProgress] = useState(0), [status, setStatus] = useState('Idle'), [error, setError] = useState('')
   const [calibrationNotice, setCalibrationNotice] = useState('')
-  const [workerPreference, setWorkerPreference] = useState<OcrWorkerPreference>('auto'), [debugVisible, setDebugVisible] = useState(false)
+  const [workerPreference, setWorkerPreference] = useState<OcrWorkerPreference>('auto'), [debugVisible, setDebugVisible] = useState(true)
   const [profile, setProfile] = useState<CalibrationProfile | undefined>(() => loadLatestCalibrationProfile()), [calibrationImage, setCalibrationImage] = useState(''), [calibrating, setCalibrating] = useState(false)
   const [selectedLayout, setSelectedLayout] = useState<CalibrationProfile['layout']>(() => loadLatestCalibrationProfile()?.layout ?? 'echo-detail')
-  const [audioFeedback, setAudioFeedback] = useState(false)
+  const [audioFeedback, setAudioFeedback] = useState(true)
   const [videoTrim, setVideoTrim] = useState<VideoTrim>({ start: 0, end: 0, fps: 2 }), [videoDuration, setVideoDuration] = useState(0)
   const [videoEta, setVideoEta] = useState('')
   const [reviewOpen, setReviewOpen] = useState(false), [activeReviewId, setActiveReviewId] = useState<string>()
-  const [layoutOpen, setLayoutOpen] = useState(false)
-  const closeLayoutPicker = useCallback(() => setLayoutOpen(false), [])
   const closeReview = useCallback(() => setReviewOpen(false), [])
-  useDismissableLayer(layoutOpen, layoutPickerRef, closeLayoutPicker)
   useDismissableLayer(reviewOpen, reviewRef, closeReview)
   useBodyScrollLock(reviewOpen)
 
   useEffect(() => { candidatesRef.current = candidates }, [candidates])
   useEffect(() => { echoesRef.current = echoes }, [echoes])
+  useEffect(() => {
+    if (!audioFeedback || feedbackAudioRef.current?.state === 'running') return
+    const unlockAudio = () => {
+      const context = feedbackAudioRef.current ?? createFeedbackAudio()
+      if (!context) return
+      feedbackAudioRef.current = context
+      void context.resume()
+    }
+    window.addEventListener('pointerdown', unlockAudio, { capture: true, once: true })
+    window.addEventListener('keydown', unlockAudio, { capture: true, once: true })
+    return () => { window.removeEventListener('pointerdown', unlockAudio, true); window.removeEventListener('keydown', unlockAudio, true) }
+  }, [audioFeedback])
   useEffect(() => {
     const strip = candidateTabsRef.current
     if (!reviewOpen || !strip) return
@@ -115,7 +128,19 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onSessionRiskChan
       candidatesRef.current = next
       return next
     })
-    if (audioFeedback) feedbackTone(candidate.duplicateOf ? 'duplicate' : candidateErrors(candidate).length ? 'error' : 'new')
+    if (audioFeedbackRef.current && feedbackAudioRef.current) feedbackTone(feedbackAudioRef.current, candidate.duplicateOf ? 'duplicate' : candidateErrors(candidate).length ? 'error' : 'new')
+  }
+  const toggleAudioFeedback = async (enabled: boolean) => {
+    setAudioFeedback(enabled)
+    audioFeedbackRef.current = enabled
+    if (!enabled) return
+    try {
+      const context = feedbackAudioRef.current ?? createFeedbackAudio()
+      if (!context) throw new Error('Audio feedback is not supported by this browser.')
+      feedbackAudioRef.current = context
+      await context.resume()
+      feedbackTone(context, 'new')
+    } catch (caught) { audioFeedbackRef.current = false; setAudioFeedback(false); setError(caught instanceof Error ? caught.message : 'Sound feedback could not start.') }
   }
   const createController = async (source: ScanSource) => {
     if (controllerRef.current) await controllerRef.current.cancel()
@@ -293,7 +318,7 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onSessionRiskChan
     catch (caught) { setError(caught instanceof Error ? caught.message : 'Field retry failed.') }
   }
 
-  useEffect(() => () => { if (streamRef.current) stopScreenSource(streamRef.current); videoSource.current.close(); void controllerRef.current?.cancel() }, [])
+  useEffect(() => () => { if (streamRef.current) stopScreenSource(streamRef.current); videoSource.current.close(); void controllerRef.current?.cancel(); void feedbackAudioRef.current?.close() }, [])
 
   const activeReview = candidates.find((candidate) => candidate.id === activeReviewId) ?? candidates[0]
   const selectLayout = (layout: CalibrationProfile['layout']) => {
@@ -312,8 +337,37 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onSessionRiskChan
   }
 
   return <div className="scanner-view" onClickCapture={(event) => { if ((event.target as Element).closest('button')) setError('') }}>
-    <PageHeader eyebrow="Capture lab / English only" title="Decode Echo details and build cards" description="In-game panels and official Discord build cards are recognized locally. Screenshots, OCR evidence, and diagnostics stay on this device." actions={<div className="scanner-header-actions">{streaming ? <button className="danger" onClick={stopScreen}>Stop sharing</button> : <button className="primary" onClick={() => void startScreen()}><Icon name="scan"/>Share Game Window</button>}<button className="secondary" disabled={imageScanning} onClick={() => screenshotRef.current?.click()}><Icon name="upload"/>{imageScanning ? 'Scanning images…' : 'Images / build cards'}</button><button className="secondary" onClick={() => videoFileRef.current?.click()}>Video</button><button className="secondary" onClick={() => void addManual()}><Icon name="plus"/>Add Echo manually</button><input ref={screenshotRef} hidden multiple type="file" accept="image/png,image/jpeg,image/webp" onChange={(event) => { const files = Array.from(event.target.files ?? []); event.target.value = ''; void acceptScreenshots(files) }}/><input ref={videoFileRef} hidden type="file" accept="video/*" onChange={(event) => { const file = event.target.files?.[0]; event.target.value = ''; void openVideo(file) }}/></div>}/>
-    <div className="scanner-controls"><label>OCR workers<select value={workerPreference} onChange={(event) => { const value = event.target.value === 'auto' ? 'auto' : Number(event.target.value) as 1 | 2 | 4; setWorkerPreference(value); controllerRef.current?.setWorkerPreference(value) }}><option value="auto">Auto</option><option value="1">1</option><option value="2">2</option><option value="4">4</option></select></label><label className="check"><input type="checkbox" checked={debugVisible} onChange={(event) => setDebugVisible(event.target.checked)}/>Debug boxes</label><label className="check"><input type="checkbox" checked={audioFeedback} onChange={(event) => setAudioFeedback(event.target.checked)}/>Local audio feedback</label><button className="primary scanner-calibration-button" onClick={toggleCalibration}><Icon name="scan"/>{calibrating ? 'Close Calibration' : 'Calibrate Scanner'}</button><div className="scanner-layout-control"><span>Layout</span><details className="scanner-layout-picker" ref={layoutPickerRef} open={layoutOpen} onToggle={(event) => setLayoutOpen(event.currentTarget.open)}><summary>{selectedLayout === 'echo-detail' ? 'Character Menu' : selectedLayout === 'echo-management' ? 'Backpack' : 'Discord build card'}<i>⌄</i></summary><div>{([['echo-detail', 'Character Menu'], ['echo-management', 'Backpack'], ['build-card', 'Discord build card']] as const).map(([layout, label]) => <button type="button" className={selectedLayout === layout ? 'active' : ''} key={layout} onClick={() => { selectLayout(layout); setLayoutOpen(false) }}>{label}</button>)}</div></details></div></div>
+    <PageHeader eyebrow="Echo scanner" title="Scan Echoes. Skip the typing." description="Choose what you see in-game, then start. Everything stays on this device."/>
+    <Panel className="scanner-launchpad">
+      <header className="scanner-launchpad-head"><span className="eyebrow">Start here</span><span className="scanner-private-pill">Private & local</span></header>
+      <div className="scanner-step">
+        <h2><b>1</b><span>Choose what you’re scanning</span></h2>
+        <div className="scanner-source-picker" role="group" aria-label="Scan source layout">
+          {([['echo-detail', 'Character menu', 'Equipped Echo details'], ['echo-management', 'Echo backpack', 'Inventory details'], ['build-card', 'Build card', 'Discord export image']] as const).map(([layout, label, hint]) => <button type="button" className={selectedLayout === layout ? 'active' : ''} aria-pressed={selectedLayout === layout} key={layout} onClick={() => selectLayout(layout)}><Icon name={layout === 'build-card' ? 'build' : 'echo'}/><span><strong>{label}</strong><small>{hint}</small></span><i>{selectedLayout === layout ? '✓' : ''}</i></button>)}
+        </div>
+      </div>
+      <div className="scanner-step">
+        <h2><b>2</b><span>Choose how to scan</span></h2>
+        <div className="scanner-start-actions">
+          {streaming ? <button className="danger scanner-live-action" onClick={stopScreen}><span className="scanner-action-icon"><Icon name="scan"/></span><span><strong>Stop live scan</strong><small>End window sharing</small></span></button> : <button className="primary scanner-live-action" onClick={() => void startScreen()}><span className="scanner-action-icon"><Icon name="scan"/></span><span><strong>Scan game window</strong><small>Best for multiple Echoes</small></span></button>}
+          <button className="secondary" disabled={imageScanning} onClick={() => screenshotRef.current?.click()}><Icon name="upload"/><span><strong>{imageScanning ? 'Scanning…' : 'Use images'}</strong><small>Screenshots or build cards</small></span></button>
+          <button className="secondary scanner-video-action" onClick={() => videoFileRef.current?.click()}><span><strong>Use a video</strong><small>Choose a local recording</small></span></button>
+          <button className="secondary" onClick={() => void addManual()}><Icon name="plus"/><span><strong>Enter manually</strong><small>No image needed</small></span></button>
+        </div>
+      </div>
+      <input ref={screenshotRef} hidden multiple type="file" accept="image/png,image/jpeg,image/webp" onChange={(event) => { const files = Array.from(event.target.files ?? []); event.target.value = ''; void acceptScreenshots(files) }}/>
+      <input ref={videoFileRef} hidden type="file" accept="video/*" onChange={(event) => { const file = event.target.files?.[0]; event.target.value = ''; void openVideo(file) }}/>
+      {(imageScanning || status !== 'Idle') && !streaming && <div className="scanner-inline-status"><span className={`live-dot ${imageScanning ? 'on' : ''}`}/><strong>{status}</strong>{imageScanning && <><div className="progress"><i style={{ width: `${progress * 100}%` }}/></div><b>{Math.round(progress * 100)}%</b></>}</div>}
+      {error && <div className="notice error scanner-capture-error">{error}</div>}
+      {calibrationNotice && <div className="notice warning scanner-calibration-notice">{calibrationNotice}</div>}
+      <div className="scanner-step scanner-final-step"><h2><b>3</b><span>Check and save</span></h2><small>Tip: paste an image directly with Ctrl+V</small></div>
+      <details className="scanner-advanced">
+        <summary><span><Icon name="settings"/>Advanced scanner settings</span><i aria-hidden="true"/></summary>
+        <div className="scanner-controls"><label>Scan speed<select value={scanIntervalMs} onChange={(event) => void onScanIntervalChange(Number(event.target.value))}>{![500, 900, 1500].includes(scanIntervalMs) && <option value={scanIntervalMs}>Custom</option>}<option value="1500">Careful</option><option value="900">Balanced</option><option value="500">Fast</option></select></label><label>OCR workers<select value={workerPreference} onChange={(event) => { const value = event.target.value === 'auto' ? 'auto' : Number(event.target.value) as 1 | 2 | 4; setWorkerPreference(value); controllerRef.current?.setWorkerPreference(value) }}><option value="auto">Auto</option><option value="1">1</option><option value="2">2</option><option value="4">4</option></select></label><label className="check"><input type="checkbox" checked={debugVisible} onChange={(event) => setDebugVisible(event.target.checked)}/>Show scan boxes</label><label className="check"><input type="checkbox" checked={audioFeedback} onChange={(event) => void toggleAudioFeedback(event.target.checked)}/>Sound feedback</label><button className="secondary scanner-calibration-button" onClick={toggleCalibration}><Icon name="scan"/>{calibrating ? 'Close calibration' : 'Calibrate'}</button></div>
+        <p className="scanner-setting-note">Scan speed changes how often the live window is checked. OCR workers split one scan’s text fields across CPU cores.</p>
+        <ScanSessionSummary session={session}/>
+      </details>
+    </Panel>
     {calibrating && profile && calibrationImage && <ScannerCalibration
       key={profile.layout}
       imageDataUrl={calibrationImage}
@@ -321,16 +375,12 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onSessionRiskChan
       onChange={(next) => { setProfile(next); setSelectedLayout(next.layout) }}
       onSaved={(saved) => { setProfile(saved); setSelectedLayout(saved.layout); setError(''); setCalibrationNotice(''); setCalibrating(false); setStatus('Calibration profile saved locally') }}
     />}
-    <div className="scanner-layout scanner-layout-wide">
-      {streaming ? <Panel className="capture-panel">{error && <div className="notice error scanner-capture-error">{error}</div>}{calibrationNotice && <div className="notice warning scanner-calibration-notice">{calibrationNotice}</div>}<div className="capture-head"><div><span className="live-dot on"/><strong>Live window share</strong></div><span>{status}</span></div><div className="video-stage active"><video ref={videoRef} muted playsInline autoPlay/>{profile && <div className="live-panel-overlay" style={{ left: `${profile.panelRect.x * 100}%`, top: `${profile.panelRect.y * 100}%`, width: `${profile.panelRect.width * 100}%`, height: `${profile.panelRect.height * 100}%` }}><ScannerDebugOverlay regions={profile.regions} visible={debugVisible}/></div>}</div><div className="capture-status"><div className="progress"><i style={{ width: `${progress * 100}%` }}/></div><span>{Math.round(progress * 100)}%</span><button className="text-button" onClick={() => void scanCurrentFrame()}>Scan current frame</button></div><div className="privacy-strip"><strong>Privacy boundary</strong><span>Frames → browser memory → local English OCR → mandatory review. No scan data is uploaded.</span></div></Panel>
-      : <Panel className="capture-panel capture-panel-compact">{error && <div className="notice error scanner-capture-error">{error}</div>}{calibrationNotice && <div className="notice warning scanner-calibration-notice">{calibrationNotice}</div>}<div className="capture-head"><div><span className={`live-dot ${imageScanning ? 'on' : ''}`}/><strong>{imageScanning ? 'Scanning imported images' : candidates.length ? `${candidates.length} scanned ${candidates.length === 1 ? 'Echo' : 'Echoes'} ready` : 'Import ready'}</strong></div><span>{status}</span></div>{imageScanning && <div className="capture-status"><div className="progress"><i style={{ width: `${progress * 100}%` }}/></div><span>{Math.round(progress * 100)}%</span></div>}<p>Paste an image with Ctrl+V or use “Images / build cards” above. The live preview opens only while sharing a window.</p></Panel>}
-    </div>
+    {streaming && <div className="scanner-layout scanner-layout-wide"><Panel className="capture-panel"><div className="capture-head"><div><span className="live-dot on"/><strong>Scanning live</strong></div><span>{status}</span></div><div className="video-stage active"><video ref={videoRef} muted playsInline autoPlay/>{profile && <div className="live-panel-overlay" style={{ left: `${profile.panelRect.x * 100}%`, top: `${profile.panelRect.y * 100}%`, width: `${profile.panelRect.width * 100}%`, height: `${profile.panelRect.height * 100}%` }}><ScannerDebugOverlay regions={profile.regions} visible={debugVisible}/></div>}</div><div className="capture-status"><div className="progress"><i style={{ width: `${progress * 100}%` }}/></div><span>{Math.round(progress * 100)}%</span><button className="text-button" onClick={() => void scanCurrentFrame()}>Scan now</button></div><div className="privacy-strip"><strong>Local only</strong><span>No frames leave this device.</span></div></Panel></div>}
     {videoDuration > 0 && <Panel className="video-scan-controls"><header><div><span className="eyebrow">Local video scan</span><h3>Trim and sample</h3></div><span>{videoEta}</span></header><div className="video-trim"><label>Start {videoTrim.start.toFixed(1)}s<input type="range" min="0" max={videoDuration} step=".1" value={videoTrim.start} onChange={(event) => setVideoTrim((value) => ({ ...value, start: Math.min(Number(event.target.value), value.end) }))}/></label><label>End {videoTrim.end.toFixed(1)}s<input type="range" min="0" max={videoDuration} step=".1" value={videoTrim.end} onChange={(event) => setVideoTrim((value) => ({ ...value, end: Math.max(Number(event.target.value), value.start) }))}/></label><label>Sampling<select value={videoTrim.fps} onChange={(event) => setVideoTrim((value) => ({ ...value, fps: Number(event.target.value) as VideoTrim['fps'] }))}>{[1, 2, 5, 10].map((fps) => <option value={fps} key={fps}>{fps} fps</option>)}</select></label>{videoScanning ? <button className="danger" onClick={cancelVideo}>Cancel immediately</button> : <button className="primary" onClick={() => void scanVideo()}>Scan video</button>}</div></Panel>}
-    <ScanSessionSummary session={session}/>
-    <section className="scanned-echoes">
-      <div className="section-heading scanned-echoes-heading"><div><span className="eyebrow">Human checkpoint</span><h2>Scanned Echoes <b>{candidates.length}</b></h2></div><div className="scanned-echo-actions"><button className="secondary" disabled={!candidates.length} onClick={() => { setReviewOpen(true); setActiveReviewId(candidates[0]?.id) }}>Review queue</button><button className="primary" disabled={!approvableCandidates.length} onClick={() => void approveAll()}>Approve all</button><button className="secondary" disabled={!approvableDuplicates.length} onClick={() => void approveAllDuplicates()}>Approve all Duplicates</button><button className="danger" disabled={!candidates.length} onClick={discardAll}>Discard all</button></div></div>
-      {candidates.length ? <div className="scanned-echo-grid">{scannedBuildCards.map(({ candidate, details }) => <ScannedLoadoutCards key={details.id} details={details} onReview={() => { setActiveReviewId(candidate.id); setReviewOpen(true) }}/>)}{candidates.map((candidate) => { const duplicateBadge = candidate.duplicateOf ? <span className="scan-duplicate-badge">Duplicate</span> : null; if (candidateErrors(candidate).length > 0) return <button className={`scan-error-card${candidate.duplicateOf ? ' duplicate' : ''}`} key={candidate.id} onClick={() => { setActiveReviewId(candidate.id); setReviewOpen(true) }}>{duplicateBadge}<span>Needs review</span><strong>{candidate.fields.name.value || 'Unknown Echo'}</strong><small>{candidateErrors(candidate).join(' ')}</small></button>; const echo = candidateToEcho(candidate); return <div className={`scanned-echo-card${candidate.duplicateOf ? ' duplicate' : ''}`} key={candidate.id}>{duplicateBadge}<EchoMiniCard echo={echo} rollRating={echoRollRating(echo)} equipment={<EquippedCharacterLabel name={candidate.fields.equippedBy.value}/>} onClick={() => { setActiveReviewId(candidate.id); setReviewOpen(true) }}/></div> })}</div> : <Panel className="empty-state compact"><h3>No scanned Echoes yet</h3><p>Successful scans will appear here as cards ready for review.</p></Panel>}
-    </section>
-    {reviewOpen && <div className="modal-backdrop scan-review-backdrop" role="dialog" aria-modal="true" aria-label="Human review"><section className="panel scan-review-popout" ref={reviewRef}><header><div><span className="eyebrow">Human review</span><h2>Review scanned Echoes <b>{candidates.length}</b></h2></div><button className="close" aria-label="Close human review" onClick={closeReview}>×</button></header>{candidates.length > 1 && <div className="review-candidate-tabs" ref={candidateTabsRef}>{candidates.map((candidate, index) => <button className={candidate.id === activeReview?.id ? 'active' : ''} onClick={() => setActiveReviewId(candidate.id)} key={candidate.id}>{index + 1}. {candidate.fields.name.value}</button>)}</div>}<div className="scan-review-scroll">{activeReview ? <ScanReviewCard candidate={activeReview} onChange={updateCandidate} onDiscard={() => { discard(activeReview); setActiveReviewId(undefined) }} onSave={() => { void save(activeReview); setActiveReviewId(undefined) }} onRerunField={(regionId) => void rerunField(activeReview, regionId)} onCopyDiagnostic={(includeImages) => void copyDiagnosticReport(activeReview, includeImages)}/> : <div className="empty-state compact"><h3>No scans to review</h3><p>Close the review window and scan another Echo.</p></div>}</div></section></div>}
+    {candidates.length > 0 && <section className="scanned-echoes">
+      <div className="section-heading scanned-echoes-heading"><div><span className="eyebrow">Ready to save</span><h2>Your scans <b>{candidates.length}</b></h2></div><div className="scanned-echo-actions"><button className="secondary" onClick={() => { setReviewOpen(true); setActiveReviewId(candidates[0]?.id) }}>Check scans</button><button className="primary" disabled={!approvableCandidates.length} onClick={() => void approveAll()}>Save all</button><button className="secondary" disabled={!approvableDuplicates.length} onClick={() => void approveAllDuplicates()}>Save duplicates</button><button className="danger" onClick={discardAll}>Discard all</button></div></div>
+      <div className="scanned-echo-grid">{scannedBuildCards.map(({ candidate, details }) => <ScannedLoadoutCards key={details.id} details={details} onReview={() => { setActiveReviewId(candidate.id); setReviewOpen(true) }}/>)}{candidates.map((candidate) => { const duplicateBadge = candidate.duplicateOf ? <span className="scan-duplicate-badge">Duplicate</span> : null; if (candidateErrors(candidate).length > 0) return <button className={`scan-error-card${candidate.duplicateOf ? ' duplicate' : ''}`} key={candidate.id} onClick={() => { setActiveReviewId(candidate.id); setReviewOpen(true) }}>{duplicateBadge}<span>Needs a check</span><strong>{candidate.fields.name.value || 'Unknown Echo'}</strong><small>{candidateErrors(candidate).join(' ')}</small></button>; const echo = candidateToEcho(candidate); return <div className={`scanned-echo-card${candidate.duplicateOf ? ' duplicate' : ''}`} key={candidate.id}>{duplicateBadge}<EchoMiniCard echo={echo} rollRating={echoRollRating(echo)} equipment={<EquippedCharacterLabel name={candidate.fields.equippedBy.value}/>} onClick={() => { setActiveReviewId(candidate.id); setReviewOpen(true) }}/></div> })}</div>
+    </section>}
+    {reviewOpen && <div className="modal-backdrop scan-review-backdrop" role="dialog" aria-modal="true" aria-label="Review scans"><section className="panel scan-review-popout" ref={reviewRef}><header><div><span className="eyebrow">Check before saving</span><h2>Review your scans <b>{candidates.length}</b></h2></div><button className="close" aria-label="Close review" onClick={closeReview}>×</button></header>{candidates.length > 1 && <div className="review-candidate-tabs" ref={candidateTabsRef}>{candidates.map((candidate, index) => <button className={candidate.id === activeReview?.id ? 'active' : ''} onClick={() => setActiveReviewId(candidate.id)} key={candidate.id}>{index + 1}. {candidate.fields.name.value}</button>)}</div>}<div className="scan-review-scroll">{activeReview ? <ScanReviewCard candidate={activeReview} onChange={updateCandidate} onDiscard={() => { discard(activeReview); setActiveReviewId(undefined) }} onSave={() => { void save(activeReview); setActiveReviewId(undefined) }} onRerunField={(regionId) => void rerunField(activeReview, regionId)} onCopyDiagnostic={(includeImages) => void copyDiagnosticReport(activeReview, includeImages)}/> : <div className="empty-state compact"><h3>All done</h3><p>Close this window to scan more Echoes.</p></div>}</div></section></div>}
   </div>
 }

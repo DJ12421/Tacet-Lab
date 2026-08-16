@@ -1,0 +1,51 @@
+@media (max-width: 650px) {
+  .catalog-picker-backdrop {
+    padding: 2vh 10px;
+  }
+  .catalog-picker {
+    max-height: 96vh;
+    padding: 13px;
+  }
+  .catalog-picker-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .catalog-choice {
+    grid-template-columns: 68px minmax(0,1fr);
+    min-height: 82px;
+  }
+  .catalog-choice img {
+    width: 68px;
+  }
+  .owned-add {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .echo-state-review {
+    grid-template-columns: 1fr 1fr;
+  }
+  .echo-state-review>span {
+    grid-column: 1/-1;
+  }
+  .sidebar nav {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .archive-toolbar {
+    flex-wrap: wrap;
+  }
+  .archive-toolbar .search {
+    flex-basis: 100%;
+  }
+  .archive-toolbar select {
+    flex: 1;
+    min-width: 130px;
+  }
+  .catalog-grid,.catalog-grid.weapons,.catalog-grid.echoes {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+  }
+  .catalog-art,.character .catalog-art {
+    height: 155px;
+  }
+  .catalog-grid.sonatas {
+    grid-template-columns: 1fr;
+  }
+}

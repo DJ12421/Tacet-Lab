@@ -1,0 +1,206 @@
+/* Archive uses framed catalog icons, not cinematic showcase art. */
+
+.archive-view .catalog-art img {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  object-fit: contain;
+  object-position: center;
+  transform: none;
+}
+
+.archive-view .weapon .catalog-art {
+  height: auto;
+  aspect-ratio: 1/1;
+}
+
+.archive-view .weapon .catalog-art img {
+  padding: 0;
+  transform: none;
+}
+
+.archive-view .weapon:hover .catalog-art img {
+  transform: scale(1.03);
+}
+
+.archive-view .echo-catalog .catalog-art {
+  height: auto;
+  aspect-ratio: 1/1;
+}
+
+.archive-view .echo-catalog .catalog-art img {
+  padding: 0;
+}
+
+.archive-view .sonata {
+  height: 294px;
+  min-height: 294px;
+  grid-template-rows: auto minmax(0,1fr) auto;
+}
+
+.archive-view .sonata:has(.sonata-effects[open]) {
+  height: auto;
+  min-height: 294px;
+}
+
+.archive-view .sonata-effect-preview {
+  min-height: 0;
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 12px 5px 0 0;
+  overflow: hidden;
+  mask-image: linear-gradient(#000 82%,transparent);
+  -webkit-mask-image: linear-gradient(#000 82%,transparent);
+}
+
+.archive-view .sonata-effect-preview>div {
+  display: grid;
+  grid-template-columns: 52px minmax(0,1fr);
+  gap: 8px;
+}
+
+.archive-view .sonata-effect-preview b {
+  color: var(--gold);
+  font-size: var(--font-size-caption);
+}
+
+.archive-view .sonata-effect-preview p {
+  margin: 0;
+  color: #aab5b2;
+  font-size: var(--font-size-small);
+  line-height: 1.45;
+}
+
+.archive-view .sonata:has(.sonata-effects[open])>.sonata-effect-preview {
+  display: none;
+}
+
+.archive-view .sonata-effects {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding-top: 0;
+}
+
+.archive-view .sonata-effects summary {
+  order: 2;
+  flex: none;
+  width: 28px;
+  height: 24px;
+  margin: 4px auto 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  display: grid;
+  grid-template-columns: 1fr;
+  place-items: center;
+  gap: 0;
+}
+
+.archive-view .sonata-effect-list {
+  order: 1;
+  min-height: 0;
+}
+
+@media (min-width:901px) {
+  .archive-view .catalog-grid.weapons,.archive-view .catalog-grid.sonatas,.archive-view .catalog-grid.echoes {
+    grid-template-columns: repeat(8,minmax(0,1fr));
+  }
+  .archive-view :is(.sonata-effect-preview,.sonata-effect-list)>div {
+    grid-template-columns: 1fr;
+    gap: 3px;
+  }
+}
+
+@media (max-width:650px) {
+  .archive-view .catalog-grid,.archive-view .catalog-grid.weapons,.archive-view .catalog-grid.echoes {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 8px;
+  }
+  .archive-view .catalog-grid.sonatas {
+    grid-template-columns: 1fr;
+  }
+  .archive-view .catalog-card {
+    border-radius: 7px;
+  }
+  .archive-view .catalog-art,.archive-view .character .catalog-art {
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 1/1;
+  }
+  .archive-view .catalog-art::after {
+    height: 28%;
+  }
+  .archive-view .catalog-art img {
+    width: 100%;
+    height: 100%;
+  }
+  .archive-view .catalog-copy {
+    min-width: 0;
+    padding: 8px 8px 9px;
+  }
+  .archive-view .catalog-copy h2 {
+    font-size: var(--font-size-caption);
+  }
+  .archive-view .catalog-copy p {
+    min-height: 10px;
+    margin: 4px 0 7px;
+    font-size: var(--font-size-caption);
+  }
+  .archive-view .catalog-copy footer {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) auto;
+    gap: 3px 5px;
+    font-size: var(--font-size-caption);
+  }
+  .archive-view .catalog-copy footer span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .archive-view .catalog-copy footer span:nth-child(2) {
+    text-align: right;
+  }
+  .archive-view .catalog-copy footer b {
+    grid-column: 1/-1;
+    margin: 1px 0 0;
+    font-size: var(--font-size-caption);
+    text-align: right;
+  }
+  .archive-view .element-icon {
+    width: 22px;
+    height: 22px;
+  }
+  .archive-view .element-icon img {
+    width: 20px;
+    height: 20px;
+  }
+  .archive-view .cost {
+    left: 6px;
+    top: 6px;
+    width: 25px;
+    min-width: 25px;
+    height: 25px;
+    font-size: var(--font-size-caption);
+  }
+}
+
+@media (max-width:360px) {
+  .archive-view .catalog-grid,.archive-view .catalog-grid.weapons,.archive-view .catalog-grid.echoes {
+    gap: 6px;
+  }
+  .archive-view .catalog-copy {
+    padding: 7px;
+  }
+  .archive-view .catalog-copy h2 {
+    font-size: var(--font-size-caption);
+  }
+  .archive-view .catalog-copy footer {
+    font-size: var(--font-size-caption);
+  }
+  .archive-view .catalog-copy footer b {
+    font-size: var(--font-size-caption);
+  }
+}

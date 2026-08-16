@@ -4,5 +4,7 @@ import App from './ui/App'
 import './ui/styles.css'
 import './ui/step3.css'
 import './ui/site-motion.css'
+import './ui/archive.css'
+import './ui/weapons-view.css'
 
 createRoot(document.getElementById('root')!).render(<StrictMode><App/></StrictMode>)

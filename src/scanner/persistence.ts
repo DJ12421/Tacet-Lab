@@ -16,7 +16,7 @@ export async function saveScannedCandidate(candidate: DiagnosticScanCandidate) {
     ?? weaponCatalog.find((entry) => normalizedIdentity(entry.name) === normalizedIdentity(candidate.buildCard?.weapon.value ?? ''))
 
   const initializeBuildCard = Boolean(candidate.buildCard && !initializedBuildCards.has(candidate.buildCard.id))
-  const saved = await db.transaction('rw', [db.echoes, db.characters, db.weapons, db.builds], async () => {
+  const saved = await db.transaction('rw', [db.echoes, db.characters, db.weapons, db.equippedLoadouts], async () => {
     let ownedCharacter = characterEntry ? await db.characters.where('catalogId').equals(characterEntry.id).first() : undefined
     if (characterEntry && !ownedCharacter) {
       ownedCharacter = {
@@ -40,36 +40,38 @@ export async function saveScannedCandidate(candidate: DiagnosticScanCandidate) {
       : undefined
     if (weaponEntry && !ownedWeapon) {
       ownedWeapon = { id: createLocalId(), catalogId: weaponEntry.id, level: candidate.buildCard?.weaponLevel.value ?? 1, rank: 1, locked: false, equippedBy: ownedCharacter?.id, createdAt: Date.now() }
+      if (ownedCharacter) await db.weapons.where('equippedBy').equals(ownedCharacter.id).modify({ equippedBy: undefined })
       await db.weapons.add(ownedWeapon)
     } else if (ownedWeapon && ownedCharacter && candidate.buildCard) {
+      await db.weapons.where('equippedBy').equals(ownedCharacter.id).modify({ equippedBy: undefined })
       await db.weapons.update(ownedWeapon.id, { level: candidate.buildCard.weaponLevel.value, equippedBy: ownedCharacter.id })
     }
 
-    let build = characterEntry ? await db.builds.where('resonatorId').equals(characterEntry.id).first() : undefined
-    if (characterEntry && ownedCharacter && !build) {
-      build = {
-        id: createLocalId(), name: `${characterEntry.name} build`, resonatorId: characterEntry.id,
-        weaponId: ownedWeapon?.id ?? '', echoIds: [], level: ownedCharacter.level,
-        skillLevel: candidate.buildCard?.skillLevels[1]?.value ?? 1
+    let loadout = ownedCharacter ? await db.equippedLoadouts.where('characterId').equals(ownedCharacter.id).first() : undefined
+    if (ownedCharacter && !loadout) {
+      loadout = { id: `equipped:${ownedCharacter.id}`, characterId: ownedCharacter.id, weaponId: ownedWeapon?.id ?? '', echoIds: [], updatedAt: Date.now() }
+      await db.equippedLoadouts.add(loadout)
+    } else if (loadout && ownedWeapon) {
+      if (ownedWeapon.equippedBy && ownedWeapon.equippedBy !== ownedCharacter?.id) {
+        const previous = await db.equippedLoadouts.where('characterId').equals(ownedWeapon.equippedBy).first()
+        if (previous?.weaponId === ownedWeapon.id) await db.equippedLoadouts.update(previous.id, { weaponId: '', updatedAt: Date.now() })
       }
-      await db.builds.add(build)
-    } else if (build && candidate.buildCard) {
-      const patch = { weaponId: ownedWeapon?.id ?? build.weaponId, level: candidate.buildCard.characterLevel.value, skillLevel: candidate.buildCard.skillLevels[1]?.value ?? build.skillLevel }
-      await db.builds.update(build.id, patch)
-      build = { ...build, ...patch }
+      await db.equippedLoadouts.update(loadout.id, { weaponId: ownedWeapon.id, updatedAt: Date.now() })
+      loadout = { ...loadout, weaponId: ownedWeapon.id }
     }
-    if (build && initializeBuildCard) {
-      await db.echoes.where('equippedBy').equals(build.id).modify({ equippedBy: undefined, equippedByName: undefined })
-      await db.builds.update(build.id, { echoIds: [] })
-      build = { ...build, echoIds: [] }
+    if (loadout && ownedCharacter && initializeBuildCard) {
+      await db.echoes.where('equippedBy').equals(ownedCharacter.id).modify({ equippedBy: undefined, equippedByName: undefined })
+      await db.equippedLoadouts.update(loadout.id, { echoIds: [], updatedAt: Date.now() })
+      loadout = { ...loadout, echoIds: [] }
     }
 
     const echo = candidateToEcho(candidate)
-    const assignedToBuild = Boolean(build && build.echoIds.length < 5)
-    echo.equippedByName = assignedToBuild || !build ? characterEntry?.name ?? (characterName || undefined) : undefined
-    if (assignedToBuild && build) echo.equippedBy = build.id
+    const equippedEchoes = loadout?.echoIds.length ? await db.echoes.where('id').anyOf(loadout.echoIds).toArray() : []
+    const assignedToBuild = Boolean(loadout && ownedCharacter && loadout.echoIds.length < 5 && equippedEchoes.reduce((sum, entry) => sum + entry.cost, 0) + echo.cost <= 12)
+    echo.equippedByName = assignedToBuild || !loadout ? characterEntry?.name ?? (characterName || undefined) : undefined
+    if (assignedToBuild && ownedCharacter) echo.equippedBy = ownedCharacter.id
     await db.echoes.add(echo)
-    if (build && echo.equippedBy === build.id) await db.builds.update(build.id, { echoIds: [...build.echoIds, echo.id] })
+    if (loadout && echo.equippedBy === ownedCharacter?.id) await db.equippedLoadouts.update(loadout.id, { echoIds: [...loadout.echoIds, echo.id], updatedAt: Date.now() })
     return echo
   })
   if (candidate.buildCard) initializedBuildCards.add(candidate.buildCard.id)

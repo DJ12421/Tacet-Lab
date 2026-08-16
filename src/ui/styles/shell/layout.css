@@ -1,0 +1,336 @@
+.app-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 238px minmax(0, 1fr);
+  background: radial-gradient(circle at 75% -20%, rgba(141, 228, 212, .08), transparent 32%), linear-gradient(135deg, #07090b, #0b1011 55%, #07090a);
+}
+
+.app-shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .16;
+  background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+  background-size: 38px 38px;
+  mask-image: linear-gradient(to right, transparent 5%, black 50%, transparent 100%);
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--line);
+  background: rgba(7, 10, 11, .93);
+  backdrop-filter: blur(20px);
+  padding: 20px 14px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  border: 0;
+  background: none;
+  padding: 6px 8px 28px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.brand strong {
+  display: block;
+  letter-spacing: .18em;
+  font-size: var(--font-size-small);
+}
+
+.brand span {
+  color: var(--muted);
+  letter-spacing: .14em;
+  font-size: var(--font-size-caption);
+}
+
+.brand-mark {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  display: grid;
+  grid-template-columns: repeat(3, 1px);
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  box-shadow: inset 0 0 16px rgba(228,187,94,.12);
+}
+
+.brand-mark i {
+  width: 1px;
+  height: 14px;
+  background: var(--gold);
+  display: block;
+}
+
+.brand-mark i:nth-child(2) {
+  height: 24px;
+}
+
+.brand-mark i:nth-child(3) {
+  height: 9px;
+}
+
+.sidebar nav {
+  display: grid;
+  gap: 5px;
+}
+
+.sidebar nav button, .side-bottom>button {
+  border: 1px solid transparent;
+  background: transparent;
+  color: #87918f;
+  padding: 12px 13px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.sidebar nav button:hover, .side-bottom>button:hover {
+  color: white;
+  background: rgba(255,255,255,.035);
+}
+
+.sidebar nav button.active, .side-bottom>button.active {
+  color: #fff2c8;
+  border-color: rgba(228,187,94,.24);
+  background: linear-gradient(90deg, rgba(228,187,94,.13), transparent);
+  box-shadow: inset 2px 0 var(--gold);
+}
+
+.sidebar nav button b {
+  margin-left: auto;
+  font-size: var(--font-size-caption);
+  letter-spacing: .12em;
+  background: rgba(141,228,212,.12);
+  color: var(--mint);
+  padding: 3px 5px;
+}
+
+.side-bottom {
+  margin-top: auto;
+  display: grid;
+  gap: 12px;
+  border-top: 1px solid var(--line);
+  padding-top: 17px;
+}
+
+.local-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+}
+
+.local-status>i, .pulse, .live-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--mint);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--mint);
+}
+
+.local-status strong, .local-status span {
+  display: block;
+  font-size: var(--font-size-caption);
+}
+
+.local-status span {
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+main {
+  min-width: 0;
+  position: relative;
+}
+
+.topbar {
+  height: 60px;
+  padding: 0 34px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: var(--font-size-caption);
+  letter-spacing: .13em;
+}
+
+.topbar>div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.topbar button {
+  border: 0;
+  background: none;
+  color: #8c9794;
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  cursor: pointer;
+  font-size: var(--font-size-caption);
+  letter-spacing: .08em;
+}
+
+.topbar .discord-button {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(228,187,94,.5);
+  border-radius: 50%;
+  color: var(--gold);
+  background: rgba(228,187,94,.035);
+  text-decoration: none;
+}
+
+.topbar .discord-button:hover {
+  border-color: var(--gold);
+  background: rgba(228,187,94,.12);
+  box-shadow: 0 0 20px rgba(228,187,94,.12);
+}
+
+.topbar .discord-button .icon {
+  width: 19px;
+  height: 19px;
+}
+
+.topbar .settings-button {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid rgba(228,187,94,.5);
+  color: var(--gold);
+  border-radius: 50%;
+  justify-content: center;
+  margin-left: 8px;
+}
+
+.topbar .settings-button:hover {
+  border-color: var(--gold);
+  background: rgba(228,187,94,.1);
+}
+
+.pulse {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-right: 7px;
+}
+
+.content {
+  max-width: 1540px;
+  margin: 0 auto;
+  padding: 44px clamp(24px, 4vw, 64px) 70px;
+  min-height: calc(100vh - 100px);
+}
+
+.content.teams-content {
+  width: 100%;
+  max-width: none;
+  padding-right: 12px;
+  padding-left: 12px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  align-items: flex-end;
+  margin-bottom: 31px;
+}
+
+.eyebrow {
+  color: var(--gold);
+  font-size: var(--font-size-caption);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+
+h1, h2, h3, p {
+  margin-top: 0;
+}
+
+h1 {
+  font-size: clamp(var(--font-size-display-small), 4.3vw, var(--font-size-display-large));
+  font-weight: 500;
+  line-height: .98;
+  letter-spacing: -.045em;
+  margin: 8px 0 13px;
+}
+
+.page-header p {
+  color: #8d9996;
+  max-width: 660px;
+  line-height: 1.55;
+  margin-bottom: 0;
+}
+
+.header-actions {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+button.primary, button.secondary, button.danger {
+  min-height: 42px;
+  border-radius: 3px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+button.primary {
+  color: #16140d;
+  border: 1px solid #f0cd78;
+  background: linear-gradient(135deg, #f0ce7c, #ba8e39);
+  font-weight: 650;
+}
+
+button.primary:hover {
+  filter: brightness(1.08);
+  box-shadow: 0 0 25px rgba(228,187,94,.18);
+}
+
+button.secondary {
+  border: 1px solid rgba(228,187,94,.3);
+  background: rgba(228,187,94,.06);
+  color: #f2dfaa;
+}
+
+button.secondary:hover {
+  background: rgba(228,187,94,.12);
+}
+
+button.danger {
+  border: 1px solid rgba(239,118,110,.45);
+  background: rgba(239,118,110,.09);
+  color: #ffaaa4;
+}
+
+button.text-button {
+  border: 0;
+  background: none;
+  color: var(--gold);
+  cursor: pointer;
+  padding: 5px;
+}

@@ -1,0 +1,259 @@
+/* Equipped, saved, and theorycraft loadout library. */
+
+.loadout-library {
+  display: grid;
+  grid-template-columns: 270px minmax(0,1fr);
+  gap: 14px;
+}
+
+.loadout-library>aside {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+}
+
+.loadout-library>aside section {
+  display: grid;
+  gap: 5px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+
+.loadout-library>aside h2 {
+  margin: 0 0 4px;
+  color: var(--muted);
+  font-size: var(--font-size-caption);
+  text-transform: uppercase;
+}
+
+.loadout-library>aside button {
+  display: grid;
+  gap: 2px;
+  padding: 10px;
+  text-align: left;
+}
+
+.loadout-library>aside button.active {
+  border-color: var(--gold);
+  background: rgba(228,187,94,.1);
+}
+
+.loadout-library>aside small {
+  color: var(--muted);
+}
+
+.loadout-detail {
+  display: grid;
+  gap: 16px;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.loadout-summary {
+  display: grid;
+  gap: 12px;
+}
+
+.loadout-summary-character {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.loadout-summary-character img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.loadout-summary-character span {
+  display: grid;
+}
+
+.loadout-summary-character small {
+  color: var(--muted);
+}
+
+.loadout-summary-facts,.loadout-final-stats {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 7px;
+}
+
+.loadout-summary-facts span,.loadout-final-stats span {
+  display: grid;
+  padding: 11px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.025);
+}
+
+.loadout-summary-facts b,.loadout-final-stats b {
+  color: var(--gold);
+}
+
+.loadout-final-stats {
+  grid-template-columns: repeat(6,minmax(0,1fr));
+}
+
+.loadout-final-stats small {
+  color: var(--muted);
+}
+
+.loadout-compare {
+  display: grid;
+  grid-template-columns: auto minmax(180px,320px);
+  align-items: center;
+  gap: 10px;
+}
+
+.loadout-comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.loadout-comparison article {
+  padding: 12px;
+  border: 1px solid var(--line);
+}
+
+.theorycraft-editor {
+  width: min(1180px,96vw);
+  max-height: 94vh;
+  overflow: auto;
+}
+
+.theorycraft-editor>header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.theorycraft-grid {
+  display: grid;
+  grid-template-columns: 2fr 3fr 2fr 1fr 1fr 2fr;
+  gap: 8px;
+}
+
+.theorycraft-grid label,.theorycraft-slots label,.theorycraft-substats label {
+  display: grid;
+  gap: 4px;
+}
+
+.theorycraft-grid textarea {
+  min-height: 42px;
+}
+
+.theorycraft-slots {
+  display: grid;
+  grid-template-columns: repeat(5,minmax(0,1fr));
+  gap: 7px;
+}
+
+.theorycraft-slots article {
+  display: grid;
+  gap: 7px;
+  padding: 9px;
+  border: 1px solid var(--line);
+}
+
+.theorycraft-sonatas {
+  display: grid;
+  gap: 6px;
+}
+
+.theorycraft-sonatas>div {
+  display: grid;
+  grid-template-columns: minmax(180px,1fr) 80px auto;
+  gap: 7px;
+}
+
+.theorycraft-substats {
+  display: grid;
+  grid-template-columns: repeat(4,minmax(0,1fr));
+  gap: 7px;
+}
+
+.cs-loadout-source {
+  display: grid;
+  gap: 2px;
+  color: var(--muted);
+  font-size: var(--font-size-caption);
+}
+
+.cs-loadout-source select {
+  min-width: 190px;
+}
+
+.optimizer-result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 6px;
+}
+
+.optimizer-result-actions button {
+  white-space: nowrap;
+}
+
+@media (max-width:900px) {
+  .loadout-library {
+    grid-template-columns: 1fr;
+  }
+  .loadout-library>aside {
+    grid-template-columns: repeat(3,1fr);
+  }
+  .loadout-final-stats {
+    grid-template-columns: repeat(3,1fr);
+  }
+  .theorycraft-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .theorycraft-slots {
+    display: flex;
+    overflow-x: auto;
+  }
+  .theorycraft-slots article {
+    min-width: 190px;
+  }
+  .theorycraft-substats {
+    grid-template-columns: 1fr 1fr;
+  }
+  .cs-toolbar {
+    flex-wrap: wrap;
+  }
+  .cs-loadout-source {
+    order: 3;
+    width: 100%;
+  }
+  .cs-loadout-source select {
+    width: 100%;
+  }
+}
+
+@media (max-width:600px) {
+  .loadout-library>aside {
+    grid-template-columns: 1fr;
+  }
+  .loadout-comparison {
+    grid-template-columns: 1fr;
+  }
+  .theorycraft-grid,.theorycraft-substats {
+    grid-template-columns: 1fr;
+  }
+  .loadout-summary-facts,.loadout-final-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.loadout-library-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}

@@ -4,7 +4,7 @@ import { characterCatalog, echoCatalog, weaponCatalog, type CharacterCatalogEntr
 import { createLocalId } from '../domain/id'
 import { generatedSonataIconSources } from '../game-data/sonatas.generated'
 import { db } from '../storage/database'
-import type { AppSettings, Build, Echo, OwnedCharacter, OwnedWeapon, Team } from '../domain/types'
+import type { AppSettings, Build, Echo, EquippedLoadout, OwnedCharacter, OwnedWeapon, Team, TheorycraftBuild } from '../domain/types'
 import { ElementFilterIcon, FilterChips, Icon, Panel } from './components'
 import { CharacterShowcase } from './CharacterShowcase'
 
@@ -26,8 +26,8 @@ function Stars({ rarity }: { rarity: number }) {
   return <span className={rarity === 4 ? 'rarity-stars four-star' : 'rarity-stars'}>{'★'.repeat(rarity)}</span>
 }
 
-function Picker({ title, query, setQuery, filters, children, onClose }: { title: string; query: string; setQuery: (value: string) => void; filters?: ReactNode; children: ReactNode; onClose: () => void }) {
-  return createPortal(<div className="catalog-picker-backdrop character-catalog-picker-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}><section className="catalog-picker" role="dialog" aria-modal="true" aria-label={title}><header><div><span className="eyebrow">Local inventory</span><h2>{title}</h2></div><button type="button" className="text-button" onClick={onClose}>Close</button></header><div className="catalog-picker-tools"><label className="search"><span>⌕</span><input autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`Search ${title.toLowerCase()}...`}/></label>{filters}</div><div className="catalog-picker-grid">{children}</div></section></div>, document.body)
+export function Picker({ title, query, setQuery, filters, children, onClose }: { title: string; query: string; setQuery: (value: string) => void; filters?: ReactNode; children: ReactNode; onClose: () => void }) {
+  return createPortal(<div className="catalog-picker-backdrop character-catalog-picker-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}><section className="catalog-picker" role="dialog" aria-modal="true" aria-label={title}><header><h2>{title}</h2><button type="button" className="text-button" onClick={onClose}>Close</button></header><div className="catalog-picker-tools"><label className="search"><span>⌕</span><input autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search by name..."/></label>{filters}</div><div className="catalog-picker-grid">{children}</div></section></div>, document.body)
 }
 
 function LoadoutSquare({ label, image, topLeft, bottomRight, className = '' }: { label: string; image?: string; topLeft?: string; bottomRight?: ReactNode; className?: string }) {
@@ -39,6 +39,8 @@ export interface CharacterInventoryProps {
   weapons?: OwnedWeapon[]
   echoes?: Echo[]
   builds?: Build[]
+  equippedLoadouts?: EquippedLoadout[]
+  theorycraftBuilds?: TheorycraftBuild[]
   teams?: Team[]
   settings: AppSettings
   roverGender: 'male' | 'female'
@@ -49,7 +51,7 @@ export interface CharacterInventoryProps {
 
 const characterRouteKey = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, '')
 
-export function CharacterInventory({ owned, weapons = [], echoes = [], builds = [], settings, roverGender, refresh, characterIdentifier, onCharacterChange }: CharacterInventoryProps) {
+export function CharacterInventory({ owned, weapons = [], echoes = [], builds = [], equippedLoadouts = [], theorycraftBuilds = [], settings, roverGender, refresh, characterIdentifier, onCharacterChange }: CharacterInventoryProps) {
   const [query, setQuery] = useState('')
   const [elements, setElements] = useState<string[]>(characterElements)
   const [rarities, setRarities] = useState<number[]>(characterRarities)
@@ -89,22 +91,26 @@ export function CharacterInventory({ owned, weapons = [], echoes = [], builds = 
     && pickerRarities.includes(entry.rarity)
     && `${entry.name} ${entry.element} ${entry.weaponType}`.toLowerCase().includes(pickerQuery.toLowerCase()))
   const add = async (catalogId: string) => {
-    await db.characters.add({ id: createLocalId(), catalogId, level: 1, sequence: 0, locked: false, favorite: false, skillLevels: [1, 1, 1, 1, 1], createdAt: Date.now() })
+    const id = createLocalId()
+    await db.transaction('rw', [db.characters, db.equippedLoadouts], async () => {
+      await db.characters.add({ id, catalogId, level: 1, sequence: 0, locked: false, favorite: false, skillLevels: [1, 1, 1, 1, 1], createdAt: Date.now() })
+      await db.equippedLoadouts.add({ id: `equipped:${id}`, characterId: id, weaponId: '', echoIds: [], updatedAt: Date.now() })
+    })
     setPickerOpen(false)
     await refresh()
   }
   const selected = rows.find(({ item }) => item.id === selectedId)
 
-  if (selected) return <CharacterShowcase character={selected.item} catalog={selected.catalog} weapons={weapons} echoes={echoes} builds={builds} settings={settings} refresh={refresh} onBack={() => { setSelectedId(null); onCharacterChange?.(null) }}/>
+  if (selected) return <CharacterShowcase character={selected.item} catalog={selected.catalog} weapons={weapons} echoes={echoes} builds={builds} equippedLoadouts={equippedLoadouts} theorycraftBuilds={theorycraftBuilds} settings={settings} refresh={refresh} onBack={() => { setSelectedId(null); onCharacterChange?.(null) }}/>
 
   return <>
-    <Panel className="owned-add"><div><span className="eyebrow">Character roster</span><strong>Favorites stay at the top. Select a character to view their full loadout.</strong></div><button type="button" className="primary" onClick={() => setPickerOpen(true)}><Icon name="plus"/>Add character</button></Panel>
+    <Panel className="owned-add"><div><span className="eyebrow">Characters</span><strong>Pick a character</strong></div><button type="button" className="primary" onClick={() => setPickerOpen(true)}><Icon name="plus"/>Add character</button></Panel>
     <Panel className="owned-filter chip-toolbar"><label className="search"><span>⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search characters..."/></label><FilterChips label="Element" values={characterElements} selected={elements} onChange={setElements} renderValue={(value) => <ElementFilterIcon element={value}/>}/><FilterChips label="Rarity" values={characterRarities} selected={rarities} onChange={setRarities} renderValue={(value) => `${value} ★`}/><span>{visible.length} / {owned.length}</span></Panel>
     <div className="character-candy-grid">{visible.map(({ item, catalog }) => {
-      const build = builds.find((entry) => entry.resonatorId === item.catalogId)
-      const weapon = weapons.find((entry) => entry.id === build?.weaponId)
+      const loadout = equippedLoadouts.find((entry) => entry.characterId === item.id)
+      const weapon = weapons.find((entry) => entry.id === loadout?.weaponId)
       const weaponEntry = weaponCatalog.find((entry) => entry.id === weapon?.catalogId)
-      const equipped = build?.echoIds.map((id) => echoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)) || []
+      const equipped = loadout?.echoIds.map((id) => echoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)) || []
       const openCharacter = () => { setSelectedId(item.id); onCharacterChange?.({ id: catalog.id, name: catalog.name }) }
       return <article className={`character-candy-card rarity-${catalog.rarity}`} key={item.id} role="button" tabIndex={0} onClick={openCharacter} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') openCharacter() }}>
         <button className={item.favorite ? 'favorite active' : 'favorite'} aria-label="Favorite character" onClick={async (event) => { event.stopPropagation(); await db.characters.update(item.id, { favorite: !item.favorite }); await refresh() }}>♥</button>

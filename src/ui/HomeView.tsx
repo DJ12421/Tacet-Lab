@@ -18,11 +18,25 @@ interface HomeViewProps {
 }
 
 type HomeSettings = AppSettings & { homeFeaturedCharacterId?: string }
+const sidebarIconRoot = `${import.meta.env.BASE_URL}sidebar-icons/`
+const sidebarIconFiles: Partial<Record<AppView, string>> = {
+  dashboard: 'home.svg',
+  archive: 'archive.svg',
+  echoes: 'echoes.svg',
+  weapons: 'weapons.svg',
+  characters: 'characters.svg'
+}
+
+function HomeNavIcon({ view }: { view: AppView }) {
+  const source = sidebarIconFiles[view]
+  if (source) return <img className="home-nav-icon" src={`${sidebarIconRoot}${source}`} alt=""/>
+  return <Icon name={view === 'scanner' ? 'scan' : view === 'teams' ? 'team' : 'home'}/>
+}
 
 const quickStarts = [
-  { view: 'scanner' as const, icon: 'scan' as const, number: '01', title: 'Scan your collection', description: 'Import Echoes and character build cards.' },
-  { view: 'characters' as const, icon: 'team' as const, number: '02', title: 'Check their builds', description: 'Review equipment, stats, and damage.' },
-  { view: 'teams' as const, icon: 'optimize' as const, number: '03', title: 'See what works', description: 'Compare builds, damage, and teams.' }
+  { view: 'scanner' as const, number: '01', title: 'Scan your collection', description: 'Import Echoes and character build cards.' },
+  { view: 'characters' as const, number: '02', title: 'Check their builds', description: 'Review equipment, stats, and damage.' },
+  { view: 'teams' as const, number: '03', title: 'See what works', description: 'Compare builds, damage, and teams.' }
 ]
 
 const changelogEntries = [
@@ -93,9 +107,10 @@ export function HomeView({ echoes, characters, builds, teams, navigate }: HomeVi
     <article className="home-hero">
       <div className="home-hero-grid"/>
       <img className="home-hero-art" src={featured.portraitSourceUrl || featured.iconSourceUrl} alt=""/>
-      <div className="home-hero-art-zone" onMouseLeave={() => { setHeroPickerOpen(false); setHeroControlDismissed(false) }} onClick={(event) => { if (event.target === event.currentTarget) setHeroControlDismissed(false) }}>
+      <div className="home-hero-art-zone" onMouseEnter={() => setHeroControlDismissed(false)} onMouseLeave={closeHeroPicker}>
         <div className={`home-hero-character-control${heroPickerOpen ? ' is-open' : ''}${heroControlDismissed ? ' is-dismissed' : ''}`}>
-          <label><select aria-label="Home hero character" value={featured.id} onChange={(event) => { closeHeroPicker(); void changeFeaturedCharacter(event.target.value) }}>{characterCatalog.map((entry) => <option value={entry.id} key={entry.id}>{entry.name}</option>)}</select></label>
+          <div className="home-hero-character-pill"><span>{featured.name}</span><b aria-hidden="true">⌄</b></div>
+          {heroPickerOpen && <div className="home-hero-character-menu" role="listbox" aria-label="Home hero character">{characterCatalog.map((entry) => <button type="button" role="option" aria-selected={entry.id === featured.id} className={entry.id === featured.id ? 'is-selected' : ''} key={entry.id} onClick={() => { closeHeroPicker(); void changeFeaturedCharacter(entry.id) }}><img src={entry.iconSourceUrl} alt=""/><span>{entry.name}</span></button>)}</div>}
           <button type="button" aria-label="Change home character" title="Change home character" aria-expanded={heroPickerOpen} onClick={() => { if (heroPickerOpen) closeHeroPicker(); else setHeroPickerOpen(true) }}><Icon name="settings"/></button>
         </div>
       </div>
@@ -105,7 +120,7 @@ export function HomeView({ echoes, characters, builds, teams, navigate }: HomeVi
         <p>Pick a character, add your Echoes, and see what improves your damage.</p>
         <div className="home-hero-actions">
           <button className="primary" onClick={() => navigate(primaryView)}>{hasStarted ? 'Continue your build' : 'Start scanning'}<span aria-hidden="true">→</span></button>
-          <button className="secondary" onClick={() => navigate(hasStarted ? 'scanner' : 'archive')}><Icon name={hasStarted ? 'scan' : 'team'}/>{hasStarted ? 'Add my Echoes' : 'Browse characters'}</button>
+          <button className="secondary" onClick={() => navigate(hasStarted ? 'scanner' : 'archive')}><HomeNavIcon view={hasStarted ? 'scanner' : 'archive'}/>{hasStarted ? 'Add my Echoes' : 'Browse characters'}</button>
         </div>
         <div className="home-trust-line"><Icon name="lock"/><span>Free · No account · Your data stays on this device</span></div>
       </div>
@@ -114,7 +129,7 @@ export function HomeView({ echoes, characters, builds, teams, navigate }: HomeVi
 
     <section className="home-start" aria-labelledby="home-start-title">
       <div className="home-section-heading"><span className="eyebrow">New here?</span><h2 id="home-start-title">Start in three simple steps</h2></div>
-      <div className="home-steps">{quickStarts.map((item) => <button key={item.view} className="home-step" onClick={() => navigate(item.view)}><span className="home-step-number">{item.number}</span><span className="home-step-icon"><Icon name={item.icon}/></span><span className="home-step-copy"><strong>{item.title}</strong><small>{item.description}</small></span><b aria-hidden="true">→</b></button>)}</div>
+      <div className="home-steps">{quickStarts.map((item) => <button key={item.view} className="home-step" onClick={() => navigate(item.view)}><span className="home-step-number">{item.number}</span><span className="home-step-icon"><HomeNavIcon view={item.view}/></span><span className="home-step-copy"><strong>{item.title}</strong><small>{item.description}</small></span><b aria-hidden="true">→</b></button>)}</div>
     </section>
 
     <article className="home-account-band">
@@ -124,9 +139,9 @@ export function HomeView({ echoes, characters, builds, teams, navigate }: HomeVi
     </article>
 
     <div className="home-discover">
-      <button onClick={() => navigate('archive')}><span><Icon name="home"/></span><div><strong>Explore the game database</strong><small>{characterCatalog.length} characters · {weaponCatalog.length} weapons</small></div><b aria-hidden="true">→</b></button>
-      <button onClick={() => navigate('echoes')}><span><Icon name="echo"/></span><div><strong>Browse your Echoes</strong><small>Filter, compare, and edit your collection</small></div><b aria-hidden="true">→</b></button>
-      <button onClick={() => navigate('teams')}><span><Icon name="team"/></span><div><strong>Plan a team</strong><small>Put three characters together</small></div><b aria-hidden="true">→</b></button>
+      <button onClick={() => navigate('archive')}><span><HomeNavIcon view="archive"/></span><div><strong>Explore the game database</strong><small>{characterCatalog.length} characters · {weaponCatalog.length} weapons</small></div><b aria-hidden="true">→</b></button>
+      <button onClick={() => navigate('echoes')}><span><HomeNavIcon view="echoes"/></span><div><strong>Browse your Echoes</strong><small>Filter, compare, and edit your collection</small></div><b aria-hidden="true">→</b></button>
+      <button onClick={() => navigate('teams')}><span><HomeNavIcon view="teams"/></span><div><strong>Plan a team</strong><small>Put three characters together</small></div><b aria-hidden="true">→</b></button>
     </div>
 
     <article className="home-community">

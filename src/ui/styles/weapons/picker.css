@@ -1,0 +1,76 @@
+/* Keep weapon picker sizing after the shared catalog rules above. */
+
+.catalog-picker-grid {
+  grid-template-columns: repeat(auto-fill,minmax(285px,1fr));
+  gap: 12px;
+}
+
+.catalog-choice.weapon-choice {
+  grid-template-columns: 118px minmax(0,1fr);
+  min-height: 132px;
+  border-color: color-mix(in srgb,var(--weapon-accent) 48%,transparent);
+  background: linear-gradient(135deg,var(--weapon-glow),#0b1011 70%);
+}
+
+.catalog-choice.weapon-choice img {
+  width: 118px;
+  background: radial-gradient(circle,var(--weapon-glow),transparent 68%);
+}
+
+.catalog-choice.weapon-choice strong {
+  font-size: var(--font-size-small);
+}
+
+.catalog-choice.weapon-choice small {
+  font-size: var(--font-size-caption);
+}
+
+.catalog-choice .picker-weapon-stats b {
+  color: #dbe2e0;
+  font-size: var(--font-size-caption);
+  letter-spacing: 0;
+}
+
+@media (max-width:650px) {
+  .catalog-picker-grid {
+    grid-template-columns: 1fr;
+  }
+  .catalog-choice.weapon-choice {
+    grid-template-columns: 100px minmax(0,1fr);
+  }
+  .catalog-choice.weapon-choice img {
+    width: 100px;
+  }
+}
+
+.catalog-picker-backdrop:has(>.weapon-catalog-picker) {
+  padding: clamp(10px,3vw,32px);
+  place-items: center;
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+.catalog-picker-backdrop>.weapon-catalog-picker {
+  width: min(1120px,calc(100vw - clamp(20px,6vw,64px)));
+  height: min(820px,calc(100dvh - clamp(20px,6vw,64px)));
+  min-height: 0;
+  max-height: none;
+  margin: auto;
+  padding: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+@media (max-width:650px) {
+  .catalog-picker-backdrop>.weapon-catalog-picker {
+    width: calc(100vw - 20px);
+    height: calc(100dvh - 20px);
+    min-height: 0;
+    padding: 12px 10px 16px;
+    border-radius: 10px;
+  }
+  .weapon-catalog-picker .catalog-picker-grid {
+    min-height: 0;
+    overflow-y: auto;
+  }
+}

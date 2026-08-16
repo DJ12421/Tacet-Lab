@@ -1,0 +1,185 @@
+/* Desktop navigation keeps a visible icon rail, expands as an overlay, and reserves
+   its full column when the user pins it. */
+
+@media (min-width:651px) {
+  .app-shell {
+    grid-template-columns: 58px minmax(0,1fr);
+    transition: grid-template-columns .22s ease;
+  }
+  .content {
+    width: 100%;
+    max-width: none;
+  }
+  .sidebar {
+    position: sticky;
+    z-index: 40;
+    top: 0;
+    width: 58px;
+    height: 100vh;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 14px 8px;
+    border-right-color: rgba(228,187,94,.34);
+    background: linear-gradient(180deg,rgba(11,16,17,.985),rgba(6,9,10,.97));
+    box-shadow: 8px 0 24px rgba(0,0,0,.18);
+    transition: width .22s ease,padding .22s ease,box-shadow .22s ease;
+  }
+  .app-shell>.modal-backdrop {
+    z-index: 45;
+  }
+  .sidebar:hover,.sidebar:has(:focus-visible),.app-shell.sidebar-open .sidebar {
+    width: 238px;
+    padding: 20px 14px;
+    box-shadow: 18px 0 45px rgba(0,0,0,.55);
+  }
+  .sidebar-controls {
+    display: flex;
+    width: 208px;
+    height: 34px;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .sidebar-controls button {
+    height: 34px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: transparent;
+    color: #96a19e;
+    cursor: pointer;
+  }
+  .sidebar-label {
+    display: flex;
+    width: 150px;
+    align-items: center;
+    padding: 0 10px;
+    color: var(--gold);
+    font-size: var(--font-size-caption);
+    font-weight: 700;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .sidebar-pin {
+    display: flex;
+    min-width: 52px;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 0 8px;
+    font-size: var(--font-size-caption);
+  }
+  .sidebar-pin-icon {
+    width: 17px;
+    height: 17px;
+    flex: none;
+    overflow: visible;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .sidebar-pin[aria-pressed="true"] .sidebar-pin-icon {
+    fill: currentColor;
+    stroke-width: 1.25;
+  }
+  .sidebar-controls button:hover,.sidebar-pin[aria-pressed="true"] {
+    border-color: rgba(228,187,94,.32);
+    background: rgba(228,187,94,.08);
+    color: var(--gold);
+  }
+  .sidebar .brand {
+    position: relative;
+    left: -5px;
+    width: 208px;
+    padding: 6px 8px 24px;
+    transition: left .22s ease;
+  }
+  .sidebar:hover .brand,.sidebar:has(:focus-visible) .brand,.app-shell.sidebar-open .sidebar .brand,.app-shell.sidebar-pinned .sidebar .brand {
+    left: 0;
+  }
+  .sidebar .brand>div:last-child,.sidebar nav button span,.sidebar .side-bottom span,.sidebar .local-status>div {
+    display: block;
+  }
+  .sidebar :is(.sidebar-label,.sidebar-pin,.brand>div:last-child,nav button span,nav button b,.local-status>div,.side-bottom>button span) {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .12s ease;
+  }
+  .sidebar:hover :is(.sidebar-label,.sidebar-pin,.brand>div:last-child,nav button span,nav button b,.local-status>div,.side-bottom>button span),.sidebar:has(:focus-visible) :is(.sidebar-label,.sidebar-pin,.brand>div:last-child,nav button span,nav button b,.local-status>div,.side-bottom>button span),.app-shell.sidebar-open .sidebar :is(.sidebar-label,.sidebar-pin,.brand>div:last-child,nav button span,nav button b,.local-status>div,.side-bottom>button span),.app-shell.sidebar-pinned .sidebar :is(.sidebar-label,.sidebar-pin,.brand>div:last-child,nav button span,nav button b,.local-status>div,.side-bottom>button span) {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition-delay: .08s;
+  }
+  .sidebar nav {
+    width: 208px;
+    min-height: 0;
+    overflow-y: auto;
+    align-content: start;
+    scrollbar-width: none;
+  }
+  .sidebar nav::-webkit-scrollbar {
+    display: none;
+  }
+  .sidebar .side-bottom {
+    width: 208px;
+    flex: none;
+  }
+  .sidebar nav button,.sidebar .side-bottom>button {
+    width: calc(100% - 4px);
+    justify-content: flex-start;
+    padding: 12px 9px;
+    white-space: nowrap;
+  }
+  .sidebar-nav-icon,.sidebar nav button>.icon,.sidebar .side-bottom>button>.icon {
+    width: 24px;
+    height: 24px;
+    flex: none;
+  }
+  .sidebar-nav-icon {
+    object-fit: contain;
+    opacity: .62;
+    filter: grayscale(1);
+    transition: opacity .18s ease,filter .18s ease,transform .18s ease;
+  }
+  .sidebar nav button:hover .sidebar-nav-icon,.sidebar nav button.active .sidebar-nav-icon {
+    opacity: 1;
+    filter: none;
+  }
+  .sidebar nav button>.icon,.sidebar .side-bottom>button>.icon {
+    stroke-width: 1.9;
+  }
+  .sidebar:hover nav button,.sidebar:hover .side-bottom>button,.sidebar:has(:focus-visible) nav button,.sidebar:has(:focus-visible) .side-bottom>button,.app-shell.sidebar-open .sidebar nav button,.app-shell.sidebar-open .sidebar .side-bottom>button,.app-shell.sidebar-pinned .sidebar nav button,.app-shell.sidebar-pinned .sidebar .side-bottom>button {
+    padding-inline: 11px;
+  }
+  .sidebar nav button b {
+    position: static;
+    margin-left: auto;
+  }
+  .sidebar .local-status {
+    position: relative;
+    left: 7px;
+    justify-content: flex-start;
+    transition: left .22s ease;
+  }
+  .sidebar:hover .local-status,.sidebar:has(:focus-visible) .local-status,.app-shell.sidebar-open .sidebar .local-status,.app-shell.sidebar-pinned .sidebar .local-status {
+    left: 0;
+  }
+  .app-shell.sidebar-reserved {
+    grid-template-columns: 238px minmax(0,1fr);
+  }
+  .app-shell.sidebar-pinned .sidebar {
+    width: 238px;
+    padding: 20px 14px;
+    box-shadow: none;
+  }
+}
+
+@media (max-width:650px) {
+  .sidebar-controls {
+    display: none;
+  }
+}

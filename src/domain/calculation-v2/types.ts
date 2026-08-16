@@ -107,6 +107,8 @@ export interface EchoCalculationMechanics {
   id: string
   key: string
   name: string
+  description?: string
+  cooldown?: number
   effects: CalculationEffectDefinition[]
   attacks: CalculationAttackDefinition[]
 }

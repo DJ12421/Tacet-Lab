@@ -5677,8 +5677,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_53_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Aimisi_UI.webp",
     "titleCardSourceUrl": "https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_47.webp",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Aimisi/Portraits_Aimisi.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Aimisi/Portraits_Aimisi.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/aimisi/aimisi.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/aimisi/aimisi.atlas"
   },
   {
     "id": "1306",
@@ -8888,8 +8888,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_51_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_aogusita_UI.webp",
     "titleCardSourceUrl": "https://raw.githubusercontent.com/alt3ri/WW_Asset/Global/UIResources/Common/Image/Com/Image/EpithetName_Role_38.png",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Aogusita/Portraits_Aogusita.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Aogusita/Portraits_Aogusita.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/aogusita/aogusita.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/aogusita/aogusita.atlas"
   },
   {
     "id": "1103",
@@ -14022,8 +14022,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_44_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Bulante_UI.webp",
     "titleCardSourceUrl": "https://raw.githubusercontent.com/alt3ri/WW_Asset/Global/UIResources/Common/Image/Com/Image/EpithetName_Role_28.png",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Bulante/Portraits_Bulante.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Bulante/Portraits_Bulante.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/bulante/bulante.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/bulante/bulante.atlas"
   },
   {
     "id": "1307",
@@ -23459,8 +23459,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_29_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_chun_UI.webp",
     "titleCardSourceUrl": "https://raw.githubusercontent.com/alt3ri/WW_Asset/Global/UIResources/Common/Image/Com/Image/EpithetName_Role_24.png",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Chun/Portraits_Chun.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Chun/Portraits_Chun.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/chun/chun.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/chun/chun.atlas"
   },
   {
     "id": "1607",
@@ -26802,8 +26802,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_34_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_kanteleila_UI.webp",
     "titleCardSourceUrl": "https://raw.githubusercontent.com/alt3ri/WW_Asset/Global/UIResources/Common/Image/Com/Image/EpithetName_Role_30.png",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Kanteleila/Portraits_Kanteleila.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Kanteleila/Portraits_Kanteleila.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/kanteleila/kanteleila.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/kanteleila/kanteleila.atlas"
   },
   {
     "id": "1107",
@@ -29570,8 +29570,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_32_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_kelaita_UI.webp",
     "titleCardSourceUrl": "https://raw.githubusercontent.com/alt3ri/WW_Asset/Global/UIResources/Common/Image/Com/Image/EpithetName_Role_26.png",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Kelaita/Portraits_Kelaita.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Kelaita/Portraits_Kelaita.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/kelaita/kelaita.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/kelaita/kelaita.atlas"
   },
   {
     "id": "1409",
@@ -33647,8 +33647,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_40_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_katixiya_UI.webp",
     "titleCardSourceUrl": "https://raw.githubusercontent.com/alt3ri/WW_Asset/Global/UIResources/Common/Image/Com/Image/EpithetName_Role_35.png",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Katixiya/Portraits_Katixiya.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Katixiya/Portraits_Katixiya.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/katixiya/katixiya.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/katixiya/katixiya.atlas"
   },
   {
     "id": "1205",
@@ -36278,8 +36278,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_26_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_changli_UI.webp",
     "titleCardSourceUrl": "https://raw.githubusercontent.com/alt3ri/WW_Asset/Global/UIResources/Common/Image/Com/Image/EpithetName_Role_19.png",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Changli/Portraits_Changli.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Changli/Portraits_Changli.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/changli/changli.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/changli/changli.atlas"
   },
   {
     "id": "1508",
@@ -40970,8 +40970,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_57_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Qianxiao_UI.webp",
     "titleCardSourceUrl": "https://raw.githubusercontent.com/alt3ri/WW_Asset/Global/UIResources/Common/Image/Com/Image/EpithetName_Role_43.png",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Qianxiao/Portraits_Qianxiao.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Qianxiao/Portraits_Qianxiao.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/qianxiao/qianxiao.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/qianxiao/qianxiao.atlas"
   },
   {
     "id": "1202",
@@ -46063,8 +46063,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_37_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_xiakong_UI.webp",
     "titleCardSourceUrl": "https://raw.githubusercontent.com/alt3ri/WW_Asset/Global/UIResources/Common/Image/Com/Image/EpithetName_Role_31.png",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Xiakong/Portraits_Xiakong.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Xiakong/Portraits_Xiakong.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/xiakong/xiakong.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/xiakong/xiakong.atlas"
   },
   {
     "id": "1602",
@@ -52078,8 +52078,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_64_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_daniya_UI.webp",
     "titleCardSourceUrl": "https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_51.webp",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Daniya/Portraits_Daniya.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Daniya/Portraits_Daniya.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/daniya/daniya.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/daniya/daniya.atlas"
   },
   {
     "id": "1203",
@@ -58635,8 +58635,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_55_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Jiabeilina_UI.webp",
     "titleCardSourceUrl": "https://raw.githubusercontent.com/alt3ri/WW_Asset/Global/UIResources/Common/Image/Com/Image/EpithetName_Role_40.png",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Jiabeilina/Portraits_Jiabeilina.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Jiabeilina/Portraits_Jiabeilina.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/jiabeilina/jiabeilina.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/jiabeilina/jiabeilina.atlas"
   },
   {
     "id": "1108",
@@ -62213,8 +62213,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_67_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Feixue_UI.webp",
     "titleCardSourceUrl": "https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_50.webp",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Feixue/Portraits_Feixue.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Feixue/Portraits_Feixue.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/feixue/feixue.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/feixue/feixue.atlas"
   },
   {
     "id": "1410",
@@ -65698,8 +65698,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_48_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_younuo_UI.webp",
     "titleCardSourceUrl": "https://raw.githubusercontent.com/alt3ri/WW_Asset/Global/UIResources/Common/Image/Com/Image/EpithetName_Role_39.png",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Younuo/Portraits_Younuo.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Younuo/Portraits_Younuo.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/younuo/younuo.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/younuo/younuo.atlas"
   },
   {
     "id": "1405",
@@ -71497,8 +71497,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_24_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_jinxi_UI.webp",
     "titleCardSourceUrl": "https://raw.githubusercontent.com/alt3ri/WW_Asset/Global/UIResources/Common/Image/Com/Image/EpithetName_Role_18.png",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Jinxi/Portraits_Jinxi.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Jinxi/Portraits_Jinxi.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/jinxi/jinxi.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/jinxi/jinxi.atlas"
   },
   {
     "id": "1404",
@@ -74408,8 +74408,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_11_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_jiyan_UI.webp",
     "titleCardSourceUrl": "https://raw.githubusercontent.com/alt3ri/WW_Asset/Global/UIResources/Common/Image/Com/Image/EpithetName_Role_16.png",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Jiyan/Portraits_Jiyan.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Jiyan/Portraits_Jiyan.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/jiyan/jiyan.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/jiyan/jiyan.atlas"
   },
   {
     "id": "1104",
@@ -79319,8 +79319,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_66_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Luosela_UI.webp",
     "titleCardSourceUrl": "https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_54.webp",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_LuoSeLa/Portraits_LuoSeLa.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_LuoSeLa/Portraits_LuoSeLa.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/luosela/luosela.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/luosela/luosela.atlas"
   },
   {
     "id": "1511",
@@ -83425,8 +83425,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_68_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Luxi_UI.webp",
     "titleCardSourceUrl": "https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_52.webp",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Lucy/Portraits_Lucy.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Lucy/Portraits_Lucy.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/luxi/luxi.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/luxi/luxi.atlas"
   },
   {
     "id": "1504",
@@ -89521,8 +89521,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_46_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_lupa_UI.webp",
     "titleCardSourceUrl": "https://raw.githubusercontent.com/alt3ri/WW_Asset/Global/UIResources/Common/Image/Com/Image/EpithetName_Role_36.png",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Lupa/Portraits_Lupa.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Lupa/Portraits_Lupa.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/lupa/lupa.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/lupa/lupa.atlas"
   },
   {
     "id": "1510",
@@ -92827,8 +92827,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_54_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Luhesi_UI.webp",
     "titleCardSourceUrl": "https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_48.webp",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Luhesi/Portraits_Luhesi.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Luhesi/Portraits_Luhesi.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/luhesi/luhesi.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/luhesi/luhesi.atlas"
   },
   {
     "id": "1509",
@@ -97350,8 +97350,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_60_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Linnai_UI.webp",
     "titleCardSourceUrl": "https://raw.githubusercontent.com/alt3ri/WW_Asset/Global/UIResources/Common/Image/Com/Image/EpithetName_Role_45.png",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Linnai/Portraits_Linnai.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Linnai/Portraits_Linnai.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/linnai/linnai.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/linnai/linnai.atlas"
   },
   {
     "id": "1209",
@@ -100311,8 +100311,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_61_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Moning_UI.webp",
     "titleCardSourceUrl": "https://raw.githubusercontent.com/alt3ri/WW_Asset/Global/UIResources/Common/Image/Com/Image/EpithetName_Role_46.png",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Moning/Portraits_Moning.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Moning/Portraits_Moning.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/moning/moning.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/moning/moning.atlas"
   },
   {
     "id": "1204",
@@ -104781,8 +104781,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_45_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Feibi_UI.webp",
     "titleCardSourceUrl": "https://raw.githubusercontent.com/alt3ri/WW_Asset/Global/UIResources/Common/Image/Com/Image/EpithetName_Role_29.png",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Feibi/Portraits_Feibi.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Feibi/Portraits_Feibi.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/feibi/feibi.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/feibi/feibi.atlas"
   },
   {
     "id": "1608",
@@ -107517,8 +107517,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_41_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_fuluoluo_UI.webp",
     "titleCardSourceUrl": "https://raw.githubusercontent.com/alt3ri/WW_Asset/Global/UIResources/Common/Image/Com/Image/EpithetName_Role_37.png",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Fuluoluo/Portraits_Fuluoluo.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Fuluoluo/Portraits_Fuluoluo.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/fuluoluo/fuluoluo.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/fuluoluo/fuluoluo.atlas"
   },
   {
     "id": "1411",
@@ -110191,8 +110191,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_56_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Qiuyuan_UI.webp",
     "titleCardSourceUrl": "https://raw.githubusercontent.com/alt3ri/WW_Asset/Global/UIResources/Common/Image/Com/Image/EpithetName_Role_41.png",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Qiuyuan/Portraits_Qiuyuan.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Qiuyuan/Portraits_Qiuyuan.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/qiuyuan/qiuyuan.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/qiuyuan/qiuyuan.atlas"
   },
   {
     "id": "1308",
@@ -113693,8 +113693,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_69_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Libeika_UI.webp",
     "titleCardSourceUrl": "https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_53.webp",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Rebecca/Portraits_Rebecca.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Rebecca/Portraits_Rebecca.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/libeika/libeika.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/libeika/libeika.atlas"
   },
   {
     "id": "1606",
@@ -115769,8 +115769,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_33_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_luokeke_UI.webp",
     "titleCardSourceUrl": "https://raw.githubusercontent.com/alt3ri/WW_Asset/Global/UIResources/Common/Image/Com/Image/EpithetName_Role_27.png",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Luokeke/Portraits_Luokeke.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Luokeke/Portraits_Luokeke.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/luokeke/luokeke.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/luokeke/luokeke.atlas"
   },
   {
     "id": "1406",
@@ -143569,8 +143569,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_28_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_shouanren_UI.webp",
     "titleCardSourceUrl": "https://raw.githubusercontent.com/alt3ri/WW_Asset/Global/UIResources/Common/Image/Com/Image/EpithetName_Role_22.png",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Shouanren/Portraits_Shouanren.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Shouanren/Portraits_Shouanren.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/shouanren/shouanren.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/shouanren/shouanren.atlas"
   },
   {
     "id": "1412",
@@ -146483,8 +146483,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_65_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Xigelika_UI.webp",
     "titleCardSourceUrl": "https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_49.webp",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Xigelika/Portraits_Xigelika.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Xigelika/Portraits_Xigelika.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/xigelika/xigelika.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/xigelika/xigelika.atlas"
   },
   {
     "id": "1110",
@@ -149567,8 +149567,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_71_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Suisui_UI.webp",
     "titleCardSourceUrl": "https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_56.webp",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Suisui/Portraits_Suisui.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Suisui/Portraits_Suisui.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/suisui/suisui.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/suisui/suisui.atlas"
   },
   {
     "id": "1601",
@@ -156564,8 +156564,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_25_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_xiangliyao_UI.webp",
     "titleCardSourceUrl": "https://raw.githubusercontent.com/alt3ri/WW_Asset/Global/UIResources/Common/Image/Com/Image/EpithetName_Role_20.png",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Xiangliyao/Portraits_Xiangliyao.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Xiangliyao/Portraits_Xiangliyao.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/xiangliyao/xiangliyao.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/xiangliyao/xiangliyao.atlas"
   },
   {
     "id": "1402",
@@ -162458,8 +162458,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_70_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Xuanling_UI.webp",
     "titleCardSourceUrl": "https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_55.webp",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Xuanling/Portraits_Xuanling.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Xuanling/Portraits_Xuanling.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/xuanling/xuanling.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/xuanling/xuanling.atlas"
   },
   {
     "id": "1302",
@@ -164937,8 +164937,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_17_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_yinlin_UI.webp",
     "titleCardSourceUrl": "https://raw.githubusercontent.com/alt3ri/WW_Asset/Global/UIResources/Common/Image/Com/Image/EpithetName_Role_17.png",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Yinlin/Portraits_Yinlin.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Yinlin/Portraits_Yinlin.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/yinlin/yinlin.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/yinlin/yinlin.atlas"
   },
   {
     "id": "1106",
@@ -173497,8 +173497,8 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_38_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_zanni_UI.webp",
     "titleCardSourceUrl": "https://raw.githubusercontent.com/alt3ri/WW_Asset/Global/UIResources/Common/Image/Com/Image/EpithetName_Role_32.png",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Zanni/Portraits_Zanni.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Zanni/Portraits_Zanni.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/zanni/zanni.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/zanni/zanni.atlas"
   },
   {
     "id": "1105",
@@ -175819,7 +175819,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_27_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_zhezhi_UI.webp",
     "titleCardSourceUrl": "https://raw.githubusercontent.com/alt3ri/WW_Asset/Global/UIResources/Common/Image/Com/Image/EpithetName_Role_21.png",
-    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Zhezhi/Portraits_Zhezhi.skel",
-    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Zhezhi/Portraits_Zhezhi.atlas"
+    "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/zhezhi/zhezhi.skel",
+    "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/zhezhi/zhezhi.atlas"
   }
 ]

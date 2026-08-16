@@ -1,0 +1,76 @@
+:root {
+  color-scheme: dark;
+  font-family: Bahnschrift, "DIN Alternate", "Trebuchet MS", sans-serif;
+  color: #edf3ef;
+  background: #080b0d;
+  font-synthesis: none;
+  /* Shared type scale: new UI should use these instead of one-off pixel sizes. */
+  --font-size-caption: .75rem;
+  --font-size-small: .875rem;
+  --font-size-body: 1rem;
+  --font-size-body-large: 1.125rem;
+  --font-size-heading-small: 1.25rem;
+  --font-size-heading: 1.5rem;
+  --font-size-heading-large: 2rem;
+  --font-size-display-small: 2.5rem;
+  --font-size-display: 3rem;
+  --font-size-display-large: 4rem;
+  --font-size-display-hero: 6rem;
+  --font-size-artwork: 26.875rem;
+  --bg: #080b0d;
+  --surface: rgba(15, 20, 21, .9);
+  --surface-2: #151b1c;
+  --line: rgba(220, 201, 144, .18);
+  --gold: #e4bb5e;
+  --gold-soft: #9a7a38;
+  --mint: #8de4d4;
+  --muted: #7c8987;
+  --danger: #ef766e;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: var(--font-size-body);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: var(--bg);
+  font-size: var(--font-size-body);
+  line-height: 1.5;
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 2px solid var(--mint);
+  outline-offset: 2px;
+}
+
+button:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex: none;
+}

@@ -72,10 +72,36 @@ export function resolveSonataMechanicsV2(name: string, pieces: number): SonataCa
 }
 
 export function resolveEchoMechanicsV2(echo: Echo | undefined): EchoCalculationMechanics | undefined {
-  return echo ? closestByName(calculationCatalogV2.echoes, echo.name) : undefined
+  const mechanics = echo ? closestByName(calculationCatalogV2.echoes as EchoCalculationMechanics[], echo.name) : undefined
+  if (!mechanics) return undefined
+  const description = mechanics.description ?? mechanics.effects.find((effect) => effect.description)?.description ?? ''
+  const cooldownMatch = description.match(/\bCD\s*:\s*(\d+(?:\.\d+)?)s\b/i)
+  const durationMatch = description.match(/\b(?:lasts?|for)\s+(\d+(?:\.\d+)?)s\b/i)
+  const isMainSlotPassive = /\bequipped\s+in\s+(?:the|their)\s+main\s+slot[^.]{0,24}\bgains?\b/i.test(description)
+  const firstAttack = mechanics.attacks[0]
+  const seenAttackIds = new Map<string, number>()
+  const attacks = mechanics.attacks.map((attack) => {
+    const occurrence = seenAttackIds.get(attack.id) ?? 0
+    seenAttackIds.set(attack.id, occurrence + 1)
+    return occurrence === 0 ? attack : { ...attack, id: `${attack.id}:${normalized(attack.name) || occurrence + 1}` }
+  })
+  const effects = mechanics.effects.map((effect) => ({
+    ...effect,
+    alwaysEnabled: effect.alwaysEnabled || isMainSlotPassive,
+    ...(!effect.alwaysEnabled && !isMainSlotPassive && !effect.trigger && firstAttack ? { trigger: firstAttack.key } : {}),
+    ...(effect.duration === undefined && !isMainSlotPassive && durationMatch ? { duration: Number(durationMatch[1]) } : {})
+  }))
+  return {
+    ...mechanics,
+    ...(description ? { description } : {}),
+    ...(mechanics.cooldown !== undefined ? {} : cooldownMatch ? { cooldown: Number(cooldownMatch[1]) } : {}),
+    effects,
+    attacks
+  }
 }
 
-export function skillLevelForAttackV2(character: OwnedCharacter, attack: CalculationAttackDefinition) {
+export function skillLevelForAttackV2(character: OwnedCharacter, attack: CalculationAttackDefinition, mainEchoRarity?: Echo['rarity']) {
+  if (attack.group === 'Echo Skill') return Math.max(1, Math.min(5, mainEchoRarity ?? 1))
   const levels = character.skillLevels?.length === 5 ? character.skillLevels : [1, 1, 1, 1, 1]
   if (attack.group === 'Basic Attack') return levels[0] ?? 1
   if (attack.group === 'Resonance Skill') return levels[1] ?? 1
@@ -151,6 +177,7 @@ export interface BuildCalculationV2Sources {
   partyEffects?: CalculationEffectDefinition[]
   sourceStats?: CalculationSourceStats
   activeCustomBuffs?: BuffEffect[]
+  effectActivationOverrides?: Record<string, boolean>
   roverGender?: 'male' | 'female'
 }
 
@@ -201,8 +228,11 @@ export function createBuildCalculationV2Context(input: BuildCalculationV2Sources
     ...partySelections,
     ...Object.fromEntries(customEffects.map((effect) => [effect.id, { enabled: true }]))
   }
+  for (const [effectId, enabled] of Object.entries(input.effectActivationOverrides ?? {})) {
+    selections[effectId] = { ...selections[effectId], enabled }
+  }
   for (const effect of effects) {
-    if (/^Stat Bonus:/i.test(effect.name)) selections[effect.id] = { ...selections[effect.id], enabled: true }
+    if (effect.alwaysEnabled || /^Stat Bonus:/i.test(effect.name)) selections[effect.id] = { ...selections[effect.id], enabled: true }
   }
   return { mechanics, weapon, sonatas, mainEcho, effects, selections }
 }
@@ -251,7 +281,7 @@ export function calculateBuildAttackV2(
   )
   return calculateAttackV2({
     attack,
-    talentLevel: skillLevelForAttackV2(input.character, attack),
+    talentLevel: skillLevelForAttackV2(input.character, attack, input.showcase.echoSlots[0]?.rarity),
     characterLevel: input.character.level,
     accumulator,
     enemy
@@ -296,7 +326,7 @@ export function prepareBuildAttackV2(
     skillLevels: skillLevelMap(input.character),
     sequence: input.character.sequence,
     stance: String(context.selections[`character:${context.mechanics.key}:stance`]?.value ?? ''),
-    talentLevel: skillLevelForAttackV2(input.character, attack),
+    talentLevel: skillLevelForAttackV2(input.character, attack, input.showcase.echoSlots[0]?.rarity),
     characterLevel: input.character.level,
     sourceStats: input.sourceStats ?? {}
   }

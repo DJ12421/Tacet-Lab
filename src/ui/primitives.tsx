@@ -1,10 +1,25 @@
 import type { HTMLAttributes, PropsWithChildren, ReactNode } from 'react'
 
-export function Icon({ name }: { name: 'home' | 'scan' | 'echo' | 'build' | 'team' | 'optimize' | 'download' | 'upload' | 'lock' | 'unlock' | 'trash' | 'edit' | 'plus' | 'settings' | 'discord' }) {
+export function Icon({ name }: { name: 'home' | 'scan' | 'echo' | 'weapon' | 'build' | 'team' | 'optimize' | 'download' | 'upload' | 'lock' | 'unlock' | 'discard' | 'trash' | 'edit' | 'plus' | 'settings' | 'discord' }) {
   const paths: Record<typeof name, ReactNode> = {
     home: <><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10M9 20v-6h6v6"/></>,
     scan: <><path d="M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4"/><path d="M7 12h10M12 7v10"/></>,
-    echo: <><circle cx="12" cy="12" r="8"/><path d="M4 12h4l2-6 4 12 2-6h4"/></>,
+    echo: <>
+      <g transform="translate(-1.2 -1.2) scale(1.1)">
+        <path fill="currentColor" stroke="none" fillRule="evenodd" d="m12 9.2-6.4 4.9L12 21l6.4-6.9L12 9.2Zm0 3.2 2.5 1.8-2.5 3-2.5-3 2.5-1.8Z"/>
+        <path fill="currentColor" stroke="none" d="m11.2 8.1-4-2.8L9.4 2l3.3 2.3-1.5 3.8Zm2.1.5 1.4-4.1L17.6 2l1.3 2.7-3.5 4.1-2.1-.2Z"/>
+      </g>
+    </>,
+    weapon: <>
+      <g fill="currentColor" stroke="none" transform="rotate(-45 12 12)">
+        <path d="m12 1.2 2.4 1.7-1.5 9.2h-1.8L9.6 2.9 12 1.2Z"/>
+        <path d="M7.8 11.2h8.4v2.5H7.8zM10.8 13.2h2.4v6.5h-2.4zM9.7 19.2h4.6v2.5H9.7z"/>
+      </g>
+      <g fill="currentColor" stroke="none" transform="rotate(45 12 12)">
+        <path d="m12 1.2 2.4 1.7-1.5 9.2h-1.8L9.6 2.9 12 1.2Z"/>
+        <path d="M7.8 11.2h8.4v2.5H7.8zM10.8 13.2h2.4v6.5h-2.4zM9.7 19.2h4.6v2.5H9.7z"/>
+      </g>
+    </>,
     build: <><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/></>,
     team: <><circle cx="9" cy="8" r="3"/><circle cx="17" cy="10" r="2.5"/><path d="M3.5 20c.5-5 2.5-7 5.5-7s5 2 5.5 7M14 15c3.5 0 5.5 1.5 6 5"/></>,
     optimize: <><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></>,
@@ -12,6 +27,7 @@ export function Icon({ name }: { name: 'home' | 'scan' | 'echo' | 'build' | 'tea
     upload: <><path d="M12 16V4M7 9l5-5 5 5M4 20h16"/></>,
     lock: <><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></>,
     unlock: <><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M16 10V7a4 4 0 0 0-7.7-1.5"/></>,
+    discard: <><circle cx="12" cy="12" r="8"/><path d="m6.4 17.6 11.2-11.2"/></>,
     trash: <><path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13"/></>,
     edit: <><path d="m4 20 4.5-1 10-10-3.5-3.5-10 10L4 20Z"/><path d="m13.5 7 3.5 3.5"/></>,
     plus: <><path d="M12 5v14M5 12h14"/></>,

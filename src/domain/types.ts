@@ -2,14 +2,39 @@ export type StatKey = 'hp' | 'hpPercent' | 'atk' | 'atkPercent' | 'def' | 'defPe
 export type DamageType = 'basic' | 'heavy' | 'skill' | 'liberation' | 'intro' | 'outro' | 'echo' | 'healing'
 export type Element = 'spectro' | 'fusion' | 'glacio' | 'electro' | 'aero' | 'havoc'
 export interface StatLine { key: StatKey; value: number }
-export interface Echo { id: string; name: string; cost: 1 | 3 | 4; rarity: 1 | 2 | 3 | 4 | 5; level: number; sonata: string; mainStat: StatLine; subStats: StatLine[]; locked: boolean; excluded: boolean; equippedBy?: string; equippedByName?: string; createdAt: number; source: 'scan' | 'screenshot' | 'manual' | 'import' }
+export interface Echo { id: string; name: string; cost: 1 | 3 | 4; rarity: 1 | 2 | 3 | 4 | 5; level: number; sonata: string; mainStat: StatLine; subStats: StatLine[]; locked: boolean; excluded: boolean; /** Owned-character ID for actual equipment. Legacy backups may contain a build ID and are migrated on open/import. */ equippedBy?: string; equippedByName?: string; createdAt: number; source: 'scan' | 'screenshot' | 'manual' | 'import' }
 export interface AttackDefinition { id: string; name: string; type: DamageType; element: Element; multiplier: number; hits: number; scalesWith: 'atk' | 'hp' | 'def' }
 export interface Resonator { id: string; name: string; element: Element; role: string; accent: string; baseStats: Pick<AggregatedStats, 'hp' | 'atk' | 'def' | 'critRate' | 'critDamage'>; attacks: AttackDefinition[] }
 export interface Weapon { id: string; name: string; type: 'broadblade' | 'sword' | 'pistols' | 'gauntlets' | 'rectifier'; baseAtk: number; stat?: StatLine }
 export interface OwnedCharacter { id: string; catalogId: string; level: number; sequence: number; locked: boolean; favorite?: boolean; skillLevels?: number[]; enabledSkillTreeBonusIds?: string[]; createdAt: number }
 export interface OwnedWeapon { id: string; catalogId: string; level: number; rank: number; locked: boolean; equippedBy?: string; createdAt: number }
-export interface Build { id: string; name: string; resonatorId: string; weaponId: string; echoIds: string[]; level: number; skillLevel: number }
-export interface Team { id: string; name: string; buildIds: string[]; enemy: EnemyConfig; rotationDuration: number; actions: RotationAction[]; buffs?: BuffEffect[]; scenario?: TeamScenario; calculationV2?: import('./calculation-v2/types').CalculationScenarioV2 }
+export interface Build { id: string; name: string; description?: string; characterId?: string; resonatorId: string; weaponId: string; echoIds: string[]; level: number; skillLevel: number; createdAt?: number; updatedAt?: number; source?: 'manual' | 'equipped' | 'optimizer' | 'import' }
+export interface EquippedLoadout { id: string; characterId: string; weaponId: string; echoIds: string[]; updatedAt: number }
+export type LoadoutSourceRef =
+  | { type: 'equipped'; characterId: string }
+  | { type: 'saved'; buildId: string }
+  | { type: 'theorycraft'; theorycraftBuildId: string }
+export interface TeamMember { memberId: string; characterId: string; loadoutSource: LoadoutSourceRef; compareSource?: LoadoutSourceRef }
+export interface TheorycraftEchoSlot { cost: Echo['cost']; rarity: Echo['rarity']; level: number; mainStatKey: StatKey }
+export interface TheorycraftSonata { name: string; pieces: number }
+export type TheorycraftSubstats =
+  | { mode: 'values'; values: Partial<Record<StatKey, number>> }
+  | { mode: 'rolls'; quality: 'low' | 'mid' | 'high'; rolls: Partial<Record<StatKey, number>> }
+export interface TheorycraftBuild {
+  id: string
+  name: string
+  description: string
+  characterId: string
+  weapon: { catalogId: string; level: number; rank: number }
+  mainEchoName: string
+  slots: TheorycraftEchoSlot[]
+  sonatas: TheorycraftSonata[]
+  substats: TheorycraftSubstats
+  createdAt: number
+  updatedAt: number
+  source?: { type: 'equipped' | 'saved' | 'optimizer'; id?: string }
+}
+export interface Team { id: string; name: string; /** Stable member IDs in schema v7; legacy backups contain saved-build IDs and are migrated. */ buildIds: string[]; members?: TeamMember[]; enemy: EnemyConfig; rotationDuration: number; actions: RotationAction[]; buffs?: BuffEffect[]; scenario?: TeamScenario; calculationV2?: import('./calculation-v2/types').CalculationScenarioV2 }
 export type ScenarioValue = number | string | boolean
 export type FormulaResultMode = 'normal' | 'expected' | 'critical'
 export interface TeamScenario {
@@ -19,7 +44,7 @@ export interface TeamScenario {
   selectedTargetByBuild: Record<string, string>
   compareBuildId?: string
 }
-export interface RotationAction { id: string; timestamp: number; buildId: string; attackId: string; formulaTargetId?: string; inputs?: Record<string, ScenarioValue> }
+export interface RotationAction { id: string; timestamp: number; duration?: number; multiplier?: number; buildId: string; attackId: string; formulaTargetId?: string; inputs?: Record<string, ScenarioValue> }
 export interface BuffEffect { id: string; name: string; sourceBuildId: string; target: 'self' | 'next' | 'team'; triggerAttackId: string; duration: number; stat: StatKey | 'amplify'; value: number; stackingGroup: string }
 export interface EnemyConfig {
   level: number
@@ -157,6 +182,6 @@ export interface OptimizerRun {
   progress: OptimizerProgress
   highlightedBuildKeys?: string[]
 }
-export interface AccountDocument { schemaVersion: 1 | 2 | 3 | 4 | 5 | 6; gameDataVersion: string; exportedAt: string; echoes: Echo[]; characters: OwnedCharacter[]; weapons: OwnedWeapon[]; builds: Build[]; teams: Team[]; optimizerProfiles?: OptimizerProfile[]; optimizerRuns?: OptimizerRun[]; settings: AppSettings }
-export interface AppSettings { displayName: string; privacyMode: boolean; background: 'signal' | 'tacet' | 'plain'; scanIntervalMs: number; roverGender: 'male' | 'female'; scoreWeights: Record<string, Partial<Record<StatKey, number>>>; characterSubstatWeights: Record<string, Partial<Record<StatKey, number>>> }
-export type AppView = 'dashboard' | 'archive' | 'scanner' | 'echoes' | 'weapons' | 'characters' | 'teams' | 'builds' | 'legal'
+export interface AccountDocument { schemaVersion: 1 | 2 | 3 | 4 | 5 | 6 | 7; gameDataVersion: string; exportedAt: string; echoes: Echo[]; characters: OwnedCharacter[]; weapons: OwnedWeapon[]; builds: Build[]; equippedLoadouts?: EquippedLoadout[]; theorycraftBuilds?: TheorycraftBuild[]; teams: Team[]; optimizerProfiles?: OptimizerProfile[]; optimizerRuns?: OptimizerRun[]; settings: AppSettings }
+export interface AppSettings { displayName: string; uid: string; privacyMode: boolean; background: 'signal' | 'tacet' | 'plain'; scanIntervalMs: number; roverGender: 'male' | 'female'; scoreWeights: Record<string, Partial<Record<StatKey, number>>>; characterSubstatWeights: Record<string, Partial<Record<StatKey, number>>> }
+export type AppView = 'dashboard' | 'archive' | 'scanner' | 'echoes' | 'weapons' | 'characters' | 'teams' | 'legal'

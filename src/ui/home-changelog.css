@@ -84,7 +84,14 @@
 }
 
 @media (max-width: 650px) {
-  .home-changelog { padding: 20px 18px; }
-  .home-changelog-header { align-items: flex-start; }
-  .home-changelog-list li { grid-template-columns: 1fr; gap: 3px; }
+  .home-changelog {
+    padding: 20px 18px;
+  }
+  .home-changelog-header {
+    align-items: flex-start;
+  }
+  .home-changelog-list li {
+    grid-template-columns: 1fr;
+    gap: 3px;
+  }
 }

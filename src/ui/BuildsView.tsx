@@ -1,109 +1,228 @@
-import { useRef, useState } from 'react'
-import { toPng } from 'html-to-image'
+import { useMemo, useState } from 'react'
 import { aggregateStats, calculateDamage, formatDamage } from '../domain/damage'
-import { resonators, statLabels, weapons } from '../game-data'
-import { echoStatLines } from '../game-data/echo-main-stats'
-import { db, saveSettings, setBuildEchoIds, setOwnedWeaponOwner } from '../storage/database'
-import type { AppSettings, Build, Echo, StatKey } from '../domain/types'
-import { EchoMiniCard, formatStat, Icon, PageHeader, Panel, StatValue } from './components'
-import { CalculatedValue } from './CalculationDetails'
-import { damageDetail, runtimeStatDetail } from './calculation-detail-model'
+import { createLocalId } from '../domain/id'
+import { createTheorycraftBuild, loadoutCharacterId, resolveLoadout, theorycraftWarnings, type LoadoutCollections } from '../domain/loadouts'
+import type { Build, Echo, EquippedLoadout, LoadoutSourceRef, OwnedCharacter, OwnedWeapon, StatKey, TheorycraftBuild, TheorycraftEchoSlot } from '../domain/types'
+import { characterCatalog, echoCatalog, resonators, sonataCatalog, statLabels, weaponCatalog, weapons as damageWeapons } from '../game-data'
+import { mainStatKeysByCost, maxLevelByRarity } from '../game-data/echo-main-stats'
+import { tunableRolls } from '../game-data/tunable-rolls'
+import { db } from '../storage/database'
+import { duplicateSavedBuild, equipSavedBuild, equipmentConflicts, saveEquippedBuild, theorycraftFromBuild } from '../storage/loadouts'
+import { Icon, PageHeader, Panel } from './components'
 
-function scoreEcho(echo: Echo, weights: Partial<Record<StatKey, number>>) {
-  return echoStatLines(echo).reduce((sum, line) => sum + line.value * (weights[line.key] ?? 0), 0)
+type Props = {
+  echoes: Echo[]; builds: Build[]; characters: OwnedCharacter[]; weapons: OwnedWeapon[]
+  equippedLoadouts: EquippedLoadout[]; theorycraftBuilds: TheorycraftBuild[]; refresh: () => Promise<void>
+  embedded?: boolean
+  management?: boolean
+  characterId?: string
+  onSelectSource?: (source: LoadoutSourceRef) => void
 }
 
-function relativeGrade(value: number, population: number[]) {
-  if (!population.length) return '-'
-  const percentile = population.filter((score) => score <= value).length / population.length
-  if (percentile >= 0.95) return 'SSS'
-  if (percentile >= 0.85) return 'S'
-  if (percentile >= 0.7) return 'A'
-  if (percentile >= 0.45) return 'B'
-  return 'C'
+const sourceKey = (source: LoadoutSourceRef) => source.type === 'equipped' ? `equipped:${source.characterId}` : source.type === 'saved' ? `saved:${source.buildId}` : `theorycraft:${source.theorycraftBuildId}`
+const statKeys = Object.keys(tunableRolls) as StatKey[]
+
+function sourceLabel(source: LoadoutSourceRef, collections: LoadoutCollections) {
+  if (source.type === 'equipped') return 'Equipped Build'
+  if (source.type === 'saved') return collections.builds.find((entry) => entry.id === source.buildId)?.name ?? 'Missing saved build'
+  return collections.theorycraftBuilds.find((entry) => entry.id === source.theorycraftBuildId)?.name ?? 'Missing theorycraft build'
 }
 
-export function BuildsView({ echoes, builds, settings, refresh }: { echoes: Echo[]; builds: Build[]; settings: AppSettings; refresh: () => Promise<void> }) {
-  const [selectedId, setSelectedId] = useState(builds[0]?.id)
-  const [message, setMessage] = useState('')
-  const [cardMode, setCardMode] = useState<'full' | 'compact'>('full')
-  const [exporting, setExporting] = useState(false)
-  const cardRef = useRef<HTMLDivElement>(null)
-  const build = builds.find((item) => item.id === selectedId) ?? builds[0]
-  const resonator = resonators.find((item) => item.id === build?.resonatorId)
-  const weapon = weapons.find((item) => item.id === build?.weaponId)
-  if (!build || !resonator || !weapon) return null
-  const equipped = build.echoIds.map((id) => echoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo))
-  const stats = aggregateStats(resonator, weapon, equipped)
-  const attack = resonator.attacks[0]
-  const previewEnemy = { level: 100, resistance: 10, damageReduction: 0 }
-  const damage = calculateDamage(stats, attack, previewEnemy)
-  const weights = settings.scoreWeights[resonator.id] ?? {}
-  const score = equipped.reduce((sum, echo) => sum + scoreEcho(echo, weights), 0)
-  const inventoryScores = echoes.filter((echo) => !echo.excluded).map((echo) => scoreEcho(echo, weights))
-  const averageScore = equipped.length ? score / equipped.length : 0
-  const buildGrade = relativeGrade(averageScore, inventoryScores)
-  const scoreBreakdown = Object.entries(weights).map(([key, weight]) => {
-    const raw = equipped.flatMap(echoStatLines).filter((line) => line.key === key).reduce((sum, line) => sum + line.value, 0)
-    return { key: key as StatKey, raw, weight: weight ?? 0, contribution: raw * (weight ?? 0) }
-  }).filter((entry) => entry.contribution > 0)
-  const buildGradeDetail = { title: 'Build grade', value: buildGrade, formula: 'Average weighted Echo score ranked against visible inventory', rows: [
-    { label: 'Total weighted points', value: score.toFixed(1) }, { label: 'Equipped Echoes', value: String(equipped.length) }, { label: 'Average score', value: averageScore.toFixed(1), children: scoreBreakdown.map((entry) => ({ label: `${statLabels[entry.key]} × ${entry.weight}`, value: entry.contribution.toFixed(1) })) }
-  ] }
-  const cost = equipped.reduce((sum, echo) => sum + echo.cost, 0)
-  const weaponType = resonator.id === 'rover-spectro' ? 'sword' : resonator.id === 'chixia' ? 'pistols' : 'rectifier'
-  const compatibleWeapons = weapons.filter((item) => item.type === weaponType)
-  const weightKeys: StatKey[] = resonator.id === 'baizhi'
-    ? ['hpPercent', 'energyRegen', 'healingBonus', 'critRate']
-    : ['critRate', 'critDamage', 'atkPercent', resonator.element === 'spectro' ? 'spectroDamage' : resonator.element === 'fusion' ? 'fusionDamage' : 'glacioDamage']
+function LoadoutSummary({ source, collections }: { source: LoadoutSourceRef; collections: LoadoutCollections }) {
+  const resolved = resolveLoadout(source, collections)
+  const catalog = characterCatalog.find((entry) => entry.id === resolved.character?.catalogId)
+  const weapon = weaponCatalog.find((entry) => entry.id === resolved.weapon?.catalogId)
+  const cost = resolved.echoes.reduce((sum, echo) => sum + echo.cost, 0)
+  const sonatas = [...new Set(resolved.echoes.map((echo) => echo.sonata).filter(Boolean))]
+  return <div className="loadout-summary">
+    <div className="loadout-summary-character">{catalog?.iconSourceUrl && <img src={catalog.iconSourceUrl} alt=""/>}<span><strong>{catalog?.name ?? 'Missing character'}</strong><small>{weapon?.name ?? 'No weapon'}</small></span></div>
+    <div className="loadout-summary-facts"><span><b>{resolved.echoes.length}/5</b> Echoes</span><span><b>{cost}/12</b> cost</span><span><b>{sonatas.length || 0}</b> Sonatas</span></div>
+    {resolved.warnings.length > 0 && <div className="notice warning compact">{resolved.warnings.join(' ')}</div>}
+  </div>
+}
 
-  const toggleEcho = async (echo: Echo) => {
-    setMessage('')
-    const selected = build.echoIds.includes(echo.id)
-    if (!selected && echo.equippedBy && echo.equippedBy !== build.id) { setMessage('That Echo belongs to another build. Unassign it there first.'); return }
-    if (!selected && build.echoIds.length >= 5) { setMessage('A build can equip five Echoes.'); return }
-    if (!selected && cost + echo.cost > 12) { setMessage('This selection would exceed the 12-cost limit.'); return }
-    const echoIds = selected ? build.echoIds.filter((id) => id !== echo.id) : [...build.echoIds, echo.id]
-    await setBuildEchoIds(build.id, echoIds)
-    await refresh()
-  }
+function ManagementGear({ source, collections }: { source: LoadoutSourceRef; collections: LoadoutCollections }) {
+  const resolved = resolveLoadout(source, collections)
+  const weapon = weaponCatalog.find((entry) => entry.id === resolved.weapon?.catalogId)
+  return <div className="build-management-gear">
+    <span className="build-management-weapon">{weapon?.iconSourceUrl && <img src={weapon.iconSourceUrl} alt=""/>}<small>Lv. {resolved.weapon?.level ?? 1}</small><b>R{resolved.weapon?.rank ?? 1}</b></span>
+    {Array.from({ length: 5 }, (_, index) => { const echo = resolved.echoes[index]; const catalog = echo && echoCatalog.find((entry) => entry.name === echo.name); return <span className="build-management-echo" key={echo?.id ?? index}>{catalog?.iconSourceUrl ? <img src={catalog.iconSourceUrl} alt=""/> : <i>+</i>}{echo && <><small>+{echo.level}</small><b>{statLabels[echo.mainStat.key]} {echo.mainStat.value}%</b></>}</span> })}
+  </div>
+}
 
-  const exportCard = async () => {
-    if (!cardRef.current) return
-    setExporting(true); setMessage('')
-    try {
-      const dataUrl = await toPng(cardRef.current, { pixelRatio: 2, cacheBust: true, backgroundColor: '#080b0d' })
-      const anchor = document.createElement('a'); anchor.download = `${resonator.name.replace(/\W+/g, '-')}-build.png`; anchor.href = dataUrl; anchor.click()
-    } catch { setMessage('Card export failed. Try the plain background or reload the page.') }
-    finally { setExporting(false) }
-  }
-
-  const updateBuild = async (patch: Partial<Build>) => {
-    if (patch.weaponId !== undefined) {
-      const [ownedWeapon, character] = await Promise.all([db.weapons.get(patch.weaponId), db.characters.where('catalogId').equals(build.resonatorId).first()])
-      if (ownedWeapon && character) await setOwnedWeaponOwner(ownedWeapon.id, character.id)
-      else await db.builds.update(build.id, patch)
-    } else await db.builds.update(build.id, patch)
-    await refresh()
-  }
-  const updateWeight = async (key: StatKey, value: number) => {
-    await saveSettings({ ...settings, scoreWeights: { ...settings.scoreWeights, [resonator.id]: { ...weights, [key]: value } } })
-    await refresh()
-  }
-
-  return <>
-    <PageHeader eyebrow="Loadout studio" title="Character builds" description="Equip directly from your local archive, inspect the full stat pipeline, and export a card worth sharing." actions={<><button className="secondary" onClick={() => setCardMode((mode) => mode === 'full' ? 'compact' : 'full')}>{cardMode === 'full' ? 'Compact card' : 'Full card'}</button><button className="primary" disabled={exporting} onClick={exportCard}><Icon name="download"/>{exporting ? 'Rendering...' : 'Export card'}</button></>} />
-    <div className="character-tabs">{builds.map((item) => { const character = resonators.find((entry) => entry.id === item.resonatorId); return <button key={item.id} className={item.id === build.id ? 'active' : ''} onClick={() => setSelectedId(item.id)}><span style={{ '--accent': character?.accent } as React.CSSProperties}>{character?.name[0]}</span><div><strong>{character?.name}</strong><small>{item.echoIds.length}/5 Echoes</small></div></button> })}</div>
-    <div className="build-layout">
-      <div className={`build-card bg-${settings.background} mode-${cardMode}`} ref={cardRef} style={{ '--character-accent': resonator.accent } as React.CSSProperties}>
-        <div className="card-noise"/><section className="character-art"><div className="character-sigil">{resonator.name[0]}</div><div className="character-copy"><span>{resonator.element} / {resonator.role}</span><h2>{resonator.name}</h2><p>{settings.privacyMode ? 'PRIVATE BUILD' : settings.displayName}</p></div><div className="sonata-tags">{Array.from(new Set(equipped.map((echo) => echo.sonata))).map((name) => <span key={name}>{name}</span>)}</div></section>
-        <section className="build-stats"><div className="card-title"><div><span>BUILD 01 / LV. {build.level}</span><h2>{resonator.name}</h2></div><CalculatedValue detail={buildGradeDetail}><b title={`${Math.round(score)} weighted points`}>{buildGrade}</b></CalculatedValue></div>{(['hp', 'atk', 'def', 'critRate', 'critDamage', 'energyRegen', `${resonator.element}Damage`] as Array<keyof typeof stats>).map((key) => <StatValue key={key} label={statLabels[key as StatKey] ?? String(key)} value={formatStat(key as StatKey, stats[key])} accent={key === 'critRate' || key === 'critDamage'} detail={runtimeStatDetail(resonator, weapon, equipped, key as StatKey, stats[key])}/>) }<div className="damage-callout"><span>{attack.name} / Expected</span><CalculatedValue detail={damageDetail(stats, attack, previewEnemy, 'expected', damage.expected, build.level)}><strong>{formatDamage(damage.expected)}</strong></CalculatedValue><small><CalculatedValue detail={damageDetail(stats, attack, previewEnemy, 'normal', damage.normal, build.level)}>{formatDamage(damage.normal)} normal</CalculatedValue> · <CalculatedValue detail={damageDetail(stats, attack, previewEnemy, 'critical', damage.critical, build.level)}>{formatDamage(damage.critical)} critical</CalculatedValue></small></div></section>
-        <section className="weapon-card"><span>WEAPON / RANK 1</span><div className="weapon-glyph">◇</div><h3>{weapon.name}</h3><p>Base ATK <strong>{weapon.baseAtk}</strong></p>{weapon.stat && <p>{statLabels[weapon.stat.key]} <strong>{formatStat(weapon.stat.key, weapon.stat.value)}</strong></p>}</section>
-        <section className="forte-card"><span>FORTE CIRCUIT / MVP</span><div className="forte-line">{resonator.attacks.map((item, index) => <div key={item.id}><i>{index + 1}</i><strong>{item.name}</strong><small>{(item.multiplier * 100).toFixed(2)}% × {item.hits}</small></div>)}</div></section>
-        <section className="equipped-row">{Array.from({ length: 5 }, (_, index) => equipped[index] ? <EchoMiniCard key={equipped[index].id} echo={equipped[index]} grade={relativeGrade(scoreEcho(equipped[index], weights), inventoryScores)}/> : <div className="empty-echo" key={index}><span>+</span><small>EMPTY</small></div>)}</section>
-        <footer className="build-footer"><span>TACET LAB // LOCAL BUILD</span><span>{cost}/12 COST</span><span>DATA {new Date().toISOString().slice(0, 10)}</span></footer>
-      </div>
-      <Panel className="build-picker"><div className="section-heading"><div><span className="eyebrow">Archive link</span><h2>Equip Echoes</h2></div><b>{build.echoIds.length}/5 · {cost}/12</b></div><div className="build-controls"><label>Weapon<select value={build.weaponId} onChange={(event) => updateBuild({ weaponId: event.target.value })}>{compatibleWeapons.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}</select></label><label>Character level<input type="number" min="1" max="90" value={build.level} onChange={(event) => updateBuild({ level: Math.min(90, Math.max(1, Number(event.target.value))) })}/></label></div><details className="score-weights"><summary>Echo score weights & breakdown</summary><p>Grades are percentiles within your visible inventory. Weights affect the score only, not damage.</p>{weightKeys.map((key) => <label key={key}>{statLabels[key]}<input type="number" min="0" max="10" step="0.1" value={weights[key] ?? 0} onChange={(event) => updateWeight(key, Number(event.target.value))}/></label>)}{scoreBreakdown.map((entry) => <div className="score-line" key={entry.key}><span>{statLabels[entry.key]}: {entry.raw.toFixed(1)} x {entry.weight}</span><b>{entry.contribution.toFixed(1)}</b></div>)}</details>{message && <div className="notice warning">{message}</div>}<div className="picker-list">{echoes.filter((echo) => !echo.excluded).map((echo) => <EchoMiniCard key={echo.id} echo={echo} selected={build.echoIds.includes(echo.id)} onClick={() => toggleEcho(echo)}/>)}</div></Panel>
+function TheorycraftEditor({ value, ownedCharacter, onClose, onSaved }: { value: TheorycraftBuild; ownedCharacter?: OwnedCharacter; onClose: () => void; onSaved: () => Promise<void> }) {
+  const [draft, setDraft] = useState(() => structuredClone(value))
+  const character = characterCatalog.find((entry) => entry.id === ownedCharacter?.catalogId) ?? characterCatalog[0]
+  const compatibleWeapons = weaponCatalog.filter((entry) => entry.type.toLowerCase() === character?.weaponType.toLowerCase())
+  const compatibleMainEchoes = echoCatalog.filter((entry) => entry.rarities.includes(draft.slots[0]?.rarity ?? 5))
+  const warnings = theorycraftWarnings(draft)
+  const liveResolved = ownedCharacter ? resolveLoadout({ type: 'theorycraft', theorycraftBuildId: draft.id }, { characters: [ownedCharacter], weapons: [], echoes: [], builds: [], equippedLoadouts: [], theorycraftBuilds: [draft] }) : undefined
+  const liveResonator = resonators.find((entry) => entry.id === ownedCharacter?.catalogId)
+  const liveWeapon = damageWeapons.find((entry) => entry.id === liveResolved?.weapon?.catalogId)
+  const liveStats = liveResonator && liveWeapon ? aggregateStats(liveResonator, liveWeapon, liveResolved?.echoes ?? []) : undefined
+  const liveDamage = liveStats && liveResonator?.attacks[0] ? calculateDamage(liveStats, liveResonator.attacks[0], { level: 100, resistance: 10, damageReduction: 0 }) : undefined
+  const updateSlot = (index: number, patch: Partial<TheorycraftEchoSlot>) => setDraft((current) => ({ ...current, slots: current.slots.map((slot, slotIndex) => slotIndex === index ? { ...slot, ...patch } : slot), updatedAt: Date.now() }))
+  const save = async () => { await db.theorycraftBuilds.put({ ...draft, name: draft.name.trim() || 'Theorycraft build', updatedAt: Date.now() }); await onSaved(); onClose() }
+  return <div className="modal-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}><Panel className="modal theorycraft-editor">
+    <header><div><span className="eyebrow">Hypothetical loadout</span><h2>{draft.name}</h2></div><button className="text-button" onClick={onClose}>Close</button></header>
+    <div className="theorycraft-grid">
+      <label>Name<input value={draft.name} onChange={(event) => setDraft({ ...draft, name: event.target.value })}/></label>
+      <label>Description<textarea value={draft.description} onChange={(event) => setDraft({ ...draft, description: event.target.value })}/></label>
+      <label>Weapon<select value={draft.weapon.catalogId} onChange={(event) => setDraft({ ...draft, weapon: { ...draft.weapon, catalogId: event.target.value } })}>{compatibleWeapons.map((entry) => <option value={entry.id} key={entry.id}>{entry.name}</option>)}</select></label>
+      <label>Weapon level<input type="number" min="1" max="90" value={draft.weapon.level} onChange={(event) => setDraft({ ...draft, weapon: { ...draft.weapon, level: Math.max(1, Math.min(90, Number(event.target.value))) } })}/></label>
+      <label>Rank<input type="number" min="1" max="5" value={draft.weapon.rank} onChange={(event) => setDraft({ ...draft, weapon: { ...draft.weapon, rank: Math.max(1, Math.min(5, Number(event.target.value))) } })}/></label>
+      <label>Main Echo<select value={draft.mainEchoName} onChange={(event) => { const main = echoCatalog.find((entry) => entry.name === event.target.value); setDraft({ ...draft, mainEchoName: event.target.value, slots: draft.slots.map((slot, index) => index === 0 && main ? { ...slot, cost: main.cost } : slot) }) }}>{compatibleMainEchoes.map((entry) => <option value={entry.name} key={entry.id}>{entry.name} · Cost {entry.cost}</option>)}</select></label>
     </div>
+    <section><div className="section-heading"><div><span className="eyebrow">Anonymous Echoes</span><h3>Five stat slots</h3></div><b>{draft.slots.reduce((sum, slot) => sum + slot.cost, 0)}/12 cost</b></div>
+      <div className="theorycraft-slots">{draft.slots.map((slot, index) => <article key={index}><strong>{index === 0 ? 'Main Echo slot' : `Slot ${index + 1}`}</strong>
+        <label>Cost<select value={slot.cost} disabled={index === 0} onChange={(event) => { const cost = Number(event.target.value) as Echo['cost']; updateSlot(index, { cost, mainStatKey: mainStatKeysByCost[cost][0] }) }}>{[4, 3, 1].map((cost) => <option value={cost} key={cost}>{cost}</option>)}</select></label>
+        <label>Rarity<select value={slot.rarity} onChange={(event) => { const rarity = Number(event.target.value) as Echo['rarity']; updateSlot(index, { rarity, level: Math.min(slot.level, maxLevelByRarity[rarity]) }) }}>{[5, 4, 3, 2, 1].map((rarity) => <option value={rarity} key={rarity}>{rarity} star</option>)}</select></label>
+        <label>Level<input type="number" min="0" max={maxLevelByRarity[slot.rarity]} value={slot.level} onChange={(event) => updateSlot(index, { level: Number(event.target.value) })}/></label>
+        <label>Main stat<select value={slot.mainStatKey} onChange={(event) => updateSlot(index, { mainStatKey: event.target.value as StatKey })}>{mainStatKeysByCost[slot.cost].map((key) => <option value={key} key={key}>{statLabels[key]}</option>)}</select></label>
+      </article>)}</div>
+    </section>
+    <section><div className="section-heading"><div><span className="eyebrow">Sonata composition</span><h3>Exactly five pieces</h3></div><button className="secondary" onClick={() => setDraft({ ...draft, sonatas: [...draft.sonatas, { name: sonataCatalog[0]?.name ?? '', pieces: 0 }] })}>Add Sonata</button></div>
+      <div className="theorycraft-sonatas">{draft.sonatas.map((sonata, index) => <div key={`${index}:${sonata.name}`}><select value={sonata.name} onChange={(event) => setDraft({ ...draft, sonatas: draft.sonatas.map((entry, entryIndex) => entryIndex === index ? { ...entry, name: event.target.value } : entry) })}>{sonataCatalog.map((entry) => <option value={entry.name} key={entry.name}>{entry.name}</option>)}</select><input type="number" min="0" max="5" value={sonata.pieces} onChange={(event) => setDraft({ ...draft, sonatas: draft.sonatas.map((entry, entryIndex) => entryIndex === index ? { ...entry, pieces: Number(event.target.value) } : entry) })}/><button className="danger text" onClick={() => setDraft({ ...draft, sonatas: draft.sonatas.filter((_, entryIndex) => entryIndex !== index) })}>Remove</button></div>)}</div>
+    </section>
+    <section><div className="section-heading"><div><span className="eyebrow">Aggregate substats</span><h3>Direct values or roll counts</h3></div><select value={draft.substats.mode} onChange={(event) => setDraft({ ...draft, substats: event.target.value === 'values' ? { mode: 'values', values: {} } : { mode: 'rolls', quality: 'mid', rolls: {} } })}><option value="values">Direct values</option><option value="rolls">Roll counts</option></select></div>
+      {draft.substats.mode === 'rolls' && <label>Roll quality<select value={draft.substats.quality} onChange={(event) => setDraft({ ...draft, substats: { ...draft.substats, quality: event.target.value as 'low' | 'mid' | 'high' } })}><option value="low">Low</option><option value="mid">Mid</option><option value="high">High</option></select></label>}
+      <div className="theorycraft-substats">{statKeys.map((key) => <label key={key}>{statLabels[key]}<input type="number" min="0" step={draft.substats.mode === 'values' ? .1 : 1} value={draft.substats.mode === 'values' ? draft.substats.values[key] ?? 0 : draft.substats.rolls[key] ?? 0} onChange={(event) => { const value = Number(event.target.value); setDraft((current) => current.substats.mode === 'values' ? { ...current, substats: { ...current.substats, values: { ...current.substats.values, [key]: value } } } : { ...current, substats: { ...current.substats, rolls: { ...current.substats.rolls, [key]: value } } }) }}/></label>)}</div>
+    </section>
+    {warnings.length > 0 && <div className="notice warning"><strong>Feasibility warnings</strong>{warnings.map((warning) => <p key={warning}>{warning}</p>)}</div>}
+    {liveStats && <section><div className="section-heading"><div><span className="eyebrow">Live calculation</span><h3>Final stats and formula preview</h3></div>{liveDamage && <b>{liveResonator?.attacks[0]?.name}: {formatDamage(liveDamage.expected)} average DMG</b>}</div><div className="loadout-final-stats">{(['hp', 'atk', 'def', 'critRate', 'critDamage', 'energyRegen'] as StatKey[]).map((key) => <span key={key}><small>{statLabels[key]}</small><b>{formatDamage(liveStats[key] ?? 0)}</b></span>)}</div></section>}
+    <div className="notice warning">Damage values remain based on unverified bundled game data. Verify important results against the current English in-game UI.</div>
+    <div className="modal-actions"><button className="secondary" onClick={onClose}>Cancel</button><button className="primary" onClick={() => void save()}>Save theorycraft</button></div>
+  </Panel></div>
+}
+
+export function BuildsView({ echoes, builds, characters, weapons, equippedLoadouts, theorycraftBuilds, refresh, embedded = false, management = false, characterId, onSelectSource }: Props) {
+  const collections = useMemo<LoadoutCollections>(() => ({ echoes, builds, characters, weapons, equippedLoadouts, theorycraftBuilds }), [echoes, builds, characters, weapons, equippedLoadouts, theorycraftBuilds])
+  const sources = useMemo<LoadoutSourceRef[]>(() => {
+    const candidates: LoadoutSourceRef[] = [
+      ...characters.map((character) => ({ type: 'equipped' as const, characterId: character.id })),
+      ...builds.map((build) => ({ type: 'saved' as const, buildId: build.id })),
+      ...theorycraftBuilds.map((build) => ({ type: 'theorycraft' as const, theorycraftBuildId: build.id }))
+    ]
+    return characterId ? candidates.filter((source) => loadoutCharacterId(source, collections) === characterId) : candidates
+  }, [characters, builds, theorycraftBuilds, characterId, collections])
+  const [selectedKey, setSelectedKey] = useState(sourceKey(sources[0] ?? { type: 'equipped', characterId: '' }))
+  const [compareKey, setCompareKey] = useState('')
+  const [editing, setEditing] = useState<TheorycraftBuild>()
+  const [message, setMessage] = useState('')
+  const selected = sources.find((source) => sourceKey(source) === selectedKey) ?? sources[0]
+  const selectedCharacterId = selected ? loadoutCharacterId(selected, collections) : undefined
+  const compareOptions = sources.filter((source) => sourceKey(source) !== sourceKey(selected ?? { type: 'equipped', characterId: '' }) && loadoutCharacterId(source, collections) === selectedCharacterId)
+
+  const run = async (action: () => Promise<unknown>, success: string) => { try { setMessage(''); await action(); await refresh(); setMessage(success) } catch (error) { setMessage(error instanceof Error ? error.message : String(error)) } }
+  const createTc = async (character: OwnedCharacter) => { const created = createTheorycraftBuild(character); created.id = createLocalId(); await db.theorycraftBuilds.add(created); await refresh(); setEditing(created); setSelectedKey(sourceKey({ type: 'theorycraft', theorycraftBuildId: created.id })) }
+  const equip = async (build: Build) => {
+    const conflicts = await equipmentConflicts(build.id)
+    if (conflicts.length && !confirm(`Equip ${build.name}? Items will move from ${conflicts.join(', ')}.`)) return
+    await run(() => equipSavedBuild(build.id), `${build.name} equipped. The saved snapshot was not changed.`)
+  }
+  const deleteSource = async (source: LoadoutSourceRef) => {
+    if (source.type === 'equipped') return
+    if (!confirm(`Delete ${sourceLabel(source, collections)}? This cannot be undone.`)) return
+    await run(async () => {
+      const characterId = loadoutCharacterId(source, collections)
+      await db.transaction('rw', [db.builds, db.theorycraftBuilds, db.teams, db.optimizerProfiles, db.optimizerRuns], async () => {
+        const matches = (candidate?: LoadoutSourceRef) => Boolean(candidate && sourceKey(candidate) === sourceKey(source))
+        await db.teams.toCollection().modify((team) => {
+          team.members = team.members?.map((member) => ({ ...member,
+            loadoutSource: matches(member.loadoutSource) && characterId ? { type: 'equipped', characterId } : member.loadoutSource,
+            compareSource: matches(member.compareSource) ? undefined : member.compareSource
+          }))
+        })
+        if (source.type === 'saved') {
+          const profileIds = (await db.optimizerProfiles.where('buildId').equals(source.buildId).toArray()).map((entry) => entry.id)
+          await db.optimizerRuns.where('buildId').equals(source.buildId).delete()
+          if (profileIds.length) await db.optimizerProfiles.bulkDelete(profileIds)
+          await db.builds.delete(source.buildId)
+        } else await db.theorycraftBuilds.delete(source.theorycraftBuildId)
+      })
+      setSelectedKey(sourceKey(sources.find((entry) => sourceKey(entry) !== sourceKey(source)) ?? { type: 'equipped', characterId: '' }))
+    }, 'Build deleted. Team members fell back to Equipped.')
+  }
+  const rename = async (source: LoadoutSourceRef) => {
+    if (source.type === 'equipped') return
+    const current = sourceLabel(source, collections); const name = prompt('Build name', current)?.trim(); if (!name) return
+    await run(async () => { if (source.type === 'saved') await db.builds.update(source.buildId, { name, updatedAt: Date.now() }); else await db.theorycraftBuilds.update(source.theorycraftBuildId, { name, updatedAt: Date.now() }) }, 'Build renamed.')
+  }
+  const describe = async (source: LoadoutSourceRef) => {
+    if (source.type === 'equipped') return
+    const current = source.type === 'saved' ? builds.find((entry) => entry.id === source.buildId)?.description : theorycraftBuilds.find((entry) => entry.id === source.theorycraftBuildId)?.description
+    const description = prompt('Build description', current ?? ''); if (description === null) return
+    await run(async () => { if (source.type === 'saved') await db.builds.update(source.buildId, { description, updatedAt: Date.now() }); else await db.theorycraftBuilds.update(source.theorycraftBuildId, { description, updatedAt: Date.now() }) }, 'Description updated.')
+  }
+  const duplicate = async (source: LoadoutSourceRef) => run(async () => { if (source.type === 'saved') await duplicateSavedBuild(source.buildId); else if (source.type === 'theorycraft') await theorycraftFromBuild(source) }, 'Build duplicated.')
+  const toTheorycraft = async (source: LoadoutSourceRef) => run(async () => { const created = await theorycraftFromBuild(source); setSelectedKey(sourceKey({ type: 'theorycraft', theorycraftBuildId: created.id })); setEditing(created) }, 'Theorycraft copy created.')
+  const removeMissingReferences = async (buildId: string) => run(async () => {
+    const build = builds.find((entry) => entry.id === buildId); if (!build) return
+    const echoIds = build.echoIds.filter((id) => echoes.some((echo) => echo.id === id))
+    const weaponId = weapons.some((weapon) => weapon.id === build.weaponId) ? build.weaponId : ''
+    await db.builds.update(buildId, { echoIds, weaponId, updatedAt: Date.now() })
+  }, 'Missing inventory references removed from the snapshot.')
+  const replaceMissingReferences = async (buildId: string) => run(async () => {
+    const build = builds.find((entry) => entry.id === buildId); if (!build) return
+    const characterId = build.characterId ?? characters.find((entry) => entry.catalogId === build.resonatorId)?.id
+    const equipped = equippedLoadouts.find((entry) => entry.characterId === characterId)
+    if (!equipped) throw new Error('No Equipped loadout is available for replacements.')
+    const used = new Set(build.echoIds.filter((id) => echoes.some((echo) => echo.id === id)))
+    const echoIds = build.echoIds.flatMap((id, index) => {
+      if (echoes.some((echo) => echo.id === id)) return [id]
+      const replacement = equipped.echoIds[index] ?? equipped.echoIds.find((candidate) => !used.has(candidate))
+      if (!replacement || used.has(replacement)) return []
+      used.add(replacement); return [replacement]
+    })
+    const weaponId = weapons.some((weapon) => weapon.id === build.weaponId) ? build.weaponId : equipped.weaponId
+    await db.builds.update(buildId, { echoIds, weaponId, updatedAt: Date.now() })
+  }, 'Missing references replaced from the current Equipped loadout where possible.')
+
+  if (!sources.length) return <>{!embedded && <PageHeader eyebrow="Loadout studio" title="Builds" description="Add an owned character before creating loadouts."/>}<Panel><p>No owned characters are available.</p></Panel></>
+  const grouped = (type: LoadoutSourceRef['type']) => sources.filter((source) => source.type === type)
+  const selectedResolved = selected ? resolveLoadout(selected, collections) : undefined
+  const selectedCatalog = resonators.find((entry) => entry.id === selectedResolved?.character?.catalogId)
+  const selectedWeapon = damageWeapons.find((entry) => entry.id === selectedResolved?.weapon?.catalogId)
+  const selectedStats = selectedCatalog && selectedWeapon ? aggregateStats(selectedCatalog, selectedWeapon, selectedResolved?.echoes ?? []) : undefined
+  if (management) {
+    const equipped = grouped('equipped')[0]
+    const saved = grouped('saved')
+    const theorycraft = grouped('theorycraft')
+    const card = (source: LoadoutSourceRef) => <article className={`build-management-card ${source.type}`} key={sourceKey(source)}>
+      <header><strong>{sourceLabel(source, collections)}{source.type === 'equipped' && ' Build'}</strong><span>{source.type === 'equipped' ? 'Current' : source.type === 'saved' ? 'Saved' : 'Theorycraft'}</span></header>
+      <ManagementGear source={source} collections={collections}/>
+      <footer>
+        {onSelectSource && <button title="Use this build" onClick={() => onSelectSource(source)}><Icon name="team"/></button>}
+        {source.type === 'equipped' && <><button title="Save snapshot" onClick={() => void run(() => saveEquippedBuild(source.characterId), 'Snapshot saved.')}><Icon name="download"/></button><button title="Copy to theorycraft" onClick={() => void toTheorycraft(source)}><Icon name="plus"/></button></>}
+        {source.type === 'saved' && <><button title="Equip" onClick={() => { const build = builds.find((entry) => entry.id === source.buildId); if (build) void equip(build) }}><Icon name="build"/></button><button title="Duplicate" onClick={() => void duplicate(source)}><Icon name="plus"/></button><button title="Rename" onClick={() => void rename(source)}><Icon name="edit"/></button><button title="Delete" onClick={() => void deleteSource(source)}><Icon name="trash"/></button></>}
+        {source.type === 'theorycraft' && <><button title="Edit" onClick={() => setEditing(theorycraftBuilds.find((entry) => entry.id === source.theorycraftBuildId))}><Icon name="edit"/></button><button title="Duplicate" onClick={() => void duplicate(source)}><Icon name="plus"/></button><button title="Delete" onClick={() => void deleteSource(source)}><Icon name="trash"/></button></>}
+      </footer>
+    </article>
+    return <div className="build-management-content">
+      {message && <div className="notice warning">{message}</div>}
+      {equipped && <section className="build-management-equipped">{card(equipped)}</section>}
+      <section className="build-management-group"><header><h3>Builds</h3><button onClick={() => { if (equipped?.type === 'equipped') void run(() => saveEquippedBuild(equipped.characterId), 'New build saved.') }}><Icon name="plus"/>New Build</button></header><div className="build-management-cards">{saved.map(card)}</div><p><b>ⓘ</b>A Build is comprised of a weapon and 5 Echoes.</p></section>
+      <section className="build-management-group"><header><h3>TC Builds</h3><button onClick={() => { const character = characters.find((entry) => entry.id === characterId); if (character) void createTc(character) }}><Icon name="plus"/>New TC Build</button></header><div className="build-management-cards">{theorycraft.map(card)}</div><p><b>ⓘ</b>A Theorycraft Build allows defining a build with hypothetical equipment and aggregate stats.</p></section>
+      {editing && <TheorycraftEditor value={editing} ownedCharacter={characters.find((entry) => entry.id === editing.characterId)} onClose={() => setEditing(undefined)} onSaved={refresh}/>} 
+    </div>
+  }
+  return <>
+    {!embedded && <PageHeader eyebrow="Loadout studio" title="Equipped, saved, and theorycraft builds" description="Preview snapshots freely. Only the explicit Equip action moves owned inventory." actions={selectedCharacterId && <button className="primary" onClick={() => { const character = characters.find((entry) => entry.id === selectedCharacterId); if (character) void createTc(character) }}><Icon name="plus"/>New theorycraft</button>}/>} 
+    {embedded && selectedCharacterId && <div className="loadout-library-actions"><button className="primary" onClick={() => { const character = characters.find((entry) => entry.id === selectedCharacterId); if (character) void createTc(character) }}><Icon name="plus"/>New theorycraft</button></div>}
+    {message && <div className="notice warning">{message}</div>}
+    <div className="loadout-library">
+      <aside>{(['equipped', 'saved', 'theorycraft'] as const).map((type) => <section key={type}><h2>{type === 'equipped' ? 'Equipped' : type === 'saved' ? 'Saved builds' : 'Theorycraft builds'}</h2>{grouped(type).map((source) => <button className={sourceKey(source) === sourceKey(selected!) ? 'active' : ''} key={sourceKey(source)} onClick={() => { setSelectedKey(sourceKey(source)); setCompareKey('') }}><strong>{sourceLabel(source, collections)}</strong><small>{characterCatalog.find((entry) => entry.id === resolveLoadout(source, collections).character?.catalogId)?.name}</small></button>)}</section>)}</aside>
+      <section><Panel className="loadout-detail"><div className="section-heading"><div><span className="eyebrow">{selected?.type}</span><h2>{selected ? sourceLabel(selected, collections) : ''}</h2></div><div className="button-row">
+        {selected?.type === 'equipped' && <><button className="secondary" onClick={() => void run(() => saveEquippedBuild(selected.characterId), 'Snapshot saved.')}>Save snapshot</button><button className="secondary" onClick={() => void toTheorycraft(selected)}>Copy to theorycraft</button></>}
+        {selected?.type === 'saved' && <><button className="primary" onClick={() => { const build = builds.find((entry) => entry.id === selected.buildId); if (build) void equip(build) }}>Equip</button><button className="secondary" onClick={() => void toTheorycraft(selected)}>Copy to theorycraft</button><button className="secondary" onClick={() => void duplicate(selected)}>Duplicate</button>{selectedResolved?.warnings.some((warning) => warning.includes('missing')) && <><button className="secondary" onClick={() => void replaceMissingReferences(selected.buildId)}>Replace from Equipped</button><button className="secondary" onClick={() => void removeMissingReferences(selected.buildId)}>Remove missing references</button></>}</>}
+        {selected?.type === 'theorycraft' && <><button className="primary" onClick={() => setEditing(theorycraftBuilds.find((entry) => entry.id === selected.theorycraftBuildId))}>Edit</button><button className="secondary" onClick={() => void duplicate(selected)}>Duplicate</button></>}
+        {selected?.type !== 'equipped' && <><button className="text" onClick={() => void rename(selected!)}>Rename</button><button className="text" onClick={() => void describe(selected!)}>Describe</button><button className="danger text" onClick={() => void deleteSource(selected!)}>Delete</button></>}
+      </div></div>{selected && <LoadoutSummary source={selected} collections={collections}/>} 
+      {selectedStats && <div className="loadout-final-stats">{(['hp', 'atk', 'def', 'critRate', 'critDamage', 'energyRegen'] as StatKey[]).map((key) => <span key={key}><small>{statLabels[key]}</small><b>{formatDamage(selectedStats[key] ?? 0)}</b></span>)}</div>}
+      <label className="loadout-compare">Compare with<select value={compareKey} onChange={(event) => setCompareKey(event.target.value)}><option value="">None</option>{compareOptions.map((source) => <option value={sourceKey(source)} key={sourceKey(source)}>{sourceLabel(source, collections)}</option>)}</select></label>
+      {compareKey && <div className="loadout-comparison"><article><h3>{sourceLabel(selected!, collections)}</h3><LoadoutSummary source={selected!} collections={collections}/></article><article><h3>{sourceLabel(compareOptions.find((source) => sourceKey(source) === compareKey)!, collections)}</h3><LoadoutSummary source={compareOptions.find((source) => sourceKey(source) === compareKey)!} collections={collections}/></article></div>}
+      </Panel></section>
+    </div>
+    {editing && <TheorycraftEditor value={editing} ownedCharacter={characters.find((entry) => entry.id === editing.characterId)} onClose={() => setEditing(undefined)} onSaved={refresh}/>} 
   </>
 }

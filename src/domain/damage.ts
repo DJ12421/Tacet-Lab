@@ -142,33 +142,51 @@ export function formatDamage(value: number) {
 export function calculateRotation(team: Team, builds: Build[], resonators: Resonator[], weapons: Weapon[], echoes: Echo[]): RotationResult {
   const result: RotationResult = { total: 0, dps: 0, actions: [], byBuild: {}, byType: {} }
   const active: Array<{ effect: BuffEffect; activatedAt: number }> = []
-  for (const action of [...team.actions].sort((a, b) => a.timestamp - b.timestamp)) {
-    const build = builds.find((item) => item.id === action.buildId)
-    if (!build) continue
-    const resonator = resonators.find((item) => item.id === build.resonatorId)
-    const weapon = weapons.find((item) => item.id === build.weaponId)
-    const attack = resonator?.attacks.find((item) => item.id === action.attackId)
-    if (!resonator || !weapon || !attack) continue
+  const sortedActions = [...team.actions].sort((a, b) => a.timestamp - b.timestamp)
+  for (let groupStart = 0; groupStart < sortedActions.length;) {
+    const timestamp = sortedActions[groupStart].timestamp
+    let groupEnd = groupStart + 1
+    while (groupEnd < sortedActions.length && sortedActions[groupEnd].timestamp === timestamp) groupEnd += 1
     for (let index = active.length - 1; index >= 0; index -= 1) {
-      if (action.timestamp > active[index].activatedAt + active[index].effect.duration) active.splice(index, 1)
+      if (timestamp > active[index].activatedAt + active[index].effect.duration) active.splice(index, 1)
     }
-    const applicable = active.filter(({ effect }) => effect.target === 'team'
-      || (effect.target === 'self' && effect.sourceBuildId === build.id)
-      || (effect.target === 'next' && effect.sourceBuildId !== build.id))
-    const equipped = build.echoIds.map((id) => echoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo))
-    const baseStats = aggregateStats(resonator, weapon, equipped)
-    const buffed = applyBuffEffects(baseStats, applicable.map(({ effect }) => effect))
-    const calculated = calculateDamage(buffed.stats, attack, team.enemy, build.level, buffed.amplify)
-    result.actions.push({ ...calculated, timestamp: action.timestamp, buildId: build.id })
-    result.total += calculated.expected
-    result.byBuild[build.id] = (result.byBuild[build.id] ?? 0) + calculated.expected
-    result.byType[attack.type] = (result.byType[attack.type] ?? 0) + calculated.expected
+    const group = sortedActions.slice(groupStart, groupEnd)
+    for (const action of group) {
+      const build = builds.find((item) => item.id === action.buildId)
+      if (!build) continue
+      const resonator = resonators.find((item) => item.id === build.resonatorId)
+      const weapon = weapons.find((item) => item.id === build.weaponId)
+      const attack = resonator?.attacks.find((item) => item.id === action.attackId)
+      if (!resonator || !weapon || !attack) continue
+      const applicable = active.filter(({ effect }) => effect.target === 'team'
+        || (effect.target === 'self' && effect.sourceBuildId === build.id)
+        || (effect.target === 'next' && effect.sourceBuildId !== build.id))
+      const equipped = build.echoIds.map((id) => echoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo))
+      const baseStats = aggregateStats(resonator, weapon, equipped)
+      const buffed = applyBuffEffects(baseStats, applicable.map(({ effect }) => effect))
+      const calculated = calculateDamage(buffed.stats, attack, team.enemy, build.level, buffed.amplify)
+      const multiplier = Math.max(1, Math.min(99, Math.floor(action.multiplier ?? 1)))
+      const scaled = {
+        ...calculated,
+        normal: calculated.normal * multiplier,
+        critical: calculated.critical * multiplier,
+        expected: calculated.expected * multiplier
+      }
+      result.actions.push({ ...scaled, timestamp: action.timestamp, buildId: build.id })
+      result.total += scaled.expected
+      result.byBuild[build.id] = (result.byBuild[build.id] ?? 0) + scaled.expected
+      result.byType[attack.type] = (result.byType[attack.type] ?? 0) + scaled.expected
+    }
+    const incomingBuildIds = new Set(group.map((action) => action.buildId))
     for (let index = active.length - 1; index >= 0; index -= 1) {
-      if (active[index].effect.target === 'next' && active[index].effect.sourceBuildId !== build.id) active.splice(index, 1)
+      if (active[index].effect.target === 'next' && [...incomingBuildIds].some((buildId) => active[index].effect.sourceBuildId !== buildId)) active.splice(index, 1)
     }
-    for (const effect of team.buffs ?? []) {
-      if (effect.sourceBuildId === build.id && effect.triggerAttackId === attack.id) active.push({ effect, activatedAt: action.timestamp })
+    for (const action of group) {
+      for (const effect of team.buffs ?? []) {
+        if (effect.sourceBuildId === action.buildId && effect.triggerAttackId === action.attackId) active.push({ effect, activatedAt: timestamp })
+      }
     }
+    groupStart = groupEnd
   }
   result.dps = result.total / Math.max(1, team.rotationDuration)
   return result

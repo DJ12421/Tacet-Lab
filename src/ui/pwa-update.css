@@ -13,11 +13,31 @@
   box-shadow: 0 18px 70px #000;
 }
 
-.pwa-update-toast > div:first-child { display: grid; gap: 5px; }
-.pwa-update-toast strong { color: var(--gold); font-size: var(--font-size-small); }
-.pwa-update-toast span { color: var(--muted); font-size: var(--font-size-caption); line-height: 1.5; }
-.pwa-update-toast small { color: #ffb0aa; }
-.pwa-update-toast > div:last-child { display: flex; justify-content: flex-end; gap: 8px; }
+.pwa-update-toast > div:first-child {
+  display: grid;
+  gap: 5px;
+}
+
+.pwa-update-toast strong {
+  color: var(--gold);
+  font-size: var(--font-size-small);
+}
+
+.pwa-update-toast span {
+  color: var(--muted);
+  font-size: var(--font-size-caption);
+  line-height: 1.5;
+}
+
+.pwa-update-toast small {
+  color: #ffb0aa;
+}
+
+.pwa-update-toast > div:last-child {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
 
 .pwa-update-toast.updated,
 .pwa-update-toast.update-error {
@@ -28,9 +48,17 @@
   background: rgba(19, 29, 28, .96);
 }
 
-.pwa-update-toast.updated strong { color: var(--mint); }
-.pwa-update-toast.update-error { border-color: rgba(239, 118, 110, .45); }
+.pwa-update-toast.updated strong {
+  color: var(--mint);
+}
+
+.pwa-update-toast.update-error {
+  border-color: rgba(239, 118, 110, .45);
+}
 
 @media (max-width: 520px) {
-  .pwa-update-toast { right: 16px; bottom: 16px; }
+  .pwa-update-toast {
+    right: 16px;
+    bottom: 16px;
+  }
 }

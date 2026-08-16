@@ -51,6 +51,7 @@ export function FilterChips<T extends string | number>({ values, selected, label
 }) {
   const toggle = (value: T) => {
     if (selected.length === values.length) onChange([value])
+    else if (selected.length === 1 && selected.includes(value)) onChange([...values])
     else onChange(selected.includes(value) ? selected.filter((entry) => entry !== value) : [...selected, value])
   }
   return <div className="owned-chip-filter"><span>{label}</span><div className="filter-chips">{values.map((value) => <button type="button" aria-pressed={selected.includes(value)} className={selected.includes(value) ? 'active' : ''} key={value} onClick={() => toggle(value)}>{renderValue?.(value) ?? value}</button>)}</div></div>

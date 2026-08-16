@@ -166,8 +166,13 @@ export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaS
           const bounds = portrait.getLocalBounds()
           if (!bounds.width || !bounds.height) return
           const scale = Math.min(width / bounds.width, height / bounds.height) * 1.02
+          const rootBone = portrait.skeleton.getRootBone()
+          const rootCenterX = rootBone?.worldX
+          const characterCenterX = typeof rootCenterX === 'number' && Number.isFinite(rootCenterX)
+            ? rootCenterX
+            : bounds.x + bounds.width / 2
           portrait.scale.set(scale)
-          portrait.pivot.set(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2)
+          portrait.pivot.set(characterCenterX, bounds.y + bounds.height / 2)
           portrait.position.set(width / 2, height / 2)
         }
         fitPortrait()

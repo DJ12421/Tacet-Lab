@@ -6,6 +6,7 @@ import {
   calculateBuildStatsV2,
   enemyV2,
   prepareBuildAttackV2,
+  resolveEchoMechanicsV2,
   type PreparedBuildAttackV2
 } from '../domain/calculation-v2'
 
@@ -68,6 +69,13 @@ function damageEvaluator(request: OptimizerRequest) {
     const key = `${prefix}${echoes[0]?.id ?? ''}|${sonatas.map((entry) => `${entry.name}:${entry.count}`).join('|')}|${providerFingerprint}`
     let prepared = preparedEvaluators.get(key)
     if (prepared === undefined) {
+      const candidateAttack = config.attack.group === 'Echo Skill'
+        ? resolveEchoMechanicsV2(echoes[0])?.attacks.find((attack) => attack.id === config.attack.id || attack.key === config.attack.key)
+        : config.attack
+      if (!candidateAttack) {
+        preparedEvaluators.set(key, null)
+        return undefined
+      }
       const sourceStats = { ...(config.sourceStats ?? {}) }
       delete sourceStats[config.build.id]
       const candidateBuild = { ...config.build, echoIds: echoes.map((echo) => echo.id) }
@@ -106,7 +114,7 @@ function damageEvaluator(request: OptimizerRequest) {
         sourceStats,
         roverGender: config.roverGender,
         showcase: { equipmentStats: stats, sonatas, echoSlots: echoes }
-      }, config.attack, enemy) ?? null
+      }, candidateAttack, enemy) ?? null
       preparedEvaluators.set(key, prepared)
     }
     if (!prepared) return undefined
@@ -114,7 +122,7 @@ function damageEvaluator(request: OptimizerRequest) {
     // future generated modifier falls back to no damage bound automatically.
     if (requireSafeBound && !hasSafeSonataUpperBound(prepared)) return undefined
     const result = calculatePreparedBuildAttackV2(prepared, stats)
-    return { ...result, hits: config.attack.count }
+    return { ...result, hits: prepared.attack.count }
   }
   const evaluate = (echoes: Echo[], stats: AggregatedStats): DamageResult | undefined => {
     const sonataCounts = new Map<string, number>()

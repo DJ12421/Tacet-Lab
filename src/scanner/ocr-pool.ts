@@ -62,11 +62,8 @@ export class OcrPool {
   }
 
   async warm() {
-    await this.ensureSlot(0)
     const desired = this.desiredCount()
-    for (let index = 1; index < desired; index += 1) {
-      window.setTimeout(() => { void this.ensureSlot(index) }, index * 350)
-    }
+    await Promise.all(Array.from({ length: desired }, (_, index) => this.ensureSlot(index)))
   }
 
   private async ensureSlot(index: number) {
@@ -86,10 +83,9 @@ export class OcrPool {
   }
 
   async recognize(image: string | Blob, region: ScanRegion, requestedJobId?: string): Promise<OcrRecognition> {
-    await this.ensureSlot(0)
     const desired = this.desiredCount()
-    if (this.slots.length < desired) void this.ensureSlot(this.slots.length)
-    const slot = [...this.slots].sort((left, right) => left.pending - right.pending || left.id.localeCompare(right.id))[0]
+    await Promise.all(Array.from({ length: desired }, (_, index) => this.ensureSlot(index)))
+    const slot = this.slots.slice(0, desired).sort((left, right) => left.pending - right.pending || left.id.localeCompare(right.id))[0]
     if (!slot) throw new Error('No OCR worker is available.')
     const generation = this.generation
     const jobId = requestedJobId ?? createLocalId()

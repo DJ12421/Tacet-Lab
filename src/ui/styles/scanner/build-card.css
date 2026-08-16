@@ -1,0 +1,60 @@
+.scan-build-card-summary {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid rgba(232, 189, 103, .32);
+  border-radius: 16px;
+  background: rgba(232, 189, 103, .06);
+}
+
+.scan-build-card-summary > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.scan-build-card-summary > header h3 {
+  margin: 2px 0 0;
+}
+
+.scan-build-card-summary > header img {
+  width: 150px;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 9px;
+  border: 1px solid var(--line);
+}
+
+.scan-build-card-fields {
+  display: grid;
+  grid-template-columns: 1.4fr .7fr .7fr 1.4fr .7fr;
+  gap: 10px;
+}
+
+.scan-build-card-skills {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.scan-build-card-skills > span {
+  grid-column: 1 / -1;
+  color: var(--muted);
+  font-size: var(--font-size-caption);
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+
+@media (max-width: 900px) {
+  .scan-build-card-fields, .scan-build-card-skills {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .scan-build-card-skills > span {
+    grid-column: 1 / -1;
+  }
+  .scan-build-card-summary > header img {
+    width: 110px;
+  }
+}

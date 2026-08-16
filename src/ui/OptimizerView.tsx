@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useRef, useState, type Dispatch, type SetStateAction } from 'react'
 import { characterCatalog, GAME_DATA_VERSION, sonataCatalog, statLabels } from '../game-data'
-import { setBuildEchoIds } from '../storage/database'
+import { createTheorycraftBuild } from '../domain/loadouts'
+import { effectiveSubStats } from '../game-data/echo-main-stats'
+import { db } from '../storage/database'
+import { setEquippedEchoIds } from '../storage/loadouts'
 import {
   loadLatestOptimizerRun,
   loadOptimizerProfile,
@@ -135,6 +138,7 @@ export function OptimizerView({
   const workersRef = useRef<Worker[]>([])
   const requestIdRef = useRef('')
   const contextFingerprintRef = useRef('')
+  const inventoryEchoes = useMemo(() => echoes.filter((echo) => !echo.id.startsWith('theorycraft:')), [echoes])
   const build = builds.find((item) => item.id === buildId) ?? builds[0]
   const runtime = useMemo(() => build ? resolveRuntimeBuild(build, characters, ownedWeapons) : undefined, [build, characters, ownedWeapons])
   const showcase = useMemo(() => build && runtime ? resolveCharacterShowcaseModel({ character: runtime.character, weapons: ownedWeapons, echoes, builds: [build] }) : undefined, [build, runtime, ownedWeapons, echoes])
@@ -206,7 +210,7 @@ export function OptimizerView({
   useEffect(() => {
     let live = true
     setProfileReady(false)
-    const fingerprint = optimizerInventoryFingerprint(echoes)
+    const fingerprint = optimizerInventoryFingerprint(inventoryEchoes)
     Promise.all([loadOptimizerProfile(buildId), loadLatestOptimizerRun(buildId)]).then(([storedProfile, run]) => {
       if (!live) return
       const savedTarget = targets.some((target) => target.id === storedProfile.targetId) ? storedProfile.targetId : undefined
@@ -263,7 +267,7 @@ export function OptimizerView({
     setRunning(true)
     const requestId = createLocalId()
     requestIdRef.current = requestId
-    const fingerprint = optimizerInventoryFingerprint(echoes)
+    const fingerprint = optimizerInventoryFingerprint(inventoryEchoes)
     const profileFingerprint = optimizerProfileFingerprint({ ...profile, teamBuildIds: [...new Set(teamBuildIds)] })
     const contextFingerprint = activeContextFingerprint
     const hardwareWorkers = Math.max(1, Math.min(8, (navigator.hardwareConcurrency ?? 4) - 1))
@@ -285,9 +289,9 @@ export function OptimizerView({
     const baseContext = createBuildCalculationContext({ build, character: runtime.character, weapon: runtime.weapon, echoes: currentEchoes, enemy, scenario, targetId: formulaTarget?.id })
     const mode = objective === 'normal' || objective === 'critical' || objective === 'expected' ? objective : undefined
     const baseRequest: Omit<OptimizerRequest, 'partition'> = {
-      requestId, echoes, resonator, weapon, attack, enemy, objective, minimumStats: profile.minimumStats,
+      requestId, echoes: inventoryEchoes, resonator, weapon, attack, enemy, objective, minimumStats: profile.minimumStats,
       maximumStats: profile.maximumStats, limit: profile.resultLimit, maxEvaluations: profile.maxEvaluations,
-      includeEquippedBy: build.id, currentMainEchoId: build.echoIds[0], bonusStatLines: calculationAttackV2 ? [] : bonusStatLines, profile: { ...profile, teamBuildIds: [...new Set(teamBuildIds)] },
+      includeEquippedBy: runtime.character.id, currentMainEchoId: build.echoIds[0], bonusStatLines: calculationAttackV2 ? [] : bonusStatLines, profile: { ...profile, teamBuildIds: [...new Set(teamBuildIds)] },
       formula: !calculationAttackV2 && mode && formulaTarget ? { target: { id: formulaTarget.id, label: formulaTarget.label, kind: formulaTarget.kind, mode }, node: formulaTarget[mode], inputs: baseContext.inputs, entries: baseContext.entries } : undefined,
       calculationV2: calculationAttackV2 ? { build, character: runtime.character, characterCatalog: showcase.catalog, weapon: showcase.weapon?.owned, weaponCatalog: showcase.weapon?.catalog, attack: calculationAttackV2, scenario: calculationScenarioV2, partyEffects: partyEffectsV2, sourceStats: partyEffectSourceStatsV2, roverGender } : undefined
     }
@@ -412,21 +416,53 @@ export function OptimizerView({
 
   const apply = async (result: OptimizerResult) => {
     if (!build) return
-    if (runFingerprint && runFingerprint !== optimizerInventoryFingerprint(echoes)) { setError('Inventory assignments changed after this search. Generate builds again before equipping.'); return }
+    if (runFingerprint && runFingerprint !== optimizerInventoryFingerprint(inventoryEchoes)) { setError('Inventory assignments changed after this search. Generate builds again before equipping.'); return }
     const selected = result.echoIds.map((id) => echoes.find((echo) => echo.id === id))
     if (selected.some((echo) => !echo)) { setError('One or more Echoes in this result no longer exist.'); return }
-    const borrowed = selected.filter((echo): echo is Echo => Boolean(echo?.equippedBy && echo.equippedBy !== build.id))
+    const borrowed = selected.filter((echo): echo is Echo => Boolean(echo?.equippedBy && echo.equippedBy !== runtime?.character.id))
     if (borrowed.length) {
       const sources = [...new Set(borrowed.map((echo) => echo.equippedByName ?? builds.find((candidate) => candidate.id === echo.equippedBy)?.name ?? 'another build'))]
       if (!window.confirm(`Equip this result and move ${borrowed.length} Echo${borrowed.length === 1 ? '' : 'es'} from ${sources.join(', ')}?`)) return
     }
     try {
-      await setBuildEchoIds(build.id, result.echoIds)
+      if (!runtime?.character) throw new Error('The optimizer character is missing.')
+      await setEquippedEchoIds(runtime.character.id, result.echoIds)
       await refresh()
-      setMessage('Optimizer result equipped. Main Echo placement and borrowed assignments were applied atomically.')
+      setMessage('Optimizer result equipped. Saved and theorycraft builds were not changed.')
     } catch (applyError) {
       setError(applyError instanceof Error ? applyError.message : 'The optimizer result could not be equipped.')
     }
+  }
+
+  const saveResult = async (result: OptimizerResult) => {
+    if (!build || !runtime?.character) return
+    const now = Date.now()
+    const weaponExists = Boolean(await db.weapons.get(build.weaponId))
+    await db.builds.add({
+      id: createLocalId(), name: `Optimizer result ${new Date(now).toLocaleDateString()}`, description: `Saved from optimizer target ${calculationAttackV2?.name ?? formulaTarget?.label ?? attack?.name ?? objective}.`,
+      characterId: runtime.character.id, resonatorId: runtime.character.catalogId, weaponId: weaponExists ? build.weaponId : '', echoIds: [...result.echoIds],
+      level: runtime.character.level, skillLevel: runtime.character.skillLevels?.[1] ?? 1, createdAt: now, updatedAt: now, source: 'optimizer'
+    })
+    await refresh(); setMessage('Optimizer result saved as a reusable build. Equipment was not changed.')
+  }
+
+  const theorycraftResult = async (result: OptimizerResult) => {
+    if (!runtime?.character) return
+    const resultEchoes = result.echoIds.map((id) => echoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo))
+    if (resultEchoes.length !== result.echoIds.length) { setError('One or more result Echoes are missing.'); return }
+    const theorycraft = createTheorycraftBuild(runtime.character, `Optimizer theorycraft ${new Date().toLocaleDateString()}`)
+    theorycraft.id = createLocalId()
+    const ownedWeapon = ownedWeapons.find((entry) => entry.id === build?.weaponId)
+    if (ownedWeapon) theorycraft.weapon = { catalogId: ownedWeapon.catalogId, level: ownedWeapon.level, rank: ownedWeapon.rank }
+    theorycraft.mainEchoName = resultEchoes[0]?.name ?? ''
+    const resultSlots = resultEchoes.map((echo) => ({ cost: echo.cost, rarity: echo.rarity, level: echo.level, mainStatKey: echo.mainStat.key }))
+    theorycraft.slots = [...resultSlots, ...theorycraft.slots.slice(resultSlots.length)].slice(0, 5)
+    const counts = new Map<string, number>(); resultEchoes.forEach((echo) => counts.set(echo.sonata, (counts.get(echo.sonata) ?? 0) + 1))
+    theorycraft.sonatas = [...counts].map(([name, pieces]) => ({ name, pieces }))
+    const values: Partial<Record<Echo['mainStat']['key'], number>> = {}
+    resultEchoes.flatMap(effectiveSubStats).forEach((line) => { values[line.key] = (values[line.key] ?? 0) + line.value })
+    theorycraft.substats = { mode: 'values', values }; theorycraft.source = { type: 'optimizer', id: activeRunId }; theorycraft.updatedAt = Date.now()
+    await db.theorycraftBuilds.add(theorycraft); await refresh(); setMessage('Optimizer result converted to theorycraft. Equipment was not changed.')
   }
 
   const detailForResult = (result: OptimizerResult) => {
@@ -462,7 +498,7 @@ export function OptimizerView({
   return <section className="tw-optimizer-workspace optimizer-v2-workspace">
     <header className="tw-optimizer-heading tw-panel"><div><span className="eyebrow">Build laboratory</span><h2>Echo optimizer</h2><p>Search every legal loadout against the active team state, compare trade-offs, and equip the exact main-Echo ordering you choose.</p></div><span className="optimizer-engine-badge"><Icon name="optimize"/>Calculation V2</span></header>
     {profileReady && build && runtime && showcase && <OptimizerSetup
-      profile={profile} setProfile={updateProfile} echoes={echoes} currentEchoes={currentEchoes} buildId={build.id} buildName={build.name}
+      profile={profile} setProfile={updateProfile} echoes={inventoryEchoes} currentEchoes={currentEchoes} buildId={build.id} buildName={build.name}
       characterName={showcase.catalog.name} portraitUrl={showcase.catalog.portraitSourceUrl || showcase.catalog.iconSourceUrl}
       weaponName={showcase.weapon?.catalog.name ?? 'No weapon equipped'} currentStats={currentStats} currentScore={currentScore}
       objectiveLabel={objectiveLabel(objective)} targetId={calculationAttackV2?.id ?? attack?.id ?? ''} targets={targets}
@@ -476,21 +512,21 @@ export function OptimizerView({
       <div className="optimizer-progress-track"><i style={{ width: `${progressPercent}%` }}/></div>
       <dl><div><dt>Processed</dt><dd>{progress.processed.toLocaleString('en-US')} / {progress.total.toLocaleString('en-US')}</dd></div><div><dt>Evaluated</dt><dd>{progress.tested.toLocaleString('en-US')}</dd></div><div><dt>Rejected</dt><dd>{progress.rejected.toLocaleString('en-US')}</dd></div><div><dt>Pruned total</dt><dd>{progress.skipped.toLocaleString('en-US')}</dd></div><div><dt>Cost skips</dt><dd>{(progress.skippedCost ?? 0).toLocaleString('en-US')}</dd></div><div><dt>Sonata skips</dt><dd>{(progress.skippedSonata ?? 0).toLocaleString('en-US')}</dd></div><div><dt>Bound skips</dt><dd>{(progress.skippedBounds ?? 0).toLocaleString('en-US')}</dd></div><div><dt>Rate</dt><dd>{Math.round(progress.testedPerSecond).toLocaleString('en-US')}/s</dd></div><div><dt>Elapsed</dt><dd>{(progress.elapsedMs / 1000).toFixed(1)}s</dd></div></dl>
     </Panel>}
-    {!running && profileReady && !results.length && <Panel className="optimizer-empty"><div className="empty-glyph">⌁</div><h2>{echoes.length < 5 ? 'Your archive needs more Echoes' : 'Ready to generate builds'}</h2><p>{echoes.length < 5 ? 'Scan or enter enough pieces for a legal loadout, or enable partial builds.' : 'The current configuration is saved automatically. Generate when the filters and constraints are ready.'}</p>{echoes.length < 5 && <button className="secondary" onClick={openScanner}>Open scanner</button>}</Panel>}
+    {!running && profileReady && !results.length && <Panel className="optimizer-empty"><div className="empty-glyph">⌁</div><h2>{inventoryEchoes.length < 5 ? 'Your archive needs more Echoes' : 'Ready to generate builds'}</h2><p>{inventoryEchoes.length < 5 ? 'Scan or enter enough pieces for a legal loadout, or enable partial builds.' : 'The current configuration is saved automatically. Generate when the filters and constraints are ready.'}</p>{inventoryEchoes.length < 5 && <button className="secondary" onClick={openScanner}>Open scanner</button>}</Panel>}
     {!running && results.length > 0 && <>
       <OptimizerDistributionChart points={plotPoints} results={results} currentStats={currentStats} currentScore={currentScore} plotStat={profile.plotStat} onPlotStatChange={(plotStat) => setProfile((current) => ({ ...current, plotStat, updatedAt: Date.now() }))} selectedKey={selectedKey} highlightedKeys={highlightedKeys} onToggleHighlight={(key) => setHighlightedKeys((current) => current.includes(key) ? current.filter((entry) => entry !== key) : [...current.slice(-5), key])} onSelect={(key) => { setSelectedKey(key); const index = results.findIndex((result) => buildKey(result.echoIds) === key); if (index >= 0) setExpandedResult(index) }}/>
       {comparisonPoints.length > 0 && <Panel className="optimizer-comparison-tray"><header><div><span className="eyebrow">Pinned comparison</span><h3>{comparisonPoints.length} highlighted build{comparisonPoints.length === 1 ? '' : 's'}</h3></div><button className="secondary" onClick={() => setHighlightedKeys([])}>Clear comparison</button></header><div>{comparisonPoints.map((point) => <article className={selectedKey === point.key ? 'is-selected' : ''} key={point.key}><button className="optimizer-comparison-select" onClick={() => { setSelectedKey(point.key); if (point.rank) setExpandedResult(point.rank - 1) }}><span>{point.rank ? `Rank #${point.rank}` : 'Search sample'}</span><strong>{Math.round(point.score).toLocaleString('en-US')}</strong><small>{statLabels[profile.plotStat]} {formatStat(profile.plotStat, point.stats[profile.plotStat])}</small><small>{point.echoIds.map((id) => echoes.find((echo) => echo.id === id)?.name ?? 'Missing Echo').join(' · ')}</small></button><button className="optimizer-comparison-remove" aria-label="Remove build from comparison" onClick={() => setHighlightedKeys((current) => current.filter((key) => key !== point.key))}>×</button></article>)}</div></Panel>}
       <div className="optimizer-results-heading"><div><span>{results.length} ranked builds</span>{generatedAt && <small>Generated {new Date(generatedAt).toLocaleString()} · {progress.tested.toLocaleString('en-US')} evaluated</small>}</div><div><span className={`optimizer-mode-chip ${results[0]?.complete ? 'complete' : 'capped'}`}>{results[0]?.complete ? 'Exact result' : 'Best found'}</span><button className="secondary" onClick={clearResults}>Clear results</button></div></div>
       <div className="optimizer-build-list">{results.map((result, index) => {
         const resultEchoes = result.echoIds.map((id) => echoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo))
-        const borrowedEchoes = resultEchoes.filter((echo) => echo.equippedBy && echo.equippedBy !== build?.id)
+        const borrowedEchoes = resultEchoes.filter((echo) => echo.equippedBy && echo.equippedBy !== runtime?.character.id)
         const improvement = currentScore === undefined ? undefined : result.score - currentScore
         const improvementPercent = currentScore && improvement !== undefined ? improvement / currentScore * 100 : undefined
         const expanded = expandedResult === index
         const statKeys: OptimizerStatKey[] = ['hp', 'atk', 'def', 'critRate', 'critDamage', 'energyRegen', 'basicDamage', 'liberationDamage']
         const sonatas = [...resultEchoes.reduce((counts, echo) => counts.set(echo.sonata, (counts.get(echo.sonata) ?? 0) + 1), new Map<string, number>())].filter(([name, count]) => sonataCatalog.some((sonata) => sonata.name === name && sonata.effects.some((effect) => count >= effect.pieces)))
         return <Panel className={`optimizer-build-result ${expanded ? 'is-expanded' : ''} ${selectedKey === buildKey(result.echoIds) ? 'is-selected' : ''}`} key={buildKey(result.echoIds)}>
-          <header><button className="optimizer-result-toggle" onClick={() => { setExpandedResult(expanded ? null : index); setSelectedKey(expanded ? undefined : buildKey(result.echoIds)) }} aria-expanded={expanded}><span className="optimizer-rank">#{index + 1}</span><span><b>{result.complete ? 'OPTIMAL BUILD' : 'BEST FOUND'}</b><small>{result.mainEchoId === result.echoIds[0] ? 'Main Echo verified' : 'Main Echo reordered'}</small></span><span className="optimizer-score"><small>{calculationAttackV2?.name ?? formulaTarget?.label ?? attack?.name ?? 'Target score'}</small><strong>{Math.round(result.score).toLocaleString('en-US')}</strong>{improvement !== undefined && <em className={improvement > 0 ? 'positive' : improvement < 0 ? 'negative' : ''}>{improvement > 0 ? '+' : ''}{formatDamage(improvement)}{improvementPercent !== undefined ? ` (${improvementPercent > 0 ? '+' : ''}${improvementPercent.toFixed(1)}%)` : ''}</em>}</span><span className="optimizer-score-modes"><i>Non-CRIT <b>{formatDamage(result.damage.normal)}</b></i><i>Average <b>{formatDamage(result.damage.expected)}</b></i><i>CRIT <b>{formatDamage(result.damage.critical)}</b></i></span><span className="optimizer-chevron">⌄</span></button><button className="primary" onClick={() => void apply(result)}>Equip build</button></header>
+          <header><button className="optimizer-result-toggle" onClick={() => { setExpandedResult(expanded ? null : index); setSelectedKey(expanded ? undefined : buildKey(result.echoIds)) }} aria-expanded={expanded}><span className="optimizer-rank">#{index + 1}</span><span><b>{result.complete ? 'OPTIMAL BUILD' : 'BEST FOUND'}</b><small>{result.mainEchoId === result.echoIds[0] ? 'Main Echo verified' : 'Main Echo reordered'}</small></span><span className="optimizer-score"><small>{calculationAttackV2?.name ?? formulaTarget?.label ?? attack?.name ?? 'Target score'}</small><strong>{Math.round(result.score).toLocaleString('en-US')}</strong>{improvement !== undefined && <em className={improvement > 0 ? 'positive' : improvement < 0 ? 'negative' : ''}>{improvement > 0 ? '+' : ''}{formatDamage(improvement)}{improvementPercent !== undefined ? ` (${improvementPercent > 0 ? '+' : ''}${improvementPercent.toFixed(1)}%)` : ''}</em>}</span><span className="optimizer-score-modes"><i>Non-CRIT <b>{formatDamage(result.damage.normal)}</b></i><i>Average <b>{formatDamage(result.damage.expected)}</b></i><i>CRIT <b>{formatDamage(result.damage.critical)}</b></i></span><span className="optimizer-chevron">⌄</span></button><div className="optimizer-result-actions"><button className="primary" onClick={() => void apply(result)}>Equip</button><button className="secondary" onClick={() => void saveResult(result)}>Save build</button><button className="secondary" onClick={() => void theorycraftResult(result)}>Theorycraft</button></div></header>
           <div className="optimizer-result-tags"><b>Main: {resultEchoes[0]?.name ?? 'Unavailable'}</b>{sonatas.map(([name, count]) => <span key={name}>{name} · {count}-pc</span>)}{borrowedEchoes.length > 0 && <em>{borrowedEchoes.length} borrowed</em>}</div>
           <div className="optimizer-echo-strip">{resultEchoes.map((echo, echoIndex) => { const ownerBuild = builds.find((candidate) => candidate.echoIds.includes(echo.id)); const ownerCharacter = characterCatalog.find((candidate) => candidate.id === ownerBuild?.resonatorId); const ownerName = ownerCharacter?.name ?? echo.equippedByName ?? ownerBuild?.name ?? (echo.equippedBy ? 'Equipped' : 'Inventory'); return <div className={echoIndex === 0 ? 'optimizer-main-echo' : ''} key={echo.id}>{echoIndex === 0 && <span>Main Echo</span>}<EchoMiniCard echo={echo} equipment={<EquippedCharacterLabel name={ownerName}/>} /></div> })}</div>
           {expanded && <div className="optimizer-result-details"><section><h3>Build statistics</h3><div className="optimizer-stat-table">{statKeys.map((key) => { const previous = currentStats?.[key] ?? result.stats[key]; const delta = result.stats[key] - previous; return <div key={key}><span>{statLabels[key]}</span>{resonator && weapon ? <CalculatedValue detail={runtimeStatDetail(resonator, weapon, resultEchoes, key, result.stats[key])}><b>{formatStat(key, result.stats[key])}</b></CalculatedValue> : <b>{formatStat(key, result.stats[key])}</b>}<small className={delta > 0 ? 'positive' : delta < 0 ? 'negative' : ''}>{delta === 0 ? '—' : `${delta > 0 ? '+' : ''}${formatStat(key, delta)}`}</small></div> })}</div></section><section><h3>Target comparison</h3><div className="optimizer-damage-table"><div><span>Current score</span><b>{currentScore === undefined ? 'Unavailable' : formatDamage(currentScore)}</b></div><div><span>Optimized score</span><CalculatedValue detail={detailForResult(result)}><b>{Math.round(result.score).toLocaleString('en-US')}</b></CalculatedValue></div><div><span>Improvement</span><b className={improvement !== undefined && improvement > 0 ? 'positive' : improvement !== undefined && improvement < 0 ? 'negative' : ''}>{improvement === undefined ? 'Unavailable' : `${improvement > 0 ? '+' : ''}${formatDamage(improvement)}${improvementPercent !== undefined ? ` (${improvementPercent > 0 ? '+' : ''}${improvementPercent.toFixed(1)}%)` : ''}`}</b></div><div><span>Search guarantee</span><b>{result.complete ? 'Exact within active filters' : 'Capped search'}</b></div></div></section></div>}

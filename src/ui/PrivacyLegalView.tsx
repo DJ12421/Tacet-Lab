@@ -13,7 +13,7 @@ export function PrivacyLegalView() {
     <section className="legal-highlights" aria-label="Privacy highlights">
       <Panel><Icon name="lock"/><span>Storage</span><strong>Your account data stays in this browser.</strong><p>No Tacet Lab account, backend, cloud sync, or scan uploads. Only aggregate page analytics leave the browser.</p></Panel>
       <Panel><Icon name="scan"/><span>Scanning</span><strong>Capture begins only when you approve it.</strong><p>Frames are processed locally, without audio, and every OCR result requires review before saving.</p></Panel>
-      <Panel><Icon name="download"/><span>Control</span><strong>You can export or delete your data.</strong><p>Use Export for a portable JSON copy or Settings & data to clear the local database.</p></Panel>
+      <Panel><Icon name="download"/><span>Control</span><strong>You can export or delete your data.</strong><p>Use Export for a portable JSON copy or Settings to clear the local database.</p></Panel>
     </section>
 
     <div className="legal-layout">
@@ -56,7 +56,7 @@ export function PrivacyLegalView() {
               <li>Review every OCR candidate before it is added to your inventory.</li>
               <li>Edit or remove individual inventory records at any time.</li>
               <li>Use <strong>Export</strong> to download a versioned JSON copy and <strong>Import</strong> to restore a compatible copy.</li>
-              <li>Use <strong>Delete local data</strong> in Settings & data to clear Tacet Lab&apos;s IndexedDB records and reset local preferences.</li>
+              <li>Use <strong>Delete all local data</strong> in Settings to clear Tacet Lab&apos;s IndexedDB records and reset local preferences.</li>
               <li>Use your browser controls to revoke screen-sharing permission or clear cached site resources.</li>
             </ul>
             <p>Because Tacet Lab does not operate accounts or a user database, there is no remote profile for the project to retrieve or delete.</p>
