@@ -40,6 +40,8 @@ const quickStarts = [
 ]
 
 const changelogEntries = [
+  { hash: 'd00cd2f', date: 'Aug 17, 2026', title: 'Improve character card layouts and exports' },
+  { hash: '296bdfa', date: 'Aug 17, 2026', title: 'Expand loadout workflows and refresh app UI' },
   { hash: 'c198e19', date: 'Aug 10, 2026', title: 'Improve teams, Echo inventory, calculations, and app updates' },
   { hash: 'f947d9a', date: 'Aug 6, 2026', title: 'Fix sidebar auto-hide behavior' },
   { hash: 'a91225c', date: 'Aug 6, 2026', title: 'Stabilize optimizer and refine team UI' },
