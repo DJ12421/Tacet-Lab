@@ -32,7 +32,7 @@ describe('loadout resolution', () => {
     build.substats = { mode: 'rolls', quality: 'high', rolls: { critRate: 9 } }
 
     const warnings = theorycraftWarnings(build).join(' ')
-    expect(warnings).toContain('12-cost')
+    expect(warnings).toContain('20/12')
     expect(warnings).toContain('0/5')
     expect(warnings).toContain('more Echoes')
   })

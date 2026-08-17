@@ -39,24 +39,24 @@ type EchoLayoutPreset = 'curved' | 'straight'
 interface DebugSectionRect { x: number; y: number; width: number; height: number }
 const ECHO_DEBUG_SECTIONS: DebugSectionKey[] = ['echo0', 'echo1', 'echo2', 'echo3', 'echo4']
 const DEFAULT_CURVED_SECTION_RECTS: Partial<Record<DebugSectionKey, DebugSectionRect>> = {
-  art: { x: -954, y: -1123, width: 3840, height: 2160 },
-  identity: { x: 19, y: 15, width: 400, height: 178 },
-  stats: { x: 19, y: 202, width: 400, height: 591 },
-  weapon: { x: 19, y: 802, width: 400, height: 225 },
+  art: { x: -954, y: -500, width: 3840, height: 2160 },
+  identity: { x: 19, y: 15, width: 450, height: 178 },
+  stats: { x: 19, y: 201, width: 450, height: 591 },
+  weapon: { x: 19, y: 802, width: 450, height: 225 },
   sequences: { x: 620, y: 23, width: 680, height: 124 },
   skills: { x: 580, y: 673, width: 760, height: 352 },
-  echoHeader: { x: 1400, y: 15, width: 450, height: 120 },
-  echo0: { x: 1348, y: 160, width: 450, height: 155 },
-  echo1: { x: 1408, y: 315, width: 450, height: 155 },
+  echoHeader: { x: 1450, y: 18, width: 450, height: 120 },
+  echo0: { x: 1348, y: 150, width: 450, height: 155 },
+  echo1: { x: 1408, y: 310, width: 450, height: 155 },
   echo2: { x: 1468, y: 470, width: 450, height: 155 },
-  echo3: { x: 1408, y: 625, width: 450, height: 155 },
-  echo4: { x: 1348, y: 780, width: 450, height: 155 },
-  sonatas: { x: 1400, y: 950, width: 450, height: 40 },
+  echo3: { x: 1408, y: 630, width: 450, height: 155 },
+  echo4: { x: 1348, y: 790, width: 450, height: 155 },
+  sonatas: { x: 1450, y: 980, width: 450, height: 40 },
   footer: { x: 19, y: 1037, width: 1882, height: 30 }
 }
 const DEFAULT_STRAIGHT_SECTION_RECTS: Partial<Record<DebugSectionKey, DebugSectionRect>> = {
   ...DEFAULT_CURVED_SECTION_RECTS,
-  art: { x: -954, y: -1123, width: 3840, height: 2160 },
+  art: { x: -954, y: -500, width: 3840, height: 2160 },
   identity: { x: 19, y: 15, width: 450, height: 178 },
   stats: { x: 19, y: 201, width: 450, height: 591 },
   weapon: { x: 19, y: 802, width: 450, height: 225 },
@@ -100,20 +100,66 @@ interface SavedDebugLayout {
   colorEchoGrades: boolean
 }
 
-const loadSavedDebugLayout = (): SavedDebugLayout => {
+interface SavedDebugLayoutCollection {
+  storageVersion: 2
+  characters: Record<string, SavedDebugLayout>
+}
+
+const defaultDebugLayout = (): SavedDebugLayout => ({ layoutVersion: 3, rects: {}, hidden: [], echoLayout: 'curved', accentColor: null, colorEchoGrades: true })
+
+const parseSavedDebugLayout = (value: unknown): SavedDebugLayout | null => {
+  if (!value || typeof value !== 'object') return null
+  const parsed = value as { layoutVersion?: number; rects?: Record<string, Partial<DebugSectionRect>>; hidden?: string[]; echoLayout?: string | null; accentColor?: string | null; colorEchoGrades?: boolean } & Record<string, unknown>
+  const savedRects = parsed.rects ?? parsed
+  const result: Partial<Record<DebugSectionKey, DebugSectionRect>> = {}
+  DEBUG_SECTIONS.forEach(([key]) => {
+    const rect = savedRects[key] as Partial<DebugSectionRect> | undefined
+    if (rect && [rect.x, rect.y, rect.width, rect.height].every((entry) => typeof entry === 'number' && Number.isFinite(entry))) result[key] = clampDebugRect(rect as DebugSectionRect, key)
+  })
+  const validKeys = new Set(DEBUG_SECTIONS.map(([key]) => key))
+  const echoLayout = parsed.echoLayout === 'curved' || parsed.echoLayout === 'straight' ? parsed.echoLayout : Object.keys(result).length ? null : 'curved'
+  const accentColor = typeof parsed.accentColor === 'string' && /^#[0-9a-f]{6}$/i.test(parsed.accentColor) ? parsed.accentColor : null
+  return { layoutVersion: parsed.layoutVersion === 3 ? 3 : parsed.layoutVersion === 2 ? 2 : 1, rects: result, hidden: (parsed.hidden ?? []).filter((key): key is DebugSectionKey => validKeys.has(key as DebugSectionKey)), echoLayout, accentColor, colorEchoGrades: parsed.colorEchoGrades !== false }
+}
+
+const readDebugLayoutCollection = (): SavedDebugLayoutCollection | null => {
   try {
-    const parsed = JSON.parse(window.localStorage.getItem(DEBUG_LAYOUT_STORAGE_KEY) ?? '{}') as { layoutVersion?: number; rects?: Record<string, Partial<DebugSectionRect>>; hidden?: string[]; echoLayout?: string | null; accentColor?: string | null; colorEchoGrades?: boolean } & Record<string, unknown>
-    const savedRects = parsed.rects ?? parsed
-    const result: Partial<Record<DebugSectionKey, DebugSectionRect>> = {}
-    DEBUG_SECTIONS.forEach(([key]) => {
-      const rect = savedRects[key] as Partial<DebugSectionRect> | undefined
-      if (rect && [rect.x, rect.y, rect.width, rect.height].every((value) => typeof value === 'number' && Number.isFinite(value))) result[key] = clampDebugRect(rect as DebugSectionRect, key)
-    })
-    const validKeys = new Set(DEBUG_SECTIONS.map(([key]) => key))
-    const echoLayout = parsed.echoLayout === 'curved' || parsed.echoLayout === 'straight' ? parsed.echoLayout : Object.keys(result).length ? null : 'curved'
-    const accentColor = typeof parsed.accentColor === 'string' && /^#[0-9a-f]{6}$/i.test(parsed.accentColor) ? parsed.accentColor : null
-    return { layoutVersion: parsed.layoutVersion === 3 ? 3 : parsed.layoutVersion === 2 ? 2 : 1, rects: result, hidden: (parsed.hidden ?? []).filter((key): key is DebugSectionKey => validKeys.has(key as DebugSectionKey)), echoLayout, accentColor, colorEchoGrades: parsed.colorEchoGrades !== false }
-  } catch { return { layoutVersion: 3, rects: {}, hidden: [], echoLayout: 'curved', accentColor: null, colorEchoGrades: true } }
+    const parsed = JSON.parse(window.localStorage.getItem(DEBUG_LAYOUT_STORAGE_KEY) ?? 'null') as Partial<SavedDebugLayoutCollection> | null
+    if (parsed?.storageVersion !== 2 || !parsed.characters || typeof parsed.characters !== 'object') return null
+    return { storageVersion: 2, characters: parsed.characters as Record<string, SavedDebugLayout> }
+  } catch { return null }
+}
+
+const loadSavedDebugLayout = (characterId: string): SavedDebugLayout => {
+  try {
+    const raw = window.localStorage.getItem(DEBUG_LAYOUT_STORAGE_KEY)
+    if (!raw) return defaultDebugLayout()
+    const parsed = JSON.parse(raw) as unknown
+    if (parsed && typeof parsed === 'object' && (parsed as Partial<SavedDebugLayoutCollection>).storageVersion === 2) {
+      return parseSavedDebugLayout((parsed as SavedDebugLayoutCollection).characters?.[characterId]) ?? defaultDebugLayout()
+    }
+    const legacyLayout = parseSavedDebugLayout(parsed) ?? defaultDebugLayout()
+    const migrated: SavedDebugLayoutCollection = { storageVersion: 2, characters: { [characterId]: legacyLayout } }
+    window.localStorage.setItem(DEBUG_LAYOUT_STORAGE_KEY, JSON.stringify(migrated))
+    return legacyLayout
+  } catch { return defaultDebugLayout() }
+}
+
+const saveCharacterDebugLayout = (characterId: string, layout: SavedDebugLayout) => {
+  const collection = readDebugLayoutCollection() ?? { storageVersion: 2 as const, characters: {} }
+  window.localStorage.setItem(DEBUG_LAYOUT_STORAGE_KEY, JSON.stringify({ ...collection, characters: { ...collection.characters, [characterId]: layout } }))
+}
+
+const exportedLayout = (layout: SavedDebugLayout) => ({ format: 'tacet-lab-character-card-layout', version: 1, layout })
+
+const parseImportedLayout = (value: unknown): SavedDebugLayout | null => {
+  if (!value || typeof value !== 'object') return null
+  const imported = value as { format?: unknown; version?: unknown; layout?: unknown }
+  if (imported.format !== 'tacet-lab-character-card-layout' || imported.version !== 1) return null
+  if (!imported.layout || typeof imported.layout !== 'object') return null
+  const layout = imported.layout as Partial<SavedDebugLayout>
+  if (layout.layoutVersion !== 3 || !layout.rects || typeof layout.rects !== 'object' || !Array.isArray(layout.hidden)) return null
+  return parseSavedDebugLayout(imported.layout)
 }
 
 function DebugCoordinateInput({ section, property, rect, onChange }: { section: DebugSectionKey; property: keyof DebugSectionRect; rect: DebugSectionRect; onChange: (rect: DebugSectionRect) => void }) {
@@ -324,7 +370,7 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
   const [levelOpen, setLevelOpen] = useState(false)
   const [skillLevelOpen, setSkillLevelOpen] = useState<number | null>(null)
   const savedDebugLayoutRef = useRef<SavedDebugLayout | null>(null)
-  if (!savedDebugLayoutRef.current) savedDebugLayoutRef.current = loadSavedDebugLayout()
+  if (!savedDebugLayoutRef.current) savedDebugLayoutRef.current = loadSavedDebugLayout(catalog.id)
   const [hiddenDebugSections, setHiddenDebugSections] = useState<Set<DebugSectionKey>>(() => new Set(savedDebugLayoutRef.current?.hidden ?? []))
   const [echoLayoutPreset, setEchoLayoutPreset] = useState<EchoLayoutPreset | null>(() => savedDebugLayoutRef.current?.echoLayout ?? 'curved')
   const elementAccent = ELEMENT_ACCENTS[catalog.element] ?? '#e4bb5e'
@@ -337,6 +383,8 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
   const debugSectionOriginRectsRef = useRef<Partial<Record<DebugSectionKey, DebugSectionRect>>>({})
   const defaultDebugSectionRectsRef = useRef<Partial<Record<DebugSectionKey, DebugSectionRect>>>({})
   const debugLayoutSnapshotRef = useRef<SavedDebugLayout | null>(null)
+  const layoutImportRef = useRef<HTMLInputElement>(null)
+  const [layoutTransferStatus, setLayoutTransferStatus] = useState<string | null>(null)
   const accentStyle = { '--cbc-accent': customAccent ?? elementAccent } as CSSProperties
   const debugSectionClass = (section: DebugSectionKey, className: string) => `${className} cbc-debug-section${hiddenDebugSections.has(section) ? ' is-debug-hidden' : ''}`
   const debugSectionStyle = (section: DebugSectionKey): CSSProperties | undefined => {
@@ -365,6 +413,18 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
   }, [])
 
   useEffect(() => onAccentChange?.(customAccent), [customAccent, onAccentChange])
+
+  useEffect(() => {
+    const saved = loadSavedDebugLayout(catalog.id)
+    savedDebugLayoutRef.current = saved
+    debugLayoutSnapshotRef.current = null
+    setDebugCalibrationEnabled(false)
+    setHiddenDebugSections(new Set(saved.hidden))
+    setEchoLayoutPreset(saved.echoLayout)
+    setCustomAccent(saved.accentColor)
+    setColorEchoGrades(saved.colorEchoGrades)
+    setLayoutTransferStatus(null)
+  }, [catalog.id])
 
   useEffect(() => {
     debugSectionOriginRectsRef.current = {}
@@ -472,10 +532,38 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
   }
   const saveDebugPositioning = () => {
     const saved = { layoutVersion: 3 as const, rects: debugSectionRects, hidden: [...hiddenDebugSections], echoLayout: echoLayoutPreset, accentColor: customAccent, colorEchoGrades }
-    try { window.localStorage.setItem(DEBUG_LAYOUT_STORAGE_KEY, JSON.stringify(saved)) } catch { /* Keep the calibrated layout in memory when browser storage is unavailable. */ }
+    try { saveCharacterDebugLayout(catalog.id, saved) } catch { /* Keep the calibrated layout in memory when browser storage is unavailable. */ }
     savedDebugLayoutRef.current = saved
     debugLayoutSnapshotRef.current = null
     setDebugCalibrationEnabled(false)
+  }
+  const currentDebugLayout = (): SavedDebugLayout => ({ layoutVersion: 3, rects: debugSectionRects, hidden: [...hiddenDebugSections], echoLayout: echoLayoutPreset, accentColor: customAccent, colorEchoGrades })
+  const exportDebugLayout = () => {
+    const blob = new Blob([JSON.stringify(exportedLayout(currentDebugLayout()), null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const anchor = document.createElement('a')
+    anchor.href = url
+    anchor.download = `${catalog.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'character'}-card-layout.json`
+    anchor.click()
+    URL.revokeObjectURL(url)
+    setLayoutTransferStatus('Layout exported.')
+  }
+  const importDebugLayout = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    event.target.value = ''
+    if (!file) return
+    try {
+      const imported = parseImportedLayout(JSON.parse(await file.text()))
+      if (!imported) throw new Error('Unsupported layout file')
+      setDebugSectionRects({ ...defaultDebugSectionRectsRef.current, ...imported.rects })
+      setHiddenDebugSections(new Set(imported.hidden))
+      setEchoLayoutPreset(imported.echoLayout)
+      setCustomAccent(imported.accentColor)
+      setColorEchoGrades(imported.colorEchoGrades)
+      setLayoutTransferStatus('Layout imported. Save changes to keep it for this character.')
+    } catch {
+      setLayoutTransferStatus('That file is not a valid Tacet Lab card layout.')
+    }
   }
   const artRect = debugSectionRects.art
   const maximumArtZoom = Math.floor(Math.min(ART_CANVAS_WIDTH / CARD_WIDTH, ART_CANVAS_HEIGHT / CARD_HEIGHT) * 100)
@@ -526,7 +614,7 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
         <div className={debugSectionClass('art', 'cbc-art-positioner')} data-debug-section="art" style={debugSectionStyle('art')}>
           <img ref={portraitRef} className={`cbc-character-art ${portraitFailed ? 'is-fallback' : ''} ${animatedPortraitReady ? 'is-live-hidden' : ''}`} src={portraitFailed ? catalog.iconSourceUrl : (catalog.portraitSourceUrl || catalog.iconSourceUrl)} alt={catalog.name} onError={onPortraitError}/>
           <img className="cbc-live-portrait-snapshot" alt="" aria-hidden="true"/>
-          {catalog.spineSkeletonSourceUrl && catalog.spineAtlasSourceUrl && <NanokaSpinePortrait ref={livePortraitRef} skeletonSourceUrl={catalog.spineSkeletonSourceUrl} atlasSourceUrl={catalog.spineAtlasSourceUrl} onReady={onLiveReady} onFallback={onLiveFallback}/>} 
+          {catalog.spineSkeletonSourceUrl && catalog.spineAtlasSourceUrl && <NanokaSpinePortrait ref={livePortraitRef} skeletonSourceUrl={catalog.spineSkeletonSourceUrl} atlasSourceUrl={catalog.spineAtlasSourceUrl} renderScale={scale} onReady={onLiveReady} onFallback={onLiveFallback}/>}
         </div>
       </section>
 
@@ -611,6 +699,8 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
     {debugCalibrationEnabled && layoutPanelHost && createPortal(<div className="cbc-debug-controls cbc-debug-sidebar-controls" style={accentStyle}>
       <div className="cbc-debug-menu">
       <div className="cbc-debug-layout-actions"><button type="button" onClick={cancelDebugPositioning}>Cancel changes</button><button type="button" className="is-primary" onClick={saveDebugPositioning}>Save changes</button></div>
+      <div className="cbc-debug-layout-transfer"><button type="button" onClick={() => layoutImportRef.current?.click()}><Icon name="upload"/>Import layout</button><button type="button" onClick={exportDebugLayout}><Icon name="download"/>Export layout</button><input ref={layoutImportRef} type="file" accept="application/json,.json" onChange={(event) => void importDebugLayout(event)}/></div>
+      {layoutTransferStatus && <p className="cbc-layout-transfer-status" role="status">{layoutTransferStatus}</p>}
       <fieldset className="cbc-accent-picker"><legend>Card accent</legend><label><span className="cbc-accent-swatch" style={{ background: customAccent ?? elementAccent }}/><input type="color" aria-label="Custom card accent" value={customAccent ?? elementAccent} onChange={(event) => setCustomAccent(event.target.value)}/><output>{(customAccent ?? elementAccent).toUpperCase()}</output></label><button type="button" disabled={!customAccent} onClick={() => setCustomAccent(null)}>Use element color</button></fieldset>
       <label className="cbc-grade-color-option"><input type="checkbox" checked={colorEchoGrades} onChange={(event) => setColorEchoGrades(event.target.checked)}/><span><b>Color Echo rolls</b><small>Color each substat value by its individual roll quality.</small></span></label>
       <fieldset className="cbc-echo-layout-options"><legend>Echo layout</legend><button type="button" className={echoLayoutPreset === 'curved' ? 'is-active' : ''} aria-pressed={echoLayoutPreset === 'curved'} onClick={() => applyEchoLayoutPreset('curved')}>Curved</button><button type="button" className={echoLayoutPreset === 'straight' ? 'is-active' : ''} aria-pressed={echoLayoutPreset === 'straight'} onClick={() => applyEchoLayoutPreset('straight')}>Straight</button></fieldset>

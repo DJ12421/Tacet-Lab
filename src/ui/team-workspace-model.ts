@@ -547,7 +547,7 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
     if (effect.scope !== 'next') return true
     const firstIncomingTime = sortedActions.find((action) => action.timestamp > activationTime && action.buildId !== source.build?.id)?.timestamp
     if (firstIncomingTime === undefined || currentTime !== firstIncomingTime) return false
-    return sortedActions.some((action) => action.timestamp === firstIncomingTime && action.buildId === recipient.build.id)
+    return sortedActions.some((action) => action.timestamp === firstIncomingTime && action.buildId === recipient.build?.id)
   }
   let resultIndex = 0
   const actions = sortedActions.map((action, index): TeamActionModel => {

@@ -58,14 +58,14 @@ describe('CharacterBuildCard direct editing', () => {
   it('edits level, Sequence, skill level, bonus nodes, weapon, and an empty Echo slot when equipped', () => {
     const { container, callbacks } = card(true)
 
-    fireEvent.click(screen.getByRole('button', { name: /Lv\. 90/ }))
+    fireEvent.click(container.querySelector<HTMLButtonElement>('.cbc-identity > button')!)
     fireEvent.click(screen.getByRole('button', { name: '80' }))
     expect(callbacks.onSetLevel).toHaveBeenCalledWith(80)
 
-    fireEvent.click(screen.getByText('S1').closest('button')!)
+    fireEvent.click(within(screen.getByLabelText('Sequence 0')).getAllByRole('button')[0])
     expect(callbacks.onSetSequence).toHaveBeenCalledWith(1)
 
-    fireEvent.click(screen.getByText('Normal Attack', { selector: '.cbc-main-skill > strong' }).closest('button')!)
+    fireEvent.click(container.querySelector<HTMLButtonElement>('.cbc-main-skill')!)
     fireEvent.click(container.querySelector<HTMLButtonElement>('.cbc-skill-level-popover button:last-child')!)
     expect(callbacks.onSetSkillLevel).toHaveBeenCalledWith(0, 7)
 
@@ -86,16 +86,17 @@ describe('CharacterBuildCard direct editing', () => {
       mainStat: { key: 'critRate', value: 22 }, subStats: [{ key: 'critRate', value: 10.5 }],
       locked: false, excluded: false, createdAt: 1, source: 'manual'
     }
-    const { callbacks } = card(true, { echoSlots: [echo, undefined, undefined, undefined, undefined], equippedEchoes: [echo], totalEchoCost: 4 })
-
-    fireEvent.click(screen.getByRole('button', { name: /Hooscamp/ }))
+    const first = card(true, { echoSlots: [echo, undefined, undefined, undefined, undefined], equippedEchoes: [echo], totalEchoCost: 4 })
+    fireEvent.click(screen.getByRole('button', { name: 'Edit Hooscamp' }))
     const actions = screen.getByText('Edit Echo').parentElement!
     fireEvent.click(within(actions).getByText('Edit Echo'))
-    expect(callbacks.onEditEcho).toHaveBeenCalledWith(echo)
+    expect(first.callbacks.onEditEcho).toHaveBeenCalledWith(echo)
 
-    fireEvent.click(screen.getByRole('button', { name: /Hooscamp/ }))
-    fireEvent.click(screen.getByText('Switch Echo'))
-    expect(callbacks.onOpenEcho).toHaveBeenCalledWith(0)
+    first.unmount()
+    const second = card(true, { echoSlots: [echo, undefined, undefined, undefined, undefined], equippedEchoes: [echo], totalEchoCost: 4 })
+    fireEvent.click(screen.getByRole('button', { name: 'Edit Hooscamp' }))
+    fireEvent.click(screen.getByText(/Switch Echo/))
+    expect(second.callbacks.onOpenEcho).toHaveBeenCalledWith(0)
   })
 
   it('keeps Saved and Theorycraft presentations read-only through the shared editable contract', () => {
@@ -104,8 +105,8 @@ describe('CharacterBuildCard direct editing', () => {
     expect(screen.getByRole('button', { name: /Lv\. 90/ })).toBeDisabled()
     expect(screen.getByRole('button', { name: /No weapon equipped/ })).toBeDisabled()
     expect(screen.getByRole('button', { name: /Empty Echo slot Main Echo/ })).toBeDisabled()
-    fireEvent.click(screen.getByText('S1').closest('button')!)
-    fireEvent.click(screen.getByText('Normal Attack', { selector: '.cbc-main-skill > strong' }).closest('button')!)
+    fireEvent.click(within(screen.getByLabelText('Sequence 0')).getAllByRole('button')[0])
+    fireEvent.click(container.querySelector<HTMLButtonElement>('.cbc-main-skill')!)
     fireEvent.click(container.querySelector<HTMLButtonElement>('.cbc-skill-bonuses button')!)
 
     expect(callbacks.onSetSequence).not.toHaveBeenCalled()

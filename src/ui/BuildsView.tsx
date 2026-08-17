@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { aggregateStats, calculateDamage, formatDamage } from '../domain/damage'
 import { createLocalId } from '../domain/id'
 import { createTheorycraftBuild, loadoutCharacterId, resolveLoadout, theorycraftWarnings, type LoadoutCollections } from '../domain/loadouts'
-import type { Build, Echo, EquippedLoadout, LoadoutSourceRef, OwnedCharacter, OwnedWeapon, StatKey, TheorycraftBuild, TheorycraftEchoSlot } from '../domain/types'
+import type { AggregatedStats, Build, Echo, EquippedLoadout, LoadoutSourceRef, OwnedCharacter, OwnedWeapon, StatKey, TheorycraftBuild, TheorycraftEchoSlot } from '../domain/types'
 import { characterCatalog, echoCatalog, resonators, sonataCatalog, statLabels, weaponCatalog, weapons as damageWeapons } from '../game-data'
 import { mainStatKeysByCost, maxLevelByRarity } from '../game-data/echo-main-stats'
 import { tunableRolls } from '../game-data/tunable-rolls'
@@ -21,6 +21,7 @@ type Props = {
 
 const sourceKey = (source: LoadoutSourceRef) => source.type === 'equipped' ? `equipped:${source.characterId}` : source.type === 'saved' ? `saved:${source.buildId}` : `theorycraft:${source.theorycraftBuildId}`
 const statKeys = Object.keys(tunableRolls) as StatKey[]
+const summaryStatKeys = ['hp', 'atk', 'def', 'critRate', 'critDamage', 'energyRegen'] as const satisfies readonly (keyof AggregatedStats & StatKey)[]
 
 function sourceLabel(source: LoadoutSourceRef, collections: LoadoutCollections) {
   if (source.type === 'equipped') return 'Equipped Build'
@@ -54,7 +55,7 @@ function TheorycraftEditor({ value, ownedCharacter, onClose, onSaved }: { value:
   const [draft, setDraft] = useState(() => structuredClone(value))
   const character = characterCatalog.find((entry) => entry.id === ownedCharacter?.catalogId) ?? characterCatalog[0]
   const compatibleWeapons = weaponCatalog.filter((entry) => entry.type.toLowerCase() === character?.weaponType.toLowerCase())
-  const compatibleMainEchoes = echoCatalog.filter((entry) => entry.rarities.includes(draft.slots[0]?.rarity ?? 5))
+  const compatibleMainEchoes = echoCatalog.filter((entry) => entry.rarities?.includes(draft.slots[0]?.rarity ?? 5))
   const warnings = theorycraftWarnings(draft)
   const liveResolved = ownedCharacter ? resolveLoadout({ type: 'theorycraft', theorycraftBuildId: draft.id }, { characters: [ownedCharacter], weapons: [], echoes: [], builds: [], equippedLoadouts: [], theorycraftBuilds: [draft] }) : undefined
   const liveResonator = resonators.find((entry) => entry.id === ownedCharacter?.catalogId)
@@ -85,11 +86,11 @@ function TheorycraftEditor({ value, ownedCharacter, onClose, onSaved }: { value:
       <div className="theorycraft-sonatas">{draft.sonatas.map((sonata, index) => <div key={`${index}:${sonata.name}`}><select value={sonata.name} onChange={(event) => setDraft({ ...draft, sonatas: draft.sonatas.map((entry, entryIndex) => entryIndex === index ? { ...entry, name: event.target.value } : entry) })}>{sonataCatalog.map((entry) => <option value={entry.name} key={entry.name}>{entry.name}</option>)}</select><input type="number" min="0" max="5" value={sonata.pieces} onChange={(event) => setDraft({ ...draft, sonatas: draft.sonatas.map((entry, entryIndex) => entryIndex === index ? { ...entry, pieces: Number(event.target.value) } : entry) })}/><button className="danger text" onClick={() => setDraft({ ...draft, sonatas: draft.sonatas.filter((_, entryIndex) => entryIndex !== index) })}>Remove</button></div>)}</div>
     </section>
     <section><div className="section-heading"><div><span className="eyebrow">Aggregate substats</span><h3>Direct values or roll counts</h3></div><select value={draft.substats.mode} onChange={(event) => setDraft({ ...draft, substats: event.target.value === 'values' ? { mode: 'values', values: {} } : { mode: 'rolls', quality: 'mid', rolls: {} } })}><option value="values">Direct values</option><option value="rolls">Roll counts</option></select></div>
-      {draft.substats.mode === 'rolls' && <label>Roll quality<select value={draft.substats.quality} onChange={(event) => setDraft({ ...draft, substats: { ...draft.substats, quality: event.target.value as 'low' | 'mid' | 'high' } })}><option value="low">Low</option><option value="mid">Mid</option><option value="high">High</option></select></label>}
+      {draft.substats.mode === 'rolls' && <label>Roll quality<select value={draft.substats.quality} onChange={(event) => { const quality = event.target.value as 'low' | 'mid' | 'high'; setDraft((current) => current.substats.mode === 'rolls' ? { ...current, substats: { ...current.substats, quality } } : current) }}><option value="low">Low</option><option value="mid">Mid</option><option value="high">High</option></select></label>}
       <div className="theorycraft-substats">{statKeys.map((key) => <label key={key}>{statLabels[key]}<input type="number" min="0" step={draft.substats.mode === 'values' ? .1 : 1} value={draft.substats.mode === 'values' ? draft.substats.values[key] ?? 0 : draft.substats.rolls[key] ?? 0} onChange={(event) => { const value = Number(event.target.value); setDraft((current) => current.substats.mode === 'values' ? { ...current, substats: { ...current.substats, values: { ...current.substats.values, [key]: value } } } : { ...current, substats: { ...current.substats, rolls: { ...current.substats.rolls, [key]: value } } }) }}/></label>)}</div>
     </section>
     {warnings.length > 0 && <div className="notice warning"><strong>Feasibility warnings</strong>{warnings.map((warning) => <p key={warning}>{warning}</p>)}</div>}
-    {liveStats && <section><div className="section-heading"><div><span className="eyebrow">Live calculation</span><h3>Final stats and formula preview</h3></div>{liveDamage && <b>{liveResonator?.attacks[0]?.name}: {formatDamage(liveDamage.expected)} average DMG</b>}</div><div className="loadout-final-stats">{(['hp', 'atk', 'def', 'critRate', 'critDamage', 'energyRegen'] as StatKey[]).map((key) => <span key={key}><small>{statLabels[key]}</small><b>{formatDamage(liveStats[key] ?? 0)}</b></span>)}</div></section>}
+    {liveStats && <section><div className="section-heading"><div><span className="eyebrow">Live calculation</span><h3>Final stats and formula preview</h3></div>{liveDamage && <b>{liveResonator?.attacks[0]?.name}: {formatDamage(liveDamage.expected)} average DMG</b>}</div><div className="loadout-final-stats">{summaryStatKeys.map((key) => <span key={key}><small>{statLabels[key]}</small><b>{formatDamage(liveStats[key] ?? 0)}</b></span>)}</div></section>}
     <div className="notice warning">Damage values remain based on unverified bundled game data. Verify important results against the current English in-game UI.</div>
     <div className="modal-actions"><button className="secondary" onClick={onClose}>Cancel</button><button className="primary" onClick={() => void save()}>Save theorycraft</button></div>
   </Panel></div>
@@ -218,7 +219,7 @@ export function BuildsView({ echoes, builds, characters, weapons, equippedLoadou
         {selected?.type === 'theorycraft' && <><button className="primary" onClick={() => setEditing(theorycraftBuilds.find((entry) => entry.id === selected.theorycraftBuildId))}>Edit</button><button className="secondary" onClick={() => void duplicate(selected)}>Duplicate</button></>}
         {selected?.type !== 'equipped' && <><button className="text" onClick={() => void rename(selected!)}>Rename</button><button className="text" onClick={() => void describe(selected!)}>Describe</button><button className="danger text" onClick={() => void deleteSource(selected!)}>Delete</button></>}
       </div></div>{selected && <LoadoutSummary source={selected} collections={collections}/>} 
-      {selectedStats && <div className="loadout-final-stats">{(['hp', 'atk', 'def', 'critRate', 'critDamage', 'energyRegen'] as StatKey[]).map((key) => <span key={key}><small>{statLabels[key]}</small><b>{formatDamage(selectedStats[key] ?? 0)}</b></span>)}</div>}
+      {selectedStats && <div className="loadout-final-stats">{summaryStatKeys.map((key) => <span key={key}><small>{statLabels[key]}</small><b>{formatDamage(selectedStats[key] ?? 0)}</b></span>)}</div>}
       <label className="loadout-compare">Compare with<select value={compareKey} onChange={(event) => setCompareKey(event.target.value)}><option value="">None</option>{compareOptions.map((source) => <option value={sourceKey(source)} key={sourceKey(source)}>{sourceLabel(source, collections)}</option>)}</select></label>
       {compareKey && <div className="loadout-comparison"><article><h3>{sourceLabel(selected!, collections)}</h3><LoadoutSummary source={selected!} collections={collections}/></article><article><h3>{sourceLabel(compareOptions.find((source) => sourceKey(source) === compareKey)!, collections)}</h3><LoadoutSummary source={compareOptions.find((source) => sourceKey(source) === compareKey)!} collections={collections}/></article></div>}
       </Panel></section>

@@ -63,6 +63,78 @@ async function inlineImageSource(image: HTMLImageElement) {
   return source
 }
 
+const EXPORT_CARD_WIDTH = 1920
+const EXPORT_CARD_HEIGHT = 1080
+const EXPORT_BACKDROP_BLUR = 12
+const EXPORT_GLASS_SELECTOR = '.cbc-glass,.cbc-echo-row,.cbc-sonatas button'
+
+const nextPaint = () => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())))
+
+function renderExportFrame(frame: HTMLElement) {
+  return toPng(frame, {
+    width: EXPORT_CARD_WIDTH,
+    height: EXPORT_CARD_HEIGHT,
+    pixelRatio: 1,
+    cacheBust: true,
+    backgroundColor: '#030708',
+    style: { width: `${EXPORT_CARD_WIDTH}px`, height: `${EXPORT_CARD_HEIGHT}px`, maxWidth: 'none', transform: 'none' }
+  })
+}
+
+async function loadExportImage(source: string) {
+  const image = new Image()
+  image.src = source
+  await image.decode()
+  return image
+}
+
+async function bakeExportGlassBackdrops(exportFrame: HTMLDivElement) {
+  const host = exportFrame.parentElement
+  if (!host) return
+
+  const backgroundFrame = exportFrame.cloneNode(true) as HTMLDivElement
+  backgroundFrame.classList.add('is-exporting-background')
+  host.append(backgroundFrame)
+  await nextPaint()
+
+  let backgroundSource: string
+  try {
+    backgroundSource = await renderExportFrame(backgroundFrame)
+  } finally {
+    backgroundFrame.remove()
+  }
+
+  const backgroundImage = await loadExportImage(backgroundSource)
+  const padding = EXPORT_BACKDROP_BLUR * 3
+  const blurred = document.createElement('canvas')
+  blurred.width = EXPORT_CARD_WIDTH + padding * 2
+  blurred.height = EXPORT_CARD_HEIGHT + padding * 2
+  const blurContext = blurred.getContext('2d')
+  if (!blurContext) return
+  blurContext.filter = `blur(${EXPORT_BACKDROP_BLUR}px)`
+  blurContext.drawImage(backgroundImage, padding, padding, EXPORT_CARD_WIDTH, EXPORT_CARD_HEIGHT)
+
+  const frameBounds = exportFrame.getBoundingClientRect()
+  if (!frameBounds.width || !frameBounds.height) return
+  const scaleX = EXPORT_CARD_WIDTH / frameBounds.width
+  const scaleY = EXPORT_CARD_HEIGHT / frameBounds.height
+  for (const panel of exportFrame.querySelectorAll<HTMLElement>(EXPORT_GLASS_SELECTOR)) {
+    const bounds = panel.getBoundingClientRect()
+    const x = Math.round((bounds.left - frameBounds.left) * scaleX)
+    const y = Math.round((bounds.top - frameBounds.top) * scaleY)
+    const width = Math.max(1, Math.round(bounds.width * scaleX))
+    const height = Math.max(1, Math.round(bounds.height * scaleY))
+    const crop = document.createElement('canvas')
+    crop.width = width
+    crop.height = height
+    const cropContext = crop.getContext('2d')
+    if (!cropContext) continue
+    cropContext.drawImage(blurred, x + padding, y + padding, width, height, 0, 0, width, height)
+    panel.style.setProperty('--cbc-export-backdrop-image', `url("${crop.toDataURL('image/png')}")`)
+    panel.classList.add('has-export-backdrop')
+  }
+}
+
 export function richSkillDescription(description: string) {
   const nodes: ReactNode[] = []
   const colors: string[] = []
@@ -278,16 +350,16 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
     }
   }, [exportMessage])
 
-  const collections: LoadoutCollections = { characters: [character], weapons, echoes, builds, equippedLoadouts, theorycraftBuilds }
-  const resolvedLoadout = resolveLoadout(loadoutSource, collections)
-  const runtimeWeapons = resolvedLoadout.weapon && !weapons.some((entry) => entry.id === resolvedLoadout.weapon?.id) ? [...weapons, resolvedLoadout.weapon] : weapons
-  const runtimeEchoes = resolvedLoadout.echoes.some((entry) => !echoes.some((owned) => owned.id === entry.id)) ? [...echoes, ...resolvedLoadout.echoes] : echoes
-  const model = resolveCharacterShowcaseModel({ character, catalog, weapons: runtimeWeapons, echoes: runtimeEchoes, builds: resolvedLoadout.build ? [resolvedLoadout.build] : [] })
-  if (!model) return null
+  const collections = useMemo<LoadoutCollections>(() => ({ characters: [character], weapons, echoes, builds, equippedLoadouts, theorycraftBuilds }), [builds, character, echoes, equippedLoadouts, theorycraftBuilds, weapons])
+  const resolvedLoadout = useMemo(() => resolveLoadout(loadoutSource, collections), [collections, loadoutSource])
+  const runtimeWeapons = useMemo(() => resolvedLoadout.weapon && !weapons.some((entry) => entry.id === resolvedLoadout.weapon?.id) ? [...weapons, resolvedLoadout.weapon] : weapons, [resolvedLoadout.weapon, weapons])
+  const runtimeEchoes = useMemo(() => resolvedLoadout.echoes.some((entry) => !echoes.some((owned) => owned.id === entry.id)) ? [...echoes, ...resolvedLoadout.echoes] : echoes, [echoes, resolvedLoadout.echoes])
+  const model = useMemo(() => resolveCharacterShowcaseModel({ character, catalog, weapons: runtimeWeapons, echoes: runtimeEchoes, builds: resolvedLoadout.build ? [resolvedLoadout.build] : [] }), [catalog, character, resolvedLoadout.build, runtimeEchoes, runtimeWeapons])
   const customSubstatWeights = settings.characterSubstatWeights[catalog.id]
-  const recommendedSubstatProfile = resolveCharacterSubstatProfile(catalog)
-  const characterSubstatProfile = resolveCharacterSubstatProfile(catalog, customSubstatWeights)
-  const statRows = prioritizedBuildCardStats(catalog, characterSubstatProfile)
+  const recommendedSubstatProfile = useMemo(() => resolveCharacterSubstatProfile(catalog), [catalog])
+  const characterSubstatProfile = useMemo(() => resolveCharacterSubstatProfile(catalog, customSubstatWeights), [catalog, customSubstatWeights])
+  const statRows = useMemo(() => prioritizedBuildCardStats(catalog, characterSubstatProfile), [catalog, characterSubstatProfile])
+  if (!model) return null
   const updateCharacter = async (patch: Partial<OwnedCharacter>) => {
     await db.characters.update(character.id, patch)
     await refresh()
@@ -298,7 +370,7 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
   }
   const removeCharacter = async () => {
     if (!deleteArmed) { setDeleteArmed(true); return }
-    await db.transaction('rw', db.characters, db.weapons, db.echoes, db.builds, db.equippedLoadouts, db.theorycraftBuilds, db.teams, async () => {
+    await db.transaction('rw', [db.characters, db.weapons, db.echoes, db.builds, db.equippedLoadouts, db.theorycraftBuilds, db.teams], async () => {
       await db.characters.delete(character.id)
       await db.weapons.where('equippedBy').equals(character.id).modify({ equippedBy: undefined })
       await db.echoes.where('equippedBy').equals(character.id).modify({ equippedBy: undefined, equippedByName: undefined })
@@ -373,15 +445,14 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
         })
         await image.decode().catch(() => undefined)
       }))
-      await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())))
-      const dataUrl = await toPng(exportFrame, {
-        width: 1920,
-        height: 1080,
-        pixelRatio: 1,
-        cacheBust: true,
-        backgroundColor: '#030708',
-        style: { width: '1920px', height: '1080px', maxWidth: 'none', transform: 'none' }
-      })
+      await nextPaint()
+      try {
+        await bakeExportGlassBackdrops(exportFrame)
+      } catch (error) {
+        console.warn('Character card backdrop blur could not be baked; using the export-safe glass fallback.', error)
+      }
+      await nextPaint()
+      const dataUrl = await renderExportFrame(exportFrame)
       const anchor = document.createElement('a')
       anchor.download = `${catalog.name.replace(/\W+/g, '-').replace(/^-|-$/g, '').toLowerCase()}-character-card.png`
       anchor.href = dataUrl

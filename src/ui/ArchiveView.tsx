@@ -37,8 +37,8 @@ function ElementIcon({ element }: { element: string }) {
   return <span className={`element-icon element-${element.toLowerCase()}`} title={element}>{source && <img src={source} alt=""/>}</span>
 }
 
-function CatalogImage({ src, alt }: { src: string; alt: string }) {
-  return <img src={src} alt={alt} loading="lazy" decoding="async"/>
+function CatalogImage({ src, alt }: { src?: string; alt: string }) {
+  return src ? <img src={src} alt={alt} loading="lazy" decoding="async"/> : null
 }
 
 export function ArchiveView({ roverGender, tab, onTabChange }: { roverGender: 'male' | 'female'; tab: ArchiveTab; onTabChange: (tab: ArchiveTab) => void }) {

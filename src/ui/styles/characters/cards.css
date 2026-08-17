@@ -41,6 +41,9 @@
 
 .character-candy-card {
   container-type: inline-size;
+  content-visibility: auto;
+  contain: layout paint style inline-size;
+  contain-intrinsic-size: auto 235px;
   grid-template-columns: clamp(112px,29%,145px) minmax(0,1fr);
   grid-template-rows: minmax(145px,auto) auto;
 }

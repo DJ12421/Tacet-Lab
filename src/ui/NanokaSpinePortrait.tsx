@@ -18,6 +18,7 @@ const NORMALIZED_ATLAS_FOLDERS = [
 interface NanokaSpinePortraitProps {
   skeletonSourceUrl: string
   atlasSourceUrl: string
+  renderScale?: number
   onReady: () => void
   onFallback: () => void
 }
@@ -43,8 +44,13 @@ function needsAtlasNormalization(atlasSourceUrl: string) {
   return NORMALIZED_ATLAS_FOLDERS.some((folder) => atlasSourceUrl.includes(`/portraits/${folder}/`))
 }
 
-export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaSpinePortraitProps>(function NanokaSpinePortrait({ skeletonSourceUrl, atlasSourceUrl, onReady, onFallback }, ref) {
+function portraitResolution(renderScale: number) {
+  return Math.max(.5, Math.min((window.devicePixelRatio || 1) * renderScale, 1.25))
+}
+
+export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaSpinePortraitProps>(function NanokaSpinePortrait({ skeletonSourceUrl, atlasSourceUrl, renderScale = 1, onReady, onFallback }, ref) {
   const hostRef = useRef<HTMLDivElement>(null)
+  const appRef = useRef<Application | undefined>(undefined)
   const [status, setStatus] = useState<PortraitStatus>('idle')
 
   useImperativeHandle(ref, () => ({
@@ -58,6 +64,14 @@ export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaS
       }
     }
   }), [])
+
+  useEffect(() => {
+    const app = appRef.current
+    const host = hostRef.current
+    if (!app || !host) return
+    app.renderer.resolution = portraitResolution(renderScale)
+    app.renderer.resize(Math.max(host.clientWidth, 1), Math.max(host.clientHeight, 1))
+  }, [renderScale])
 
   useEffect(() => {
     const host = hostRef.current
@@ -76,10 +90,21 @@ export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaS
     let app: Application | undefined
     let spineAtlas: TextureAtlas | undefined
     let resizeObserver: ResizeObserver | undefined
+    let intersectionObserver: IntersectionObserver | undefined
+    let isIntersecting = true
+    const updatePlayback = () => {
+      if (!app) return
+      if (isIntersecting && document.visibilityState === 'visible') app.start()
+      else app.stop()
+    }
     const disposeRuntime = () => {
       resizeObserver?.disconnect()
       resizeObserver = undefined
+      intersectionObserver?.disconnect()
+      intersectionObserver = undefined
+      document.removeEventListener('visibilitychange', updatePlayback)
       app?.destroy(true, { children: true, texture: false, baseTexture: false })
+      if (appRef.current === app) appRef.current = undefined
       app = undefined
       spineAtlas?.dispose()
       spineAtlas = undefined
@@ -96,9 +121,11 @@ export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaS
           antialias: true,
           autoDensity: true,
           preserveDrawingBuffer: true,
-          resolution: Math.min(window.devicePixelRatio || 1, 2)
+          resolution: portraitResolution(renderScale)
         })
         app = runtimeApp
+        appRef.current = runtimeApp
+        runtimeApp.ticker.maxFPS = 60
         const canvas = runtimeApp.view as HTMLCanvasElement
         canvas.setAttribute('aria-hidden', 'true')
         host.replaceChildren(canvas)
@@ -178,6 +205,13 @@ export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaS
         fitPortrait()
         resizeObserver = new ResizeObserver(fitPortrait)
         resizeObserver.observe(host)
+        intersectionObserver = new IntersectionObserver(([entry]) => {
+          isIntersecting = entry?.isIntersecting ?? false
+          updatePlayback()
+        })
+        intersectionObserver.observe(host)
+        document.addEventListener('visibilitychange', updatePlayback)
+        updatePlayback()
         setStatus('ready')
         onReady()
       } catch (error) {
