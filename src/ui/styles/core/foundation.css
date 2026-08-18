@@ -26,10 +26,47 @@
   --mint: #8de4d4;
   --muted: #7c8987;
   --danger: #ef766e;
+  --scrollbar-track: #0b0f10;
+  --scrollbar-thumb: #806d42;
+  --scrollbar-thumb-hover: var(--gold);
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  scrollbar-width: thin;
 }
 
 * {
   box-sizing: border-box;
+}
+
+/* Chromium, Safari, and other WebKit-based browsers. */
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb {
+  min-width: 28px;
+  min-height: 28px;
+  border: 2px solid var(--scrollbar-track);
+  border-radius: 999px;
+  background: var(--scrollbar-thumb);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+*::-webkit-scrollbar-corner {
+  background: var(--scrollbar-track);
+}
+
+@media (forced-colors: active) {
+  :root {
+    scrollbar-color: auto;
+  }
 }
 
 html {

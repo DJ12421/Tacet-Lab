@@ -40,6 +40,7 @@ const quickStarts = [
 ]
 
 const changelogEntries = [
+  { hash: 'e7bcaa5', date: 'Aug 19, 2026', title: 'Update game data and characters for version 3.6' },
   { hash: 'd00cd2f', date: 'Aug 17, 2026', title: 'Improve character card layouts and exports' },
   { hash: '296bdfa', date: 'Aug 17, 2026', title: 'Expand loadout workflows and refresh app UI' },
   { hash: 'c198e19', date: 'Aug 10, 2026', title: 'Improve teams, Echo inventory, calculations, and app updates' },
