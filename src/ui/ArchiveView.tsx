@@ -144,6 +144,6 @@ export function ArchiveView({ roverGender, tab, onTabChange }: { roverGender: 'm
     {tab === 'echoes' && <div className="archive-results-grid archive-echo-grid">{(visibleResults as typeof echoCatalog).map((item) => <a className="archive-entry-card archive-echo-card" href={item.articleUrl} target="_blank" rel="noreferrer" key={item.id}><div className="archive-entry-art"><CatalogImage src={item.iconSourceUrl} alt={item.name}/><b className={`archive-cost cost-${item.cost}`}>{item.cost}</b><span className="archive-external" aria-hidden="true">↗</span></div><div className="archive-entry-copy"><h2>{item.name}</h2><p>{item.sonatas.join(' · ')}</p><footer><span>{item.cost} cost</span><b aria-label={`${Math.max(...(item.rarities ?? [1]))} stars`}>{'★'.repeat(Math.max(...(item.rarities ?? [1])))}</b></footer></div></a>)}</div>}
 
     {visibleLimit < results.length && <div className="archive-load-more"><p>Showing {visibleResults.length} of {results.length}</p><button type="button" className="secondary" onClick={() => setVisibleLimit((value) => value + PAGE_SIZE)}>Show {Math.min(PAGE_SIZE, results.length - visibleLimit)} more</button></div>}
-    <p className="archive-credit">Catalog and artwork from Nanoka 3.5. Cards open Nanoka in a new tab.</p>
+    <p className="archive-credit">Catalog and artwork from Nanoka 3.6. Cards open Nanoka in a new tab.</p>
   </section>
 }

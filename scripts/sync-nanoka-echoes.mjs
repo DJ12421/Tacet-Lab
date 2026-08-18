@@ -1,5 +1,5 @@
 import { writeFile } from 'node:fs/promises'
-const version='3.5',base=`https://static.nanoka.cc/ww/${version}`
+const version='3.6',base=`https://static.nanoka.cc/ww/${version}`
 const encoreBase='https://api-v2.encore.moe/api/en'
 const wutheringToolsHome='https://www.wutheringtools.com/'
 const sources={characters:`${base}/character.json`,weapons:`${base}/weapon.json`,echoes:`${base}/echo.json`,titles:`${encoreBase}/title`,damageTypes:wutheringToolsHome}
@@ -38,7 +38,11 @@ const loadWutheringToolsDamageTypes=async characterNames=>{
       return expectedKeys.some(expected=>normalizedKey===expected||normalizedKey.startsWith(expected))
     }).map(entry=>[normalizedSourceKey(entry.characterKey),entry]))
   const chunks=[...chunkByCharacter.values()]
-  if(chunks.length<characterNames.length)throw Error(`Incomplete WutheringTools character modules: ${chunks.length}/${characterNames.length}`)
+  const availableCharacterKeys=[...chunkByCharacter.keys()]
+  const missingCharacters=[...new Set(characterNames)].filter(name=>{
+    const expected=normalizedSourceKey(name)
+    return !availableCharacterKeys.some(characterKey=>characterKey===expected||characterKey.startsWith(expected))
+  })
   const entries=await mapLimit(chunks,8,async({characterKey,chunk})=>{
     const moduleSource=await loadText(new URL(`assets/${chunk}`,wutheringToolsHome))
     const types=new Map()
@@ -54,9 +58,9 @@ const loadWutheringToolsDamageTypes=async characterNames=>{
   })
   const emptyCharacters=entries.filter(([,types])=>types.size===0).map(([characterKey])=>characterKey)
   if(emptyCharacters.length)throw Error(`Missing WutheringTools attack types: ${emptyCharacters.join(', ')}`)
-  return new Map(entries)
+  return {damageTypes:new Map(entries),missingCharacters}
 }
-const wutheringToolsDamageTypes=await loadWutheringToolsDamageTypes(Object.values(rawCharacters).map(character=>character.en))
+const {damageTypes:wutheringToolsDamageTypes,missingCharacters:wutheringToolsMissingCharacters}=await loadWutheringToolsDamageTypes(Object.values(rawCharacters).map(character=>character.en))
 const wutheringToolsSourceTypeCount=[...wutheringToolsDamageTypes.values()].reduce((total,types)=>total+types.size,0)
 let wutheringToolsTypeMatches=0,wutheringToolsTypeMisses=0
 const wutheringToolsCombatType=(characterKey,attackName)=>{
@@ -171,7 +175,7 @@ const outroDescriptionAttack=(id,nodeId,skill)=>{
     hitMultipliers
   }]
 }
-// Nanoka 3.5 formats this as 6.11% × 6 + 24.44%, but the two damage
+// Nanoka formats this as 6.11% × 6 + 24.44%, but the two damage
 // components and the English in-game damage breakdown both show two hits.
 const verifiedComponentHitAttacks=new Set(['1511:1:Basic Attack Stage 1 DMG'])
 const characterLevels=Array.from({length:90},(_,index)=>index+1)
@@ -321,3 +325,4 @@ await Promise.all([
 ])
 console.log(`Wrote ${characters.length} characters, ${weapons.length} weapons, ${sonatas.length} Sonatas, and ${echoes.length} Echoes from Nanoka ${version}`)
 console.log(`Imported ${wutheringToolsTypeMatches}/${wutheringToolsSourceTypeCount} matching attack damage types from WutheringTools; ${wutheringToolsTypeMisses} Nanoka-only or ambiguous attacks retained their category fallback`)
+if(wutheringToolsMissingCharacters.length)console.log(`WutheringTools has no character module for: ${wutheringToolsMissingCharacters.join(', ')}; Nanoka attacks retained their category fallback`)

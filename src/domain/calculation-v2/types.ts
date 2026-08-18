@@ -23,7 +23,9 @@ export interface CalculationModifier {
   modifierValueTalentRef?: string
   modifySpecificTalents?: string[]
   maximumValue?: number
+  perStackMaximumValue?: number
   modifierStep?: number
+  maxSteps?: number
   overflowStep?: number
   overflowMin?: number
   overflowMax?: number

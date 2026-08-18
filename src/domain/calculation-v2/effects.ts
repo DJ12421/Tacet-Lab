@@ -71,16 +71,22 @@ export function resolveSourceScaledModifierValue(
   if (!modifier.modifierBasedOn || !modifier.modifierStep) return undefined
   const dependencyStats = (effect.sourceBuildId ? sourceStats[effect.sourceBuildId] : undefined) ?? fallbackStats
   if (!dependencyStats) return undefined
+  const ratioDependency = modifier.modifierBasedOn === 'EnergyRegen' || modifier.modifierBasedOn === 'CritRate'
   const dependency = modifier.modifierBasedOn === 'EnergyRegen' ? dependencyStats.energyRegen / 100
     : modifier.modifierBasedOn === 'CritRate' ? dependencyStats.critRate / 100
-      : undefined
+      : modifier.modifierBasedOn === 'HP' ? dependencyStats.hp
+        : modifier.modifierBasedOn === 'ATK' ? dependencyStats.atk
+          : modifier.modifierBasedOn === 'DEF' ? dependencyStats.def
+            : undefined
   if (dependency === undefined) return undefined
-  const additionalAmount = dependency * 100 - (modifier.minStatValue ?? 0) * 100
-  const steps = Math.max(0, Math.floor(additionalAmount / modifier.modifierStep))
+  const dependencyScale = ratioDependency ? 100 : 1
+  const additionalAmount = dependency * dependencyScale - (modifier.minStatValue ?? 0) * dependencyScale
+  const steps = Math.min(modifier.maxSteps ?? Number.POSITIVE_INFINITY, Math.max(0, Math.floor(additionalAmount / modifier.modifierStep)))
   const raw = resolveRawValue(modifier, selection, skillLevels)
   const rawValue = typeof raw === 'number' ? raw : Number.parseFloat(raw)
   if (!Number.isFinite(rawValue)) return 0
-  return Math.min(modifier.maximumValue ?? Number.POSITIVE_INFINITY, Math.max(0, steps * rawValue * selectionFactor(effect, selection)))
+  const valuePerStack = Math.min(modifier.perStackMaximumValue ?? Number.POSITIVE_INFINITY, steps * rawValue)
+  return Math.min(modifier.maximumValue ?? Number.POSITIVE_INFINITY, Math.max(0, valuePerStack * selectionFactor(effect, selection)))
 }
 
 function stackingMagnitude(effect: CalculationEffectDefinition, selection: CalculationEffectSelection, skillLevels: Record<string, number>) {

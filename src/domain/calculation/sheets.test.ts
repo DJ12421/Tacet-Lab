@@ -3,12 +3,12 @@ import { characterCatalog, echoCatalog, sonataCatalog, weaponCatalog } from '../
 import { FormulaCalculator } from './engine'
 import { characterFormulaSheets, echoFormulaSheets, formulaSheets, getFormulaCoverage, sonataFormulaSheets, weaponFormulaSheets } from './sheets'
 
-describe('Nanoka 3.5 formula coverage', () => {
+describe('Nanoka 3.6 formula coverage', () => {
   it('classifies the complete pinned catalog', () => {
-    expect(characterCatalog).toHaveLength(60)
-    expect(weaponCatalog).toHaveLength(120)
+    expect(characterCatalog).toHaveLength(62)
+    expect(weaponCatalog).toHaveLength(122)
     expect(sonataCatalog).toHaveLength(34)
-    expect(echoCatalog).toHaveLength(180)
+    expect(echoCatalog).toHaveLength(181)
     expect(characterFormulaSheets).toHaveLength(characterCatalog.length)
     expect(weaponFormulaSheets).toHaveLength(weaponCatalog.length)
     expect(sonataFormulaSheets).toHaveLength(sonataCatalog.length)

@@ -460,7 +460,7 @@ export const generatedSonataCatalog:GeneratedSonataCatalogEntry[]=[
   {
     "id": "34",
     "name": "Heart of Evil's Purge",
-    "echoCount": 7,
+    "echoCount": 8,
     "effects": [
       {
         "pieces": 2,
@@ -475,7 +475,7 @@ export const generatedSonataCatalog:GeneratedSonataCatalogEntry[]=[
   {
     "id": "35",
     "name": "Lamp of Nether Road",
-    "echoCount": 7,
+    "echoCount": 8,
     "effects": [
       {
         "pieces": 2,

@@ -442,6 +442,17 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21040034_UI.webp"
   },
   {
+    "id": "21020106",
+    "name": "Glint of Clouds",
+    "rarity": 5,
+    "type": "Sword",
+    "baseAtk": 500,
+    "secondaryStat": "Crit. Rate",
+    "secondaryStatValue": "36%",
+    "articleUrl": "https://ww.nanoka.cc/weapon/21020106",
+    "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21020106_UI.webp"
+  },
+  {
     "id": "21010053",
     "name": "Guardian Broadblade",
     "rarity": 3,
@@ -1067,6 +1078,17 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "secondaryStatValue": "72%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21030016",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21030017_UI.webp"
+  },
+  {
+    "id": "21010076",
+    "name": "Thousandfold Deliverance",
+    "rarity": 5,
+    "type": "Broadblade",
+    "baseAtk": 412,
+    "secondaryStat": "HP",
+    "secondaryStatValue": "72.2%",
+    "articleUrl": "https://ww.nanoka.cc/weapon/21010076",
+    "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21010076_UI.webp"
   },
   {
     "id": "21030074",

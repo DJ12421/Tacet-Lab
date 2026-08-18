@@ -5,7 +5,7 @@ import { characterCatalog, sonataCatalog, weaponCatalog, type CharacterCatalogEn
 import { generatedSonataIconSources } from '../game-data/sonatas.generated'
 import { alwaysOnPassiveStatLines, alwaysOnSequenceStatLines, hasConditionalStatLines, skillTreeStatLine } from '../game-data/passive-stats'
 
-export const SHOWCASE_DATA_WARNING = 'Game data is generated from Nanoka 3.5 and has not yet been authoritatively verified against the current English in-game UI.'
+export const SHOWCASE_DATA_WARNING = 'Game data is generated from Nanoka 3.6 and has not yet been authoritatively verified against the current English in-game UI.'
 
 export interface CharacterShowcaseInput {
   character: OwnedCharacter

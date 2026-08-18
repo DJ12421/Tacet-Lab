@@ -18,7 +18,7 @@ Use the top-bar controls to export or restore a JSON backup. Open **Settings & d
 
 ## Current features
 
-- Browse the Nanoka 3.5 character, weapon, Sonata, and Echo catalogs.
+- Browse the Nanoka 3.6 character, weapon, Sonata, and Echo catalogs.
 - View Nanoka's animated Spine portrait on character loadout cards, with a static-art and reduced-motion fallback.
 - Track owned characters, weapon copies, levels, sequences, ranks, locks, and assignments.
 - Scan English Echo detail screens from a user-approved window share.
@@ -52,7 +52,7 @@ The app downloads catalog artwork and the selected character's animated portrait
 - Live scanning is designed for 1920x1080 and 2560x1440 16:9 layouts on desktop Chrome or Edge.
 - Mobile supports browsing and editing, but not live game-window capture.
 - Real 1080p and 1440p fixtures have not yet demonstrated the 95% OCR target. Every result must be reviewed.
-- Formula coverage is pinned to `nanoka-3.5-formula-v2`: 60 characters, 120 weapons, 34 Sonatas, and 180 Echoes are classified, and generated character attack parameters drive the result sheets.
+- Formula coverage is pinned to `nanoka-3.6-formula-v2`: 62 characters, 122 weapons, 34 Sonatas, and 181 Echoes are classified, and generated character attack parameters drive the result sheets.
 - “Nanoka-derived” means reproducible from that pinned dataset, not independently verified against the current English in-game UI. Complex weapon, Sonata, sequence, and Echo-active behaviors must retain visible reference/coverage warnings until their structured effects are audited.
 - Catalog images and animated character portraits require a network connection unless the browser already cached them. The first OCR run also requires network access.
 
@@ -84,6 +84,6 @@ The production output is written to `dist/`. GitHub Actions runs the same checks
 - [Game-data verification policy](docs/game-data.md)
 - [OCR fixture and acceptance protocol](docs/ocr-fixtures.md)
 
-Catalog metadata and artwork are imported from [Nanoka 3.5](https://ww.nanoka.cc/) with permission. Echo main-stat validation references the Wuthering Waves Wiki. The generated catalog records their source URLs and generation metadata in the repository.
+Catalog metadata and artwork are imported from [Nanoka 3.6](https://ww.nanoka.cc/) with permission. Echo main-stat validation references the Wuthering Waves Wiki. The generated catalog records their source URLs and generation metadata in the repository.
 
 Do not use current damage output as an authoritative in-game reference, and do not claim the OCR accuracy target without the required fixture corpus.

@@ -2882,6 +2882,78 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21040034_UI.webp"
   },
   {
+    "id": "21020106",
+    "name": "Glint of Clouds",
+    "description": "Wreathed in mist and cloud, still waters blend with the sky in seamless blue. Sparse shadows slant across as a rain of petals falls.\nMay I bear this jade blade into the mortal realm, cleanse a tarnished age, and put the wicked to the sword.",
+    "rarity": 5,
+    "type": "Sword",
+    "baseAtk": 500,
+    "secondaryStat": "Crit. Rate",
+    "secondaryStatValue": "36%",
+    "levelStats": [
+      {
+        "level": 1,
+        "baseAtk": 40,
+        "secondaryStatValue": "8%"
+      },
+      {
+        "level": 10,
+        "baseAtk": 70,
+        "secondaryStatValue": "11.1%"
+      },
+      {
+        "level": 20,
+        "baseAtk": 130,
+        "secondaryStatValue": "14.2%"
+      },
+      {
+        "level": 30,
+        "baseAtk": 164,
+        "secondaryStatValue": "17.3%"
+      },
+      {
+        "level": 40,
+        "baseAtk": 224,
+        "secondaryStatValue": "20.4%"
+      },
+      {
+        "level": 50,
+        "baseAtk": 285,
+        "secondaryStatValue": "23.5%"
+      },
+      {
+        "level": 60,
+        "baseAtk": 345,
+        "secondaryStatValue": "26.6%"
+      },
+      {
+        "level": 70,
+        "baseAtk": 405,
+        "secondaryStatValue": "29.7%"
+      },
+      {
+        "level": 80,
+        "baseAtk": 466,
+        "secondaryStatValue": "32.8%"
+      },
+      {
+        "level": 90,
+        "baseAtk": 500,
+        "secondaryStatValue": "36%"
+      }
+    ],
+    "passiveName": "Evil's Scourge",
+    "passiveEffects": [
+      "ATK is increased by 12%. Inflicting Tune Strain - Shifting grants 11.2% Aero DMG Bonus for 2s, stacking up to 5 times. This effect can be triggered once every 0.5s. Upon reaching the max stack limit, gain the following effects:\n- This Aero DMG Bonus effect's duration is extended to 30s.\n- Aero DMG ignores 10% of the target's DEF during this effect.",
+      "ATK is increased by 15%. Inflicting Tune Strain - Shifting grants 14% Aero DMG Bonus for 2s, stacking up to 5 times. This effect can be triggered once every 0.5s. Upon reaching the max stack limit, gain the following effects:\n- This Aero DMG Bonus effect's duration is extended to 30s.\n- Aero DMG ignores 12.5% of the target's DEF during this effect.",
+      "ATK is increased by 18%. Inflicting Tune Strain - Shifting grants 16.8% Aero DMG Bonus for 2s, stacking up to 5 times. This effect can be triggered once every 0.5s. Upon reaching the max stack limit, gain the following effects:\n- This Aero DMG Bonus effect's duration is extended to 30s.\n- Aero DMG ignores 15% of the target's DEF during this effect.",
+      "ATK is increased by 21%. Inflicting Tune Strain - Shifting grants 19.6% Aero DMG Bonus for 2s, stacking up to 5 times. This effect can be triggered once every 0.5s. Upon reaching the max stack limit, gain the following effects:\n- This Aero DMG Bonus effect's duration is extended to 30s.\n- Aero DMG ignores 17.5% of the target's DEF during this effect.",
+      "ATK is increased by 24%. Inflicting Tune Strain - Shifting grants 22.4% Aero DMG Bonus for 2s, stacking up to 5 times. This effect can be triggered once every 0.5s. Upon reaching the max stack limit, gain the following effects:\n- This Aero DMG Bonus effect's duration is extended to 30s.\n- Aero DMG ignores 20% of the target's DEF during this effect."
+    ],
+    "articleUrl": "https://ww.nanoka.cc/weapon/21020106",
+    "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21020106_UI.webp"
+  },
+  {
     "id": "21010053",
     "name": "Guardian Broadblade",
     "description": "The first Jinzhou Magistrate, in memory of the mysterious person who helped defend the border and build the city, created the Guardian series under his guidance. Today, it has become an indispensable cornerstone in the development of new weapons.",
@@ -6984,6 +7056,78 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     ],
     "articleUrl": "https://ww.nanoka.cc/weapon/21030016",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21030017_UI.webp"
+  },
+  {
+    "id": "21010076",
+    "name": "Thousandfold Deliverance",
+    "description": "Endless stretches the Netherworld; the long night knows no end. Ten thousand souls lie hushed, and all sound fades to silence.\nWhen cold, golden rays illuminate the Nether Gate, the sunken dreams of ages past shall at last be brought to light.",
+    "rarity": 5,
+    "type": "Broadblade",
+    "baseAtk": 412,
+    "secondaryStat": "HP",
+    "secondaryStatValue": "72.2%",
+    "levelStats": [
+      {
+        "level": 1,
+        "baseAtk": 33,
+        "secondaryStatValue": "16%"
+      },
+      {
+        "level": 10,
+        "baseAtk": 58,
+        "secondaryStatValue": "22.2%"
+      },
+      {
+        "level": 20,
+        "baseAtk": 107,
+        "secondaryStatValue": "28.5%"
+      },
+      {
+        "level": 30,
+        "baseAtk": 135,
+        "secondaryStatValue": "34.7%"
+      },
+      {
+        "level": 40,
+        "baseAtk": 185,
+        "secondaryStatValue": "41%"
+      },
+      {
+        "level": 50,
+        "baseAtk": 235,
+        "secondaryStatValue": "47.2%"
+      },
+      {
+        "level": 60,
+        "baseAtk": 285,
+        "secondaryStatValue": "53.4%"
+      },
+      {
+        "level": 70,
+        "baseAtk": 334,
+        "secondaryStatValue": "59.7%"
+      },
+      {
+        "level": 80,
+        "baseAtk": 384,
+        "secondaryStatValue": "65.9%"
+      },
+      {
+        "level": 90,
+        "baseAtk": 412,
+        "secondaryStatValue": "72.2%"
+      }
+    ],
+    "passiveName": "Hark, Spirits and Stars",
+    "passiveEffects": [
+      "Grants 12% All-Attribute DMG Bonus. Casting Intro Skill or gaining a Shield as the active Resonator grants 1 stack of Nature's Order and 1 stack of Cradle of Life. This effect can be triggered via gaining a Shield once every 0.5s, stacking up to <SapTag=1>6</SapTag> {Cus:Sap,S=time P=times SapTag=1}, lasting for 7s. Switching to another Resonator ends both Nature's Order and Cradle of Life immediately.\nNature's Order: Crit. DMG is increased by 4%, up to 24%. When Nature's Order reaches <SapTag=A>6</SapTag> {Cus:Sap,S=stack P=stacks SapTag=A}, the Crit. Rate of Heavy Attack DMG is increased by 12%.\nCradle of Life: Casting Heavy Attack consumes up to 2 stacks of Cradle of Life. For every <SapTag=6>1</SapTag> {Cus:Sap,S=stack P=stacks SapTag=6} of Cradle of Life consumed, Heavy Attack DMG ignores 15% of the target's DEF, up to 30%. The effect lasts for 2s.",
+      "Grants 15% All-Attribute DMG Bonus. Casting Intro Skill or gaining a Shield as the active Resonator grants 1 stack of Nature's Order and 1 stack of Cradle of Life. This effect can be triggered via gaining a Shield once every 0.5s, stacking up to <SapTag=1>6</SapTag> {Cus:Sap,S=time P=times SapTag=1}, lasting for 7s. Switching to another Resonator ends both Nature's Order and Cradle of Life immediately.\nNature's Order: Crit. DMG is increased by 5%, up to 30%. When Nature's Order reaches <SapTag=A>6</SapTag> {Cus:Sap,S=stack P=stacks SapTag=A}, the Crit. Rate of Heavy Attack DMG is increased by 15%.\nCradle of Life: Casting Heavy Attack consumes up to 2 stacks of Cradle of Life. For every <SapTag=6>1</SapTag> {Cus:Sap,S=stack P=stacks SapTag=6} of Cradle of Life consumed, Heavy Attack DMG ignores 17.5% of the target's DEF, up to 35%. The effect lasts for 2s.",
+      "Grants 18% All-Attribute DMG Bonus. Casting Intro Skill or gaining a Shield as the active Resonator grants 1 stack of Nature's Order and 1 stack of Cradle of Life. This effect can be triggered via gaining a Shield once every 0.5s, stacking up to <SapTag=1>6</SapTag> {Cus:Sap,S=time P=times SapTag=1}, lasting for 7s. Switching to another Resonator ends both Nature's Order and Cradle of Life immediately.\nNature's Order: Crit. DMG is increased by 6%, up to 36%. When Nature's Order reaches <SapTag=A>6</SapTag> {Cus:Sap,S=stack P=stacks SapTag=A}, the Crit. Rate of Heavy Attack DMG is increased by 18%.\nCradle of Life: Casting Heavy Attack consumes up to 2 stacks of Cradle of Life. For every <SapTag=6>1</SapTag> {Cus:Sap,S=stack P=stacks SapTag=6} of Cradle of Life consumed, Heavy Attack DMG ignores 20% of the target's DEF, up to 40%. The effect lasts for 2s.",
+      "Grants 21% All-Attribute DMG Bonus. Casting Intro Skill or gaining a Shield as the active Resonator grants 1 stack of Nature's Order and 1 stack of Cradle of Life. This effect can be triggered via gaining a Shield once every 0.5s, stacking up to <SapTag=1>6</SapTag> {Cus:Sap,S=time P=times SapTag=1}, lasting for 7s. Switching to another Resonator ends both Nature's Order and Cradle of Life immediately.\nNature's Order: Crit. DMG is increased by 7%, up to 42%. When Nature's Order reaches <SapTag=A>6</SapTag> {Cus:Sap,S=stack P=stacks SapTag=A}, the Crit. Rate of Heavy Attack DMG is increased by 21%.\nCradle of Life: Casting Heavy Attack consumes up to 2 stacks of Cradle of Life. For every <SapTag=6>1</SapTag> {Cus:Sap,S=stack P=stacks SapTag=6} of Cradle of Life consumed, Heavy Attack DMG ignores 22.5% of the target's DEF, up to 45%. The effect lasts for 2s.",
+      "Grants 24% All-Attribute DMG Bonus. Casting Intro Skill or gaining a Shield as the active Resonator grants 1 stack of Nature's Order and 1 stack of Cradle of Life. This effect can be triggered via gaining a Shield once every 0.5s, stacking up to <SapTag=1>6</SapTag> {Cus:Sap,S=time P=times SapTag=1}, lasting for 7s. Switching to another Resonator ends both Nature's Order and Cradle of Life immediately.\nNature's Order: Crit. DMG is increased by 8%, up to 48%. When Nature's Order reaches <SapTag=A>6</SapTag> {Cus:Sap,S=stack P=stacks SapTag=A}, the Crit. Rate of Heavy Attack DMG is increased by 24%.\nCradle of Life: Casting Heavy Attack consumes up to 2 stacks of Cradle of Life. For every <SapTag=6>1</SapTag> {Cus:Sap,S=stack P=stacks SapTag=6} of Cradle of Life consumed, Heavy Attack DMG ignores 25% of the target's DEF, up to 50%. The effect lasts for 2s."
+    ],
+    "articleUrl": "https://ww.nanoka.cc/weapon/21010076",
+    "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21010076_UI.webp"
   },
   {
     "id": "21030074",

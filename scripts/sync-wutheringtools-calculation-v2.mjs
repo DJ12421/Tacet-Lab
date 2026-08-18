@@ -145,6 +145,8 @@ const numericLiteral = (value) => typeof value === 'string' && value.trim() !== 
 
 function normalizeModifier(modifier) {
   const normalizedModifier = { ...modifier }
+  delete normalizedModifier.key
+  delete normalizedModifier.details
   if ('modifierValue' in normalizedModifier) {
     normalizedModifier.modifierValue = Array.isArray(normalizedModifier.modifierValue)
       ? normalizedModifier.modifierValue.map(numericLiteral)
@@ -157,7 +159,7 @@ function normalizeModifier(modifier) {
       Object.entries(normalizedModifier.modifierByRefinement).map(([rank, value]) => [rank, Number(value)])
     )
   }
-  for (const key of ['maximumValue', 'modifierStep', 'overflowStep', 'overflowMin', 'overflowMax', 'minStatValue']) {
+  for (const key of ['maximumValue', 'perStackMaximumValue', 'modifierStep', 'maxSteps', 'overflowStep', 'overflowMin', 'overflowMax', 'minStatValue']) {
     if (normalizedModifier[key] !== undefined) normalizedModifier[key] = Number(normalizedModifier[key])
   }
   return normalizedModifier
@@ -247,6 +249,30 @@ function attackDefinition(raw, characterKey, group, element) {
   }
 }
 
+function enrichStackedAmplificationEffects(effects, attacks) {
+  return effects.map((effect) => {
+    if (effect.modifiers.length || !effect.hasStacks) return effect
+    const match = effect.description.match(/Amplified by\s+(\d+(?:\.\d+)?)%[\s\S]*?increases by\s+(\d+(?:\.\d+)?)%\s+per stack for (?:the )?first\s+(\d+)\s+stacks/i)
+    if (!match) return effect
+    const descriptionKey = normalized(effect.description)
+    const targets = attacks.filter((attack) => {
+      const attackName = normalized(attack.name).replace(/stage\d+/g, '').replace(/dmg$/, '')
+      return attackName.length >= 8 && descriptionKey.includes(attackName)
+    }).map((attack) => attack.key)
+    if (!targets.length) return effect
+    const basePerStack = Number(match[1]) / 100
+    const bonusPerStack = Number(match[2]) / 100
+    const bonusStackLimit = Number(match[3])
+    return {
+      ...effect,
+      modifiers: [
+        { modifier: 'specialMultiplier', modifierValue: basePerStack, modifySpecificTalents: targets },
+        { modifier: 'specialMultiplier', modifierValue: bonusPerStack, maximumValue: bonusPerStack * bonusStackLimit, modifySpecificTalents: targets }
+      ]
+    }
+  })
+}
+
 const characterAttackFiles = [
   ['basicAttacks.ts', 'Basic Attack'],
   ['skillAttacks.ts', 'Resonance Skill'],
@@ -269,7 +295,7 @@ for (const key of characterFolders) {
   const effects = ((await parseFile(path.join(folder, 'buffs.ts'))).value('buffs') ?? [])
     .map((effect) => effectDefinition(effect, { sourceKind: 'character', sourceId: key }))
   const sequences = ((await parseFile(path.join(folder, 'resonanceChains.ts'))).value('resonanceChains') ?? [])
-    .map((effect, index) => effectDefinition(effect, { sourceKind: 'sequence', sourceId: key, sequence: index + 1 }))
+    .map((effect) => effectDefinition(effect, { sourceKind: 'sequence', sourceId: key }))
   const attacks = []
   for (const [file, group] of characterAttackFiles) {
     const parsed = await parseFile(path.join(folder, file))
@@ -277,14 +303,15 @@ for (const key of characterFolders) {
     const attackGroup = parsed.value(exportName) ?? {}
     for (const attack of attackGroup.attacks ?? []) attacks.push(attackDefinition(attack, key, group, basic.element))
   }
+  const enrichedEffects = enrichStackedAmplificationEffects(effects, attacks)
   characters.push({
     id: normalized(`${basic.name ?? key}-${basic.element ?? ''}`),
     key,
     name: String(basic.name ?? key),
     attacks,
-    effects,
+    effects: enrichedEffects,
     sequences,
-    stances: [...new Set([...effects, ...sequences].flatMap((effect) => effect.stance ? [effect.stance] : []))]
+    stances: [...new Set([...enrichedEffects, ...sequences].flatMap((effect) => effect.stance ? [effect.stance] : []))]
   })
 }
 

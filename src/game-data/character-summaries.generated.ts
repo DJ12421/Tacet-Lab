@@ -310,6 +310,20 @@ export const generatedCharacterSummaries:GeneratedCharacterSummary[]=[
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_jiexin_UI.webp"
   },
   {
+    "id": "1212",
+    "name": "Jingran",
+    "title": "Nether Qi Art",
+    "nickname": "",
+    "rarity": 5,
+    "element": "Fusion",
+    "weaponType": "Broadblade",
+    "role": "Main Damage Dealer",
+    "gender": "male",
+    "articleUrl": "https://ww.nanoka.cc/character/1212",
+    "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_74_UI.webp",
+    "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Jingran_UI.webp"
+  },
+  {
     "id": "1304",
     "name": "Jinhsi",
     "title": "Thawborn Renewal",
@@ -490,6 +504,20 @@ export const generatedCharacterSummaries:GeneratedCharacterSummary[]=[
     "articleUrl": "https://ww.nanoka.cc/character/1608",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_41_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_fuluoluo_UI.webp"
+  },
+  {
+    "id": "1413",
+    "name": "Qingxiao",
+    "title": "Heart Sword",
+    "nickname": "Lumi",
+    "rarity": 5,
+    "element": "Aero",
+    "weaponType": "Sword",
+    "role": "Main Damage Dealer",
+    "gender": "female",
+    "articleUrl": "https://ww.nanoka.cc/character/1413",
+    "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_73_UI.webp",
+    "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Qingxiao_UI.webp"
   },
   {
     "id": "1411",

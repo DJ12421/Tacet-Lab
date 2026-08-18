@@ -42,6 +42,8 @@ const DAMAGE_RESULT_MODES: Array<{ id: FormulaResultMode; label: string }> = [
   { id: 'critical', label: 'Crit hit DMG' }
 ]
 
+const TEAM_TBA_CHARACTER_IDS = new Set(['1212', '1413'])
+
 const ROTATION_ATTACK_GROUPS: Array<{ id: TeamAttackGroup; label: string }> = [
   { id: 'basic', label: 'Basic' },
   { id: 'skill', label: 'Skill' },
@@ -1787,6 +1789,7 @@ function CharacterOverviewWorkspace({ member, model, updateTeam, weaponPassive }
 
 function MemberWorkspace({ member, model, section, setSection, updateTeam, echoes, builds, characters, weapons, openScanner, refresh, roverGender }: { member: TeamMemberModel; model: TeamWorkspaceModel; section: MemberSection; setSection: (section: MemberSection) => void; updateTeam: (patch: Partial<Team>) => Promise<void>; echoes: Echo[]; builds: Build[]; characters: OwnedCharacter[]; weapons: OwnedWeapon[]; openScanner: () => void; refresh: () => Promise<void>; roverGender: 'male' | 'female' }) {
   if (!member.build || !member.catalog || !member.character || !member.showcase) return <section className="tw-member-empty tw-panel"><MemberAvatar member={member}/><h2>Member {member.slot + 1} is empty</h2><p>Return to Team Settings and click the empty member card to add a saved build.</p></section>
+  const isTeamTba = TEAM_TBA_CHARACTER_IDS.has(member.catalog.id)
   const showcase = member.showcase
   const weaponPassive = showcase.weapon?.catalog.passiveEffects[Math.max(0, (showcase.weapon?.owned.rank ?? 1) - 1)] ?? showcase.weapon?.catalog.passiveEffects[0]
   const scenario = model.team.scenario ?? { resultMode: 'expected' as const, memberConditions: {}, enemyConditions: {}, selectedTargetByBuild: {} }
@@ -1798,11 +1801,12 @@ function MemberWorkspace({ member, model, section, setSection, updateTeam, echoe
   return <div className={`tw-member-page section-${section}`} style={{ '--tw-member-accent': ELEMENT_COLORS[member.catalog.element] ?? '#c8d0ce' } as CSSProperties}>
     <nav className="tw-subnav" aria-label={`${member.catalog.name} sections`} role="tablist">
       {MEMBER_SECTIONS.map((item) => <button key={item.id} role="tab" className={section === item.id ? 'active' : ''} aria-selected={section === item.id} onClick={() => setSection(item.id)}>{item.label}</button>)}
-      <div className="tw-nav-result-modes" role="group" aria-label="Damage result mode">
+      {!isTeamTba && <div className="tw-nav-result-modes" role="group" aria-label="Damage result mode">
         {DAMAGE_RESULT_MODES.map((mode) => <button type="button" aria-pressed={calculationV2.resultMode === mode.id} className={calculationV2.resultMode === mode.id ? 'active' : ''} key={mode.id} onClick={() => void setResultMode(mode.id)}>{mode.label}</button>)}
-      </div>
+      </div>}
     </nav>
-    {section === 'overview' ? <CharacterOverviewWorkspace member={member} model={model} updateTeam={updateTeam} weaponPassive={weaponPassive}/>
+    {isTeamTba ? <section className="tw-member-empty tw-panel"><h2>TBA</h2></section>
+      : section === 'overview' ? <CharacterOverviewWorkspace member={member} model={model} updateTeam={updateTeam} weaponPassive={weaponPassive}/>
       : section === 'rotation' ? <RotationWorkspace model={model} updateTeam={updateTeam} focusBuildId={member.build.id}/>
       : section === 'optimizer' ? <OptimizerView echoes={[...echoes, ...member.resolvedEchoes.filter((echo) => !echoes.some((owned) => owned.id === echo.id))]} builds={[...builds.filter((build) => build.id !== member.build!.id), member.build]} characters={characters} ownedWeapons={member.resolvedWeapon && !weapons.some((weapon) => weapon.id === member.resolvedWeapon?.id) ? [...weapons, member.resolvedWeapon] : weapons} refresh={refresh} openScanner={openScanner} buildId={member.build.id} teamBuildIds={model.members.flatMap((entry) => entry.character ? [entry.character.id] : [])} initialEnemy={model.team.enemy} damageMode={calculationV2.resultMode} scenario={scenario} calculationScenarioV2={calculationV2} calculationAttacksV2={member.calculationMechanicsV2?.attacks} partyEffectsV2={member.calculationEffectsV2.filter((effect) => effect.sourceKind === 'party')} partyEffectSourceStatsV2={model.sourceStatsV2} roverGender={roverGender}/>
       : <section className="tw-member-hero tw-panel forte-mode" style={{ '--tw-element': member.catalog.element.toLowerCase() } as CSSProperties}>
@@ -1811,7 +1815,7 @@ function MemberWorkspace({ member, model, section, setSection, updateTeam, echoe
         <ForteWorkspace member={member} model={model} refresh={refresh} updateTeam={updateTeam}/>
       </div>
     </section>}
-    <WarningList warnings={section === 'rotation' ? model.warnings : member.warnings}/>
+    {!isTeamTba && <WarningList warnings={section === 'rotation' ? model.warnings : member.warnings}/>}
   </div>
 }
 

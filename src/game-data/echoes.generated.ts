@@ -215,6 +215,25 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_992_UI.webp"
   },
   {
+    "id": "6000221",
+    "name": "Calamity Effigy",
+    "cost": 4,
+    "sonatas": [
+      "Heart of Evil's Purge",
+      "Lamp of Nether Road"
+    ],
+    "rarities": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "intensity": 2,
+    "articleUrl": "https://ww.nanoka.cc/echo/6000221",
+    "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34032_UI.T_IconMonsterHead_34032_UI",
+    "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34032_UI.webp"
+  },
+  {
     "id": "6000094",
     "name": "Calcified Junrock",
     "cost": 1,

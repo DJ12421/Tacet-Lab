@@ -2,7 +2,7 @@
 
 ## Current status
 
-The formula engine is pinned to `nanoka-3.5-formula-v2` and the generated Nanoka 3.5 catalog. All 60 characters, 120 weapons, 34 Sonatas, and 180 Echoes are classified by the coverage registry. Character attack targets are evaluated from the structured skill parameters in that dataset.
+The formula engine is pinned to `nanoka-3.6-formula-v2` and the generated Nanoka 3.6 catalog. All 62 characters, 122 weapons, 34 Sonatas, and 181 Echoes are classified by the coverage registry. Character attack targets are evaluated from the structured skill parameters in that dataset.
 
 The result sheet visibly labels its provenance as Nanoka-derived. That makes calculations reproducible from the pinned source, but does not mean they were independently verified against the current English in-game UI. Keep that distinction visible until the verification checklist is complete.
 

@@ -42,7 +42,7 @@ export type FormulaSheetKind = 'character' | 'weapon' | 'sonata' | 'echo'
 export interface FormulaSheet {
   id: string
   kind: FormulaSheetKind
-  version: 'nanoka-3.5-formula-v2'
+  version: 'nanoka-3.6-formula-v2'
   status: 'modeled' | 'noCombatEffect'
   name: string
   source: string
@@ -52,7 +52,7 @@ export interface FormulaSheet {
   targets: FormulaTarget[]
 }
 
-export const FORMULA_SHEET_VERSION = 'nanoka-3.5-formula-v2' as const
+export const FORMULA_SHEET_VERSION = 'nanoka-3.6-formula-v2' as const
 const one = formula.constant(1)
 const hundred = formula.constant(100)
 const addPercent = (node: FormulaNode) => formula.sum(one, formula.prod(node, formula.constant(0.01)))

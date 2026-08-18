@@ -23,7 +23,7 @@ Screen share / screenshot / local video
 ## Modules
 
 - `src/domain/` owns serializable types, the tagged formula graph, calculation contexts and traces, stat aggregation, rotations, buffs, and optimization. Domain functions do not access the DOM or storage.
-- `src/game-data/` owns the pinned Nanoka 3.5 display and numeric source data. `src/domain/calculation/sheets.ts` classifies every generated character, weapon, Sonata, and Echo record for formula coverage.
+- `src/game-data/` owns the pinned Nanoka 3.6 display and numeric source data. `src/domain/calculation/sheets.ts` classifies every generated character, weapon, Sonata, and Echo record for formula coverage.
 - `src/scanner/` owns local capture sources, calibration profiles, named field regions, worker preprocessing, the adaptive English OCR pool, session cancellation/backpressure, parsing, validation, duplicate detection, diagnostics, and fixture accuracy/performance accounting.
 - `src/storage/` owns IndexedDB tables, seed repair, schema validation, optimizer profiles and run history, atomic import, export, and reset.
 - `src/workers/` isolates partitioned optimization from the render thread and reports aggregate progress to the UI. Scanner image preprocessing runs in `src/scanner/preprocess.worker.ts`; Tesseract workers are serialized through one-worker schedulers managed by `OcrPool`.
@@ -45,7 +45,7 @@ Every scan carries a session ID, frame sequence, frame ID, region ID, and job ID
 
 `src/domain/calculation/` retains the original clean-room declarative engine for backward compatibility. The active Team damage path lives in `src/domain/calculation-v2/`: a GPL-compatible, source-attributed mechanics engine whose generated character, weapon, Sonata, Echo, sequence, and party effects feed member result sheets, rotation actions, and optimizer objectives through one calculation context.
 
-Formula data is labeled `nanoka-3.5-formula-v2`. This is reproducible from the pinned dataset; it is not a claim of independent verification against the live game.
+Formula data is labeled `nanoka-3.6-formula-v2`. This is reproducible from the pinned dataset; it is not a claim of independent verification against the live game.
 
 ## Optimizer
 
