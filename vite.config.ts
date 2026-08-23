@@ -8,7 +8,7 @@ const githubSha = (globalThis as typeof globalThis & { process?: { env?: Record<
 const appVersion = githubSha ? `${packageJson.version}+${githubSha.slice(0, 7)}` : packageJson.version
 
 export default defineConfig(({ command }) => ({
-  base: command === 'build' ? '/WuWa-Optimizer/' : '/',
+  base: command === 'build' ? '/Tacet-Lab/' : '/',
   define: {
     __APP_VERSION__: JSON.stringify(appVersion)
   },
