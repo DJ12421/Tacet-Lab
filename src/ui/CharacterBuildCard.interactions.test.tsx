@@ -49,12 +49,54 @@ function card(editable: boolean, overrides: Partial<typeof baseModel> = {}) {
     onPortraitError={vi.fn()}
     onLiveReady={vi.fn()}
     onLiveFallback={vi.fn()}
+    onUploadArtwork={vi.fn()}
+    onRestoreArtwork={vi.fn()}
     {...callbacks}
   />)
   return { ...result, callbacks }
 }
 
 describe('CharacterBuildCard direct editing', () => {
+  it('synchronizes the layout sidebar host to the rendered card height', () => {
+    const layoutPanelHost = document.createElement('div')
+    document.body.append(layoutPanelHost)
+    const result = render(<CharacterBuildCard
+      character={character}
+      catalog={catalog}
+      model={baseModel}
+      settings={defaultSettings}
+      profile={profile}
+      statRows={prioritizedBuildCardStats(catalog, profile)}
+      statDetail={(_key, label) => ({ title: label, value: '0', formula: 'Test formula', rows: [] })}
+      editable
+      portraitRef={createRef<HTMLImageElement>()}
+      livePortraitRef={createRef<NanokaSpinePortraitHandle>()}
+      portraitFailed={false}
+      animatedPortraitReady={false}
+      enabledSkillTreeNodeIds={defaultEnabledSkillTreeBonusIds(catalog)}
+      onPortraitError={vi.fn()}
+      onLiveReady={vi.fn()}
+      onLiveFallback={vi.fn()}
+      onSetLevel={vi.fn()}
+      onSetSequence={vi.fn()}
+      onSetSkillLevel={vi.fn()}
+      onToggleSkillTreeNode={vi.fn()}
+      onOpenWeapon={vi.fn()}
+      onOpenEcho={vi.fn()}
+      onEditEcho={vi.fn()}
+      onEditPriorities={vi.fn()}
+      onShowScoreInfo={vi.fn()}
+      onUploadArtwork={vi.fn()}
+      onRestoreArtwork={vi.fn()}
+      layoutPanelHost={layoutPanelHost}
+    />)
+
+    expect(layoutPanelHost.style.height).toBe('1080px')
+    result.unmount()
+    expect(layoutPanelHost.style.height).toBe('')
+    layoutPanelHost.remove()
+  })
+
   it('edits level, Sequence, skill level, bonus nodes, weapon, and an empty Echo slot when equipped', () => {
     const { container, callbacks } = card(true)
 
@@ -66,8 +108,8 @@ describe('CharacterBuildCard direct editing', () => {
     expect(callbacks.onSetSequence).toHaveBeenCalledWith(1)
 
     fireEvent.click(container.querySelector<HTMLButtonElement>('.cbc-main-skill')!)
-    fireEvent.click(container.querySelector<HTMLButtonElement>('.cbc-skill-level-popover button:last-child')!)
-    expect(callbacks.onSetSkillLevel).toHaveBeenCalledWith(0, 7)
+    fireEvent.change(screen.getByRole('spinbutton', { name: 'Normal Attack level' }), { target: { value: '9' } })
+    expect(callbacks.onSetSkillLevel).toHaveBeenCalledWith(0, 9)
 
     const firstBonus = container.querySelector<HTMLButtonElement>('.cbc-skill-bonuses button')!
     fireEvent.click(firstBonus)

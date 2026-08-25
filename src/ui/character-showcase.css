@@ -3358,6 +3358,7 @@
 
 .cs-card-workspace:has(>.cs-layout-panel-host:not(:empty)) {
   grid-template-columns: minmax(0,1fr) 330px;
+  align-items: stretch;
 }
 
 .cs-card-workspace>.cbc-card-layout {
@@ -3369,7 +3370,8 @@
   position: sticky;
   top: 76px;
   min-width: 0;
-  align-self: start;
+  min-height: 0;
+  align-self: stretch;
 }
 
 .cs-layout-panel-host:empty {
@@ -3378,12 +3380,16 @@
 
 .cs-layout-panel-host .cbc-debug-controls {
   width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .cs-layout-panel-host .cbc-debug-menu {
   position: static;
   width: 100%;
-  max-height: calc(100vh - 145px);
+  height: 100%;
+  max-height: none;
   margin: 0;
 }
 
@@ -3405,9 +3411,16 @@
   .cs-layout-panel-host {
     position: relative;
     top: auto;
+    height: auto!important;
+    align-self: start;
   }
-.cs-layout-panel-host .cbc-debug-menu {
+  .cs-layout-panel-host .cbc-debug-controls,
+  .cs-layout-panel-host .cbc-debug-menu {
+    height: auto;
     max-height: none;
+  }
+  .cs-layout-panel-host .cbc-debug-controls {
+    overflow: visible;
   }
 }
 

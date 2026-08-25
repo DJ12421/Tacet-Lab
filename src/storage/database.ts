@@ -5,6 +5,7 @@ import { generatedWeaponSummaries as weaponCatalog } from '../game-data/weapon-s
 import { effectiveSubStats, maxSubStatsForLevel, normalizeEchoMainStat } from '../game-data/echo-main-stats'
 import type { AccountDocument, AppSettings, Build, Echo, EquippedLoadout, LoadoutSourceRef, OptimizerProfile, OptimizerRun, OwnedCharacter, OwnedWeapon, Team, TeamMember, TheorycraftBuild } from '../domain/types'
 import { createLocalId } from '../domain/id'
+import { clearCharacterArtwork } from './character-art-cache'
 
 type SettingsRow = AppSettings & { id: 'settings' }
 
@@ -747,6 +748,7 @@ function isOwnedWeapon(value: unknown) {
 }
 
 export async function clearAccount() {
+  await clearCharacterArtwork()
   await db.delete()
   await db.open()
   await ensureSeedData()
