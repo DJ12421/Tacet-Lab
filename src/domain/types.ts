@@ -18,6 +18,7 @@ export interface TeamMember { memberId: string; characterId: string; loadoutSour
 export interface TheorycraftEchoSlot { cost: Echo['cost']; rarity: Echo['rarity']; level: number; mainStatKey: StatKey }
 export interface TheorycraftSonata { name: string; pieces: number }
 export type TheorycraftSubstats =
+  | { mode: 'slots'; slots: Array<Array<{ key: StatKey; value: number }>> }
   | { mode: 'values'; values: Partial<Record<StatKey, number>> }
   | { mode: 'rolls'; quality: 'low' | 'mid' | 'high'; rolls: Partial<Record<StatKey, number>> }
 export interface TheorycraftBuild {
@@ -34,7 +35,7 @@ export interface TheorycraftBuild {
   updatedAt: number
   source?: { type: 'equipped' | 'saved' | 'optimizer'; id?: string }
 }
-export interface Team { id: string; name: string; /** Stable member IDs in schema v7; legacy backups contain saved-build IDs and are migrated. */ buildIds: string[]; members?: TeamMember[]; enemy: EnemyConfig; rotationDuration: number; actions: RotationAction[]; buffs?: BuffEffect[]; scenario?: TeamScenario; calculationV2?: import('./calculation-v2/types').CalculationScenarioV2 }
+export interface Team { id: string; name: string; /** Stable member IDs in schema v7; legacy backups contain saved-build IDs and are migrated. */ buildIds: string[]; members?: TeamMember[]; enemy: EnemyConfig; rotationDuration: number; actions: RotationAction[]; rotationPresets?: import('./rotation-presets').RotationPresetDocument[]; buffs?: BuffEffect[]; scenario?: TeamScenario; calculationV2?: import('./calculation-v2/types').CalculationScenarioV2 }
 export type ScenarioValue = number | string | boolean
 export type FormulaResultMode = 'normal' | 'expected' | 'critical'
 export interface TeamScenario {
@@ -45,7 +46,7 @@ export interface TeamScenario {
   compareBuildId?: string
 }
 export interface RotationAction { id: string; timestamp: number; duration?: number; multiplier?: number; buildId: string; attackId: string; formulaTargetId?: string; inputs?: Record<string, ScenarioValue> }
-export interface BuffEffect { id: string; name: string; sourceBuildId: string; target: 'self' | 'next' | 'team'; triggerAttackId: string; duration: number; stat: StatKey | 'amplify'; value: number; stackingGroup: string }
+export interface BuffEffect { id: string; name: string; sourceBuildId: string; target: 'self' | 'next' | 'character' | 'team'; recipientBuildId?: string; triggerAttackId: string; duration: number; stat: StatKey | 'amplify'; value: number; stackingGroup: string }
 export interface EnemyConfig {
   level: number
   resistance: number
@@ -60,7 +61,7 @@ export interface AggregatedStats { baseHp: number; baseAtk: number; baseDef: num
 export interface DamageResult { normal: number; critical: number; expected: number; hits: number; attackId: string }
 export interface RotationResult { total: number; dps: number; actions: Array<DamageResult & { timestamp: number; buildId: string }>; byBuild: Record<string, number>; byType: Partial<Record<DamageType, number>> }
 export interface ScanField<T> { value: T; confidence: number; raw?: string }
-export interface BuildCardDetails { id: string; character: ScanField<string>; characterCatalogId?: string; characterLevel: ScanField<number>; sequence: ScanField<number>; skillLevels: ScanField<number>[]; weapon: ScanField<string>; weaponCatalogId?: string; weaponLevel: ScanField<number>; sourceImageDataUrl: string }
+export interface BuildCardDetails { id: string; formatId?: string; formatConfidence?: number; character: ScanField<string>; characterCatalogId?: string; characterLevel: ScanField<number>; sequence: ScanField<number>; skillLevels: ScanField<number>[]; weapon: ScanField<string>; weaponCatalogId?: string; weaponLevel: ScanField<number>; weaponRank: ScanField<number>; sourceImageDataUrl: string }
 export interface ScanCandidate { id: string; createdAt: number; imageDataUrl: string; fingerprint: string; fields: { name: ScanField<string>; cost: ScanField<1 | 3 | 4>; rarity: ScanField<1 | 2 | 3 | 4 | 5>; level: ScanField<number>; sonata: ScanField<string>; mainStat: ScanField<StatLine>; subStats: ScanField<StatLine>[]; equippedBy: ScanField<string>; locked: ScanField<boolean>; excluded: ScanField<boolean> }; source: 'screen' | 'screenshot' | 'video' | 'manual'; duplicateOf?: string; buildCard?: BuildCardDetails }
 export type OptimizerStatKey = Exclude<keyof AggregatedStats, 'baseHp' | 'baseAtk' | 'baseDef'>
 export type OptimizerObjective = 'expected' | 'normal' | 'critical' | OptimizerStatKey
@@ -183,5 +184,5 @@ export interface OptimizerRun {
   highlightedBuildKeys?: string[]
 }
 export interface AccountDocument { schemaVersion: 1 | 2 | 3 | 4 | 5 | 6 | 7; gameDataVersion: string; exportedAt: string; echoes: Echo[]; characters: OwnedCharacter[]; weapons: OwnedWeapon[]; builds: Build[]; equippedLoadouts?: EquippedLoadout[]; theorycraftBuilds?: TheorycraftBuild[]; teams: Team[]; optimizerProfiles?: OptimizerProfile[]; optimizerRuns?: OptimizerRun[]; settings: AppSettings }
-export interface AppSettings { displayName: string; uid: string; privacyMode: boolean; background: 'signal' | 'tacet' | 'plain'; scanIntervalMs: number; roverGender: 'male' | 'female'; scoreWeights: Record<string, Partial<Record<StatKey, number>>>; characterSubstatWeights: Record<string, Partial<Record<StatKey, number>>> }
+export interface AppSettings { displayName: string; uid: string; privacyMode: boolean; background: 'signal' | 'tacet' | 'plain'; scanIntervalMs: number; roverGender: 'male' | 'female'; scoreWeights: Record<string, Partial<Record<StatKey, number>>>; characterSubstatWeights: Record<string, Partial<Record<StatKey, number>>>; characterEnergyRegenMinimums: Record<string, number> }
 export type AppView = 'dashboard' | 'archive' | 'scanner' | 'echoes' | 'weapons' | 'characters' | 'teams' | 'legal'
