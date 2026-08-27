@@ -28,6 +28,7 @@ const SKILLS = [
 ] as const
 const ELEMENT_ACCENTS: Record<string, string> = { Spectro: '#e8cc72', Fusion: '#ee715e', Glacio: '#76cef2', Electro: '#b581ef', Aero: '#62d7ae', Havoc: '#d36adf' }
 const echoCatalogByName = new Map(echoCatalog.map((entry) => [entry.name, entry]))
+const STANDARD_FIVE_STAR_NAMES = new Set(['Calcharo', 'Encore', 'Jianxin', 'Lingyang', 'Verina'])
 const DEBUG_SECTIONS = [
   ['art', 'Character art'], ['identity', 'Identity'], ['stats', 'Stats'], ['weapon', 'Weapon'],
   ['sequences', 'Sequences'], ['skills', 'Skills'], ['echoHeader', 'Build score'],
@@ -38,6 +39,7 @@ type DebugSectionKey = typeof DEBUG_SECTIONS[number][0]
 type EchoLayoutPreset = 'curved' | 'straight'
 interface DebugSectionRect { x: number; y: number; width: number; height: number }
 const ECHO_DEBUG_SECTIONS: DebugSectionKey[] = ['echo0', 'echo1', 'echo2', 'echo3', 'echo4']
+const SHARED_CHARACTER_ART_RECT: DebugSectionRect = { x: -183, y: 100, width: 2285, height: 1285 }
 const DEFAULT_CURVED_SECTION_RECTS: Partial<Record<DebugSectionKey, DebugSectionRect>> = {
   art: { x: -954, y: -500, width: 3840, height: 2160 },
   identity: { x: 19, y: 15, width: 450, height: 178 },
@@ -77,8 +79,8 @@ const clampDebugRect = (rect: DebugSectionRect, section?: DebugSectionKey): Debu
   const isArt = section === 'art'
   const canvasWidth = isArt ? ART_CANVAS_WIDTH : CARD_WIDTH
   const canvasHeight = isArt ? ART_CANVAS_HEIGHT : CARD_HEIGHT
-  const minimumWidth = isArt ? CARD_WIDTH : 60
-  const minimumHeight = isArt ? CARD_HEIGHT : 30
+  const minimumWidth = isArt ? CARD_WIDTH / 100 : 60
+  const minimumHeight = isArt ? CARD_HEIGHT / 100 : 30
   const width = Math.max(minimumWidth, Math.min(canvasWidth, rect.width))
   const height = Math.max(minimumHeight, Math.min(canvasHeight, rect.height))
   const overscanX = isArt ? (ART_CANVAS_WIDTH - CARD_WIDTH) / 2 : 0
@@ -105,7 +107,7 @@ interface SavedDebugLayoutCollection {
   characters: Record<string, SavedDebugLayout>
 }
 
-const defaultDebugLayout = (): SavedDebugLayout => ({ layoutVersion: 3, rects: {}, hidden: [], echoLayout: 'curved', accentColor: null, colorEchoGrades: true })
+const defaultDebugLayout = (): SavedDebugLayout => ({ layoutVersion: 3, rects: {}, hidden: [], echoLayout: 'straight', accentColor: null, colorEchoGrades: true })
 
 const parseSavedDebugLayout = (value: unknown): SavedDebugLayout | null => {
   if (!value || typeof value !== 'object') return null
@@ -117,7 +119,7 @@ const parseSavedDebugLayout = (value: unknown): SavedDebugLayout | null => {
     if (rect && [rect.x, rect.y, rect.width, rect.height].every((entry) => typeof entry === 'number' && Number.isFinite(entry))) result[key] = clampDebugRect(rect as DebugSectionRect, key)
   })
   const validKeys = new Set(DEBUG_SECTIONS.map(([key]) => key))
-  const echoLayout = parsed.echoLayout === 'curved' || parsed.echoLayout === 'straight' ? parsed.echoLayout : Object.keys(result).length ? null : 'curved'
+  const echoLayout = parsed.echoLayout === 'curved' || parsed.echoLayout === 'straight' ? parsed.echoLayout : Object.keys(result).length ? null : 'straight'
   const accentColor = typeof parsed.accentColor === 'string' && /^#[0-9a-f]{6}$/i.test(parsed.accentColor) ? parsed.accentColor : null
   return { layoutVersion: parsed.layoutVersion === 3 ? 3 : parsed.layoutVersion === 2 ? 2 : 1, rects: result, hidden: (parsed.hidden ?? []).filter((key): key is DebugSectionKey => validKeys.has(key as DebugSectionKey)), echoLayout, accentColor, colorEchoGrades: parsed.colorEchoGrades !== false }
 }
@@ -167,14 +169,26 @@ function DebugCoordinateInput({ section, property, rect, onChange }: { section: 
   useEffect(() => setDraft(String(Math.round(rect[property]))), [section, property, rect, rect[property]])
   const minimum = section === 'art' && property === 'x' ? -(ART_CANVAS_WIDTH - CARD_WIDTH) / 2
     : section === 'art' && property === 'y' ? -(ART_CANVAS_HEIGHT - CARD_HEIGHT) / 2
-      : property === 'width' ? (section === 'art' ? CARD_WIDTH : 60)
-        : property === 'height' ? (section === 'art' ? CARD_HEIGHT : 30) : 0
+      : property === 'width' ? (section === 'art' ? CARD_WIDTH / 100 : 60)
+        : property === 'height' ? (section === 'art' ? CARD_HEIGHT / 100 : 30) : 0
   return <input type="number" min={minimum} step="1" value={draft} onChange={(event) => {
     const nextDraft = event.target.value
     setDraft(nextDraft)
     const value = Number(nextDraft)
     if (nextDraft.trim() && Number.isFinite(value)) onChange({ ...rect, [property]: value })
   }}/>
+}
+
+function debugCoordinateRange(section: DebugSectionKey, property: keyof DebugSectionRect, rect: DebugSectionRect) {
+  const isArt = section === 'art'
+  const canvasWidth = isArt ? ART_CANVAS_WIDTH : CARD_WIDTH
+  const canvasHeight = isArt ? ART_CANVAS_HEIGHT : CARD_HEIGHT
+  const overscanX = isArt ? (ART_CANVAS_WIDTH - CARD_WIDTH) / 2 : 0
+  const overscanY = isArt ? (ART_CANVAS_HEIGHT - CARD_HEIGHT) / 2 : 0
+  if (property === 'x') return { minimum: -overscanX, maximum: CARD_WIDTH + overscanX - rect.width }
+  if (property === 'y') return { minimum: -overscanY, maximum: CARD_HEIGHT + overscanY - rect.height }
+  if (property === 'width') return { minimum: isArt ? CARD_WIDTH / 100 : 60, maximum: canvasWidth }
+  return { minimum: isArt ? CARD_HEIGHT / 100 : 30, maximum: canvasHeight }
 }
 
 export type BuildCardStatKey = StatKey | 'tuneBreakBoost'
@@ -353,6 +367,9 @@ interface CharacterBuildCardProps {
   onEditEcho: (echo: Echo) => void
   onEditPriorities: () => void
   onShowScoreInfo: () => void
+  customArtworkUrl?: string
+  onUploadArtwork: (file: File) => Promise<void>
+  onRestoreArtwork: () => Promise<void>
   onAccentChange?: (color: string | null) => void
   layoutControlsHost?: HTMLElement | null
   layoutPanelHost?: HTMLElement | null
@@ -363,7 +380,8 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
     character, catalog, model, settings, profile, statRows, statDetail, editable,
     portraitRef, livePortraitRef, portraitFailed, animatedPortraitReady, enabledSkillTreeNodeIds,
     onPortraitError, onLiveReady, onLiveFallback, onSetLevel, onSetSequence, onSetSkillLevel,
-    onToggleSkillTreeNode, onOpenWeapon, onOpenEcho, onEditEcho, onEditPriorities, onShowScoreInfo, onAccentChange, layoutControlsHost, layoutPanelHost
+    onToggleSkillTreeNode, onOpenWeapon, onOpenEcho, onEditEcho, onEditPriorities, onShowScoreInfo,
+    customArtworkUrl, onUploadArtwork, onRestoreArtwork, onAccentChange, layoutControlsHost, layoutPanelHost
   } = props
   const viewportRef = useRef<HTMLDivElement>(null)
   const [scale, setScale] = useState(1)
@@ -372,7 +390,7 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
   const savedDebugLayoutRef = useRef<SavedDebugLayout | null>(null)
   if (!savedDebugLayoutRef.current) savedDebugLayoutRef.current = loadSavedDebugLayout(catalog.id)
   const [hiddenDebugSections, setHiddenDebugSections] = useState<Set<DebugSectionKey>>(() => new Set(savedDebugLayoutRef.current?.hidden ?? []))
-  const [echoLayoutPreset, setEchoLayoutPreset] = useState<EchoLayoutPreset | null>(() => savedDebugLayoutRef.current?.echoLayout ?? 'curved')
+  const [echoLayoutPreset, setEchoLayoutPreset] = useState<EchoLayoutPreset | null>(() => savedDebugLayoutRef.current?.echoLayout ?? 'straight')
   const elementAccent = ELEMENT_ACCENTS[catalog.element] ?? '#e4bb5e'
   const [customAccent, setCustomAccent] = useState<string | null>(() => savedDebugLayoutRef.current?.accentColor ?? null)
   const [colorEchoGrades, setColorEchoGrades] = useState(() => savedDebugLayoutRef.current?.colorEchoGrades ?? true)
@@ -384,7 +402,9 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
   const defaultDebugSectionRectsRef = useRef<Partial<Record<DebugSectionKey, DebugSectionRect>>>({})
   const debugLayoutSnapshotRef = useRef<SavedDebugLayout | null>(null)
   const layoutImportRef = useRef<HTMLInputElement>(null)
+  const artworkInputRef = useRef<HTMLInputElement>(null)
   const [layoutTransferStatus, setLayoutTransferStatus] = useState<string | null>(null)
+  const [artworkStatus, setArtworkStatus] = useState<string | null>(null)
   const accentStyle = { '--cbc-accent': customAccent ?? elementAccent } as CSSProperties
   const debugSectionClass = (section: DebugSectionKey, className: string) => `${className} cbc-debug-section${hiddenDebugSections.has(section) ? ' is-debug-hidden' : ''}`
   const debugSectionStyle = (section: DebugSectionKey): CSSProperties | undefined => {
@@ -411,6 +431,12 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
     observer.observe(viewport)
     return () => observer.disconnect()
   }, [])
+
+  useEffect(() => {
+    if (!layoutPanelHost) return
+    layoutPanelHost.style.height = `${CARD_HEIGHT * scale}px`
+    return () => { layoutPanelHost.style.height = '' }
+  }, [layoutPanelHost, scale])
 
   useEffect(() => onAccentChange?.(customAccent), [customAccent, onAccentChange])
 
@@ -449,7 +475,11 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
             height: bounds.height * scaleY
           }
         })
-        const defaults = { ...measured, ...DEFAULT_CURVED_SECTION_RECTS }
+        const defaults = {
+          ...measured,
+          ...DEFAULT_STRAIGHT_SECTION_RECTS,
+          ...(catalog.rarity === 4 || catalog.name.startsWith('Rover:') || STANDARD_FIVE_STAR_NAMES.has(catalog.name) ? { art: SHARED_CHARACTER_ART_RECT } : {})
+        }
         debugSectionOriginRectsRef.current = measured
         defaultDebugSectionRectsRef.current = defaults
         const restored = { ...defaults, ...(savedDebugLayoutRef.current?.rects ?? {}) }
@@ -504,7 +534,7 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
   }
   const resetAllDebugSections = () => {
     setDebugSectionRects(Object.fromEntries(Object.entries(defaultDebugSectionRectsRef.current).map(([key, rect]) => [key, { ...rect }])) as Partial<Record<DebugSectionKey, DebugSectionRect>>)
-    setEchoLayoutPreset('curved')
+    setEchoLayoutPreset('straight')
     setCustomAccent(null)
     setColorEchoGrades(true)
   }
@@ -580,6 +610,27 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
       height
     })
   }
+  const uploadArtwork = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    event.target.value = ''
+    if (!file) return
+    setArtworkStatus('Saving artwork...')
+    try {
+      await onUploadArtwork(file)
+      setArtworkStatus('Custom artwork saved in this browser.')
+    } catch (error) {
+      setArtworkStatus(error instanceof Error ? error.message : 'Artwork could not be saved.')
+    }
+  }
+  const restoreArtwork = async () => {
+    setArtworkStatus('Restoring default artwork...')
+    try {
+      await onRestoreArtwork()
+      setArtworkStatus('Default artwork restored.')
+    } catch (error) {
+      setArtworkStatus(error instanceof Error ? error.message : 'Default artwork could not be restored.')
+    }
+  }
 
   const sonataDetails = useMemo(() => model.sonatas.map((active) => ({
     ...active,
@@ -612,9 +663,9 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
     <div ref={forwardedRef} className={`cs-export-frame cbc-card cbc-debug-enabled${highlightedStat ? ' is-stat-highlighting' : ''}`} style={{ ...accentStyle, transform: `scale(${scale})` }}>
       <section className="cbc-art-stage" aria-label={`${catalog.name} character artwork`}>
         <div className={debugSectionClass('art', 'cbc-art-positioner')} data-debug-section="art" style={debugSectionStyle('art')}>
-          <img ref={portraitRef} className={`cbc-character-art ${portraitFailed ? 'is-fallback' : ''} ${animatedPortraitReady ? 'is-live-hidden' : ''}`} src={portraitFailed ? catalog.iconSourceUrl : (catalog.portraitSourceUrl || catalog.iconSourceUrl)} alt={catalog.name} onError={onPortraitError}/>
+          <img ref={portraitRef} className={`cbc-character-art ${portraitFailed && !customArtworkUrl ? 'is-fallback' : ''} ${animatedPortraitReady && !customArtworkUrl ? 'is-live-hidden' : ''}`} src={customArtworkUrl ?? (portraitFailed ? catalog.iconSourceUrl : (catalog.portraitSourceUrl || catalog.iconSourceUrl))} alt={catalog.name} onError={onPortraitError}/>
           <img className="cbc-live-portrait-snapshot" alt="" aria-hidden="true"/>
-          {catalog.spineSkeletonSourceUrl && catalog.spineAtlasSourceUrl && <NanokaSpinePortrait ref={livePortraitRef} skeletonSourceUrl={catalog.spineSkeletonSourceUrl} atlasSourceUrl={catalog.spineAtlasSourceUrl} renderScale={scale} onReady={onLiveReady} onFallback={onLiveFallback}/>}
+          {!customArtworkUrl && catalog.spineSkeletonSourceUrl && catalog.spineAtlasSourceUrl && <NanokaSpinePortrait ref={livePortraitRef} skeletonSourceUrl={catalog.spineSkeletonSourceUrl} atlasSourceUrl={catalog.spineAtlasSourceUrl} renderScale={scale} onReady={onLiveReady} onFallback={onLiveFallback}/>}
         </div>
       </section>
 
@@ -709,8 +760,13 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
       </div>
       {debugSectionRects[selectedDebugSection] && <section className="cbc-debug-inspector">
         <strong>{DEBUG_SECTIONS.find(([key]) => key === selectedDebugSection)?.[1]}</strong>
-        <div>{(['x', 'y', 'width', 'height'] as Array<keyof DebugSectionRect>).map((property) => <label key={property}>{property}<DebugCoordinateInput section={selectedDebugSection} property={property} rect={debugSectionRects[selectedDebugSection]!} onChange={(rect) => updateDebugSectionRect(selectedDebugSection, rect)}/></label>)}</div>
-        {selectedDebugSection === 'art' && <label className="cbc-art-zoom"><span>Zoom <output>{artZoom}%</output></span><input type="range" aria-label="Character art zoom" min="100" max={maximumArtZoom} step="1" value={Math.max(100, Math.min(maximumArtZoom, artZoom))} onChange={(event) => updateArtZoom(Number(event.target.value))}/></label>}
+        <div>{(['x', 'y', 'width', 'height'] as Array<keyof DebugSectionRect>).map((property) => {
+          const rect = debugSectionRects[selectedDebugSection]!
+          const range = debugCoordinateRange(selectedDebugSection, property, rect)
+          const showSlider = selectedDebugSection !== 'art' || property === 'x' || property === 'y'
+          return <label key={property}>{property}{showSlider && <input className="cbc-coordinate-slider" type="range" aria-label={`${DEBUG_SECTIONS.find(([key]) => key === selectedDebugSection)?.[1]} ${property}`} min={range.minimum} max={Math.max(range.minimum, range.maximum)} step="1" value={Math.max(range.minimum, Math.min(range.maximum, rect[property]))} onChange={(event) => updateDebugSectionRect(selectedDebugSection, { ...rect, [property]: Number(event.target.value) })}/>}<DebugCoordinateInput section={selectedDebugSection} property={property} rect={rect} onChange={(next) => updateDebugSectionRect(selectedDebugSection, next)}/></label>
+        })}</div>
+        {selectedDebugSection === 'art' && <><label className="cbc-art-zoom"><span>Zoom <output>{artZoom}%</output></span><input type="range" aria-label="Character art zoom" min="1" max={maximumArtZoom} step="1" value={Math.max(1, Math.min(maximumArtZoom, artZoom))} onChange={(event) => updateArtZoom(Number(event.target.value))}/></label><div className="cbc-artwork-actions"><button type="button" onClick={() => artworkInputRef.current?.click()}><Icon name="upload"/>Upload artwork</button><button type="button" disabled={!customArtworkUrl} onClick={() => void restoreArtwork()}>Restore default</button><input ref={artworkInputRef} type="file" accept="image/*" onChange={(event) => void uploadArtwork(event)}/></div>{artworkStatus && <p className="cbc-artwork-status" role="status">{artworkStatus}</p>}</>}
         <button type="button" onClick={() => resetDebugSection(selectedDebugSection)}>Reset selected</button>
       </section>}
       <footer><button type="button" onClick={() => setHiddenDebugSections(new Set(DEBUG_SECTIONS.map(([key]) => key)))}>Hide all</button><button type="button" onClick={() => setHiddenDebugSections(new Set<DebugSectionKey>())}>Show all</button><button type="button" onClick={resetAllDebugSections}>Reset layout</button></footer>

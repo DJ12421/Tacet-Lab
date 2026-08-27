@@ -193,6 +193,15 @@
   font: inherit;
 }
 
+.cbc-debug-inspector input.cbc-coordinate-slider {
+  height: 18px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  accent-color: var(--cbc-accent);
+  cursor: ew-resize;
+}
+
 .cbc-debug-inspector .cbc-art-zoom {
   gap: 5px;
   margin-top: 2px;
@@ -2278,6 +2287,35 @@
 
 .cbc-skill-level-popover>div>strong {
   font-size: 15px;
+}
+
+.cbc-artwork-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.cbc-artwork-actions button {
+  min-height: 34px;
+  justify-content: center;
+  gap: 6px;
+}
+
+.cbc-artwork-actions button svg {
+  width: 15px;
+  height: 15px;
+}
+
+.cbc-artwork-actions input {
+  display: none;
+}
+
+.cbc-artwork-status {
+  margin: 0;
+  color: rgba(232,241,241,.78);
+  font-size: 11px;
+  line-height: 1.4;
+  text-transform: none;
 }
 
 .cbc-extra-skills {

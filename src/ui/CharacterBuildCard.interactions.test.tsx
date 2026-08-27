@@ -49,12 +49,56 @@ function card(editable: boolean, overrides: Partial<typeof baseModel> = {}) {
     onPortraitError={vi.fn()}
     onLiveReady={vi.fn()}
     onLiveFallback={vi.fn()}
+    onUploadArtwork={vi.fn()}
+    onRestoreArtwork={vi.fn()}
     {...callbacks}
   />)
   return { ...result, callbacks }
 }
 
 describe('CharacterBuildCard direct editing', () => {
+  it('synchronizes the layout sidebar host to the rendered card height', () => {
+    const clientWidth = vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(1920)
+    const layoutPanelHost = document.createElement('div')
+    document.body.append(layoutPanelHost)
+    const result = render(<CharacterBuildCard
+      character={character}
+      catalog={catalog}
+      model={baseModel}
+      settings={defaultSettings}
+      profile={profile}
+      statRows={prioritizedBuildCardStats(catalog, profile)}
+      statDetail={(_key, label) => ({ title: label, value: '0', formula: 'Test formula', rows: [] })}
+      editable
+      portraitRef={createRef<HTMLImageElement>()}
+      livePortraitRef={createRef<NanokaSpinePortraitHandle>()}
+      portraitFailed={false}
+      animatedPortraitReady={false}
+      enabledSkillTreeNodeIds={defaultEnabledSkillTreeBonusIds(catalog)}
+      onPortraitError={vi.fn()}
+      onLiveReady={vi.fn()}
+      onLiveFallback={vi.fn()}
+      onSetLevel={vi.fn()}
+      onSetSequence={vi.fn()}
+      onSetSkillLevel={vi.fn()}
+      onToggleSkillTreeNode={vi.fn()}
+      onOpenWeapon={vi.fn()}
+      onOpenEcho={vi.fn()}
+      onEditEcho={vi.fn()}
+      onEditPriorities={vi.fn()}
+      onShowScoreInfo={vi.fn()}
+      onUploadArtwork={vi.fn()}
+      onRestoreArtwork={vi.fn()}
+      layoutPanelHost={layoutPanelHost}
+    />)
+
+    expect(layoutPanelHost.style.height).toBe('1080px')
+    result.unmount()
+    expect(layoutPanelHost.style.height).toBe('')
+    layoutPanelHost.remove()
+    clientWidth.mockRestore()
+  })
+
   it('edits level, Sequence, skill level, bonus nodes, weapon, and an empty Echo slot when equipped', () => {
     const { container, callbacks } = card(true)
 
