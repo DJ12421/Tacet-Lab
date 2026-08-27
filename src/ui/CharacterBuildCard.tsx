@@ -28,6 +28,7 @@ const SKILLS = [
 ] as const
 const ELEMENT_ACCENTS: Record<string, string> = { Spectro: '#e8cc72', Fusion: '#ee715e', Glacio: '#76cef2', Electro: '#b581ef', Aero: '#62d7ae', Havoc: '#d36adf' }
 const echoCatalogByName = new Map(echoCatalog.map((entry) => [entry.name, entry]))
+const STANDARD_FIVE_STAR_NAMES = new Set(['Calcharo', 'Encore', 'Jianxin', 'Lingyang', 'Verina'])
 const DEBUG_SECTIONS = [
   ['art', 'Character art'], ['identity', 'Identity'], ['stats', 'Stats'], ['weapon', 'Weapon'],
   ['sequences', 'Sequences'], ['skills', 'Skills'], ['echoHeader', 'Build score'],
@@ -38,6 +39,7 @@ type DebugSectionKey = typeof DEBUG_SECTIONS[number][0]
 type EchoLayoutPreset = 'curved' | 'straight'
 interface DebugSectionRect { x: number; y: number; width: number; height: number }
 const ECHO_DEBUG_SECTIONS: DebugSectionKey[] = ['echo0', 'echo1', 'echo2', 'echo3', 'echo4']
+const SHARED_CHARACTER_ART_RECT: DebugSectionRect = { x: -183, y: 100, width: 2285, height: 1285 }
 const DEFAULT_CURVED_SECTION_RECTS: Partial<Record<DebugSectionKey, DebugSectionRect>> = {
   art: { x: -954, y: -500, width: 3840, height: 2160 },
   identity: { x: 19, y: 15, width: 450, height: 178 },
@@ -473,7 +475,11 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
             height: bounds.height * scaleY
           }
         })
-        const defaults = { ...measured, ...DEFAULT_STRAIGHT_SECTION_RECTS }
+        const defaults = {
+          ...measured,
+          ...DEFAULT_STRAIGHT_SECTION_RECTS,
+          ...(catalog.rarity === 4 || catalog.name.startsWith('Rover:') || STANDARD_FIVE_STAR_NAMES.has(catalog.name) ? { art: SHARED_CHARACTER_ART_RECT } : {})
+        }
         debugSectionOriginRectsRef.current = measured
         defaultDebugSectionRectsRef.current = defaults
         const restored = { ...defaults, ...(savedDebugLayoutRef.current?.rects ?? {}) }
