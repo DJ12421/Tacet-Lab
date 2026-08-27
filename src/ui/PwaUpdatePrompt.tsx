@@ -4,6 +4,7 @@ import './pwa-update.css'
 
 const UPDATE_CHECK_INTERVAL_MS = 60 * 60 * 1_000
 const UPDATE_RELOAD_MARKER = 'tacet-lab:update-reload'
+const DEV_WORKER_CLEANUP_MARKER = 'tacet-lab:dev-worker-cleanup'
 
 export function PwaUpdatePrompt({ safeToActivate, navigationVersion }: { safeToActivate: boolean; navigationVersion: number }) {
   const registrationRef = useRef<ServiceWorkerRegistration | undefined>(undefined)
@@ -22,6 +23,23 @@ export function PwaUpdatePrompt({ safeToActivate, navigationVersion }: { safeToA
     },
     onRegisterError: (registrationError) => console.error('Service worker registration failed.', registrationError)
   })
+
+  useEffect(() => {
+    if (!import.meta.env.DEV || !('serviceWorker' in navigator)) return
+    let cancelled = false
+    void navigator.serviceWorker.getRegistrations().then(async (registrations) => {
+      const wasControlled = Boolean(navigator.serviceWorker.controller)
+      const removed = (await Promise.all(registrations.map((registration) => registration.unregister()))).some(Boolean)
+      if (cancelled) return
+      if ((wasControlled || removed) && sessionStorage.getItem(DEV_WORKER_CLEANUP_MARKER) !== 'done') {
+        sessionStorage.setItem(DEV_WORKER_CLEANUP_MARKER, 'done')
+        window.location.reload()
+        return
+      }
+      sessionStorage.removeItem(DEV_WORKER_CLEANUP_MARKER)
+    }).catch((cleanupError) => console.error('Development service worker cleanup failed.', cleanupError))
+    return () => { cancelled = true }
+  }, [])
 
   useEffect(() => {
     if (sessionStorage.getItem(UPDATE_RELOAD_MARKER) !== 'pending') return
