@@ -106,7 +106,7 @@ export function optimizerContextFingerprint(context: unknown) {
 export function optimizerInventoryFingerprint(echoes: Echo[]) {
   const source = [...echoes]
     .sort((left, right) => left.id.localeCompare(right.id))
-    .map((echo) => `${echo.id}:${echo.level}:${echo.rarity}:${echo.sonata}:${echo.mainStat.key}:${echo.mainStat.value}:${echo.subStats.map((stat) => `${stat.key}:${stat.value}`).join(',')}:${echo.locked ? 1 : 0}:${echo.excluded ? 1 : 0}:${echo.equippedBy ?? ''}`)
+    .map((echo) => `${echo.id}:${echo.level}:${echo.rarity}:${echo.sonata}:${echo.mainStat.key}:${echo.mainStat.value}:${echo.subStats.map((stat) => `${stat.key}:${stat.value}`).join(',')}:${echo.excluded ? 1 : 0}:${echo.equippedBy ?? ''}`)
     .join('|')
   return fingerprint(source)
 }

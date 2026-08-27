@@ -1,9 +1,9 @@
 import { useDeferredValue, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { characterCatalog, echoCatalog, weaponCatalog, type CharacterCatalogEntry } from '../game-data'
-import { createLocalId } from '../domain/id'
 import { generatedSonataIconSources } from '../game-data/sonatas.generated'
 import { db } from '../storage/database'
+import { createOwnedCharacterWithDefaultWeapon } from '../storage/loadouts'
 import type { AppSettings, Build, Echo, EquippedLoadout, OwnedCharacter, OwnedWeapon, Team, TheorycraftBuild } from '../domain/types'
 import { ElementFilterIcon, FilterChips, Icon, Panel } from './components'
 import { CharacterShowcase } from './CharacterShowcase'
@@ -108,17 +108,13 @@ export function CharacterInventory({ owned, weapons = [], echoes = [], builds = 
       && `${entry.name} ${entry.element} ${entry.weaponType}`.toLowerCase().includes(normalizedQuery))
   }, [owned, pickerElements, pickerQuery, pickerRarities, roverGender])
   const add = async (catalogId: string) => {
-    const id = createLocalId()
-    await db.transaction('rw', [db.characters, db.equippedLoadouts], async () => {
-      await db.characters.add({ id, catalogId, level: 1, sequence: 0, locked: false, favorite: false, skillLevels: [1, 1, 1, 1, 1], createdAt: Date.now() })
-      await db.equippedLoadouts.add({ id: `equipped:${id}`, characterId: id, weaponId: '', echoIds: [], updatedAt: Date.now() })
-    })
+    await createOwnedCharacterWithDefaultWeapon(catalogId)
     setPickerOpen(false)
     await refresh()
   }
   const selected = rows.find(({ item }) => item.id === selectedId)
 
-  if (selected) return <CharacterShowcase character={selected.item} catalog={selected.catalog} weapons={weapons} echoes={echoes} builds={builds} equippedLoadouts={equippedLoadouts} theorycraftBuilds={theorycraftBuilds} settings={settings} refresh={refresh} onBack={() => { setSelectedId(null); onCharacterChange?.(null) }}/>
+  if (selected) return <CharacterShowcase character={selected.item} characters={owned} catalog={selected.catalog} weapons={weapons} echoes={echoes} builds={builds} equippedLoadouts={equippedLoadouts} theorycraftBuilds={theorycraftBuilds} settings={settings} refresh={refresh} onBack={() => { setSelectedId(null); onCharacterChange?.(null) }}/>
 
   return <>
     <Panel className="owned-add"><div><span className="eyebrow">Characters</span><strong>Pick a character</strong></div><button type="button" className="primary" onClick={() => setPickerOpen(true)}><Icon name="plus"/>Add character</button></Panel>

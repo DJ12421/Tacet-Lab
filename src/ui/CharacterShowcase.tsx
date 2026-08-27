@@ -20,6 +20,7 @@ import type { CalculationDetail } from './CalculationDetails'
 import { showcaseStatDetail } from './calculation-detail-model'
 import { CharacterBuildCard, prioritizedBuildCardStats, type BuildCardStatKey } from './CharacterBuildCard'
 import { defaultEnabledSkillTreeBonusIds, inherentSkillBonusId, resolveCharacterShowcaseModel, skillTreeBonusId } from './character-showcase-model'
+import { WeaponInventoryCard } from './WeaponInventoryCard'
 import { useDismissableLayer } from './useDismissableLayer'
 import './character-showcase.css'
 
@@ -32,6 +33,7 @@ function customAccentStyle(color: string | null): CSSProperties | undefined {
 
 interface CharacterShowcaseProps {
   character: OwnedCharacter
+  characters: OwnedCharacter[]
   catalog: CharacterCatalogEntry
   weapons: OwnedWeapon[]
   echoes: Echo[]
@@ -165,7 +167,7 @@ function EchoFilterSelect({ label, values, options, emptyLabel, onChange, icon }
   return <label className="multi-filter">{label}<div className="multi-select" ref={ref}><button type="button" className="multi-select-trigger" aria-expanded={open} onClick={() => setOpen((current) => !current)}><span className="multi-select-values">{values.length ? values.map((value) => <span className="multi-select-chip" key={value}>{icon?.(value)}<b>{options.find((option) => option.value === value)?.label ?? value}</b></span>) : <em>{emptyLabel}</em>}</span><strong>⌄</strong></button>{open && <div className="multi-select-menu"><div className="multi-select-options">{options.map((option) => <button type="button" className={values.includes(option.value) ? 'active' : ''} onClick={() => toggle(option.value)} key={option.value}>{icon?.(option.value)}<span>{option.label}</span><i>{values.includes(option.value) ? '✓' : ''}</i></button>)}</div><footer><button type="button" className="multi-select-clear" disabled={!values.length} onClick={() => onChange([])}>Clear selections</button></footer></div>}</div></label>
 }
 
-function WeaponPicker({ character, catalog, weapons, refresh, onClose }: { character: OwnedCharacter; catalog: CharacterCatalogEntry; weapons: OwnedWeapon[]; refresh: () => Promise<void>; onClose: () => void }) {
+function WeaponPicker({ character, characters, catalog, weapons, refresh, onClose }: { character: OwnedCharacter; characters: OwnedCharacter[]; catalog: CharacterCatalogEntry; weapons: OwnedWeapon[]; refresh: () => Promise<void>; onClose: () => void }) {
   const [adding, setAdding] = useState(false)
   const eligibleOwned = weapons.flatMap((owned) => {
     const entry = weaponCatalog.find((candidate) => candidate.id === owned.catalogId)
@@ -183,7 +185,7 @@ function WeaponPicker({ character, catalog, weapons, refresh, onClose }: { chara
     await equip(weapon)
   }
   return <div className="catalog-picker-backdrop cs-picker-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}><section className="catalog-picker cs-picker" role="dialog" aria-modal="true" aria-label="Equip weapon"><header><div><span className="eyebrow">{catalog.weaponType} inventory</span><h2>{adding ? 'Add and equip weapon' : 'Equip weapon'}</h2></div><div>{adding && <button className="secondary" onClick={() => setAdding(false)}>Owned</button>}<button className="text-button" onClick={onClose}>Close</button></div></header><div className="catalog-picker-grid">
-    {!adding && eligibleOwned.map(({ owned, entry }) => <button className={`catalog-choice weapon-choice rarity-${entry.rarity}`} key={owned.id} onClick={() => void equip(owned)}><img src={entry.iconSourceUrl} alt=""/><span><strong>{entry.name}</strong><small>Lv. {owned.level} · R{owned.rank}</small><Stars rarity={entry.rarity}/>{owned.equippedBy && owned.equippedBy !== character.id && <em>Currently equipped elsewhere</em>}</span></button>)}
+    {!adding && eligibleOwned.map(({ owned, entry }) => { const owner = characters.find((candidate) => candidate.id === owned.equippedBy); const ownerCatalog = characterCatalog.find((candidate) => candidate.id === owner?.catalogId); return <WeaponInventoryCard weapon={owned} catalog={entry} className="cs-weapon-picker-card" ariaLabel={`Equip ${entry.name}`} onClick={() => void equip(owned)} footer={<button type="button" className="character-equip-trigger cs-weapon-picker-owner" onClick={() => void equip(owned)}>{ownerCatalog ? <img src={ownerCatalog.iconSourceUrl} alt=""/> : <span className="equip-empty">—</span>}<b>{ownerCatalog?.name ?? 'Unequipped'}</b><i>Equip</i></button>} key={owned.id}/> })}
     {!adding && <button className="catalog-choice add-owned-choice" onClick={() => setAdding(true)}><span className="add-glyph">+</span><span><strong>Add weapon</strong><small>Create a local copy and equip it.</small></span></button>}
     {adding && eligibleCatalog.map((entry) => <button className={`catalog-choice weapon-choice rarity-${entry.rarity}`} key={entry.id} onClick={() => void add(entry)}><img src={entry.iconSourceUrl} alt=""/><span><strong>{entry.name}</strong><small>{entry.type}</small><Stars rarity={entry.rarity}/></span></button>)}
   </div></section></div>
@@ -271,15 +273,17 @@ function EchoPicker({ slot, characterId, currentIds, echoes, refresh, onClose }:
   </div>
 }
 
-function SubstatWeightEditor({ characterName, initialWeights, recommendedWeights, onSave, onReset, onClose }: {
+function SubstatWeightEditor({ characterName, initialWeights, recommendedWeights, initialEnergyRegenMinimum, onSave, onReset, onClose }: {
   characterName: string
   initialWeights: Partial<Record<StatKey, number>>
   recommendedWeights: Partial<Record<StatKey, number>>
-  onSave: (weights: Partial<Record<StatKey, number>>) => Promise<void>
+  initialEnergyRegenMinimum: number
+  onSave: (weights: Partial<Record<StatKey, number>>, energyRegenMinimum: number) => Promise<void>
   onReset: () => Promise<void>
   onClose: () => void
 }) {
   const [weights, setWeights] = useState<Partial<Record<StatKey, number>>>(() => ({ ...initialWeights }))
+  const [energyRegenMinimum, setEnergyRegenMinimum] = useState(initialEnergyRegenMinimum)
   const [saving, setSaving] = useState(false)
   const setWeight = (key: StatKey, value: number) => setWeights((current) => ({
     ...current,
@@ -288,10 +292,10 @@ function SubstatWeightEditor({ characterName, initialWeights, recommendedWeights
   const submit = async () => {
     setSaving(true)
     try {
-      await onSave(Object.fromEntries(characterSubstatScoreKeys.flatMap((key) => {
+      await onSave(Object.fromEntries(characterSubstatScoreKeys.filter((key) => key !== 'energyRegen').flatMap((key) => {
         const weight = Math.round((weights[key] ?? 0) * 2) / 2
         return weight > 0 ? [[key, weight]] : []
-      })))
+      })), Math.max(0, Math.min(500, energyRegenMinimum)))
       onClose()
     } finally {
       setSaving(false)
@@ -308,13 +312,14 @@ function SubstatWeightEditor({ characterName, initialWeights, recommendedWeights
   }
   return <div className="modal-backdrop cs-weight-editor-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}><Panel className="cs-weight-editor" role="dialog" aria-modal="true" aria-labelledby="substat-weight-editor-title">
     <header><div><span className="eyebrow">Character substat priorities</span><h2 id="substat-weight-editor-title">Configure {characterName}</h2></div><button type="button" className="close" aria-label="Close substat priority editor" onClick={onClose}>×</button></header>
-    <p>Set a priority from 0 to 4 in 0.5 intervals. A stat at 0 is ignored; higher priorities award more points for each roll tier.</p>
-    <div className="cs-weight-grid">{characterSubstatScoreKeys.map((key) => <label key={key}><span>{statLabels[key]}<small>Recommended: {recommendedWeights[key] ?? 0}</small></span><div><button type="button" aria-label={`Decrease ${statLabels[key]} priority`} disabled={(weights[key] ?? 0) <= 0} onClick={() => setWeight(key, (weights[key] ?? 0) - 0.5)}>−</button><input aria-label={`${statLabels[key]} priority`} type="number" min="0" max="4" step="0.5" value={weights[key] ?? 0} onChange={(event) => setWeight(key, Number(event.target.value) || 0)}/><button type="button" aria-label={`Increase ${statLabels[key]} priority`} disabled={(weights[key] ?? 0) >= 4} onClick={() => setWeight(key, (weights[key] ?? 0) + 0.5)}>+</button></div></label>)}</div>
+    <p>Set a priority from 0 to 4 in 0.5 intervals. Energy Regen is handled separately as a build requirement and does not add Substat Score.</p>
+    <label className="cs-er-requirement"><span><strong>Minimum Energy Regen</strong><small>Falling below this value lowers the final build grade by one tier. Use 0 to disable.</small></span><span><input aria-label="Minimum Energy Regen" type="number" min="0" max="500" step="0.1" value={energyRegenMinimum} onChange={(event) => setEnergyRegenMinimum(Number(event.target.value) || 0)}/><b>%</b></span></label>
+    <div className="cs-weight-grid">{characterSubstatScoreKeys.filter((key) => key !== 'energyRegen').map((key) => <label key={key}><span>{statLabels[key]}<small>Recommended: {recommendedWeights[key] ?? 0}</small></span><div><button type="button" aria-label={`Decrease ${statLabels[key]} priority`} disabled={(weights[key] ?? 0) <= 0} onClick={() => setWeight(key, (weights[key] ?? 0) - 0.5)}>−</button><input aria-label={`${statLabels[key]} priority`} type="number" min="0" max="4" step="0.5" value={weights[key] ?? 0} onChange={(event) => setWeight(key, Number(event.target.value) || 0)}/><button type="button" aria-label={`Increase ${statLabels[key]} priority`} disabled={(weights[key] ?? 0) >= 4} onClick={() => setWeight(key, (weights[key] ?? 0) + 0.5)}>+</button></div></label>)}</div>
     <footer><button type="button" className="secondary" disabled={saving} onClick={() => void reset()}>Reset to recommended</button><div><button type="button" className="text-button" disabled={saving} onClick={onClose}>Cancel</button><button type="button" className="primary" disabled={saving} onClick={() => void submit()}>{saving ? 'Saving...' : 'Save priorities'}</button></div></footer>
   </Panel></div>
 }
 
-export function CharacterShowcase({ character, catalog, weapons, echoes, builds, equippedLoadouts, theorycraftBuilds, settings, refresh, onBack }: CharacterShowcaseProps) {
+export function CharacterShowcase({ character, characters, catalog, weapons, echoes, builds, equippedLoadouts, theorycraftBuilds, settings, refresh, onBack }: CharacterShowcaseProps) {
   const [exporting, setExporting] = useState(false)
   const [exportMessage, setExportMessage] = useState('')
   const [weaponPickerOpen, setWeaponPickerOpen] = useState(false)
@@ -501,17 +506,20 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
     else enabled.add(id)
     await updateCharacter({ enabledSkillTreeBonusIds: [...enabled].sort() })
   }
-  const saveSubstatWeights = async (weights: Partial<Record<StatKey, number>>) => {
+  const saveSubstatWeights = async (weights: Partial<Record<StatKey, number>>, energyRegenMinimum: number) => {
     await saveSettings({
       ...settings,
-      characterSubstatWeights: { ...settings.characterSubstatWeights, [catalog.id]: weights }
+      characterSubstatWeights: { ...settings.characterSubstatWeights, [catalog.id]: weights },
+      characterEnergyRegenMinimums: { ...settings.characterEnergyRegenMinimums, [catalog.id]: energyRegenMinimum }
     })
     await refresh()
   }
   const resetSubstatWeights = async () => {
     const characterSubstatWeights = { ...settings.characterSubstatWeights }
+    const characterEnergyRegenMinimums = { ...settings.characterEnergyRegenMinimums }
     delete characterSubstatWeights[catalog.id]
-    await saveSettings({ ...settings, characterSubstatWeights })
+    delete characterEnergyRegenMinimums[catalog.id]
+    await saveSettings({ ...settings, characterSubstatWeights, characterEnergyRegenMinimums })
     await refresh()
   }
 
@@ -556,16 +564,16 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
     />
     <div className="cs-layout-panel-host" ref={setLayoutPanelHost}/></div>
 
-    {weaponPickerOpen && <WeaponPicker character={character} catalog={catalog} weapons={weapons} refresh={refresh} onClose={() => setWeaponPickerOpen(false)}/>}
+    {weaponPickerOpen && <WeaponPicker character={character} characters={characters} catalog={catalog} weapons={weapons} refresh={refresh} onClose={() => setWeaponPickerOpen(false)}/>}
     {echoSlot !== null && loadoutSource.type === 'equipped' && <EchoPicker slot={echoSlot} characterId={character.id} currentIds={resolvedLoadout.build?.echoIds ?? []} echoes={echoes} refresh={refresh} onClose={() => setEchoSlot(null)}/>} 
     {editingEcho && <EchoEditModal echo={editingEcho} onClose={() => setEditingEcho(null)} onSave={async (updated) => { await db.echoes.put(updated); setEditingEcho(null); await refresh() }}/>}
-    {scoreEditorOpen && <SubstatWeightEditor characterName={catalog.name} initialWeights={characterSubstatProfile.weights} recommendedWeights={recommendedSubstatProfile.weights} onSave={saveSubstatWeights} onReset={resetSubstatWeights} onClose={() => setScoreEditorOpen(false)}/>}
+    {scoreEditorOpen && <SubstatWeightEditor characterName={catalog.name} initialWeights={characterSubstatProfile.weights} recommendedWeights={recommendedSubstatProfile.weights} initialEnergyRegenMinimum={settings.characterEnergyRegenMinimums[catalog.id] ?? 0} onSave={saveSubstatWeights} onReset={resetSubstatWeights} onClose={() => setScoreEditorOpen(false)}/>}
     {scoreInfoOpen && <div className="modal-backdrop roll-quality-backdrop" onMouseDown={() => setScoreInfoOpen(false)}><Panel className="roll-quality-modal cs-score-info-modal" role="dialog" aria-modal="true" aria-labelledby="substat-score-info-title" onMouseDown={(event) => event.stopPropagation()}>
       <header><div><span className="eyebrow">Character-specific Echo evaluation</span><h2 id="substat-score-info-title">How Substat Score works</h2></div><button className="close" aria-label="Close Substat Score information" onClick={() => setScoreInfoOpen(false)}>×</button></header>
       <p>Substat Score measures how useful an Echo's revealed rolls are for {catalog.name}. Unlike Roll Grade, it values the stats this character actually wants.</p>
       <section><h3>1. Find the roll tier</h3><p>Percentage substats earn 1–8 tier points from their position among the eight fixed in-game roll values. Flat HP, ATK, and DEF use 3 tier points.</p><div className="roll-tier-legend"><span className="tier-low">1–2 Low</span><span className="tier-mid">3–4 Mid</span><span className="tier-high">5–6 High</span><span className="tier-perfect">7–8 Elite</span></div></section>
-      <section><h3>2. Apply this character's priority</h3><p>Every configured stat has a character-specific weight. Irrelevant or unconfigured stats contribute zero points.</p><div className="score-weight-legend"><span className="weight-4">4 Highest</span><span className="weight-3">3 Strong</span><span className="weight-2">2 Useful</span><span className="weight-1">1 Marginal</span></div><div className="quality-formula"><b>Roll tier</b><span>×</span><b>Character weight</b><span>= contribution</span></div></section>
-      <section><h3>3. Normalize the total</h3><p>Contributions are added and divided by the maximum configured score for this character. Fewer than five revealed substats produce a provisional score marked with an asterisk.</p><div className="quality-formula"><b>Earned weighted points</b><span>÷</span><b>Maximum weighted points</b><span>= score %</span></div><div className="score-grade-legend"><span className="grade-e">E<small>0–14.9%</small></span><span className="grade-d">D<small>15–24.9%</small></span><span className="grade-c">C<small>25–34.9%</small></span><span className="grade-b">B<small>35–44.9%</small></span><span className="grade-a">A<small>45–54.9%</small></span><span className="grade-s">S<small>55–64.9%</small></span><span className="grade-ss">SS<small>65–74.9%</small></span><span className="grade-sss">SSS<small>75–100%</small></span></div></section>
+      <section><h3>2. Apply this character's priority</h3><p>Every configured stat has a character-specific weight. Energy Regen is excluded and instead uses the configured minimum requirement.</p><div className="score-weight-legend"><span className="weight-4">4 Highest</span><span className="weight-3">3 Strong</span><span className="weight-2">2 Useful</span><span className="weight-1">1 Marginal</span></div><div className="quality-formula"><b>Roll tier</b><span>×</span><b>Character weight</b><span>= contribution</span></div></section>
+      <section><h3>3. Normalize the total</h3><p>Each ER substat is removed from both the earned points and the 25-roll denominator. If total ER is below the configured minimum, the earned build grade drops by one tier. Fewer than five revealed substats produce a provisional score marked with an asterisk.</p><div className="quality-formula"><b>Earned non-ER points</b><span>÷</span><b>25 minus ER rolls</b><span>= score %</span></div><div className="score-grade-legend"><span className="grade-e">E<small>0–14.9%</small></span><span className="grade-d">D<small>15–24.9%</small></span><span className="grade-c">C<small>25–34.9%</small></span><span className="grade-b">B<small>35–44.9%</small></span><span className="grade-a">A<small>45–54.9%</small></span><span className="grade-s">S<small>55–64.9%</small></span><span className="grade-ss">SS<small>65–74.9%</small></span><span className="grade-sss">SSS<small>75–100%</small></span></div></section>
     </Panel></div>}
   </section></CharacterSubstatProfileContext.Provider>
 }

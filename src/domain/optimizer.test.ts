@@ -40,10 +40,10 @@ describe('optimizer', () => {
     expect(results[0].complete).toBe(false)
   })
 
-  it('treats locked as inventory protection while honoring exclusions and constraints', () => {
-    const echoes = [makeEcho('locked', 1, true), ...[2, 3, 4, 5, 6].map((value) => makeEcho(String(value), value)), { ...makeEcho('excluded', 100), excluded: true }]
+  it('keeps locked Echoes optimizer-eligible while honoring exclusions and constraints', () => {
+    const echoes = [makeEcho('locked', 1, true), ...[2, 3, 4, 5].map((value) => makeEcho(String(value), value)), { ...makeEcho('excluded', 100), excluded: true }]
     const results = optimizeBuilds({ ...request(echoes), minimumStats: { critRate: 40 } })
-    expect(results[0].echoIds).not.toContain('locked')
+    expect(results[0].echoIds).toContain('locked')
     expect(results[0].echoIds).not.toContain('excluded')
   })
 
