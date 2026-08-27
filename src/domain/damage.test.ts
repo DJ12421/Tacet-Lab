@@ -62,5 +62,12 @@ describe('damage pipeline', () => {
     }] }, builds, resonators, weapons, [])
     expect(withBuff.actions[1].expected).toBeGreaterThan(withoutBuff.actions[1].expected)
     expect(withBuff.actions[2].expected).toBeCloseTo(withoutBuff.actions[2].expected)
+
+    const forCharacter = calculateRotation({ ...baseTeam, buffs: [{
+      id: 'specific', name: 'Specific ATK', sourceBuildId: builds[0].id, target: 'character', recipientBuildId: builds[1].id,
+      triggerAttackId: resonators[0].attacks[0].id, duration: 5, stat: 'atkPercent', value: 20, stackingGroup: 'specific'
+    }] }, builds, resonators, weapons, [])
+    expect(forCharacter.actions[1].expected).toBeGreaterThan(withoutBuff.actions[1].expected)
+    expect(forCharacter.actions[2].expected).toBeGreaterThan(withoutBuff.actions[2].expected)
   })
 })

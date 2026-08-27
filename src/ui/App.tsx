@@ -37,7 +37,7 @@ const viewPaths: Record<AppView, string> = {
   legal: 'privacy'
 }
 type ArchiveTab = 'characters' | 'weapons' | 'sonatas' | 'echoes'
-type TeamSection = 'overview' | 'forte' | 'optimize' | 'rotation'
+type TeamSection = 'overview' | 'buffs' | 'theorizer' | 'forte' | 'optimize' | 'rotation'
 interface AppRoute {
   view: AppView
   archiveTab?: ArchiveTab
@@ -59,7 +59,7 @@ const archivePathTabs: Record<string, ArchiveTab> = {
   sonatas: 'sonatas',
   echoes: 'echoes'
 }
-const teamSections = new Set<TeamSection>(['overview', 'forte', 'optimize', 'rotation'])
+const teamSections = new Set<TeamSection>(['overview', 'buffs', 'theorizer', 'forte', 'optimize', 'rotation'])
 const routeHeads = new Set(['home', ...Object.values(viewPaths).filter(Boolean)])
 const initialUrl = new URL(window.location.href)
 const restoredRoute = initialUrl.searchParams.get('__route')
@@ -88,11 +88,14 @@ function routeFromLocation(): AppRoute {
   if (head === 'archive') return { view: 'archive', archiveTab: archivePathTabs[second] ?? 'characters' }
   if (head === 'characters') return { view: 'characters', character: second }
   if (head === 'weapons') return { view: 'weapons', weapon: second }
-  if (head === 'teams') return {
-    view: 'teams',
-    team: second,
-    teamCharacter: third,
-    teamSection: teamSections.has(fourth as TeamSection) ? fourth as TeamSection : undefined
+  if (head === 'teams') {
+    const globalSection = teamSections.has(third as TeamSection) ? third as TeamSection : undefined
+    return {
+      view: 'teams',
+      team: second,
+      teamCharacter: globalSection ? undefined : third,
+      teamSection: globalSection ?? (teamSections.has(fourth as TeamSection) ? fourth as TeamSection : undefined)
+    }
   }
   const entry = Object.entries(viewPaths).find(([, path]) => path === head)
   return { view: entry?.[0] as AppView ?? 'dashboard' }

@@ -160,7 +160,8 @@ export function calculateRotation(team: Team, builds: Build[], resonators: Reson
       if (!resonator || !weapon || !attack) continue
       const applicable = active.filter(({ effect }) => effect.target === 'team'
         || (effect.target === 'self' && effect.sourceBuildId === build.id)
-        || (effect.target === 'next' && effect.sourceBuildId !== build.id))
+        || (effect.target === 'next' && effect.sourceBuildId !== build.id)
+        || (effect.target === 'character' && effect.recipientBuildId === build.id))
       const equipped = build.echoIds.map((id) => echoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo))
       const baseStats = aggregateStats(resonator, weapon, equipped)
       const buffed = applyBuffEffects(baseStats, applicable.map(({ effect }) => effect))

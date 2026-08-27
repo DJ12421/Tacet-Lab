@@ -40,6 +40,8 @@ export interface TeamWorkspaceInput {
   equippedLoadouts?: EquippedLoadout[]
   theorycraftBuilds?: TheorycraftBuild[]
   roverGender?: 'male' | 'female'
+  /** Transient loadout substitutions for what-if/optimizer calculations. Never persisted. */
+  loadoutOverrides?: Partial<Record<number, LoadoutSourceRef>>
 }
 
 export interface TeamAttackModel {
@@ -289,6 +291,7 @@ function buffAppliesTo(effect: BuffEffect, member: TeamMemberModel) {
   return effect.target === 'team'
     || (effect.target === 'self' && effect.sourceBuildId === member.build.id)
     || (effect.target === 'next' && effect.sourceBuildId !== member.build.id)
+    || (effect.target === 'character' && effect.recipientBuildId === member.build.id)
 }
 
 function activeBuffsAt(team: Team, sortedActions: RotationAction[], currentIndex: number) {
@@ -328,7 +331,7 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
   const resolvedMembers = Array.from({ length: 3 }, (_, slot) => {
     const member = input.team.members?.[slot]
     const legacyBuildId = input.team.buildIds[slot]
-    const source: LoadoutSourceRef | undefined = member?.loadoutSource ?? (legacyBuildId ? { type: 'saved', buildId: legacyBuildId } : undefined)
+    const source: LoadoutSourceRef | undefined = input.loadoutOverrides?.[slot] ?? member?.loadoutSource ?? (legacyBuildId ? { type: 'saved', buildId: legacyBuildId } : undefined)
     return source ? resolveLoadout(source, collections, member?.memberId ?? legacyBuildId) : undefined
   })
   const resolvedComparisons = Array.from({ length: 3 }, (_, slot) => {
@@ -398,6 +401,7 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
         ...effect,
         definitionId: effect.definitionId ?? effect.id,
         id: `${effect.id}:provider:${member.build!.id}`,
+        originSourceKind: effect.originSourceKind ?? effect.sourceKind,
         sourceKind: 'party',
         sourceBuildId: member.build!.id,
         modifiers: effect.modifiers.map((modifier) => modifier.modifierByRefinement
