@@ -1,13 +1,14 @@
 import type { ScanRect, ScanRegion } from './types'
 import { createLocalId } from '../domain/id'
 
-type Strategy = 'name' | 'text' | 'substat' | 'visual' | 'plain'
+type Strategy = 'name' | 'label' | 'text' | 'substat' | 'visual' | 'plain'
 type Pending = { resolve: (value: PreprocessedImage) => void; reject: (reason: Error) => void }
 export interface PreprocessedImage { dataUrl: string; blob: Blob; width: number; height: number; strategy: Strategy }
 
 const strategyFor = (region: ScanRegion): Strategy => {
   if (region.recognition === 'visual') return 'visual'
   if (region.kind === 'name') return 'name'
+  if (region.kind === 'main-stat-label') return 'label'
   if (region.kind === 'substats-block' || region.kind === 'substat-row') return 'substat'
   return 'text'
 }

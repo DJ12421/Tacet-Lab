@@ -1,5 +1,6 @@
 import { defaultPanelRectForLayout, normalizeSubstatRegions, regionsForLayout } from './regions'
 import type { CalibrationProfile, ScanLayout, ScanRect } from './types'
+import { buildCardFormat, buildCardFormatRegions, buildCardFormats, type BuildCardFormatId } from './build-card-formats'
 
 // v2 uses the source image's true rendered aspect ratio. Profiles created by
 // the clipped v1 calibration surface used a different vertical coordinate basis.
@@ -40,21 +41,38 @@ export function detectRightPanel(source: CanvasImageSource, width: number, heigh
   return { panelRect, layout: detectLayout(panelRect), confidence: Math.min(.98, .6 + best.score / 30) }
 }
 
-export function profileKey(width: number, height: number, layout: ScanLayout, uiScale = 1) {
-  return `${width}x${height}:${layout}:${uiScale.toFixed(2)}`
+export function profileKey(width: number, height: number, layout: ScanLayout, uiScale = 1, buildCardFormat?: BuildCardFormatId) {
+  return `${width}x${height}:${layout}:${uiScale.toFixed(2)}${layout === 'build-card' ? `:${buildCardFormat ?? 'discord-bot'}` : ''}`
 }
 
-function normalizedProfileRegions(layout: ScanLayout, input: CalibrationProfile['regions']) {
-  const normalized = normalizeSubstatRegions(input).filter((region) => layout !== 'build-card' || (region.id !== 'sequence' && !/^echo-\d+-main-stat$/.test(region.id)))
+function inferredBuildCardFormat(profile: Pick<CalibrationProfile, 'layout' | 'name' | 'buildCardFormat'>): BuildCardFormatId | undefined {
+  if (profile.layout !== 'build-card') return undefined
+  return profile.buildCardFormat ?? buildCardFormats.find((format) => profile.name.endsWith(`${format.label} build card`))?.id ?? 'discord-bot'
+}
+
+function normalizedProfileRegions(layout: ScanLayout, input: CalibrationProfile['regions'], buildCardFormat?: BuildCardFormatId) {
+  const normalized = (layout === 'build-card' ? input.map((region) => ({ ...region, rect: { ...region.rect } })) : normalizeSubstatRegions(input))
+    .filter((region) => layout !== 'build-card' || (region.id !== 'sequence'
+      && !/^echo-\d+-main-stat$/.test(region.id)
+      && !(buildCardFormat === 'wuwaflex' && /^echo-\d+-art$/.test(region.id))))
   if (layout !== 'build-card') return normalized
-  const defaults = regionsForLayout('build-card')
+  const defaults = buildCardFormat && buildCardFormat !== 'discord-bot' ? buildCardFormatRegions(buildCardFormat) : regionsForLayout('build-card')
   return [...normalized, ...defaults.filter((fallback) => !normalized.some((region) => region.id === fallback.id))]
+}
+
+function normalizedStoredProfile(profile: CalibrationProfile): CalibrationProfile {
+  const buildCardFormat = inferredBuildCardFormat(profile)
+  return {
+    ...profile, buildCardFormat,
+    id: profileKey(profile.sourceWidth, profile.sourceHeight, profile.layout, profile.uiScale, buildCardFormat),
+    regions: normalizedProfileRegions(profile.layout, profile.regions ?? [], buildCardFormat)
+  }
 }
 
 export function loadCalibrationProfiles(): CalibrationProfile[] {
   try {
     const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]')
-    return Array.isArray(parsed) ? parsed.map((profile) => ({ ...profile, regions: normalizedProfileRegions(profile.layout, profile.regions ?? []) })) : []
+    return Array.isArray(parsed) ? parsed.map(normalizedStoredProfile) : []
   } catch { return [] }
 }
 
@@ -63,14 +81,18 @@ export function loadLatestCalibrationProfile() {
 }
 
 export function saveCalibrationProfile(profile: CalibrationProfile) {
-  const persisted = { ...profile, regions: normalizedProfileRegions(profile.layout, profile.regions), id: profileKey(profile.sourceWidth, profile.sourceHeight, profile.layout, profile.uiScale), updatedAt: Date.now() }
+  const buildCardFormat = inferredBuildCardFormat(profile)
+  const persisted = {
+    ...profile, buildCardFormat, regions: normalizedProfileRegions(profile.layout, profile.regions, buildCardFormat),
+    id: profileKey(profile.sourceWidth, profile.sourceHeight, profile.layout, profile.uiScale, buildCardFormat), updatedAt: Date.now()
+  }
   const profiles = loadCalibrationProfiles().filter((entry) => entry.id !== persisted.id)
   localStorage.setItem(STORAGE_KEY, JSON.stringify([...profiles, persisted]))
   return persisted
 }
 
 export function deleteCalibrationProfile(profile: CalibrationProfile) {
-  const id = profileKey(profile.sourceWidth, profile.sourceHeight, profile.layout, profile.uiScale)
+  const id = profileKey(profile.sourceWidth, profile.sourceHeight, profile.layout, profile.uiScale, inferredBuildCardFormat(profile))
   localStorage.setItem(STORAGE_KEY, JSON.stringify(loadCalibrationProfiles().filter((entry) => entry.id !== id)))
 }
 
@@ -84,6 +106,7 @@ function normalizeImportedProfile(input: unknown): CalibrationProfile {
   const value = input as Partial<CalibrationProfile>
   if (!value || typeof value !== 'object'
     || (value.layout !== 'echo-detail' && value.layout !== 'echo-management' && value.layout !== 'build-card')
+    || (value.buildCardFormat !== undefined && !buildCardFormats.some((format) => format.id === value.buildCardFormat))
     || typeof value.sourceWidth !== 'number' || !Number.isFinite(value.sourceWidth)
     || typeof value.sourceHeight !== 'number' || !Number.isFinite(value.sourceHeight)
     || typeof value.uiScale !== 'number' || !Number.isFinite(value.uiScale)
@@ -94,11 +117,13 @@ function normalizeImportedProfile(input: unknown): CalibrationProfile {
     throw new Error('This file is not a valid Tacet Lab calibration profile.')
   }
   const now = Date.now()
+  const buildCardFormat = inferredBuildCardFormat({ layout: value.layout, name: typeof value.name === 'string' ? value.name : '', buildCardFormat: value.buildCardFormat })
   return {
     ...value,
-    id: profileKey(value.sourceWidth, value.sourceHeight, value.layout, value.uiScale),
-    name: typeof value.name === 'string' ? value.name : `${value.sourceWidth}x${value.sourceHeight} - ${value.layout === 'echo-detail' ? 'Character Menu' : value.layout === 'echo-management' ? 'Backpack' : 'Discord build card'}`,
-    regions: normalizedProfileRegions(value.layout, value.regions),
+    buildCardFormat,
+    id: profileKey(value.sourceWidth, value.sourceHeight, value.layout, value.uiScale, buildCardFormat),
+    name: typeof value.name === 'string' ? value.name : profileName(value.sourceWidth, value.sourceHeight, value.layout, buildCardFormat),
+    regions: normalizedProfileRegions(value.layout, value.regions, buildCardFormat),
     createdAt: typeof value.createdAt === 'number' ? value.createdAt : now,
     updatedAt: now
   } as CalibrationProfile
@@ -117,29 +142,42 @@ export function parseCalibrationProfile(json: string): CalibrationProfile {
 
 export function calibrationExportProfiles(current: CalibrationProfile) {
   const stored = loadCalibrationProfiles()
-  return (['echo-detail', 'echo-management', 'build-card'] as const).map((layout) => {
-    if (current.layout === layout) return current
-    return stored.filter((profile) => profile.layout === layout
+  const targets: Array<{ layout: Exclude<ScanLayout, 'unknown'>; buildCardFormat?: BuildCardFormatId }> = [
+    { layout: 'echo-detail' }, { layout: 'echo-management' },
+    ...buildCardFormats.map((format) => ({ layout: 'build-card' as const, buildCardFormat: format.id }))
+  ]
+  return targets.map(({ layout, buildCardFormat }) => {
+    const matches = (profile: CalibrationProfile) => profile.layout === layout && inferredBuildCardFormat(profile) === buildCardFormat
+    if (matches(current)) return current
+    return stored.filter((profile) => matches(profile)
       && Math.abs(profile.sourceWidth - current.sourceWidth) <= 2
       && Math.abs(profile.sourceHeight - current.sourceHeight) <= 2
       && Math.abs(profile.uiScale - current.uiScale) <= .02)
       .sort((left, right) => right.updatedAt - left.updatedAt)[0]
-      ?? createCalibrationProfile(current.sourceWidth, current.sourceHeight, defaultPanelRectForLayout(layout), layout, current.uiScale)
+      ?? createCalibrationProfile(current.sourceWidth, current.sourceHeight, defaultPanelRectForLayout(layout), layout, current.uiScale, buildCardFormat)
   })
 }
 
-export function findCompatibleProfile(width: number, height: number, layout: ScanLayout, uiScale?: number) {
+export function findCompatibleProfile(width: number, height: number, layout: ScanLayout, uiScale?: number, buildCardFormat?: BuildCardFormatId) {
   return loadCalibrationProfiles().filter((profile) => profile.layout === layout
+    && (layout !== 'build-card' || inferredBuildCardFormat(profile) === (buildCardFormat ?? 'discord-bot'))
     && Math.abs(profile.sourceWidth - width) <= 2 && Math.abs(profile.sourceHeight - height) <= 2
     && (uiScale === undefined || Math.abs(profile.uiScale - uiScale) <= .02))
     .sort((left, right) => right.updatedAt - left.updatedAt)[0]
 }
 
-export function createCalibrationProfile(width: number, height: number, panelRect: ScanRect, layout: Exclude<ScanLayout, 'unknown'>, uiScale = 1): CalibrationProfile {
+function profileName(width: number, height: number, layout: Exclude<ScanLayout, 'unknown'>, formatId?: BuildCardFormatId) {
+  const label = layout === 'echo-detail' ? 'Character Menu' : layout === 'echo-management' ? 'Backpack' : `${buildCardFormat(formatId ?? 'discord-bot').label} build card`
+  return `${width}x${height} - ${label}`
+}
+
+export function createCalibrationProfile(width: number, height: number, panelRect: ScanRect, layout: Exclude<ScanLayout, 'unknown'>, uiScale = 1, buildCardFormatId?: BuildCardFormatId): CalibrationProfile {
   const now = Date.now()
+  const format = layout === 'build-card' ? buildCardFormatId ?? 'discord-bot' : undefined
   return {
-    id: profileKey(width, height, layout, uiScale), name: `${width}x${height} - ${layout === 'echo-detail' ? 'Character Menu' : layout === 'echo-management' ? 'Backpack' : 'Discord build card'}`,
-    layout, sourceWidth: width, sourceHeight: height, uiScale, panelRect: { ...panelRect }, regions: regionsForLayout(layout), createdAt: now, updatedAt: now
+    id: profileKey(width, height, layout, uiScale, format), name: profileName(width, height, layout, format), buildCardFormat: format,
+    layout, sourceWidth: width, sourceHeight: height, uiScale, panelRect: { ...panelRect },
+    regions: format && format !== 'discord-bot' ? buildCardFormatRegions(format) : regionsForLayout(layout), createdAt: now, updatedAt: now
   }
 }
 

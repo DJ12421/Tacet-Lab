@@ -7,6 +7,7 @@ import { closestTunableRoll, exactTunableRoll, tunableRolls } from '../game-data
 import { fixedSecondaryMainStat, isMainStatAllowed, mainStatError, mainStatKeysByCost, maxSubStatsForLevel } from '../game-data/echo-main-stats'
 import type { Echo, ScanCandidate, StatKey, StatLine } from '../domain/types'
 import { createLocalId } from '../domain/id'
+import { dedupeBySubstatKey, duplicateSubstatKeys } from '../domain/echo-substats'
 
 const sonataNames = generatedSonataCatalog.map((sonata) => sonata.name)
 
@@ -163,7 +164,8 @@ export async function parseEchoText(text: string, imageDataUrl: string, source: 
   const remainingStats = stats.filter((_, index) => index !== mainStatIndex)
   const fixedSecondary = fixedSecondaryMainStat({ cost, rarity, level })
   const secondaryMainIndex = remainingStats.findIndex((stat) => stat.key === fixedSecondary.key && Math.abs(stat.value - fixedSecondary.value) <= .51)
-  const subStats = remainingStats.filter((_, index) => index !== secondaryMainIndex).slice(0, maxSubStatsForLevel(level)).map((stat) => {
+  const uniqueSubStats = dedupeBySubstatKey(remainingStats.filter((_, index) => index !== secondaryMainIndex), (stat) => stat.key).values
+  const subStats = uniqueSubStats.slice(0, maxSubStatsForLevel(level)).map((stat) => {
     const roll = resolveTunableRoll(stat.key, stat.value)
     return { value: roll ? { ...stat, value: roll.value } : stat, confidence: roll ? (exactTunableRoll(stat.key, stat.value) ? 0.92 : 0.84) : 0.52, raw: String(stat.value) }
   })
@@ -209,6 +211,7 @@ export function candidateErrors(candidate: ScanCandidate) {
   const maxSubStats = maxSubStatsForLevel(candidate.fields.level.value)
   if (candidate.fields.subStats.length > maxSubStats) errors.push(`A level ${candidate.fields.level.value} Echo can only have ${maxSubStats} substat${maxSubStats === 1 ? '' : 's'}.`)
   if (candidate.fields.subStats.some((field) => !Number.isFinite(field.value.value) || field.value.value < 0)) errors.push('Substats must be non-negative numbers.')
+  if (duplicateSubstatKeys(candidate.fields.subStats.map((field) => field.value)).length) errors.push('Each substat type can only appear once.')
   if (candidate.fields.subStats.some((field) => tunableRolls[field.value.key] && !exactTunableRoll(field.value.key, field.value.value))) errors.push('Each tunable substat must match an exact in-game roll value.')
   if (candidate.buildCard) {
     if (!characterCatalog.some((entry) => entry.id === candidate.buildCard?.characterCatalogId || normalizedIdentity(entry.name) === normalizedIdentity(candidate.buildCard?.character.value ?? ''))) errors.push('Choose the build-card character from the catalog.')

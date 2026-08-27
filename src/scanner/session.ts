@@ -8,6 +8,7 @@ import { PreprocessClient } from './preprocess'
 import { recognizeFrame, rerunRegion } from './recognize'
 import { recognizeBuildCard } from './build-card'
 import type { CalibrationProfile, DiagnosticScanCandidate, OcrWorkerPreference, ScanSession, ScanSource } from './types'
+import type { BuildCardFormatPreference } from './build-card-formats'
 
 interface QueuedFrame { prepared: PreparedFrame; resolve: (accepted: boolean) => void; reject: (error: Error) => void }
 export interface ScanControllerCallbacks {
@@ -27,6 +28,7 @@ export class ScanSessionController {
   private cancelled = false
   private fingerprints: number[][] = []
   private frameCache = new Map<string, PreparedFrame>()
+  private buildCardFormatPreference: BuildCardFormatPreference = 'auto'
 
   constructor(source: ScanSource, private callbacks: ScanControllerCallbacks, preference: OcrWorkerPreference = 'auto') {
     const now = Date.now()
@@ -40,6 +42,7 @@ export class ScanSessionController {
   }
 
   setWorkerPreference(preference: OcrWorkerPreference) { this.pool.setPreference(preference) }
+  setBuildCardFormatPreference(preference: BuildCardFormatPreference) { this.buildCardFormatPreference = preference }
 
   private applyPoolMetrics(metrics: OcrPoolMetrics) {
     this.session.metrics.workerCount = metrics.workerCount
@@ -64,7 +67,7 @@ export class ScanSessionController {
     }
     if (source === 'video' && !this.hasCapacity(source)) return false
     const sequence = this.session.nextFrameSequence++
-    const prepared = await prepareScanFrame(dataUrl, source, this.session.id, sequence, preferredProfile)
+    const prepared = await prepareScanFrame(dataUrl, source, this.session.id, sequence, preferredProfile, undefined, this.buildCardFormatPreference)
     this.session.metrics.totalFrames += 1
     if ((source === 'screen' || source === 'video') && this.fingerprints.some((fingerprint) => fingerprintDistance(fingerprint, prepared.frame.fingerprint) <= .018)) {
       this.session.metrics.skippedFrames += 1; this.session.metrics.duplicates += 1; this.emit(); return false
