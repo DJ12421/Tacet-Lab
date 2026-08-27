@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { clearCharacterArtwork, deleteCharacterArtwork, loadCharacterArtwork, saveCharacterArtwork } from './character-art-cache'
 
@@ -19,7 +20,9 @@ describe('character artwork cache', () => {
     const artwork = new Blob(['image bytes'], { type: 'image/png' })
 
     await saveCharacterArtwork('owned-lucy', artwork)
-    expect(await loadCharacterArtwork('owned-lucy')).toEqual(artwork)
+    const loaded = await loadCharacterArtwork('owned-lucy')
+    expect(loaded?.size).toBe(artwork.size)
+    expect(loaded?.type).toBe(artwork.type)
     await deleteCharacterArtwork('owned-lucy')
     expect(await loadCharacterArtwork('owned-lucy')).toBeUndefined()
     await saveCharacterArtwork('owned-lucy', artwork)

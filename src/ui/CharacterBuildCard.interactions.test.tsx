@@ -58,6 +58,7 @@ function card(editable: boolean, overrides: Partial<typeof baseModel> = {}) {
 
 describe('CharacterBuildCard direct editing', () => {
   it('synchronizes the layout sidebar host to the rendered card height', () => {
+    const clientWidth = vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(1920)
     const layoutPanelHost = document.createElement('div')
     document.body.append(layoutPanelHost)
     const result = render(<CharacterBuildCard
@@ -95,6 +96,7 @@ describe('CharacterBuildCard direct editing', () => {
     result.unmount()
     expect(layoutPanelHost.style.height).toBe('')
     layoutPanelHost.remove()
+    clientWidth.mockRestore()
   })
 
   it('edits level, Sequence, skill level, bonus nodes, weapon, and an empty Echo slot when equipped', () => {
@@ -108,8 +110,8 @@ describe('CharacterBuildCard direct editing', () => {
     expect(callbacks.onSetSequence).toHaveBeenCalledWith(1)
 
     fireEvent.click(container.querySelector<HTMLButtonElement>('.cbc-main-skill')!)
-    fireEvent.change(screen.getByRole('spinbutton', { name: 'Normal Attack level' }), { target: { value: '9' } })
-    expect(callbacks.onSetSkillLevel).toHaveBeenCalledWith(0, 9)
+    fireEvent.click(container.querySelector<HTMLButtonElement>('.cbc-skill-level-popover button:last-child')!)
+    expect(callbacks.onSetSkillLevel).toHaveBeenCalledWith(0, 7)
 
     const firstBonus = container.querySelector<HTMLButtonElement>('.cbc-skill-bonuses button')!
     fireEvent.click(firstBonus)
