@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000177",
+  "entityName": "Geospider S4",
+  "sourceFingerprint": "6f4064b5e27c90b25d787fe657df304b59856ad44d964f8af561fdbfb90bdded",
+  "reviewedAt": "2026-08-26T11:44:25.075Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "9010a95f5bece62ace61303d62104ea31d0e0f376c29501579c4addf11098423",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000177:skill",
+            "name": "Geospider S4 - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Geospider S4 to attack enemies, dealing 28.80% Spectro DMG once and 43.20% Spectro DMG once.\nCD: 8s.",
+              "Summon a Geospider S4 to attack enemies, dealing 34.56% Spectro DMG once and 51.84% Spectro DMG once.\nCD: 8s.",
+              "Summon a Geospider S4 to attack enemies, dealing 40.32% Spectro DMG once and 60.48% Spectro DMG once.\nCD: 8s.",
+              "Summon a Geospider S4 to attack enemies, dealing 46.08% Spectro DMG once and 69.12% Spectro DMG once.\nCD: 8s.",
+              "Summon a Geospider S4 to attack enemies, dealing 51.84% Spectro DMG once and 77.76% Spectro DMG once.\nCD: 8s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.28800000000000003,
+                0.43200000000000005
+              ],
+              [
+                0.3456,
+                0.5184000000000001
+              ],
+              [
+                0.4032,
+                0.6048
+              ],
+              [
+                0.4608,
+                0.6912
+              ],
+              [
+                0.5184000000000001,
+                0.7776000000000001
+              ]
+            ],
+            "count": 2,
+            "sourceText": "Summon a Geospider S4 to attack enemies, dealing 28.80% Spectro DMG once and 43.20% Spectro DMG once.\nCD: 8s. · Summon a Geospider S4 to attack enemies, dealing 34.56% Spectro DMG once and 51.84% Spectro DMG once.\nCD: 8s. · Summon a Geospider S4 to attack enemies, dealing 40.32% Spectro DMG once and 60.48% Spectro DMG once.\nCD: 8s. · Summon a Geospider S4 to attack enemies, dealing 46.08% Spectro DMG once and 69.12% Spectro DMG once.\nCD: 8s. · Summon a Geospider S4 to attack enemies, dealing 51.84% Spectro DMG once and 77.76% Spectro DMG once.\nCD: 8s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

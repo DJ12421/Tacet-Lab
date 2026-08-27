@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000083",
+  "entityName": "Sentry Construct",
+  "sourceFingerprint": "a98559ada0b6c28c9a521341b6686294a7a2828eda9cfea9cc77abc840261b04",
+  "reviewedAt": "2026-08-26T11:44:24.951Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "6dd8549acff446d8be4f4fb9c56459e9fcfe273eaa42d28978f5a17a789c1ee3",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000083:skill",
+            "name": "Sentry Construct - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Sentry Construct and attack enemies in front, dealing 225.00% Glacio DMG. Each time the Resonator with this Echo casts Resonance Liberation, it charges the Strike Capacitor.\nOnce Strike Capacitor is at max level, the Echo Skill cooldown will be reset. Use Echo Skill to transform into Sentry Construct and dive into enemies from the air, dealing 225.00% Glacio DMG and freezing the target.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Skill DMG Bonus.\nCD: 25s.",
+              "Transform into Sentry Construct and attack enemies in front, dealing 270.00% Glacio DMG. Each time the Resonator with this Echo casts Resonance Liberation, it charges the Strike Capacitor.\nOnce Strike Capacitor is at max level, the Echo Skill cooldown will be reset. Use Echo Skill to transform into Sentry Construct and dive into enemies from the air, dealing 270.00% Glacio DMG and freezing the target.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Skill DMG Bonus.\nCD: 25s.",
+              "Transform into Sentry Construct and attack enemies in front, dealing 315.00% Glacio DMG. Each time the Resonator with this Echo casts Resonance Liberation, it charges the Strike Capacitor.\nOnce Strike Capacitor is at max level, the Echo Skill cooldown will be reset. Use Echo Skill to transform into Sentry Construct and dive into enemies from the air, dealing 315.00% Glacio DMG and freezing the target.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Skill DMG Bonus.\nCD: 25s.",
+              "Transform into Sentry Construct and attack enemies in front, dealing 360.00% Glacio DMG. Each time the Resonator with this Echo casts Resonance Liberation, it charges the Strike Capacitor.\nOnce Strike Capacitor is at max level, the Echo Skill cooldown will be reset. Use Echo Skill to transform into Sentry Construct and dive into enemies from the air, dealing 360.00% Glacio DMG and freezing the target.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Skill DMG Bonus.\nCD: 25s.",
+              "Transform into Sentry Construct and attack enemies in front, dealing 405.00% Glacio DMG. Each time the Resonator with this Echo casts Resonance Liberation, it charges the Strike Capacitor.\nOnce Strike Capacitor is at max level, the Echo Skill cooldown will be reset. Use Echo Skill to transform into Sentry Construct and dive into enemies from the air, dealing 405.00% Glacio DMG and freezing the target.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Skill DMG Bonus.\nCD: 25s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                2.25,
+                2.25,
+                0.12,
+                0.12
+              ],
+              [
+                2.7,
+                2.7,
+                0.12,
+                0.12
+              ],
+              [
+                3.15,
+                3.15,
+                0.12,
+                0.12
+              ],
+              [
+                3.6,
+                3.6,
+                0.12,
+                0.12
+              ],
+              [
+                4.05,
+                4.05,
+                0.12,
+                0.12
+              ]
+            ],
+            "count": 4,
+            "sourceText": "Transform into Sentry Construct and attack enemies in front, dealing 225.00% Glacio DMG. Each time the Resonator with this Echo casts Resonance Liberation, it charges the Strike Capacitor.\nOnce Strike Capacitor is at max level, the Echo Skill cooldown will be reset. Use Echo Skill to transform into Sentry Construct and dive into enemies from the air, dealing 225.00% Glacio DMG and freezing the target.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Skill DMG Bonus.\nCD: 25s. · Transform into Sentry Construct and attack enemies in front, dealing 270.00% Glacio DMG. Each time the Resonator with this Echo casts Resonance Liberation, it charges the Strike Capacitor.\nOnce Strike Capacitor is at max level, the Echo Skill cooldown will be reset. Use Echo Skill to transform into Sentry Construct and dive into enemies from the air, dealing 270.00% Glacio DMG and freezing the target.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Skill DMG Bonus.\nCD: 25s. · Transform into Sentry Construct and attack enemies in front, dealing 315.00% Glacio DMG. Each time the Resonator with this Echo casts Resonance Liberation, it charges the Strike Capacitor.\nOnce Strike Capacitor is at max level, the Echo Skill cooldown will be reset. Use Echo Skill to transform into Sentry Construct and dive into enemies from the air, dealing 315.00% Glacio DMG and freezing the target.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Skill DMG Bonus.\nCD: 25s. · Transform into Sentry Construct and attack enemies in front, dealing 360.00% Glacio DMG. Each time the Resonator with this Echo casts Resonance Liberation, it charges the Strike Capacitor.\nOnce Strike Capacitor is at max level, the Echo Skill cooldown will be reset. Use Echo Skill to transform into Sentry Construct and dive into enemies from the air, dealing 360.00% Glacio DMG and freezing the target.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Skill DMG Bonus.\nCD: 25s. · Transform into Sentry Construct and attack enemies in front, dealing 405.00% Glacio DMG. Each time the Resonator with this Echo casts Resonance Liberation, it charges the Strike Capacitor.\nOnce Strike Capacitor is at max level, the Echo Skill cooldown will be reset. Use Echo Skill to transform into Sentry Construct and dive into enemies from the air, dealing 405.00% Glacio DMG and freezing the target.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Skill DMG Bonus.\nCD: 25s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "3526db3819047e563249eeb4f8f95f1c7165dd362907dad6f3c55948c90c98f3",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000083:effect:0",
+            "sourceName": "Sentry Construct",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Skill DMG Bonus.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "Glacio",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

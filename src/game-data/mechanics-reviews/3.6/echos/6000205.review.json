@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000205",
+  "entityName": "Aureate Picket",
+  "sourceFingerprint": "e316d88b80d5a5ee00c2f8adcaea8e05ff6334d90bfd3d872af655165ead0b47",
+  "reviewedAt": "2026-08-26T11:44:25.132Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "140ffecb61ad9204d4f63a3ed827dbb1c3f9dcbce41618e969d3863303e02da2",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000205:skill",
+            "name": "Aureate Picket - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Use Echo Skill to transform into an Aureate Picket, immediately recover 0.31% HP times plus an additional instance of 24 points of HP, then bash into enemies and deal 85.50% Aero DMG.\nCD: 8s",
+              "Use Echo Skill to transform into an Aureate Picket, immediately recover 0.37% HP times plus an additional instance of 24 points of HP, then bash into enemies and deal 102.60% Aero DMG.\nCD: 8s",
+              "Use Echo Skill to transform into an Aureate Picket, immediately recover 0.43% HP times plus an additional instance of 24 points of HP, then bash into enemies and deal 119.70% Aero DMG.\nCD: 8s",
+              "Use Echo Skill to transform into an Aureate Picket, immediately recover 0.49% HP times plus an additional instance of 24 points of HP, then bash into enemies and deal 136.80% Aero DMG.\nCD: 8s",
+              "Use Echo Skill to transform into an Aureate Picket, immediately recover 0.55% HP times plus an additional instance of 24 points of HP, then bash into enemies and deal 153.90% Aero DMG.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.0031,
+                0.855
+              ],
+              [
+                0.0037,
+                1.026
+              ],
+              [
+                0.0043,
+                1.197
+              ],
+              [
+                0.0049,
+                1.368
+              ],
+              [
+                0.0055000000000000005,
+                1.5390000000000001
+              ]
+            ],
+            "count": 2,
+            "sourceText": "Use Echo Skill to transform into an Aureate Picket, immediately recover 0.31% HP times plus an additional instance of 24 points of HP, then bash into enemies and deal 85.50% Aero DMG.\nCD: 8s · Use Echo Skill to transform into an Aureate Picket, immediately recover 0.37% HP times plus an additional instance of 24 points of HP, then bash into enemies and deal 102.60% Aero DMG.\nCD: 8s · Use Echo Skill to transform into an Aureate Picket, immediately recover 0.43% HP times plus an additional instance of 24 points of HP, then bash into enemies and deal 119.70% Aero DMG.\nCD: 8s · Use Echo Skill to transform into an Aureate Picket, immediately recover 0.49% HP times plus an additional instance of 24 points of HP, then bash into enemies and deal 136.80% Aero DMG.\nCD: 8s · Use Echo Skill to transform into an Aureate Picket, immediately recover 0.55% HP times plus an additional instance of 24 points of HP, then bash into enemies and deal 153.90% Aero DMG.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

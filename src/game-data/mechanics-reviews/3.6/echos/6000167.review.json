@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000167",
+  "entityName": "Reminiscence: Threnodian - Leviathan",
+  "sourceFingerprint": "d0456896fe39110b70939538103e6061c97ae31fe0f3c6bd60b067f48d27f8b7",
+  "reviewedAt": "2026-08-26T11:44:25.054Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "eb54c4675bbbdbc5312875f7641b4bd80f31945451a35d31bb6bcbf556632a33",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000167:skill",
+            "name": "Reminiscence: Threnodian - Leviathan - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Collapsing Horizon, dealing two instances of 72.80% Havoc DMG to the nearby enemies and obtaining the Core of Collapse for 15s.\nWhile it lasts, Core of Collapse deals 24.57% Havoc DMG when the active Resonator in the team deals damage. This effect can be triggered once every 0.5s, up to 8. Enemies with Havoc Bane take 100% more DMG from this effect.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 25s",
+              "Summon a Collapsing Horizon, dealing two instances of 87.36% Havoc DMG to the nearby enemies and obtaining the Core of Collapse for 15s.\nWhile it lasts, Core of Collapse deals 24.57% Havoc DMG when the active Resonator in the team deals damage. This effect can be triggered once every 0.5s, up to 8. Enemies with Havoc Bane take 100% more DMG from this effect.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 25s",
+              "Summon a Collapsing Horizon, dealing two instances of 101.92% Havoc DMG to the nearby enemies and obtaining the Core of Collapse for 15s.\nWhile it lasts, Core of Collapse deals 24.57% Havoc DMG when the active Resonator in the team deals damage. This effect can be triggered once every 0.5s, up to 8. Enemies with Havoc Bane take 100% more DMG from this effect.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 25s",
+              "Summon a Collapsing Horizon, dealing two instances of 116.48% Havoc DMG to the nearby enemies and obtaining the Core of Collapse for 15s.\nWhile it lasts, Core of Collapse deals 24.57% Havoc DMG when the active Resonator in the team deals damage. This effect can be triggered once every 0.5s, up to 8. Enemies with Havoc Bane take 100% more DMG from this effect.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 25s",
+              "Summon a Collapsing Horizon, dealing two instances of 131.04% Havoc DMG to the nearby enemies and obtaining the Core of Collapse for 15s.\nWhile it lasts, Core of Collapse deals 24.57% Havoc DMG when the active Resonator in the team deals damage. This effect can be triggered once every 0.5s, up to 8. Enemies with Havoc Bane take 100% more DMG from this effect.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 25s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.728,
+                0.2457,
+                1,
+                0.12,
+                0.12
+              ],
+              [
+                0.8736,
+                0.2457,
+                1,
+                0.12,
+                0.12
+              ],
+              [
+                1.0192,
+                0.2457,
+                1,
+                0.12,
+                0.12
+              ],
+              [
+                1.1648,
+                0.2457,
+                1,
+                0.12,
+                0.12
+              ],
+              [
+                1.3104,
+                0.2457,
+                1,
+                0.12,
+                0.12
+              ]
+            ],
+            "count": 5,
+            "sourceText": "Summon a Collapsing Horizon, dealing two instances of 72.80% Havoc DMG to the nearby enemies and obtaining the Core of Collapse for 15s.\nWhile it lasts, Core of Collapse deals 24.57% Havoc DMG when the active Resonator in the team deals damage. This effect can be triggered once every 0.5s, up to 8. Enemies with Havoc Bane take 100% more DMG from this effect.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 25s · Summon a Collapsing Horizon, dealing two instances of 87.36% Havoc DMG to the nearby enemies and obtaining the Core of Collapse for 15s.\nWhile it lasts, Core of Collapse deals 24.57% Havoc DMG when the active Resonator in the team deals damage. This effect can be triggered once every 0.5s, up to 8. Enemies with Havoc Bane take 100% more DMG from this effect.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 25s · Summon a Collapsing Horizon, dealing two instances of 101.92% Havoc DMG to the nearby enemies and obtaining the Core of Collapse for 15s.\nWhile it lasts, Core of Collapse deals 24.57% Havoc DMG when the active Resonator in the team deals damage. This effect can be triggered once every 0.5s, up to 8. Enemies with Havoc Bane take 100% more DMG from this effect.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 25s · Summon a Collapsing Horizon, dealing two instances of 116.48% Havoc DMG to the nearby enemies and obtaining the Core of Collapse for 15s.\nWhile it lasts, Core of Collapse deals 24.57% Havoc DMG when the active Resonator in the team deals damage. This effect can be triggered once every 0.5s, up to 8. Enemies with Havoc Bane take 100% more DMG from this effect.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 25s · Summon a Collapsing Horizon, dealing two instances of 131.04% Havoc DMG to the nearby enemies and obtaining the Core of Collapse for 15s.\nWhile it lasts, Core of Collapse deals 24.57% Havoc DMG when the active Resonator in the team deals damage. This effect can be triggered once every 0.5s, up to 8. Enemies with Havoc Bane take 100% more DMG from this effect.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 25s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "88f01ea2195bf31921d380f874f70dae8a5762ce9d4219c7a6b6a37f7cf313d7",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000167:effect:0",
+            "sourceName": "Reminiscence: Threnodian - Leviathan",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 12.00% Resonance Liberation DMG Bonus.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "Havoc",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

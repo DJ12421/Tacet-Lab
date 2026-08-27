@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000093",
+  "entityName": "Golden Junrock",
+  "sourceFingerprint": "b8238557ca8d387c4706fb5df2e60e22ce7ec870784bc78acf8606ce93c7a0ab",
+  "reviewedAt": "2026-08-26T11:44:24.971Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "d57ab2c0ed8338714e67d21bacb50f13ae6f56538454b285726363f64f04ede2",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000093:skill",
+            "name": "Golden Junrock - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Golden Junrock that charges forward, dealing 72.00% Spectro DMG to enemies in its path.\nCD: 8s",
+              "Summon a Golden Junrock that charges forward, dealing 86.40% Spectro DMG to enemies in its path.\nCD: 8s",
+              "Summon a Golden Junrock that charges forward, dealing 100.80% Spectro DMG to enemies in its path.\nCD: 8s",
+              "Summon a Golden Junrock that charges forward, dealing 115.20% Spectro DMG to enemies in its path.\nCD: 8s",
+              "Summon a Golden Junrock that charges forward, dealing 129.60% Spectro DMG to enemies in its path.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.72
+              ],
+              [
+                0.8640000000000001
+              ],
+              [
+                1.008
+              ],
+              [
+                1.1520000000000001
+              ],
+              [
+                1.296
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Golden Junrock that charges forward, dealing 72.00% Spectro DMG to enemies in its path.\nCD: 8s · Summon a Golden Junrock that charges forward, dealing 86.40% Spectro DMG to enemies in its path.\nCD: 8s · Summon a Golden Junrock that charges forward, dealing 100.80% Spectro DMG to enemies in its path.\nCD: 8s · Summon a Golden Junrock that charges forward, dealing 115.20% Spectro DMG to enemies in its path.\nCD: 8s · Summon a Golden Junrock that charges forward, dealing 129.60% Spectro DMG to enemies in its path.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

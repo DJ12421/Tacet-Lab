@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "sonata",
+  "entityId": "4",
+  "entityName": "Sierra Gale",
+  "sourceFingerprint": "2e6fdc03b3a42e6f25263397d605749c97b1ccc9fde0eba620ceb6392942a4c5",
+  "reviewedAt": "2026-08-26T11:44:24.695Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "269718d50a19bb24e7b53a43653207543cfa893214dc37850c94e001e53353b0",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:4:2:0",
+            "sourceName": "Sierra Gale",
+            "text": "Aero DMG + 10%.",
+            "refinementTexts": [
+              "Aero DMG + 10%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:4:5:0",
+            "sourceName": "Sierra Gale",
+            "text": "Aero DMG + 30% for 15s after releasing Intro Skill.",
+            "refinementTexts": [
+              "Aero DMG + 30% for 15s after releasing Intro Skill."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Intro Skill",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 30
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

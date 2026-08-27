@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390077025",
+  "entityName": "Chasm Guardian",
+  "sourceFingerprint": "95c079e626aeec3dbb10c30060f9d4d78db194e1ab2cf997694708b582734539",
+  "reviewedAt": "2026-08-26T11:44:24.839Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "7f6d329f6f2164c4ca4beb195850615c6f4eef5a1dbfaca2b1b247a4dbeb496c",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390077025:skill",
+            "name": "Chasm Guardian - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Chasm Guardian to perform a Leap Strike that deals 171.00% Havoc DMG on hit. Current character loses 10.00% HP after the hit lands. Periodically restore current character's HP after 5s for up to 10.00% of their Max HP.\nCD: 15s",
+              "Transform into Chasm Guardian to perform a Leap Strike that deals 196.65% Havoc DMG on hit. Current character loses 10.00% HP after the hit lands. Periodically restore current character's HP after 5s for up to 10.00% of their Max HP.\nCD: 15s",
+              "Transform into Chasm Guardian to perform a Leap Strike that deals 222.30% Havoc DMG on hit. Current character loses 10.00% HP after the hit lands. Periodically restore current character's HP after 5s for up to 10.00% of their Max HP.\nCD: 15s",
+              "Transform into Chasm Guardian to perform a Leap Strike that deals 247.95% Havoc DMG on hit. Current character loses 10.00% HP after the hit lands. Periodically restore current character's HP after 5s for up to 10.00% of their Max HP.\nCD: 15s",
+              "Transform into Chasm Guardian to perform a Leap Strike that deals 273.60% Havoc DMG on hit. Current character loses 10.00% HP after the hit lands. Periodically restore current character's HP after 5s for up to 10.00% of their Max HP.\nCD: 15s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.71,
+                0.1,
+                0.1
+              ],
+              [
+                1.9665000000000001,
+                0.1,
+                0.1
+              ],
+              [
+                2.2230000000000003,
+                0.1,
+                0.1
+              ],
+              [
+                2.4795,
+                0.1,
+                0.1
+              ],
+              [
+                2.736,
+                0.1,
+                0.1
+              ]
+            ],
+            "count": 3,
+            "sourceText": "Transform into Chasm Guardian to perform a Leap Strike that deals 171.00% Havoc DMG on hit. Current character loses 10.00% HP after the hit lands. Periodically restore current character's HP after 5s for up to 10.00% of their Max HP.\nCD: 15s · Transform into Chasm Guardian to perform a Leap Strike that deals 196.65% Havoc DMG on hit. Current character loses 10.00% HP after the hit lands. Periodically restore current character's HP after 5s for up to 10.00% of their Max HP.\nCD: 15s · Transform into Chasm Guardian to perform a Leap Strike that deals 222.30% Havoc DMG on hit. Current character loses 10.00% HP after the hit lands. Periodically restore current character's HP after 5s for up to 10.00% of their Max HP.\nCD: 15s · Transform into Chasm Guardian to perform a Leap Strike that deals 247.95% Havoc DMG on hit. Current character loses 10.00% HP after the hit lands. Periodically restore current character's HP after 5s for up to 10.00% of their Max HP.\nCD: 15s · Transform into Chasm Guardian to perform a Leap Strike that deals 273.60% Havoc DMG on hit. Current character loses 10.00% HP after the hit lands. Periodically restore current character's HP after 5s for up to 10.00% of their Max HP.\nCD: 15s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

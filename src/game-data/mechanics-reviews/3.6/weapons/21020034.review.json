@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21020034",
+  "entityName": "Sword#18",
+  "sourceFingerprint": "8e60784faa85275dffee7b2c0cae236a0ce77b4e5ccc19e11105276536f19a69",
+  "reviewedAt": "2026-08-26T11:44:23.983Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "08909437b740c5d871d23132464686a7bc3372eac8cdd5174dc7a35b8d7f9aae",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020034:effect:0",
+            "sourceName": "Daybreak",
+            "text": "When the Resonator's HP drops below 40%, increases Heavy Attack DMG Bonus by 18% and gives 5% healing when dealing Heavy Attack DMG. This effect can be triggered 1 time(s) every 8s.",
+            "refinementTexts": [
+              "When the Resonator's HP drops below 40%, increases Heavy Attack DMG Bonus by 18% and gives 5% healing when dealing Heavy Attack DMG. This effect can be triggered 1 time(s) every 8s.",
+              "When the Resonator's HP drops below 50%, increases Heavy Attack DMG Bonus by 22.5% and gives 6.25% healing when dealing Heavy Attack DMG. This effect can be triggered 1 time(s) every 8s.",
+              "When the Resonator's HP drops below 60%, increases Heavy Attack DMG Bonus by 27% and gives 7.5% healing when dealing Heavy Attack DMG. This effect can be triggered 1 time(s) every 8s.",
+              "When the Resonator's HP drops below 70%, increases Heavy Attack DMG Bonus by 31.5% and gives 8.75% healing when dealing Heavy Attack DMG. This effect can be triggered 1 time(s) every 8s.",
+              "When the Resonator's HP drops below 80%, increases Heavy Attack DMG Bonus by 36% and gives 10% healing when dealing Heavy Attack DMG. This effect can be triggered 1 time(s) every 8s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Heavy Attack DMG",
+              "modifiers": [
+                {
+                  "stat": "heavyDamage",
+                  "operation": "addPercent",
+                  "value": 18
+                }
+              ],
+              "confidence": "review",
+              "warnings": [
+                "First-pass review: this text contains additional percentages; confirm that every calculator mechanic is represented."
+              ]
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Heavy Attack DMG",
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "review",
+                "warnings": [
+                  "First-pass review: this text contains additional percentages; confirm that every calculator mechanic is represented."
+                ]
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Heavy Attack DMG",
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 6.25
+                  }
+                ],
+                "confidence": "review",
+                "warnings": [
+                  "First-pass review: this text contains additional percentages; confirm that every calculator mechanic is represented."
+                ]
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Heavy Attack DMG",
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 7.5
+                  }
+                ],
+                "confidence": "review",
+                "warnings": [
+                  "First-pass review: this text contains additional percentages; confirm that every calculator mechanic is represented."
+                ]
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Heavy Attack DMG",
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 8.75
+                  }
+                ],
+                "confidence": "review",
+                "warnings": [
+                  "First-pass review: this text contains additional percentages; confirm that every calculator mechanic is represented."
+                ]
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Heavy Attack DMG",
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 36
+                  }
+                ],
+                "confidence": "review",
+                "warnings": [
+                  "First-pass review: this text contains additional percentages; confirm that every calculator mechanic is represented."
+                ]
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

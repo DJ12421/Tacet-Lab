@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000183",
+  "entityName": "Ironhoof",
+  "sourceFingerprint": "c6e9574588c6f776dc0ceb5c54ee9f66399de5bf21c2f0871dffdbe7cc394d6b",
+  "reviewedAt": "2026-08-26T11:44:25.089Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "125ff25b7c49c416361e9ce918eb28b2b60b8a7caed30edb833d35532922e028",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000183:skill",
+            "name": "Ironhoof - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into an Ironhoof to charge at enemies, dealing 29.80% Fusion DMG. At the end of the charge, unleash a goring attack that deals 7.45% Fusion DMG 3 times and 96.85% Fusion DMG once.\nCD: 15s.",
+              "Transform into an Ironhoof to charge at enemies, dealing 35.76% Fusion DMG. At the end of the charge, unleash a goring attack that deals 8.94% Fusion DMG 3 times and 116.22% Fusion DMG once.\nCD: 15s.",
+              "Transform into an Ironhoof to charge at enemies, dealing 41.72% Fusion DMG. At the end of the charge, unleash a goring attack that deals 10.43% Fusion DMG 3 times and 135.59% Fusion DMG once.\nCD: 15s.",
+              "Transform into an Ironhoof to charge at enemies, dealing 47.68% Fusion DMG. At the end of the charge, unleash a goring attack that deals 11.92% Fusion DMG 3 times and 154.96% Fusion DMG once.\nCD: 15s.",
+              "Transform into an Ironhoof to charge at enemies, dealing 53.64% Fusion DMG. At the end of the charge, unleash a goring attack that deals 13.41% Fusion DMG 3 times and 174.33% Fusion DMG once.\nCD: 15s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.298,
+                0.0745,
+                0.9684999999999999
+              ],
+              [
+                0.3576,
+                0.0894,
+                1.1622
+              ],
+              [
+                0.4172,
+                0.1043,
+                1.3559
+              ],
+              [
+                0.4768,
+                0.1192,
+                1.5496
+              ],
+              [
+                0.5364,
+                0.1341,
+                1.7433
+              ]
+            ],
+            "count": 3,
+            "sourceText": "Transform into an Ironhoof to charge at enemies, dealing 29.80% Fusion DMG. At the end of the charge, unleash a goring attack that deals 7.45% Fusion DMG 3 times and 96.85% Fusion DMG once.\nCD: 15s. · Transform into an Ironhoof to charge at enemies, dealing 35.76% Fusion DMG. At the end of the charge, unleash a goring attack that deals 8.94% Fusion DMG 3 times and 116.22% Fusion DMG once.\nCD: 15s. · Transform into an Ironhoof to charge at enemies, dealing 41.72% Fusion DMG. At the end of the charge, unleash a goring attack that deals 10.43% Fusion DMG 3 times and 135.59% Fusion DMG once.\nCD: 15s. · Transform into an Ironhoof to charge at enemies, dealing 47.68% Fusion DMG. At the end of the charge, unleash a goring attack that deals 11.92% Fusion DMG 3 times and 154.96% Fusion DMG once.\nCD: 15s. · Transform into an Ironhoof to charge at enemies, dealing 53.64% Fusion DMG. At the end of the charge, unleash a goring attack that deals 13.41% Fusion DMG 3 times and 174.33% Fusion DMG once.\nCD: 15s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

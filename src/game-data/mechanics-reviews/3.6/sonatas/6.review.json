@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "sonata",
+  "entityId": "6",
+  "entityName": "Havoc Eclipse",
+  "sourceFingerprint": "3df3b8bd31bff01be5ff8ddd02e943a2bc2411b78f47e079d2094e3897600ab8",
+  "reviewedAt": "2026-08-26T11:44:24.702Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "bd24395409057ff6f06a1a08e93dfcdf74355d240644e44b72720cfc7a2c216a",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:6:2:0",
+            "sourceName": "Havoc Eclipse",
+            "text": "Havoc DMG + 10%.",
+            "refinementTexts": [
+              "Havoc DMG + 10%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:6:5:0",
+            "sourceName": "Havoc Eclipse",
+            "text": "Havoc DMG + 7.5% after releasing Basic Attack or Heavy Attack. This effect stacks up to 4 times, each stack lasts 15s.",
+            "refinementTexts": [
+              "Havoc DMG + 7.5% after releasing Basic Attack or Heavy Attack. This effect stacks up to 4 times, each stack lasts 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 4
+              },
+              "modifiers": [],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

@@ -1,0 +1,256 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21010015",
+  "entityName": "Lustrous Razor",
+  "sourceFingerprint": "e97226eb3fc47305f2e3fed797a0fa0409ab7090b4e627e83f441c452e0d86e8",
+  "reviewedAt": "2026-08-26T11:44:23.817Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "47698bc5bcb4b5e6c602c3ad0acbe1f4805bdc76729750dd047e6c2124db8a31",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21010015:effect:0",
+            "sourceName": "Stormy Resolution",
+            "text": "Increases Energy Regen by 12.8%.",
+            "refinementTexts": [
+              "Increases Energy Regen by 12.8%.",
+              "Increases Energy Regen by 16%.",
+              "Increases Energy Regen by 19.2%.",
+              "Increases Energy Regen by 22.4%.",
+              "Increases Energy Regen by 25.6%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "energyRegen",
+                  "operation": "addPercent",
+                  "value": 12.8
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "energyRegen",
+                    "operation": "addPercent",
+                    "value": 12.8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "energyRegen",
+                    "operation": "addPercent",
+                    "value": 16
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "energyRegen",
+                    "operation": "addPercent",
+                    "value": 19.2
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "energyRegen",
+                    "operation": "addPercent",
+                    "value": 22.4
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "energyRegen",
+                    "operation": "addPercent",
+                    "value": 25.6
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21010015:effect:1",
+            "sourceName": "Stormy Resolution",
+            "text": "When Resonance Skill is cast, Resonance Liberation DMG Bonus is increased by 7%, stacking up to 3 times. This effect lasts for 12s.",
+            "refinementTexts": [
+              "When Resonance Skill is cast, Resonance Liberation DMG Bonus is increased by 7%, stacking up to 3 times. This effect lasts for 12s.",
+              "When Resonance Skill is cast, Resonance Liberation DMG Bonus is increased by 8.75%, stacking up to 3 times. This effect lasts for 12s.",
+              "When Resonance Skill is cast, Resonance Liberation DMG Bonus is increased by 10.5%, stacking up to 3 times. This effect lasts for 12s.",
+              "When Resonance Skill is cast, Resonance Liberation DMG Bonus is increased by 12.25%, stacking up to 3 times. This effect lasts for 12s.",
+              "When Resonance Skill is cast, Resonance Liberation DMG Bonus is increased by 14%, stacking up to 3 times. This effect lasts for 12s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "trigger": "Resonance Skill",
+              "durationSeconds": 12,
+              "modifiers": [
+                {
+                  "stat": "liberationDamage",
+                  "operation": "addPercent",
+                  "value": 7
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 12,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 7
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 12,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 8.75
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 12,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 10.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 12,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 12.25
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 12,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 14
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

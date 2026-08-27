@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000104",
+  "entityName": "Capitaneus",
+  "sourceFingerprint": "d7fab7e34cba11f5698db2b6ab8d5af3b186ad7a4bcf35a3fea103553c260a5e",
+  "reviewedAt": "2026-08-26T11:44:24.993Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "867de8f88766cc6542018f1978cff4d7d9b2aaa5e2e27ac54d7fcc5b91b047c4",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000104:skill",
+            "name": "Capitaneus - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Capitaneus to jump up and smash enemies, dealing 66.00% Spectro DMG. This attack generates 4 extra Merciless Judgements, each dealing 33.00% Spectro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Spectro DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s.",
+              "Summon a Capitaneus to jump up and smash enemies, dealing 79.20% Spectro DMG. This attack generates 4 extra Merciless Judgements, each dealing 39.60% Spectro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Spectro DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s.",
+              "Summon a Capitaneus to jump up and smash enemies, dealing 92.40% Spectro DMG. This attack generates 4 extra Merciless Judgements, each dealing 46.20% Spectro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Spectro DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s.",
+              "Summon a Capitaneus to jump up and smash enemies, dealing 105.60% Spectro DMG. This attack generates 4 extra Merciless Judgements, each dealing 52.80% Spectro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Spectro DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s.",
+              "Summon a Capitaneus to jump up and smash enemies, dealing 118.80% Spectro DMG. This attack generates 4 extra Merciless Judgements, each dealing 59.40% Spectro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Spectro DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.66,
+                0.33,
+                0.12,
+                0.12
+              ],
+              [
+                0.792,
+                0.396,
+                0.12,
+                0.12
+              ],
+              [
+                0.924,
+                0.462,
+                0.12,
+                0.12
+              ],
+              [
+                1.056,
+                0.528,
+                0.12,
+                0.12
+              ],
+              [
+                1.188,
+                0.594,
+                0.12,
+                0.12
+              ]
+            ],
+            "count": 4,
+            "sourceText": "Summon a Capitaneus to jump up and smash enemies, dealing 66.00% Spectro DMG. This attack generates 4 extra Merciless Judgements, each dealing 33.00% Spectro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Spectro DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s. · Summon a Capitaneus to jump up and smash enemies, dealing 79.20% Spectro DMG. This attack generates 4 extra Merciless Judgements, each dealing 39.60% Spectro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Spectro DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s. · Summon a Capitaneus to jump up and smash enemies, dealing 92.40% Spectro DMG. This attack generates 4 extra Merciless Judgements, each dealing 46.20% Spectro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Spectro DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s. · Summon a Capitaneus to jump up and smash enemies, dealing 105.60% Spectro DMG. This attack generates 4 extra Merciless Judgements, each dealing 52.80% Spectro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Spectro DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s. · Summon a Capitaneus to jump up and smash enemies, dealing 118.80% Spectro DMG. This attack generates 4 extra Merciless Judgements, each dealing 59.40% Spectro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Spectro DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "af1b5d0ebba05fea559029076fa9e23b577a513d458d89fe95363374da22bc4d",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000104:effect:0",
+            "sourceName": "Capitaneus",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in their main slot gains 12.00% Spectro DMG Bonus and 12.00% Heavy Attack DMG Bonus.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "Spectro",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

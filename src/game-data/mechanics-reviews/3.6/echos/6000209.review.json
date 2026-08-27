@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000209",
+  "entityName": "Kernel Puppet: Reflection",
+  "sourceFingerprint": "4703162b1bd4cbe13068cc56ce7ac9973a321f33d7aeb83b6131c82308380a59",
+  "reviewedAt": "2026-08-26T11:44:25.141Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "7451f843654d4238997133f4690664e213867db19592f14c0ad87cb6660daae0",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000209:skill",
+            "name": "Kernel Puppet: Reflection - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Use Echo Skill to summon Kernel Puppet: Reflection to attack enemies, dealing 36.00% Electro DMG.\nCD: 8s",
+              "Use Echo Skill to summon Kernel Puppet: Reflection to attack enemies, dealing 43.20% Electro DMG.\nCD: 8s",
+              "Use Echo Skill to summon Kernel Puppet: Reflection to attack enemies, dealing 50.40% Electro DMG.\nCD: 8s",
+              "Use Echo Skill to summon Kernel Puppet: Reflection to attack enemies, dealing 57.60% Electro DMG.\nCD: 8s",
+              "Use Echo Skill to summon Kernel Puppet: Reflection to attack enemies, dealing 64.80% Electro DMG.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.36
+              ],
+              [
+                0.43200000000000005
+              ],
+              [
+                0.504
+              ],
+              [
+                0.5760000000000001
+              ],
+              [
+                0.648
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Use Echo Skill to summon Kernel Puppet: Reflection to attack enemies, dealing 36.00% Electro DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Reflection to attack enemies, dealing 43.20% Electro DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Reflection to attack enemies, dealing 50.40% Electro DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Reflection to attack enemies, dealing 57.60% Electro DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Reflection to attack enemies, dealing 64.80% Electro DMG.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

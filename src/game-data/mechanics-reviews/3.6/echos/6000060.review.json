@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000060",
+  "entityName": "Fallacy of No Return",
+  "sourceFingerprint": "f4ad4f2af2cd5b6ce87c7ecc6772fe9599f632ea519b3423da4e13f7b7d4a074",
+  "reviewedAt": "2026-08-26T11:44:24.903Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "b557c0381506dacbc87c5fbe690a7ef27faf7f9421548597e43b4d35d87663d2",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000060:skill",
+            "name": "Fallacy of No Return - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "hp",
+            "expressions": [
+              "Activate the Echo Skill to summon a fraction of the Fallacy of No Return's power and deal a blast to the surrounding area, inflicting Spectro DMG equal to 9.91% of max HP, after which the Resonator gains 10% bonus Energy Regen and all team members 10% bonus ATK for 20s.\nHold Echo Skill to unleash a series of flurry assaults at the cost of STA, each dealing Spectro DMG equal to 0.99% of max HP; Release to end the assail in a powerful blow, dealing Spectro DMG equal to 12.39% of max HP.\nCD: 20s",
+              "Activate the Echo Skill to summon a fraction of the Fallacy of No Return's power and deal a blast to the surrounding area, inflicting Spectro DMG equal to 11.40% of max HP, after which the Resonator gains 10% bonus Energy Regen and all team members 10% bonus ATK for 20s.\nHold Echo Skill to unleash a series of flurry assaults at the cost of STA, each dealing Spectro DMG equal to 1.14% of max HP; Release to end the assail in a powerful blow, dealing Spectro DMG equal to 14.25% of max HP.\nCD: 20s",
+              "Activate the Echo Skill to summon a fraction of the Fallacy of No Return's power and deal a blast to the surrounding area, inflicting Spectro DMG equal to 12.88% of max HP, after which the Resonator gains 10% bonus Energy Regen and all team members 10% bonus ATK for 20s.\nHold Echo Skill to unleash a series of flurry assaults at the cost of STA, each dealing Spectro DMG equal to 1.29% of max HP; Release to end the assail in a powerful blow, dealing Spectro DMG equal to 16.11% of max HP.\nCD: 20s",
+              "Activate the Echo Skill to summon a fraction of the Fallacy of No Return's power and deal a blast to the surrounding area, inflicting Spectro DMG equal to 14.37% of max HP, after which the Resonator gains 10% bonus Energy Regen and all team members 10% bonus ATK for 20s.\nHold Echo Skill to unleash a series of flurry assaults at the cost of STA, each dealing Spectro DMG equal to 1.44% of max HP; Release to end the assail in a powerful blow, dealing Spectro DMG equal to 17.97% of max HP.\nCD: 20s",
+              "Activate the Echo Skill to summon a fraction of the Fallacy of No Return's power and deal a blast to the surrounding area, inflicting Spectro DMG equal to 15.86% of max HP, after which the Resonator gains 10% bonus Energy Regen and all team members 10% bonus ATK for 20s.\nHold Echo Skill to unleash a series of flurry assaults at the cost of STA, each dealing Spectro DMG equal to 1.58% of max HP; Release to end the assail in a powerful blow, dealing Spectro DMG equal to 19.82% of max HP.\nCD: 20s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.09910000000000001,
+                0.1,
+                0.1,
+                0.009899999999999999,
+                0.12390000000000001
+              ],
+              [
+                0.114,
+                0.1,
+                0.1,
+                0.011399999999999999,
+                0.1425
+              ],
+              [
+                0.1288,
+                0.1,
+                0.1,
+                0.0129,
+                0.1611
+              ],
+              [
+                0.1437,
+                0.1,
+                0.1,
+                0.0144,
+                0.1797
+              ],
+              [
+                0.1586,
+                0.1,
+                0.1,
+                0.0158,
+                0.19820000000000002
+              ]
+            ],
+            "count": 5,
+            "sourceText": "Activate the Echo Skill to summon a fraction of the Fallacy of No Return's power and deal a blast to the surrounding area, inflicting Spectro DMG equal to 9.91% of max HP, after which the Resonator gains 10% bonus Energy Regen and all team members 10% bonus ATK for 20s.\nHold Echo Skill to unleash a series of flurry assaults at the cost of STA, each dealing Spectro DMG equal to 0.99% of max HP; Release to end the assail in a powerful blow, dealing Spectro DMG equal to 12.39% of max HP.\nCD: 20s · Activate the Echo Skill to summon a fraction of the Fallacy of No Return's power and deal a blast to the surrounding area, inflicting Spectro DMG equal to 11.40% of max HP, after which the Resonator gains 10% bonus Energy Regen and all team members 10% bonus ATK for 20s.\nHold Echo Skill to unleash a series of flurry assaults at the cost of STA, each dealing Spectro DMG equal to 1.14% of max HP; Release to end the assail in a powerful blow, dealing Spectro DMG equal to 14.25% of max HP.\nCD: 20s · Activate the Echo Skill to summon a fraction of the Fallacy of No Return's power and deal a blast to the surrounding area, inflicting Spectro DMG equal to 12.88% of max HP, after which the Resonator gains 10% bonus Energy Regen and all team members 10% bonus ATK for 20s.\nHold Echo Skill to unleash a series of flurry assaults at the cost of STA, each dealing Spectro DMG equal to 1.29% of max HP; Release to end the assail in a powerful blow, dealing Spectro DMG equal to 16.11% of max HP.\nCD: 20s · Activate the Echo Skill to summon a fraction of the Fallacy of No Return's power and deal a blast to the surrounding area, inflicting Spectro DMG equal to 14.37% of max HP, after which the Resonator gains 10% bonus Energy Regen and all team members 10% bonus ATK for 20s.\nHold Echo Skill to unleash a series of flurry assaults at the cost of STA, each dealing Spectro DMG equal to 1.44% of max HP; Release to end the assail in a powerful blow, dealing Spectro DMG equal to 17.97% of max HP.\nCD: 20s · Activate the Echo Skill to summon a fraction of the Fallacy of No Return's power and deal a blast to the surrounding area, inflicting Spectro DMG equal to 15.86% of max HP, after which the Resonator gains 10% bonus Energy Regen and all team members 10% bonus ATK for 20s.\nHold Echo Skill to unleash a series of flurry assaults at the cost of STA, each dealing Spectro DMG equal to 1.58% of max HP; Release to end the assail in a powerful blow, dealing Spectro DMG equal to 19.82% of max HP.\nCD: 20s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "87c1749dd4113f3f955b287c306bcbb3ab51be7441eca6a9c380f38649966eeb",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000060:effect:0",
+            "sourceName": "Fallacy of No Return",
+            "sourceType": "echo",
+            "text": "Activate the Echo Skill to summon a fraction of the Fallacy of No Return's power and deal a blast to the surrounding area, inflicting Spectro DMG equal to 9.91% of max HP, after which the Resonator gains 10% bonus Energy Regen and all team members 10% bonus ATK for 20s.",
+            "parsed": {
+              "scope": "team",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 20,
+              "modifiers": [],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

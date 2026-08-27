@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21010053",
+  "entityName": "Guardian Broadblade",
+  "sourceFingerprint": "b3551822c443996ffaeb116fbbe59fbbbc821a86736dafb685ec2d4f00e59398",
+  "reviewedAt": "2026-08-26T11:44:23.882Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "94b41d745e04e0f3ce942f25f5e34568fa9cf87ace9d468d34fbdeb8126db7d9",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21010053:effect:0",
+            "sourceName": "Consensus",
+            "text": "Increases Basic Attack DMG Bonus and Heavy Attack DMG Bonus by 12%.",
+            "refinementTexts": [
+              "Increases Basic Attack DMG Bonus and Heavy Attack DMG Bonus by 12%.",
+              "Increases Basic Attack DMG Bonus and Heavy Attack DMG Bonus by 15%.",
+              "Increases Basic Attack DMG Bonus and Heavy Attack DMG Bonus by 18%.",
+              "Increases Basic Attack DMG Bonus and Heavy Attack DMG Bonus by 21%.",
+              "Increases Basic Attack DMG Bonus and Heavy Attack DMG Bonus by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "basicDamage",
+                  "operation": "addPercent",
+                  "value": 12
+                },
+                {
+                  "stat": "heavyDamage",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 12
+                  },
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 15
+                  },
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 18
+                  },
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 21
+                  },
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 24
+                  },
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

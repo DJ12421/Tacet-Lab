@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000076",
+  "entityName": "Abyssal Patricius",
+  "sourceFingerprint": "3ff4de13543286952c86d76e3099acc7f898a835d25710d9d22b04cc235b09ea",
+  "reviewedAt": "2026-08-26T11:44:24.935Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "2443fa4fc451f7edbb4026cad23029baed5566955574891cbf670c5a8ec129ab",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000076:skill",
+            "name": "Abyssal Patricius - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Abyssal Patricius and charge forward to attack enemies, dealing 149.00% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus.\nCD: 15s.",
+              "Transform into Abyssal Patricius and charge forward to attack enemies, dealing 178.80% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus.\nCD: 15s.",
+              "Transform into Abyssal Patricius and charge forward to attack enemies, dealing 208.60% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus.\nCD: 15s.",
+              "Transform into Abyssal Patricius and charge forward to attack enemies, dealing 238.40% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus.\nCD: 15s.",
+              "Transform into Abyssal Patricius and charge forward to attack enemies, dealing 268.20% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus.\nCD: 15s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.49,
+                0.12
+              ],
+              [
+                1.788,
+                0.12
+              ],
+              [
+                2.086,
+                0.12
+              ],
+              [
+                2.384,
+                0.12
+              ],
+              [
+                2.682,
+                0.12
+              ]
+            ],
+            "count": 2,
+            "sourceText": "Transform into Abyssal Patricius and charge forward to attack enemies, dealing 149.00% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus.\nCD: 15s. · Transform into Abyssal Patricius and charge forward to attack enemies, dealing 178.80% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus.\nCD: 15s. · Transform into Abyssal Patricius and charge forward to attack enemies, dealing 208.60% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus.\nCD: 15s. · Transform into Abyssal Patricius and charge forward to attack enemies, dealing 238.40% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus.\nCD: 15s. · Transform into Abyssal Patricius and charge forward to attack enemies, dealing 268.20% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus.\nCD: 15s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "15b1f1754711ed0b3513741829284c50aa28e847a6ed79df98189249792d64d5",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000076:effect:0",
+            "sourceName": "Abyssal Patricius",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "Glacio",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

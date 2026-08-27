@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000116",
+  "entityName": "Reminiscence: Fenrico",
+  "sourceFingerprint": "57713b06e4fbe434fa7e9248e11b9d87544b0b48623d96592d3889d620462d20",
+  "reviewedAt": "2026-08-26T11:44:25.026Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "b3a9471286caa31dc676136d643ca190ec0efa61558d164dbdedde34c8de369f",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000116:skill",
+            "name": "Reminiscence: Fenrico - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon the Talons of Decree to attack nearby enemies, dealing 152.00% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s.",
+              "Summon the Talons of Decree to attack nearby enemies, dealing 182.40% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s.",
+              "Summon the Talons of Decree to attack nearby enemies, dealing 212.80% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s.",
+              "Summon the Talons of Decree to attack nearby enemies, dealing 243.20% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s.",
+              "Summon the Talons of Decree to attack nearby enemies, dealing 273.60% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.52,
+                0.12,
+                0.12
+              ],
+              [
+                1.824,
+                0.12,
+                0.12
+              ],
+              [
+                2.128,
+                0.12,
+                0.12
+              ],
+              [
+                2.432,
+                0.12,
+                0.12
+              ],
+              [
+                2.736,
+                0.12,
+                0.12
+              ]
+            ],
+            "count": 3,
+            "sourceText": "Summon the Talons of Decree to attack nearby enemies, dealing 152.00% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s. · Summon the Talons of Decree to attack nearby enemies, dealing 182.40% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s. · Summon the Talons of Decree to attack nearby enemies, dealing 212.80% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s. · Summon the Talons of Decree to attack nearby enemies, dealing 243.20% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s. · Summon the Talons of Decree to attack nearby enemies, dealing 273.60% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "bdcdcab29488a4eb00ecd05e2ee1c5f0574a4223bfea65ff15bddd57d48f6dae",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000116:effect:0",
+            "sourceName": "Reminiscence: Fenrico",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

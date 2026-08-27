@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000092",
+  "entityName": "Nightmare: Mourning Aix",
+  "sourceFingerprint": "d648548acffbf5bf432e6c9be81c96b894ca2c6947fc1d45290acfc26f76019a",
+  "reviewedAt": "2026-08-26T11:44:24.969Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "e788c7e7f831cf6c01f24d68df29f83b53a7fbc6cdfc5fd1ee53a9e05af54818",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000092:skill",
+            "name": "Nightmare: Mourning Aix - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Nightmare: Mourning Aix to attack surrounding enemies, dealing 152.00% Spectro DMG. DMG dealt to enemies inflicted by Spectro Frazzle is increased by 100.00%.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Spectro DMG Bonus.\nCD: 20s.",
+              "Summon a Nightmare: Mourning Aix to attack surrounding enemies, dealing 182.40% Spectro DMG. DMG dealt to enemies inflicted by Spectro Frazzle is increased by 100.00%.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Spectro DMG Bonus.\nCD: 20s.",
+              "Summon a Nightmare: Mourning Aix to attack surrounding enemies, dealing 212.80% Spectro DMG. DMG dealt to enemies inflicted by Spectro Frazzle is increased by 100.00%.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Spectro DMG Bonus.\nCD: 20s.",
+              "Summon a Nightmare: Mourning Aix to attack surrounding enemies, dealing 243.20% Spectro DMG. DMG dealt to enemies inflicted by Spectro Frazzle is increased by 100.00%.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Spectro DMG Bonus.\nCD: 20s.",
+              "Summon a Nightmare: Mourning Aix to attack surrounding enemies, dealing 273.60% Spectro DMG. DMG dealt to enemies inflicted by Spectro Frazzle is increased by 100.00%.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Spectro DMG Bonus.\nCD: 20s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.52,
+                1,
+                0.12
+              ],
+              [
+                1.824,
+                1,
+                0.12
+              ],
+              [
+                2.128,
+                1,
+                0.12
+              ],
+              [
+                2.432,
+                1,
+                0.12
+              ],
+              [
+                2.736,
+                1,
+                0.12
+              ]
+            ],
+            "count": 3,
+            "sourceText": "Summon a Nightmare: Mourning Aix to attack surrounding enemies, dealing 152.00% Spectro DMG. DMG dealt to enemies inflicted by Spectro Frazzle is increased by 100.00%.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Spectro DMG Bonus.\nCD: 20s. · Summon a Nightmare: Mourning Aix to attack surrounding enemies, dealing 182.40% Spectro DMG. DMG dealt to enemies inflicted by Spectro Frazzle is increased by 100.00%.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Spectro DMG Bonus.\nCD: 20s. · Summon a Nightmare: Mourning Aix to attack surrounding enemies, dealing 212.80% Spectro DMG. DMG dealt to enemies inflicted by Spectro Frazzle is increased by 100.00%.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Spectro DMG Bonus.\nCD: 20s. · Summon a Nightmare: Mourning Aix to attack surrounding enemies, dealing 243.20% Spectro DMG. DMG dealt to enemies inflicted by Spectro Frazzle is increased by 100.00%.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Spectro DMG Bonus.\nCD: 20s. · Summon a Nightmare: Mourning Aix to attack surrounding enemies, dealing 273.60% Spectro DMG. DMG dealt to enemies inflicted by Spectro Frazzle is increased by 100.00%.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Spectro DMG Bonus.\nCD: 20s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "633788ebe85eddebc12b4ebe11416a481b4c41839d332799a5684814b68a0f42",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000092:effect:0",
+            "sourceName": "Nightmare: Mourning Aix",
+            "sourceType": "echo",
+            "text": "DMG dealt to enemies inflicted by Spectro Frazzle is increased by 100.00%.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 100
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          },
+          {
+            "id": "echo:6000092:effect:1",
+            "sourceName": "Nightmare: Mourning Aix",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in their main slot gains 12.00% Spectro DMG Bonus.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "Spectro",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

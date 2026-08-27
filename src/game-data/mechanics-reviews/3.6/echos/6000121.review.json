@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000121",
+  "entityName": "The False Sovereign",
+  "sourceFingerprint": "05ef06e3716a52ac4c4dfd464751b4607f370266d649d817b5dabd5db9f79f0a",
+  "reviewedAt": "2026-08-26T11:44:25.037Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "5016282ff9b40974023172f90b80afd1054487171a9584215bfdf98c919b4a1b",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000121:skill",
+            "name": "The False Sovereign - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into the False Sovereign and dash forward in a spinning strike, dealing 30.75% Electro DMG 4 times.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Electro DMG Bonus and 12.00% Heavy Attack DMG Bonus. Upon casting Intro Skill, the False Sovereign is also summoned to deal 225.00% Electro DMG.\nStart with 2 charges. Gain 1 charge every 8s, up to 2 charges.\nCD: 8s",
+              "Transform into the False Sovereign and dash forward in a spinning strike, dealing 36.90% Electro DMG 4 times.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Electro DMG Bonus and 12.00% Heavy Attack DMG Bonus. Upon casting Intro Skill, the False Sovereign is also summoned to deal 270.00% Electro DMG.\nStart with 2 charges. Gain 1 charge every 8s, up to 2 charges.\nCD: 8s",
+              "Transform into the False Sovereign and dash forward in a spinning strike, dealing 43.05% Electro DMG 4 times.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Electro DMG Bonus and 12.00% Heavy Attack DMG Bonus. Upon casting Intro Skill, the False Sovereign is also summoned to deal 315.00% Electro DMG.\nStart with 2 charges. Gain 1 charge every 8s, up to 2 charges.\nCD: 8s",
+              "Transform into the False Sovereign and dash forward in a spinning strike, dealing 49.20% Electro DMG 4 times.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Electro DMG Bonus and 12.00% Heavy Attack DMG Bonus. Upon casting Intro Skill, the False Sovereign is also summoned to deal 360.00% Electro DMG.\nStart with 2 charges. Gain 1 charge every 8s, up to 2 charges.\nCD: 8s",
+              "Transform into the False Sovereign and dash forward in a spinning strike, dealing 55.35% Electro DMG 4 times.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Electro DMG Bonus and 12.00% Heavy Attack DMG Bonus. Upon casting Intro Skill, the False Sovereign is also summoned to deal 405.00% Electro DMG.\nStart with 2 charges. Gain 1 charge every 8s, up to 2 charges.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.3075,
+                0.12,
+                0.12,
+                2.25
+              ],
+              [
+                0.369,
+                0.12,
+                0.12,
+                2.7
+              ],
+              [
+                0.4305,
+                0.12,
+                0.12,
+                3.15
+              ],
+              [
+                0.49200000000000005,
+                0.12,
+                0.12,
+                3.6
+              ],
+              [
+                0.5535,
+                0.12,
+                0.12,
+                4.05
+              ]
+            ],
+            "count": 4,
+            "sourceText": "Transform into the False Sovereign and dash forward in a spinning strike, dealing 30.75% Electro DMG 4 times.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Electro DMG Bonus and 12.00% Heavy Attack DMG Bonus. Upon casting Intro Skill, the False Sovereign is also summoned to deal 225.00% Electro DMG.\nStart with 2 charges. Gain 1 charge every 8s, up to 2 charges.\nCD: 8s · Transform into the False Sovereign and dash forward in a spinning strike, dealing 36.90% Electro DMG 4 times.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Electro DMG Bonus and 12.00% Heavy Attack DMG Bonus. Upon casting Intro Skill, the False Sovereign is also summoned to deal 270.00% Electro DMG.\nStart with 2 charges. Gain 1 charge every 8s, up to 2 charges.\nCD: 8s · Transform into the False Sovereign and dash forward in a spinning strike, dealing 43.05% Electro DMG 4 times.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Electro DMG Bonus and 12.00% Heavy Attack DMG Bonus. Upon casting Intro Skill, the False Sovereign is also summoned to deal 315.00% Electro DMG.\nStart with 2 charges. Gain 1 charge every 8s, up to 2 charges.\nCD: 8s · Transform into the False Sovereign and dash forward in a spinning strike, dealing 49.20% Electro DMG 4 times.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Electro DMG Bonus and 12.00% Heavy Attack DMG Bonus. Upon casting Intro Skill, the False Sovereign is also summoned to deal 360.00% Electro DMG.\nStart with 2 charges. Gain 1 charge every 8s, up to 2 charges.\nCD: 8s · Transform into the False Sovereign and dash forward in a spinning strike, dealing 55.35% Electro DMG 4 times.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Electro DMG Bonus and 12.00% Heavy Attack DMG Bonus. Upon casting Intro Skill, the False Sovereign is also summoned to deal 405.00% Electro DMG.\nStart with 2 charges. Gain 1 charge every 8s, up to 2 charges.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "d99425676555d9ff42f267b7b4868ba72d1f2bccbd73554c3110b6ba7e62c1cc",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000121:effect:0",
+            "sourceName": "The False Sovereign",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in the main slot gains 12.00% Electro DMG Bonus and 12.00% Heavy Attack DMG Bonus.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "Electro",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          },
+          {
+            "id": "echo:6000121:effect:1",
+            "sourceName": "The False Sovereign",
+            "sourceType": "echo",
+            "text": "Gain 1 charge every 8s, up to 2 charges.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

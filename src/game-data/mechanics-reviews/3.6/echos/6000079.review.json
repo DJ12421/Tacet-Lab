@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000079",
+  "entityName": "Chop Chop",
+  "sourceFingerprint": "9af03204084ee773af183ca7e9202de20ec0f8f8a54c83b37f951ae68fd4ebe7",
+  "reviewedAt": "2026-08-26T11:44:24.941Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "f26ea28b42eda83620c62a1b0c411441e89d44e59ae288cd200be3bb5f0d12fd",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000079:skill",
+            "name": "Chop Chop - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Chop Chop to perform a series of consecutive attacks. The first 6 strikes each deal 10.70% Fusion DMG and finishing strike deals 42.80% Fusion DMG.\nCD: 15s.",
+              "Summon a Chop Chop to perform a series of consecutive attacks. The first 6 strikes each deal 12.84% Fusion DMG and finishing strike deals 51.36% Fusion DMG.\nCD: 15s.",
+              "Summon a Chop Chop to perform a series of consecutive attacks. The first 6 strikes each deal 14.98% Fusion DMG and finishing strike deals 59.92% Fusion DMG.\nCD: 15s.",
+              "Summon a Chop Chop to perform a series of consecutive attacks. The first 6 strikes each deal 17.12% Fusion DMG and finishing strike deals 68.48% Fusion DMG.\nCD: 15s.",
+              "Summon a Chop Chop to perform a series of consecutive attacks. The first 6 strikes each deal 19.26% Fusion DMG and finishing strike deals 77.04% Fusion DMG.\nCD: 15s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.107,
+                0.428
+              ],
+              [
+                0.1284,
+                0.5136
+              ],
+              [
+                0.14980000000000002,
+                0.5992000000000001
+              ],
+              [
+                0.17120000000000002,
+                0.6848000000000001
+              ],
+              [
+                0.19260000000000002,
+                0.7704000000000001
+              ]
+            ],
+            "count": 2,
+            "sourceText": "Summon a Chop Chop to perform a series of consecutive attacks. The first 6 strikes each deal 10.70% Fusion DMG and finishing strike deals 42.80% Fusion DMG.\nCD: 15s. · Summon a Chop Chop to perform a series of consecutive attacks. The first 6 strikes each deal 12.84% Fusion DMG and finishing strike deals 51.36% Fusion DMG.\nCD: 15s. · Summon a Chop Chop to perform a series of consecutive attacks. The first 6 strikes each deal 14.98% Fusion DMG and finishing strike deals 59.92% Fusion DMG.\nCD: 15s. · Summon a Chop Chop to perform a series of consecutive attacks. The first 6 strikes each deal 17.12% Fusion DMG and finishing strike deals 68.48% Fusion DMG.\nCD: 15s. · Summon a Chop Chop to perform a series of consecutive attacks. The first 6 strikes each deal 19.26% Fusion DMG and finishing strike deals 77.04% Fusion DMG.\nCD: 15s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

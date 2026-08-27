@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000175",
+  "entityName": "Flora Drone",
+  "sourceFingerprint": "a7967a8a22a79de2b7a7424787b062066fbf88683d82c0293579e353c1f9de3b",
+  "reviewedAt": "2026-08-26T11:44:25.071Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "ad54f105d0b53170ec0299177001bac46df90cfb43186205323d83a760607a90",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000175:skill",
+            "name": "Flora Drone - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Flora Drone, dealing 36.00% Aero DMG to enemies and healing Resonators within range by 2.00% of their Max HP plus an additional 160 HP.\nCD: 8s",
+              "Summon a Flora Drone, dealing 43.20% Aero DMG to enemies and healing Resonators within range by 2.40% of their Max HP plus an additional 160 HP.\nCD: 8s",
+              "Summon a Flora Drone, dealing 50.40% Aero DMG to enemies and healing Resonators within range by 2.80% of their Max HP plus an additional 160 HP.\nCD: 8s",
+              "Summon a Flora Drone, dealing 57.60% Aero DMG to enemies and healing Resonators within range by 3.20% of their Max HP plus an additional 160 HP.\nCD: 8s",
+              "Summon a Flora Drone, dealing 64.80% Aero DMG to enemies and healing Resonators within range by 3.60% of their Max HP plus an additional 160 HP.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.36,
+                0.02
+              ],
+              [
+                0.43200000000000005,
+                0.024
+              ],
+              [
+                0.504,
+                0.027999999999999997
+              ],
+              [
+                0.5760000000000001,
+                0.032
+              ],
+              [
+                0.648,
+                0.036000000000000004
+              ]
+            ],
+            "count": 2,
+            "sourceText": "Summon a Flora Drone, dealing 36.00% Aero DMG to enemies and healing Resonators within range by 2.00% of their Max HP plus an additional 160 HP.\nCD: 8s · Summon a Flora Drone, dealing 43.20% Aero DMG to enemies and healing Resonators within range by 2.40% of their Max HP plus an additional 160 HP.\nCD: 8s · Summon a Flora Drone, dealing 50.40% Aero DMG to enemies and healing Resonators within range by 2.80% of their Max HP plus an additional 160 HP.\nCD: 8s · Summon a Flora Drone, dealing 57.60% Aero DMG to enemies and healing Resonators within range by 3.20% of their Max HP plus an additional 160 HP.\nCD: 8s · Summon a Flora Drone, dealing 64.80% Aero DMG to enemies and healing Resonators within range by 3.60% of their Max HP plus an additional 160 HP.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

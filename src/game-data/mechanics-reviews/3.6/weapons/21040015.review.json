@@ -1,0 +1,350 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21040015",
+  "entityName": "Abyss Surges",
+  "sourceFingerprint": "fc8958dfd204c100a1e2a1cf7bd367f967f24ffc2809bb1ac53813e8bf5d610d",
+  "reviewedAt": "2026-08-26T11:44:24.175Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "625da70688eb72b3b2d8d8af96e4ca5c0aedea6375fcbdb946cbe7a10bb91ae2",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21040015:effect:0",
+            "sourceName": "Stormy Resolution",
+            "text": "Increases Energy Regen by 12.8%.",
+            "refinementTexts": [
+              "Increases Energy Regen by 12.8%.",
+              "Increases Energy Regen by 16%.",
+              "Increases Energy Regen by 19.2%.",
+              "Increases Energy Regen by 22.4%.",
+              "Increases Energy Regen by 25.6%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "energyRegen",
+                  "operation": "addPercent",
+                  "value": 12.8
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "energyRegen",
+                    "operation": "addPercent",
+                    "value": 12.8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "energyRegen",
+                    "operation": "addPercent",
+                    "value": 16
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "energyRegen",
+                    "operation": "addPercent",
+                    "value": 19.2
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "energyRegen",
+                    "operation": "addPercent",
+                    "value": 22.4
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "energyRegen",
+                    "operation": "addPercent",
+                    "value": 25.6
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21040015:effect:1",
+            "sourceName": "Stormy Resolution",
+            "text": "When hitting a target with Resonance Skill, increases Basic Attack DMG Bonus by 10%, lasting for 8s.",
+            "refinementTexts": [
+              "When hitting a target with Resonance Skill, increases Basic Attack DMG Bonus by 10%, lasting for 8s.",
+              "When hitting a target with Resonance Skill, increases Basic Attack DMG Bonus by 12.5%, lasting for 8s.",
+              "When hitting a target with Resonance Skill, increases Basic Attack DMG Bonus by 15%, lasting for 8s.",
+              "When hitting a target with Resonance Skill, increases Basic Attack DMG Bonus by 17.5%, lasting for 8s.",
+              "When hitting a target with Resonance Skill, increases Basic Attack DMG Bonus by 20%, lasting for 8s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 8,
+              "modifiers": [
+                {
+                  "stat": "basicDamage",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 12.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 17.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21040015:effect:2",
+            "sourceName": "Stormy Resolution",
+            "text": "When hitting a target with Basic Attacks, increases Resonance Skill DMG Bonus by 10%, lasting for 8s.",
+            "refinementTexts": [
+              "When hitting a target with Basic Attacks, increases Resonance Skill DMG Bonus by 10%, lasting for 8s.",
+              "When hitting a target with Basic Attacks, increases Resonance Skill DMG Bonus by 12.5%, lasting for 8s.",
+              "When hitting a target with Basic Attacks, increases Resonance Skill DMG Bonus by 15%, lasting for 8s.",
+              "When hitting a target with Basic Attacks, increases Resonance Skill DMG Bonus by 17.5%, lasting for 8s.",
+              "When hitting a target with Basic Attacks, increases Resonance Skill DMG Bonus by 20%, lasting for 8s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 8,
+              "modifiers": [
+                {
+                  "stat": "skillDamage",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 12.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 17.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

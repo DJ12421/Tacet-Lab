@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000217",
+  "entityName": "Myriad Snare: Rustfire Chassis",
+  "sourceFingerprint": "c181357064e18976d9d6a838d521d4d54b5b83a020804ff736b03635b1f0003a",
+  "reviewedAt": "2026-08-26T11:44:25.156Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "136bc50624d59514c99584a76278c9e79b573517a394143900befb204417a8bc",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000217:skill",
+            "name": "Myriad Snare: Rustfire Chassis - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "hp",
+            "expressions": [
+              "Summon Myriad Snare: Rustfire Chassis, dealing Fusion DMG equal to 5.67% of the Max HP on initial impact. During its duration, it repeatedly crushes enemies along its path up to 19 times, dealing Fusion DMG equal to 0.20% of the Max HP each time.\nResonators with this Echo equipped in the main slot gain 12.00% Fusion DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s",
+              "Summon Myriad Snare: Rustfire Chassis, dealing Fusion DMG equal to 6.80% of the Max HP on initial impact. During its duration, it repeatedly crushes enemies along its path up to 19 times, dealing Fusion DMG equal to 0.24% of the Max HP each time.\nResonators with this Echo equipped in the main slot gain 12.00% Fusion DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s",
+              "Summon Myriad Snare: Rustfire Chassis, dealing Fusion DMG equal to 7.93% of the Max HP on initial impact. During its duration, it repeatedly crushes enemies along its path up to 19 times, dealing Fusion DMG equal to 0.29% of the Max HP each time.\nResonators with this Echo equipped in the main slot gain 12.00% Fusion DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s",
+              "Summon Myriad Snare: Rustfire Chassis, dealing Fusion DMG equal to 9.07% of the Max HP on initial impact. During its duration, it repeatedly crushes enemies along its path up to 19 times, dealing Fusion DMG equal to 0.33% of the Max HP each time.\nResonators with this Echo equipped in the main slot gain 12.00% Fusion DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s",
+              "Summon Myriad Snare: Rustfire Chassis, dealing Fusion DMG equal to 10.20% of the Max HP on initial impact. During its duration, it repeatedly crushes enemies along its path up to 19 times, dealing Fusion DMG equal to 0.37% of the Max HP each time.\nResonators with this Echo equipped in the main slot gain 12.00% Fusion DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.0567,
+                0.002,
+                0.12,
+                0.12
+              ],
+              [
+                0.068,
+                0.0024,
+                0.12,
+                0.12
+              ],
+              [
+                0.0793,
+                0.0029,
+                0.12,
+                0.12
+              ],
+              [
+                0.0907,
+                0.0033,
+                0.12,
+                0.12
+              ],
+              [
+                0.102,
+                0.0037,
+                0.12,
+                0.12
+              ]
+            ],
+            "count": 4,
+            "sourceText": "Summon Myriad Snare: Rustfire Chassis, dealing Fusion DMG equal to 5.67% of the Max HP on initial impact. During its duration, it repeatedly crushes enemies along its path up to 19 times, dealing Fusion DMG equal to 0.20% of the Max HP each time.\nResonators with this Echo equipped in the main slot gain 12.00% Fusion DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s · Summon Myriad Snare: Rustfire Chassis, dealing Fusion DMG equal to 6.80% of the Max HP on initial impact. During its duration, it repeatedly crushes enemies along its path up to 19 times, dealing Fusion DMG equal to 0.24% of the Max HP each time.\nResonators with this Echo equipped in the main slot gain 12.00% Fusion DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s · Summon Myriad Snare: Rustfire Chassis, dealing Fusion DMG equal to 7.93% of the Max HP on initial impact. During its duration, it repeatedly crushes enemies along its path up to 19 times, dealing Fusion DMG equal to 0.29% of the Max HP each time.\nResonators with this Echo equipped in the main slot gain 12.00% Fusion DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s · Summon Myriad Snare: Rustfire Chassis, dealing Fusion DMG equal to 9.07% of the Max HP on initial impact. During its duration, it repeatedly crushes enemies along its path up to 19 times, dealing Fusion DMG equal to 0.33% of the Max HP each time.\nResonators with this Echo equipped in the main slot gain 12.00% Fusion DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s · Summon Myriad Snare: Rustfire Chassis, dealing Fusion DMG equal to 10.20% of the Max HP on initial impact. During its duration, it repeatedly crushes enemies along its path up to 19 times, dealing Fusion DMG equal to 0.37% of the Max HP each time.\nResonators with this Echo equipped in the main slot gain 12.00% Fusion DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "826f9afd31552e5557afb9aeeaa7c99f9bee7a167c0b88771a8ab53d3c2e87b7",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000217:effect:0",
+            "sourceName": "Myriad Snare: Rustfire Chassis",
+            "sourceType": "echo",
+            "text": "Resonators with this Echo equipped in the main slot gain 12.00% Fusion DMG Bonus and 12.00% Heavy Attack DMG Bonus.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "Fusion",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

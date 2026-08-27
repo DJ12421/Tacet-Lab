@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000189",
+  "entityName": "Hyvatia",
+  "sourceFingerprint": "50f82182c2f7465cb45b48addf310e0733fffb748c1f23eee0cae8a0681e1231",
+  "reviewedAt": "2026-08-26T11:44:25.100Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "5f26bb98abab202d478e3b7eabb40494bdb1704dbbd51d967ece97aa3dba67fe",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000189:skill",
+            "name": "Hyvatia - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon Hyvatia to fire lasers at enemies from mid-air, dealing 15.20% Spectro DMG 10 times.\nCasting Outro Skill within 15s after summoning Hyvatia grants 10.00% All-Attribute DMG Bonus to the next Resonator using Intro Skill for 15s.\nCD: 20s.",
+              "Summon Hyvatia to fire lasers at enemies from mid-air, dealing 18.24% Spectro DMG 10 times.\nCasting Outro Skill within 15s after summoning Hyvatia grants 10.00% All-Attribute DMG Bonus to the next Resonator using Intro Skill for 15s.\nCD: 20s.",
+              "Summon Hyvatia to fire lasers at enemies from mid-air, dealing 21.28% Spectro DMG 10 times.\nCasting Outro Skill within 15s after summoning Hyvatia grants 10.00% All-Attribute DMG Bonus to the next Resonator using Intro Skill for 15s.\nCD: 20s.",
+              "Summon Hyvatia to fire lasers at enemies from mid-air, dealing 24.32% Spectro DMG 10 times.\nCasting Outro Skill within 15s after summoning Hyvatia grants 10.00% All-Attribute DMG Bonus to the next Resonator using Intro Skill for 15s.\nCD: 20s.",
+              "Summon Hyvatia to fire lasers at enemies from mid-air, dealing 27.36% Spectro DMG 10 times.\nCasting Outro Skill within 15s after summoning Hyvatia grants 10.00% All-Attribute DMG Bonus to the next Resonator using Intro Skill for 15s.\nCD: 20s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.152,
+                0.1
+              ],
+              [
+                0.18239999999999998,
+                0.1
+              ],
+              [
+                0.21280000000000002,
+                0.1
+              ],
+              [
+                0.2432,
+                0.1
+              ],
+              [
+                0.2736,
+                0.1
+              ]
+            ],
+            "count": 2,
+            "sourceText": "Summon Hyvatia to fire lasers at enemies from mid-air, dealing 15.20% Spectro DMG 10 times.\nCasting Outro Skill within 15s after summoning Hyvatia grants 10.00% All-Attribute DMG Bonus to the next Resonator using Intro Skill for 15s.\nCD: 20s. · Summon Hyvatia to fire lasers at enemies from mid-air, dealing 18.24% Spectro DMG 10 times.\nCasting Outro Skill within 15s after summoning Hyvatia grants 10.00% All-Attribute DMG Bonus to the next Resonator using Intro Skill for 15s.\nCD: 20s. · Summon Hyvatia to fire lasers at enemies from mid-air, dealing 21.28% Spectro DMG 10 times.\nCasting Outro Skill within 15s after summoning Hyvatia grants 10.00% All-Attribute DMG Bonus to the next Resonator using Intro Skill for 15s.\nCD: 20s. · Summon Hyvatia to fire lasers at enemies from mid-air, dealing 24.32% Spectro DMG 10 times.\nCasting Outro Skill within 15s after summoning Hyvatia grants 10.00% All-Attribute DMG Bonus to the next Resonator using Intro Skill for 15s.\nCD: 20s. · Summon Hyvatia to fire lasers at enemies from mid-air, dealing 27.36% Spectro DMG 10 times.\nCasting Outro Skill within 15s after summoning Hyvatia grants 10.00% All-Attribute DMG Bonus to the next Resonator using Intro Skill for 15s.\nCD: 20s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "5278086608a6ffc708785515f100ba8886875677a6729028e4fa9db28551482f",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000189:effect:0",
+            "sourceName": "Hyvatia",
+            "sourceType": "echo",
+            "text": "Casting Outro Skill within 15s after summoning Hyvatia grants 10.00% All-Attribute DMG Bonus to the next Resonator using Intro Skill for 15s.",
+            "parsed": {
+              "scope": "next",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Outro Skill",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "AllElementAttributeBonus",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

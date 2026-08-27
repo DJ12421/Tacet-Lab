@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000071",
+  "entityName": "Diggy Duggy",
+  "sourceFingerprint": "a9b11607d883cabaa42816a93c3aac9e30c7103e7e726cf7a83146eb46cdbfac",
+  "reviewedAt": "2026-08-26T11:44:24.923Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "8111b97a74b245be564cefbfc3027ab57c59ce6195002a62230c6aa56f42e4ff",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000071:skill",
+            "name": "Diggy Duggy - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Diggy Duggy and jump up into the air to smash onto enemies, dealing 149.00% Physical DMG.\nCD: 15s.",
+              "Transform into Diggy Duggy and jump up into the air to smash onto enemies, dealing 178.80% Physical DMG.\nCD: 15s.",
+              "Transform into Diggy Duggy and jump up into the air to smash onto enemies, dealing 208.60% Physical DMG.\nCD: 15s.",
+              "Transform into Diggy Duggy and jump up into the air to smash onto enemies, dealing 238.40% Physical DMG.\nCD: 15s.",
+              "Transform into Diggy Duggy and jump up into the air to smash onto enemies, dealing 268.20% Physical DMG.\nCD: 15s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.49
+              ],
+              [
+                1.788
+              ],
+              [
+                2.086
+              ],
+              [
+                2.384
+              ],
+              [
+                2.682
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Transform into Diggy Duggy and jump up into the air to smash onto enemies, dealing 149.00% Physical DMG.\nCD: 15s. · Transform into Diggy Duggy and jump up into the air to smash onto enemies, dealing 178.80% Physical DMG.\nCD: 15s. · Transform into Diggy Duggy and jump up into the air to smash onto enemies, dealing 208.60% Physical DMG.\nCD: 15s. · Transform into Diggy Duggy and jump up into the air to smash onto enemies, dealing 238.40% Physical DMG.\nCD: 15s. · Transform into Diggy Duggy and jump up into the air to smash onto enemies, dealing 268.20% Physical DMG.\nCD: 15s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

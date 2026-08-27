@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000114",
+  "entityName": "Lioness of Glory",
+  "sourceFingerprint": "cc3f3652e520df0f4f54dbfc1b50ad8b3d3ad522971661bb8676c5eeafb95e3c",
+  "reviewedAt": "2026-08-26T11:44:25.020Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "931d334f26d810c82b6099de139a27a6d3f74d49bd10b397ecc6553966331d2a",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000114:skill",
+            "name": "Lioness of Glory - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon the Halberd of Glory to crush an area, dealing 45.60% Fusion DMG to nearby targets, and then blast off after a short delay, dealing 106.40% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s",
+              "Summon the Halberd of Glory to crush an area, dealing 54.72% Fusion DMG to nearby targets, and then blast off after a short delay, dealing 127.68% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s",
+              "Summon the Halberd of Glory to crush an area, dealing 63.84% Fusion DMG to nearby targets, and then blast off after a short delay, dealing 148.96% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s",
+              "Summon the Halberd of Glory to crush an area, dealing 72.96% Fusion DMG to nearby targets, and then blast off after a short delay, dealing 170.24% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s",
+              "Summon the Halberd of Glory to crush an area, dealing 82.08% Fusion DMG to nearby targets, and then blast off after a short delay, dealing 191.52% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.456,
+                1.064,
+                0.12,
+                0.12
+              ],
+              [
+                0.5472,
+                1.2768000000000002,
+                0.12,
+                0.12
+              ],
+              [
+                0.6384000000000001,
+                1.4896,
+                0.12,
+                0.12
+              ],
+              [
+                0.7295999999999999,
+                1.7024000000000001,
+                0.12,
+                0.12
+              ],
+              [
+                0.8208,
+                1.9152,
+                0.12,
+                0.12
+              ]
+            ],
+            "count": 4,
+            "sourceText": "Summon the Halberd of Glory to crush an area, dealing 45.60% Fusion DMG to nearby targets, and then blast off after a short delay, dealing 106.40% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon the Halberd of Glory to crush an area, dealing 54.72% Fusion DMG to nearby targets, and then blast off after a short delay, dealing 127.68% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon the Halberd of Glory to crush an area, dealing 63.84% Fusion DMG to nearby targets, and then blast off after a short delay, dealing 148.96% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon the Halberd of Glory to crush an area, dealing 72.96% Fusion DMG to nearby targets, and then blast off after a short delay, dealing 170.24% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon the Halberd of Glory to crush an area, dealing 82.08% Fusion DMG to nearby targets, and then blast off after a short delay, dealing 191.52% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "af2b6a81f2293d98e593a060f2c1ecdabb8d7c59968fff3c30680baff541ff1b",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000114:effect:0",
+            "sourceName": "Lioness of Glory",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Resonance Liberation DMG Bonus.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "Fusion",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

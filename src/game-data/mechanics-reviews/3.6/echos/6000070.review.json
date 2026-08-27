@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000070",
+  "entityName": "Lottie Lost",
+  "sourceFingerprint": "0349068aaf34f1caa2f7dc9e4c2545ec1c7b247cb5e518865139937530dd039d",
+  "reviewedAt": "2026-08-26T11:44:24.922Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "e811769f77a35786f8c186ce2eb201d9ff31a819589581371d2d2c1729dddc53",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000070:skill",
+            "name": "Lottie Lost - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Lottie Lost to attack enemies, dealing 72.00% Spectro DMG.\nCD: 8s.",
+              "Summon a Lottie Lost to attack enemies, dealing 86.40% Spectro DMG.\nCD: 8s.",
+              "Summon a Lottie Lost to attack enemies, dealing 100.80% Spectro DMG.\nCD: 8s.",
+              "Summon a Lottie Lost to attack enemies, dealing 115.20% Spectro DMG.\nCD: 8s.",
+              "Summon a Lottie Lost to attack enemies, dealing 129.60% Spectro DMG.\nCD: 8s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.72
+              ],
+              [
+                0.8640000000000001
+              ],
+              [
+                1.008
+              ],
+              [
+                1.1520000000000001
+              ],
+              [
+                1.296
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Lottie Lost to attack enemies, dealing 72.00% Spectro DMG.\nCD: 8s. · Summon a Lottie Lost to attack enemies, dealing 86.40% Spectro DMG.\nCD: 8s. · Summon a Lottie Lost to attack enemies, dealing 100.80% Spectro DMG.\nCD: 8s. · Summon a Lottie Lost to attack enemies, dealing 115.20% Spectro DMG.\nCD: 8s. · Summon a Lottie Lost to attack enemies, dealing 129.60% Spectro DMG.\nCD: 8s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

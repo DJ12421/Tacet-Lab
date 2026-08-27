@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000196",
+  "entityName": "Iceglint Dancer",
+  "sourceFingerprint": "49269abdd2d34429ed5bcc3f052e7390cc1a0f4e51ead550b4db9173f48814ee",
+  "reviewedAt": "2026-08-26T11:44:25.115Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "2fb4c4e8abdd9ae2a024d35fdeee9a4bc8db391f9380f120ca61ef38e21a0203",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000196:skill",
+            "name": "Iceglint Dancer - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into an Iceglint Dancer to attack enemies, dealing 114.00% Glacio DMG.\nCD: 8s.",
+              "Transform into an Iceglint Dancer to attack enemies, dealing 136.80% Glacio DMG.\nCD: 8s.",
+              "Transform into an Iceglint Dancer to attack enemies, dealing 159.60% Glacio DMG.\nCD: 8s.",
+              "Transform into an Iceglint Dancer to attack enemies, dealing 182.40% Glacio DMG.\nCD: 8s.",
+              "Transform into an Iceglint Dancer to attack enemies, dealing 205.20% Glacio DMG.\nCD: 8s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.14
+              ],
+              [
+                1.368
+              ],
+              [
+                1.5959999999999999
+              ],
+              [
+                1.824
+              ],
+              [
+                2.052
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Transform into an Iceglint Dancer to attack enemies, dealing 114.00% Glacio DMG.\nCD: 8s. · Transform into an Iceglint Dancer to attack enemies, dealing 136.80% Glacio DMG.\nCD: 8s. · Transform into an Iceglint Dancer to attack enemies, dealing 159.60% Glacio DMG.\nCD: 8s. · Transform into an Iceglint Dancer to attack enemies, dealing 182.40% Glacio DMG.\nCD: 8s. · Transform into an Iceglint Dancer to attack enemies, dealing 205.20% Glacio DMG.\nCD: 8s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

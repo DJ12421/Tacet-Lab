@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21040012",
+  "entityName": "Tyro Gauntlets",
+  "sourceFingerprint": "3fb1c12d6dedeebd5d44d3bfcf0aa13afeb0f20a2a485aa70c8195c6d42d513d",
+  "reviewedAt": "2026-08-26T11:44:24.167Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "2488fc50412882085a8c7e7a81050346a8ceb9a33dcf30d3e617d5d42581dc49",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21040012:effect:0",
+            "sourceName": "Prologue",
+            "text": "Increases ATK by 5%.",
+            "refinementTexts": [
+              "Increases ATK by 5%.",
+              "Increases ATK by 6.25%.",
+              "Increases ATK by 7.5%.",
+              "Increases ATK by 8.75%.",
+              "Increases ATK by 10%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 5
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 6.25
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 7.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 8.75
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

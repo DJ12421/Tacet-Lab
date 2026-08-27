@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390077028",
+  "entityName": "Viridblaze Saurian",
+  "sourceFingerprint": "a3840f4f36d684f6f1fb1e22fbe5867a05ee5a961e12c45a8be2974aaa71f619",
+  "reviewedAt": "2026-08-26T11:44:24.841Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "f6e6529d7d0b950ae1f65343ff8949c112709803b1f0b67cfbb37d325fc5d000",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390077028:skill",
+            "name": "Viridblaze Saurian - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Viridblaze Saurian to continuously spit fire, dealing 10.70% Fusion DMG 10 times.\nCD: 15s",
+              "Summon a Viridblaze Saurian to continuously spit fire, dealing 12.31% Fusion DMG 10 times.\nCD: 15s",
+              "Summon a Viridblaze Saurian to continuously spit fire, dealing 13.91% Fusion DMG 10 times.\nCD: 15s",
+              "Summon a Viridblaze Saurian to continuously spit fire, dealing 15.52% Fusion DMG 10 times.\nCD: 15s",
+              "Summon a Viridblaze Saurian to continuously spit fire, dealing 17.12% Fusion DMG 10 times.\nCD: 15s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.107
+              ],
+              [
+                0.1231
+              ],
+              [
+                0.1391
+              ],
+              [
+                0.1552
+              ],
+              [
+                0.17120000000000002
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Viridblaze Saurian to continuously spit fire, dealing 10.70% Fusion DMG 10 times.\nCD: 15s · Summon a Viridblaze Saurian to continuously spit fire, dealing 12.31% Fusion DMG 10 times.\nCD: 15s · Summon a Viridblaze Saurian to continuously spit fire, dealing 13.91% Fusion DMG 10 times.\nCD: 15s · Summon a Viridblaze Saurian to continuously spit fire, dealing 15.52% Fusion DMG 10 times.\nCD: 15s · Summon a Viridblaze Saurian to continuously spit fire, dealing 17.12% Fusion DMG 10 times.\nCD: 15s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

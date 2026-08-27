@@ -1,7 +1,8 @@
 import { aggregateStats, applyBuffEffects, defenseMultiplier, floorGameValue, resistanceMultiplier } from '../damage'
 import type { AttackDefinition, BuffEffect, Build, Echo, EnemyConfig, OwnedCharacter, OwnedWeapon, Resonator, TeamScenario, Weapon } from '../types'
 import {
-  baseTuneBreakBoost, characterConditionId, characterConditionInherentSkillIndex, characterConditionModes, characterConditionRequiresToggle, characterConditions, characterCatalog,
+  baseTuneBreakBoost, characterConditionId, characterConditionInherentSkillIndex, characterConditionModeId, characterConditionModes, characterConditionRequiresToggle, characterConditions, characterCatalog,
+  legacyCharacterConditionId, legacyCharacterConditionModeId,
   isFixedSkillValueName, weaponCatalog, weaponPassiveConditions, type CharacterConditionModifier
 } from '../../game-data'
 import { defaultEnabledSkillTreeBonusIds, inherentSkillBonusId, resolveCharacterShowcaseModel, weaponSecondaryStat } from '../../ui/character-showcase-model'
@@ -109,15 +110,15 @@ export function createBuildCalculationContext(input: BuildCalculationInput): Cal
   const targetAttack = character.attacks.find((attack) => attack.id === targetAttackId)
   const targetAttackReference = targetAttack ? `${targetAttack.id} ${targetAttack.name}` : ''
   const enabledSkillTreeNodes = new Set(input.character.enabledSkillTreeBonusIds ?? defaultEnabledSkillTreeBonusIds(character))
-  const selectedMode = String(memberConditions['wt:mode'] ?? characterConditionModes(character)[0] ?? '')
+  const selectedMode = String(memberConditions[characterConditionModeId] ?? memberConditions[legacyCharacterConditionModeId] ?? characterConditionModes(character)[0] ?? '')
   if (targetAttack) for (const condition of characterConditions(character)) {
     if (condition.sequence && input.character.sequence < condition.sequence) continue
     if (condition.stance && condition.stance !== selectedMode) continue
     const inherentSkillIndex = characterConditionInherentSkillIndex(condition, character)
     if (inherentSkillIndex !== undefined && !enabledSkillTreeNodes.has(inherentSkillBonusId(inherentSkillIndex))) continue
-    const raw = memberConditions[characterConditionId(condition)]
-    const sequenceAlwaysOn = condition.sequence > 0 && !characterConditionRequiresToggle(condition)
-    let factor = sequenceAlwaysOn ? 1 : condition.hasStacks ? numericInput(raw) : raw === true ? 1 : 0
+    const raw = memberConditions[characterConditionId(condition)] ?? memberConditions[legacyCharacterConditionId(condition)]
+    const alwaysOn = !characterConditionRequiresToggle(condition)
+    let factor = alwaysOn ? 1 : condition.hasStacks ? numericInput(raw) : raw === true ? 1 : 0
     if (condition.appliesOnEveryStep) factor = Math.floor(factor / condition.appliesOnEveryStep)
     if (!(factor > 0)) continue
     for (const modifier of condition.modifiers) {
@@ -148,8 +149,8 @@ export function createBuildCalculationContext(input: BuildCalculationInput): Cal
       else if (key === 'specialMultiplier') conditionSpecialMultiplier += value * 100
       else if (key === 'talentModifierMultiply') conditionMotionValueMultiplier += value * 100
       else if (!key && modifier.modifySpecificTalents?.length) {
-        // Wuthering Tools leaves targeted DMG/healing increases untyped, while
-        // actual motion-value changes are explicitly talentModifierMultiply.
+        // Untyped targeted increases affect damage or healing, while actual
+        // motion-value changes are explicitly talentModifierMultiply.
         if (targetAttack.type === 'healing') conditionMotionValueMultiplier += value * 100
         else conditionBonusDamage += value * 100
       }
@@ -165,9 +166,9 @@ export function createBuildCalculationContext(input: BuildCalculationInput): Cal
     if (condition.stance && condition.stance !== selectedMode) continue
     const inherentSkillIndex = characterConditionInherentSkillIndex(condition, character)
     if (inherentSkillIndex !== undefined && !enabledSkillTreeNodes.has(inherentSkillBonusId(inherentSkillIndex))) continue
-    const raw = memberConditions[characterConditionId(condition)]
-    const sequenceAlwaysOn = condition.sequence > 0 && !characterConditionRequiresToggle(condition)
-    let factor = sequenceAlwaysOn ? 1 : condition.hasStacks ? numericInput(raw) : raw === true ? 1 : 0
+    const raw = memberConditions[characterConditionId(condition)] ?? memberConditions[legacyCharacterConditionId(condition)]
+    const alwaysOn = !characterConditionRequiresToggle(condition)
+    let factor = alwaysOn ? 1 : condition.hasStacks ? numericInput(raw) : raw === true ? 1 : 0
     if (condition.appliesOnEveryStep) factor = Math.floor(factor / condition.appliesOnEveryStep)
     if (!(factor > 0)) continue
     for (const modifier of condition.modifiers) {

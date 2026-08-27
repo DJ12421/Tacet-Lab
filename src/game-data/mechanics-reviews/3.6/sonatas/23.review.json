@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "sonata",
+  "entityId": "23",
+  "entityName": "Thread of Severed Fate",
+  "sourceFingerprint": "2d4c859f28f34187181bfc62de961168a9c768fc7924d34eddfe0b7d6bf7a5b3",
+  "reviewedAt": "2026-08-26T11:44:24.645Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "5af1e63c3d01dcc21ea24f698230556acd67eadd5acca16af693cd6a960fe8eb",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:23:3:0",
+            "sourceName": "Thread of Severed Fate",
+            "text": "Inflicting Havoc Bane increases the Resonator's ATK by 20% and grants 30% Resonance Liberation DMG Bonus for 5s.",
+            "refinementTexts": [
+              "Inflicting Havoc Bane increases the Resonator's ATK by 20% and grants 30% Resonance Liberation DMG Bonus for 5s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 5,
+              "modifiers": [
+                {
+                  "stat": "liberationDamage",
+                  "operation": "addPercent",
+                  "value": 20
+                },
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 20
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 3,
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

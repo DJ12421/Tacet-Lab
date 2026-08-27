@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390070068",
+  "entityName": "Whiff Whaff",
+  "sourceFingerprint": "b09d2bf8ad1e938c565283a81a901af632888a053cdb1a9d1725deae5b991ce2",
+  "reviewedAt": "2026-08-26T11:44:24.766Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "b20aa4f303061493391b0b9e002a6c2d5ff9db751c94c153083ff347aa226a04",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390070068:skill",
+            "name": "Whiff Whaff - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Whiff Whaff that triggers an air explosion, dealing 32.10% Aero DMG and produce a Low-pressure Zone. The Low-pressure Zone continuously pulls enemies nearby towards the center for 2s, dealing 12.48% Aero DMG up to 6 times.\nCD: 15s",
+              "Summon a Whiff Whaff that triggers an air explosion, dealing 36.92% Aero DMG and produce a Low-pressure Zone. The Low-pressure Zone continuously pulls enemies nearby towards the center for 2s, dealing 14.35% Aero DMG up to 6 times.\nCD: 15s",
+              "Summon a Whiff Whaff that triggers an air explosion, dealing 41.73% Aero DMG and produce a Low-pressure Zone. The Low-pressure Zone continuously pulls enemies nearby towards the center for 2s, dealing 16.22% Aero DMG up to 6 times.\nCD: 15s",
+              "Summon a Whiff Whaff that triggers an air explosion, dealing 46.55% Aero DMG and produce a Low-pressure Zone. The Low-pressure Zone continuously pulls enemies nearby towards the center for 2s, dealing 18.10% Aero DMG up to 6 times.\nCD: 15s",
+              "Summon a Whiff Whaff that triggers an air explosion, dealing 51.36% Aero DMG and produce a Low-pressure Zone. The Low-pressure Zone continuously pulls enemies nearby towards the center for 2s, dealing 19.97% Aero DMG up to 6 times.\nCD: 15s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.321,
+                0.12480000000000001
+              ],
+              [
+                0.36920000000000003,
+                0.1435
+              ],
+              [
+                0.41729999999999995,
+                0.16219999999999998
+              ],
+              [
+                0.46549999999999997,
+                0.18100000000000002
+              ],
+              [
+                0.5136,
+                0.1997
+              ]
+            ],
+            "count": 2,
+            "sourceText": "Summon a Whiff Whaff that triggers an air explosion, dealing 32.10% Aero DMG and produce a Low-pressure Zone. The Low-pressure Zone continuously pulls enemies nearby towards the center for 2s, dealing 12.48% Aero DMG up to 6 times.\nCD: 15s · Summon a Whiff Whaff that triggers an air explosion, dealing 36.92% Aero DMG and produce a Low-pressure Zone. The Low-pressure Zone continuously pulls enemies nearby towards the center for 2s, dealing 14.35% Aero DMG up to 6 times.\nCD: 15s · Summon a Whiff Whaff that triggers an air explosion, dealing 41.73% Aero DMG and produce a Low-pressure Zone. The Low-pressure Zone continuously pulls enemies nearby towards the center for 2s, dealing 16.22% Aero DMG up to 6 times.\nCD: 15s · Summon a Whiff Whaff that triggers an air explosion, dealing 46.55% Aero DMG and produce a Low-pressure Zone. The Low-pressure Zone continuously pulls enemies nearby towards the center for 2s, dealing 18.10% Aero DMG up to 6 times.\nCD: 15s · Summon a Whiff Whaff that triggers an air explosion, dealing 51.36% Aero DMG and produce a Low-pressure Zone. The Low-pressure Zone continuously pulls enemies nearby towards the center for 2s, dealing 19.97% Aero DMG up to 6 times.\nCD: 15s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

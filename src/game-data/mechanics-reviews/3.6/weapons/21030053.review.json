@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21030053",
+  "entityName": "Guardian Pistols",
+  "sourceFingerprint": "f10a30bc30ac7c8b31e7ffc396859a7334dd449722533b76b0ca26a3fdf4822d",
+  "reviewedAt": "2026-08-26T11:44:24.130Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "7f4862756e694b570365f7a185b71d3f38d27d0aa67de155bb736a72d996b652",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21030053:effect:0",
+            "sourceName": "Unity",
+            "text": "Resonance Skill DMG Bonus is increased by 12%.",
+            "refinementTexts": [
+              "Resonance Skill DMG Bonus is increased by 12%.",
+              "Resonance Skill DMG Bonus is increased by 15%.",
+              "Resonance Skill DMG Bonus is increased by 18%.",
+              "Resonance Skill DMG Bonus is increased by 21%.",
+              "Resonance Skill DMG Bonus is increased by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "skillDamage",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

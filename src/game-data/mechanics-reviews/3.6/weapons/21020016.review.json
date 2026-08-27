@@ -1,0 +1,301 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21020016",
+  "entityName": "Blazing Brilliance",
+  "sourceFingerprint": "c50790e80c6520ec17717e1014fea458a38de20236bf4a50a323a11f355d9fb0",
+  "reviewedAt": "2026-08-26T11:44:23.959Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "4ccbf02a08d071d79ff2d06fff7157545f68b42bddce599087dee3b2bed2ba99",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020016:effect:0",
+            "sourceName": "Crimson Phoenix",
+            "text": "ATK increased by 12%.",
+            "refinementTexts": [
+              "ATK increased by 12%.",
+              "ATK increased by 15%.",
+              "ATK increased by 18%.",
+              "ATK increased by 21%.",
+              "ATK increased by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21020016:effect:1",
+            "sourceName": "Crimson Phoenix",
+            "text": "The wielder gains 1 stack of Searing Feather upon dealing damage, which can be triggered once every 0.5s, and gains 5 stacks of the same effect upon casting Resonance Skill.",
+            "refinementTexts": [
+              "The wielder gains 1 stack of Searing Feather upon dealing damage, which can be triggered once every 0.5s, and gains 5 stacks of the same effect upon casting Resonance Skill.",
+              "The wielder gains 1 stack of Searing Feather upon dealing damage, which can be triggered once every 0.5s, and gains 5 stacks of the same effect upon casting Resonance Skill.",
+              "The wielder gains 1 stack of Searing Feather upon dealing damage, which can be triggered once every 0.5s, and gains 5 stacks of the same effect upon casting Resonance Skill.",
+              "The wielder gains 1 stack of Searing Feather upon dealing damage, which can be triggered once every 0.5s, and gains 5 stacks of the same effect upon casting Resonance Skill.",
+              "The wielder gains 1 stack of Searing Feather upon dealing damage, which can be triggered once every 0.5s, and gains 5 stacks of the same effect upon casting Resonance Skill."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "trigger": "Resonance Skill",
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence.",
+                "Stack maximum was not explicit and requires review."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21020016:effect:2",
+            "sourceName": "Crimson Phoenix",
+            "text": "Each stack of Searing Feather gives 4% additional Resonance Skill DMG Bonus for up to 14 stacks.",
+            "refinementTexts": [
+              "Each stack of Searing Feather gives 4% additional Resonance Skill DMG Bonus for up to 14 stacks.",
+              "Each stack of Searing Feather gives 5% additional Resonance Skill DMG Bonus for up to 14 stacks.",
+              "Each stack of Searing Feather gives 6% additional Resonance Skill DMG Bonus for up to 14 stacks.",
+              "Each stack of Searing Feather gives 7% additional Resonance Skill DMG Bonus for up to 14 stacks.",
+              "Each stack of Searing Feather gives 8% additional Resonance Skill DMG Bonus for up to 14 stacks."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 14
+              },
+              "modifiers": [
+                {
+                  "stat": "skillDamage",
+                  "operation": "addPercent",
+                  "value": 4
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 14
+                },
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 4
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 14
+                },
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 14
+                },
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 6
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 14
+                },
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 7
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 14
+                },
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21020016:effect:3",
+            "sourceName": "Crimson Phoenix",
+            "text": "After reaching the max stacks, all stacks will be removed in 12s.",
+            "refinementTexts": [
+              "After reaching the max stacks, all stacks will be removed in 12s.",
+              "After reaching the max stacks, all stacks will be removed in 12s.",
+              "After reaching the max stacks, all stacks will be removed in 12s.",
+              "After reaching the max stacks, all stacks will be removed in 12s.",
+              "After reaching the max stacks, all stacks will be removed in 12s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence.",
+                "Stack maximum was not explicit and requires review."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

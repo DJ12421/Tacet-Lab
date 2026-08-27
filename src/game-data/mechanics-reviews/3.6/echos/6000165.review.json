@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000165",
+  "entityName": "Nightmare: Gulpuff",
+  "sourceFingerprint": "96acd01d674da046dca37c6fb20023b7a118ac969f12dedb0dab9c5287fc6fac",
+  "reviewedAt": "2026-08-26T11:44:25.050Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "33dbaa108a4f4b66bbd2bd798a5e646789d73f1b9b77a2cfe0b3b41a959c522f",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000165:skill",
+            "name": "Nightmare: Gulpuff - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Gulpuff that blows bubbles 5 times, each time dealing 14.40% Glacio DMG.\nCD: 8s",
+              "Summon a Gulpuff that blows bubbles 5 times, each time dealing 16.56% Glacio DMG.\nCD: 8s",
+              "Summon a Gulpuff that blows bubbles 5 times, each time dealing 18.72% Glacio DMG.\nCD: 8s",
+              "Summon a Gulpuff that blows bubbles 5 times, each time dealing 20.88% Glacio DMG.\nCD: 8s",
+              "Summon a Gulpuff that blows bubbles 5 times, each time dealing 23.04% Glacio DMG.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.14400000000000002
+              ],
+              [
+                0.1656
+              ],
+              [
+                0.18719999999999998
+              ],
+              [
+                0.20879999999999999
+              ],
+              [
+                0.2304
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Gulpuff that blows bubbles 5 times, each time dealing 14.40% Glacio DMG.\nCD: 8s · Summon a Gulpuff that blows bubbles 5 times, each time dealing 16.56% Glacio DMG.\nCD: 8s · Summon a Gulpuff that blows bubbles 5 times, each time dealing 18.72% Glacio DMG.\nCD: 8s · Summon a Gulpuff that blows bubbles 5 times, each time dealing 20.88% Glacio DMG.\nCD: 8s · Summon a Gulpuff that blows bubbles 5 times, each time dealing 23.04% Glacio DMG.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

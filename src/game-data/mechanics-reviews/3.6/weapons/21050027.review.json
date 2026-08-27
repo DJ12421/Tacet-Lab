@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21050027",
+  "entityName": "Ocean's Gift",
+  "sourceFingerprint": "f720ae78086be8ecc7172c3ed13fd57dd4d0e0be30aa4559ba949d4a24088318",
+  "reviewedAt": "2026-08-26T11:44:24.312Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "6fed10460fbe346e87183cfaf108d0801d151e0a522fc9032c835abbf3765b98",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050027:effect:0",
+            "sourceName": "Fish Catch",
+            "text": "Dealing DMG to enemies with Spectro Frazzle increases the wielder's Spectro DMG by 6%, gaining 1 stack per second for 6s, stacking up to 4 times.",
+            "refinementTexts": [
+              "Dealing DMG to enemies with Spectro Frazzle increases the wielder's Spectro DMG by 6%, gaining 1 stack per second for 6s, stacking up to 4 times.",
+              "Dealing DMG to enemies with Spectro Frazzle increases the wielder's Spectro DMG by 7%, gaining 1 stack per second for 6s, stacking up to 4 times.",
+              "Dealing DMG to enemies with Spectro Frazzle increases the wielder's Spectro DMG by 8%, gaining 1 stack per second for 6s, stacking up to 4 times.",
+              "Dealing DMG to enemies with Spectro Frazzle increases the wielder's Spectro DMG by 9%, gaining 1 stack per second for 6s, stacking up to 4 times.",
+              "Dealing DMG to enemies with Spectro Frazzle increases the wielder's Spectro DMG by 10%, gaining 1 stack per second for 6s, stacking up to 4 times."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 4
+              },
+              "durationSeconds": 6,
+              "modifiers": [
+                {
+                  "stat": "Spectro",
+                  "operation": "addPercent",
+                  "value": 6
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "Spectro",
+                    "operation": "addPercent",
+                    "value": 6
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "Spectro",
+                    "operation": "addPercent",
+                    "value": 7
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "Spectro",
+                    "operation": "addPercent",
+                    "value": 8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "Spectro",
+                    "operation": "addPercent",
+                    "value": 9
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "Spectro",
+                    "operation": "addPercent",
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

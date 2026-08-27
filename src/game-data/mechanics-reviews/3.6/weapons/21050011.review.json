@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21050011",
+  "entityName": "Training Rectifier",
+  "sourceFingerprint": "ab1bc90b53eb1a3810e07d13a4a97b4dda5c6ee4f60437ec29c0b4bc7ca44e8c",
+  "reviewedAt": "2026-08-26T11:44:24.266Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "2a65f24baa7e059e5f52741190aa4b362e68fef5257ed7ca79ec8d3529ee0fdd",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050011:effect:0",
+            "sourceName": "Persevere",
+            "text": "Increases ATK by 4%.",
+            "refinementTexts": [
+              "Increases ATK by 4%.",
+              "Increases ATK by 5%.",
+              "Increases ATK by 6%.",
+              "Increases ATK by 7%.",
+              "Increases ATK by 8%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 4
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 4
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 6
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 7
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

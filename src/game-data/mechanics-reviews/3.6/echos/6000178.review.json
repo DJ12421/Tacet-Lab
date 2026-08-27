@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000178",
+  "entityName": "Zip Zap",
+  "sourceFingerprint": "69285c58425d5ebe1f4d80399744f460a6376064d202da9f4569c995fcfde14c",
+  "reviewedAt": "2026-08-26T11:44:25.077Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "be2ae383b4593b0b5e8d5c9bd5eefad8b7455f31290fbd67351c55730a3c6852",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000178:skill",
+            "name": "Zip Zap - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Zip Zap to launch spinning attacks at enemies, dealing 14.40% Electro DMG 5 times.\nCD: 8s.",
+              "Summon a Zip Zap to launch spinning attacks at enemies, dealing 17.28% Electro DMG 5 times.\nCD: 8s.",
+              "Summon a Zip Zap to launch spinning attacks at enemies, dealing 20.16% Electro DMG 5 times.\nCD: 8s.",
+              "Summon a Zip Zap to launch spinning attacks at enemies, dealing 23.04% Electro DMG 5 times.\nCD: 8s.",
+              "Summon a Zip Zap to launch spinning attacks at enemies, dealing 25.92% Electro DMG 5 times.\nCD: 8s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.14400000000000002
+              ],
+              [
+                0.1728
+              ],
+              [
+                0.2016
+              ],
+              [
+                0.2304
+              ],
+              [
+                0.25920000000000004
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Zip Zap to launch spinning attacks at enemies, dealing 14.40% Electro DMG 5 times.\nCD: 8s. · Summon a Zip Zap to launch spinning attacks at enemies, dealing 17.28% Electro DMG 5 times.\nCD: 8s. · Summon a Zip Zap to launch spinning attacks at enemies, dealing 20.16% Electro DMG 5 times.\nCD: 8s. · Summon a Zip Zap to launch spinning attacks at enemies, dealing 23.04% Electro DMG 5 times.\nCD: 8s. · Summon a Zip Zap to launch spinning attacks at enemies, dealing 25.92% Electro DMG 5 times.\nCD: 8s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

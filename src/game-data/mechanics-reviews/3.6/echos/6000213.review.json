@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000213",
+  "entityName": "Fog Lionarch: Head",
+  "sourceFingerprint": "30092aad22373399d62feafa4804c4afbaf46a16be3b98abd67a3cd410b260cb",
+  "reviewedAt": "2026-08-26T11:44:25.148Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "878ff389c1e240729f3591a005faf4f5b9805cb2aedd6080ad28e3dbaa23316a",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000213:skill",
+            "name": "Fog Lionarch: Head - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Use Echo Skill to summon Fog Lionarch: Head to dart toward enemies, dealing 72.00% Fusion DMG.\nCD: 8s",
+              "Use Echo Skill to summon Fog Lionarch: Head to dart toward enemies, dealing 86.40% Fusion DMG.\nCD: 8s",
+              "Use Echo Skill to summon Fog Lionarch: Head to dart toward enemies, dealing 100.80% Fusion DMG.\nCD: 8s",
+              "Use Echo Skill to summon Fog Lionarch: Head to dart toward enemies, dealing 115.20% Fusion DMG.\nCD: 8s",
+              "Use Echo Skill to summon Fog Lionarch: Head to dart toward enemies, dealing 129.60% Fusion DMG.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.72
+              ],
+              [
+                0.8640000000000001
+              ],
+              [
+                1.008
+              ],
+              [
+                1.1520000000000001
+              ],
+              [
+                1.296
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Use Echo Skill to summon Fog Lionarch: Head to dart toward enemies, dealing 72.00% Fusion DMG.\nCD: 8s · Use Echo Skill to summon Fog Lionarch: Head to dart toward enemies, dealing 86.40% Fusion DMG.\nCD: 8s · Use Echo Skill to summon Fog Lionarch: Head to dart toward enemies, dealing 100.80% Fusion DMG.\nCD: 8s · Use Echo Skill to summon Fog Lionarch: Head to dart toward enemies, dealing 115.20% Fusion DMG.\nCD: 8s · Use Echo Skill to summon Fog Lionarch: Head to dart toward enemies, dealing 129.60% Fusion DMG.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

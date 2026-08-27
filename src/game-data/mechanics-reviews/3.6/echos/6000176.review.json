@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000176",
+  "entityName": "Mining Drone",
+  "sourceFingerprint": "39b9d0ffe51037b4b599754592a421aeb52e5708b64a8f2eb32213fc4d329616",
+  "reviewedAt": "2026-08-26T11:44:25.074Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "159ea52352d663eb924b8b06e89a2704176e4e0c3993996cf17d738121e85acb",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000176:skill",
+            "name": "Mining Drone - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into a Mining Drone to attack enemies, dealing 57.00% Havoc DMG twice.\nCD: 8s.",
+              "Transform into a Mining Drone to attack enemies, dealing 68.40% Havoc DMG twice.\nCD: 8s.",
+              "Transform into a Mining Drone to attack enemies, dealing 79.80% Havoc DMG twice.\nCD: 8s.",
+              "Transform into a Mining Drone to attack enemies, dealing 91.20% Havoc DMG twice.\nCD: 8s.",
+              "Transform into a Mining Drone to attack enemies, dealing 102.60% Havoc DMG twice.\nCD: 8s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.57
+              ],
+              [
+                0.684
+              ],
+              [
+                0.7979999999999999
+              ],
+              [
+                0.912
+              ],
+              [
+                1.026
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Transform into a Mining Drone to attack enemies, dealing 57.00% Havoc DMG twice.\nCD: 8s. · Transform into a Mining Drone to attack enemies, dealing 68.40% Havoc DMG twice.\nCD: 8s. · Transform into a Mining Drone to attack enemies, dealing 79.80% Havoc DMG twice.\nCD: 8s. · Transform into a Mining Drone to attack enemies, dealing 91.20% Havoc DMG twice.\nCD: 8s. · Transform into a Mining Drone to attack enemies, dealing 102.60% Havoc DMG twice.\nCD: 8s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

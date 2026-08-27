@@ -1,0 +1,538 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21030036",
+  "entityName": "Lux & Umbra",
+  "sourceFingerprint": "ba016cd44643e0c0e2f785ef56ed254b5d9325c82907af5d91f39ea98e71605d",
+  "reviewedAt": "2026-08-26T11:44:24.112Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "e8851606e5400a4e3cc6c745b2a8e773bd6f9fbe17bca148bc44b0cca17c0d67",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21030036:effect:0",
+            "sourceName": "To Fire She Returns",
+            "text": "ATK is increased by 12%.",
+            "refinementTexts": [
+              "ATK is increased by 12%.",
+              "ATK is increased by 15%.",
+              "ATK is increased by 18%.",
+              "ATK is increased by 21%.",
+              "ATK is increased by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21030036:effect:1",
+            "sourceName": "To Fire She Returns",
+            "text": "Upon dealing Echo Skill DMG, gain 24% Heavy Attack DMG Amplification for 6s.",
+            "refinementTexts": [
+              "Upon dealing Echo Skill DMG, gain 24% Heavy Attack DMG Amplification for 6s.",
+              "Upon dealing Echo Skill DMG, gain 30% Heavy Attack DMG Amplification for 6s.",
+              "Upon dealing Echo Skill DMG, gain 36% Heavy Attack DMG Amplification for 6s.",
+              "Upon dealing Echo Skill DMG, gain 42% Heavy Attack DMG Amplification for 6s.",
+              "Upon dealing Echo Skill DMG, gain 48% Heavy Attack DMG Amplification for 6s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Echo Skill DMG",
+              "durationSeconds": 6,
+              "modifiers": [
+                {
+                  "stat": "heavyDamage",
+                  "operation": "amplifyPercent",
+                  "value": 24
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Echo Skill DMG",
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "amplifyPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Echo Skill DMG",
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "amplifyPercent",
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Echo Skill DMG",
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "amplifyPercent",
+                    "value": 36
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Echo Skill DMG",
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "amplifyPercent",
+                    "value": 42
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Echo Skill DMG",
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "amplifyPercent",
+                    "value": 48
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21030036:effect:2",
+            "sourceName": "To Fire She Returns",
+            "text": "Upon dealing Heavy Attack DMG, gain 24% Echo Skill DMG Amplification for 6s.",
+            "refinementTexts": [
+              "Upon dealing Heavy Attack DMG, gain 24% Echo Skill DMG Amplification for 6s.",
+              "Upon dealing Heavy Attack DMG, gain 30% Echo Skill DMG Amplification for 6s.",
+              "Upon dealing Heavy Attack DMG, gain 36% Echo Skill DMG Amplification for 6s.",
+              "Upon dealing Heavy Attack DMG, gain 42% Echo Skill DMG Amplification for 6s.",
+              "Upon dealing Heavy Attack DMG, gain 48% Echo Skill DMG Amplification for 6s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Heavy Attack DMG",
+              "durationSeconds": 6,
+              "modifiers": [
+                {
+                  "stat": "echoDamage",
+                  "operation": "addPercent",
+                  "value": 24
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Heavy Attack DMG",
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "echoDamage",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Heavy Attack DMG",
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "echoDamage",
+                    "operation": "addPercent",
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Heavy Attack DMG",
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "echoDamage",
+                    "operation": "addPercent",
+                    "value": 36
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Heavy Attack DMG",
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "echoDamage",
+                    "operation": "addPercent",
+                    "value": 42
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Heavy Attack DMG",
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "echoDamage",
+                    "operation": "addPercent",
+                    "value": 48
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21030036:effect:3",
+            "sourceName": "To Fire She Returns",
+            "text": "DMG Amplification on each attack is capped at 24%.",
+            "refinementTexts": [
+              "DMG Amplification on each attack is capped at 24%.",
+              "DMG Amplification on each attack is capped at 30%.",
+              "DMG Amplification on each attack is capped at 36%.",
+              "DMG Amplification on each attack is capped at 42%.",
+              "DMG Amplification on each attack is capped at 48%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21030036:effect:4",
+            "sourceName": "To Fire She Returns",
+            "text": "While both effects are active, dealing damage ignores 8% of the target's DEF.",
+            "refinementTexts": [
+              "While both effects are active, dealing damage ignores 8% of the target's DEF.",
+              "While both effects are active, dealing damage ignores 10% of the target's DEF.",
+              "While both effects are active, dealing damage ignores 12% of the target's DEF.",
+              "While both effects are active, dealing damage ignores 14% of the target's DEF.",
+              "While both effects are active, dealing damage ignores 16% of the target's DEF."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "DEFIgnore",
+                  "operation": "addPercent",
+                  "value": 8
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "DEFIgnore",
+                    "operation": "addPercent",
+                    "value": 8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "DEFIgnore",
+                    "operation": "addPercent",
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "DEFIgnore",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "DEFIgnore",
+                    "operation": "addPercent",
+                    "value": 14
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "DEFIgnore",
+                    "operation": "addPercent",
+                    "value": 16
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

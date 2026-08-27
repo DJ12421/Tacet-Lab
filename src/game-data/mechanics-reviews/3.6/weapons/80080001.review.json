@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "80080001",
+  "entityName": "Projection: Somnoire Anchor",
+  "sourceFingerprint": "94fa40221e3ad9c1ae1e0d7b0fec921902e29433f914a1795976e445c8374688",
+  "reviewedAt": "2026-08-26T11:44:24.541Z",
+  "sections": {
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390070074",
+  "entityName": "Cruisewing",
+  "sourceFingerprint": "017625cb860ce7c95de3eddf110729fa396ee0a37739ef0de2f9dad65d0b6fe0",
+  "reviewedAt": "2026-08-26T11:44:24.783Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "55c7132d3fa003904d7a26d12b0a6313f777cd1fa99b079448c998582009bc2a",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390070074:skill",
+            "name": "Cruisewing - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "hp",
+            "expressions": [
+              "Summon a Cruisewing that restores HP for all current team characters by 1% of their Max HPs plus an additional 80 points of HP, up to 4 times.\nCD: 8s",
+              "Summon a Cruisewing that restores HP for all current team characters by 1.20% of their Max HPs plus an additional 80 points of HP, up to 4 times.\nCD: 8s",
+              "Summon a Cruisewing that restores HP for all current team characters by 1.40% of their Max HPs plus an additional 80 points of HP, up to 4 times.\nCD: 8s",
+              "Summon a Cruisewing that restores HP for all current team characters by 1.60% of their Max HPs plus an additional 80 points of HP, up to 4 times.\nCD: 8s",
+              "Summon a Cruisewing that restores HP for all current team characters by 1.80% of their Max HPs plus an additional 80 points of HP, up to 4 times.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.01
+              ],
+              [
+                0.012
+              ],
+              [
+                0.013999999999999999
+              ],
+              [
+                0.016
+              ],
+              [
+                0.018000000000000002
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Cruisewing that restores HP for all current team characters by 1% of their Max HPs plus an additional 80 points of HP, up to 4 times.\nCD: 8s · Summon a Cruisewing that restores HP for all current team characters by 1.20% of their Max HPs plus an additional 80 points of HP, up to 4 times.\nCD: 8s · Summon a Cruisewing that restores HP for all current team characters by 1.40% of their Max HPs plus an additional 80 points of HP, up to 4 times.\nCD: 8s · Summon a Cruisewing that restores HP for all current team characters by 1.60% of their Max HPs plus an additional 80 points of HP, up to 4 times.\nCD: 8s · Summon a Cruisewing that restores HP for all current team characters by 1.80% of their Max HPs plus an additional 80 points of HP, up to 4 times.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

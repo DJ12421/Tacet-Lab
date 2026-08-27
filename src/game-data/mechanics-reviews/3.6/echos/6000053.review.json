@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000053",
+  "entityName": "Dreamless",
+  "sourceFingerprint": "8c1f6b0610c66fad56d9762f8de6a632c4c9b30dc44ea0264fbd376edbdf170b",
+  "reviewedAt": "2026-08-26T11:44:24.888Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "4dfe8b1ba2e2254f8e23f783354af12e400aec4aa8c3f9f2c9870ff74473ed14",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000053:skill",
+            "name": "Dreamless - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Dreamless and perform 6 consecutive strikes. The first 5 strikes deal 33.80% Havoc DMG each, and the last strike deal 169.00% Havoc DMG.\nThe DMG of this Echo Skill is increased by 50.00% during the first 5s after Rover: Havoc casts Resonance Liberation: Deadening Abyss.\nCD: 20s",
+              "Transform into Dreamless and perform 6 consecutive strikes. The first 5 strikes deal 38.87% Havoc DMG each, and the last strike deal 194.35% Havoc DMG.\nThe DMG of this Echo Skill is increased by 50.00% during the first 5s after Rover: Havoc casts Resonance Liberation: Deadening Abyss.\nCD: 20s",
+              "Transform into Dreamless and perform 6 consecutive strikes. The first 5 strikes deal 43.94% Havoc DMG each, and the last strike deal 219.70% Havoc DMG.\nThe DMG of this Echo Skill is increased by 50.00% during the first 5s after Rover: Havoc casts Resonance Liberation: Deadening Abyss.\nCD: 20s",
+              "Transform into Dreamless and perform 6 consecutive strikes. The first 5 strikes deal 49.01% Havoc DMG each, and the last strike deal 245.05% Havoc DMG.\nThe DMG of this Echo Skill is increased by 50.00% during the first 5s after Rover: Havoc casts Resonance Liberation: Deadening Abyss.\nCD: 20s",
+              "Transform into Dreamless and perform 6 consecutive strikes. The first 5 strikes deal 54.08% Havoc DMG each, and the last strike deal 270.40% Havoc DMG.\nThe DMG of this Echo Skill is increased by 50.00% during the first 5s after Rover: Havoc casts Resonance Liberation: Deadening Abyss.\nCD: 20s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.33799999999999997,
+                1.69,
+                0.5
+              ],
+              [
+                0.3887,
+                1.9435,
+                0.5
+              ],
+              [
+                0.43939999999999996,
+                2.197,
+                0.5
+              ],
+              [
+                0.4901,
+                2.4505,
+                0.5
+              ],
+              [
+                0.5408,
+                2.7039999999999997,
+                0.5
+              ]
+            ],
+            "count": 3,
+            "sourceText": "Transform into Dreamless and perform 6 consecutive strikes. The first 5 strikes deal 33.80% Havoc DMG each, and the last strike deal 169.00% Havoc DMG.\nThe DMG of this Echo Skill is increased by 50.00% during the first 5s after Rover: Havoc casts Resonance Liberation: Deadening Abyss.\nCD: 20s · Transform into Dreamless and perform 6 consecutive strikes. The first 5 strikes deal 38.87% Havoc DMG each, and the last strike deal 194.35% Havoc DMG.\nThe DMG of this Echo Skill is increased by 50.00% during the first 5s after Rover: Havoc casts Resonance Liberation: Deadening Abyss.\nCD: 20s · Transform into Dreamless and perform 6 consecutive strikes. The first 5 strikes deal 43.94% Havoc DMG each, and the last strike deal 219.70% Havoc DMG.\nThe DMG of this Echo Skill is increased by 50.00% during the first 5s after Rover: Havoc casts Resonance Liberation: Deadening Abyss.\nCD: 20s · Transform into Dreamless and perform 6 consecutive strikes. The first 5 strikes deal 49.01% Havoc DMG each, and the last strike deal 245.05% Havoc DMG.\nThe DMG of this Echo Skill is increased by 50.00% during the first 5s after Rover: Havoc casts Resonance Liberation: Deadening Abyss.\nCD: 20s · Transform into Dreamless and perform 6 consecutive strikes. The first 5 strikes deal 54.08% Havoc DMG each, and the last strike deal 270.40% Havoc DMG.\nThe DMG of this Echo Skill is increased by 50.00% during the first 5s after Rover: Havoc casts Resonance Liberation: Deadening Abyss.\nCD: 20s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "34293e06f10ec19ac35eb3542f79c6a773dd26a6a5a41f181573dbf4094bf020",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000053:effect:0",
+            "sourceName": "Dreamless",
+            "sourceType": "echo",
+            "text": "The DMG of this Echo Skill is increased by 50.00% during the first 5s after Rover: Havoc casts Resonance Liberation: Deadening Abyss.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Liberation",
+              "modifiers": [],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

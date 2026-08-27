@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "sonata",
+  "entityId": "31",
+  "entityName": "Reel of Spliced Memories",
+  "sourceFingerprint": "a54706b13fa7094fbfd35000f27f12d19c0ebe940f960dd65f1a8885fda078e7",
+  "reviewedAt": "2026-08-26T11:44:24.677Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "b647e00b763273f7cafe54e3acf3067b79122e00ad2babd699a73190bab613c8",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:31:2:0",
+            "sourceName": "Reel of Spliced Memories",
+            "text": "ATK + 10%",
+            "refinementTexts": [
+              "ATK + 10%"
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:31:5:0",
+            "sourceName": "Reel of Spliced Memories",
+            "text": "Inflicting Tune Rupture - Shifting or Tune Strain - Shifting on enemies increases the Tune Break Boost of Resonators in the team by 20 for 30s.",
+            "refinementTexts": [
+              "Inflicting Tune Rupture - Shifting or Tune Strain - Shifting on enemies increases the Tune Break Boost of Resonators in the team by 20 for 30s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 30,
+              "modifiers": [
+                {
+                  "stat": "tuneBreakBoost",
+                  "operation": "addPercent",
+                  "value": 20
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:31:5:1",
+            "sourceName": "Reel of Spliced Memories",
+            "text": "Effects of the same name do not stack.",
+            "refinementTexts": [
+              "Effects of the same name do not stack."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence.",
+                "Stack maximum was not explicit and requires review."
+              ]
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000206",
+  "entityName": "Kernel Puppet: Joy",
+  "sourceFingerprint": "c5affedec0a57c991eeafb3313b2755a91c2fd2c4a6e9f2a5ba4c6d963b9c67e",
+  "reviewedAt": "2026-08-26T11:44:25.136Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "9d7ae72265e73e9d1579e27305a2331def8014c7de92bcd7a89bb7a5d344e463",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000206:skill",
+            "name": "Kernel Puppet: Joy - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Use Echo Skill to summon Kernel Puppet: Joy to attack enemies, dealing 72.00% Physical DMG.\nCD: 8s",
+              "Use Echo Skill to summon Kernel Puppet: Joy to attack enemies, dealing 86.40% Physical DMG.\nCD: 8s",
+              "Use Echo Skill to summon Kernel Puppet: Joy to attack enemies, dealing 100.80% Physical DMG.\nCD: 8s",
+              "Use Echo Skill to summon Kernel Puppet: Joy to attack enemies, dealing 115.20% Physical DMG.\nCD: 8s",
+              "Use Echo Skill to summon Kernel Puppet: Joy to attack enemies, dealing 129.60% Physical DMG.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.72
+              ],
+              [
+                0.8640000000000001
+              ],
+              [
+                1.008
+              ],
+              [
+                1.1520000000000001
+              ],
+              [
+                1.296
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Use Echo Skill to summon Kernel Puppet: Joy to attack enemies, dealing 72.00% Physical DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Joy to attack enemies, dealing 86.40% Physical DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Joy to attack enemies, dealing 100.80% Physical DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Joy to attack enemies, dealing 115.20% Physical DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Joy to attack enemies, dealing 129.60% Physical DMG.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

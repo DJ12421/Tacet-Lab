@@ -1,0 +1,268 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21050045",
+  "entityName": "Boson Astrolabe",
+  "sourceFingerprint": "65943a160bb83416be6acc23ba4d8c32bb544d5b06a9b0252c3500300766749d",
+  "reviewedAt": "2026-08-26T11:44:24.347Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "0be48bbce45484317aab18a620fb34328509cd8c47745dab707cea5c204bcb7e",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050045:effect:0",
+            "sourceName": "Path Observer",
+            "text": "Increases ATK by 12%.",
+            "refinementTexts": [
+              "Increases ATK by 12%.",
+              "Increases ATK by 15%.",
+              "Increases ATK by 18%.",
+              "Increases ATK by 21%.",
+              "Increases ATK by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21050045:effect:1",
+            "sourceName": "Path Observer",
+            "text": "After a Resonator in the team casts a Tune Break skill, it grants a 12% ATK increase and 12% Basic Attack DMG Bonus to the wielder for 14s.",
+            "refinementTexts": [
+              "After a Resonator in the team casts a Tune Break skill, it grants a 12% ATK increase and 12% Basic Attack DMG Bonus to the wielder for 14s.",
+              "After a Resonator in the team casts a Tune Break skill, it grants a 13.5% ATK increase and 13.5% Basic Attack DMG Bonus to the wielder for 14s.",
+              "After a Resonator in the team casts a Tune Break skill, it grants a 15% ATK increase and 15% Basic Attack DMG Bonus to the wielder for 14s.",
+              "After a Resonator in the team casts a Tune Break skill, it grants a 16.5% ATK increase and 16.5% Basic Attack DMG Bonus to the wielder for 14s.",
+              "After a Resonator in the team casts a Tune Break skill, it grants a 18% ATK increase and 18% Basic Attack DMG Bonus to the wielder for 14s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 14,
+              "modifiers": [
+                {
+                  "stat": "basicDamage",
+                  "operation": "addPercent",
+                  "value": 12
+                },
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 12
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 13.5
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 13.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 15
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 16.5
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 16.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 18
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

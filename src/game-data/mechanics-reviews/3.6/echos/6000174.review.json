@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000174",
+  "entityName": "Tremor Warrior",
+  "sourceFingerprint": "f40b377c4c23270b7aaa9b7a0ddb52a7333370489ef44978a66c4dd5dda20398",
+  "reviewedAt": "2026-08-26T11:44:25.070Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "8628b1749c49eb7dfed51dbdc43ea605b87052bbce8002cbfe55c76096ad1f73",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000174:skill",
+            "name": "Tremor Warrior - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into a Tremor Warrior and viciously attack enemies in the front, dealing 114.00% Electro DMG.\nCD: 8s.",
+              "Transform into a Tremor Warrior and viciously attack enemies in the front, dealing 136.80% Electro DMG.\nCD: 8s.",
+              "Transform into a Tremor Warrior and viciously attack enemies in the front, dealing 159.60% Electro DMG.\nCD: 8s.",
+              "Transform into a Tremor Warrior and viciously attack enemies in the front, dealing 182.40% Electro DMG.\nCD: 8s.",
+              "Transform into a Tremor Warrior and viciously attack enemies in the front, dealing 205.20% Electro DMG.\nCD: 8s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.14
+              ],
+              [
+                1.368
+              ],
+              [
+                1.5959999999999999
+              ],
+              [
+                1.824
+              ],
+              [
+                2.052
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Transform into a Tremor Warrior and viciously attack enemies in the front, dealing 114.00% Electro DMG.\nCD: 8s. · Transform into a Tremor Warrior and viciously attack enemies in the front, dealing 136.80% Electro DMG.\nCD: 8s. · Transform into a Tremor Warrior and viciously attack enemies in the front, dealing 159.60% Electro DMG.\nCD: 8s. · Transform into a Tremor Warrior and viciously attack enemies in the front, dealing 182.40% Electro DMG.\nCD: 8s. · Transform into a Tremor Warrior and viciously attack enemies in the front, dealing 205.20% Electro DMG.\nCD: 8s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

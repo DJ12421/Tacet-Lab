@@ -1,0 +1,218 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "sonata",
+  "entityId": "30",
+  "entityName": "Wishes of Quiet Snowfall",
+  "sourceFingerprint": "bc2a54cadfa55abb3db3fd4e8efd386bd6e1d1a2d6df604e69d7c98f27fef854",
+  "reviewedAt": "2026-08-26T11:44:24.674Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "80882ca52d04a19b42043749b3fc392c3423b6fbc7d214af33b32e7e3b1b1da6",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:30:2:0",
+            "sourceName": "Wishes of Quiet Snowfall",
+            "text": "Glacio DMG + 10%",
+            "refinementTexts": [
+              "Glacio DMG + 10%"
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:30:5:0",
+            "sourceName": "Wishes of Quiet Snowfall",
+            "text": "Inflicting Glacio Chafe on enemies increases Glacio DMG dealt by 10% for 15s.",
+            "refinementTexts": [
+              "Inflicting Glacio Chafe on enemies increases Glacio DMG dealt by 10% for 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "Glacio",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:30:5:1",
+            "sourceName": "Wishes of Quiet Snowfall",
+            "text": "The Resonator gains the Snowfall effect for 15s, which can be triggered once every 25s.",
+            "refinementTexts": [
+              "The Resonator gains the Snowfall effect for 15s, which can be triggered once every 25s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 15,
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "sonata:30:5:2",
+            "sourceName": "Wishes of Quiet Snowfall",
+            "text": "While Snowfall is active:",
+            "refinementTexts": [
+              "While Snowfall is active:"
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "sonata:30:5:3",
+            "sourceName": "Wishes of Quiet Snowfall",
+            "text": "- Dealing Resonance Liberation DMG removes Snowfall and increases the Resonator's Crit. Rate by 25% for 6s.",
+            "refinementTexts": [
+              "- Dealing Resonance Liberation DMG removes Snowfall and increases the Resonator's Crit. Rate by 25% for 6s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 6,
+              "modifiers": [
+                {
+                  "stat": "critRate",
+                  "operation": "addPercent",
+                  "value": 25
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:30:5:4",
+            "sourceName": "Wishes of Quiet Snowfall",
+            "text": "While the effect is active, dealing Resonance Liberation DMG extends its duration by 4s, triggered once every 0.5s, up to 6 times.",
+            "refinementTexts": [
+              "While the effect is active, dealing Resonance Liberation DMG extends its duration by 4s, triggered once every 0.5s, up to 6 times."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 6
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "sonata:30:5:5",
+            "sourceName": "Wishes of Quiet Snowfall",
+            "text": "- Casting Outro Skill removes Snowfall and grants 25% Glacio DMG Bonus to the incoming Resonator for 15s.",
+            "refinementTexts": [
+              "- Casting Outro Skill removes Snowfall and grants 25% Glacio DMG Bonus to the incoming Resonator for 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "Glacio",
+                  "operation": "addPercent",
+                  "value": 25
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:30:5:6",
+            "sourceName": "Wishes of Quiet Snowfall",
+            "text": "When Snowfall is removed, only one of the effects above can be triggered.",
+            "refinementTexts": [
+              "When Snowfall is removed, only one of the effects above can be triggered."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

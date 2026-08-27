@@ -1,5 +1,5 @@
 import type { AggregatedStats, BuffEffect, Build, Echo, EnemyConfig, OwnedCharacter, OwnedWeapon } from '../types'
-import { calculationCatalogV2 } from '../../game-data/calculation-v2.generated'
+import { mechanicsCatalog as calculationCatalogV2 } from '../../game-data/mechanics'
 import type { CharacterCatalogEntry, WeaponCatalogEntry } from '../../game-data'
 import { applyCalculationEffects, createEffectAccumulator } from './effects'
 import { calculateAttackV2, calculateAttackV2Compact, type CompactCalculationResultV2 } from './damage'
@@ -149,7 +149,7 @@ function customEffect(effect: BuffEffect): CalculationEffectDefinition {
     description: 'Advanced custom modifier',
     sourceKind: 'custom',
     sourceId: effect.sourceBuildId,
-    scope: effect.target,
+    scope: effect.target === 'character' ? 'self' : effect.target,
     valueUnit: 'percent',
     alwaysEnabled: true,
     hasStacks: false,

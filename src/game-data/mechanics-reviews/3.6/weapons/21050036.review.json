@@ -1,0 +1,295 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21050036",
+  "entityName": "Stellar Symphony",
+  "sourceFingerprint": "aa9cbad621c1af14c731ea213d66e3299f8d85188bc7944333c1a1fb821a6ce4",
+  "reviewedAt": "2026-08-26T11:44:24.325Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "f1450b3c983271e4499dcf9eddb8dc2b1f38fe1d81d9626d8fbd640ecb171fda",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050036:effect:0",
+            "sourceName": "Astral Evolvement",
+            "text": "Increase HP by 12%.",
+            "refinementTexts": [
+              "Increase HP by 12%.",
+              "Increase HP by 15%.",
+              "Increase HP by 18%.",
+              "Increase HP by 21%.",
+              "Increase HP by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "hpPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "hpPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "hpPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "hpPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "hpPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "hpPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21050036:effect:1",
+            "sourceName": "Astral Evolvement",
+            "text": "Restore 8 Concerto Energy when casting Resonance Liberation. This effect can be triggered 1 time(s) every 20s.",
+            "refinementTexts": [
+              "Restore 8 Concerto Energy when casting Resonance Liberation. This effect can be triggered 1 time(s) every 20s.",
+              "Restore 10 Concerto Energy when casting Resonance Liberation. This effect can be triggered 1 time(s) every 20s.",
+              "Restore 12 Concerto Energy when casting Resonance Liberation. This effect can be triggered 1 time(s) every 20s.",
+              "Restore 14 Concerto Energy when casting Resonance Liberation. This effect can be triggered 1 time(s) every 20s.",
+              "Restore 16 Concerto Energy when casting Resonance Liberation. This effect can be triggered 1 time(s) every 20s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Liberation",
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21050036:effect:2",
+            "sourceName": "Astral Evolvement",
+            "text": "When casting Resonance Skill that heals, increase nearby party members' ATK by 14% for 30s.",
+            "refinementTexts": [
+              "When casting Resonance Skill that heals, increase nearby party members' ATK by 14% for 30s.",
+              "When casting Resonance Skill that heals, increase nearby party members' ATK by 17.5% for 30s.",
+              "When casting Resonance Skill that heals, increase nearby party members' ATK by 21% for 30s.",
+              "When casting Resonance Skill that heals, increase nearby party members' ATK by 24.5% for 30s.",
+              "When casting Resonance Skill that heals, increase nearby party members' ATK by 28% for 30s."
+            ],
+            "parsed": {
+              "scope": "team",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Skill",
+              "durationSeconds": 30,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 14
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "team",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 14
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "team",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 17.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "team",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "team",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "team",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 28
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21050036:effect:3",
+            "sourceName": "Astral Evolvement",
+            "text": "Effects of the same name cannot be stacked.",
+            "refinementTexts": [
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

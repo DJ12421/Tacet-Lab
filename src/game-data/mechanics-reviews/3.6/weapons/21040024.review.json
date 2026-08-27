@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21040024",
+  "entityName": "Marcato",
+  "sourceFingerprint": "4d5f78c946f73de950d92281f41ec65c128cdba19a12b3f7c023345b117f66ba",
+  "reviewedAt": "2026-08-26T11:44:24.188Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "d67c1c0c196fc5da30dd793a9561391d89a61085731655c87aa9c5b7a06ca7aa",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21040024:effect:0",
+            "sourceName": "Ceaseless Aria",
+            "text": "When Resonance Skill is cast, restores 8 Concerto Energy. This effect can be triggered 1 times every 20s.",
+            "refinementTexts": [
+              "When Resonance Skill is cast, restores 8 Concerto Energy. This effect can be triggered 1 times every 20s.",
+              "When Resonance Skill is cast, restores 10 Concerto Energy. This effect can be triggered 1 times every 20s.",
+              "When Resonance Skill is cast, restores 12 Concerto Energy. This effect can be triggered 1 times every 20s.",
+              "When Resonance Skill is cast, restores 14 Concerto Energy. This effect can be triggered 1 times every 20s.",
+              "When Resonance Skill is cast, restores 16 Concerto Energy. This effect can be triggered 1 times every 20s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Skill",
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

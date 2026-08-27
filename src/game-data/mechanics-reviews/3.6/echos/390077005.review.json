@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390077005",
+  "entityName": "Cyan-Feathered Heron",
+  "sourceFingerprint": "4f97d1b0a6bcf428a0f378b116e6b193d717ba10cd4015d6210eca672094a39f",
+  "reviewedAt": "2026-08-26T11:44:24.816Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "a39ed736539d22037deab4a09dc135f30035c352cbc0d6f48c50a9433cb4c174",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390077005:skill",
+            "name": "Cyan-Feathered Heron - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Cyan-Feathered Heron and charge at the enemies, dealing 148.00% Aero DMG; This Echo Skill interrupts enemy Special Skills upon dealing damage.\nCD: 15s",
+              "Transform into Cyan-Feathered Heron and charge at the enemies, dealing 170.20% Aero DMG; This Echo Skill interrupts enemy Special Skills upon dealing damage.\nCD: 15s",
+              "Transform into Cyan-Feathered Heron and charge at the enemies, dealing 192.40% Aero DMG; This Echo Skill interrupts enemy Special Skills upon dealing damage.\nCD: 15s",
+              "Transform into Cyan-Feathered Heron and charge at the enemies, dealing 214.60% Aero DMG; This Echo Skill interrupts enemy Special Skills upon dealing damage.\nCD: 15s",
+              "Transform into Cyan-Feathered Heron and charge at the enemies, dealing 236.80% Aero DMG; This Echo Skill interrupts enemy Special Skills upon dealing damage.\nCD: 15s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.48
+              ],
+              [
+                1.702
+              ],
+              [
+                1.9240000000000002
+              ],
+              [
+                2.146
+              ],
+              [
+                2.3680000000000003
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Transform into Cyan-Feathered Heron and charge at the enemies, dealing 148.00% Aero DMG; This Echo Skill interrupts enemy Special Skills upon dealing damage.\nCD: 15s · Transform into Cyan-Feathered Heron and charge at the enemies, dealing 170.20% Aero DMG; This Echo Skill interrupts enemy Special Skills upon dealing damage.\nCD: 15s · Transform into Cyan-Feathered Heron and charge at the enemies, dealing 192.40% Aero DMG; This Echo Skill interrupts enemy Special Skills upon dealing damage.\nCD: 15s · Transform into Cyan-Feathered Heron and charge at the enemies, dealing 214.60% Aero DMG; This Echo Skill interrupts enemy Special Skills upon dealing damage.\nCD: 15s · Transform into Cyan-Feathered Heron and charge at the enemies, dealing 236.80% Aero DMG; This Echo Skill interrupts enemy Special Skills upon dealing damage.\nCD: 15s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

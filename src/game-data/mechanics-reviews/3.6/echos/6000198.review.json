@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000198",
+  "entityName": "Voidwing Moth",
+  "sourceFingerprint": "723c1112601a5da0e6d3ef1285c11211408bce8ffc7c9b25941a87fe02779946",
+  "reviewedAt": "2026-08-26T11:44:25.119Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "e905fe21b9e6a834be002d1e40a54c0d4272ef6eaa954d078214c4644ba8b295",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000198:skill",
+            "name": "Voidwing Moth - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Echo Skill to transform into Voidwing Moth, dealing 225.00% Spectro DMG to nearby enemies.\nHold Echo Skill to continuously attack, dealing up to 12 instances of 27.41% Spectro DMG.\nWithin 15s after using this Echo skill, casting Outro Skill increases the incoming Resonator's ATK by 12.00% for 15s.\nCD: 25s",
+              "Echo Skill to transform into Voidwing Moth, dealing 270.00% Spectro DMG to nearby enemies.\nHold Echo Skill to continuously attack, dealing up to 12 instances of 32.89% Spectro DMG.\nWithin 15s after using this Echo skill, casting Outro Skill increases the incoming Resonator's ATK by 12.00% for 15s.\nCD: 25s",
+              "Echo Skill to transform into Voidwing Moth, dealing 315.00% Spectro DMG to nearby enemies.\nHold Echo Skill to continuously attack, dealing up to 12 instances of 38.37% Spectro DMG.\nWithin 15s after using this Echo skill, casting Outro Skill increases the incoming Resonator's ATK by 12.00% for 15s.\nCD: 25s",
+              "Echo Skill to transform into Voidwing Moth, dealing 360.00% Spectro DMG to nearby enemies.\nHold Echo Skill to continuously attack, dealing up to 12 instances of 43.85% Spectro DMG.\nWithin 15s after using this Echo skill, casting Outro Skill increases the incoming Resonator's ATK by 12.00% for 15s.\nCD: 25s",
+              "Echo Skill to transform into Voidwing Moth, dealing 405.00% Spectro DMG to nearby enemies.\nHold Echo Skill to continuously attack, dealing up to 12 instances of 49.33% Spectro DMG.\nWithin 15s after using this Echo skill, casting Outro Skill increases the incoming Resonator's ATK by 12.00% for 15s.\nCD: 25s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                2.25,
+                0.2741,
+                0.12
+              ],
+              [
+                2.7,
+                0.3289,
+                0.12
+              ],
+              [
+                3.15,
+                0.3837,
+                0.12
+              ],
+              [
+                3.6,
+                0.4385,
+                0.12
+              ],
+              [
+                4.05,
+                0.49329999999999996,
+                0.12
+              ]
+            ],
+            "count": 3,
+            "sourceText": "Echo Skill to transform into Voidwing Moth, dealing 225.00% Spectro DMG to nearby enemies.\nHold Echo Skill to continuously attack, dealing up to 12 instances of 27.41% Spectro DMG.\nWithin 15s after using this Echo skill, casting Outro Skill increases the incoming Resonator's ATK by 12.00% for 15s.\nCD: 25s · Echo Skill to transform into Voidwing Moth, dealing 270.00% Spectro DMG to nearby enemies.\nHold Echo Skill to continuously attack, dealing up to 12 instances of 32.89% Spectro DMG.\nWithin 15s after using this Echo skill, casting Outro Skill increases the incoming Resonator's ATK by 12.00% for 15s.\nCD: 25s · Echo Skill to transform into Voidwing Moth, dealing 315.00% Spectro DMG to nearby enemies.\nHold Echo Skill to continuously attack, dealing up to 12 instances of 38.37% Spectro DMG.\nWithin 15s after using this Echo skill, casting Outro Skill increases the incoming Resonator's ATK by 12.00% for 15s.\nCD: 25s · Echo Skill to transform into Voidwing Moth, dealing 360.00% Spectro DMG to nearby enemies.\nHold Echo Skill to continuously attack, dealing up to 12 instances of 43.85% Spectro DMG.\nWithin 15s after using this Echo skill, casting Outro Skill increases the incoming Resonator's ATK by 12.00% for 15s.\nCD: 25s · Echo Skill to transform into Voidwing Moth, dealing 405.00% Spectro DMG to nearby enemies.\nHold Echo Skill to continuously attack, dealing up to 12 instances of 49.33% Spectro DMG.\nWithin 15s after using this Echo skill, casting Outro Skill increases the incoming Resonator's ATK by 12.00% for 15s.\nCD: 25s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "f14b1e48c53e389cea02ab880be5c8c7ff88c6fad5c9bb8477daefab9deadb2a",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000198:effect:0",
+            "sourceName": "Voidwing Moth",
+            "sourceType": "echo",
+            "text": "Within 15s after using this Echo skill, casting Outro Skill increases the incoming Resonator's ATK by 12.00% for 15s.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

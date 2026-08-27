@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21050017",
+  "entityName": "Call of the Abyss",
+  "sourceFingerprint": "a25271a5506092728fa2b3fe39bffc8810653d3ee83649336fd60bf7a09e05f8",
+  "reviewedAt": "2026-08-26T11:44:24.286Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "4fad8974e4b656a199080986a3a2fa7a3b3b50e231015c591bc97df850571865",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050017:effect:0",
+            "sourceName": "Pole of the Celestial Dome",
+            "text": "Casting Resonance Liberation increases the Resonator's Healing Bonus by 16% for 15s.",
+            "refinementTexts": [
+              "Casting Resonance Liberation increases the Resonator's Healing Bonus by 16% for 15s.",
+              "Casting Resonance Liberation increases the Resonator's Healing Bonus by 20% for 15s.",
+              "Casting Resonance Liberation increases the Resonator's Healing Bonus by 24% for 15s.",
+              "Casting Resonance Liberation increases the Resonator's Healing Bonus by 28% for 15s.",
+              "Casting Resonance Liberation increases the Resonator's Healing Bonus by 32% for 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Liberation",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "healingBonus",
+                  "operation": "addPercent",
+                  "value": 16
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "healingBonus",
+                    "operation": "addPercent",
+                    "value": 16
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "healingBonus",
+                    "operation": "addPercent",
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "healingBonus",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "healingBonus",
+                    "operation": "addPercent",
+                    "value": 28
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "healingBonus",
+                    "operation": "addPercent",
+                    "value": 32
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

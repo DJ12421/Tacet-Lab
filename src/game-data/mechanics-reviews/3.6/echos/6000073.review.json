@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000073",
+  "entityName": "Questless Knight",
+  "sourceFingerprint": "f0e6ce0d73511952758f957bd77725d9322e648e4bf55572703e97b054440175",
+  "reviewedAt": "2026-08-26T11:44:24.927Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "bcb9fbdc83b80489a65c49ce8daef22cbf0035a1cd4221e41d5c861f82803291",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000073:skill",
+            "name": "Questless Knight - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Questless Knight and smash the surrounding enemies, dealing 174.00% Electro DMG.\nCD: 20s.",
+              "Transform into Questless Knight and smash the surrounding enemies, dealing 208.80% Electro DMG.\nCD: 20s.",
+              "Transform into Questless Knight and smash the surrounding enemies, dealing 243.60% Electro DMG.\nCD: 20s.",
+              "Transform into Questless Knight and smash the surrounding enemies, dealing 278.40% Electro DMG.\nCD: 20s.",
+              "Transform into Questless Knight and smash the surrounding enemies, dealing 313.20% Electro DMG.\nCD: 20s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.74
+              ],
+              [
+                2.088
+              ],
+              [
+                2.436
+              ],
+              [
+                2.784
+              ],
+              [
+                3.1319999999999997
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Transform into Questless Knight and smash the surrounding enemies, dealing 174.00% Electro DMG.\nCD: 20s. · Transform into Questless Knight and smash the surrounding enemies, dealing 208.80% Electro DMG.\nCD: 20s. · Transform into Questless Knight and smash the surrounding enemies, dealing 243.60% Electro DMG.\nCD: 20s. · Transform into Questless Knight and smash the surrounding enemies, dealing 278.40% Electro DMG.\nCD: 20s. · Transform into Questless Knight and smash the surrounding enemies, dealing 313.20% Electro DMG.\nCD: 20s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

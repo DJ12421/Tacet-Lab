@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21020024",
+  "entityName": "Overture",
+  "sourceFingerprint": "e2855866c3fca337c3da69b31c05aca8dd75d617bbc863bfd2aba1a748530955",
+  "reviewedAt": "2026-08-26T11:44:23.972Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "443dada7991aa4bba327f5afce8354ca924ecf3e6aa1c957aa95036bfc62af84",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020024:effect:0",
+            "sourceName": "Ceaseless Aria",
+            "text": "When Resonance Skill is cast, restores 8 Concerto Energy. This effect can be triggered 1 time(s) every 20s.",
+            "refinementTexts": [
+              "When Resonance Skill is cast, restores 8 Concerto Energy. This effect can be triggered 1 time(s) every 20s.",
+              "When Resonance Skill is cast, restores 10 Concerto Energy. This effect can be triggered 1 time(s) every 20s.",
+              "When Resonance Skill is cast, restores 12 Concerto Energy. This effect can be triggered 1 time(s) every 20s.",
+              "When Resonance Skill is cast, restores 14 Concerto Energy. This effect can be triggered 1 time(s) every 20s.",
+              "When Resonance Skill is cast, restores 16 Concerto Energy. This effect can be triggered 1 time(s) every 20s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Skill",
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

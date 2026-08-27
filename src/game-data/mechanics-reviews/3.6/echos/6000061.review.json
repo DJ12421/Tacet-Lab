@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000061",
+  "entityName": "Galescourge Stalker",
+  "sourceFingerprint": "320833e1575988c7d4f5d16d7ba1e31a1c5b23601f875f60408e211d97eaecdf",
+  "reviewedAt": "2026-08-26T11:44:24.906Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "f91191151bf6dc21c18414595c8826661ffa150f62c11675317caa25f4c0cb80",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000061:skill",
+            "name": "Galescourge Stalker - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "hp",
+            "expressions": [
+              "Summon a Galescourge Stalker that restores nearby party members' HP by 1.50% of their Max HP, up to 3 times.\nCD: 8s.",
+              "Summon a Galescourge Stalker that restores nearby party members' HP by 1.80% of their Max HP, up to 3 times.\nCD: 8s.",
+              "Summon a Galescourge Stalker that restores nearby party members' HP by 2.10% of their Max HP, up to 3 times.\nCD: 8s.",
+              "Summon a Galescourge Stalker that restores nearby party members' HP by 2.40% of their Max HP, up to 3 times.\nCD: 8s.",
+              "Summon a Galescourge Stalker that restores nearby party members' HP by 2.70% of their Max HP, up to 3 times.\nCD: 8s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.015
+              ],
+              [
+                0.018000000000000002
+              ],
+              [
+                0.021
+              ],
+              [
+                0.024
+              ],
+              [
+                0.027000000000000003
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Galescourge Stalker that restores nearby party members' HP by 1.50% of their Max HP, up to 3 times.\nCD: 8s. · Summon a Galescourge Stalker that restores nearby party members' HP by 1.80% of their Max HP, up to 3 times.\nCD: 8s. · Summon a Galescourge Stalker that restores nearby party members' HP by 2.10% of their Max HP, up to 3 times.\nCD: 8s. · Summon a Galescourge Stalker that restores nearby party members' HP by 2.40% of their Max HP, up to 3 times.\nCD: 8s. · Summon a Galescourge Stalker that restores nearby party members' HP by 2.70% of their Max HP, up to 3 times.\nCD: 8s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

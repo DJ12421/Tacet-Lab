@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000215",
+  "entityName": "Fog Lionarch",
+  "sourceFingerprint": "dbcfcb2b50b9eee4df916215a59cbf8bde67151d9342e87c849d55d1a3ef9ce3",
+  "reviewedAt": "2026-08-26T11:44:25.152Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "bcbb47ec7a9a063698f4307befd19cecf412fbc9f7fb93db21194bc6fb0bd8f0",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000215:skill",
+            "name": "Fog Lionarch - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Use Echo Skill to summon Fog Lionarch to spit fire toward enemies, dealing 7 stages of 18.85% Fusion DMG.\nCD: 20s",
+              "Use Echo Skill to summon Fog Lionarch to spit fire toward enemies, dealing 7 stages of 22.62% Fusion DMG.\nCD: 20s",
+              "Use Echo Skill to summon Fog Lionarch to spit fire toward enemies, dealing 7 stages of 26.39% Fusion DMG.\nCD: 20s",
+              "Use Echo Skill to summon Fog Lionarch to spit fire toward enemies, dealing 7 stages of 30.16% Fusion DMG.\nCD: 20s",
+              "Use Echo Skill to summon Fog Lionarch to spit fire toward enemies, dealing 7 stages of 33.93% Fusion DMG.\nCD: 20s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.1885
+              ],
+              [
+                0.2262
+              ],
+              [
+                0.2639
+              ],
+              [
+                0.3016
+              ],
+              [
+                0.3393
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Use Echo Skill to summon Fog Lionarch to spit fire toward enemies, dealing 7 stages of 18.85% Fusion DMG.\nCD: 20s · Use Echo Skill to summon Fog Lionarch to spit fire toward enemies, dealing 7 stages of 22.62% Fusion DMG.\nCD: 20s · Use Echo Skill to summon Fog Lionarch to spit fire toward enemies, dealing 7 stages of 26.39% Fusion DMG.\nCD: 20s · Use Echo Skill to summon Fog Lionarch to spit fire toward enemies, dealing 7 stages of 30.16% Fusion DMG.\nCD: 20s · Use Echo Skill to summon Fog Lionarch to spit fire toward enemies, dealing 7 stages of 33.93% Fusion DMG.\nCD: 20s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000207",
+  "entityName": "Kernel Puppet: Anger",
+  "sourceFingerprint": "48c1d7f79a3f7d134a06bbe4daf8e1e78ab42e9b71e1f562a2930355504aed1c",
+  "reviewedAt": "2026-08-26T11:44:25.137Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "8e474a1569385644cf85f5b5d1932db1dbe2e023d63da0092b7a94e7f8f435b1",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000207:skill",
+            "name": "Kernel Puppet: Anger - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Use Echo Skill to summon Kernel Puppet: Worry to attack enemies, dealing 72.00% Fusion DMG.\nCD: 8s",
+              "Use Echo Skill to summon Kernel Puppet: Worry to attack enemies, dealing 86.40% Fusion DMG.\nCD: 8s",
+              "Use Echo Skill to summon Kernel Puppet: Worry to attack enemies, dealing 100.80% Fusion DMG.\nCD: 8s",
+              "Use Echo Skill to summon Kernel Puppet: Worry to attack enemies, dealing 115.20% Fusion DMG.\nCD: 8s",
+              "Use Echo Skill to summon Kernel Puppet: Worry to attack enemies, dealing 129.60% Fusion DMG.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.72
+              ],
+              [
+                0.8640000000000001
+              ],
+              [
+                1.008
+              ],
+              [
+                1.1520000000000001
+              ],
+              [
+                1.296
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Use Echo Skill to summon Kernel Puppet: Worry to attack enemies, dealing 72.00% Fusion DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Worry to attack enemies, dealing 86.40% Fusion DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Worry to attack enemies, dealing 100.80% Fusion DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Worry to attack enemies, dealing 115.20% Fusion DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Worry to attack enemies, dealing 129.60% Fusion DMG.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

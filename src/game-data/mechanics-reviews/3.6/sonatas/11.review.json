@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "sonata",
+  "entityId": "11",
+  "entityName": "Eternal Radiance",
+  "sourceFingerprint": "f0c82067545d78e880c180a477e61d2f5aaa016c120159bb23127b1886a1c445",
+  "reviewedAt": "2026-08-26T11:44:24.576Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "a707df52c1ac28076e57e646c8a2ab3cc37cb1fb54e4232bcb5f62a636244c59",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:11:2:0",
+            "sourceName": "Eternal Radiance",
+            "text": "Spectro DMG + 10%",
+            "refinementTexts": [
+              "Spectro DMG + 10%"
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:11:5:0",
+            "sourceName": "Eternal Radiance",
+            "text": "Inflicting Spectro Frazzle on enemies increases Crit. Rate by 20% for 15s.",
+            "refinementTexts": [
+              "Inflicting Spectro Frazzle on enemies increases Crit. Rate by 20% for 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "critRate",
+                  "operation": "addPercent",
+                  "value": 20
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:11:5:1",
+            "sourceName": "Eternal Radiance",
+            "text": "Attacking enemies inflicted with 10 stacks of Spectro Frazzle grants 15% Spectro DMG Bonus for 15s.",
+            "refinementTexts": [
+              "Attacking enemies inflicted with 10 stacks of Spectro Frazzle grants 15% Spectro DMG Bonus for 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 10
+              },
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "Spectro",
+                  "operation": "addPercent",
+                  "value": 15
+                }
+              ],
+              "confidence": "review",
+              "warnings": [
+                "A stack threshold was used as the selectable maximum and requires review."
+              ]
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

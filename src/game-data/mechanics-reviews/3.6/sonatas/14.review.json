@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "sonata",
+  "entityId": "14",
+  "entityName": "Tidebreaking Courage",
+  "sourceFingerprint": "7d3a5580b222bc33bbbeddd02d56fae5ac9698524127ca6de4b89a4b72a78146",
+  "reviewedAt": "2026-08-26T11:44:24.587Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "289a70b3160dae68c82c24b8385b85c8a6ab43b801f997b1565b20593b56f55b",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:14:2:0",
+            "sourceName": "Tidebreaking Courage",
+            "text": "Energy Regen + 10%",
+            "refinementTexts": [
+              "Energy Regen + 10%"
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "energyRegen",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:14:5:0",
+            "sourceName": "Tidebreaking Courage",
+            "text": "Increase the Resonator's ATK by 15%.",
+            "refinementTexts": [
+              "Increase the Resonator's ATK by 15%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 15
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:14:5:1",
+            "sourceName": "Tidebreaking Courage",
+            "text": "Reaching 250% Energy Regen increases all Attribute DMG by 30% for the Resonator.",
+            "refinementTexts": [
+              "Reaching 250% Energy Regen increases all Attribute DMG by 30% for the Resonator."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "AllElementAttributeBonus",
+                  "operation": "addPercent",
+                  "value": 30
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

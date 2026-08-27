@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21010074",
+  "entityName": "Autumntrace",
+  "sourceFingerprint": "8ca0b1cc9cf38998c04098e5ba5255fd63ae32a5f2e916acf3b419f389db2b34",
+  "reviewedAt": "2026-08-26T11:44:23.909Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "91200bfd95e7d26713d4c7a4618ef5a1deebc6addd0f26b47534ed830278d313",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21010074:effect:0",
+            "sourceName": "Edge Direction",
+            "text": "Increases ATK by 4% upon dealing Basic Attack DMG or Heavy Attack DMG, stacking up to 5 time(s). This effect lasts for 7s and can be triggered 1 time(s) every 1s.",
+            "refinementTexts": [
+              "Increases ATK by 4% upon dealing Basic Attack DMG or Heavy Attack DMG, stacking up to 5 time(s). This effect lasts for 7s and can be triggered 1 time(s) every 1s.",
+              "Increases ATK by 6.2% upon dealing Basic Attack DMG or Heavy Attack DMG, stacking up to 5 time(s). This effect lasts for 7s and can be triggered 1 time(s) every 1s.",
+              "Increases ATK by 8.4% upon dealing Basic Attack DMG or Heavy Attack DMG, stacking up to 5 time(s). This effect lasts for 7s and can be triggered 1 time(s) every 1s.",
+              "Increases ATK by 10.6% upon dealing Basic Attack DMG or Heavy Attack DMG, stacking up to 5 time(s). This effect lasts for 7s and can be triggered 1 time(s) every 1s.",
+              "Increases ATK by 12.8% upon dealing Basic Attack DMG or Heavy Attack DMG, stacking up to 5 time(s). This effect lasts for 7s and can be triggered 1 time(s) every 1s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 5
+              },
+              "trigger": "Basic Attack DMG",
+              "durationSeconds": 7,
+              "modifiers": [
+                {
+                  "stat": "basicDamage",
+                  "operation": "addPercent",
+                  "value": 4
+                },
+                {
+                  "stat": "heavyDamage",
+                  "operation": "addPercent",
+                  "value": 4
+                },
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 4
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 7,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 4
+                  },
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 4
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 4
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 7,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 6.2
+                  },
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 6.2
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 6.2
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 7,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 8.4
+                  },
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 8.4
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 8.4
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 7,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 10.6
+                  },
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 10.6
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 10.6
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 7,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 12.8
+                  },
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 12.8
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12.8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

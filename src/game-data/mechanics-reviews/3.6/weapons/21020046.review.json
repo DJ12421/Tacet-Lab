@@ -1,0 +1,214 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21020046",
+  "entityName": "Bloodpact's Pledge",
+  "sourceFingerprint": "0389d7b04881853292e8664b8f18c880b50ac4d2a996c4c15332294cbf45ec48",
+  "reviewedAt": "2026-08-26T11:44:24.009Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "8b67bea7f29b81159cd5b188c032f6ae03cc750fd1494214a26702f32791ba17",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020046:effect:0",
+            "sourceName": "Harmonious Vibrancy",
+            "text": "Providing Healing increases Resonance Skill DMG by 10% for 6s.",
+            "refinementTexts": [
+              "Providing Healing increases Resonance Skill DMG by 10% for 6s.",
+              "Providing Healing increases Resonance Skill DMG by 14% for 6s.",
+              "Providing Healing increases Resonance Skill DMG by 18% for 6s.",
+              "Providing Healing increases Resonance Skill DMG by 22% for 6s.",
+              "Providing Healing increases Resonance Skill DMG by 26% for 6s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 6,
+              "modifiers": [
+                {
+                  "stat": "skillDamage",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 14
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 22
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 26
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21020046:effect:1",
+            "sourceName": "Harmonious Vibrancy",
+            "text": "When Rover: Aero casts Resonance Skill Unbound Flow, Aero DMG dealt by nearby Resonators on the field is Amplified by 10% for 30s.",
+            "refinementTexts": [
+              "When Rover: Aero casts Resonance Skill Unbound Flow, Aero DMG dealt by nearby Resonators on the field is Amplified by 10% for 30s.",
+              "When Rover: Aero casts Resonance Skill Unbound Flow, Aero DMG dealt by nearby Resonators on the field is Amplified by 14% for 30s.",
+              "When Rover: Aero casts Resonance Skill Unbound Flow, Aero DMG dealt by nearby Resonators on the field is Amplified by 18% for 30s.",
+              "When Rover: Aero casts Resonance Skill Unbound Flow, Aero DMG dealt by nearby Resonators on the field is Amplified by 22% for 30s.",
+              "When Rover: Aero casts Resonance Skill Unbound Flow, Aero DMG dealt by nearby Resonators on the field is Amplified by 26% for 30s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Skill",
+              "durationSeconds": 30,
+              "modifiers": [],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 30,
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 30,
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 30,
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 30,
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 30,
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

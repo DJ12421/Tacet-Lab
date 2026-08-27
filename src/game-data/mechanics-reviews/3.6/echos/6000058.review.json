@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000058",
+  "entityName": "Lightcrusher",
+  "sourceFingerprint": "b0f0534f5cc5abf24b76eca38984a5752f4a5ea40f8cdcb2ab20e5658bf4702c",
+  "reviewedAt": "2026-08-26T11:44:24.897Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "ae06f3eb2d97f363d40494c12cc3c7ce7d0179f89cae4e14d1b5b404d4577665",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000058:skill",
+            "name": "Lightcrusher - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Lunge forward as a Lightcrusher, dealing 84.60% Spectro DMG. Generate 6 Ablucence on hit. Each Ablucence explosion deals 9.40% Spectro DMG.\nHold the Echo Skill to stay in the Lightcrusher form, which allows you to leap up and pounce forward in the air for a short distance.\nCooldown: 15s",
+              "Lunge forward as a Lightcrusher, dealing 97.29% Spectro DMG. Generate 6 Ablucence on hit. Each Ablucence explosion deals 10.81% Spectro DMG.\nHold the Echo Skill to stay in the Lightcrusher form, which allows you to leap up and pounce forward in the air for a short distance.\nCooldown: 15s",
+              "Lunge forward as a Lightcrusher, dealing 109.98% Spectro DMG. Generate 6 Ablucence on hit. Each Ablucence explosion deals 12.22% Spectro DMG.\nHold the Echo Skill to stay in the Lightcrusher form, which allows you to leap up and pounce forward in the air for a short distance.\nCooldown: 15s",
+              "Lunge forward as a Lightcrusher, dealing 122.67% Spectro DMG. Generate 6 Ablucence on hit. Each Ablucence explosion deals 13.63% Spectro DMG.\nHold the Echo Skill to stay in the Lightcrusher form, which allows you to leap up and pounce forward in the air for a short distance.\nCooldown: 15s",
+              "Lunge forward as a Lightcrusher, dealing 135.36% Spectro DMG. Generate 6 Ablucence on hit. Each Ablucence explosion deals 15.04% Spectro DMG.\nHold the Echo Skill to stay in the Lightcrusher form, which allows you to leap up and pounce forward in the air for a short distance.\nCooldown: 15s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.846,
+                0.094
+              ],
+              [
+                0.9729000000000001,
+                0.1081
+              ],
+              [
+                1.0998,
+                0.1222
+              ],
+              [
+                1.2267000000000001,
+                0.1363
+              ],
+              [
+                1.3536000000000001,
+                0.15039999999999998
+              ]
+            ],
+            "count": 2,
+            "sourceText": "Lunge forward as a Lightcrusher, dealing 84.60% Spectro DMG. Generate 6 Ablucence on hit. Each Ablucence explosion deals 9.40% Spectro DMG.\nHold the Echo Skill to stay in the Lightcrusher form, which allows you to leap up and pounce forward in the air for a short distance.\nCooldown: 15s · Lunge forward as a Lightcrusher, dealing 97.29% Spectro DMG. Generate 6 Ablucence on hit. Each Ablucence explosion deals 10.81% Spectro DMG.\nHold the Echo Skill to stay in the Lightcrusher form, which allows you to leap up and pounce forward in the air for a short distance.\nCooldown: 15s · Lunge forward as a Lightcrusher, dealing 109.98% Spectro DMG. Generate 6 Ablucence on hit. Each Ablucence explosion deals 12.22% Spectro DMG.\nHold the Echo Skill to stay in the Lightcrusher form, which allows you to leap up and pounce forward in the air for a short distance.\nCooldown: 15s · Lunge forward as a Lightcrusher, dealing 122.67% Spectro DMG. Generate 6 Ablucence on hit. Each Ablucence explosion deals 13.63% Spectro DMG.\nHold the Echo Skill to stay in the Lightcrusher form, which allows you to leap up and pounce forward in the air for a short distance.\nCooldown: 15s · Lunge forward as a Lightcrusher, dealing 135.36% Spectro DMG. Generate 6 Ablucence on hit. Each Ablucence explosion deals 15.04% Spectro DMG.\nHold the Echo Skill to stay in the Lightcrusher form, which allows you to leap up and pounce forward in the air for a short distance.\nCooldown: 15s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

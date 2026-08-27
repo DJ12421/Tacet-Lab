@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "80080006",
+  "entityName": "Projection: Formless Rectifier",
+  "sourceFingerprint": "07df99b3f712bd9929c92fa9abebcc214d2095d6889f1df1aedf9f124b9b9ee6",
+  "reviewedAt": "2026-08-26T11:44:24.553Z",
+  "sections": {
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

@@ -1,0 +1,363 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21050056",
+  "entityName": "Whispers of Sirens",
+  "sourceFingerprint": "62e7178968f5b4ce91e4f01bcbfc27b119e0bc2a08ba02e2e018627b767a7c14",
+  "reviewedAt": "2026-08-26T11:44:24.457Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "d04858e30878e0b83ee507e54278d8f82d9bc7734038be9718a492ae9ba22032",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050056:effect:0",
+            "sourceName": "From the Deep",
+            "text": "Increases ATK by 12%.",
+            "refinementTexts": [
+              "Increases ATK by 12%.",
+              "Increases ATK by 15%.",
+              "Increases ATK by 18%.",
+              "Increases ATK by 21%.",
+              "Increases ATK by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21050056:effect:1",
+            "sourceName": "From the Deep",
+            "text": "Casting Echo Skill within 10s after casting Intro Skill or Basic Attacks grants 1 of Gentle Dream.",
+            "refinementTexts": [
+              "Casting Echo Skill within 10s after casting Intro Skill or Basic Attacks grants 1 of Gentle Dream.",
+              "Casting Echo Skill within 10s after casting Intro Skill or Basic Attacks grants 1 of Gentle Dream.",
+              "Casting Echo Skill within 10s after casting Intro Skill or Basic Attacks grants 1 of Gentle Dream.",
+              "Casting Echo Skill within 10s after casting Intro Skill or Basic Attacks grants 1 of Gentle Dream.",
+              "Casting Echo Skill within 10s after casting Intro Skill or Basic Attacks grants 1 of Gentle Dream."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Echo Skill",
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21050056:effect:2",
+            "sourceName": "From the Deep",
+            "text": "Echoes with the same name can only trigger this effect once, stacking up to 2 times, lasting for 10s.",
+            "refinementTexts": [
+              "Echoes with the same name can only trigger this effect once, stacking up to 2 times, lasting for 10s.",
+              "Echoes with the same name can only trigger this effect once, stacking up to 2 times, lasting for 10s.",
+              "Echoes with the same name can only trigger this effect once, stacking up to 2 times, lasting for 10s.",
+              "Echoes with the same name can only trigger this effect once, stacking up to 2 times, lasting for 10s.",
+              "Echoes with the same name can only trigger this effect once, stacking up to 2 times, lasting for 10s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 2
+              },
+              "durationSeconds": 10,
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21050056:effect:3",
+            "sourceName": "From the Deep",
+            "text": "When reaching 2 stacks, casting Echo Skill no longer resets the duration of this effect. This effect activates up to once per 10s.",
+            "refinementTexts": [
+              "When reaching 2 stacks, casting Echo Skill no longer resets the duration of this effect. This effect activates up to once per 10s.",
+              "When reaching 2 stacks, casting Echo Skill no longer resets the duration of this effect. This effect activates up to once per 10s.",
+              "When reaching 2 stacks, casting Echo Skill no longer resets the duration of this effect. This effect activates up to once per 10s.",
+              "When reaching 2 stacks, casting Echo Skill no longer resets the duration of this effect. This effect activates up to once per 10s.",
+              "When reaching 2 stacks, casting Echo Skill no longer resets the duration of this effect. This effect activates up to once per 10s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21050056:effect:4",
+            "sourceName": "From the Deep",
+            "text": "Switching to another Resonator ends this effect early.",
+            "refinementTexts": [
+              "Switching to another Resonator ends this effect early.",
+              "Switching to another Resonator ends this effect early.",
+              "Switching to another Resonator ends this effect early.",
+              "Switching to another Resonator ends this effect early.",
+              "Switching to another Resonator ends this effect early."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21050056:effect:5",
+            "sourceName": "From the Deep",
+            "text": "With 1: Grants 40% Basic Attack DMG Bonus.",
+            "refinementTexts": [
+              "With 1: Grants 40% Basic Attack DMG Bonus.",
+              "With 1: Grants 50% Basic Attack DMG Bonus.",
+              "With 1: Grants 60% Basic Attack DMG Bonus.",
+              "With 1: Grants 70% Basic Attack DMG Bonus.",
+              "With 1: Grants 80% Basic Attack DMG Bonus."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "basicDamage",
+                  "operation": "addPercent",
+                  "value": 40
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 40
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 50
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 60
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 70
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 80
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21050056:effect:6",
+            "sourceName": "From the Deep",
+            "text": "With 2: Ignores 12% of the target's Havoc RES.",
+            "refinementTexts": [
+              "With 2: Ignores 12% of the target's Havoc RES.",
+              "With 2: Ignores 15% of the target's Havoc RES.",
+              "With 2: Ignores 18% of the target's Havoc RES.",
+              "With 2: Ignores 21% of the target's Havoc RES.",
+              "With 2: Ignores 24% of the target's Havoc RES."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

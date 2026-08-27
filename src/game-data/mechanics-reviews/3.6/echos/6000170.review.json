@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000170",
+  "entityName": "Nightmare: Baby Roseshroom",
+  "sourceFingerprint": "0d37425ef05b442a7308ed69956eaa08f11d324ff38b482fea8da840d72fb410",
+  "reviewedAt": "2026-08-26T11:44:25.062Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "46ed8816154f894481ad41a856a2ba74746824fc7775b8f9074df3d06a760df6",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000170:skill",
+            "name": "Nightmare: Baby Roseshroom - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Baby Roseshroom that fires a laser, dealing 20.00%+40 Havoc DMG.\nCD: 8s",
+              "Summon a Baby Roseshroom that fires a laser, dealing 23.00%+46 Havoc DMG.\nCD: 8s",
+              "Summon a Baby Roseshroom that fires a laser, dealing 26.00%+52 Havoc DMG.\nCD: 8s",
+              "Summon a Baby Roseshroom that fires a laser, dealing 29.00%+58 Havoc DMG.\nCD: 8s",
+              "Summon a Baby Roseshroom that fires a laser, dealing 32.00%+64 Havoc DMG.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.2
+              ],
+              [
+                0.23
+              ],
+              [
+                0.26
+              ],
+              [
+                0.29
+              ],
+              [
+                0.32
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Baby Roseshroom that fires a laser, dealing 20.00%+40 Havoc DMG.\nCD: 8s · Summon a Baby Roseshroom that fires a laser, dealing 23.00%+46 Havoc DMG.\nCD: 8s · Summon a Baby Roseshroom that fires a laser, dealing 26.00%+52 Havoc DMG.\nCD: 8s · Summon a Baby Roseshroom that fires a laser, dealing 29.00%+58 Havoc DMG.\nCD: 8s · Summon a Baby Roseshroom that fires a laser, dealing 32.00%+64 Havoc DMG.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

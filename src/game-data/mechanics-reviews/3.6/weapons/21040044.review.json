@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21040044",
+  "entityName": "Amity Accord",
+  "sourceFingerprint": "05160ad5d937638c65617ee64790276d4ca2ceb849ad5c8f926c9b73f52984af",
+  "reviewedAt": "2026-08-26T11:44:24.210Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "bf0426ec342326c6f42a2215789dc497ef072a7a81291dacd8765cafaa7810e0",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21040044:effect:0",
+            "sourceName": "Camaraderie",
+            "text": "When Intro Skill is cast, increases Resonance Liberation DMG Bonus by 20%, lasting for 15s.",
+            "refinementTexts": [
+              "When Intro Skill is cast, increases Resonance Liberation DMG Bonus by 20%, lasting for 15s.",
+              "When Intro Skill is cast, increases Resonance Liberation DMG Bonus by 25%, lasting for 15s.",
+              "When Intro Skill is cast, increases Resonance Liberation DMG Bonus by 30%, lasting for 15s.",
+              "When Intro Skill is cast, increases Resonance Liberation DMG Bonus by 35%, lasting for 15s.",
+              "When Intro Skill is cast, increases Resonance Liberation DMG Bonus by 40%, lasting for 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Intro Skill",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "liberationDamage",
+                  "operation": "addPercent",
+                  "value": 20
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 25
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 35
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 40
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

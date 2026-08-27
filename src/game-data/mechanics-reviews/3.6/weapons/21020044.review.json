@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21020044",
+  "entityName": "Commando of Conviction",
+  "sourceFingerprint": "ec8f3ec330614f2af77af10e03f018d03afda9992f30c5a0e88540dff28261e2",
+  "reviewedAt": "2026-08-26T11:44:23.998Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "d1f763cdbb6e579ce94ab527216a98db412424eef0c859420f86645735d6ffe3",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020044:effect:0",
+            "sourceName": "Unyielding",
+            "text": "When Intro Skill is cast, increases ATK by 15%, lasting for 15s.",
+            "refinementTexts": [
+              "When Intro Skill is cast, increases ATK by 15%, lasting for 15s.",
+              "When Intro Skill is cast, increases ATK by 18.75%, lasting for 15s.",
+              "When Intro Skill is cast, increases ATK by 22.5%, lasting for 15s.",
+              "When Intro Skill is cast, increases ATK by 26.25%, lasting for 15s.",
+              "When Intro Skill is cast, increases ATK by 30%, lasting for 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Intro Skill",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 15
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18.75
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 22.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 26.25
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000045",
+  "entityName": "Mourning Aix",
+  "sourceFingerprint": "54849bc75e88c38d70c2a3a6fc0fc59264d82ca06620f9e3c68b60dc79ad9b30",
+  "reviewedAt": "2026-08-26T11:44:24.871Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "2a79cf4fd942f658fea59697bf71044ba937d35b01603befb9112ebb1dd72972",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000045:skill",
+            "name": "Mourning Aix - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Mourning Aix and perform 2 consecutive claw attacks, each attack dealing 98.40% and 147.60% Spectro DMG respectively.\nAfter the transformation, increase current character's Spectro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s\nCD: 20s",
+              "Transform into Mourning Aix and perform 2 consecutive claw attacks, each attack dealing 113.16% and 169.74% Spectro DMG respectively.\nAfter the transformation, increase current character's Spectro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s\nCD: 20s",
+              "Transform into Mourning Aix and perform 2 consecutive claw attacks, each attack dealing 127.92% and 191.88% Spectro DMG respectively.\nAfter the transformation, increase current character's Spectro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s\nCD: 20s",
+              "Transform into Mourning Aix and perform 2 consecutive claw attacks, each attack dealing 142.68% and 214.02% Spectro DMG respectively.\nAfter the transformation, increase current character's Spectro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s\nCD: 20s",
+              "Transform into Mourning Aix and perform 2 consecutive claw attacks, each attack dealing 157.44% and 236.16% Spectro DMG respectively.\nAfter the transformation, increase current character's Spectro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s\nCD: 20s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.9840000000000001,
+                1.476,
+                0.12,
+                0.12
+              ],
+              [
+                1.1316,
+                1.6974,
+                0.12,
+                0.12
+              ],
+              [
+                1.2792000000000001,
+                1.9188,
+                0.12,
+                0.12
+              ],
+              [
+                1.4268,
+                2.1402,
+                0.12,
+                0.12
+              ],
+              [
+                1.5744,
+                2.3616,
+                0.12,
+                0.12
+              ]
+            ],
+            "count": 4,
+            "sourceText": "Transform into Mourning Aix and perform 2 consecutive claw attacks, each attack dealing 98.40% and 147.60% Spectro DMG respectively.\nAfter the transformation, increase current character's Spectro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s\nCD: 20s · Transform into Mourning Aix and perform 2 consecutive claw attacks, each attack dealing 113.16% and 169.74% Spectro DMG respectively.\nAfter the transformation, increase current character's Spectro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s\nCD: 20s · Transform into Mourning Aix and perform 2 consecutive claw attacks, each attack dealing 127.92% and 191.88% Spectro DMG respectively.\nAfter the transformation, increase current character's Spectro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s\nCD: 20s · Transform into Mourning Aix and perform 2 consecutive claw attacks, each attack dealing 142.68% and 214.02% Spectro DMG respectively.\nAfter the transformation, increase current character's Spectro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s\nCD: 20s · Transform into Mourning Aix and perform 2 consecutive claw attacks, each attack dealing 157.44% and 236.16% Spectro DMG respectively.\nAfter the transformation, increase current character's Spectro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s\nCD: 20s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "a7c20e7e27f8d90c018bacce3de44d702c0693daba4f4eaebe7cbd50f67d5eb2",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000045:effect:0",
+            "sourceName": "Mourning Aix",
+            "sourceType": "echo",
+            "text": "After the transformation, increase current character's Spectro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "Spectro",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

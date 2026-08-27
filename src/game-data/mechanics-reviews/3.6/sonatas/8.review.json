@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "sonata",
+  "entityId": "8",
+  "entityName": "Moonlit Clouds",
+  "sourceFingerprint": "464c6abce4630c9967aa8e0394686edeb142b1290ea905de519b46f61f8cd144",
+  "reviewedAt": "2026-08-26T11:44:24.712Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "350e85a8b06bfd19ee0865b065eb56cba68d317d027f6609971d01c159bea60a",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:8:2:0",
+            "sourceName": "Moonlit Clouds",
+            "text": "Energy Regen + 10%.",
+            "refinementTexts": [
+              "Energy Regen + 10%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "energyRegen",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:8:5:0",
+            "sourceName": "Moonlit Clouds",
+            "text": "Upon using Outro Skill, increases the ATK of the next Resonator by 22.5% for 15s.",
+            "refinementTexts": [
+              "Upon using Outro Skill, increases the ATK of the next Resonator by 22.5% for 15s."
+            ],
+            "parsed": {
+              "scope": "next",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Outro Skill",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 22.5
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

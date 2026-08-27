@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000052",
+  "entityName": "Impermanence Heron",
+  "sourceFingerprint": "499c0de3fad9794640db4521ebeb182ceddc08a54ca80d679851d1c6202727c9",
+  "reviewedAt": "2026-08-26T11:44:24.886Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "7926f5bee08e2de656da1150f4fb1fb15f3d9028a0bb752d803d961902d5d25c",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000052:skill",
+            "name": "Impermanence Heron - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Impermanence Heron to fly up and smack down, dealing 194.10% Havoc DMG.\nLong press to stay as Impermanence Heron and continuously spit flames, each attack dealing 34.83% Havoc DMG.\nOnce the initial attack lands on any enemy, the current character regains 10 Resonance Energy. If the current character uses their Outro Skill within the next 15s, the next character's damage dealt will be boosted by 12% for 15s.\nCD: 20s",
+              "Transform into Impermanence Heron to fly up and smack down, dealing 223.22% Havoc DMG.\nLong press to stay as Impermanence Heron and continuously spit flames, each attack dealing 40.05% Havoc DMG.\nOnce the initial attack lands on any enemy, the current character regains 10 Resonance Energy. If the current character uses their Outro Skill within the next 15s, the next character's damage dealt will be boosted by 12% for 15s.\nCD: 20s",
+              "Transform into Impermanence Heron to fly up and smack down, dealing 252.33% Havoc DMG.\nLong press to stay as Impermanence Heron and continuously spit flames, each attack dealing 45.28% Havoc DMG.\nOnce the initial attack lands on any enemy, the current character regains 10 Resonance Energy. If the current character uses their Outro Skill within the next 15s, the next character's damage dealt will be boosted by 12% for 15s.\nCD: 20s",
+              "Transform into Impermanence Heron to fly up and smack down, dealing 281.45% Havoc DMG.\nLong press to stay as Impermanence Heron and continuously spit flames, each attack dealing 50.50% Havoc DMG.\nOnce the initial attack lands on any enemy, the current character regains 10 Resonance Energy. If the current character uses their Outro Skill within the next 15s, the next character's damage dealt will be boosted by 12% for 15s.\nCD: 20s",
+              "Transform into Impermanence Heron to fly up and smack down, dealing 310.56% Havoc DMG.\nLong press to stay as Impermanence Heron and continuously spit flames, each attack dealing 55.73% Havoc DMG.\nOnce the initial attack lands on any enemy, the current character regains 10 Resonance Energy. If the current character uses their Outro Skill within the next 15s, the next character's damage dealt will be boosted by 12% for 15s.\nCD: 20s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.9409999999999998,
+                0.3483,
+                0.12
+              ],
+              [
+                2.2322,
+                0.40049999999999997,
+                0.12
+              ],
+              [
+                2.5233000000000003,
+                0.45280000000000004,
+                0.12
+              ],
+              [
+                2.8145,
+                0.505,
+                0.12
+              ],
+              [
+                3.1056,
+                0.5573,
+                0.12
+              ]
+            ],
+            "count": 3,
+            "sourceText": "Transform into Impermanence Heron to fly up and smack down, dealing 194.10% Havoc DMG.\nLong press to stay as Impermanence Heron and continuously spit flames, each attack dealing 34.83% Havoc DMG.\nOnce the initial attack lands on any enemy, the current character regains 10 Resonance Energy. If the current character uses their Outro Skill within the next 15s, the next character's damage dealt will be boosted by 12% for 15s.\nCD: 20s · Transform into Impermanence Heron to fly up and smack down, dealing 223.22% Havoc DMG.\nLong press to stay as Impermanence Heron and continuously spit flames, each attack dealing 40.05% Havoc DMG.\nOnce the initial attack lands on any enemy, the current character regains 10 Resonance Energy. If the current character uses their Outro Skill within the next 15s, the next character's damage dealt will be boosted by 12% for 15s.\nCD: 20s · Transform into Impermanence Heron to fly up and smack down, dealing 252.33% Havoc DMG.\nLong press to stay as Impermanence Heron and continuously spit flames, each attack dealing 45.28% Havoc DMG.\nOnce the initial attack lands on any enemy, the current character regains 10 Resonance Energy. If the current character uses their Outro Skill within the next 15s, the next character's damage dealt will be boosted by 12% for 15s.\nCD: 20s · Transform into Impermanence Heron to fly up and smack down, dealing 281.45% Havoc DMG.\nLong press to stay as Impermanence Heron and continuously spit flames, each attack dealing 50.50% Havoc DMG.\nOnce the initial attack lands on any enemy, the current character regains 10 Resonance Energy. If the current character uses their Outro Skill within the next 15s, the next character's damage dealt will be boosted by 12% for 15s.\nCD: 20s · Transform into Impermanence Heron to fly up and smack down, dealing 310.56% Havoc DMG.\nLong press to stay as Impermanence Heron and continuously spit flames, each attack dealing 55.73% Havoc DMG.\nOnce the initial attack lands on any enemy, the current character regains 10 Resonance Energy. If the current character uses their Outro Skill within the next 15s, the next character's damage dealt will be boosted by 12% for 15s.\nCD: 20s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "836c6bcd96ec63d2cdc49d9da19543d2569f7b7c687429d7a7a94976ae735239",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000052:effect:0",
+            "sourceName": "Impermanence Heron",
+            "sourceType": "echo",
+            "text": "Once the initial attack lands on any enemy, the current character regains 10 Resonance Energy.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

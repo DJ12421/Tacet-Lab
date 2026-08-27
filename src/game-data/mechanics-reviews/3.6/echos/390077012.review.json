@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390077012",
+  "entityName": "Fusion Prism",
+  "sourceFingerprint": "f719ecea06925f059f2a853148a6ba0006ec48af40656b0904bf6ba1c6b86949",
+  "reviewedAt": "2026-08-26T11:44:24.818Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "39bbe0f020f799c66149976ee8d9a437a11ccb2df2d744885c635ea90c0e8a08",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390077012:skill",
+            "name": "Fusion Prism - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Fusion Prism to fire a crystal shard, dealing 20.00%+40 Fusion DMG.\nCD: 8s",
+              "Summon a Fusion Prism to fire a crystal shard, dealing 23.00%+46 Fusion DMG.\nCD: 8s",
+              "Summon a Fusion Prism to fire a crystal shard, dealing 26.00%+52 Fusion DMG.\nCD: 8s",
+              "Summon a Fusion Prism to fire a crystal shard, dealing 29.00%+58 Fusion DMG.\nCD: 8s",
+              "Summon a Fusion Prism to fire a crystal shard, dealing 32.00%+64 Fusion DMG.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.2
+              ],
+              [
+                0.23
+              ],
+              [
+                0.26
+              ],
+              [
+                0.29
+              ],
+              [
+                0.32
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Fusion Prism to fire a crystal shard, dealing 20.00%+40 Fusion DMG.\nCD: 8s · Summon a Fusion Prism to fire a crystal shard, dealing 23.00%+46 Fusion DMG.\nCD: 8s · Summon a Fusion Prism to fire a crystal shard, dealing 26.00%+52 Fusion DMG.\nCD: 8s · Summon a Fusion Prism to fire a crystal shard, dealing 29.00%+58 Fusion DMG.\nCD: 8s · Summon a Fusion Prism to fire a crystal shard, dealing 32.00%+64 Fusion DMG.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

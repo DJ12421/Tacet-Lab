@@ -1,0 +1,238 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21030016",
+  "entityName": "The Last Dance",
+  "sourceFingerprint": "27c851a8826a53be0da263c6939673fce8e9f03eceb84834c3e481882a64d9ff",
+  "reviewedAt": "2026-08-26T11:44:24.091Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "af81a01e3828104d4da13de613c956db14642b504f5bfae71813c42df8bcc54a",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21030016:effect:0",
+            "sourceName": "Silent Eulogy",
+            "text": "Increases ATK by 12%.",
+            "refinementTexts": [
+              "Increases ATK by 12%.",
+              "Increases ATK by 15%.",
+              "Increases ATK by 18%.",
+              "Increases ATK by 21%.",
+              "Increases ATK by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21030016:effect:1",
+            "sourceName": "Silent Eulogy",
+            "text": "Every time Intro Skill or Resonance Liberation is cast, Resonance Skill DMG Bonus increases by 48% for 5s.",
+            "refinementTexts": [
+              "Every time Intro Skill or Resonance Liberation is cast, Resonance Skill DMG Bonus increases by 48% for 5s.",
+              "Every time Intro Skill or Resonance Liberation is cast, Resonance Skill DMG Bonus increases by 60% for 5s.",
+              "Every time Intro Skill or Resonance Liberation is cast, Resonance Skill DMG Bonus increases by 72% for 5s.",
+              "Every time Intro Skill or Resonance Liberation is cast, Resonance Skill DMG Bonus increases by 84% for 5s.",
+              "Every time Intro Skill or Resonance Liberation is cast, Resonance Skill DMG Bonus increases by 96% for 5s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 5,
+              "modifiers": [
+                {
+                  "stat": "skillDamage",
+                  "operation": "addPercent",
+                  "value": 48
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 5,
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 48
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 5,
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 60
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 5,
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 72
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 5,
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 84
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 5,
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 96
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

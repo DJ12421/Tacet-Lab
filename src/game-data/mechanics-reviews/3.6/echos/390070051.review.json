@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390070051",
+  "entityName": "Vanguard Junrock",
+  "sourceFingerprint": "1c0597e34f141fa8b00dbc28c4ffe0d6d8d828bab82b9d4cadbdce6f09fe5a9f",
+  "reviewedAt": "2026-08-26T11:44:24.724Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "56a2a155c9c17b0cd12ae5d5d0fd88a2a23e8b1774dfe30cd88e87ead980f6b4",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390070051:skill",
+            "name": "Vanguard Junrock - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Vanguard Junrock that charges forward, dealing 20.00%+40 Physical DMG to enemies in its path.\nCD: 8s",
+              "Summon a Vanguard Junrock that charges forward, dealing 23.00%+46 Physical DMG to enemies in its path.\nCD: 8s",
+              "Summon a Vanguard Junrock that charges forward, dealing 26.00%+52 Physical DMG to enemies in its path.\nCD: 8s",
+              "Summon a Vanguard Junrock that charges forward, dealing 29.00%+58 Physical DMG to enemies in its path.\nCD: 8s",
+              "Summon a Vanguard Junrock that charges forward, dealing 32.00%+64 Physical DMG to enemies in its path.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.2
+              ],
+              [
+                0.23
+              ],
+              [
+                0.26
+              ],
+              [
+                0.29
+              ],
+              [
+                0.32
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Vanguard Junrock that charges forward, dealing 20.00%+40 Physical DMG to enemies in its path.\nCD: 8s · Summon a Vanguard Junrock that charges forward, dealing 23.00%+46 Physical DMG to enemies in its path.\nCD: 8s · Summon a Vanguard Junrock that charges forward, dealing 26.00%+52 Physical DMG to enemies in its path.\nCD: 8s · Summon a Vanguard Junrock that charges forward, dealing 29.00%+58 Physical DMG to enemies in its path.\nCD: 8s · Summon a Vanguard Junrock that charges forward, dealing 32.00%+64 Physical DMG to enemies in its path.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

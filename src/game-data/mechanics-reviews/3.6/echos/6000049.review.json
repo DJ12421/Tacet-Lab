@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000049",
+  "entityName": "Autopuppet Scout",
+  "sourceFingerprint": "93facb0a63ba0fdfa9f871f05c89e8f33f89968cf3982e0ace99df11601174e1",
+  "reviewedAt": "2026-08-26T11:44:24.880Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "cac0c6293f8329350e03cd3c533616bf5c42553bbac61907413e93d29b1c5cab",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000049:skill",
+            "name": "Autopuppet Scout - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Autopuppet Scout, dealing 170.00% Glacio DMG to the surroundings, and generate up to 3 Ice Walls to block off the enemies.\nCD: 15s",
+              "Transform into Autopuppet Scout, dealing 195.50% Glacio DMG to the surroundings, and generate up to 3 Ice Walls to block off the enemies.\nCD: 15s",
+              "Transform into Autopuppet Scout, dealing 221.00% Glacio DMG to the surroundings, and generate up to 3 Ice Walls to block off the enemies.\nCD: 15s",
+              "Transform into Autopuppet Scout, dealing 246.50% Glacio DMG to the surroundings, and generate up to 3 Ice Walls to block off the enemies.\nCD: 15s",
+              "Transform into Autopuppet Scout, dealing 272.00% Glacio DMG to the surroundings, and generate up to 3 Ice Walls to block off the enemies.\nCD: 15s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.7
+              ],
+              [
+                1.955
+              ],
+              [
+                2.21
+              ],
+              [
+                2.465
+              ],
+              [
+                2.72
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Transform into Autopuppet Scout, dealing 170.00% Glacio DMG to the surroundings, and generate up to 3 Ice Walls to block off the enemies.\nCD: 15s · Transform into Autopuppet Scout, dealing 195.50% Glacio DMG to the surroundings, and generate up to 3 Ice Walls to block off the enemies.\nCD: 15s · Transform into Autopuppet Scout, dealing 221.00% Glacio DMG to the surroundings, and generate up to 3 Ice Walls to block off the enemies.\nCD: 15s · Transform into Autopuppet Scout, dealing 246.50% Glacio DMG to the surroundings, and generate up to 3 Ice Walls to block off the enemies.\nCD: 15s · Transform into Autopuppet Scout, dealing 272.00% Glacio DMG to the surroundings, and generate up to 3 Ice Walls to block off the enemies.\nCD: 15s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

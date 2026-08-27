@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000216",
+  "entityName": "Forbidden Bastion",
+  "sourceFingerprint": "f56927098e45614b46d5624626535bb89aa28001f2987c820999774ff8372d45",
+  "reviewedAt": "2026-08-26T11:44:25.154Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "402cfdc3a293d1822435764fa1f13d86c6cf948f7021f25ec7b73e23d41aff2a",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000216:skill",
+            "name": "Forbidden Bastion - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Use Echo Skill to summon Forbidden Bastion to bash over enemies, dealing 132.00% Glacio DMG.\nResonators with this Echo equipped in the main slot gain 10.00% Healing Bonus.\nCD: 20s",
+              "Use Echo Skill to summon Forbidden Bastion to bash over enemies, dealing 158.40% Glacio DMG.\nResonators with this Echo equipped in the main slot gain 10.00% Healing Bonus.\nCD: 20s",
+              "Use Echo Skill to summon Forbidden Bastion to bash over enemies, dealing 184.80% Glacio DMG.\nResonators with this Echo equipped in the main slot gain 10.00% Healing Bonus.\nCD: 20s",
+              "Use Echo Skill to summon Forbidden Bastion to bash over enemies, dealing 211.20% Glacio DMG.\nResonators with this Echo equipped in the main slot gain 10.00% Healing Bonus.\nCD: 20s",
+              "Use Echo Skill to summon Forbidden Bastion to bash over enemies, dealing 237.60% Glacio DMG.\nResonators with this Echo equipped in the main slot gain 10.00% Healing Bonus.\nCD: 20s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.32,
+                0.1
+              ],
+              [
+                1.584,
+                0.1
+              ],
+              [
+                1.848,
+                0.1
+              ],
+              [
+                2.112,
+                0.1
+              ],
+              [
+                2.376,
+                0.1
+              ]
+            ],
+            "count": 2,
+            "sourceText": "Use Echo Skill to summon Forbidden Bastion to bash over enemies, dealing 132.00% Glacio DMG.\nResonators with this Echo equipped in the main slot gain 10.00% Healing Bonus.\nCD: 20s · Use Echo Skill to summon Forbidden Bastion to bash over enemies, dealing 158.40% Glacio DMG.\nResonators with this Echo equipped in the main slot gain 10.00% Healing Bonus.\nCD: 20s · Use Echo Skill to summon Forbidden Bastion to bash over enemies, dealing 184.80% Glacio DMG.\nResonators with this Echo equipped in the main slot gain 10.00% Healing Bonus.\nCD: 20s · Use Echo Skill to summon Forbidden Bastion to bash over enemies, dealing 211.20% Glacio DMG.\nResonators with this Echo equipped in the main slot gain 10.00% Healing Bonus.\nCD: 20s · Use Echo Skill to summon Forbidden Bastion to bash over enemies, dealing 237.60% Glacio DMG.\nResonators with this Echo equipped in the main slot gain 10.00% Healing Bonus.\nCD: 20s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "37e0a2c316c64060cacd6e14c2fe073da03003451cd2c9c54ab9122bf09e3c8f",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000216:effect:0",
+            "sourceName": "Forbidden Bastion",
+            "sourceType": "echo",
+            "text": "Resonators with this Echo equipped in the main slot gain 10.00% Healing Bonus.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "healingBonus",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

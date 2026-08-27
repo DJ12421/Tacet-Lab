@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000179",
+  "entityName": "Twin Nova: Nebulous Cannon",
+  "sourceFingerprint": "cf44549dfd259cc3ae90046380380b43164e9bc0ce801b911f5a1304bf5e2fd7",
+  "reviewedAt": "2026-08-26T11:44:25.080Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "6c0673ee9f27833f71fa1d57a95676c47459cb1a69519fa65765230ce0d40d8c",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000179:skill",
+            "name": "Twin Nova: Nebulous Cannon - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into a Twin Nova: Nebulous Cannon to slash enemies twice, with each attack dealing 44.73% Spectro DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Spectro DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 8s.\nIf Twin Nova: Collapsar Blade is equipped in another slot on the Resonator:\n- Casting Echo Skill in succession transforms you into Nebulous Cannon and Collapsar Blade alternately and is considered casting Echo skills of the same name. The DMG Bonus from the Echo in the main slot remains unchanged.\n- DMG dealt by Twin Nova: Collapsar Blade becomes Spectro DMG.\n- Casting Basic Attacks grants 1 of Dyad Origins. Casting Resonance Skill grants 3 of Dyad Origins. Dyad Origins can stack up to 6 times and lasts for 8s. Each stack increases Echo Skill DMG by 10%, and all stacks are cleared after this Echo Skill ends.\n-This skill is capped at 2 uses. Initially, this skill can be used 2 times, with 1 use added every 8s.",
+              "Transform into a Twin Nova: Nebulous Cannon to slash enemies twice, with each attack dealing 53.67% Spectro DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Spectro DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 8s.\nIf Twin Nova: Collapsar Blade is equipped in another slot on the Resonator:\n- Casting Echo Skill in succession transforms you into Nebulous Cannon and Collapsar Blade alternately and is considered casting Echo skills of the same name. The DMG Bonus from the Echo in the main slot remains unchanged.\n- DMG dealt by Twin Nova: Collapsar Blade becomes Spectro DMG.\n- Casting Basic Attacks grants 1 of Dyad Origins. Casting Resonance Skill grants 3 of Dyad Origins. Dyad Origins can stack up to 6 times and lasts for 8s. Each stack increases Echo Skill DMG by 10%, and all stacks are cleared after this Echo Skill ends.\n-This skill is capped at 2 uses. Initially, this skill can be used 2 times, with 1 use added every 8s.",
+              "Transform into a Twin Nova: Nebulous Cannon to slash enemies twice, with each attack dealing 62.62% Spectro DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Spectro DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 8s.\nIf Twin Nova: Collapsar Blade is equipped in another slot on the Resonator:\n- Casting Echo Skill in succession transforms you into Nebulous Cannon and Collapsar Blade alternately and is considered casting Echo skills of the same name. The DMG Bonus from the Echo in the main slot remains unchanged.\n- DMG dealt by Twin Nova: Collapsar Blade becomes Spectro DMG.\n- Casting Basic Attacks grants 1 of Dyad Origins. Casting Resonance Skill grants 3 of Dyad Origins. Dyad Origins can stack up to 6 times and lasts for 8s. Each stack increases Echo Skill DMG by 10%, and all stacks are cleared after this Echo Skill ends.\n-This skill is capped at 2 uses. Initially, this skill can be used 2 times, with 1 use added every 8s.",
+              "Transform into a Twin Nova: Nebulous Cannon to slash enemies twice, with each attack dealing 71.56% Spectro DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Spectro DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 8s.\nIf Twin Nova: Collapsar Blade is equipped in another slot on the Resonator:\n- Casting Echo Skill in succession transforms you into Nebulous Cannon and Collapsar Blade alternately and is considered casting Echo skills of the same name. The DMG Bonus from the Echo in the main slot remains unchanged.\n- DMG dealt by Twin Nova: Collapsar Blade becomes Spectro DMG.\n- Casting Basic Attacks grants 1 of Dyad Origins. Casting Resonance Skill grants 3 of Dyad Origins. Dyad Origins can stack up to 6 times and lasts for 8s. Each stack increases Echo Skill DMG by 10%, and all stacks are cleared after this Echo Skill ends.\n-This skill is capped at 2 uses. Initially, this skill can be used 2 times, with 1 use added every 8s.",
+              "Transform into a Twin Nova: Nebulous Cannon to slash enemies twice, with each attack dealing 80.51% Spectro DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Spectro DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 8s.\nIf Twin Nova: Collapsar Blade is equipped in another slot on the Resonator:\n- Casting Echo Skill in succession transforms you into Nebulous Cannon and Collapsar Blade alternately and is considered casting Echo skills of the same name. The DMG Bonus from the Echo in the main slot remains unchanged.\n- DMG dealt by Twin Nova: Collapsar Blade becomes Spectro DMG.\n- Casting Basic Attacks grants 1 of Dyad Origins. Casting Resonance Skill grants 3 of Dyad Origins. Dyad Origins can stack up to 6 times and lasts for 8s. Each stack increases Echo Skill DMG by 10%, and all stacks are cleared after this Echo Skill ends.\n-This skill is capped at 2 uses. Initially, this skill can be used 2 times, with 1 use added every 8s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.4473,
+                0.12,
+                0.12,
+                0.1
+              ],
+              [
+                0.5367000000000001,
+                0.12,
+                0.12,
+                0.1
+              ],
+              [
+                0.6262,
+                0.12,
+                0.12,
+                0.1
+              ],
+              [
+                0.7156,
+                0.12,
+                0.12,
+                0.1
+              ],
+              [
+                0.8051,
+                0.12,
+                0.12,
+                0.1
+              ]
+            ],
+            "count": 4,
+            "sourceText": "Transform into a Twin Nova: Nebulous Cannon to slash enemies twice, with each attack dealing 44.73% Spectro DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Spectro DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 8s.\nIf Twin Nova: Collapsar Blade is equipped in another slot on the Resonator:\n- Casting Echo Skill in succession transforms you into Nebulous Cannon and Collapsar Blade alternately and is considered casting Echo skills of the same name. The DMG Bonus from the Echo in the main slot remains unchanged.\n- DMG dealt by Twin Nova: Collapsar Blade becomes Spectro DMG.\n- Casting Basic Attacks grants 1 of Dyad Origins. Casting Resonance Skill grants 3 of Dyad Origins. Dyad Origins can stack up to 6 times and lasts for 8s. Each stack increases Echo Skill DMG by 10%, and all stacks are cleared after this Echo Skill ends.\n-This skill is capped at 2 uses. Initially, this skill can be used 2 times, with 1 use added every 8s. · Transform into a Twin Nova: Nebulous Cannon to slash enemies twice, with each attack dealing 53.67% Spectro DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Spectro DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 8s.\nIf Twin Nova: Collapsar Blade is equipped in another slot on the Resonator:\n- Casting Echo Skill in succession transforms you into Nebulous Cannon and Collapsar Blade alternately and is considered casting Echo skills of the same name. The DMG Bonus from the Echo in the main slot remains unchanged.\n- DMG dealt by Twin Nova: Collapsar Blade becomes Spectro DMG.\n- Casting Basic Attacks grants 1 of Dyad Origins. Casting Resonance Skill grants 3 of Dyad Origins. Dyad Origins can stack up to 6 times and lasts for 8s. Each stack increases Echo Skill DMG by 10%, and all stacks are cleared after this Echo Skill ends.\n-This skill is capped at 2 uses. Initially, this skill can be used 2 times, with 1 use added every 8s. · Transform into a Twin Nova: Nebulous Cannon to slash enemies twice, with each attack dealing 62.62% Spectro DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Spectro DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 8s.\nIf Twin Nova: Collapsar Blade is equipped in another slot on the Resonator:\n- Casting Echo Skill in succession transforms you into Nebulous Cannon and Collapsar Blade alternately and is considered casting Echo skills of the same name. The DMG Bonus from the Echo in the main slot remains unchanged.\n- DMG dealt by Twin Nova: Collapsar Blade becomes Spectro DMG.\n- Casting Basic Attacks grants 1 of Dyad Origins. Casting Resonance Skill grants 3 of Dyad Origins. Dyad Origins can stack up to 6 times and lasts for 8s. Each stack increases Echo Skill DMG by 10%, and all stacks are cleared after this Echo Skill ends.\n-This skill is capped at 2 uses. Initially, this skill can be used 2 times, with 1 use added every 8s. · Transform into a Twin Nova: Nebulous Cannon to slash enemies twice, with each attack dealing 71.56% Spectro DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Spectro DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 8s.\nIf Twin Nova: Collapsar Blade is equipped in another slot on the Resonator:\n- Casting Echo Skill in succession transforms you into Nebulous Cannon and Collapsar Blade alternately and is considered casting Echo skills of the same name. The DMG Bonus from the Echo in the main slot remains unchanged.\n- DMG dealt by Twin Nova: Collapsar Blade becomes Spectro DMG.\n- Casting Basic Attacks grants 1 of Dyad Origins. Casting Resonance Skill grants 3 of Dyad Origins. Dyad Origins can stack up to 6 times and lasts for 8s. Each stack increases Echo Skill DMG by 10%, and all stacks are cleared after this Echo Skill ends.\n-This skill is capped at 2 uses. Initially, this skill can be used 2 times, with 1 use added every 8s. · Transform into a Twin Nova: Nebulous Cannon to slash enemies twice, with each attack dealing 80.51% Spectro DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Spectro DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 8s.\nIf Twin Nova: Collapsar Blade is equipped in another slot on the Resonator:\n- Casting Echo Skill in succession transforms you into Nebulous Cannon and Collapsar Blade alternately and is considered casting Echo skills of the same name. The DMG Bonus from the Echo in the main slot remains unchanged.\n- DMG dealt by Twin Nova: Collapsar Blade becomes Spectro DMG.\n- Casting Basic Attacks grants 1 of Dyad Origins. Casting Resonance Skill grants 3 of Dyad Origins. Dyad Origins can stack up to 6 times and lasts for 8s. Each stack increases Echo Skill DMG by 10%, and all stacks are cleared after this Echo Skill ends.\n-This skill is capped at 2 uses. Initially, this skill can be used 2 times, with 1 use added every 8s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "db2d1257ddb1fe3564cc2e0b1b9c8d23657e965610740a8ac1283dbdd31a8991",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000179:effect:0",
+            "sourceName": "Twin Nova: Nebulous Cannon",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in the main slot gains 12.00% Spectro DMG Bonus and 12.00% Basic Attack DMG Bonus.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "Spectro",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          },
+          {
+            "id": "echo:6000179:effect:1",
+            "sourceName": "Twin Nova: Nebulous Cannon",
+            "sourceType": "echo",
+            "text": "The DMG Bonus from the Echo in the main slot remains unchanged.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "echo:6000179:effect:2",
+            "sourceName": "Twin Nova: Nebulous Cannon",
+            "sourceType": "echo",
+            "text": "Dyad Origins can stack up to 6 times and lasts for 8s.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 6
+              },
+              "durationSeconds": 8,
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "echo:6000179:effect:3",
+            "sourceName": "Twin Nova: Nebulous Cannon",
+            "sourceType": "echo",
+            "text": "Each stack increases Echo Skill DMG by 10%, and all stacks are cleared after this Echo Skill ends.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "modifiers": [
+                {
+                  "stat": "echoDamage",
+                  "operation": "addPercent",
+                  "value": 10,
+                  "perStack": true
+                }
+              ],
+              "confidence": "review",
+              "warnings": [
+                "Stack maximum was not explicit and requires review."
+              ]
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

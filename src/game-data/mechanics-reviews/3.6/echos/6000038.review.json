@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000038",
+  "entityName": "Hooscamp",
+  "sourceFingerprint": "d3386dca20e9a3bb562d2ea46a0d472cfd466dbf039f7cb8764ed5959fc9cd3b",
+  "reviewedAt": "2026-08-26T11:44:24.856Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "16b29f138d6495f39bce0ccd54f94ad14f71f07261d2d891908b80c80bf6ad88",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000038:skill",
+            "name": "Hooscamp - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Hooscamp Flinger and pounce at the enemies, dealing 30.00%+60 Aero DMG.\nCD: 8s",
+              "Transform into Hooscamp Flinger and pounce at the enemies, dealing 34.50%+69 Aero DMG.\nCD: 8s",
+              "Transform into Hooscamp Flinger and pounce at the enemies, dealing 39.00%+78 Aero DMG.\nCD: 8s",
+              "Transform into Hooscamp Flinger and pounce at the enemies, dealing 43.50%+87 Aero DMG.\nCD: 8s",
+              "Transform into Hooscamp Flinger and pounce at the enemies, dealing 48.00%+96 Aero DMG.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.3
+              ],
+              [
+                0.345
+              ],
+              [
+                0.39
+              ],
+              [
+                0.435
+              ],
+              [
+                0.48
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Transform into Hooscamp Flinger and pounce at the enemies, dealing 30.00%+60 Aero DMG.\nCD: 8s · Transform into Hooscamp Flinger and pounce at the enemies, dealing 34.50%+69 Aero DMG.\nCD: 8s · Transform into Hooscamp Flinger and pounce at the enemies, dealing 39.00%+78 Aero DMG.\nCD: 8s · Transform into Hooscamp Flinger and pounce at the enemies, dealing 43.50%+87 Aero DMG.\nCD: 8s · Transform into Hooscamp Flinger and pounce at the enemies, dealing 48.00%+96 Aero DMG.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

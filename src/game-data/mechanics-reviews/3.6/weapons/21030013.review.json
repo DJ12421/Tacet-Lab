@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21030013",
+  "entityName": "Pistols of Night",
+  "sourceFingerprint": "74429c9f2e928c1ffe27307708cd2b4419408c621171260bca08690ddb5cbdce",
+  "reviewedAt": "2026-08-26T11:44:24.084Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "32aa664e8deb447d0603d7d623e59106ba20a06ac775044d347b6a7689e595bb",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21030013:effect:0",
+            "sourceName": "Valiance",
+            "text": "When Intro Skill is cast, increases ATK by 8%, lasting for 10s.",
+            "refinementTexts": [
+              "When Intro Skill is cast, increases ATK by 8%, lasting for 10s.",
+              "When Intro Skill is cast, increases ATK by 10%, lasting for 10s.",
+              "When Intro Skill is cast, increases ATK by 12%, lasting for 10s.",
+              "When Intro Skill is cast, increases ATK by 14%, lasting for 10s.",
+              "When Intro Skill is cast, increases ATK by 16%, lasting for 10s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Intro Skill",
+              "durationSeconds": 10,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 8
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 14
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 16
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

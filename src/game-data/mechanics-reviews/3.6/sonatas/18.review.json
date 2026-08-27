@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "sonata",
+  "entityId": "18",
+  "entityName": "Flaming Clawprint",
+  "sourceFingerprint": "c0be7d2efac516ba352aeddc7a362fbdb55b04bfb2286b827188c81b7e1b1fbc",
+  "reviewedAt": "2026-08-26T11:44:24.610Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "2c8d78596d932f14f809d34ccc3cbb2bea499df0286ac1691221e2e6f9bc9cf6",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:18:2:0",
+            "sourceName": "Flaming Clawprint",
+            "text": "Fusion DMG + 10%",
+            "refinementTexts": [
+              "Fusion DMG + 10%"
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:18:5:0",
+            "sourceName": "Flaming Clawprint",
+            "text": "Casting Resonance Liberation grants all Resonators in the team 15% Fusion DMG Bonus and the caster 20% Resonance Liberation DMG Bonus, lasting for 35s.",
+            "refinementTexts": [
+              "Casting Resonance Liberation grants all Resonators in the team 15% Fusion DMG Bonus and the caster 20% Resonance Liberation DMG Bonus, lasting for 35s."
+            ],
+            "parsed": {
+              "scope": "team",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Liberation",
+              "durationSeconds": 35,
+              "modifiers": [
+                {
+                  "stat": "liberationDamage",
+                  "operation": "addPercent",
+                  "value": 15
+                },
+                {
+                  "stat": "Fusion",
+                  "operation": "addPercent",
+                  "value": 15
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

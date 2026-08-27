@@ -1,0 +1,388 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21030056",
+  "entityName": "Spectral Trigger",
+  "sourceFingerprint": "b2d25137580c3e9574d35cb5ce199f623e8bff658747c9dfa343feaf42c90729",
+  "reviewedAt": "2026-08-26T11:44:24.137Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "36d8cd04f378856ccc7336e9e6ce7aa0557a3d71314b7f3c511b0dd7fe4a4693",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21030056:effect:0",
+            "sourceName": "Sunken Dream",
+            "text": "Increases ATK by 12%.",
+            "refinementTexts": [
+              "Increases ATK by 12%.",
+              "Increases ATK by 15%.",
+              "Increases ATK by 18%.",
+              "Increases ATK by 21%.",
+              "Increases ATK by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21030056:effect:1",
+            "sourceName": "Sunken Dream",
+            "text": "Casting Resonance Skill grants 20% Spectro DMG Bonus to the wielder for 14s, stacking up to 2 times.",
+            "refinementTexts": [
+              "Casting Resonance Skill grants 20% Spectro DMG Bonus to the wielder for 14s, stacking up to 2 times.",
+              "Casting Resonance Skill grants 25% Spectro DMG Bonus to the wielder for 14s, stacking up to 2 times.",
+              "Casting Resonance Skill grants 30% Spectro DMG Bonus to the wielder for 14s, stacking up to 2 times.",
+              "Casting Resonance Skill grants 35% Spectro DMG Bonus to the wielder for 14s, stacking up to 2 times.",
+              "Casting Resonance Skill grants 40% Spectro DMG Bonus to the wielder for 14s, stacking up to 2 times."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 2
+              },
+              "trigger": "Resonance Skill",
+              "durationSeconds": 14,
+              "modifiers": [
+                {
+                  "stat": "Spectro",
+                  "operation": "addPercent",
+                  "value": 20
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "Spectro",
+                    "operation": "addPercent",
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "Spectro",
+                    "operation": "addPercent",
+                    "value": 25
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "Spectro",
+                    "operation": "addPercent",
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "Spectro",
+                    "operation": "addPercent",
+                    "value": 35
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "Spectro",
+                    "operation": "addPercent",
+                    "value": 40
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21030056:effect:2",
+            "sourceName": "Sunken Dream",
+            "text": "Inflicting Hack - Shifting grants 30% Heavy Attack DMG Amplification to the wielder for 14s, during which Heavy Attack DMG ignores 10% of the target's DEF.",
+            "refinementTexts": [
+              "Inflicting Hack - Shifting grants 30% Heavy Attack DMG Amplification to the wielder for 14s, during which Heavy Attack DMG ignores 10% of the target's DEF.",
+              "Inflicting Hack - Shifting grants 37.5% Heavy Attack DMG Amplification to the wielder for 14s, during which Heavy Attack DMG ignores 12.5% of the target's DEF.",
+              "Inflicting Hack - Shifting grants 45% Heavy Attack DMG Amplification to the wielder for 14s, during which Heavy Attack DMG ignores 15% of the target's DEF.",
+              "Inflicting Hack - Shifting grants 52.5% Heavy Attack DMG Amplification to the wielder for 14s, during which Heavy Attack DMG ignores 17.5% of the target's DEF.",
+              "Inflicting Hack - Shifting grants 60% Heavy Attack DMG Amplification to the wielder for 14s, during which Heavy Attack DMG ignores 20% of the target's DEF."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 14,
+              "modifiers": [
+                {
+                  "stat": "heavyDamage",
+                  "operation": "amplifyPercent",
+                  "value": 30
+                },
+                {
+                  "stat": "DEFIgnore:Heavy",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "amplifyPercent",
+                    "value": 30
+                  },
+                  {
+                    "stat": "DEFIgnore:Heavy",
+                    "operation": "addPercent",
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "amplifyPercent",
+                    "value": 37.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "amplifyPercent",
+                    "value": 45
+                  },
+                  {
+                    "stat": "DEFIgnore:Heavy",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "amplifyPercent",
+                    "value": 52.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "amplifyPercent",
+                    "value": 60
+                  },
+                  {
+                    "stat": "DEFIgnore:Heavy",
+                    "operation": "addPercent",
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

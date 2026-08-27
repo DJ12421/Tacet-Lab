@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000042",
+  "entityName": "Crownless",
+  "sourceFingerprint": "2176f2409ff1ff67df6fe08a8b09fb5b01bd7e44a9073162b9bdf366b8d63fa9",
+  "reviewedAt": "2026-08-26T11:44:24.863Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "46640c96a685ef95e16fcae50ebaee9612df806b2e5225600b98b2edcc2379d9",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000042:skill",
+            "name": "Crownless - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Crownless and perform up to 4 consecutive attacks. The first 2 attacks deal 83.80% Havoc DMG each, the 3rd attack deals 62.85% Havoc DMG 2 times, and the 4th attack deals 41.90% Havoc DMG 3 times.\nAfter the transformation, increase current character's Havoc DMG by 12.00% and Resonance Skill DMG by 12.00% for 15s.\nCD: 20s",
+              "Transform into Crownless and perform up to 4 consecutive attacks. The first 2 attacks deal 96.37% Havoc DMG each, the 3rd attack deals 72.28% Havoc DMG 2 times, and the 4th attack deals 48.19% Havoc DMG 3 times.\nAfter the transformation, increase current character's Havoc DMG by 12.00% and Resonance Skill DMG by 12.00% for 15s.\nCD: 20s",
+              "Transform into Crownless and perform up to 4 consecutive attacks. The first 2 attacks deal 108.94% Havoc DMG each, the 3rd attack deals 81.71% Havoc DMG 2 times, and the 4th attack deals 54.47% Havoc DMG 3 times.\nAfter the transformation, increase current character's Havoc DMG by 12.00% and Resonance Skill DMG by 12.00% for 15s.\nCD: 20s",
+              "Transform into Crownless and perform up to 4 consecutive attacks. The first 2 attacks deal 121.51% Havoc DMG each, the 3rd attack deals 91.13% Havoc DMG 2 times, and the 4th attack deals 60.76% Havoc DMG 3 times.\nAfter the transformation, increase current character's Havoc DMG by 12.00% and Resonance Skill DMG by 12.00% for 15s.\nCD: 20s",
+              "Transform into Crownless and perform up to 4 consecutive attacks. The first 2 attacks deal 134.08% Havoc DMG each, the 3rd attack deals 100.56% Havoc DMG 2 times, and the 4th attack deals 67.04% Havoc DMG 3 times.\nAfter the transformation, increase current character's Havoc DMG by 12.00% and Resonance Skill DMG by 12.00% for 15s.\nCD: 20s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.838,
+                0.6285000000000001,
+                0.419,
+                0.12,
+                0.12
+              ],
+              [
+                0.9637,
+                0.7228,
+                0.4819,
+                0.12,
+                0.12
+              ],
+              [
+                1.0894,
+                0.8170999999999999,
+                0.5447,
+                0.12,
+                0.12
+              ],
+              [
+                1.2151,
+                0.9113,
+                0.6076,
+                0.12,
+                0.12
+              ],
+              [
+                1.3408000000000002,
+                1.0056,
+                0.6704000000000001,
+                0.12,
+                0.12
+              ]
+            ],
+            "count": 5,
+            "sourceText": "Transform into Crownless and perform up to 4 consecutive attacks. The first 2 attacks deal 83.80% Havoc DMG each, the 3rd attack deals 62.85% Havoc DMG 2 times, and the 4th attack deals 41.90% Havoc DMG 3 times.\nAfter the transformation, increase current character's Havoc DMG by 12.00% and Resonance Skill DMG by 12.00% for 15s.\nCD: 20s · Transform into Crownless and perform up to 4 consecutive attacks. The first 2 attacks deal 96.37% Havoc DMG each, the 3rd attack deals 72.28% Havoc DMG 2 times, and the 4th attack deals 48.19% Havoc DMG 3 times.\nAfter the transformation, increase current character's Havoc DMG by 12.00% and Resonance Skill DMG by 12.00% for 15s.\nCD: 20s · Transform into Crownless and perform up to 4 consecutive attacks. The first 2 attacks deal 108.94% Havoc DMG each, the 3rd attack deals 81.71% Havoc DMG 2 times, and the 4th attack deals 54.47% Havoc DMG 3 times.\nAfter the transformation, increase current character's Havoc DMG by 12.00% and Resonance Skill DMG by 12.00% for 15s.\nCD: 20s · Transform into Crownless and perform up to 4 consecutive attacks. The first 2 attacks deal 121.51% Havoc DMG each, the 3rd attack deals 91.13% Havoc DMG 2 times, and the 4th attack deals 60.76% Havoc DMG 3 times.\nAfter the transformation, increase current character's Havoc DMG by 12.00% and Resonance Skill DMG by 12.00% for 15s.\nCD: 20s · Transform into Crownless and perform up to 4 consecutive attacks. The first 2 attacks deal 134.08% Havoc DMG each, the 3rd attack deals 100.56% Havoc DMG 2 times, and the 4th attack deals 67.04% Havoc DMG 3 times.\nAfter the transformation, increase current character's Havoc DMG by 12.00% and Resonance Skill DMG by 12.00% for 15s.\nCD: 20s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "cce2f21c60ae2c827381981f63ce693aaf272ff260ff60b2596e471e9a9c1494",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000042:effect:0",
+            "sourceName": "Crownless",
+            "sourceType": "echo",
+            "text": "After the transformation, increase current character's Havoc DMG by 12.00% and Resonance Skill DMG by 12.00% for 15s.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "Havoc",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

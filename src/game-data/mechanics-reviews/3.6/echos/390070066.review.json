@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390070066",
+  "entityName": "Snip Snap",
+  "sourceFingerprint": "ee3aebe77aa56c26baea84e9001f309312d980f97950436644501df89010c740",
+  "reviewedAt": "2026-08-26T11:44:24.756Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "684ed178005f1e65cacd90bec8e47b6ab13c0d9be7d192de41387f7651f1d913",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390070066:skill",
+            "name": "Snip Snap - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Snip Snap that throws fireballs at the enemy, dealing 20.00%+40 Fusion DMG on-hit.\nCD: 8s",
+              "Summon a Snip Snap that throws fireballs at the enemy, dealing 23.00%+46 Fusion DMG on-hit.\nCD: 8s",
+              "Summon a Snip Snap that throws fireballs at the enemy, dealing 26.00%+52 Fusion DMG on-hit.\nCD: 8s",
+              "Summon a Snip Snap that throws fireballs at the enemy, dealing 29.00%+58 Fusion DMG on-hit.\nCD: 8s",
+              "Summon a Snip Snap that throws fireballs at the enemy, dealing 32.00%+64 Fusion DMG on-hit.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.2
+              ],
+              [
+                0.23
+              ],
+              [
+                0.26
+              ],
+              [
+                0.29
+              ],
+              [
+                0.32
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Snip Snap that throws fireballs at the enemy, dealing 20.00%+40 Fusion DMG on-hit.\nCD: 8s · Summon a Snip Snap that throws fireballs at the enemy, dealing 23.00%+46 Fusion DMG on-hit.\nCD: 8s · Summon a Snip Snap that throws fireballs at the enemy, dealing 26.00%+52 Fusion DMG on-hit.\nCD: 8s · Summon a Snip Snap that throws fireballs at the enemy, dealing 29.00%+58 Fusion DMG on-hit.\nCD: 8s · Summon a Snip Snap that throws fireballs at the enemy, dealing 32.00%+64 Fusion DMG on-hit.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

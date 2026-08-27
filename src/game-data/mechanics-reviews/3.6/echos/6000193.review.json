@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000193",
+  "entityName": "Kronablight",
+  "sourceFingerprint": "aa5a6ace4e6213d380bc136cba1ca9b39a283eb2da60dde498021957eb788556",
+  "reviewedAt": "2026-08-26T11:44:25.109Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "3ab1de4396fa781c8e2858913e6e2f2f974d8ea2ca66df6b49fa43212f9fb10f",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000193:skill",
+            "name": "Kronablight - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into a Kronablight, soar into the air, and dive to deal 149.00% Electro DMG to the enemies.\nCD: 15s",
+              "Transform into a Kronablight, soar into the air, and dive to deal 178.80% Electro DMG to the enemies.\nCD: 15s",
+              "Transform into a Kronablight, soar into the air, and dive to deal 208.60% Electro DMG to the enemies.\nCD: 15s",
+              "Transform into a Kronablight, soar into the air, and dive to deal 238.40% Electro DMG to the enemies.\nCD: 15s",
+              "Transform into a Kronablight, soar into the air, and dive to deal 268.20% Electro DMG to the enemies.\nCD: 15s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.49
+              ],
+              [
+                1.788
+              ],
+              [
+                2.086
+              ],
+              [
+                2.384
+              ],
+              [
+                2.682
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Transform into a Kronablight, soar into the air, and dive to deal 149.00% Electro DMG to the enemies.\nCD: 15s · Transform into a Kronablight, soar into the air, and dive to deal 178.80% Electro DMG to the enemies.\nCD: 15s · Transform into a Kronablight, soar into the air, and dive to deal 208.60% Electro DMG to the enemies.\nCD: 15s · Transform into a Kronablight, soar into the air, and dive to deal 238.40% Electro DMG to the enemies.\nCD: 15s · Transform into a Kronablight, soar into the air, and dive to deal 268.20% Electro DMG to the enemies.\nCD: 15s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

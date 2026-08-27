@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "sonata",
+  "entityId": "16",
+  "entityName": "Gusts of Welkin",
+  "sourceFingerprint": "cadb277583ec43d3fb649ed2243b4e815b7e3f9abc002e4f7a8f612ea0905712",
+  "reviewedAt": "2026-08-26T11:44:24.592Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "410268e77e0a0947cbc1dd35eb02d2f3c66f7f6bba42efc0a7da138de50b284f",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:16:2:0",
+            "sourceName": "Gusts of Welkin",
+            "text": "Aero DMG + 10%",
+            "refinementTexts": [
+              "Aero DMG + 10%"
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:16:5:0",
+            "sourceName": "Gusts of Welkin",
+            "text": "Inflicting Aero Erosion upon enemies increases Aero DMG for all Resonators in the team by 15%, and for the Resonator triggering this effect by an additional 15%, lasting for 20s.",
+            "refinementTexts": [
+              "Inflicting Aero Erosion upon enemies increases Aero DMG for all Resonators in the team by 15%, and for the Resonator triggering this effect by an additional 15%, lasting for 20s."
+            ],
+            "parsed": {
+              "scope": "team",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 20,
+              "modifiers": [
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 15
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

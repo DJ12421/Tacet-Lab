@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000195",
+  "entityName": "Glommoth",
+  "sourceFingerprint": "86f9c6d4b1c0df1fe711501020c1c3b3252a1f279a28eac72fd3f4617b08d17e",
+  "reviewedAt": "2026-08-26T11:44:25.113Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "ab1d041384f0b93146061a297d7e3d5237a3308c290e088fe614850a47045170",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000195:skill",
+            "name": "Glommoth - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Glommoth to stomp enemies, dealing 152.00% Glacio DMG.\nCasting Outro Skill within 15s after summoning Glommoth grants 12.00% Glacio DMG Bonus to the incoming Resonator for 15s.\nCD: 20s.",
+              "Summon a Glommoth to stomp enemies, dealing 182.40% Glacio DMG.\nCasting Outro Skill within 15s after summoning Glommoth grants 12.00% Glacio DMG Bonus to the incoming Resonator for 15s.\nCD: 20s.",
+              "Summon a Glommoth to stomp enemies, dealing 212.80% Glacio DMG.\nCasting Outro Skill within 15s after summoning Glommoth grants 12.00% Glacio DMG Bonus to the incoming Resonator for 15s.\nCD: 20s.",
+              "Summon a Glommoth to stomp enemies, dealing 243.20% Glacio DMG.\nCasting Outro Skill within 15s after summoning Glommoth grants 12.00% Glacio DMG Bonus to the incoming Resonator for 15s.\nCD: 20s.",
+              "Summon a Glommoth to stomp enemies, dealing 273.60% Glacio DMG.\nCasting Outro Skill within 15s after summoning Glommoth grants 12.00% Glacio DMG Bonus to the incoming Resonator for 15s.\nCD: 20s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.52,
+                0.12
+              ],
+              [
+                1.824,
+                0.12
+              ],
+              [
+                2.128,
+                0.12
+              ],
+              [
+                2.432,
+                0.12
+              ],
+              [
+                2.736,
+                0.12
+              ]
+            ],
+            "count": 2,
+            "sourceText": "Summon a Glommoth to stomp enemies, dealing 152.00% Glacio DMG.\nCasting Outro Skill within 15s after summoning Glommoth grants 12.00% Glacio DMG Bonus to the incoming Resonator for 15s.\nCD: 20s. · Summon a Glommoth to stomp enemies, dealing 182.40% Glacio DMG.\nCasting Outro Skill within 15s after summoning Glommoth grants 12.00% Glacio DMG Bonus to the incoming Resonator for 15s.\nCD: 20s. · Summon a Glommoth to stomp enemies, dealing 212.80% Glacio DMG.\nCasting Outro Skill within 15s after summoning Glommoth grants 12.00% Glacio DMG Bonus to the incoming Resonator for 15s.\nCD: 20s. · Summon a Glommoth to stomp enemies, dealing 243.20% Glacio DMG.\nCasting Outro Skill within 15s after summoning Glommoth grants 12.00% Glacio DMG Bonus to the incoming Resonator for 15s.\nCD: 20s. · Summon a Glommoth to stomp enemies, dealing 273.60% Glacio DMG.\nCasting Outro Skill within 15s after summoning Glommoth grants 12.00% Glacio DMG Bonus to the incoming Resonator for 15s.\nCD: 20s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "275791a927d998326e3e0a9655040e459447ee0ac49394bf651b50af8cf84e7d",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000195:effect:0",
+            "sourceName": "Glommoth",
+            "sourceType": "echo",
+            "text": "Casting Outro Skill within 15s after summoning Glommoth grants 12.00% Glacio DMG Bonus to the incoming Resonator for 15s.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Outro Skill",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "Glacio",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000097",
+  "entityName": "Hurriclaw",
+  "sourceFingerprint": "fdab6ae290f7f8639eebc2064aeed19967ae642234406c6970438b021b0b7361",
+  "reviewedAt": "2026-08-26T11:44:24.978Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "2956149d2e9787116c83949022ab52a23d0b3b122d64bcb57a024a53a3c18a4c",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000097:skill",
+            "name": "Hurriclaw - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Hurriclaw and charge forward, dealing 87.00% Aero DMG upon hit plus 87.00% Aero DMG with a sweep attack. Hold the Echo Skill to continue charging forward. Use Echo Skill again while charging to perform a sweep attack.\nCD: 20s.",
+              "Transform into Hurriclaw and charge forward, dealing 104.40% Aero DMG upon hit plus 104.40% Aero DMG with a sweep attack. Hold the Echo Skill to continue charging forward. Use Echo Skill again while charging to perform a sweep attack.\nCD: 20s.",
+              "Transform into Hurriclaw and charge forward, dealing 121.80% Aero DMG upon hit plus 121.80% Aero DMG with a sweep attack. Hold the Echo Skill to continue charging forward. Use Echo Skill again while charging to perform a sweep attack.\nCD: 20s.",
+              "Transform into Hurriclaw and charge forward, dealing 139.20% Aero DMG upon hit plus 139.20% Aero DMG with a sweep attack. Hold the Echo Skill to continue charging forward. Use Echo Skill again while charging to perform a sweep attack.\nCD: 20s.",
+              "Transform into Hurriclaw and charge forward, dealing 156.60% Aero DMG upon hit plus 156.60% Aero DMG with a sweep attack. Hold the Echo Skill to continue charging forward. Use Echo Skill again while charging to perform a sweep attack.\nCD: 20s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.87,
+                0.87
+              ],
+              [
+                1.044,
+                1.044
+              ],
+              [
+                1.218,
+                1.218
+              ],
+              [
+                1.392,
+                1.392
+              ],
+              [
+                1.5659999999999998,
+                1.5659999999999998
+              ]
+            ],
+            "count": 2,
+            "sourceText": "Transform into Hurriclaw and charge forward, dealing 87.00% Aero DMG upon hit plus 87.00% Aero DMG with a sweep attack. Hold the Echo Skill to continue charging forward. Use Echo Skill again while charging to perform a sweep attack.\nCD: 20s. · Transform into Hurriclaw and charge forward, dealing 104.40% Aero DMG upon hit plus 104.40% Aero DMG with a sweep attack. Hold the Echo Skill to continue charging forward. Use Echo Skill again while charging to perform a sweep attack.\nCD: 20s. · Transform into Hurriclaw and charge forward, dealing 121.80% Aero DMG upon hit plus 121.80% Aero DMG with a sweep attack. Hold the Echo Skill to continue charging forward. Use Echo Skill again while charging to perform a sweep attack.\nCD: 20s. · Transform into Hurriclaw and charge forward, dealing 139.20% Aero DMG upon hit plus 139.20% Aero DMG with a sweep attack. Hold the Echo Skill to continue charging forward. Use Echo Skill again while charging to perform a sweep attack.\nCD: 20s. · Transform into Hurriclaw and charge forward, dealing 156.60% Aero DMG upon hit plus 156.60% Aero DMG with a sweep attack. Hold the Echo Skill to continue charging forward. Use Echo Skill again while charging to perform a sweep attack.\nCD: 20s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "d8eeadc15f734663f29ba0a00f2570ae24b87bd388af0a46e62255eff0913754",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000097:effect:0",
+            "sourceName": "Hurriclaw",
+            "sourceType": "echo",
+            "text": "Use Echo Skill again while charging to perform a sweep attack.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Echo Skill",
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

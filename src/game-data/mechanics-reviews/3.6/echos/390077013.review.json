@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390077013",
+  "entityName": "Glacio Prism",
+  "sourceFingerprint": "08f5361fca937edb64ec53bb9cdd8a3e560a5fe82cd52d5969fcdf9941fa107e",
+  "reviewedAt": "2026-08-26T11:44:24.820Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "3ecca1d73fb62b0f90bb2aea19ac870b376c270fc35647c454e4546833ef9c82",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390077013:skill",
+            "name": "Glacio Prism - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Glacio Prism that continuously fires three crystal shards, each dealing 24.00% Glacio DMG.\nCD: 8s",
+              "Summon a Glacio Prism that continuously fires three crystal shards, each dealing 27.60% Glacio DMG.\nCD: 8s",
+              "Summon a Glacio Prism that continuously fires three crystal shards, each dealing 31.20% Glacio DMG.\nCD: 8s",
+              "Summon a Glacio Prism that continuously fires three crystal shards, each dealing 34.80% Glacio DMG.\nCD: 8s",
+              "Summon a Glacio Prism that continuously fires three crystal shards, each dealing 38.40% Glacio DMG.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.24
+              ],
+              [
+                0.276
+              ],
+              [
+                0.312
+              ],
+              [
+                0.348
+              ],
+              [
+                0.384
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Glacio Prism that continuously fires three crystal shards, each dealing 24.00% Glacio DMG.\nCD: 8s · Summon a Glacio Prism that continuously fires three crystal shards, each dealing 27.60% Glacio DMG.\nCD: 8s · Summon a Glacio Prism that continuously fires three crystal shards, each dealing 31.20% Glacio DMG.\nCD: 8s · Summon a Glacio Prism that continuously fires three crystal shards, each dealing 34.80% Glacio DMG.\nCD: 8s · Summon a Glacio Prism that continuously fires three crystal shards, each dealing 38.40% Glacio DMG.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21010043",
+  "entityName": "Broadblade of Voyager",
+  "sourceFingerprint": "3bd7cde96cf42d247de82f1941d030d93ce1e50b274ee66a1a57af130798318d",
+  "reviewedAt": "2026-08-26T11:44:23.860Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "bf5c398ec0456a70f4e7d9dcf80986112bfc0a4a0eb8c7827d681cf999e53263",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21010043:effect:0",
+            "sourceName": "Long Journey",
+            "text": "When Resonance Skill is cast, restores 8 Resonance Energy. This effect can be triggered 1 time(s) every 20s.",
+            "refinementTexts": [
+              "When Resonance Skill is cast, restores 8 Resonance Energy. This effect can be triggered 1 time(s) every 20s.",
+              "When Resonance Skill is cast, restores 9 Resonance Energy. This effect can be triggered 1 time(s) every 20s.",
+              "When Resonance Skill is cast, restores 10 Resonance Energy. This effect can be triggered 1 time(s) every 20s.",
+              "When Resonance Skill is cast, restores 11 Resonance Energy. This effect can be triggered 1 time(s) every 20s.",
+              "When Resonance Skill is cast, restores 12 Resonance Energy. This effect can be triggered 1 time(s) every 20s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Skill",
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

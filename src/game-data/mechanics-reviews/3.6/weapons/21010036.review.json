@@ -1,0 +1,403 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21010036",
+  "entityName": "Wildfire Mark",
+  "sourceFingerprint": "4ebbb1698ec2f58d3499ccfa6dcc4e91903e102509984f7e3520dfb0efe22bf7",
+  "reviewedAt": "2026-08-26T11:44:23.857Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "29cde54216149e4bd997143fe20634d9814e199d3c4c73b2f53750002d61d2d9",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21010036:effect:0",
+            "sourceName": "Blazing Starfire",
+            "text": "Increases ATK by 12%.",
+            "refinementTexts": [
+              "Increases ATK by 12%.",
+              "Increases ATK by 15%.",
+              "Increases ATK by 18%.",
+              "Increases ATK by 21%.",
+              "Increases ATK by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21010036:effect:1",
+            "sourceName": "Blazing Starfire",
+            "text": "Performing Intro Skill or Resonance Liberation increases Resonance Liberation DMG by 24% for 6s.",
+            "refinementTexts": [
+              "Performing Intro Skill or Resonance Liberation increases Resonance Liberation DMG by 24% for 6s.",
+              "Performing Intro Skill or Resonance Liberation increases Resonance Liberation DMG by 30% for 6s.",
+              "Performing Intro Skill or Resonance Liberation increases Resonance Liberation DMG by 36% for 6s.",
+              "Performing Intro Skill or Resonance Liberation increases Resonance Liberation DMG by 42% for 6s.",
+              "Performing Intro Skill or Resonance Liberation increases Resonance Liberation DMG by 48% for 6s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 6,
+              "modifiers": [
+                {
+                  "stat": "liberationDamage",
+                  "operation": "addPercent",
+                  "value": 24
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 36
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 42
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 48
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21010036:effect:2",
+            "sourceName": "Blazing Starfire",
+            "text": "Dealing Heavy Attack DMG extends this effect by 4s, up to 1 time.",
+            "refinementTexts": [
+              "Dealing Heavy Attack DMG extends this effect by 4s, up to 1 time.",
+              "Dealing Heavy Attack DMG extends this effect by 4s, up to 1 time.",
+              "Dealing Heavy Attack DMG extends this effect by 4s, up to 1 time.",
+              "Dealing Heavy Attack DMG extends this effect by 4s, up to 1 time.",
+              "Dealing Heavy Attack DMG extends this effect by 4s, up to 1 time."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "trigger": "Heavy Attack DMG",
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21010036:effect:3",
+            "sourceName": "Blazing Starfire",
+            "text": "Each successful extension gives 24% Fusion DMG Bonus to all Resonators in the team for 30s.",
+            "refinementTexts": [
+              "Each successful extension gives 24% Fusion DMG Bonus to all Resonators in the team for 30s.",
+              "Each successful extension gives 30% Fusion DMG Bonus to all Resonators in the team for 30s.",
+              "Each successful extension gives 36% Fusion DMG Bonus to all Resonators in the team for 30s.",
+              "Each successful extension gives 42% Fusion DMG Bonus to all Resonators in the team for 30s.",
+              "Each successful extension gives 48% Fusion DMG Bonus to all Resonators in the team for 30s."
+            ],
+            "parsed": {
+              "scope": "team",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 30,
+              "modifiers": [
+                {
+                  "stat": "Fusion",
+                  "operation": "addPercent",
+                  "value": 24
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "team",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "Fusion",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "team",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "Fusion",
+                    "operation": "addPercent",
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "team",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "Fusion",
+                    "operation": "addPercent",
+                    "value": 36
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "team",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "Fusion",
+                    "operation": "addPercent",
+                    "value": 42
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "team",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "Fusion",
+                    "operation": "addPercent",
+                    "value": 48
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21010036:effect:4",
+            "sourceName": "Blazing Starfire",
+            "text": "Effects of the same name cannot be stacked.",
+            "refinementTexts": [
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21050053",
+  "entityName": "Guardian Rectifier",
+  "sourceFingerprint": "0c488c1bbb7bd9faab4b9bca7615b045aa56ce2e3ce14eac1ece8c9045c6706a",
+  "reviewedAt": "2026-08-26T11:44:24.426Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "8d5304a0a1b22e4216995523d6ed3791b7c5b734545f699639bb0e0af3fa6bd4",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050053:effect:0",
+            "sourceName": "Companionship",
+            "text": "Increases Basic Attack and Heavy Attack DMG Bonus by 12%.",
+            "refinementTexts": [
+              "Increases Basic Attack and Heavy Attack DMG Bonus by 12%.",
+              "Increases Basic Attack and Heavy Attack DMG Bonus by 15%.",
+              "Increases Basic Attack and Heavy Attack DMG Bonus by 18%.",
+              "Increases Basic Attack and Heavy Attack DMG Bonus by 21%.",
+              "Increases Basic Attack and Heavy Attack DMG Bonus by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "heavyDamage",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

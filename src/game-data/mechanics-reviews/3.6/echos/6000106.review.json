@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000106",
+  "entityName": "Reminiscence: Fleurdelys",
+  "sourceFingerprint": "dc81dfff225f2803c6a293b353c84a56225e0e7c56dc1a588559c6d506ea67af",
+  "reviewedAt": "2026-08-26T11:44:24.999Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "a5cab8be1b902374ac6e3b13545592599f08806f24d60d76a74ddad5f9f91782",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000106:skill",
+            "name": "Reminiscence: Fleurdelys - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon Windcleaver and attack the target, dealing 15.20% Aero DMG 8 times and 76.00% Aero DMG once.\nThe Resonator with this Echo equipped in the main slot gains 10.00% Aero DMG Bonus. When Resonator: Aero or Cartethyia equips this Echo, they gain 10.00% more Aero DMG Bonus.\nCD: 20s.",
+              "Summon Windcleaver and attack the target, dealing 18.24% Aero DMG 8 times and 91.20% Aero DMG once.\nThe Resonator with this Echo equipped in the main slot gains 10.00% Aero DMG Bonus. When Resonator: Aero or Cartethyia equips this Echo, they gain 10.00% more Aero DMG Bonus.\nCD: 20s.",
+              "Summon Windcleaver and attack the target, dealing 21.28% Aero DMG 8 times and 106.40% Aero DMG once.\nThe Resonator with this Echo equipped in the main slot gains 10.00% Aero DMG Bonus. When Resonator: Aero or Cartethyia equips this Echo, they gain 10.00% more Aero DMG Bonus.\nCD: 20s.",
+              "Summon Windcleaver and attack the target, dealing 24.32% Aero DMG 8 times and 121.60% Aero DMG once.\nThe Resonator with this Echo equipped in the main slot gains 10.00% Aero DMG Bonus. When Resonator: Aero or Cartethyia equips this Echo, they gain 10.00% more Aero DMG Bonus.\nCD: 20s.",
+              "Summon Windcleaver and attack the target, dealing 27.36% Aero DMG 8 times and 136.80% Aero DMG once.\nThe Resonator with this Echo equipped in the main slot gains 10.00% Aero DMG Bonus. When Resonator: Aero or Cartethyia equips this Echo, they gain 10.00% more Aero DMG Bonus.\nCD: 20s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.152,
+                0.76,
+                0.1,
+                0.1
+              ],
+              [
+                0.18239999999999998,
+                0.912,
+                0.1,
+                0.1
+              ],
+              [
+                0.21280000000000002,
+                1.064,
+                0.1,
+                0.1
+              ],
+              [
+                0.2432,
+                1.216,
+                0.1,
+                0.1
+              ],
+              [
+                0.2736,
+                1.368,
+                0.1,
+                0.1
+              ]
+            ],
+            "count": 4,
+            "sourceText": "Summon Windcleaver and attack the target, dealing 15.20% Aero DMG 8 times and 76.00% Aero DMG once.\nThe Resonator with this Echo equipped in the main slot gains 10.00% Aero DMG Bonus. When Resonator: Aero or Cartethyia equips this Echo, they gain 10.00% more Aero DMG Bonus.\nCD: 20s. · Summon Windcleaver and attack the target, dealing 18.24% Aero DMG 8 times and 91.20% Aero DMG once.\nThe Resonator with this Echo equipped in the main slot gains 10.00% Aero DMG Bonus. When Resonator: Aero or Cartethyia equips this Echo, they gain 10.00% more Aero DMG Bonus.\nCD: 20s. · Summon Windcleaver and attack the target, dealing 21.28% Aero DMG 8 times and 106.40% Aero DMG once.\nThe Resonator with this Echo equipped in the main slot gains 10.00% Aero DMG Bonus. When Resonator: Aero or Cartethyia equips this Echo, they gain 10.00% more Aero DMG Bonus.\nCD: 20s. · Summon Windcleaver and attack the target, dealing 24.32% Aero DMG 8 times and 121.60% Aero DMG once.\nThe Resonator with this Echo equipped in the main slot gains 10.00% Aero DMG Bonus. When Resonator: Aero or Cartethyia equips this Echo, they gain 10.00% more Aero DMG Bonus.\nCD: 20s. · Summon Windcleaver and attack the target, dealing 27.36% Aero DMG 8 times and 136.80% Aero DMG once.\nThe Resonator with this Echo equipped in the main slot gains 10.00% Aero DMG Bonus. When Resonator: Aero or Cartethyia equips this Echo, they gain 10.00% more Aero DMG Bonus.\nCD: 20s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "c805513d600eda852023cece8ff3973b2d38a9db0401431eabebc5502a5b75f1",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000106:effect:0",
+            "sourceName": "Reminiscence: Fleurdelys",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in the main slot gains 10.00% Aero DMG Bonus.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          },
+          {
+            "id": "echo:6000106:effect:1",
+            "sourceName": "Reminiscence: Fleurdelys",
+            "sourceType": "echo",
+            "text": "When Resonator: Aero or Cartethyia equips this Echo, they gain 10.00% more Aero DMG Bonus.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

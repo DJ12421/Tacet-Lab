@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000201",
+  "entityName": "Reminiscence - Nightmare: Adam Smasher",
+  "sourceFingerprint": "2874b545e321bdc91d55ad056cd4e4f949d256515897f19f71cb2df5c711a1e3",
+  "reviewedAt": "2026-08-26T11:44:25.125Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "6f1fe34e605e3a59ef87805613a653e4edf328a1c66f7164a8ca138082bf50d6",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000201:skill",
+            "name": "Reminiscence - Nightmare: Adam Smasher - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Cast Echo Skill to deal 16 instances of Physical DMG equal to 5.70% of ATK to enemies within range.\nWhen Lucy or Rebecca has this Echo equipped in the main slot, their Crit. Rate is increased by 15% and they unlock special Echo Skills.\nIf equipped by Lucy:\n- the Echo Skill button to deal Spectro DMG equal to 152.00% of ATK to nearby enemies.\n- Hold the Echo Skill button to deal Spectro DMG equal to 152.00% of ATK to nearby enemies and enter a special moving state, increasing Lucy's movement speed while slowing nearby enemies.\nIf equipped by Rebecca:\n- Cast Echo Skill to fire missiles, dealing 16 instances of Electro DMG equal to 9.50% of ATK to enemies.\nCD: 20s",
+              "Cast Echo Skill to deal 16 instances of Physical DMG equal to 6.84% of ATK to enemies within range.\nWhen Lucy or Rebecca has this Echo equipped in the main slot, their Crit. Rate is increased by 15% and they unlock special Echo Skills.\nIf equipped by Lucy:\n- the Echo Skill button to deal Spectro DMG equal to 182.40% of ATK to nearby enemies.\n- Hold the Echo Skill button to deal Spectro DMG equal to 182.40% of ATK to nearby enemies and enter a special moving state, increasing Lucy's movement speed while slowing nearby enemies.\nIf equipped by Rebecca:\n- Cast Echo Skill to fire missiles, dealing 16 instances of Electro DMG equal to 11.40% of ATK to enemies.\nCD: 20s",
+              "Cast Echo Skill to deal 16 instances of Physical DMG equal to 7.98% of ATK to enemies within range.\nWhen Lucy or Rebecca has this Echo equipped in the main slot, their Crit. Rate is increased by 15% and they unlock special Echo Skills.\nIf equipped by Lucy:\n- the Echo Skill button to deal Spectro DMG equal to 212.80% of ATK to nearby enemies.\n- Hold the Echo Skill button to deal Spectro DMG equal to 212.80% of ATK to nearby enemies and enter a special moving state, increasing Lucy's movement speed while slowing nearby enemies.\nIf equipped by Rebecca:\n- Cast Echo Skill to fire missiles, dealing 16 instances of Electro DMG equal to 13.30% of ATK to enemies.\nCD: 20s",
+              "Cast Echo Skill to deal 16 instances of Physical DMG equal to 9.12% of ATK to enemies within range.\nWhen Lucy or Rebecca has this Echo equipped in the main slot, their Crit. Rate is increased by 15% and they unlock special Echo Skills.\nIf equipped by Lucy:\n- the Echo Skill button to deal Spectro DMG equal to 243.20% of ATK to nearby enemies.\n- Hold the Echo Skill button to deal Spectro DMG equal to 243.20% of ATK to nearby enemies and enter a special moving state, increasing Lucy's movement speed while slowing nearby enemies.\nIf equipped by Rebecca:\n- Cast Echo Skill to fire missiles, dealing 16 instances of Electro DMG equal to 15.20% of ATK to enemies.\nCD: 20s",
+              "Cast Echo Skill to deal 16 instances of Physical DMG equal to 10.26% of ATK to enemies within range.\nWhen Lucy or Rebecca has this Echo equipped in the main slot, their Crit. Rate is increased by 15% and they unlock special Echo Skills.\nIf equipped by Lucy:\n- the Echo Skill button to deal Spectro DMG equal to 273.60% of ATK to nearby enemies.\n- Hold the Echo Skill button to deal Spectro DMG equal to 273.60% of ATK to nearby enemies and enter a special moving state, increasing Lucy's movement speed while slowing nearby enemies.\nIf equipped by Rebecca:\n- Cast Echo Skill to fire missiles, dealing 16 instances of Electro DMG equal to 17.10% of ATK to enemies.\nCD: 20s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.057,
+                0.15,
+                1.52,
+                1.52,
+                0.095
+              ],
+              [
+                0.0684,
+                0.15,
+                1.824,
+                1.824,
+                0.114
+              ],
+              [
+                0.07980000000000001,
+                0.15,
+                2.128,
+                2.128,
+                0.133
+              ],
+              [
+                0.09119999999999999,
+                0.15,
+                2.432,
+                2.432,
+                0.152
+              ],
+              [
+                0.1026,
+                0.15,
+                2.736,
+                2.736,
+                0.171
+              ]
+            ],
+            "count": 5,
+            "sourceText": "Cast Echo Skill to deal 16 instances of Physical DMG equal to 5.70% of ATK to enemies within range.\nWhen Lucy or Rebecca has this Echo equipped in the main slot, their Crit. Rate is increased by 15% and they unlock special Echo Skills.\nIf equipped by Lucy:\n- the Echo Skill button to deal Spectro DMG equal to 152.00% of ATK to nearby enemies.\n- Hold the Echo Skill button to deal Spectro DMG equal to 152.00% of ATK to nearby enemies and enter a special moving state, increasing Lucy's movement speed while slowing nearby enemies.\nIf equipped by Rebecca:\n- Cast Echo Skill to fire missiles, dealing 16 instances of Electro DMG equal to 9.50% of ATK to enemies.\nCD: 20s · Cast Echo Skill to deal 16 instances of Physical DMG equal to 6.84% of ATK to enemies within range.\nWhen Lucy or Rebecca has this Echo equipped in the main slot, their Crit. Rate is increased by 15% and they unlock special Echo Skills.\nIf equipped by Lucy:\n- the Echo Skill button to deal Spectro DMG equal to 182.40% of ATK to nearby enemies.\n- Hold the Echo Skill button to deal Spectro DMG equal to 182.40% of ATK to nearby enemies and enter a special moving state, increasing Lucy's movement speed while slowing nearby enemies.\nIf equipped by Rebecca:\n- Cast Echo Skill to fire missiles, dealing 16 instances of Electro DMG equal to 11.40% of ATK to enemies.\nCD: 20s · Cast Echo Skill to deal 16 instances of Physical DMG equal to 7.98% of ATK to enemies within range.\nWhen Lucy or Rebecca has this Echo equipped in the main slot, their Crit. Rate is increased by 15% and they unlock special Echo Skills.\nIf equipped by Lucy:\n- the Echo Skill button to deal Spectro DMG equal to 212.80% of ATK to nearby enemies.\n- Hold the Echo Skill button to deal Spectro DMG equal to 212.80% of ATK to nearby enemies and enter a special moving state, increasing Lucy's movement speed while slowing nearby enemies.\nIf equipped by Rebecca:\n- Cast Echo Skill to fire missiles, dealing 16 instances of Electro DMG equal to 13.30% of ATK to enemies.\nCD: 20s · Cast Echo Skill to deal 16 instances of Physical DMG equal to 9.12% of ATK to enemies within range.\nWhen Lucy or Rebecca has this Echo equipped in the main slot, their Crit. Rate is increased by 15% and they unlock special Echo Skills.\nIf equipped by Lucy:\n- the Echo Skill button to deal Spectro DMG equal to 243.20% of ATK to nearby enemies.\n- Hold the Echo Skill button to deal Spectro DMG equal to 243.20% of ATK to nearby enemies and enter a special moving state, increasing Lucy's movement speed while slowing nearby enemies.\nIf equipped by Rebecca:\n- Cast Echo Skill to fire missiles, dealing 16 instances of Electro DMG equal to 15.20% of ATK to enemies.\nCD: 20s · Cast Echo Skill to deal 16 instances of Physical DMG equal to 10.26% of ATK to enemies within range.\nWhen Lucy or Rebecca has this Echo equipped in the main slot, their Crit. Rate is increased by 15% and they unlock special Echo Skills.\nIf equipped by Lucy:\n- the Echo Skill button to deal Spectro DMG equal to 273.60% of ATK to nearby enemies.\n- Hold the Echo Skill button to deal Spectro DMG equal to 273.60% of ATK to nearby enemies and enter a special moving state, increasing Lucy's movement speed while slowing nearby enemies.\nIf equipped by Rebecca:\n- Cast Echo Skill to fire missiles, dealing 16 instances of Electro DMG equal to 17.10% of ATK to enemies.\nCD: 20s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "b4c1a1adc4ab069bcc0ca8f539a105dbba3fcb808078534326aa993a4ea75a8a",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000201:effect:0",
+            "sourceName": "Reminiscence - Nightmare: Adam Smasher",
+            "sourceType": "echo",
+            "text": "When Lucy or Rebecca has this Echo equipped in the main slot, their Crit. Rate is increased by 15% and they unlock special Echo Skills.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "critRate",
+                  "operation": "addPercent",
+                  "value": 15
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

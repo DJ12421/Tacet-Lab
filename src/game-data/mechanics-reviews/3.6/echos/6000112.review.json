@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000112",
+  "entityName": "Kerasaur",
+  "sourceFingerprint": "0e6cf9a374b1afabd3f594d2216aaa69134f0e9dcb12da9343b733ab6ad4a33e",
+  "reviewedAt": "2026-08-26T11:44:25.015Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "6a9a4a47cf963c662184d122847417fe08e178596a69c0be6f22708f66214f12",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000112:skill",
+            "name": "Kerasaur - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Kerasaur to leap into the air and slam down, dealing 149.00% Aero DMG. Shortly after hitting the target, cast Echo Skill again to charge at the target, dealing 149.00% Aero DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 15s",
+              "Transform into Kerasaur to leap into the air and slam down, dealing 178.80% Aero DMG. Shortly after hitting the target, cast Echo Skill again to charge at the target, dealing 178.80% Aero DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 15s",
+              "Transform into Kerasaur to leap into the air and slam down, dealing 208.60% Aero DMG. Shortly after hitting the target, cast Echo Skill again to charge at the target, dealing 208.60% Aero DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 15s",
+              "Transform into Kerasaur to leap into the air and slam down, dealing 238.40% Aero DMG. Shortly after hitting the target, cast Echo Skill again to charge at the target, dealing 238.40% Aero DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 15s",
+              "Transform into Kerasaur to leap into the air and slam down, dealing 268.20% Aero DMG. Shortly after hitting the target, cast Echo Skill again to charge at the target, dealing 268.20% Aero DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 15s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.49,
+                1.49,
+                0.12,
+                0.12
+              ],
+              [
+                1.788,
+                1.788,
+                0.12,
+                0.12
+              ],
+              [
+                2.086,
+                2.086,
+                0.12,
+                0.12
+              ],
+              [
+                2.384,
+                2.384,
+                0.12,
+                0.12
+              ],
+              [
+                2.682,
+                2.682,
+                0.12,
+                0.12
+              ]
+            ],
+            "count": 4,
+            "sourceText": "Transform into Kerasaur to leap into the air and slam down, dealing 149.00% Aero DMG. Shortly after hitting the target, cast Echo Skill again to charge at the target, dealing 149.00% Aero DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 15s · Transform into Kerasaur to leap into the air and slam down, dealing 178.80% Aero DMG. Shortly after hitting the target, cast Echo Skill again to charge at the target, dealing 178.80% Aero DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 15s · Transform into Kerasaur to leap into the air and slam down, dealing 208.60% Aero DMG. Shortly after hitting the target, cast Echo Skill again to charge at the target, dealing 208.60% Aero DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 15s · Transform into Kerasaur to leap into the air and slam down, dealing 238.40% Aero DMG. Shortly after hitting the target, cast Echo Skill again to charge at the target, dealing 238.40% Aero DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 15s · Transform into Kerasaur to leap into the air and slam down, dealing 268.20% Aero DMG. Shortly after hitting the target, cast Echo Skill again to charge at the target, dealing 268.20% Aero DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 15s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "2dc3e51546143c7b51fcfc7ce3af6b7720eec71ee5f7e3cdc44d142dc40cfe6a",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000112:effect:0",
+            "sourceName": "Kerasaur",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

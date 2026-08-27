@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000056",
+  "entityName": "Glacio Dreadmane",
+  "sourceFingerprint": "4c7823051a118b0c44b395146e9ebb93b59720f9091d9f37f3b2d598d6c8af02",
+  "reviewedAt": "2026-08-26T11:44:24.894Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "d148579f1a330aaea0613610cc47977fabe45b05404ef902dc33dac8d237301e",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000056:skill",
+            "name": "Glacio Dreadmane - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Lacerate enemies as a Glacio Dreadmane, dealing 134.00% Glacio DMG on each hit. Equipped with 2 charges and can be cast mid-air. Glacio Dreadmane deals 20.00% more DMG while in mid-air and generates 6 Icicles upon landing, each dealing 20.00% Glacio DMG.\nCD: 20s",
+              "Lacerate enemies as a Glacio Dreadmane, dealing 154.10% Glacio DMG on each hit. Equipped with 2 charges and can be cast mid-air. Glacio Dreadmane deals 20.00% more DMG while in mid-air and generates 6 Icicles upon landing, each dealing 23.00% Glacio DMG.\nCD: 20s",
+              "Lacerate enemies as a Glacio Dreadmane, dealing 174.20% Glacio DMG on each hit. Equipped with 2 charges and can be cast mid-air. Glacio Dreadmane deals 20.00% more DMG while in mid-air and generates 6 Icicles upon landing, each dealing 26.00% Glacio DMG.\nCD: 20s",
+              "Lacerate enemies as a Glacio Dreadmane, dealing 194.30% Glacio DMG on each hit. Equipped with 2 charges and can be cast mid-air. Glacio Dreadmane deals 20.00% more DMG while in mid-air and generates 6 Icicles upon landing, each dealing 29.00% Glacio DMG.\nCD: 20s",
+              "Lacerate enemies as a Glacio Dreadmane, dealing 214.40% Glacio DMG on each hit. Equipped with 2 charges and can be cast mid-air. Glacio Dreadmane deals 20.00% more DMG while in mid-air and generates 6 Icicles upon landing, each dealing 32.00% Glacio DMG.\nCD: 20s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.34,
+                0.2,
+                0.2
+              ],
+              [
+                1.541,
+                0.2,
+                0.23
+              ],
+              [
+                1.742,
+                0.2,
+                0.26
+              ],
+              [
+                1.943,
+                0.2,
+                0.29
+              ],
+              [
+                2.144,
+                0.2,
+                0.32
+              ]
+            ],
+            "count": 3,
+            "sourceText": "Lacerate enemies as a Glacio Dreadmane, dealing 134.00% Glacio DMG on each hit. Equipped with 2 charges and can be cast mid-air. Glacio Dreadmane deals 20.00% more DMG while in mid-air and generates 6 Icicles upon landing, each dealing 20.00% Glacio DMG.\nCD: 20s · Lacerate enemies as a Glacio Dreadmane, dealing 154.10% Glacio DMG on each hit. Equipped with 2 charges and can be cast mid-air. Glacio Dreadmane deals 20.00% more DMG while in mid-air and generates 6 Icicles upon landing, each dealing 23.00% Glacio DMG.\nCD: 20s · Lacerate enemies as a Glacio Dreadmane, dealing 174.20% Glacio DMG on each hit. Equipped with 2 charges and can be cast mid-air. Glacio Dreadmane deals 20.00% more DMG while in mid-air and generates 6 Icicles upon landing, each dealing 26.00% Glacio DMG.\nCD: 20s · Lacerate enemies as a Glacio Dreadmane, dealing 194.30% Glacio DMG on each hit. Equipped with 2 charges and can be cast mid-air. Glacio Dreadmane deals 20.00% more DMG while in mid-air and generates 6 Icicles upon landing, each dealing 29.00% Glacio DMG.\nCD: 20s · Lacerate enemies as a Glacio Dreadmane, dealing 214.40% Glacio DMG on each hit. Equipped with 2 charges and can be cast mid-air. Glacio Dreadmane deals 20.00% more DMG while in mid-air and generates 6 Icicles upon landing, each dealing 32.00% Glacio DMG.\nCD: 20s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

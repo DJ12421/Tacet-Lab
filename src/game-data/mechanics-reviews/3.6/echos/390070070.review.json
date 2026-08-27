@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390070070",
+  "entityName": "Glacio Predator",
+  "sourceFingerprint": "1ade80b4e937a1aed10716dcef8c6e5dd93a685d7e1cfaa494920a66caa09582",
+  "reviewedAt": "2026-08-26T11:44:24.777Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "93b6890d21eeac093183e144c04e6731bf3cd505d53087beb0e2675901034a14",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390070070:skill",
+            "name": "Glacio Predator - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Glacio Predator that throws an ice spear, dealing 28.80% Glacio DMG on hit. Deal 2.88% Glacio DMG up to 10 times during the charging time, and 14.40% Glacio DMG when the spear explodes.\nCD: 8s",
+              "Summon a Glacio Predator that throws an ice spear, dealing 33.12% Glacio DMG on hit. Deal 3.31% Glacio DMG up to 10 times during the charging time, and 16.56% Glacio DMG when the spear explodes.\nCD: 8s",
+              "Summon a Glacio Predator that throws an ice spear, dealing 37.44% Glacio DMG on hit. Deal 3.74% Glacio DMG up to 10 times during the charging time, and 18.72% Glacio DMG when the spear explodes.\nCD: 8s",
+              "Summon a Glacio Predator that throws an ice spear, dealing 41.76% Glacio DMG on hit. Deal 4.18% Glacio DMG up to 10 times during the charging time, and 20.88% Glacio DMG when the spear explodes.\nCD: 8s",
+              "Summon a Glacio Predator that throws an ice spear, dealing 46.08% Glacio DMG on hit. Deal 4.61% Glacio DMG up to 10 times during the charging time, and 23.04% Glacio DMG when the spear explodes.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.28800000000000003,
+                0.0288,
+                0.14400000000000002
+              ],
+              [
+                0.3312,
+                0.0331,
+                0.1656
+              ],
+              [
+                0.37439999999999996,
+                0.0374,
+                0.18719999999999998
+              ],
+              [
+                0.41759999999999997,
+                0.0418,
+                0.20879999999999999
+              ],
+              [
+                0.4608,
+                0.0461,
+                0.2304
+              ]
+            ],
+            "count": 3,
+            "sourceText": "Summon a Glacio Predator that throws an ice spear, dealing 28.80% Glacio DMG on hit. Deal 2.88% Glacio DMG up to 10 times during the charging time, and 14.40% Glacio DMG when the spear explodes.\nCD: 8s · Summon a Glacio Predator that throws an ice spear, dealing 33.12% Glacio DMG on hit. Deal 3.31% Glacio DMG up to 10 times during the charging time, and 16.56% Glacio DMG when the spear explodes.\nCD: 8s · Summon a Glacio Predator that throws an ice spear, dealing 37.44% Glacio DMG on hit. Deal 3.74% Glacio DMG up to 10 times during the charging time, and 18.72% Glacio DMG when the spear explodes.\nCD: 8s · Summon a Glacio Predator that throws an ice spear, dealing 41.76% Glacio DMG on hit. Deal 4.18% Glacio DMG up to 10 times during the charging time, and 20.88% Glacio DMG when the spear explodes.\nCD: 8s · Summon a Glacio Predator that throws an ice spear, dealing 46.08% Glacio DMG on hit. Deal 4.61% Glacio DMG up to 10 times during the charging time, and 23.04% Glacio DMG when the spear explodes.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

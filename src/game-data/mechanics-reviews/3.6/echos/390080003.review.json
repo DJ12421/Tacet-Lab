@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390080003",
+  "entityName": "Thundering Mephis",
+  "sourceFingerprint": "7a844c3a5c5beef683ec00b8529f345f238cbb1a20d2ff1a7d40c20ed167ed0c",
+  "reviewedAt": "2026-08-26T11:44:24.849Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "d84366426a874fde8b8d57938a9b869b19fda041e38e88ddf4c5ff3e8cda6aea",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390080003:skill",
+            "name": "Thundering Mephis - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Thundering Mephis, engaging in a rapid assault of up to 6 strikes. The first 5 strikes deal 82.88% Electro DMG each, while the final strike inflicts 118.40% Electro DMG, with an additional 19.73% Electro DMG from the thunder.\nAfter the final hit, increase the current character's Electro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s.\nCD: 20s",
+              "Transform into Thundering Mephis, engaging in a rapid assault of up to 6 strikes. The first 5 strikes deal 95.31% Electro DMG each, while the final strike inflicts 136.16% Electro DMG, with an additional 22.69% Electro DMG from the thunder.\nAfter the final hit, increase the current character's Electro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s.\nCD: 20s",
+              "Transform into Thundering Mephis, engaging in a rapid assault of up to 6 strikes. The first 5 strikes deal 107.74% Electro DMG each, while the final strike inflicts 153.92% Electro DMG, with an additional 25.65% Electro DMG from the thunder.\nAfter the final hit, increase the current character's Electro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s.\nCD: 20s",
+              "Transform into Thundering Mephis, engaging in a rapid assault of up to 6 strikes. The first 5 strikes deal 120.18% Electro DMG each, while the final strike inflicts 171.68% Electro DMG, with an additional 28.61% Electro DMG from the thunder.\nAfter the final hit, increase the current character's Electro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s.\nCD: 20s",
+              "Transform into Thundering Mephis, engaging in a rapid assault of up to 6 strikes. The first 5 strikes deal 132.61% Electro DMG each, while the final strike inflicts 189.44% Electro DMG, with an additional 31.57% Electro DMG from the thunder.\nAfter the final hit, increase the current character's Electro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s.\nCD: 20s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.8288,
+                1.1840000000000002,
+                0.1973,
+                0.12,
+                0.12
+              ],
+              [
+                0.9531000000000001,
+                1.3616,
+                0.22690000000000002,
+                0.12,
+                0.12
+              ],
+              [
+                1.0774,
+                1.5392,
+                0.2565,
+                0.12,
+                0.12
+              ],
+              [
+                1.2018,
+                1.7168,
+                0.2861,
+                0.12,
+                0.12
+              ],
+              [
+                1.3261,
+                1.8944,
+                0.3157,
+                0.12,
+                0.12
+              ]
+            ],
+            "count": 5,
+            "sourceText": "Transform into Thundering Mephis, engaging in a rapid assault of up to 6 strikes. The first 5 strikes deal 82.88% Electro DMG each, while the final strike inflicts 118.40% Electro DMG, with an additional 19.73% Electro DMG from the thunder.\nAfter the final hit, increase the current character's Electro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s.\nCD: 20s · Transform into Thundering Mephis, engaging in a rapid assault of up to 6 strikes. The first 5 strikes deal 95.31% Electro DMG each, while the final strike inflicts 136.16% Electro DMG, with an additional 22.69% Electro DMG from the thunder.\nAfter the final hit, increase the current character's Electro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s.\nCD: 20s · Transform into Thundering Mephis, engaging in a rapid assault of up to 6 strikes. The first 5 strikes deal 107.74% Electro DMG each, while the final strike inflicts 153.92% Electro DMG, with an additional 25.65% Electro DMG from the thunder.\nAfter the final hit, increase the current character's Electro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s.\nCD: 20s · Transform into Thundering Mephis, engaging in a rapid assault of up to 6 strikes. The first 5 strikes deal 120.18% Electro DMG each, while the final strike inflicts 171.68% Electro DMG, with an additional 28.61% Electro DMG from the thunder.\nAfter the final hit, increase the current character's Electro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s.\nCD: 20s · Transform into Thundering Mephis, engaging in a rapid assault of up to 6 strikes. The first 5 strikes deal 132.61% Electro DMG each, while the final strike inflicts 189.44% Electro DMG, with an additional 31.57% Electro DMG from the thunder.\nAfter the final hit, increase the current character's Electro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s.\nCD: 20s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "34e1d30ddd8ecf91ff87a3abee331c765535eec79cfd2dbdd4651ed6202b758e",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:390080003:effect:0",
+            "sourceName": "Thundering Mephis",
+            "sourceType": "echo",
+            "text": "After the final hit, increase the current character's Electro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "Electro",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

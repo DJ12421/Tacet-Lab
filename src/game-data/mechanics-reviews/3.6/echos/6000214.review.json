@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000214",
+  "entityName": "Smolder",
+  "sourceFingerprint": "acf26f8bf920b5070e5242e8a908c0c95ac45a7edc01f7c7b7092a53d164bc1b",
+  "reviewedAt": "2026-08-26T11:44:25.150Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "39319ac12286c5e16703d830ad1728eb5c7568340e61e0b4347555b055dcfe03",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000214:skill",
+            "name": "Smolder - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Use Echo Skill to summon Smolder to hurl fireballs toward enemies, dealing 107.00% Fusion DMG. If the fireball hits the ground, it explodes to deal 107.00% Fusion DMG to all enemies within the range.\nCD: 15s",
+              "Use Echo Skill to summon Smolder to hurl fireballs toward enemies, dealing 128.40% Fusion DMG. If the fireball hits the ground, it explodes to deal 128.40% Fusion DMG to all enemies within the range.\nCD: 15s",
+              "Use Echo Skill to summon Smolder to hurl fireballs toward enemies, dealing 149.80% Fusion DMG. If the fireball hits the ground, it explodes to deal 149.80% Fusion DMG to all enemies within the range.\nCD: 15s",
+              "Use Echo Skill to summon Smolder to hurl fireballs toward enemies, dealing 171.20% Fusion DMG. If the fireball hits the ground, it explodes to deal 171.20% Fusion DMG to all enemies within the range.\nCD: 15s",
+              "Use Echo Skill to summon Smolder to hurl fireballs toward enemies, dealing 192.60% Fusion DMG. If the fireball hits the ground, it explodes to deal 192.60% Fusion DMG to all enemies within the range.\nCD: 15s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.07,
+                1.07
+              ],
+              [
+                1.284,
+                1.284
+              ],
+              [
+                1.4980000000000002,
+                1.4980000000000002
+              ],
+              [
+                1.712,
+                1.712
+              ],
+              [
+                1.926,
+                1.926
+              ]
+            ],
+            "count": 2,
+            "sourceText": "Use Echo Skill to summon Smolder to hurl fireballs toward enemies, dealing 107.00% Fusion DMG. If the fireball hits the ground, it explodes to deal 107.00% Fusion DMG to all enemies within the range.\nCD: 15s · Use Echo Skill to summon Smolder to hurl fireballs toward enemies, dealing 128.40% Fusion DMG. If the fireball hits the ground, it explodes to deal 128.40% Fusion DMG to all enemies within the range.\nCD: 15s · Use Echo Skill to summon Smolder to hurl fireballs toward enemies, dealing 149.80% Fusion DMG. If the fireball hits the ground, it explodes to deal 149.80% Fusion DMG to all enemies within the range.\nCD: 15s · Use Echo Skill to summon Smolder to hurl fireballs toward enemies, dealing 171.20% Fusion DMG. If the fireball hits the ground, it explodes to deal 171.20% Fusion DMG to all enemies within the range.\nCD: 15s · Use Echo Skill to summon Smolder to hurl fireballs toward enemies, dealing 192.60% Fusion DMG. If the fireball hits the ground, it explodes to deal 192.60% Fusion DMG to all enemies within the range.\nCD: 15s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

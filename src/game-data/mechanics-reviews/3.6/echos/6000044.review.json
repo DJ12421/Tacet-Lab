@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000044",
+  "entityName": "Lampylumen Myriad",
+  "sourceFingerprint": "8f99f8cf8c06b531a8623e815e71e07215162ec5a655500f5bb33757a6d77b6b",
+  "reviewedAt": "2026-08-26T11:44:24.869Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "571d69554855fc8959e34a43514a7582ea5ee0d86ee8bea58205b43716f2f9de",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000044:skill",
+            "name": "Lampylumen Myriad - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Lampylumen Myriad. Perform up to 3 consecutive attacks.\nUnleash a freezing shock by performing consecutive forward strikes, with the initial two strikes inflicting 125.10% and 125.10% Glacio DMG respectively, and the final strike dealing 166.80% Glacio DMG. Enemies will be frozen on hit.\nEach shock increases the current character's Glacio DMG by 4.00% and Resonance Skill DMG dealt by 4.00% for 15s, stacking up to 3 times\nCD: 20s",
+              "Transform into Lampylumen Myriad. Perform up to 3 consecutive attacks.\nUnleash a freezing shock by performing consecutive forward strikes, with the initial two strikes inflicting 143.87% and 143.87% Glacio DMG respectively, and the final strike dealing 191.82% Glacio DMG. Enemies will be frozen on hit.\nEach shock increases the current character's Glacio DMG by 4.00% and Resonance Skill DMG dealt by 4.00% for 15s, stacking up to 3 times\nCD: 20s",
+              "Transform into Lampylumen Myriad. Perform up to 3 consecutive attacks.\nUnleash a freezing shock by performing consecutive forward strikes, with the initial two strikes inflicting 162.63% and 162.63% Glacio DMG respectively, and the final strike dealing 216.84% Glacio DMG. Enemies will be frozen on hit.\nEach shock increases the current character's Glacio DMG by 4.00% and Resonance Skill DMG dealt by 4.00% for 15s, stacking up to 3 times\nCD: 20s",
+              "Transform into Lampylumen Myriad. Perform up to 3 consecutive attacks.\nUnleash a freezing shock by performing consecutive forward strikes, with the initial two strikes inflicting 181.40% and 181.40% Glacio DMG respectively, and the final strike dealing 241.86% Glacio DMG. Enemies will be frozen on hit.\nEach shock increases the current character's Glacio DMG by 4.00% and Resonance Skill DMG dealt by 4.00% for 15s, stacking up to 3 times\nCD: 20s",
+              "Transform into Lampylumen Myriad. Perform up to 3 consecutive attacks.\nUnleash a freezing shock by performing consecutive forward strikes, with the initial two strikes inflicting 200.16% and 200.16% Glacio DMG respectively, and the final strike dealing 266.88% Glacio DMG. Enemies will be frozen on hit.\nEach shock increases the current character's Glacio DMG by 4.00% and Resonance Skill DMG dealt by 4.00% for 15s, stacking up to 3 times\nCD: 20s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.251,
+                1.251,
+                1.6680000000000001,
+                0.04,
+                0.04
+              ],
+              [
+                1.4387,
+                1.4387,
+                1.9182,
+                0.04,
+                0.04
+              ],
+              [
+                1.6262999999999999,
+                1.6262999999999999,
+                2.1684,
+                0.04,
+                0.04
+              ],
+              [
+                1.814,
+                1.814,
+                2.4186,
+                0.04,
+                0.04
+              ],
+              [
+                2.0016,
+                2.0016,
+                2.6688,
+                0.04,
+                0.04
+              ]
+            ],
+            "count": 5,
+            "sourceText": "Transform into Lampylumen Myriad. Perform up to 3 consecutive attacks.\nUnleash a freezing shock by performing consecutive forward strikes, with the initial two strikes inflicting 125.10% and 125.10% Glacio DMG respectively, and the final strike dealing 166.80% Glacio DMG. Enemies will be frozen on hit.\nEach shock increases the current character's Glacio DMG by 4.00% and Resonance Skill DMG dealt by 4.00% for 15s, stacking up to 3 times\nCD: 20s · Transform into Lampylumen Myriad. Perform up to 3 consecutive attacks.\nUnleash a freezing shock by performing consecutive forward strikes, with the initial two strikes inflicting 143.87% and 143.87% Glacio DMG respectively, and the final strike dealing 191.82% Glacio DMG. Enemies will be frozen on hit.\nEach shock increases the current character's Glacio DMG by 4.00% and Resonance Skill DMG dealt by 4.00% for 15s, stacking up to 3 times\nCD: 20s · Transform into Lampylumen Myriad. Perform up to 3 consecutive attacks.\nUnleash a freezing shock by performing consecutive forward strikes, with the initial two strikes inflicting 162.63% and 162.63% Glacio DMG respectively, and the final strike dealing 216.84% Glacio DMG. Enemies will be frozen on hit.\nEach shock increases the current character's Glacio DMG by 4.00% and Resonance Skill DMG dealt by 4.00% for 15s, stacking up to 3 times\nCD: 20s · Transform into Lampylumen Myriad. Perform up to 3 consecutive attacks.\nUnleash a freezing shock by performing consecutive forward strikes, with the initial two strikes inflicting 181.40% and 181.40% Glacio DMG respectively, and the final strike dealing 241.86% Glacio DMG. Enemies will be frozen on hit.\nEach shock increases the current character's Glacio DMG by 4.00% and Resonance Skill DMG dealt by 4.00% for 15s, stacking up to 3 times\nCD: 20s · Transform into Lampylumen Myriad. Perform up to 3 consecutive attacks.\nUnleash a freezing shock by performing consecutive forward strikes, with the initial two strikes inflicting 200.16% and 200.16% Glacio DMG respectively, and the final strike dealing 266.88% Glacio DMG. Enemies will be frozen on hit.\nEach shock increases the current character's Glacio DMG by 4.00% and Resonance Skill DMG dealt by 4.00% for 15s, stacking up to 3 times\nCD: 20s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "55d54263205c5beb8bd60d9759f7109ea4c67545163bfc9bd4c225ae86288fe1",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000044:effect:0",
+            "sourceName": "Lampylumen Myriad",
+            "sourceType": "echo",
+            "text": "Each shock increases the current character's Glacio DMG by 4.00% and Resonance Skill DMG dealt by 4.00% for 15s, stacking up to 3 times",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "Glacio",
+                  "operation": "addPercent",
+                  "value": 4
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

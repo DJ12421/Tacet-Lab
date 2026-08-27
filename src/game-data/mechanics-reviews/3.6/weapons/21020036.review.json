@@ -1,0 +1,362 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21020036",
+  "entityName": "Unflickering Valor",
+  "sourceFingerprint": "36cd1d16a6b931d9ba111ebab6b79934215708829b890a0b9b59ac283c35e4bd",
+  "reviewedAt": "2026-08-26T11:44:23.990Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "73b9e3f823fdccf353a97a55932370d2198eace551eb08133f7c02821111de09",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020036:effect:0",
+            "sourceName": "Laughter Prevails",
+            "text": "Increase Crit. Rate by 8%.",
+            "refinementTexts": [
+              "Increase Crit. Rate by 8%.",
+              "Increase Crit. Rate by 10%.",
+              "Increase Crit. Rate by 12%.",
+              "Increase Crit. Rate by 14%.",
+              "Increase Crit. Rate by 16%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "critRate",
+                  "operation": "addPercent",
+                  "value": 8
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "critRate",
+                    "operation": "addPercent",
+                    "value": 8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "critRate",
+                    "operation": "addPercent",
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "critRate",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "critRate",
+                    "operation": "addPercent",
+                    "value": 14
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "critRate",
+                    "operation": "addPercent",
+                    "value": 16
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21020036:effect:1",
+            "sourceName": "Laughter Prevails",
+            "text": "Casting Resonance Liberation gives 24% Basic Attack DMG Bonus for 10s.",
+            "refinementTexts": [
+              "Casting Resonance Liberation gives 24% Basic Attack DMG Bonus for 10s.",
+              "Casting Resonance Liberation gives 30% Basic Attack DMG Bonus for 10s.",
+              "Casting Resonance Liberation gives 36% Basic Attack DMG Bonus for 10s.",
+              "Casting Resonance Liberation gives 42% Basic Attack DMG Bonus for 10s.",
+              "Casting Resonance Liberation gives 48% Basic Attack DMG Bonus for 10s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Liberation",
+              "durationSeconds": 10,
+              "modifiers": [
+                {
+                  "stat": "basicDamage",
+                  "operation": "addPercent",
+                  "value": 24
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 36
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 42
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 48
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21020036:effect:2",
+            "sourceName": "Laughter Prevails",
+            "text": "Dealing Basic Attack DMG gives 24% Basic Attack DMG Bonus for 4s.",
+            "refinementTexts": [
+              "Dealing Basic Attack DMG gives 24% Basic Attack DMG Bonus for 4s.",
+              "Dealing Basic Attack DMG gives 30% Basic Attack DMG Bonus for 4s.",
+              "Dealing Basic Attack DMG gives 36% Basic Attack DMG Bonus for 4s.",
+              "Dealing Basic Attack DMG gives 42% Basic Attack DMG Bonus for 4s.",
+              "Dealing Basic Attack DMG gives 48% Basic Attack DMG Bonus for 4s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Basic Attack DMG",
+              "durationSeconds": 4,
+              "modifiers": [
+                {
+                  "stat": "basicDamage",
+                  "operation": "addPercent",
+                  "value": 24
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 4,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 4,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 4,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 36
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 4,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 42
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 4,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 48
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

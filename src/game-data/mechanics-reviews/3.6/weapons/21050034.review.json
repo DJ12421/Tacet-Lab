@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21050034",
+  "entityName": "Rectifier#25",
+  "sourceFingerprint": "e658abea06bcac2da10b0c71446270305500760c1524fffb882838b87ed5fabb",
+  "reviewedAt": "2026-08-26T11:44:24.318Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "a6bc2ad5a7ac2aea57e0eb7cf05f4ecb6a890d0da09ced8e88f53ac72cb6c995",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050034:effect:0",
+            "sourceName": "Dawnbringer",
+            "text": "When Resonance Skill is cast, if the Resonator's HP is below 60%, heals 5% of their Max HP. This effect can be triggered 1 time(s) every 8s.",
+            "refinementTexts": [
+              "When Resonance Skill is cast, if the Resonator's HP is below 60%, heals 5% of their Max HP. This effect can be triggered 1 time(s) every 8s.",
+              "When Resonance Skill is cast, if the Resonator's HP is below 60%, heals 6.25% of their Max HP. This effect can be triggered 1 time(s) every 8s.",
+              "When Resonance Skill is cast, if the Resonator's HP is below 60%, heals 7.5% of their Max HP. This effect can be triggered 1 time(s) every 8s.",
+              "When Resonance Skill is cast, if the Resonator's HP is below 60%, heals 8.75% of their Max HP. This effect can be triggered 1 time(s) every 8s.",
+              "When Resonance Skill is cast, if the Resonator's HP is below 60%, heals 10% of their Max HP. This effect can be triggered 1 time(s) every 8s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Skill",
+              "modifiers": [],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21050034:effect:1",
+            "sourceName": "Dawnbringer",
+            "text": "If the Resonator's HP is above 60%, increases ATK by 12%, lasting for 10s.",
+            "refinementTexts": [
+              "If the Resonator's HP is above 60%, increases ATK by 12%, lasting for 10s.",
+              "If the Resonator's HP is above 60%, increases ATK by 15%, lasting for 10s.",
+              "If the Resonator's HP is above 60%, increases ATK by 18%, lasting for 10s.",
+              "If the Resonator's HP is above 60%, increases ATK by 21%, lasting for 10s.",
+              "If the Resonator's HP is above 60%, increases ATK by 24%, lasting for 10s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 10,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

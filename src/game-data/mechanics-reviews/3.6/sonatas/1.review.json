@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "sonata",
+  "entityId": "1",
+  "entityName": "Freezing Frost",
+  "sourceFingerprint": "0d89e56ab357fe230a10e1c8de8e2450c683f543c55429e41b86184b29cbe379",
+  "reviewedAt": "2026-08-26T11:44:24.570Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "07f337c3580e620e93e53d0b81dd430ce6684eca6a0198e7360f871963fa2aa7",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:1:2:0",
+            "sourceName": "Freezing Frost",
+            "text": "Glacio DMG + 10%.",
+            "refinementTexts": [
+              "Glacio DMG + 10%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:1:5:0",
+            "sourceName": "Freezing Frost",
+            "text": "Glacio DMG + 10% after releasing Basic Attack or Heavy Attack. This effect stacks up to 3 times, each stack lasts 15s.",
+            "refinementTexts": [
+              "Glacio DMG + 10% after releasing Basic Attack or Heavy Attack. This effect stacks up to 3 times, each stack lasts 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "modifiers": [],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

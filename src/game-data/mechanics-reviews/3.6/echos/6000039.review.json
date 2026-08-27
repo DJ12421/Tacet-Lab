@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000039",
+  "entityName": "Tempest Mephis",
+  "sourceFingerprint": "4c462bea1b265ec1f624def5f409927f1703814ef73a8c9a144c7beb1e83dc3b",
+  "reviewedAt": "2026-08-26T11:44:24.858Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "72509b865b471e67b6310bcd9600af891b551fd198845cfe3157491859765879",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000039:skill",
+            "name": "Tempest Mephis - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Tempest Mephis to perform tail swing attacks followed by a claw attack. The lightning strike summoned by the tail swing deals 64.05% Electro DMG each time, while the claw attack deals 109.80% Electro DMG.\nAfter the claw hit, increase the current character's Electro DMG by 12.00% and Heavy Attack DMG by 12.00% for 15s.\nCD: 20s",
+              "Transform into Tempest Mephis to perform tail swing attacks followed by a claw attack. The lightning strike summoned by the tail swing deals 73.66% Electro DMG each time, while the claw attack deals 126.27% Electro DMG.\nAfter the claw hit, increase the current character's Electro DMG by 12.00% and Heavy Attack DMG by 12.00% for 15s.\nCD: 20s",
+              "Transform into Tempest Mephis to perform tail swing attacks followed by a claw attack. The lightning strike summoned by the tail swing deals 83.27% Electro DMG each time, while the claw attack deals 142.74% Electro DMG.\nAfter the claw hit, increase the current character's Electro DMG by 12.00% and Heavy Attack DMG by 12.00% for 15s.\nCD: 20s",
+              "Transform into Tempest Mephis to perform tail swing attacks followed by a claw attack. The lightning strike summoned by the tail swing deals 92.87% Electro DMG each time, while the claw attack deals 159.21% Electro DMG.\nAfter the claw hit, increase the current character's Electro DMG by 12.00% and Heavy Attack DMG by 12.00% for 15s.\nCD: 20s",
+              "Transform into Tempest Mephis to perform tail swing attacks followed by a claw attack. The lightning strike summoned by the tail swing deals 102.48% Electro DMG each time, while the claw attack deals 175.68% Electro DMG.\nAfter the claw hit, increase the current character's Electro DMG by 12.00% and Heavy Attack DMG by 12.00% for 15s.\nCD: 20s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.6405,
+                1.0979999999999999,
+                0.12,
+                0.12
+              ],
+              [
+                0.7365999999999999,
+                1.2627,
+                0.12,
+                0.12
+              ],
+              [
+                0.8327,
+                1.4274,
+                0.12,
+                0.12
+              ],
+              [
+                0.9287000000000001,
+                1.5921,
+                0.12,
+                0.12
+              ],
+              [
+                1.0248,
+                1.7568000000000001,
+                0.12,
+                0.12
+              ]
+            ],
+            "count": 4,
+            "sourceText": "Transform into Tempest Mephis to perform tail swing attacks followed by a claw attack. The lightning strike summoned by the tail swing deals 64.05% Electro DMG each time, while the claw attack deals 109.80% Electro DMG.\nAfter the claw hit, increase the current character's Electro DMG by 12.00% and Heavy Attack DMG by 12.00% for 15s.\nCD: 20s · Transform into Tempest Mephis to perform tail swing attacks followed by a claw attack. The lightning strike summoned by the tail swing deals 73.66% Electro DMG each time, while the claw attack deals 126.27% Electro DMG.\nAfter the claw hit, increase the current character's Electro DMG by 12.00% and Heavy Attack DMG by 12.00% for 15s.\nCD: 20s · Transform into Tempest Mephis to perform tail swing attacks followed by a claw attack. The lightning strike summoned by the tail swing deals 83.27% Electro DMG each time, while the claw attack deals 142.74% Electro DMG.\nAfter the claw hit, increase the current character's Electro DMG by 12.00% and Heavy Attack DMG by 12.00% for 15s.\nCD: 20s · Transform into Tempest Mephis to perform tail swing attacks followed by a claw attack. The lightning strike summoned by the tail swing deals 92.87% Electro DMG each time, while the claw attack deals 159.21% Electro DMG.\nAfter the claw hit, increase the current character's Electro DMG by 12.00% and Heavy Attack DMG by 12.00% for 15s.\nCD: 20s · Transform into Tempest Mephis to perform tail swing attacks followed by a claw attack. The lightning strike summoned by the tail swing deals 102.48% Electro DMG each time, while the claw attack deals 175.68% Electro DMG.\nAfter the claw hit, increase the current character's Electro DMG by 12.00% and Heavy Attack DMG by 12.00% for 15s.\nCD: 20s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "217bb2b6e127daf55227e0023dc9123ee20faad3ecc5da5898fa388bc604a760",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000039:effect:0",
+            "sourceName": "Tempest Mephis",
+            "sourceType": "echo",
+            "text": "After the claw hit, increase the current character's Electro DMG by 12.00% and Heavy Attack DMG by 12.00% for 15s.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "Electro",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

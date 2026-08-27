@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000055",
+  "entityName": "Dwarf Cassowary",
+  "sourceFingerprint": "05c25b143e340c7723e6259417d26cd88b745205ea5a955ed6597d6391f68800",
+  "reviewedAt": "2026-08-26T11:44:24.892Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "7af83635b117f2d11d5d585e47865887b73aceebef029530fda1b8f916dad528",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000055:skill",
+            "name": "Dwarf Cassowary - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Dwarf Cassowary that tracks and attacks the enemy, dealing 24.00% Physical DMG 3 time(s).\nCooldown: 8s",
+              "Summon a Dwarf Cassowary that tracks and attacks the enemy, dealing 27.60% Physical DMG 3 time(s).\nCooldown: 8s",
+              "Summon a Dwarf Cassowary that tracks and attacks the enemy, dealing 31.20% Physical DMG 3 time(s).\nCooldown: 8s",
+              "Summon a Dwarf Cassowary that tracks and attacks the enemy, dealing 34.80% Physical DMG 3 time(s).\nCooldown: 8s",
+              "Summon a Dwarf Cassowary that tracks and attacks the enemy, dealing 38.40% Physical DMG 3 time(s).\nCooldown: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.24
+              ],
+              [
+                0.276
+              ],
+              [
+                0.312
+              ],
+              [
+                0.348
+              ],
+              [
+                0.384
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Dwarf Cassowary that tracks and attacks the enemy, dealing 24.00% Physical DMG 3 time(s).\nCooldown: 8s · Summon a Dwarf Cassowary that tracks and attacks the enemy, dealing 27.60% Physical DMG 3 time(s).\nCooldown: 8s · Summon a Dwarf Cassowary that tracks and attacks the enemy, dealing 31.20% Physical DMG 3 time(s).\nCooldown: 8s · Summon a Dwarf Cassowary that tracks and attacks the enemy, dealing 34.80% Physical DMG 3 time(s).\nCooldown: 8s · Summon a Dwarf Cassowary that tracks and attacks the enemy, dealing 38.40% Physical DMG 3 time(s).\nCooldown: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

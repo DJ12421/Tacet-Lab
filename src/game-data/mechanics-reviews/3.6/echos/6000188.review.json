@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000188",
+  "entityName": "Windlash Coleoid",
+  "sourceFingerprint": "db3e16e336f4eda3b10646b8cfb0e8e49921946b1d14ac5d7f89502672246ee5",
+  "reviewedAt": "2026-08-26T11:44:25.098Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "5377407f688900aa9c9edb1c0cbd944afb7906019989131d941f4077f666b940",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000188:skill",
+            "name": "Windlash Coleoid - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into a Windlash Coleoid to kick enemies, dealing 149.00% Aero DMG.\nCD: 15s.",
+              "Transform into a Windlash Coleoid to kick enemies, dealing 178.80% Aero DMG.\nCD: 15s.",
+              "Transform into a Windlash Coleoid to kick enemies, dealing 208.60% Aero DMG.\nCD: 15s.",
+              "Transform into a Windlash Coleoid to kick enemies, dealing 238.40% Aero DMG.\nCD: 15s.",
+              "Transform into a Windlash Coleoid to kick enemies, dealing 268.20% Aero DMG.\nCD: 15s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.49
+              ],
+              [
+                1.788
+              ],
+              [
+                2.086
+              ],
+              [
+                2.384
+              ],
+              [
+                2.682
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Transform into a Windlash Coleoid to kick enemies, dealing 149.00% Aero DMG.\nCD: 15s. · Transform into a Windlash Coleoid to kick enemies, dealing 178.80% Aero DMG.\nCD: 15s. · Transform into a Windlash Coleoid to kick enemies, dealing 208.60% Aero DMG.\nCD: 15s. · Transform into a Windlash Coleoid to kick enemies, dealing 238.40% Aero DMG.\nCD: 15s. · Transform into a Windlash Coleoid to kick enemies, dealing 268.20% Aero DMG.\nCD: 15s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

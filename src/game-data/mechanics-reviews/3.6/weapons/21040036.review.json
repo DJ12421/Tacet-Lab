@@ -1,0 +1,263 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21040036",
+  "entityName": "Blazing Justice",
+  "sourceFingerprint": "4b6926fe475617240fbfd7da8a7a4b5b5b44e3f37dc98e14207535312d5a8aa8",
+  "reviewedAt": "2026-08-26T11:44:24.203Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "24af08ca6e1129a952f7634621721450905a4de01d8706362a807ecb5758e127",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21040036:effect:0",
+            "sourceName": "Darkness Breaker",
+            "text": "Increases ATK by 12%.",
+            "refinementTexts": [
+              "Increases ATK by 12%.",
+              "Increases ATK by 15%.",
+              "Increases ATK by 18%.",
+              "Increases ATK by 21%.",
+              "Increases ATK by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21040036:effect:1",
+            "sourceName": "Darkness Breaker",
+            "text": "Casting Basic Attack grants the following effects: Dealing damage ignores 8% of the target's DEF and Amplifies Spectro Frazzle DMG dealt by 50% for 6s.",
+            "refinementTexts": [
+              "Casting Basic Attack grants the following effects: Dealing damage ignores 8% of the target's DEF and Amplifies Spectro Frazzle DMG dealt by 50% for 6s.",
+              "Casting Basic Attack grants the following effects: Dealing damage ignores 10% of the target's DEF and Amplifies Spectro Frazzle DMG dealt by 62.5% for 6s.",
+              "Casting Basic Attack grants the following effects: Dealing damage ignores 12% of the target's DEF and Amplifies Spectro Frazzle DMG dealt by 75% for 6s.",
+              "Casting Basic Attack grants the following effects: Dealing damage ignores 14% of the target's DEF and Amplifies Spectro Frazzle DMG dealt by 87.5% for 6s.",
+              "Casting Basic Attack grants the following effects: Dealing damage ignores 16% of the target's DEF and Amplifies Spectro Frazzle DMG dealt by 100% for 6s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 6,
+              "modifiers": [
+                {
+                  "stat": "DEFIgnore",
+                  "operation": "addPercent",
+                  "value": 8
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "DEFIgnore",
+                    "operation": "addPercent",
+                    "value": 8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "DEFIgnore",
+                    "operation": "addPercent",
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "DEFIgnore",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "DEFIgnore",
+                    "operation": "addPercent",
+                    "value": 14
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "DEFIgnore",
+                    "operation": "addPercent",
+                    "value": 16
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21040036:effect:2",
+            "sourceName": "Darkness Breaker",
+            "text": "Retriggering the effect resets its duration.",
+            "refinementTexts": [
+              "Retriggering the effect resets its duration.",
+              "Retriggering the effect resets its duration.",
+              "Retriggering the effect resets its duration.",
+              "Retriggering the effect resets its duration.",
+              "Retriggering the effect resets its duration."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

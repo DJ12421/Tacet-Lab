@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390077024",
+  "entityName": "Rocksteady Guardian",
+  "sourceFingerprint": "5b8ffa333fe798bcd2b585f4ce73405cc0587212cfe722ba0135188128982ec1",
+  "reviewedAt": "2026-08-26T11:44:24.836Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "0e7a2b1663f3d9d4e466667e99723a52460a1911c47563e254290aa79745d521",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390077024:skill",
+            "name": "Rocksteady Guardian - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "hp",
+            "expressions": [
+              "Transform into Rocksteady Guardian and enter a Parry State. Upon being attacked, deal Spectro DMG equal to 5.18% of the Resonator's Max HP, and perform a follow-up attack that deals Spectro DMG equal to 5.18% of the Resonator's Max HP.\nUse the Echo Skill again to exit the transformation.\nIf the attack received is a Special Skill attack, interrupt the enemy's Special Skill, gain a Shield equal to 30% Max HP, and perform a two-stage follow-up attack, each dealing Spectro DMG equal to 3.45% of the Resonator's Max HP. These follow-up attacks simultaneously launch three ground-breaking waves, each dealing Spectro DMG equal to 2.87% of the Resonator's Max HP.\nCD: 15s",
+              "Transform into Rocksteady Guardian and enter a Parry State. Upon being attacked, deal Spectro DMG equal to 5.96% of the Resonator's Max HP, and perform a follow-up attack that deals Spectro DMG equal to 5.96% of the Resonator's Max HP.\nUse the Echo Skill again to exit the transformation.\nIf the attack received is a Special Skill attack, interrupt the enemy's Special Skill, gain a Shield equal to 30% Max HP, and perform a two-stage follow-up attack, each dealing Spectro DMG equal to 3.97% of the Resonator's Max HP. These follow-up attacks simultaneously launch three ground-breaking waves, each dealing Spectro DMG equal to 3.30% of the Resonator's Max HP.\nCD: 15s",
+              "Transform into Rocksteady Guardian and enter a Parry State. Upon being attacked, deal Spectro DMG equal to 6.73% of the Resonator's Max HP, and perform a follow-up attack that deals Spectro DMG equal to 6.73% of the Resonator's Max HP.\nUse the Echo Skill again to exit the transformation.\nIf the attack received is a Special Skill attack, interrupt the enemy's Special Skill, gain a Shield equal to 30% Max HP, and perform a two-stage follow-up attack, each dealing Spectro DMG equal to 4.49% of the Resonator's Max HP. These follow-up attacks simultaneously launch three ground-breaking waves, each dealing Spectro DMG equal to 3.73% of the Resonator's Max HP.\nCD: 15s",
+              "Transform into Rocksteady Guardian and enter a Parry State. Upon being attacked, deal Spectro DMG equal to 7.51% of the Resonator's Max HP, and perform a follow-up attack that deals Spectro DMG equal to 7.51% of the Resonator's Max HP.\nUse the Echo Skill again to exit the transformation.\nIf the attack received is a Special Skill attack, interrupt the enemy's Special Skill, gain a Shield equal to 30% Max HP, and perform a two-stage follow-up attack, each dealing Spectro DMG equal to 5.00% of the Resonator's Max HP. These follow-up attacks simultaneously launch three ground-breaking waves, each dealing Spectro DMG equal to 4.16% of the Resonator's Max HP.\nCD: 15s",
+              "Transform into Rocksteady Guardian and enter a Parry State. Upon being attacked, deal Spectro DMG equal to 8.29% of the Resonator's Max HP, and perform a follow-up attack that deals Spectro DMG equal to 8.29% of the Resonator's Max HP.\nUse the Echo Skill again to exit the transformation.\nIf the attack received is a Special Skill attack, interrupt the enemy's Special Skill, gain a Shield equal to 30% Max HP, and perform a two-stage follow-up attack, each dealing Spectro DMG equal to 5.52% of the Resonator's Max HP. These follow-up attacks simultaneously launch three ground-breaking waves, each dealing Spectro DMG equal to 4.59% of the Resonator's Max HP.\nCD: 15s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.0518,
+                0.0518,
+                0.3,
+                0.0345,
+                0.0287
+              ],
+              [
+                0.0596,
+                0.0596,
+                0.3,
+                0.0397,
+                0.033
+              ],
+              [
+                0.0673,
+                0.0673,
+                0.3,
+                0.0449,
+                0.0373
+              ],
+              [
+                0.0751,
+                0.0751,
+                0.3,
+                0.05,
+                0.0416
+              ],
+              [
+                0.08289999999999999,
+                0.08289999999999999,
+                0.3,
+                0.0552,
+                0.045899999999999996
+              ]
+            ],
+            "count": 5,
+            "sourceText": "Transform into Rocksteady Guardian and enter a Parry State. Upon being attacked, deal Spectro DMG equal to 5.18% of the Resonator's Max HP, and perform a follow-up attack that deals Spectro DMG equal to 5.18% of the Resonator's Max HP.\nUse the Echo Skill again to exit the transformation.\nIf the attack received is a Special Skill attack, interrupt the enemy's Special Skill, gain a Shield equal to 30% Max HP, and perform a two-stage follow-up attack, each dealing Spectro DMG equal to 3.45% of the Resonator's Max HP. These follow-up attacks simultaneously launch three ground-breaking waves, each dealing Spectro DMG equal to 2.87% of the Resonator's Max HP.\nCD: 15s · Transform into Rocksteady Guardian and enter a Parry State. Upon being attacked, deal Spectro DMG equal to 5.96% of the Resonator's Max HP, and perform a follow-up attack that deals Spectro DMG equal to 5.96% of the Resonator's Max HP.\nUse the Echo Skill again to exit the transformation.\nIf the attack received is a Special Skill attack, interrupt the enemy's Special Skill, gain a Shield equal to 30% Max HP, and perform a two-stage follow-up attack, each dealing Spectro DMG equal to 3.97% of the Resonator's Max HP. These follow-up attacks simultaneously launch three ground-breaking waves, each dealing Spectro DMG equal to 3.30% of the Resonator's Max HP.\nCD: 15s · Transform into Rocksteady Guardian and enter a Parry State. Upon being attacked, deal Spectro DMG equal to 6.73% of the Resonator's Max HP, and perform a follow-up attack that deals Spectro DMG equal to 6.73% of the Resonator's Max HP.\nUse the Echo Skill again to exit the transformation.\nIf the attack received is a Special Skill attack, interrupt the enemy's Special Skill, gain a Shield equal to 30% Max HP, and perform a two-stage follow-up attack, each dealing Spectro DMG equal to 4.49% of the Resonator's Max HP. These follow-up attacks simultaneously launch three ground-breaking waves, each dealing Spectro DMG equal to 3.73% of the Resonator's Max HP.\nCD: 15s · Transform into Rocksteady Guardian and enter a Parry State. Upon being attacked, deal Spectro DMG equal to 7.51% of the Resonator's Max HP, and perform a follow-up attack that deals Spectro DMG equal to 7.51% of the Resonator's Max HP.\nUse the Echo Skill again to exit the transformation.\nIf the attack received is a Special Skill attack, interrupt the enemy's Special Skill, gain a Shield equal to 30% Max HP, and perform a two-stage follow-up attack, each dealing Spectro DMG equal to 5.00% of the Resonator's Max HP. These follow-up attacks simultaneously launch three ground-breaking waves, each dealing Spectro DMG equal to 4.16% of the Resonator's Max HP.\nCD: 15s · Transform into Rocksteady Guardian and enter a Parry State. Upon being attacked, deal Spectro DMG equal to 8.29% of the Resonator's Max HP, and perform a follow-up attack that deals Spectro DMG equal to 8.29% of the Resonator's Max HP.\nUse the Echo Skill again to exit the transformation.\nIf the attack received is a Special Skill attack, interrupt the enemy's Special Skill, gain a Shield equal to 30% Max HP, and perform a two-stage follow-up attack, each dealing Spectro DMG equal to 5.52% of the Resonator's Max HP. These follow-up attacks simultaneously launch three ground-breaking waves, each dealing Spectro DMG equal to 4.59% of the Resonator's Max HP.\nCD: 15s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "06f850654ef72ac30d91dbcc111023eb3cdd072411545fb673bd94d21fcb056b",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:390077024:effect:0",
+            "sourceName": "Rocksteady Guardian",
+            "sourceType": "echo",
+            "text": "Use the Echo Skill again to exit the transformation.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

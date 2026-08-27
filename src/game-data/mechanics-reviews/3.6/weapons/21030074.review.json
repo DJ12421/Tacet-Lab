@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21030074",
+  "entityName": "Thunderbolt",
+  "sourceFingerprint": "b7eb631eafaa46014427af70e44c2863dc0665b6b6c900162d294e56d7877641",
+  "reviewedAt": "2026-08-26T11:44:24.149Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "d4404704b6abdf79d06298cd455cbc5c1cb7e852dedf815cedade8346b07ef23",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21030074:effect:0",
+            "sourceName": "Unstoppable",
+            "text": "When hitting a target with Basic Attacks or Heavy Attacks, increases Resonance Skill DMG Bonus by 7%, stacking up to 3 time(s). This effect lasts for 10s and can be triggered 1 time(s) every 1s.",
+            "refinementTexts": [
+              "When hitting a target with Basic Attacks or Heavy Attacks, increases Resonance Skill DMG Bonus by 7%, stacking up to 3 time(s). This effect lasts for 10s and can be triggered 1 time(s) every 1s.",
+              "When hitting a target with Basic Attacks or Heavy Attacks, increases Resonance Skill DMG Bonus by 11%, stacking up to 3 time(s). This effect lasts for 10s and can be triggered 1 time(s) every 1s.",
+              "When hitting a target with Basic Attacks or Heavy Attacks, increases Resonance Skill DMG Bonus by 15%, stacking up to 3 time(s). This effect lasts for 10s and can be triggered 1 time(s) every 1s.",
+              "When hitting a target with Basic Attacks or Heavy Attacks, increases Resonance Skill DMG Bonus by 19%, stacking up to 3 time(s). This effect lasts for 10s and can be triggered 1 time(s) every 1s.",
+              "When hitting a target with Basic Attacks or Heavy Attacks, increases Resonance Skill DMG Bonus by 23%, stacking up to 3 time(s). This effect lasts for 10s and can be triggered 1 time(s) every 1s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "durationSeconds": 10,
+              "modifiers": [
+                {
+                  "stat": "skillDamage",
+                  "operation": "addPercent",
+                  "value": 7
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 7
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 11
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 19
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 23
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

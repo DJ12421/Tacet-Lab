@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21040023",
+  "entityName": "Originite: Type IV",
+  "sourceFingerprint": "98fc24ecf54ba670dbc9ff5a6233bf999be08af0d469fd3f869ee9237fe15575",
+  "reviewedAt": "2026-08-26T11:44:24.186Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "dbf33a9634f638129fd9a1e6d7528f7ebd9918d15387d12c354f5a10f3ea7e43",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21040023:effect:0",
+            "sourceName": "Rejuvinate",
+            "text": "When dealing Basic Attack DMG, heals 0.5% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 3s.",
+            "refinementTexts": [
+              "When dealing Basic Attack DMG, heals 0.5% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 3s.",
+              "When dealing Basic Attack DMG, heals 0.65% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 3s.",
+              "When dealing Basic Attack DMG, heals 0.8% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 3s.",
+              "When dealing Basic Attack DMG, heals 0.95% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 3s.",
+              "When dealing Basic Attack DMG, heals 1.1% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 3s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Basic Attack DMG",
+              "modifiers": [],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Basic Attack DMG",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Basic Attack DMG",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Basic Attack DMG",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Basic Attack DMG",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Basic Attack DMG",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

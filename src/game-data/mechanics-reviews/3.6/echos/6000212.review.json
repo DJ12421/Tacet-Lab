@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000212",
+  "entityName": "Fog Lionarch: Body",
+  "sourceFingerprint": "5971320d0710416fff02f3d9e01009a1efc445065bdad75bb817a025242083dc",
+  "reviewedAt": "2026-08-26T11:44:25.146Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "9c6494a801bb9049527c03136c04bb3b9d67b797ca78e8f306f5a197c295aedc",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000212:skill",
+            "name": "Fog Lionarch: Body - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Use Echo Skill to summon Fog Lionarch: Body to ram into enemies, dealing 107.00% Fusion DMG.\nCD: 15s",
+              "Use Echo Skill to summon Fog Lionarch: Body to ram into enemies, dealing 128.40% Fusion DMG.\nCD: 15s",
+              "Use Echo Skill to summon Fog Lionarch: Body to ram into enemies, dealing 149.80% Fusion DMG.\nCD: 15s",
+              "Use Echo Skill to summon Fog Lionarch: Body to ram into enemies, dealing 171.20% Fusion DMG.\nCD: 15s",
+              "Use Echo Skill to summon Fog Lionarch: Body to ram into enemies, dealing 192.60% Fusion DMG.\nCD: 15s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.07
+              ],
+              [
+                1.284
+              ],
+              [
+                1.4980000000000002
+              ],
+              [
+                1.712
+              ],
+              [
+                1.926
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Use Echo Skill to summon Fog Lionarch: Body to ram into enemies, dealing 107.00% Fusion DMG.\nCD: 15s · Use Echo Skill to summon Fog Lionarch: Body to ram into enemies, dealing 128.40% Fusion DMG.\nCD: 15s · Use Echo Skill to summon Fog Lionarch: Body to ram into enemies, dealing 149.80% Fusion DMG.\nCD: 15s · Use Echo Skill to summon Fog Lionarch: Body to ram into enemies, dealing 171.20% Fusion DMG.\nCD: 15s · Use Echo Skill to summon Fog Lionarch: Body to ram into enemies, dealing 192.60% Fusion DMG.\nCD: 15s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

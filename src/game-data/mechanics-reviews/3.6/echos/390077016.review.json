@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390077016",
+  "entityName": "Spectro Prism",
+  "sourceFingerprint": "3fa095549be895ff35909f51035aad08e033545ba17d9a9321a3f93b99fc0ec3",
+  "reviewedAt": "2026-08-26T11:44:24.822Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "417cf282684ffa6686484f583037791fd8e49b49e5166502ead665a26166c6b7",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390077016:skill",
+            "name": "Spectro Prism - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Spectro Prism to emit a laser that hits the enemy up to 8 times, dealing 9.00% Spectro DMG each time.\nCD: 8s",
+              "Summon a Spectro Prism to emit a laser that hits the enemy up to 8 times, dealing 10.35% Spectro DMG each time.\nCD: 8s",
+              "Summon a Spectro Prism to emit a laser that hits the enemy up to 8 times, dealing 11.70% Spectro DMG each time.\nCD: 8s",
+              "Summon a Spectro Prism to emit a laser that hits the enemy up to 8 times, dealing 13.05% Spectro DMG each time.\nCD: 8s",
+              "Summon a Spectro Prism to emit a laser that hits the enemy up to 8 times, dealing 14.40% Spectro DMG each time.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.09
+              ],
+              [
+                0.1035
+              ],
+              [
+                0.11699999999999999
+              ],
+              [
+                0.1305
+              ],
+              [
+                0.14400000000000002
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Spectro Prism to emit a laser that hits the enemy up to 8 times, dealing 9.00% Spectro DMG each time.\nCD: 8s · Summon a Spectro Prism to emit a laser that hits the enemy up to 8 times, dealing 10.35% Spectro DMG each time.\nCD: 8s · Summon a Spectro Prism to emit a laser that hits the enemy up to 8 times, dealing 11.70% Spectro DMG each time.\nCD: 8s · Summon a Spectro Prism to emit a laser that hits the enemy up to 8 times, dealing 13.05% Spectro DMG each time.\nCD: 8s · Summon a Spectro Prism to emit a laser that hits the enemy up to 8 times, dealing 14.40% Spectro DMG each time.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

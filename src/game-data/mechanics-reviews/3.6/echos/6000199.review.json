@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000199",
+  "entityName": "Reminiscence: Threnodian - Voidborne Construct",
+  "sourceFingerprint": "6461aaf1b04c9c2eb06e34466899477de9630c97b053c1859646bde9d9090009",
+  "reviewedAt": "2026-08-26T11:44:25.121Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "e4be38eb6e0806b929e23124a0cf407e91d56dc51cae32db83adf052e5600893",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000199:skill",
+            "name": "Reminiscence: Threnodian - Voidborne Construct - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon Aleph-1's Creation to deal 12.16% Glacio DMG 5 times and 91.20% Glacio DMG 1 time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s",
+              "Summon Aleph-1's Creation to deal 14.59% Glacio DMG 5 times and 109.44% Glacio DMG 1 time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s",
+              "Summon Aleph-1's Creation to deal 17.02% Glacio DMG 5 times and 127.68% Glacio DMG 1 time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s",
+              "Summon Aleph-1's Creation to deal 19.45% Glacio DMG 5 times and 145.92% Glacio DMG 1 time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s",
+              "Summon Aleph-1's Creation to deal 21.88% Glacio DMG 5 times and 164.16% Glacio DMG 1 time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.1216,
+                0.912,
+                0.12,
+                0.12
+              ],
+              [
+                0.1459,
+                1.0944,
+                0.12,
+                0.12
+              ],
+              [
+                0.1702,
+                1.2768000000000002,
+                0.12,
+                0.12
+              ],
+              [
+                0.1945,
+                1.4591999999999998,
+                0.12,
+                0.12
+              ],
+              [
+                0.2188,
+                1.6416,
+                0.12,
+                0.12
+              ]
+            ],
+            "count": 4,
+            "sourceText": "Summon Aleph-1's Creation to deal 12.16% Glacio DMG 5 times and 91.20% Glacio DMG 1 time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon Aleph-1's Creation to deal 14.59% Glacio DMG 5 times and 109.44% Glacio DMG 1 time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon Aleph-1's Creation to deal 17.02% Glacio DMG 5 times and 127.68% Glacio DMG 1 time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon Aleph-1's Creation to deal 19.45% Glacio DMG 5 times and 145.92% Glacio DMG 1 time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon Aleph-1's Creation to deal 21.88% Glacio DMG 5 times and 164.16% Glacio DMG 1 time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "0a0f003131507dd87e49cdcbef7199b1d663aeebeb0aee456452aa0951d92489",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000199:effect:0",
+            "sourceName": "Reminiscence: Threnodian - Voidborne Construct",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Liberation DMG Bonus.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "Glacio",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

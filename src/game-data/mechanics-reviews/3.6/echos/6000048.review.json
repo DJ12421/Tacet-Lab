@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000048",
+  "entityName": "Mech Abomination",
+  "sourceFingerprint": "0be6bfc0ef60679607b8b8c760f709ee8087b2cd9c36eac6787f543b8b2f4ea5",
+  "reviewedAt": "2026-08-26T11:44:24.877Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "39a90ae89760cc2c7fc97ceaeb3aa18386b4d7e969bed2bcaf62adba07864d3a",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000048:skill",
+            "name": "Mech Abomination - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Strike enemies in front, dealing 30.40% Electro DMG, and summon Mech Waste to attack. Mech Waste deals 200.00% Electro DMG on hit and explodes after a while, dealing 100.00% Electro DMG.\nAfter casting this Echo Skill, increase the current character's ATK by 12.00% for 15s.\nDamage dealt by Mech Waste equals to the Resonator's Outro Skill DMG.\nCD: 20s",
+              "Strike enemies in front, dealing 34.96% Electro DMG, and summon Mech Waste to attack. Mech Waste deals 230.00% Electro DMG on hit and explodes after a while, dealing 115.00% Electro DMG.\nAfter casting this Echo Skill, increase the current character's ATK by 12.00% for 15s.\nDamage dealt by Mech Waste equals to the Resonator's Outro Skill DMG.\nCD: 20s",
+              "Strike enemies in front, dealing 39.52% Electro DMG, and summon Mech Waste to attack. Mech Waste deals 260.00% Electro DMG on hit and explodes after a while, dealing 130.00% Electro DMG.\nAfter casting this Echo Skill, increase the current character's ATK by 12.00% for 15s.\nDamage dealt by Mech Waste equals to the Resonator's Outro Skill DMG.\nCD: 20s",
+              "Strike enemies in front, dealing 44.08% Electro DMG, and summon Mech Waste to attack. Mech Waste deals 290.00% Electro DMG on hit and explodes after a while, dealing 145.00% Electro DMG.\nAfter casting this Echo Skill, increase the current character's ATK by 12.00% for 15s.\nDamage dealt by Mech Waste equals to the Resonator's Outro Skill DMG.\nCD: 20s",
+              "Strike enemies in front, dealing 48.64% Electro DMG, and summon Mech Waste to attack. Mech Waste deals 320.00% Electro DMG on hit and explodes after a while, dealing 160.00% Electro DMG.\nAfter casting this Echo Skill, increase the current character's ATK by 12.00% for 15s.\nDamage dealt by Mech Waste equals to the Resonator's Outro Skill DMG.\nCD: 20s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.304,
+                2,
+                1,
+                0.12
+              ],
+              [
+                0.3496,
+                2.3,
+                1.15,
+                0.12
+              ],
+              [
+                0.39520000000000005,
+                2.6,
+                1.3,
+                0.12
+              ],
+              [
+                0.44079999999999997,
+                2.9,
+                1.45,
+                0.12
+              ],
+              [
+                0.4864,
+                3.2,
+                1.6,
+                0.12
+              ]
+            ],
+            "count": 4,
+            "sourceText": "Strike enemies in front, dealing 30.40% Electro DMG, and summon Mech Waste to attack. Mech Waste deals 200.00% Electro DMG on hit and explodes after a while, dealing 100.00% Electro DMG.\nAfter casting this Echo Skill, increase the current character's ATK by 12.00% for 15s.\nDamage dealt by Mech Waste equals to the Resonator's Outro Skill DMG.\nCD: 20s · Strike enemies in front, dealing 34.96% Electro DMG, and summon Mech Waste to attack. Mech Waste deals 230.00% Electro DMG on hit and explodes after a while, dealing 115.00% Electro DMG.\nAfter casting this Echo Skill, increase the current character's ATK by 12.00% for 15s.\nDamage dealt by Mech Waste equals to the Resonator's Outro Skill DMG.\nCD: 20s · Strike enemies in front, dealing 39.52% Electro DMG, and summon Mech Waste to attack. Mech Waste deals 260.00% Electro DMG on hit and explodes after a while, dealing 130.00% Electro DMG.\nAfter casting this Echo Skill, increase the current character's ATK by 12.00% for 15s.\nDamage dealt by Mech Waste equals to the Resonator's Outro Skill DMG.\nCD: 20s · Strike enemies in front, dealing 44.08% Electro DMG, and summon Mech Waste to attack. Mech Waste deals 290.00% Electro DMG on hit and explodes after a while, dealing 145.00% Electro DMG.\nAfter casting this Echo Skill, increase the current character's ATK by 12.00% for 15s.\nDamage dealt by Mech Waste equals to the Resonator's Outro Skill DMG.\nCD: 20s · Strike enemies in front, dealing 48.64% Electro DMG, and summon Mech Waste to attack. Mech Waste deals 320.00% Electro DMG on hit and explodes after a while, dealing 160.00% Electro DMG.\nAfter casting this Echo Skill, increase the current character's ATK by 12.00% for 15s.\nDamage dealt by Mech Waste equals to the Resonator's Outro Skill DMG.\nCD: 20s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "252cd3b5332e043ea445441a75e32a2783decda4fa87791744d590a50be37f0e",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000048:effect:0",
+            "sourceName": "Mech Abomination",
+            "sourceType": "echo",
+            "text": "After casting this Echo Skill, increase the current character's ATK by 12.00% for 15s.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

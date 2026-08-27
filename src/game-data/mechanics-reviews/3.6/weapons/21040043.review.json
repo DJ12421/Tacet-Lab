@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21040043",
+  "entityName": "Gauntlets of Voyager",
+  "sourceFingerprint": "208cdb7fc981e614b4438bbd57213e9c04277e21d1278685f0a1e25411403e52",
+  "reviewedAt": "2026-08-26T11:44:24.207Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "815805f7e9bb7bb9d21679b6668edd5bc4bce6e9d811f05eca74968f110c5166",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21040043:effect:0",
+            "sourceName": "Crusade",
+            "text": "When Resonance Skill is cast, restores 8 Resonance Energy. This effect can be triggered 1 time(s) every 20s.",
+            "refinementTexts": [
+              "When Resonance Skill is cast, restores 8 Resonance Energy. This effect can be triggered 1 time(s) every 20s.",
+              "When Resonance Skill is cast, restores 9 Resonance Energy. This effect can be triggered 1 time(s) every 20s.",
+              "When Resonance Skill is cast, restores 10 Resonance Energy. This effect can be triggered 1 time(s) every 20s.",
+              "When Resonance Skill is cast, restores 11 Resonance Energy. This effect can be triggered 1 time(s) every 20s.",
+              "When Resonance Skill is cast, restores 12 Resonance Energy. This effect can be triggered 1 time(s) every 20s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Skill",
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

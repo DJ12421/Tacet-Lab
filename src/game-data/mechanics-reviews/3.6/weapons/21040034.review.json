@@ -1,0 +1,308 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21040034",
+  "entityName": "Gauntlets#21D",
+  "sourceFingerprint": "ebfc4100c7c5fc47bf290e12261e84b3a52dce4f06c5e29ca8f23b490b81184d",
+  "reviewedAt": "2026-08-26T11:44:24.198Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "b5338ada52b93743ab59641cc50cf6b6fbda17328dde4c3019f80a3afbb7aad0",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21040034:effect:0",
+            "sourceName": "Mastermind",
+            "text": "When the Resonator dashes or dodges, increases ATK by 8%.",
+            "refinementTexts": [
+              "When the Resonator dashes or dodges, increases ATK by 8%.",
+              "When the Resonator dashes or dodges, increases ATK by 10%.",
+              "When the Resonator dashes or dodges, increases ATK by 12%.",
+              "When the Resonator dashes or dodges, increases ATK by 14%.",
+              "When the Resonator dashes or dodges, increases ATK by 16%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 8
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 14
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 16
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21040034:effect:1",
+            "sourceName": "Mastermind",
+            "text": "Increases Dodge Counter DMG by 50%, lasting for 8s.",
+            "refinementTexts": [
+              "Increases Dodge Counter DMG by 50%, lasting for 8s.",
+              "Increases Dodge Counter DMG by 62.5%, lasting for 8s.",
+              "Increases Dodge Counter DMG by 75%, lasting for 8s.",
+              "Increases Dodge Counter DMG by 87.5%, lasting for 8s.",
+              "Increases Dodge Counter DMG by 100%, lasting for 8s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 8,
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 50
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "damageBonus",
+                    "operation": "addPercent",
+                    "value": 50
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "damageBonus",
+                    "operation": "addPercent",
+                    "value": 62.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "damageBonus",
+                    "operation": "addPercent",
+                    "value": 75
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "damageBonus",
+                    "operation": "addPercent",
+                    "value": 87.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "damageBonus",
+                    "operation": "addPercent",
+                    "value": 100
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21040034:effect:2",
+            "sourceName": "Mastermind",
+            "text": "When Dodge Counter is performed, heals 5% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 6s.",
+            "refinementTexts": [
+              "When Dodge Counter is performed, heals 5% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 6s.",
+              "When Dodge Counter is performed, heals 6.25% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 6s.",
+              "When Dodge Counter is performed, heals 7.5% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 6s.",
+              "When Dodge Counter is performed, heals 8.75% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 6s.",
+              "When Dodge Counter is performed, heals 10% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 6s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

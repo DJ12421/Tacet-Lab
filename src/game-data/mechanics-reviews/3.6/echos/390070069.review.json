@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390070069",
+  "entityName": "Tick Tack",
+  "sourceFingerprint": "6a9e5aaca83a9d5a35f8b285c8b56d8f082997ea1928e1dcfa961c917a1eda6d",
+  "reviewedAt": "2026-08-26T11:44:24.772Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "6efa441bf204c9aed416f6f4b12ccbb7fe8e41bd54f4dcb263102867e4ca4474",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390070069:skill",
+            "name": "Tick Tack - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Tick Tack that charges and bites the enemy. The charge from Tick Tack will deal 42.80% Havoc DMG to the enemy, and the bite will deal 64.20% Havoc DMG to the enemy. Reduces enemy Vibration Strength by up to 5.00% during 5s.\nCD: 15s",
+              "Summon a Tick Tack that charges and bites the enemy. The charge from Tick Tack will deal 49.22% Havoc DMG to the enemy, and the bite will deal 73.83% Havoc DMG to the enemy. Reduces enemy Vibration Strength by up to 5.00% during 5s.\nCD: 15s",
+              "Summon a Tick Tack that charges and bites the enemy. The charge from Tick Tack will deal 55.64% Havoc DMG to the enemy, and the bite will deal 83.46% Havoc DMG to the enemy. Reduces enemy Vibration Strength by up to 5.00% during 5s.\nCD: 15s",
+              "Summon a Tick Tack that charges and bites the enemy. The charge from Tick Tack will deal 62.06% Havoc DMG to the enemy, and the bite will deal 93.09% Havoc DMG to the enemy. Reduces enemy Vibration Strength by up to 5.00% during 5s.\nCD: 15s",
+              "Summon a Tick Tack that charges and bites the enemy. The charge from Tick Tack will deal 68.48% Havoc DMG to the enemy, and the bite will deal 102.72% Havoc DMG to the enemy. Reduces enemy Vibration Strength by up to 5.00% during 5s.\nCD: 15s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.428,
+                0.642,
+                0.05
+              ],
+              [
+                0.49219999999999997,
+                0.7383,
+                0.05
+              ],
+              [
+                0.5564,
+                0.8345999999999999,
+                0.05
+              ],
+              [
+                0.6206,
+                0.9309000000000001,
+                0.05
+              ],
+              [
+                0.6848000000000001,
+                1.0272,
+                0.05
+              ]
+            ],
+            "count": 3,
+            "sourceText": "Summon a Tick Tack that charges and bites the enemy. The charge from Tick Tack will deal 42.80% Havoc DMG to the enemy, and the bite will deal 64.20% Havoc DMG to the enemy. Reduces enemy Vibration Strength by up to 5.00% during 5s.\nCD: 15s · Summon a Tick Tack that charges and bites the enemy. The charge from Tick Tack will deal 49.22% Havoc DMG to the enemy, and the bite will deal 73.83% Havoc DMG to the enemy. Reduces enemy Vibration Strength by up to 5.00% during 5s.\nCD: 15s · Summon a Tick Tack that charges and bites the enemy. The charge from Tick Tack will deal 55.64% Havoc DMG to the enemy, and the bite will deal 83.46% Havoc DMG to the enemy. Reduces enemy Vibration Strength by up to 5.00% during 5s.\nCD: 15s · Summon a Tick Tack that charges and bites the enemy. The charge from Tick Tack will deal 62.06% Havoc DMG to the enemy, and the bite will deal 93.09% Havoc DMG to the enemy. Reduces enemy Vibration Strength by up to 5.00% during 5s.\nCD: 15s · Summon a Tick Tack that charges and bites the enemy. The charge from Tick Tack will deal 68.48% Havoc DMG to the enemy, and the bite will deal 102.72% Havoc DMG to the enemy. Reduces enemy Vibration Strength by up to 5.00% during 5s.\nCD: 15s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "a96251fd044c7e5a1f53d545f9f116f7ce74e7e27a94fd40391d518e16db3deb",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:390070069:effect:0",
+            "sourceName": "Tick Tack",
+            "sourceType": "echo",
+            "text": "Reduces enemy Vibration Strength by up to 5.00% during 5s.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

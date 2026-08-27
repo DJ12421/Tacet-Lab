@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000089",
+  "entityName": "Nightmare: Tempest Mephis",
+  "sourceFingerprint": "8133ad624121669ab7795b6095b7ed3503b8980edae4ab5be679e3c70e4d1029",
+  "reviewedAt": "2026-08-26T11:44:24.962Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "2f09859f05f0cbbbd0d32ade6a7fd53747e4f2626be1d838a956a40d4380ec07",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000089:skill",
+            "name": "Nightmare: Tempest Mephis - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Nightmare: Tempest Mephis and attack surrounding enemies, dealing 225.00% Electro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Electro DMG Bonus and 12.00% Resonance Skill DMG Bonus.\nCD: 25s.",
+              "Transform into Nightmare: Tempest Mephis and attack surrounding enemies, dealing 270.00% Electro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Electro DMG Bonus and 12.00% Resonance Skill DMG Bonus.\nCD: 25s.",
+              "Transform into Nightmare: Tempest Mephis and attack surrounding enemies, dealing 315.00% Electro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Electro DMG Bonus and 12.00% Resonance Skill DMG Bonus.\nCD: 25s.",
+              "Transform into Nightmare: Tempest Mephis and attack surrounding enemies, dealing 360.00% Electro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Electro DMG Bonus and 12.00% Resonance Skill DMG Bonus.\nCD: 25s.",
+              "Transform into Nightmare: Tempest Mephis and attack surrounding enemies, dealing 405.00% Electro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Electro DMG Bonus and 12.00% Resonance Skill DMG Bonus.\nCD: 25s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                2.25,
+                0.12,
+                0.12
+              ],
+              [
+                2.7,
+                0.12,
+                0.12
+              ],
+              [
+                3.15,
+                0.12,
+                0.12
+              ],
+              [
+                3.6,
+                0.12,
+                0.12
+              ],
+              [
+                4.05,
+                0.12,
+                0.12
+              ]
+            ],
+            "count": 3,
+            "sourceText": "Transform into Nightmare: Tempest Mephis and attack surrounding enemies, dealing 225.00% Electro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Electro DMG Bonus and 12.00% Resonance Skill DMG Bonus.\nCD: 25s. · Transform into Nightmare: Tempest Mephis and attack surrounding enemies, dealing 270.00% Electro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Electro DMG Bonus and 12.00% Resonance Skill DMG Bonus.\nCD: 25s. · Transform into Nightmare: Tempest Mephis and attack surrounding enemies, dealing 315.00% Electro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Electro DMG Bonus and 12.00% Resonance Skill DMG Bonus.\nCD: 25s. · Transform into Nightmare: Tempest Mephis and attack surrounding enemies, dealing 360.00% Electro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Electro DMG Bonus and 12.00% Resonance Skill DMG Bonus.\nCD: 25s. · Transform into Nightmare: Tempest Mephis and attack surrounding enemies, dealing 405.00% Electro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Electro DMG Bonus and 12.00% Resonance Skill DMG Bonus.\nCD: 25s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "c7328ee940a697eaee9aea93ec160c2991301f5f3bfe0a0980c6c2ab735bbcb6",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000089:effect:0",
+            "sourceName": "Nightmare: Tempest Mephis",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in their main slot gains 12.00% Electro DMG Bonus and 12.00% Resonance Skill DMG Bonus.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "Electro",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

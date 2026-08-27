@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21050104",
+  "entityName": "Radiant Dawn",
+  "sourceFingerprint": "758119059dc649d6e82fe8448304b174509dc82ada732a11b0939020a0fd0c0d",
+  "reviewedAt": "2026-08-26T11:44:24.538Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "0f87da2ba699dd86a7c6f19ed870fa92a44da13f5115ea0825ad5d0aaaf4ea60",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050104:effect:0",
+            "sourceName": "Oath of Tide Hunters",
+            "text": "Casting Resonance Skill increases ATK by 9% and grants 9% Basic Attack DMG Bonus for 10s.",
+            "refinementTexts": [
+              "Casting Resonance Skill increases ATK by 9% and grants 9% Basic Attack DMG Bonus for 10s.",
+              "Casting Resonance Skill increases ATK by 13.9% and grants 13.9% Basic Attack DMG Bonus for 10s.",
+              "Casting Resonance Skill increases ATK by 18.9% and grants 18.9% Basic Attack DMG Bonus for 10s.",
+              "Casting Resonance Skill increases ATK by 23.8% and grants 23.8% Basic Attack DMG Bonus for 10s.",
+              "Casting Resonance Skill increases ATK by 28.8% and grants 28.8% Basic Attack DMG Bonus for 10s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Skill",
+              "durationSeconds": 10,
+              "modifiers": [
+                {
+                  "stat": "basicDamage",
+                  "operation": "addPercent",
+                  "value": 9
+                },
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 9
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 9
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 9
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 13.9
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 13.9
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 18.9
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18.9
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 23.8
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 23.8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 28.8
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 28.8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

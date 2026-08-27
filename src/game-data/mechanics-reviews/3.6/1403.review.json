@@ -1,0 +1,1280 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "characterId": "1403",
+  "characterName": "Aalto",
+  "entityKind": "character",
+  "entityId": "1403",
+  "entityName": "Aalto",
+  "sourceFingerprint": "41f29e934f2b44e5899c23da10055ec021d4b66286c8b1e11c2d9a47f15ca702",
+  "reviewedAt": "2026-08-26T11:44:23.501Z",
+  "sections": {
+    "attacks": {
+      "status": "approved",
+      "sourceFingerprint": "1349132bab8eccc6a3d6d9fed7699248289a9a77ac4235910229e4caf3aa0db6",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "1403:1:0",
+            "skillType": "Normal Attack",
+            "skillName": "Half Truths",
+            "name": "Half Truths - Stage 1 DMG",
+            "damageType": "basic",
+            "skillSource": "basic",
+            "scaling": "atk",
+            "expressions": [
+              "16%",
+              "17.32%",
+              "18.63%",
+              "20.47%",
+              "21.78%",
+              "23.29%",
+              "25.39%",
+              "27.48%",
+              "29.58%",
+              "31.81%",
+              "34.44%",
+              "37.06%",
+              "39.69%",
+              "42.31%",
+              "44.93%",
+              "47.56%",
+              "50.18%",
+              "52.81%",
+              "55.43%",
+              "58.05%"
+            ],
+            "hitMultipliers": [
+              [
+                0.16,
+                0.1732,
+                0.1863,
+                0.2047,
+                0.21780000000000002,
+                0.2329,
+                0.2539,
+                0.2748,
+                0.2958,
+                0.3181,
+                0.3444,
+                0.37060000000000004,
+                0.3969,
+                0.42310000000000003,
+                0.4493,
+                0.4756,
+                0.5018,
+                0.5281,
+                0.5543,
+                0.5805
+              ]
+            ],
+            "count": 1,
+            "classificationEvidence": "skill source fallback",
+            "sourceText": "16% · 17.32% · 18.63% · 20.47% · 21.78% · 23.29% · 25.39% · 27.48% · 29.58% · 31.81% · 34.44% · 37.06% · 39.69% · 42.31% · 44.93% · 47.56% · 50.18% · 52.81% · 55.43% · 58.05%"
+          },
+          {
+            "id": "1403:1:1",
+            "skillType": "Normal Attack",
+            "skillName": "Half Truths",
+            "name": "Half Truths - Stage 2 DMG",
+            "damageType": "basic",
+            "skillSource": "basic",
+            "scaling": "atk",
+            "expressions": [
+              "26.67%",
+              "28.86%",
+              "31.04%",
+              "34.11%",
+              "36.29%",
+              "38.81%",
+              "42.31%",
+              "45.8%",
+              "49.3%",
+              "53.02%",
+              "57.39%",
+              "61.77%",
+              "66.14%",
+              "70.51%",
+              "74.89%",
+              "79.26%",
+              "83.63%",
+              "88.01%",
+              "92.38%",
+              "96.75%"
+            ],
+            "hitMultipliers": [
+              [
+                0.2667,
+                0.28859999999999997,
+                0.3104,
+                0.3411,
+                0.3629,
+                0.3881,
+                0.42310000000000003,
+                0.45799999999999996,
+                0.493,
+                0.5302,
+                0.5739,
+                0.6177,
+                0.6614,
+                0.7051000000000001,
+                0.7489,
+                0.7926000000000001,
+                0.8362999999999999,
+                0.8801000000000001,
+                0.9238,
+                0.9675
+              ]
+            ],
+            "count": 1,
+            "classificationEvidence": "skill source fallback",
+            "sourceText": "26.67% · 28.86% · 31.04% · 34.11% · 36.29% · 38.81% · 42.31% · 45.8% · 49.3% · 53.02% · 57.39% · 61.77% · 66.14% · 70.51% · 74.89% · 79.26% · 83.63% · 88.01% · 92.38% · 96.75%"
+          },
+          {
+            "id": "1403:1:2",
+            "skillType": "Normal Attack",
+            "skillName": "Half Truths",
+            "name": "Half Truths - Stage 3 DMG",
+            "damageType": "basic",
+            "skillSource": "basic",
+            "scaling": "atk",
+            "expressions": [
+              "24%*2",
+              "25.97%*2",
+              "27.94%*2",
+              "30.7%*2",
+              "32.66%*2",
+              "34.93%*2",
+              "38.08%*2",
+              "41.22%*2",
+              "44.37%*2",
+              "47.72%*2",
+              "51.66%*2",
+              "55.59%*2",
+              "59.53%*2",
+              "63.46%*2",
+              "67.4%*2",
+              "71.34%*2",
+              "75.27%*2",
+              "79.21%*2",
+              "83.14%*2",
+              "87.08%*2"
+            ],
+            "hitMultipliers": [
+              [
+                0.24,
+                0.2597,
+                0.27940000000000004,
+                0.307,
+                0.32659999999999995,
+                0.3493,
+                0.38079999999999997,
+                0.4122,
+                0.4437,
+                0.4772,
+                0.5166,
+                0.5559000000000001,
+                0.5953,
+                0.6346,
+                0.674,
+                0.7134,
+                0.7526999999999999,
+                0.7920999999999999,
+                0.8314,
+                0.8708
+              ],
+              [
+                0.24,
+                0.2597,
+                0.27940000000000004,
+                0.307,
+                0.32659999999999995,
+                0.3493,
+                0.38079999999999997,
+                0.4122,
+                0.4437,
+                0.4772,
+                0.5166,
+                0.5559000000000001,
+                0.5953,
+                0.6346,
+                0.674,
+                0.7134,
+                0.7526999999999999,
+                0.7920999999999999,
+                0.8314,
+                0.8708
+              ]
+            ],
+            "count": 2,
+            "classificationEvidence": "skill source fallback",
+            "sourceText": "24%*2 · 25.97%*2 · 27.94%*2 · 30.7%*2 · 32.66%*2 · 34.93%*2 · 38.08%*2 · 41.22%*2 · 44.37%*2 · 47.72%*2 · 51.66%*2 · 55.59%*2 · 59.53%*2 · 63.46%*2 · 67.4%*2 · 71.34%*2 · 75.27%*2 · 79.21%*2 · 83.14%*2 · 87.08%*2"
+          },
+          {
+            "id": "1403:1:3",
+            "skillType": "Normal Attack",
+            "skillName": "Half Truths",
+            "name": "Half Truths - Stage 4 DMG",
+            "damageType": "basic",
+            "skillSource": "basic",
+            "scaling": "atk",
+            "expressions": [
+              "25.34%*2",
+              "27.42%*2",
+              "29.49%*2",
+              "32.4%*2",
+              "34.48%*2",
+              "36.87%*2",
+              "40.19%*2",
+              "43.51%*2",
+              "46.84%*2",
+              "50.37%*2",
+              "54.52%*2",
+              "58.68%*2",
+              "62.83%*2",
+              "66.99%*2",
+              "71.14%*2",
+              "75.3%*2",
+              "79.45%*2",
+              "83.61%*2",
+              "87.76%*2",
+              "91.92%*2"
+            ],
+            "hitMultipliers": [
+              [
+                0.2534,
+                0.2742,
+                0.2949,
+                0.324,
+                0.3448,
+                0.36869999999999997,
+                0.4019,
+                0.4351,
+                0.46840000000000004,
+                0.5036999999999999,
+                0.5452,
+                0.5868,
+                0.6283,
+                0.6698999999999999,
+                0.7114,
+                0.753,
+                0.7945,
+                0.8361,
+                0.8776,
+                0.9192
+              ],
+              [
+                0.2534,
+                0.2742,
+                0.2949,
+                0.324,
+                0.3448,
+                0.36869999999999997,
+                0.4019,
+                0.4351,
+                0.46840000000000004,
+                0.5036999999999999,
+                0.5452,
+                0.5868,
+                0.6283,
+                0.6698999999999999,
+                0.7114,
+                0.753,
+                0.7945,
+                0.8361,
+                0.8776,
+                0.9192
+              ]
+            ],
+            "count": 2,
+            "classificationEvidence": "skill source fallback",
+            "sourceText": "25.34%*2 · 27.42%*2 · 29.49%*2 · 32.4%*2 · 34.48%*2 · 36.87%*2 · 40.19%*2 · 43.51%*2 · 46.84%*2 · 50.37%*2 · 54.52%*2 · 58.68%*2 · 62.83%*2 · 66.99%*2 · 71.14%*2 · 75.3%*2 · 79.45%*2 · 83.61%*2 · 87.76%*2 · 91.92%*2"
+          },
+          {
+            "id": "1403:1:4",
+            "skillType": "Normal Attack",
+            "skillName": "Half Truths",
+            "name": "Half Truths - Stage 5 DMG",
+            "damageType": "basic",
+            "skillSource": "basic",
+            "scaling": "atk",
+            "expressions": [
+              "90.4%",
+              "97.82%",
+              "105.23%",
+              "115.61%",
+              "123.02%",
+              "131.55%",
+              "143.41%",
+              "155.27%",
+              "167.13%",
+              "179.73%",
+              "194.55%",
+              "209.38%",
+              "224.21%",
+              "239.03%",
+              "253.86%",
+              "268.68%",
+              "283.51%",
+              "298.33%",
+              "313.16%",
+              "327.99%"
+            ],
+            "hitMultipliers": [
+              [
+                0.904,
+                0.9782,
+                1.0523,
+                1.1561,
+                1.2302,
+                1.3155000000000001,
+                1.4341,
+                1.5527000000000002,
+                1.6713,
+                1.7973,
+                1.9455,
+                2.0938,
+                2.2421,
+                2.3903,
+                2.5386,
+                2.6868,
+                2.8350999999999997,
+                2.9833,
+                3.1316,
+                3.2799
+              ]
+            ],
+            "count": 1,
+            "classificationEvidence": "skill source fallback",
+            "sourceText": "90.4% · 97.82% · 105.23% · 115.61% · 123.02% · 131.55% · 143.41% · 155.27% · 167.13% · 179.73% · 194.55% · 209.38% · 224.21% · 239.03% · 253.86% · 268.68% · 283.51% · 298.33% · 313.16% · 327.99%"
+          },
+          {
+            "id": "1403:1:5",
+            "skillType": "Normal Attack",
+            "skillName": "Half Truths",
+            "name": "Half Truths - Mid-air Attack",
+            "damageType": "basic",
+            "skillSource": "basic",
+            "scaling": "atk",
+            "expressions": [
+              "30%",
+              "32.46%",
+              "34.92%",
+              "38.37%",
+              "40.83%",
+              "43.66%",
+              "47.59%",
+              "51.53%",
+              "55.47%",
+              "59.65%",
+              "64.57%",
+              "69.49%",
+              "74.41%",
+              "79.33%",
+              "84.25%",
+              "89.17%",
+              "94.09%",
+              "99.01%",
+              "103.93%",
+              "108.85%"
+            ],
+            "hitMultipliers": [
+              [
+                0.3,
+                0.3246,
+                0.3492,
+                0.3837,
+                0.4083,
+                0.4366,
+                0.47590000000000005,
+                0.5153,
+                0.5547,
+                0.5965,
+                0.6456999999999999,
+                0.6949,
+                0.7441,
+                0.7933,
+                0.8425,
+                0.8917,
+                0.9409000000000001,
+                0.9901000000000001,
+                1.0393000000000001,
+                1.0885
+              ]
+            ],
+            "count": 1,
+            "classificationEvidence": "attack name",
+            "sourceText": "30% · 32.46% · 34.92% · 38.37% · 40.83% · 43.66% · 47.59% · 51.53% · 55.47% · 59.65% · 64.57% · 69.49% · 74.41% · 79.33% · 84.25% · 89.17% · 94.09% · 99.01% · 103.93% · 108.85%"
+          },
+          {
+            "id": "1403:1:6",
+            "skillType": "Normal Attack",
+            "skillName": "Half Truths",
+            "name": "Half Truths - Aimed Shot Damage",
+            "damageType": "basic",
+            "skillSource": "basic",
+            "scaling": "atk",
+            "expressions": [
+              "18.00%",
+              "19.48%",
+              "20.96%",
+              "23.02%",
+              "24.50%",
+              "26.20%",
+              "28.56%",
+              "30.92%",
+              "33.28%",
+              "35.79%",
+              "38.74%",
+              "41.69%",
+              "44.65%",
+              "47.60%",
+              "50.55%",
+              "53.50%",
+              "56.45%",
+              "59.41%",
+              "62.30%",
+              "65.31%"
+            ],
+            "hitMultipliers": [
+              [
+                0.18,
+                0.1948,
+                0.2096,
+                0.2302,
+                0.245,
+                0.262,
+                0.28559999999999997,
+                0.30920000000000003,
+                0.3328,
+                0.3579,
+                0.3874,
+                0.4169,
+                0.4465,
+                0.47600000000000003,
+                0.5055,
+                0.535,
+                0.5645,
+                0.5941,
+                0.623,
+                0.6531
+              ]
+            ],
+            "count": 1,
+            "classificationEvidence": "skill source fallback",
+            "sourceText": "18.00% · 19.48% · 20.96% · 23.02% · 24.50% · 26.20% · 28.56% · 30.92% · 33.28% · 35.79% · 38.74% · 41.69% · 44.65% · 47.60% · 50.55% · 53.50% · 56.45% · 59.41% · 62.30% · 65.31%"
+          },
+          {
+            "id": "1403:1:7",
+            "skillType": "Normal Attack",
+            "skillName": "Half Truths",
+            "name": "Half Truths - Fully Charged Aimed Shot Damage",
+            "damageType": "basic",
+            "skillSource": "basic",
+            "scaling": "atk",
+            "expressions": [
+              "40.50%",
+              "43.83%",
+              "47.15%",
+              "51.80%",
+              "55.12%",
+              "58.94%",
+              "64.25%",
+              "69.56%",
+              "74.88%",
+              "80.52%",
+              "87.17%",
+              "93.81%",
+              "100.45%",
+              "107.09%",
+              "113.73%",
+              "120.38%",
+              "127.02%",
+              "133.66%",
+              "140.30%",
+              "146.94%"
+            ],
+            "hitMultipliers": [
+              [
+                0.405,
+                0.43829999999999997,
+                0.4715,
+                0.518,
+                0.5512,
+                0.5893999999999999,
+                0.6425,
+                0.6956,
+                0.7487999999999999,
+                0.8051999999999999,
+                0.8717,
+                0.9381,
+                1.0045,
+                1.0709,
+                1.1373,
+                1.2038,
+                1.2702,
+                1.3366,
+                1.403,
+                1.4694
+              ]
+            ],
+            "count": 1,
+            "classificationEvidence": "skill source fallback",
+            "sourceText": "40.50% · 43.83% · 47.15% · 51.80% · 55.12% · 58.94% · 64.25% · 69.56% · 74.88% · 80.52% · 87.17% · 93.81% · 100.45% · 107.09% · 113.73% · 120.38% · 127.02% · 133.66% · 140.30% · 146.94%"
+          },
+          {
+            "id": "1403:1:8",
+            "skillType": "Normal Attack",
+            "skillName": "Half Truths",
+            "name": "Half Truths - Dodge Counter DMG",
+            "damageType": "basic",
+            "skillSource": "basic",
+            "scaling": "atk",
+            "expressions": [
+              "107.7%",
+              "116.54%",
+              "125.37%",
+              "137.73%",
+              "146.56%",
+              "156.72%",
+              "170.85%",
+              "184.98%",
+              "199.11%",
+              "214.12%",
+              "231.79%",
+              "249.45%",
+              "267.11%",
+              "284.77%",
+              "302.44%",
+              "320.1%",
+              "337.76%",
+              "355.43%",
+              "373.09%",
+              "390.75%"
+            ],
+            "hitMultipliers": [
+              [
+                1.077,
+                1.1654,
+                1.2537,
+                1.3773,
+                1.4656,
+                1.5672,
+                1.7085,
+                1.8497999999999999,
+                1.9911,
+                2.1412,
+                2.3179,
+                2.4945,
+                2.6711,
+                2.8476999999999997,
+                3.0244,
+                3.201,
+                3.3775999999999997,
+                3.5543,
+                3.7308999999999997,
+                3.9075
+              ]
+            ],
+            "count": 1,
+            "classificationEvidence": "attack name",
+            "sourceText": "107.7% · 116.54% · 125.37% · 137.73% · 146.56% · 156.72% · 170.85% · 184.98% · 199.11% · 214.12% · 231.79% · 249.45% · 267.11% · 284.77% · 302.44% · 320.1% · 337.76% · 355.43% · 373.09% · 390.75%"
+          },
+          {
+            "id": "1403:2:0",
+            "skillType": "Resonance Skill",
+            "skillName": "Shift Trick",
+            "name": "Shift Trick - Mist Bullet Damage",
+            "damageType": "skill",
+            "skillSource": "skill",
+            "scaling": "atk",
+            "expressions": [
+              "30%",
+              "32.46%",
+              "34.92%",
+              "38.37%",
+              "40.83%",
+              "43.66%",
+              "47.59%",
+              "51.53%",
+              "55.47%",
+              "59.65%",
+              "64.57%",
+              "69.49%",
+              "74.41%",
+              "79.33%",
+              "84.25%",
+              "89.17%",
+              "94.09%",
+              "99.01%",
+              "103.93%",
+              "108.85%"
+            ],
+            "hitMultipliers": [
+              [
+                0.3,
+                0.3246,
+                0.3492,
+                0.3837,
+                0.4083,
+                0.4366,
+                0.47590000000000005,
+                0.5153,
+                0.5547,
+                0.5965,
+                0.6456999999999999,
+                0.6949,
+                0.7441,
+                0.7933,
+                0.8425,
+                0.8917,
+                0.9409000000000001,
+                0.9901000000000001,
+                1.0393000000000001,
+                1.0885
+              ]
+            ],
+            "count": 1,
+            "classificationEvidence": "skill source fallback",
+            "sourceText": "30% · 32.46% · 34.92% · 38.37% · 40.83% · 43.66% · 47.59% · 51.53% · 55.47% · 59.65% · 64.57% · 69.49% · 74.41% · 79.33% · 84.25% · 89.17% · 94.09% · 99.01% · 103.93% · 108.85%"
+          },
+          {
+            "id": "1403:3:0",
+            "skillType": "Resonance Liberation",
+            "skillName": "Flower in the Mist",
+            "name": "Flower in the Mist - Skill DMG",
+            "damageType": "liberation",
+            "skillSource": "liberation",
+            "scaling": "atk",
+            "expressions": [
+              "200%",
+              "216.4%",
+              "232.8%",
+              "255.76%",
+              "272.16%",
+              "291.02%",
+              "317.26%",
+              "343.5%",
+              "369.74%",
+              "397.62%",
+              "430.42%",
+              "463.22%",
+              "496.02%",
+              "528.82%",
+              "561.62%",
+              "594.42%",
+              "627.22%",
+              "660.02%",
+              "692.82%",
+              "725.62%"
+            ],
+            "hitMultipliers": [
+              [
+                2,
+                2.164,
+                2.3280000000000003,
+                2.5576,
+                2.7216000000000005,
+                2.9101999999999997,
+                3.1726,
+                3.435,
+                3.6974,
+                3.9762,
+                4.3042,
+                4.6322,
+                4.9601999999999995,
+                5.288200000000001,
+                5.6162,
+                5.9441999999999995,
+                6.272200000000001,
+                6.6002,
+                6.9282,
+                7.2562
+              ]
+            ],
+            "count": 1,
+            "classificationEvidence": "skill source fallback",
+            "sourceText": "200% · 216.4% · 232.8% · 255.76% · 272.16% · 291.02% · 317.26% · 343.5% · 369.74% · 397.62% · 430.42% · 463.22% · 496.02% · 528.82% · 561.62% · 594.42% · 627.22% · 660.02% · 692.82% · 725.62%"
+          },
+          {
+            "id": "1403:6:0",
+            "skillType": "Intro Skill",
+            "skillName": "Feint Shot",
+            "name": "Feint Shot - Skill DMG",
+            "damageType": "intro",
+            "skillSource": "intro",
+            "scaling": "atk",
+            "expressions": [
+              "33.34%*3",
+              "36.07%*3",
+              "38.8%*3",
+              "42.63%*3",
+              "45.36%*3",
+              "48.51%*3",
+              "52.88%*3",
+              "57.25%*3",
+              "61.63%*3",
+              "66.27%*3",
+              "71.74%*3",
+              "77.21%*3",
+              "82.67%*3",
+              "88.14%*3",
+              "93.61%*3",
+              "99.07%*3",
+              "104.54%*3",
+              "110.01%*3",
+              "115.47%*3",
+              "120.94%*3"
+            ],
+            "hitMultipliers": [
+              [
+                0.33340000000000003,
+                0.3607,
+                0.38799999999999996,
+                0.4263,
+                0.4536,
+                0.4851,
+                0.5288,
+                0.5725,
+                0.6163000000000001,
+                0.6627,
+                0.7173999999999999,
+                0.7720999999999999,
+                0.8267,
+                0.8814,
+                0.9361,
+                0.9906999999999999,
+                1.0454,
+                1.1001,
+                1.1547,
+                1.2094
+              ],
+              [
+                0.33340000000000003,
+                0.3607,
+                0.38799999999999996,
+                0.4263,
+                0.4536,
+                0.4851,
+                0.5288,
+                0.5725,
+                0.6163000000000001,
+                0.6627,
+                0.7173999999999999,
+                0.7720999999999999,
+                0.8267,
+                0.8814,
+                0.9361,
+                0.9906999999999999,
+                1.0454,
+                1.1001,
+                1.1547,
+                1.2094
+              ],
+              [
+                0.33340000000000003,
+                0.3607,
+                0.38799999999999996,
+                0.4263,
+                0.4536,
+                0.4851,
+                0.5288,
+                0.5725,
+                0.6163000000000001,
+                0.6627,
+                0.7173999999999999,
+                0.7720999999999999,
+                0.8267,
+                0.8814,
+                0.9361,
+                0.9906999999999999,
+                1.0454,
+                1.1001,
+                1.1547,
+                1.2094
+              ]
+            ],
+            "count": 3,
+            "classificationEvidence": "skill source fallback",
+            "sourceText": "33.34%*3 · 36.07%*3 · 38.8%*3 · 42.63%*3 · 45.36%*3 · 48.51%*3 · 52.88%*3 · 57.25%*3 · 61.63%*3 · 66.27%*3 · 71.74%*3 · 77.21%*3 · 82.67%*3 · 88.14%*3 · 93.61%*3 · 99.07%*3 · 104.54%*3 · 110.01%*3 · 115.47%*3 · 120.94%*3"
+          },
+          {
+            "id": "1403:7:0",
+            "skillType": "Forte Circuit",
+            "skillName": "Misty Cover",
+            "name": "Misty Cover - Mist Bullet DMG",
+            "damageType": "skill",
+            "skillSource": "forte",
+            "scaling": "atk",
+            "expressions": [
+              "30%",
+              "32.46%",
+              "34.92%",
+              "38.37%",
+              "40.83%",
+              "43.66%",
+              "47.59%",
+              "51.53%",
+              "55.47%",
+              "59.65%",
+              "64.57%",
+              "69.49%",
+              "74.41%",
+              "79.33%",
+              "84.25%",
+              "89.17%",
+              "94.09%",
+              "99.01%",
+              "103.93%",
+              "108.85%"
+            ],
+            "hitMultipliers": [
+              [
+                0.3,
+                0.3246,
+                0.3492,
+                0.3837,
+                0.4083,
+                0.4366,
+                0.47590000000000005,
+                0.5153,
+                0.5547,
+                0.5965,
+                0.6456999999999999,
+                0.6949,
+                0.7441,
+                0.7933,
+                0.8425,
+                0.8917,
+                0.9409000000000001,
+                0.9901000000000001,
+                1.0393000000000001,
+                1.0885
+              ]
+            ],
+            "count": 1,
+            "classificationEvidence": "skill source fallback",
+            "sourceText": "30% · 32.46% · 34.92% · 38.37% · 40.83% · 43.66% · 47.59% · 51.53% · 55.47% · 59.65% · 64.57% · 69.49% · 74.41% · 79.33% · 84.25% · 89.17% · 94.09% · 99.01% · 103.93% · 108.85%"
+          }
+        ]
+      }
+    },
+    "forte": {
+      "status": "approved",
+      "sourceFingerprint": "3fe6cbf40c2b9bcdd92584223ce55f099fd84d3e65a68bd51237400eebe184f0",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "1403:7",
+            "name": "Misty Cover",
+            "type": "Forte Circuit",
+            "description": "When Aalto passes through \"Mist\" or \"Gate of Quandary\", he enters the Mistcloak Dash.\nMistcloak Dash\n-Movement speed increased;\n-During this period, \"Mist Drops\" are continuously consumed, and for each 1 \"Mist Drop\" consumed, 1 Mist Bullet(s) is generated.\nMist Drops\nAalto can hold up to 6 \"Mist Drops\".\nWhen Basic Attack or Mid-air Attack passes through \"Mist\" and hits the target, 1 \"Mist Drop\" is recovered."
+          }
+        ],
+        "modeGroups": []
+      }
+    },
+    "characterBuffs": {
+      "status": "approved",
+      "sourceFingerprint": "82aa971882f35f750b08c20e184c586abc1035d4d4e30eeb6d9371366c0f0886",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "1403:3:effect:1",
+            "sourceName": "Flower in the Mist",
+            "sourceType": "Resonance Liberation",
+            "text": "When bullets pass through the Gate of Quandary, they deal increased DMG.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "1403:7:effect:2",
+            "sourceName": "Misty Cover",
+            "sourceType": "Forte Circuit",
+            "text": "-Movement speed increased;",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "1403:8:effect:0",
+            "sourceName": "Dissolving Mist",
+            "sourceType": "Outro Skill",
+            "text": "The incoming Resonator has their Aero DMG Amplified by 23% for 14s or until they are switched out.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 14,
+              "modifiers": [
+                {
+                  "stat": "Aero",
+                  "operation": "amplifyPercent",
+                  "value": 23
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          },
+          {
+            "id": "1403:9:effect:0",
+            "sourceName": "Aero DMG Bonus+",
+            "sourceType": "Unknown",
+            "text": "Aero DMG Bonus increased by 1.80%.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 1.8
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          },
+          {
+            "id": "1403:10:effect:0",
+            "sourceName": "ATK+",
+            "sourceType": "Unknown",
+            "text": "ATK increased by 1.80%.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 1.8
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          },
+          {
+            "id": "1403:11:effect:0",
+            "sourceName": "ATK+",
+            "sourceType": "Unknown",
+            "text": "ATK increased by 1.80%.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 1.8
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          },
+          {
+            "id": "1403:12:effect:0",
+            "sourceName": "Aero DMG Bonus+",
+            "sourceType": "Unknown",
+            "text": "Aero DMG Bonus increased by 1.80%.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 1.8
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          },
+          {
+            "id": "1403:13:effect:0",
+            "sourceName": "Aero DMG Bonus+",
+            "sourceType": "Unknown",
+            "text": "Aero DMG Bonus increased by 4.20%.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 4.2
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          },
+          {
+            "id": "1403:14:effect:0",
+            "sourceName": "ATK+",
+            "sourceType": "Unknown",
+            "text": "ATK increased by 4.20%.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 4.2
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          },
+          {
+            "id": "1403:15:effect:0",
+            "sourceName": "ATK+",
+            "sourceType": "Unknown",
+            "text": "ATK increased by 4.20%.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 4.2
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          },
+          {
+            "id": "1403:16:effect:0",
+            "sourceName": "Aero DMG Bonus+",
+            "sourceType": "Unknown",
+            "text": "Aero DMG Bonus increased by 4.20%.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 4.2
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    },
+    "sequences": {
+      "status": "approved",
+      "sourceFingerprint": "a5652b30c427c41860ee498262283ef9b27e1c1ba81027c18bf821fa3db07f69",
+      "approvedData": {
+        "entries": [
+          {
+            "sequence": 1,
+            "name": "Trickster's Opening Show",
+            "text": "The cooldown of Resonance Skill Shift Trick is reduced by 4s.",
+            "parsedEffects": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "review",
+                "warnings": [
+                  "No supported numeric modifier was parsed from this sentence."
+                ],
+                "reviewStatus": "no-mechanic"
+              }
+            ]
+          },
+          {
+            "sequence": 2,
+            "name": "Mistweaver's Debut",
+            "text": "\"Mist Avatar\" inherits 100% more HP from Aalto. When Aalto attacks targets taunted by the \"Mist Avatar(s)\", his ATK is increased by 15%.",
+            "parsedEffects": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "reviewStatus": "no-mechanic"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "reviewStatus": "include"
+              }
+            ]
+          },
+          {
+            "sequence": 3,
+            "name": "Hazey Transition",
+            "text": "When Aalto's Basic Attack or Mid-air Attack passes through the Mist, 2 more bullets will be generated, dealing 50% of the DMG of Basic Attack or Mid-air Attack.",
+            "parsedEffects": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "reviewStatus": "no-mechanic"
+              }
+            ]
+          },
+          {
+            "sequence": 4,
+            "name": "Blake Bloom for Finale",
+            "text": "The damage of Resonance Skill Mist Bullets is increased by 30%; Aalto receives 30% less DMG in his Forte Circuit Mistcloak Dash state.",
+            "parsedEffects": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "reviewStatus": "no-mechanic"
+              }
+            ]
+          },
+          {
+            "sequence": 5,
+            "name": "Applause of the Lost",
+            "text": "In the Forte Circuit Mistcloak Dash state, Aalto's Aero DMG Bonus is increased by 25% for 6s.",
+            "parsedEffects": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "Aero",
+                    "operation": "addPercent",
+                    "value": 25
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "reviewStatus": "include"
+              }
+            ]
+          },
+          {
+            "sequence": 6,
+            "name": "Broker's Secrets",
+            "text": "Resonance Liberation Flower in the Mist now additionally increases Crit. Rate by 8%. When Aalto's Heavy Attack passes through the Gate of Quandary, the damage dealt is additionally increased by 50%.",
+            "parsedEffects": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "critRate",
+                    "operation": "addPercent",
+                    "value": 8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "reviewStatus": "include"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "reviewStatus": "no-mechanic"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "teamBuffs": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

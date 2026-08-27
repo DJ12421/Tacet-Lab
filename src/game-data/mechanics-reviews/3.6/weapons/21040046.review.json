@@ -1,0 +1,362 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21040046",
+  "entityName": "Moongazer's Sigil",
+  "sourceFingerprint": "63d4006803fa0f61b3c48293865539fc26083b44f1b716b60cd445922d783675",
+  "reviewedAt": "2026-08-26T11:44:24.222Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "e0cced959fd8b5b5762b6e96268ba427bf94564b67e012aabb47e05da0e85402",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21040046:effect:0",
+            "sourceName": "Plenilune Radiance",
+            "text": "Increases ATK by 12%.",
+            "refinementTexts": [
+              "Increases ATK by 12%.",
+              "Increases ATK by 15%.",
+              "Increases ATK by 18%.",
+              "Increases ATK by 21%.",
+              "Increases ATK by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21040046:effect:1",
+            "sourceName": "Plenilune Radiance",
+            "text": "Casting Intro Skill or Resonance Liberation increases Resonance Liberation DMG by 20% for 15s.",
+            "refinementTexts": [
+              "Casting Intro Skill or Resonance Liberation increases Resonance Liberation DMG by 20% for 15s.",
+              "Casting Intro Skill or Resonance Liberation increases Resonance Liberation DMG by 25% for 15s.",
+              "Casting Intro Skill or Resonance Liberation increases Resonance Liberation DMG by 30% for 15s.",
+              "Casting Intro Skill or Resonance Liberation increases Resonance Liberation DMG by 35% for 15s.",
+              "Casting Intro Skill or Resonance Liberation increases Resonance Liberation DMG by 40% for 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Intro Skill",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "liberationDamage",
+                  "operation": "addPercent",
+                  "value": 20
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 25
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 35
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 40
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21040046:effect:2",
+            "sourceName": "Plenilune Radiance",
+            "text": "Obtaining Shield allows Resonance Liberation DMG to ignore 7.2% of the target's DEF for 7s, stacking up to 5 times. This effect is triggered once every 0.5s.",
+            "refinementTexts": [
+              "Obtaining Shield allows Resonance Liberation DMG to ignore 7.2% of the target's DEF for 7s, stacking up to 5 times. This effect is triggered once every 0.5s.",
+              "Obtaining Shield allows Resonance Liberation DMG to ignore 8.4% of the target's DEF for 7s, stacking up to 5 times. This effect is triggered once every 0.5s.",
+              "Obtaining Shield allows Resonance Liberation DMG to ignore 9.6% of the target's DEF for 7s, stacking up to 5 times. This effect is triggered once every 0.5s.",
+              "Obtaining Shield allows Resonance Liberation DMG to ignore 10.8% of the target's DEF for 7s, stacking up to 5 times. This effect is triggered once every 0.5s.",
+              "Obtaining Shield allows Resonance Liberation DMG to ignore 12.0% of the target's DEF for 7s, stacking up to 5 times. This effect is triggered once every 0.5s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 5
+              },
+              "durationSeconds": 7,
+              "modifiers": [],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "durationSeconds": 7,
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "durationSeconds": 7,
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "durationSeconds": 7,
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "durationSeconds": 7,
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "durationSeconds": 7,
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21040046:effect:3",
+            "sourceName": "Plenilune Radiance",
+            "text": "Upon casting Intro Skill, this effect reaches max stacks immediately, lasting for 3s.",
+            "refinementTexts": [
+              "Upon casting Intro Skill, this effect reaches max stacks immediately, lasting for 3s.",
+              "Upon casting Intro Skill, this effect reaches max stacks immediately, lasting for 3s.",
+              "Upon casting Intro Skill, this effect reaches max stacks immediately, lasting for 3s.",
+              "Upon casting Intro Skill, this effect reaches max stacks immediately, lasting for 3s.",
+              "Upon casting Intro Skill, this effect reaches max stacks immediately, lasting for 3s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "trigger": "Intro Skill",
+              "durationSeconds": 3,
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence.",
+                "Stack maximum was not explicit and requires review."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

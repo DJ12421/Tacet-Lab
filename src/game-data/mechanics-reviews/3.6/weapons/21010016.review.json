@@ -1,0 +1,250 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21010016",
+  "entityName": "Verdant Summit",
+  "sourceFingerprint": "53ae79f55239df98c216668cfe5fb4ee73f79cb3c5b60092c9eeb5a60c3a658c",
+  "reviewedAt": "2026-08-26T11:44:23.824Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "e8788c5ddb765fc7429d4c6780409ef0172c4d61342fef1733f62fcf2865bd8e",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21010016:effect:0",
+            "sourceName": "Swordsworn",
+            "text": "Increases Attribute DMG Bonus by 12%.",
+            "refinementTexts": [
+              "Increases Attribute DMG Bonus by 12%.",
+              "Increases Attribute DMG Bonus by 15%.",
+              "Increases Attribute DMG Bonus by 18%.",
+              "Increases Attribute DMG Bonus by 21%.",
+              "Increases Attribute DMG Bonus by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "damageBonus",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "damageBonus",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "damageBonus",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "damageBonus",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "damageBonus",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21010016:effect:1",
+            "sourceName": "Swordsworn",
+            "text": "Every time Intro Skill or Resonance Liberation is cast, increases Heavy Attack DMG Bonus by 24%, stacking up to 2 time(s). This effect lasts for 14s.",
+            "refinementTexts": [
+              "Every time Intro Skill or Resonance Liberation is cast, increases Heavy Attack DMG Bonus by 24%, stacking up to 2 time(s). This effect lasts for 14s.",
+              "Every time Intro Skill or Resonance Liberation is cast, increases Heavy Attack DMG Bonus by 30%, stacking up to 2 time(s). This effect lasts for 14s.",
+              "Every time Intro Skill or Resonance Liberation is cast, increases Heavy Attack DMG Bonus by 36%, stacking up to 2 time(s). This effect lasts for 14s.",
+              "Every time Intro Skill or Resonance Liberation is cast, increases Heavy Attack DMG Bonus by 42%, stacking up to 2 time(s). This effect lasts for 14s.",
+              "Every time Intro Skill or Resonance Liberation is cast, increases Heavy Attack DMG Bonus by 48%, stacking up to 2 time(s). This effect lasts for 14s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 2
+              },
+              "durationSeconds": 14,
+              "modifiers": [
+                {
+                  "stat": "heavyDamage",
+                  "operation": "addPercent",
+                  "value": 24
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 36
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 42
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 48
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

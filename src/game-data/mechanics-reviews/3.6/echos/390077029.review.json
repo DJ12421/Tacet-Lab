@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390077029",
+  "entityName": "Roseshroom",
+  "sourceFingerprint": "a5e8f1ca91bc7fdf99836bf1333e9e72b429bc22a47026d0ebd471bd7ddda174",
+  "reviewedAt": "2026-08-26T11:44:24.843Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "5e5bb3b20960361e8337e765f4d46f34d290930548c7badf8d8f9ffbaabc6253",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390077029:skill",
+            "name": "Roseshroom - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Roseshroom that fires a laser, dealing 35.67% Havoc DMG up to 3 times.\nCD: 15s",
+              "Summon a Roseshroom that fires a laser, dealing 41.02% Havoc DMG up to 3 times.\nCD: 15s",
+              "Summon a Roseshroom that fires a laser, dealing 46.37% Havoc DMG up to 3 times.\nCD: 15s",
+              "Summon a Roseshroom that fires a laser, dealing 51.72% Havoc DMG up to 3 times.\nCD: 15s",
+              "Summon a Roseshroom that fires a laser, dealing 57.07% Havoc DMG up to 3 times.\nCD: 15s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.3567
+              ],
+              [
+                0.4102
+              ],
+              [
+                0.4637
+              ],
+              [
+                0.5172
+              ],
+              [
+                0.5707
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Roseshroom that fires a laser, dealing 35.67% Havoc DMG up to 3 times.\nCD: 15s · Summon a Roseshroom that fires a laser, dealing 41.02% Havoc DMG up to 3 times.\nCD: 15s · Summon a Roseshroom that fires a laser, dealing 46.37% Havoc DMG up to 3 times.\nCD: 15s · Summon a Roseshroom that fires a laser, dealing 51.72% Havoc DMG up to 3 times.\nCD: 15s · Summon a Roseshroom that fires a laser, dealing 57.07% Havoc DMG up to 3 times.\nCD: 15s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

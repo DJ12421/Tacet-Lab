@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000105",
+  "entityName": "Nightmare: Lampylumen Myriad",
+  "sourceFingerprint": "61a86371848b63723c22421088b299162dbe001de023a46c837f62dca633de6e",
+  "reviewedAt": "2026-08-26T11:44:24.997Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "05a0ddaa440f194c1f5165490d1a6cc78e8182e2a7d62f09dfdf427b1cae29e3",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000105:skill",
+            "name": "Nightmare: Lampylumen Myriad - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon Nightmare: Lampylumen Myriad and attack surrounding enemies, dealing 152.00% Glacio DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and deals 30.00% more Coordinated Attack DMG.\nCD: 20s.",
+              "Summon Nightmare: Lampylumen Myriad and attack surrounding enemies, dealing 182.40% Glacio DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and deals 30.00% more Coordinated Attack DMG.\nCD: 20s.",
+              "Summon Nightmare: Lampylumen Myriad and attack surrounding enemies, dealing 212.80% Glacio DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and deals 30.00% more Coordinated Attack DMG.\nCD: 20s.",
+              "Summon Nightmare: Lampylumen Myriad and attack surrounding enemies, dealing 243.20% Glacio DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and deals 30.00% more Coordinated Attack DMG.\nCD: 20s.",
+              "Summon Nightmare: Lampylumen Myriad and attack surrounding enemies, dealing 273.60% Glacio DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and deals 30.00% more Coordinated Attack DMG.\nCD: 20s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.52,
+                0.12,
+                0.3
+              ],
+              [
+                1.824,
+                0.12,
+                0.3
+              ],
+              [
+                2.128,
+                0.12,
+                0.3
+              ],
+              [
+                2.432,
+                0.12,
+                0.3
+              ],
+              [
+                2.736,
+                0.12,
+                0.3
+              ]
+            ],
+            "count": 3,
+            "sourceText": "Summon Nightmare: Lampylumen Myriad and attack surrounding enemies, dealing 152.00% Glacio DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and deals 30.00% more Coordinated Attack DMG.\nCD: 20s. · Summon Nightmare: Lampylumen Myriad and attack surrounding enemies, dealing 182.40% Glacio DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and deals 30.00% more Coordinated Attack DMG.\nCD: 20s. · Summon Nightmare: Lampylumen Myriad and attack surrounding enemies, dealing 212.80% Glacio DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and deals 30.00% more Coordinated Attack DMG.\nCD: 20s. · Summon Nightmare: Lampylumen Myriad and attack surrounding enemies, dealing 243.20% Glacio DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and deals 30.00% more Coordinated Attack DMG.\nCD: 20s. · Summon Nightmare: Lampylumen Myriad and attack surrounding enemies, dealing 273.60% Glacio DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and deals 30.00% more Coordinated Attack DMG.\nCD: 20s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "f83953435a73eab2d10272b278fe87c100b113600ba72528abe7442f2d1dd967",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000105:effect:0",
+            "sourceName": "Nightmare: Lampylumen Myriad",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and deals 30.00% more Coordinated Attack DMG.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "Glacio",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

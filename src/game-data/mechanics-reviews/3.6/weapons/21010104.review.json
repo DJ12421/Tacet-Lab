@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21010104",
+  "entityName": "Aureate Zenith",
+  "sourceFingerprint": "efbd4b9752085e2c4d5a056172468dcf64cb180df1183c9404627dd82440846d",
+  "reviewedAt": "2026-08-26T11:44:23.940Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "cf331dd7b0dac44220d002207f2a229fc974d64aae765c34eb605b472349183b",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21010104:effect:0",
+            "sourceName": "Oath of Tide Hunters",
+            "text": "Casting Resonance Liberation increases ATK by 7.2% and grants 10.8% Heavy Attack DMG Bonus for 15s.",
+            "refinementTexts": [
+              "Casting Resonance Liberation increases ATK by 7.2% and grants 10.8% Heavy Attack DMG Bonus for 15s.",
+              "Casting Resonance Liberation increases ATK by 11.1% and grants 16.7% Heavy Attack DMG Bonus for 15s.",
+              "Casting Resonance Liberation increases ATK by 15.1% and grants 22.6% Heavy Attack DMG Bonus for 15s.",
+              "Casting Resonance Liberation increases ATK by 19% and grants 28.6% Heavy Attack DMG Bonus for 15s.",
+              "Casting Resonance Liberation increases ATK by 23% and grants 34.5% Heavy Attack DMG Bonus for 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Liberation",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "heavyDamage",
+                  "operation": "addPercent",
+                  "value": 10.8
+                },
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 7.2
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 10.8
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 7.2
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 16.7
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 11.1
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 22.6
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15.1
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 28.6
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 19
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 34.5
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 23
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

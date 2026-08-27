@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000084",
+  "entityName": "Dragon of Dirge",
+  "sourceFingerprint": "de3dae15d3c613c135940a250174d7b0e83a8807bc8f1882a0713e2d7f9a258b",
+  "reviewedAt": "2026-08-26T11:44:24.953Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "aae120561f740fdafd6eb32b1d4fa43ca4101b4dafbc93f7992493b7d5a9e90a",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000084:skill",
+            "name": "Dragon of Dirge - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Dragon of Dirge and summon a Grief Rift lasting for 5s. Periodically deal 20.45% Fusion DMG to enemies within the area of effect.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 25s.",
+              "Transform into Dragon of Dirge and summon a Grief Rift lasting for 5s. Periodically deal 24.54% Fusion DMG to enemies within the area of effect.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 25s.",
+              "Transform into Dragon of Dirge and summon a Grief Rift lasting for 5s. Periodically deal 28.63% Fusion DMG to enemies within the area of effect.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 25s.",
+              "Transform into Dragon of Dirge and summon a Grief Rift lasting for 5s. Periodically deal 32.72% Fusion DMG to enemies within the area of effect.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 25s.",
+              "Transform into Dragon of Dirge and summon a Grief Rift lasting for 5s. Periodically deal 36.81% Fusion DMG to enemies within the area of effect.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 25s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.2045,
+                0.12,
+                0.12
+              ],
+              [
+                0.24539999999999998,
+                0.12,
+                0.12
+              ],
+              [
+                0.2863,
+                0.12,
+                0.12
+              ],
+              [
+                0.3272,
+                0.12,
+                0.12
+              ],
+              [
+                0.36810000000000004,
+                0.12,
+                0.12
+              ]
+            ],
+            "count": 3,
+            "sourceText": "Transform into Dragon of Dirge and summon a Grief Rift lasting for 5s. Periodically deal 20.45% Fusion DMG to enemies within the area of effect.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 25s. · Transform into Dragon of Dirge and summon a Grief Rift lasting for 5s. Periodically deal 24.54% Fusion DMG to enemies within the area of effect.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 25s. · Transform into Dragon of Dirge and summon a Grief Rift lasting for 5s. Periodically deal 28.63% Fusion DMG to enemies within the area of effect.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 25s. · Transform into Dragon of Dirge and summon a Grief Rift lasting for 5s. Periodically deal 32.72% Fusion DMG to enemies within the area of effect.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 25s. · Transform into Dragon of Dirge and summon a Grief Rift lasting for 5s. Periodically deal 36.81% Fusion DMG to enemies within the area of effect.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 25s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "9ba8f138fdd853a0b16047a2bc5d9becee6c2a4e825eb56d917de6b224fd884c",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000084:effect:0",
+            "sourceName": "Dragon of Dirge",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Basic Attack DMG Bonus.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "Fusion",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

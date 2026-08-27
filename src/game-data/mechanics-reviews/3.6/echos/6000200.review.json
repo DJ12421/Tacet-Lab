@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000200",
+  "entityName": "Reminiscence: Denia",
+  "sourceFingerprint": "aa49ac83884dc0a0b81d604d3172eb99eed542625c4b63707ddd1547dab986f8",
+  "reviewedAt": "2026-08-26T11:44:25.123Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "32d3f2c95c2ec3911e0ed589536703a7e8ccf7564a4c854ed2720ce69e3f427a",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000200:skill",
+            "name": "Reminiscence: Denia - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon \"Trickster\" to deal 152.00% Fusion DMG to enemies. Within the next 15s, casting Outro Skill grants the incoming Resonator 12.00% Fusion DMG Bonus for 15s.\nCD: 20s",
+              "Summon \"Trickster\" to deal 182.40% Fusion DMG to enemies. Within the next 15s, casting Outro Skill grants the incoming Resonator 12.00% Fusion DMG Bonus for 15s.\nCD: 20s",
+              "Summon \"Trickster\" to deal 212.80% Fusion DMG to enemies. Within the next 15s, casting Outro Skill grants the incoming Resonator 12.00% Fusion DMG Bonus for 15s.\nCD: 20s",
+              "Summon \"Trickster\" to deal 243.20% Fusion DMG to enemies. Within the next 15s, casting Outro Skill grants the incoming Resonator 12.00% Fusion DMG Bonus for 15s.\nCD: 20s",
+              "Summon \"Trickster\" to deal 273.60% Fusion DMG to enemies. Within the next 15s, casting Outro Skill grants the incoming Resonator 12.00% Fusion DMG Bonus for 15s.\nCD: 20s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.52,
+                0.12
+              ],
+              [
+                1.824,
+                0.12
+              ],
+              [
+                2.128,
+                0.12
+              ],
+              [
+                2.432,
+                0.12
+              ],
+              [
+                2.736,
+                0.12
+              ]
+            ],
+            "count": 2,
+            "sourceText": "Summon \"Trickster\" to deal 152.00% Fusion DMG to enemies. Within the next 15s, casting Outro Skill grants the incoming Resonator 12.00% Fusion DMG Bonus for 15s.\nCD: 20s · Summon \"Trickster\" to deal 182.40% Fusion DMG to enemies. Within the next 15s, casting Outro Skill grants the incoming Resonator 12.00% Fusion DMG Bonus for 15s.\nCD: 20s · Summon \"Trickster\" to deal 212.80% Fusion DMG to enemies. Within the next 15s, casting Outro Skill grants the incoming Resonator 12.00% Fusion DMG Bonus for 15s.\nCD: 20s · Summon \"Trickster\" to deal 243.20% Fusion DMG to enemies. Within the next 15s, casting Outro Skill grants the incoming Resonator 12.00% Fusion DMG Bonus for 15s.\nCD: 20s · Summon \"Trickster\" to deal 273.60% Fusion DMG to enemies. Within the next 15s, casting Outro Skill grants the incoming Resonator 12.00% Fusion DMG Bonus for 15s.\nCD: 20s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "08b1c37b644bdd4a2fa5b31e93efe5dfb0886f60c585e404a76ba37e03bbba43",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000200:effect:0",
+            "sourceName": "Reminiscence: Denia",
+            "sourceType": "echo",
+            "text": "Within the next 15s, casting Outro Skill grants the incoming Resonator 12.00% Fusion DMG Bonus for 15s.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "Fusion",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000098",
+  "entityName": "La Guardia",
+  "sourceFingerprint": "a487f2d32bc8084c66fc880184193f6f3c7ffafbf90bfbf7740036bae354a24e",
+  "reviewedAt": "2026-08-26T11:44:24.980Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "82f448d25607ca71c0717552694c89f3368888bdefb4558ec260a0107bd4c2e7",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000098:skill",
+            "name": "La Guardia - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into La Guardia and attack nearby targets, dealing 149.00% Physical DMG.\nHold the Echo Skill to maintain the Echo form for a while to slash enemies and cast a ranged attack forward. The slash deals 149.00% Physical DMG, and the ranged attack deals 9.93% Physical DMG up to 15 times.\nCD: 15s.",
+              "Transform into La Guardia and attack nearby targets, dealing 178.80% Physical DMG.\nHold the Echo Skill to maintain the Echo form for a while to slash enemies and cast a ranged attack forward. The slash deals 178.80% Physical DMG, and the ranged attack deals 11.92% Physical DMG up to 15 times.\nCD: 15s.",
+              "Transform into La Guardia and attack nearby targets, dealing 208.60% Physical DMG.\nHold the Echo Skill to maintain the Echo form for a while to slash enemies and cast a ranged attack forward. The slash deals 208.60% Physical DMG, and the ranged attack deals 13.90% Physical DMG up to 15 times.\nCD: 15s.",
+              "Transform into La Guardia and attack nearby targets, dealing 238.40% Physical DMG.\nHold the Echo Skill to maintain the Echo form for a while to slash enemies and cast a ranged attack forward. The slash deals 238.40% Physical DMG, and the ranged attack deals 15.89% Physical DMG up to 15 times.\nCD: 15s.",
+              "Transform into La Guardia and attack nearby targets, dealing 268.20% Physical DMG.\nHold the Echo Skill to maintain the Echo form for a while to slash enemies and cast a ranged attack forward. The slash deals 268.20% Physical DMG, and the ranged attack deals 17.87% Physical DMG up to 15 times.\nCD: 15s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.49,
+                1.49,
+                0.0993
+              ],
+              [
+                1.788,
+                1.788,
+                0.1192
+              ],
+              [
+                2.086,
+                2.086,
+                0.139
+              ],
+              [
+                2.384,
+                2.384,
+                0.1589
+              ],
+              [
+                2.682,
+                2.682,
+                0.1787
+              ]
+            ],
+            "count": 3,
+            "sourceText": "Transform into La Guardia and attack nearby targets, dealing 149.00% Physical DMG.\nHold the Echo Skill to maintain the Echo form for a while to slash enemies and cast a ranged attack forward. The slash deals 149.00% Physical DMG, and the ranged attack deals 9.93% Physical DMG up to 15 times.\nCD: 15s. · Transform into La Guardia and attack nearby targets, dealing 178.80% Physical DMG.\nHold the Echo Skill to maintain the Echo form for a while to slash enemies and cast a ranged attack forward. The slash deals 178.80% Physical DMG, and the ranged attack deals 11.92% Physical DMG up to 15 times.\nCD: 15s. · Transform into La Guardia and attack nearby targets, dealing 208.60% Physical DMG.\nHold the Echo Skill to maintain the Echo form for a while to slash enemies and cast a ranged attack forward. The slash deals 208.60% Physical DMG, and the ranged attack deals 13.90% Physical DMG up to 15 times.\nCD: 15s. · Transform into La Guardia and attack nearby targets, dealing 238.40% Physical DMG.\nHold the Echo Skill to maintain the Echo form for a while to slash enemies and cast a ranged attack forward. The slash deals 238.40% Physical DMG, and the ranged attack deals 15.89% Physical DMG up to 15 times.\nCD: 15s. · Transform into La Guardia and attack nearby targets, dealing 268.20% Physical DMG.\nHold the Echo Skill to maintain the Echo form for a while to slash enemies and cast a ranged attack forward. The slash deals 268.20% Physical DMG, and the ranged attack deals 17.87% Physical DMG up to 15 times.\nCD: 15s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

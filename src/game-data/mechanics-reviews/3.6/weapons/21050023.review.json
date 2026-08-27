@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21050023",
+  "entityName": "Originite: Type V",
+  "sourceFingerprint": "601b37a2de326c57646ded9b93cf258475e8ba3ed79dc5997b647e746895181e",
+  "reviewedAt": "2026-08-26T11:44:24.290Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "7e803c5b1959dd1943c6cd3fe7740fef22e9182e3af460d12db374b168758489",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050023:effect:0",
+            "sourceName": "Augment",
+            "text": "When Intro Skill is cast, heals 5% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 20s.",
+            "refinementTexts": [
+              "When Intro Skill is cast, heals 5% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 20s.",
+              "When Intro Skill is cast, heals 6.25% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 20s.",
+              "When Intro Skill is cast, heals 7.5% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 20s.",
+              "When Intro Skill is cast, heals 8.75% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 20s.",
+              "When Intro Skill is cast, heals 10% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 20s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Intro Skill",
+              "modifiers": [],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

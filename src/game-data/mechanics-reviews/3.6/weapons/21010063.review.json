@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21010063",
+  "entityName": "Beguiling Melody",
+  "sourceFingerprint": "daaba4e9bbdc0c03cdd441dc38bcdb6a43aa69df82d5bc53baea3521fc7e14c4",
+  "reviewedAt": "2026-08-26T11:44:23.890Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "3f0e1eefdd8d92f4ad1e898f1df9c88667d859105f0ccd32d1cc941de233516b",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21010063:effect:0",
+            "sourceName": "Graceful Touch",
+            "text": "When Intro Skill is cast, restores 4 Concerto Energy.",
+            "refinementTexts": [
+              "When Intro Skill is cast, restores 4 Concerto Energy.",
+              "When Intro Skill is cast, restores 5 Concerto Energy.",
+              "When Intro Skill is cast, restores 6 Concerto Energy.",
+              "When Intro Skill is cast, restores 7 Concerto Energy.",
+              "When Intro Skill is cast, restores 8 Concerto Energy."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Intro Skill",
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21010063:effect:1",
+            "sourceName": "Graceful Touch",
+            "text": "When Outro Skill is cast, restores 4 Resonance Energy.",
+            "refinementTexts": [
+              "When Outro Skill is cast, restores 4 Resonance Energy.",
+              "When Outro Skill is cast, restores 5 Resonance Energy.",
+              "When Outro Skill is cast, restores 6 Resonance Energy.",
+              "When Outro Skill is cast, restores 7 Resonance Energy.",
+              "When Outro Skill is cast, restores 8 Resonance Energy."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Outro Skill",
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

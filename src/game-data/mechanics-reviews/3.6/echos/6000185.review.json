@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000185",
+  "entityName": "Sabercat Reaver",
+  "sourceFingerprint": "2fde022886853c15e94f89de25ed9e7017c38fed6a6d3f35dff2c264db893a60",
+  "reviewedAt": "2026-08-26T11:44:25.092Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "d13a40b224d358abbe79ad24f82e5a3d65a7ad2f65792f6083a58e2a7c2266ab",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000185:skill",
+            "name": "Sabercat Reaver - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Sabercat Reaver to attack enemies, dealing 107.00% Fusion DMG.\nCD: 15s.",
+              "Summon a Sabercat Reaver to attack enemies, dealing 128.40% Fusion DMG.\nCD: 15s.",
+              "Summon a Sabercat Reaver to attack enemies, dealing 149.80% Fusion DMG.\nCD: 15s.",
+              "Summon a Sabercat Reaver to attack enemies, dealing 171.20% Fusion DMG.\nCD: 15s.",
+              "Summon a Sabercat Reaver to attack enemies, dealing 192.60% Fusion DMG.\nCD: 15s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.07
+              ],
+              [
+                1.284
+              ],
+              [
+                1.4980000000000002
+              ],
+              [
+                1.712
+              ],
+              [
+                1.926
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Sabercat Reaver to attack enemies, dealing 107.00% Fusion DMG.\nCD: 15s. · Summon a Sabercat Reaver to attack enemies, dealing 128.40% Fusion DMG.\nCD: 15s. · Summon a Sabercat Reaver to attack enemies, dealing 149.80% Fusion DMG.\nCD: 15s. · Summon a Sabercat Reaver to attack enemies, dealing 171.20% Fusion DMG.\nCD: 15s. · Summon a Sabercat Reaver to attack enemies, dealing 192.60% Fusion DMG.\nCD: 15s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000102",
+  "entityName": "Electro Drake",
+  "sourceFingerprint": "ab026f17655473a3e46d6e347e7fccb344ec9a233e5fabd4a988a1b8265989b0",
+  "reviewedAt": "2026-08-26T11:44:24.988Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "cb9acf4f36c23a095b10ef6aaa9c35a72f1add48ac557c56ab7cbf3d38a781a7",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000102:skill",
+            "name": "Electro Drake - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon an Electro Drake to attack enemies, dealing 24.00% Electro DMG 3 times.\nCD: 8s.",
+              "Summon an Electro Drake to attack enemies, dealing 28.80% Electro DMG 3 times.\nCD: 8s.",
+              "Summon an Electro Drake to attack enemies, dealing 33.60% Electro DMG 3 times.\nCD: 8s.",
+              "Summon an Electro Drake to attack enemies, dealing 38.40% Electro DMG 3 times.\nCD: 8s.",
+              "Summon an Electro Drake to attack enemies, dealing 43.20% Electro DMG 3 times.\nCD: 8s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.24
+              ],
+              [
+                0.28800000000000003
+              ],
+              [
+                0.336
+              ],
+              [
+                0.384
+              ],
+              [
+                0.43200000000000005
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon an Electro Drake to attack enemies, dealing 24.00% Electro DMG 3 times.\nCD: 8s. · Summon an Electro Drake to attack enemies, dealing 28.80% Electro DMG 3 times.\nCD: 8s. · Summon an Electro Drake to attack enemies, dealing 33.60% Electro DMG 3 times.\nCD: 8s. · Summon an Electro Drake to attack enemies, dealing 38.40% Electro DMG 3 times.\nCD: 8s. · Summon an Electro Drake to attack enemies, dealing 43.20% Electro DMG 3 times.\nCD: 8s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

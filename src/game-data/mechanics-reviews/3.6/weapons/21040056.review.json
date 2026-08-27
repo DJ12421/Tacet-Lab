@@ -1,0 +1,376 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21040056",
+  "entityName": "Daybreaker's Spine",
+  "sourceFingerprint": "fd03b92f3348cfd7bcac428a23c7a25c6f09006eedd26dd1b506160101c4203d",
+  "reviewedAt": "2026-08-26T11:44:24.232Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "383c8249bd21f4036f1ec66898bd7cc4cc38bb17b78719b38d3632ce3d4ddd27",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21040056:effect:0",
+            "sourceName": "Suturing Dayline",
+            "text": "Increases ATK by 12%.",
+            "refinementTexts": [
+              "Increases ATK by 12%.",
+              "Increases ATK by 15%.",
+              "Increases ATK by 18%.",
+              "Increases ATK by 21%.",
+              "Increases ATK by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21040056:effect:1",
+            "sourceName": "Suturing Dayline",
+            "text": "After dealing Basic Attack DMG, the wielder gains 20% Spectro DMG Bonus for 4s.",
+            "refinementTexts": [
+              "After dealing Basic Attack DMG, the wielder gains 20% Spectro DMG Bonus for 4s.",
+              "After dealing Basic Attack DMG, the wielder gains 25% Spectro DMG Bonus for 4s.",
+              "After dealing Basic Attack DMG, the wielder gains 30% Spectro DMG Bonus for 4s.",
+              "After dealing Basic Attack DMG, the wielder gains 35% Spectro DMG Bonus for 4s.",
+              "After dealing Basic Attack DMG, the wielder gains 40% Spectro DMG Bonus for 4s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Basic Attack DMG",
+              "durationSeconds": 4,
+              "modifiers": [
+                {
+                  "stat": "Spectro",
+                  "operation": "addPercent",
+                  "value": 20
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 4,
+                "modifiers": [
+                  {
+                    "stat": "Spectro",
+                    "operation": "addPercent",
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 4,
+                "modifiers": [
+                  {
+                    "stat": "Spectro",
+                    "operation": "addPercent",
+                    "value": 25
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 4,
+                "modifiers": [
+                  {
+                    "stat": "Spectro",
+                    "operation": "addPercent",
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 4,
+                "modifiers": [
+                  {
+                    "stat": "Spectro",
+                    "operation": "addPercent",
+                    "value": 35
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 4,
+                "modifiers": [
+                  {
+                    "stat": "Spectro",
+                    "operation": "addPercent",
+                    "value": 40
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21040056:effect:2",
+            "sourceName": "Suturing Dayline",
+            "text": "Each time after the wielder inflicts Tune Strain - Shifting on the target, they gain 20% Basic Attack DMG Amplification and their Basic Attack DMG ignores 10% of the target's DEF for 6s.",
+            "refinementTexts": [
+              "Each time after the wielder inflicts Tune Strain - Shifting on the target, they gain 20% Basic Attack DMG Amplification and their Basic Attack DMG ignores 10% of the target's DEF for 6s.",
+              "Each time after the wielder inflicts Tune Strain - Shifting on the target, they gain 25% Basic Attack DMG Amplification and their Basic Attack DMG ignores 12.5% of the target's DEF for 6s.",
+              "Each time after the wielder inflicts Tune Strain - Shifting on the target, they gain 30% Basic Attack DMG Amplification and their Basic Attack DMG ignores 15% of the target's DEF for 6s.",
+              "Each time after the wielder inflicts Tune Strain - Shifting on the target, they gain 35% Basic Attack DMG Amplification and their Basic Attack DMG ignores 17.5% of the target's DEF for 6s.",
+              "Each time after the wielder inflicts Tune Strain - Shifting on the target, they gain 40% Basic Attack DMG Amplification and their Basic Attack DMG ignores 20% of the target's DEF for 6s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 6,
+              "modifiers": [
+                {
+                  "stat": "basicDamage",
+                  "operation": "amplifyPercent",
+                  "value": 20
+                },
+                {
+                  "stat": "DEFIgnore:Basic",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "amplifyPercent",
+                    "value": 20
+                  },
+                  {
+                    "stat": "DEFIgnore:Basic",
+                    "operation": "addPercent",
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "amplifyPercent",
+                    "value": 25
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "amplifyPercent",
+                    "value": 30
+                  },
+                  {
+                    "stat": "DEFIgnore:Basic",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "amplifyPercent",
+                    "value": 35
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "amplifyPercent",
+                    "value": 40
+                  },
+                  {
+                    "stat": "DEFIgnore:Basic",
+                    "operation": "addPercent",
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

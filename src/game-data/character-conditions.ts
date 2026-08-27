@@ -1,28 +1,95 @@
 import type { GeneratedCharacterCatalogEntry } from './catalog-types.generated'
-import {
-  generatedCharacterConditions,
-  characterConditionProvenance,
-  type GeneratedCharacterCondition,
-  type GeneratedCharacterConditionModifier
-} from './character-conditions.generated'
+import { mechanicsCatalog } from './mechanics'
+import type { CalculationEffectDefinition, CalculationModifier } from '../domain/calculation-v2/types'
 
 export type CharacterSkillCardKey = keyof GeneratedCharacterCatalogEntry['skillIcons'] | 'outroSkill'
-export type CharacterCondition = GeneratedCharacterCondition
-export type CharacterConditionModifier = GeneratedCharacterConditionModifier
+
+export interface CharacterConditionModifier {
+  modifier?: string
+  modifierValue?: number | string | Array<number | string> | Record<string, number | string>
+  modifySpecificTalents?: string[]
+  modifierTalentKey?: string
+  modifierValueTalentRef?: string
+  maximumValue?: number
+  modifierStep?: number
+  overflowStep?: number
+  overflowMin?: number
+  overflowMax?: number
+  modifierBasedOn?: string
+  modifierTargetAttr?: string
+  minStatValue?: number
+}
+
+export interface CharacterCondition {
+  key: string
+  legacyKey: string
+  name: string
+  description: string
+  alwaysEnabled: boolean
+  hasStacks: boolean
+  minStacks: number
+  maxStacks: number
+  stance?: string
+  appliesOnEveryStep?: number
+  sequence: number
+  modifiers: CharacterConditionModifier[]
+}
 
 const normalized = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, '')
-const conditionCatalogByKey = new Map(Object.entries(generatedCharacterConditions).map(([key, conditions]) => [normalized(key), conditions]))
+const legacyKeyPart = (value: string) => value.replace(/[^a-z0-9]+/gi, '')
+const decimalValue = (value: number | string) => typeof value === 'number' ? value / 100 : value
+const modifierForLegacySheet = (modifier: CalculationModifier): CharacterConditionModifier => ({
+  modifier:modifier.modifier,
+  modifierValue:typeof modifier.modifierValue === 'number' || typeof modifier.modifierValue === 'string'
+    ? decimalValue(modifier.modifierValue)
+    : Array.isArray(modifier.modifierValue)
+      ? modifier.modifierValue.map(decimalValue)
+      : modifier.modifierValue
+        ? Object.fromEntries(Object.entries(modifier.modifierValue).map(([key, value]) => [key, decimalValue(value)]))
+        : undefined,
+  modifySpecificTalents:modifier.modifySpecificTalents,
+  modifierTalentKey:modifier.modifierTalentKey,
+  modifierValueTalentRef:modifier.modifierValueTalentRef,
+  maximumValue:modifier.maximumValue === undefined ? undefined : modifier.maximumValue / 100,
+  modifierStep:modifier.modifierStep === undefined ? undefined : modifier.modifierStep / 100,
+  overflowStep:modifier.overflowStep,
+  overflowMin:modifier.overflowMin,
+  overflowMax:modifier.overflowMax,
+  modifierBasedOn:modifier.modifierBasedOn,
+  modifierTargetAttr:modifier.modifierTargetAttr,
+  minStatValue:modifier.minStatValue
+})
 
-export const characterConditionId = (condition: CharacterCondition) => `wt:${condition.key}`
+const conditionForEffect = (effect: CalculationEffectDefinition): CharacterCondition => ({
+  key:normalized(effect.id),
+  legacyKey:effect.sequence ? `SequenceNode${effect.sequence}${legacyKeyPart(effect.name)}` : legacyKeyPart(effect.name),
+  name:effect.name,
+  description:effect.description,
+  alwaysEnabled:effect.alwaysEnabled,
+  hasStacks:effect.hasStacks,
+  minStacks:effect.minStacks,
+  maxStacks:effect.maxStacks,
+  stance:effect.stance,
+  appliesOnEveryStep:effect.appliesOnEveryStep,
+  sequence:effect.sequence ?? 0,
+  modifiers:effect.modifiers.map(modifierForLegacySheet)
+})
+
+const conditionCatalogByKey = new Map(mechanicsCatalog.characters.map((character) => [
+  normalized(character.name),
+  [...character.effects, ...character.sequences]
+    .filter((effect) => effect.scope === 'self')
+    .map(conditionForEffect)
+]))
+
+export const characterConditionId = (condition: CharacterCondition) => `v2:${condition.key}`
+export const legacyCharacterConditionId = (condition: CharacterCondition) => `wt:${condition.legacyKey}`
 export const characterConditionStackId = (condition: CharacterCondition) => `${characterConditionId(condition)}:stacks`
-export const characterConditionModeId = 'wt:mode'
+export const characterConditionModeId = 'v2:mode'
+export const legacyCharacterConditionModeId = 'wt:mode'
 
 export function characterConditionCatalogKey(character: GeneratedCharacterCatalogEntry) {
-  if (/^rover\b/i.test(character.name)) {
-    const gender = character.gender === 'female' ? 'Female' : 'Male'
-    return `Rover${character.element}${gender}`
-  }
-  return character.name.replace(/[^a-z0-9]+/gi, '')
+  return character.name
 }
 
 export function characterConditions(character: GeneratedCharacterCatalogEntry): CharacterCondition[] {
@@ -34,16 +101,15 @@ export function characterConditionModes(character: GeneratedCharacterCatalogEntr
 }
 
 export function characterConditionRequiresToggle(condition: CharacterCondition) {
-  return condition.hasStacks || /\b(?:after|when|while|upon|casting|obtaining|dealing|using|if|whenever|once|in the)\b/i.test(condition.description)
+  return !condition.alwaysEnabled
 }
 
 export function characterConditionInherentSkillIndex(condition: CharacterCondition, character: GeneratedCharacterCatalogEntry) {
   if (!/^inherent skill\b/i.test(condition.name)) return undefined
   const conditionName = normalized(condition.name.replace(/^inherent skill\s*:?\s*/i, ''))
-  const conditionKey = normalized(condition.key)
   const index = character.skillTreeExtras.inherentSkills.findIndex((skill) => {
     const skillName = normalized(skill.name)
-    return skillName.length > 3 && (conditionName.includes(skillName) || conditionKey.includes(skillName))
+    return skillName.length > 3 && conditionName.includes(skillName)
   })
   return index >= 0 ? index : undefined
 }
@@ -75,4 +141,4 @@ export function conditionTargetsAttack(condition: CharacterCondition, attackName
   })
 }
 
-export { characterConditionProvenance }
+export const characterConditionProvenance = mechanicsCatalog.provenance

@@ -1,0 +1,256 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21020015",
+  "entityName": "Emerald of Genesis",
+  "sourceFingerprint": "2e75fabeb8d944a01445bcaf5e25f5b4cd5184a15c6cd521a65cb13fe1be67f0",
+  "reviewedAt": "2026-08-26T11:44:23.953Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "c8d767d3e10e65f38c82d62edbcefcbd0887ef0b692ce2f572836d8940b5b3dd",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020015:effect:0",
+            "sourceName": "Stormy Resolution",
+            "text": "Increases Energy Regen by 12.8%.",
+            "refinementTexts": [
+              "Increases Energy Regen by 12.8%.",
+              "Increases Energy Regen by 16%.",
+              "Increases Energy Regen by 19.2%.",
+              "Increases Energy Regen by 22.4%.",
+              "Increases Energy Regen by 25.6%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "energyRegen",
+                  "operation": "addPercent",
+                  "value": 12.8
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "energyRegen",
+                    "operation": "addPercent",
+                    "value": 12.8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "energyRegen",
+                    "operation": "addPercent",
+                    "value": 16
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "energyRegen",
+                    "operation": "addPercent",
+                    "value": 19.2
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "energyRegen",
+                    "operation": "addPercent",
+                    "value": 22.4
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "energyRegen",
+                    "operation": "addPercent",
+                    "value": 25.6
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21020015:effect:1",
+            "sourceName": "Stormy Resolution",
+            "text": "When Resonance Skill is cast, increases ATK by 6%, stacking up to 2 time(s). This effect lasts for 10s.",
+            "refinementTexts": [
+              "When Resonance Skill is cast, increases ATK by 6%, stacking up to 2 time(s). This effect lasts for 10s.",
+              "When Resonance Skill is cast, increases ATK by 7.5%, stacking up to 2 time(s). This effect lasts for 10s.",
+              "When Resonance Skill is cast, increases ATK by 9%, stacking up to 2 time(s). This effect lasts for 10s.",
+              "When Resonance Skill is cast, increases ATK by 10.5%, stacking up to 2 time(s). This effect lasts for 10s.",
+              "When Resonance Skill is cast, increases ATK by 12%, stacking up to 2 time(s). This effect lasts for 10s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 2
+              },
+              "trigger": "Resonance Skill",
+              "durationSeconds": 10,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 6
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 6
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 7.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 9
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 10.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

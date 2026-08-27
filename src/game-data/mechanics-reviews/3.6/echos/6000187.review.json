@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000187",
+  "entityName": "Frostbite Coleoid",
+  "sourceFingerprint": "0177998041687fc4726aded7bfe72db8af9bd8930b638bbc1cfeb8cad321b5ac",
+  "reviewedAt": "2026-08-26T11:44:25.096Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "0555ae3a7ece049bd1e4691aa3bd8c406fad8a4616f15cc864fbe017ee6e1658",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000187:skill",
+            "name": "Frostbite Coleoid - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Frostbite Coleoid to punch enemies, dealing 107.00% Glacio DMG.\nCD: 15s.",
+              "Summon a Frostbite Coleoid to punch enemies, dealing 128.40% Glacio DMG.\nCD: 15s.",
+              "Summon a Frostbite Coleoid to punch enemies, dealing 149.80% Glacio DMG.\nCD: 15s.",
+              "Summon a Frostbite Coleoid to punch enemies, dealing 171.20% Glacio DMG.\nCD: 15s.",
+              "Summon a Frostbite Coleoid to punch enemies, dealing 192.60% Glacio DMG.\nCD: 15s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.07
+              ],
+              [
+                1.284
+              ],
+              [
+                1.4980000000000002
+              ],
+              [
+                1.712
+              ],
+              [
+                1.926
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Frostbite Coleoid to punch enemies, dealing 107.00% Glacio DMG.\nCD: 15s. · Summon a Frostbite Coleoid to punch enemies, dealing 128.40% Glacio DMG.\nCD: 15s. · Summon a Frostbite Coleoid to punch enemies, dealing 149.80% Glacio DMG.\nCD: 15s. · Summon a Frostbite Coleoid to punch enemies, dealing 171.20% Glacio DMG.\nCD: 15s. · Summon a Frostbite Coleoid to punch enemies, dealing 192.60% Glacio DMG.\nCD: 15s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

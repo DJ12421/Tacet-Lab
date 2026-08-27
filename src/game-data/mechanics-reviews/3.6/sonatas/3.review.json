@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "sonata",
+  "entityId": "3",
+  "entityName": "Void Thunder",
+  "sourceFingerprint": "5783d00717015d6e3249988dc8d6e143b9a480ee6c98fd3fa50ab628735b558e",
+  "reviewedAt": "2026-08-26T11:44:24.669Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "08737a5eb7c391a785367746ca5a67f1ee1cd9f985e74b929dffccb1f29c34db",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:3:2:0",
+            "sourceName": "Void Thunder",
+            "text": "Electro DMG + 10%.",
+            "refinementTexts": [
+              "Electro DMG + 10%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:3:5:0",
+            "sourceName": "Void Thunder",
+            "text": "Electro DMG + 15% after releasing Heavy Attack or Resonance Skill. This effect stacks up to 2 times, each stack lasts 15s.",
+            "refinementTexts": [
+              "Electro DMG + 15% after releasing Heavy Attack or Resonance Skill. This effect stacks up to 2 times, each stack lasts 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 2
+              },
+              "modifiers": [],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

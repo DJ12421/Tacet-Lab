@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000085",
+  "entityName": "Hecate",
+  "sourceFingerprint": "e2f071c116a9d6beb159c5dad2519f24387c17cbf8a5e38518873e1e2249544f",
+  "reviewedAt": "2026-08-26T11:44:24.955Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "2364e19a7800a1122da154ca88ac711b66133bf3e1a51dd546ed06fca1f01a5d",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000085:skill",
+            "name": "Hecate - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon 3 twirling Crescent Servants around you. Crescent Servants attack enemies with their spinning blades, dealing 25.33% Havoc DMG. Triggering a Counterattack with the Echo attacks resets the Crescent Servants' duration.\nThe Resonator with this Echo equipped in the main slot has their Coordinated Attack DMG increased by 40.00%.\nCD: 20s.",
+              "Summon 3 twirling Crescent Servants around you. Crescent Servants attack enemies with their spinning blades, dealing 30.40% Havoc DMG. Triggering a Counterattack with the Echo attacks resets the Crescent Servants' duration.\nThe Resonator with this Echo equipped in the main slot has their Coordinated Attack DMG increased by 40.00%.\nCD: 20s.",
+              "Summon 3 twirling Crescent Servants around you. Crescent Servants attack enemies with their spinning blades, dealing 35.46% Havoc DMG. Triggering a Counterattack with the Echo attacks resets the Crescent Servants' duration.\nThe Resonator with this Echo equipped in the main slot has their Coordinated Attack DMG increased by 40.00%.\nCD: 20s.",
+              "Summon 3 twirling Crescent Servants around you. Crescent Servants attack enemies with their spinning blades, dealing 40.53% Havoc DMG. Triggering a Counterattack with the Echo attacks resets the Crescent Servants' duration.\nThe Resonator with this Echo equipped in the main slot has their Coordinated Attack DMG increased by 40.00%.\nCD: 20s.",
+              "Summon 3 twirling Crescent Servants around you. Crescent Servants attack enemies with their spinning blades, dealing 45.59% Havoc DMG. Triggering a Counterattack with the Echo attacks resets the Crescent Servants' duration.\nThe Resonator with this Echo equipped in the main slot has their Coordinated Attack DMG increased by 40.00%.\nCD: 20s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.25329999999999997,
+                0.4
+              ],
+              [
+                0.304,
+                0.4
+              ],
+              [
+                0.3546,
+                0.4
+              ],
+              [
+                0.4053,
+                0.4
+              ],
+              [
+                0.4559,
+                0.4
+              ]
+            ],
+            "count": 2,
+            "sourceText": "Summon 3 twirling Crescent Servants around you. Crescent Servants attack enemies with their spinning blades, dealing 25.33% Havoc DMG. Triggering a Counterattack with the Echo attacks resets the Crescent Servants' duration.\nThe Resonator with this Echo equipped in the main slot has their Coordinated Attack DMG increased by 40.00%.\nCD: 20s. · Summon 3 twirling Crescent Servants around you. Crescent Servants attack enemies with their spinning blades, dealing 30.40% Havoc DMG. Triggering a Counterattack with the Echo attacks resets the Crescent Servants' duration.\nThe Resonator with this Echo equipped in the main slot has their Coordinated Attack DMG increased by 40.00%.\nCD: 20s. · Summon 3 twirling Crescent Servants around you. Crescent Servants attack enemies with their spinning blades, dealing 35.46% Havoc DMG. Triggering a Counterattack with the Echo attacks resets the Crescent Servants' duration.\nThe Resonator with this Echo equipped in the main slot has their Coordinated Attack DMG increased by 40.00%.\nCD: 20s. · Summon 3 twirling Crescent Servants around you. Crescent Servants attack enemies with their spinning blades, dealing 40.53% Havoc DMG. Triggering a Counterattack with the Echo attacks resets the Crescent Servants' duration.\nThe Resonator with this Echo equipped in the main slot has their Coordinated Attack DMG increased by 40.00%.\nCD: 20s. · Summon 3 twirling Crescent Servants around you. Crescent Servants attack enemies with their spinning blades, dealing 45.59% Havoc DMG. Triggering a Counterattack with the Echo attacks resets the Crescent Servants' duration.\nThe Resonator with this Echo equipped in the main slot has their Coordinated Attack DMG increased by 40.00%.\nCD: 20s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "bc9222d6c334dce6823ff9fc066afd9d97f7c15c67669ac105a9a91477d3c927",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000085:effect:0",
+            "sourceName": "Hecate",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in the main slot has their Coordinated Attack DMG increased by 40.00%.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 40
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

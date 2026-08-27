@@ -1,0 +1,238 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21020076",
+  "entityName": "Everbright Polestar",
+  "sourceFingerprint": "1628ba902b4f36829c87f7ffaca754be884a642aa1a4bc17f0039f4f3f5e8afe",
+  "reviewedAt": "2026-08-26T11:44:24.043Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "c04aee505dd2be9a7aa13d0b98e33558ec8fb0ee85e2b781c1d82a6298c2b5ca",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020076:effect:0",
+            "sourceName": "Starchaser",
+            "text": "Increases All-Attribute DMG Bonus by 12%.",
+            "refinementTexts": [
+              "Increases All-Attribute DMG Bonus by 12%.",
+              "Increases All-Attribute DMG Bonus by 15%.",
+              "Increases All-Attribute DMG Bonus by 18%.",
+              "Increases All-Attribute DMG Bonus by 21%.",
+              "Increases All-Attribute DMG Bonus by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "AllElementAttributeBonus",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "AllElementAttributeBonus",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "AllElementAttributeBonus",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "AllElementAttributeBonus",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "AllElementAttributeBonus",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "AllElementAttributeBonus",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21020076:effect:1",
+            "sourceName": "Starchaser",
+            "text": "When inflicting Tune Rupture - Shifting or Fusion Burst, the wielder's Resonance Liberation DMG ignores 32% DEF and 10% Fusion RES on targets for 8s.",
+            "refinementTexts": [
+              "When inflicting Tune Rupture - Shifting or Fusion Burst, the wielder's Resonance Liberation DMG ignores 32% DEF and 10% Fusion RES on targets for 8s.",
+              "When inflicting Tune Rupture - Shifting or Fusion Burst, the wielder's Resonance Liberation DMG ignores 40% DEF and 15% Fusion RES on targets for 8s.",
+              "When inflicting Tune Rupture - Shifting or Fusion Burst, the wielder's Resonance Liberation DMG ignores 48% DEF and 20% Fusion RES on targets for 8s.",
+              "When inflicting Tune Rupture - Shifting or Fusion Burst, the wielder's Resonance Liberation DMG ignores 56% DEF and 25% Fusion RES on targets for 8s.",
+              "When inflicting Tune Rupture - Shifting or Fusion Burst, the wielder's Resonance Liberation DMG ignores 64% DEF and 30% Fusion RES on targets for 8s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 8,
+              "modifiers": [
+                {
+                  "stat": "DEFIgnore:Liberation",
+                  "operation": "addPercent",
+                  "value": 32
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "DEFIgnore:Liberation",
+                    "operation": "addPercent",
+                    "value": 32
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "DEFIgnore:Liberation",
+                    "operation": "addPercent",
+                    "value": 40
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "DEFIgnore:Liberation",
+                    "operation": "addPercent",
+                    "value": 48
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "DEFIgnore:Liberation",
+                    "operation": "addPercent",
+                    "value": 56
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "DEFIgnore:Liberation",
+                    "operation": "addPercent",
+                    "value": 64
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

@@ -1,0 +1,225 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21040064",
+  "entityName": "Hollow Mirage",
+  "sourceFingerprint": "4171e1bc908313b20d7ddd1c1c8027c1df07c8e1b3fb904b8f03fa0608df6cc5",
+  "reviewedAt": "2026-08-26T11:44:24.238Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "3cb183d1a2e3990330c94adda29818b526a1ac3bab9862a3f79c95e69b0eaebd",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21040064:effect:0",
+            "sourceName": "Celestial Blessing",
+            "text": "When Resonance Liberation is cast, grants 3 stack(s) of Iron Armor.",
+            "refinementTexts": [
+              "When Resonance Liberation is cast, grants 3 stack(s) of Iron Armor.",
+              "When Resonance Liberation is cast, grants 3 stack(s) of Iron Armor.",
+              "When Resonance Liberation is cast, grants 3 stack(s) of Iron Armor.",
+              "When Resonance Liberation is cast, grants 3 stack(s) of Iron Armor.",
+              "When Resonance Liberation is cast, grants 3 stack(s) of Iron Armor."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "trigger": "Resonance Liberation",
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence.",
+                "Stack maximum was not explicit and requires review."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21040064:effect:1",
+            "sourceName": "Celestial Blessing",
+            "text": "Each stack increases ATK and DEF by 3%, stacking up to 3 time(s).",
+            "refinementTexts": [
+              "Each stack increases ATK and DEF by 3%, stacking up to 3 time(s).",
+              "Each stack increases ATK and DEF by 3.5%, stacking up to 3 time(s).",
+              "Each stack increases ATK and DEF by 4%, stacking up to 3 time(s).",
+              "Each stack increases ATK and DEF by 4.5%, stacking up to 3 time(s).",
+              "Each stack increases ATK and DEF by 5%, stacking up to 3 time(s)."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 3
+                },
+                {
+                  "stat": "defPercent",
+                  "operation": "addPercent",
+                  "value": 3
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 3
+                  },
+                  {
+                    "stat": "defPercent",
+                    "operation": "addPercent",
+                    "value": 3
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 3.5
+                  },
+                  {
+                    "stat": "defPercent",
+                    "operation": "addPercent",
+                    "value": 3.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 4
+                  },
+                  {
+                    "stat": "defPercent",
+                    "operation": "addPercent",
+                    "value": 4
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 4.5
+                  },
+                  {
+                    "stat": "defPercent",
+                    "operation": "addPercent",
+                    "value": 4.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 5
+                  },
+                  {
+                    "stat": "defPercent",
+                    "operation": "addPercent",
+                    "value": 5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21040064:effect:2",
+            "sourceName": "Celestial Blessing",
+            "text": "When the Resonator takes damage, reduces the number of stacks by 1.",
+            "refinementTexts": [
+              "When the Resonator takes damage, reduces the number of stacks by 1.",
+              "When the Resonator takes damage, reduces the number of stacks by 1.",
+              "When the Resonator takes damage, reduces the number of stacks by 1.",
+              "When the Resonator takes damage, reduces the number of stacks by 1.",
+              "When the Resonator takes damage, reduces the number of stacks by 1."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence.",
+                "Stack maximum was not explicit and requires review."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

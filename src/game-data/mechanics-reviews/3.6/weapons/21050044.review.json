@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21050044",
+  "entityName": "Jinzhou Keeper",
+  "sourceFingerprint": "44d62d168fde336386b9fc50bba13966ae3a0238be5d5424a0466c21b1b9242a",
+  "reviewedAt": "2026-08-26T11:44:24.337Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "5e0fced7c10fa54c2d454a95e19d57404493384de8e1db97e855c07aaba7ee14",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050044:effect:0",
+            "sourceName": "Guardian",
+            "text": "Casting Intro Skill increases the wielder's ATK by 8% and HP by 10%, lasting for 15s.",
+            "refinementTexts": [
+              "Casting Intro Skill increases the wielder's ATK by 8% and HP by 10%, lasting for 15s.",
+              "Casting Intro Skill increases the wielder's ATK by 10% and HP by 12.5%, lasting for 15s.",
+              "Casting Intro Skill increases the wielder's ATK by 12% and HP by 15%, lasting for 15s.",
+              "Casting Intro Skill increases the wielder's ATK by 14% and HP by 17.5%, lasting for 15s.",
+              "Casting Intro Skill increases the wielder's ATK by 16% and HP by 20%, lasting for 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Intro Skill",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 8
+                },
+                {
+                  "stat": "hpPercent",
+                  "operation": "addPercent",
+                  "value": 8
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 8
+                  },
+                  {
+                    "stat": "hpPercent",
+                    "operation": "addPercent",
+                    "value": 8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 10
+                  },
+                  {
+                    "stat": "hpPercent",
+                    "operation": "addPercent",
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  },
+                  {
+                    "stat": "hpPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 14
+                  },
+                  {
+                    "stat": "hpPercent",
+                    "operation": "addPercent",
+                    "value": 14
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 16
+                  },
+                  {
+                    "stat": "hpPercent",
+                    "operation": "addPercent",
+                    "value": 16
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

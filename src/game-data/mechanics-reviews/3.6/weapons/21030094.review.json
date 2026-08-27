@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21030094",
+  "entityName": "Romance in Farewell",
+  "sourceFingerprint": "655f1cb639280d80766039642a274975c81ef1d30ea69f6d33dde020f4f86b8f",
+  "reviewedAt": "2026-08-26T11:44:24.156Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "53a9aad23237ea90524a86c9330b8024009f903674b9fb3c2d14f3a097421723",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21030094:effect:0",
+            "sourceName": "Rhetoric",
+            "text": "Dealing DMG to enemies with Negative Statuses increases the wielder's ATK by 4% for 10s. This effect can be triggered 1 time per second, stackable up to 4 times.",
+            "refinementTexts": [
+              "Dealing DMG to enemies with Negative Statuses increases the wielder's ATK by 4% for 10s. This effect can be triggered 1 time per second, stackable up to 4 times.",
+              "Dealing DMG to enemies with Negative Statuses increases the wielder's ATK by 5% for 10s. This effect can be triggered 1 time per second, stackable up to 4 times.",
+              "Dealing DMG to enemies with Negative Statuses increases the wielder's ATK by 6% for 10s. This effect can be triggered 1 time per second, stackable up to 4 times.",
+              "Dealing DMG to enemies with Negative Statuses increases the wielder's ATK by 7% for 10s. This effect can be triggered 1 time per second, stackable up to 4 times.",
+              "Dealing DMG to enemies with Negative Statuses increases the wielder's ATK by 8% for 10s. This effect can be triggered 1 time per second, stackable up to 4 times."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 4
+              },
+              "durationSeconds": 10,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 4
+                },
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 4
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 4
+                  },
+                  {
+                    "stat": "damageBonus",
+                    "operation": "addPercent",
+                    "value": 4
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 5
+                  },
+                  {
+                    "stat": "damageBonus",
+                    "operation": "addPercent",
+                    "value": 5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 6
+                  },
+                  {
+                    "stat": "damageBonus",
+                    "operation": "addPercent",
+                    "value": 6
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 7
+                  },
+                  {
+                    "stat": "damageBonus",
+                    "operation": "addPercent",
+                    "value": 7
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 8
+                  },
+                  {
+                    "stat": "damageBonus",
+                    "operation": "addPercent",
+                    "value": 8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

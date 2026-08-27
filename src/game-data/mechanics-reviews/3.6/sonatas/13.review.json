@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "sonata",
+  "entityId": "13",
+  "entityName": "Empyrean Anthem",
+  "sourceFingerprint": "35e0467ea008001b7465c6fdf5359b7537a8d6c4fc868bf81ed205df4cc89ae4",
+  "reviewedAt": "2026-08-26T11:44:24.584Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "9ec569e94db8e52fdaa48dc95b84ea91799e1caac771215dc959adb2c3667615",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:13:2:0",
+            "sourceName": "Empyrean Anthem",
+            "text": "Energy Regen + 10%",
+            "refinementTexts": [
+              "Energy Regen + 10%"
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "energyRegen",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:13:5:0",
+            "sourceName": "Empyrean Anthem",
+            "text": "Increase the Resonator's Coordinated Attack DMG by 80%.",
+            "refinementTexts": [
+              "Increase the Resonator's Coordinated Attack DMG by 80%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 80
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:13:5:1",
+            "sourceName": "Empyrean Anthem",
+            "text": "Upon a critical hit of Coordinated Attack, increase the active Resonator's ATK by 20% for 4s.",
+            "refinementTexts": [
+              "Upon a critical hit of Coordinated Attack, increase the active Resonator's ATK by 20% for 4s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 4,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 20
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

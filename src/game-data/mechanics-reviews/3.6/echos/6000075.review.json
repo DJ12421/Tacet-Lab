@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000075",
+  "entityName": "Nocturnus Knight",
+  "sourceFingerprint": "baedcc289b9bfdbaafc46757ea2599fe2c6e0a58f5199cdb2b44010a1baea639",
+  "reviewedAt": "2026-08-26T11:44:24.931Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "d732c6129ac4aa287cacdd36d9e9e7c3c2440e76390f11c0bbecf58fa9c13243",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000075:skill",
+            "name": "Nocturnus Knight - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Nocturnus Knight and strike enemies in front of you from the air, dealing 149.00% Havoc DMG.\nCD: 15s.",
+              "Transform into Nocturnus Knight and strike enemies in front of you from the air, dealing 178.80% Havoc DMG.\nCD: 15s.",
+              "Transform into Nocturnus Knight and strike enemies in front of you from the air, dealing 208.60% Havoc DMG.\nCD: 15s.",
+              "Transform into Nocturnus Knight and strike enemies in front of you from the air, dealing 238.40% Havoc DMG.\nCD: 15s.",
+              "Transform into Nocturnus Knight and strike enemies in front of you from the air, dealing 268.20% Havoc DMG.\nCD: 15s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.49
+              ],
+              [
+                1.788
+              ],
+              [
+                2.086
+              ],
+              [
+                2.384
+              ],
+              [
+                2.682
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Transform into Nocturnus Knight and strike enemies in front of you from the air, dealing 149.00% Havoc DMG.\nCD: 15s. · Transform into Nocturnus Knight and strike enemies in front of you from the air, dealing 178.80% Havoc DMG.\nCD: 15s. · Transform into Nocturnus Knight and strike enemies in front of you from the air, dealing 208.60% Havoc DMG.\nCD: 15s. · Transform into Nocturnus Knight and strike enemies in front of you from the air, dealing 238.40% Havoc DMG.\nCD: 15s. · Transform into Nocturnus Knight and strike enemies in front of you from the air, dealing 268.20% Havoc DMG.\nCD: 15s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

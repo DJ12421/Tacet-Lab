@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000160",
+  "entityName": "Lady of the Sea",
+  "sourceFingerprint": "5fac019d8f1afa6c8fc8da297244b32d7fe69be3818753bda751b7cc3ac34a90",
+  "reviewedAt": "2026-08-26T11:44:25.039Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "be1b4643722f163f0132e9f2ffe018e4a024804249391a4f9eab23797221819b",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000160:skill",
+            "name": "Lady of the Sea - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Tidestorm to deal 7.60% Aero DMG ten times and 91.20% Aero DMG one time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s",
+              "Summon a Tidestorm to deal 9.12% Aero DMG ten times and 109.44% Aero DMG one time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s",
+              "Summon a Tidestorm to deal 10.64% Aero DMG ten times and 127.68% Aero DMG one time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s",
+              "Summon a Tidestorm to deal 12.16% Aero DMG ten times and 145.92% Aero DMG one time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s",
+              "Summon a Tidestorm to deal 13.68% Aero DMG ten times and 164.16% Aero DMG one time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.076,
+                0.912,
+                0.12,
+                0.12
+              ],
+              [
+                0.09119999999999999,
+                1.0944,
+                0.12,
+                0.12
+              ],
+              [
+                0.10640000000000001,
+                1.2768000000000002,
+                0.12,
+                0.12
+              ],
+              [
+                0.1216,
+                1.4591999999999998,
+                0.12,
+                0.12
+              ],
+              [
+                0.1368,
+                1.6416,
+                0.12,
+                0.12
+              ]
+            ],
+            "count": 4,
+            "sourceText": "Summon a Tidestorm to deal 7.60% Aero DMG ten times and 91.20% Aero DMG one time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon a Tidestorm to deal 9.12% Aero DMG ten times and 109.44% Aero DMG one time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon a Tidestorm to deal 10.64% Aero DMG ten times and 127.68% Aero DMG one time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon a Tidestorm to deal 12.16% Aero DMG ten times and 145.92% Aero DMG one time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon a Tidestorm to deal 13.68% Aero DMG ten times and 164.16% Aero DMG one time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "ed4583c805b25e3aa1b92c8ece33e278b19e1f2a7f569fb9fd3a1ca47eb126d8",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000160:effect:0",
+            "sourceName": "Lady of the Sea",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

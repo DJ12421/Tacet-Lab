@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000120",
+  "entityName": "Corrosaurus",
+  "sourceFingerprint": "a56190bcc039db6958b5ca446ffe53d4ccc80be296479328e8549f5d58432d26",
+  "reviewedAt": "2026-08-26T11:44:25.034Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "8a2af48a707d0eafbb0f02ae2b7ba2c2d32f6ff522bd3c828506451b44f04363",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000120:skill",
+            "name": "Corrosaurus - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Corrosaurus to attack enemies, dealing 152.00% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s",
+              "Summon a Corrosaurus to attack enemies, dealing 182.40% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s",
+              "Summon a Corrosaurus to attack enemies, dealing 212.80% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s",
+              "Summon a Corrosaurus to attack enemies, dealing 243.20% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s",
+              "Summon a Corrosaurus to attack enemies, dealing 273.60% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.52,
+                0.12,
+                0.2
+              ],
+              [
+                1.824,
+                0.12,
+                0.2
+              ],
+              [
+                2.128,
+                0.12,
+                0.2
+              ],
+              [
+                2.432,
+                0.12,
+                0.2
+              ],
+              [
+                2.736,
+                0.12,
+                0.2
+              ]
+            ],
+            "count": 3,
+            "sourceText": "Summon a Corrosaurus to attack enemies, dealing 152.00% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s · Summon a Corrosaurus to attack enemies, dealing 182.40% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s · Summon a Corrosaurus to attack enemies, dealing 212.80% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s · Summon a Corrosaurus to attack enemies, dealing 243.20% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s · Summon a Corrosaurus to attack enemies, dealing 273.60% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "5450168dd5bcd53ed34b85a367bcb04de393659cf66394214915324b3d01241e",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000120:effect:0",
+            "sourceName": "Corrosaurus",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 20.00% Echo Skill DMG Bonus.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "Fusion",
+                  "operation": "addPercent",
+                  "value": 12
+                },
+                {
+                  "stat": "echoDamage",
+                  "operation": "addPercent",
+                  "value": 20
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

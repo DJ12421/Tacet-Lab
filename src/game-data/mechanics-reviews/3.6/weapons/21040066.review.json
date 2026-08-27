@@ -1,0 +1,350 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21040066",
+  "entityName": "Solsworn Ciphers",
+  "sourceFingerprint": "c22cbf2bc5f30901a4e08d964f2f3f5f0847a7181add7386577749bbbf767682",
+  "reviewedAt": "2026-08-26T11:44:24.244Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "c31aee827489c29cab4ca4f61a63155b0965d15157fc132cb80d48eba1544dd4",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21040066:effect:0",
+            "sourceName": "Sunward",
+            "text": "Increases ATK by 12%.",
+            "refinementTexts": [
+              "Increases ATK by 12%.",
+              "Increases ATK by 15%.",
+              "Increases ATK by 18%.",
+              "Increases ATK by 21%.",
+              "Increases ATK by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21040066:effect:1",
+            "sourceName": "Sunward",
+            "text": "Casting Intro Skill or Echo Skill grants 32% Echo Skill DMG Amplification for 15s.",
+            "refinementTexts": [
+              "Casting Intro Skill or Echo Skill grants 32% Echo Skill DMG Amplification for 15s.",
+              "Casting Intro Skill or Echo Skill grants 40% Echo Skill DMG Amplification for 15s.",
+              "Casting Intro Skill or Echo Skill grants 48% Echo Skill DMG Amplification for 15s.",
+              "Casting Intro Skill or Echo Skill grants 56% Echo Skill DMG Amplification for 15s.",
+              "Casting Intro Skill or Echo Skill grants 64% Echo Skill DMG Amplification for 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Intro Skill",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "echoDamage",
+                  "operation": "addPercent",
+                  "value": 32
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "echoDamage",
+                    "operation": "addPercent",
+                    "value": 32
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "echoDamage",
+                    "operation": "addPercent",
+                    "value": 40
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "echoDamage",
+                    "operation": "addPercent",
+                    "value": 48
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "echoDamage",
+                    "operation": "addPercent",
+                    "value": 56
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "echoDamage",
+                    "operation": "addPercent",
+                    "value": 64
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21040066:effect:2",
+            "sourceName": "Sunward",
+            "text": "When dealing Echo Skill DMG, Aero DMG ignores 10% of the target's DEF for 6s.",
+            "refinementTexts": [
+              "When dealing Echo Skill DMG, Aero DMG ignores 10% of the target's DEF for 6s.",
+              "When dealing Echo Skill DMG, Aero DMG ignores 12.5% of the target's DEF for 6s.",
+              "When dealing Echo Skill DMG, Aero DMG ignores 15% of the target's DEF for 6s.",
+              "When dealing Echo Skill DMG, Aero DMG ignores 17.5% of the target's DEF for 6s.",
+              "When dealing Echo Skill DMG, Aero DMG ignores 20% of the target's DEF for 6s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Echo Skill DMG",
+              "durationSeconds": 6,
+              "modifiers": [
+                {
+                  "stat": "DEFIgnore:Echo",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Echo Skill DMG",
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "DEFIgnore:Echo",
+                    "operation": "addPercent",
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Echo Skill DMG",
+                "durationSeconds": 6,
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Echo Skill DMG",
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "DEFIgnore:Echo",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Echo Skill DMG",
+                "durationSeconds": 6,
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Echo Skill DMG",
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "DEFIgnore:Echo",
+                    "operation": "addPercent",
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

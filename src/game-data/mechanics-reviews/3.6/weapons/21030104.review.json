@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21030104",
+  "entityName": "Solar Flame",
+  "sourceFingerprint": "917ba182dbb405a026ecd258bf2b4a80049f8d7902fbf2f962463b181fdef913",
+  "reviewedAt": "2026-08-26T11:44:24.161Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "4b088ccdaa088a257503f47db49c1a7a34ac5958a11b45ae0f0cfc627068c1da",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21030104:effect:0",
+            "sourceName": "Oath of Tide Hunters",
+            "text": "Dealing Basic Attack or Heavy Attack DMG increases ATK by 2.2% and grants 2.2% Heavy Attack DMG Bonus for 7s, stacking up to 4 times. This effect can be triggered 1 every 1s.",
+            "refinementTexts": [
+              "Dealing Basic Attack or Heavy Attack DMG increases ATK by 2.2% and grants 2.2% Heavy Attack DMG Bonus for 7s, stacking up to 4 times. This effect can be triggered 1 every 1s.",
+              "Dealing Basic Attack or Heavy Attack DMG increases ATK by 3.4% and grants 3.4% Heavy Attack DMG Bonus for 7s, stacking up to 4 times. This effect can be triggered 1 every 1s.",
+              "Dealing Basic Attack or Heavy Attack DMG increases ATK by 4.7% and grants 4.7% Heavy Attack DMG Bonus for 7s, stacking up to 4 times. This effect can be triggered 1 every 1s.",
+              "Dealing Basic Attack or Heavy Attack DMG increases ATK by 5.9% and grants 5.9% Heavy Attack DMG Bonus for 7s, stacking up to 4 times. This effect can be triggered 1 every 1s.",
+              "Dealing Basic Attack or Heavy Attack DMG increases ATK by 7.2% and grants 7.2% Heavy Attack DMG Bonus for 7s, stacking up to 4 times. This effect can be triggered 1 every 1s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 4
+              },
+              "durationSeconds": 7,
+              "modifiers": [
+                {
+                  "stat": "heavyDamage",
+                  "operation": "addPercent",
+                  "value": 2.2
+                },
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 2.2
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "durationSeconds": 7,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 2.2
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 2.2
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "durationSeconds": 7,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 3.4
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 3.4
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "durationSeconds": 7,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 4.7
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 4.7
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "durationSeconds": 7,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 5.9
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 5.9
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "durationSeconds": 7,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 7.2
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 7.2
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

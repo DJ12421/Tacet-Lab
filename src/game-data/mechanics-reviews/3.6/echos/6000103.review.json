@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000103",
+  "entityName": "Glacio Drake",
+  "sourceFingerprint": "8769a73a1caa3601be5afa90c38134ee09f62879ae46c11512d7f5ae6da48fb2",
+  "reviewedAt": "2026-08-26T11:44:24.990Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "6ab90ac0ce9f29620cf58f4929876689719ceccefcf9e3f7492a803574317d95",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000103:skill",
+            "name": "Glacio Drake - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Glacio Drake to attack enemies, dealing 14.40% Glacio DMG 5 times.\nCD: 8s.",
+              "Summon a Glacio Drake to attack enemies, dealing 17.28% Glacio DMG 5 times.\nCD: 8s.",
+              "Summon a Glacio Drake to attack enemies, dealing 20.16% Glacio DMG 5 times.\nCD: 8s.",
+              "Summon a Glacio Drake to attack enemies, dealing 23.04% Glacio DMG 5 times.\nCD: 8s.",
+              "Summon a Glacio Drake to attack enemies, dealing 25.92% Glacio DMG 5 times.\nCD: 8s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.14400000000000002
+              ],
+              [
+                0.1728
+              ],
+              [
+                0.2016
+              ],
+              [
+                0.2304
+              ],
+              [
+                0.25920000000000004
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Glacio Drake to attack enemies, dealing 14.40% Glacio DMG 5 times.\nCD: 8s. · Summon a Glacio Drake to attack enemies, dealing 17.28% Glacio DMG 5 times.\nCD: 8s. · Summon a Glacio Drake to attack enemies, dealing 20.16% Glacio DMG 5 times.\nCD: 8s. · Summon a Glacio Drake to attack enemies, dealing 23.04% Glacio DMG 5 times.\nCD: 8s. · Summon a Glacio Drake to attack enemies, dealing 25.92% Glacio DMG 5 times.\nCD: 8s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390070053",
+  "entityName": "Electro Predator",
+  "sourceFingerprint": "8d3fa0b5b2813ea69baa1861b853869901c6b067b7cee0f0c9620cf32c24c8a5",
+  "reviewedAt": "2026-08-26T11:44:24.738Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "c25bb381d69533b114df469481150f8d57cea519374215738ac502ba0f7169fd",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390070053:skill",
+            "name": "Electro Predator - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon an Electro Predator to shoot the enemy 5 times. The first 4 shots deals 10.80% Electro DMG, and the last deals 28.80% Electro DMG.\nCD: 8s",
+              "Summon an Electro Predator to shoot the enemy 5 times. The first 4 shots deals 12.42% Electro DMG, and the last deals 33.12% Electro DMG.\nCD: 8s",
+              "Summon an Electro Predator to shoot the enemy 5 times. The first 4 shots deals 14.04% Electro DMG, and the last deals 37.44% Electro DMG.\nCD: 8s",
+              "Summon an Electro Predator to shoot the enemy 5 times. The first 4 shots deals 15.66% Electro DMG, and the last deals 41.76% Electro DMG.\nCD: 8s",
+              "Summon an Electro Predator to shoot the enemy 5 times. The first 4 shots deals 17.28% Electro DMG, and the last deals 46.08% Electro DMG.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.10800000000000001,
+                0.28800000000000003
+              ],
+              [
+                0.1242,
+                0.3312
+              ],
+              [
+                0.1404,
+                0.37439999999999996
+              ],
+              [
+                0.1566,
+                0.41759999999999997
+              ],
+              [
+                0.1728,
+                0.4608
+              ]
+            ],
+            "count": 2,
+            "sourceText": "Summon an Electro Predator to shoot the enemy 5 times. The first 4 shots deals 10.80% Electro DMG, and the last deals 28.80% Electro DMG.\nCD: 8s · Summon an Electro Predator to shoot the enemy 5 times. The first 4 shots deals 12.42% Electro DMG, and the last deals 33.12% Electro DMG.\nCD: 8s · Summon an Electro Predator to shoot the enemy 5 times. The first 4 shots deals 14.04% Electro DMG, and the last deals 37.44% Electro DMG.\nCD: 8s · Summon an Electro Predator to shoot the enemy 5 times. The first 4 shots deals 15.66% Electro DMG, and the last deals 41.76% Electro DMG.\nCD: 8s · Summon an Electro Predator to shoot the enemy 5 times. The first 4 shots deals 17.28% Electro DMG, and the last deals 46.08% Electro DMG.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

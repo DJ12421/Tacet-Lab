@@ -1,0 +1,389 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21020086",
+  "entityName": "Frostburn",
+  "sourceFingerprint": "ce2dcdf33f6ca487a299915304410d20297a4f4c42c16406c2ee1c4518408bab",
+  "reviewedAt": "2026-08-26T11:44:24.054Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "28f766c817beb839cf24ab3508847ff8b3474ad17f83c6a50494fb269de3f531",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020086:effect:0",
+            "sourceName": "Self No More",
+            "text": "ATK is increased by 12%.",
+            "refinementTexts": [
+              "ATK is increased by 12%.",
+              "ATK is increased by 15%.",
+              "ATK is increased by 18%.",
+              "ATK is increased by 21%.",
+              "ATK is increased by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21020086:effect:1",
+            "sourceName": "Self No More",
+            "text": "After the wielder applies Glacio Chafe, Glacio DMG is Amplified by 28%, and Resonance Liberation DMG ignores 10% of the target's DEF.",
+            "refinementTexts": [
+              "After the wielder applies Glacio Chafe, Glacio DMG is Amplified by 28%, and Resonance Liberation DMG ignores 10% of the target's DEF.",
+              "After the wielder applies Glacio Chafe, Glacio DMG is Amplified by 35%, and Resonance Liberation DMG ignores 12.5% of the target's DEF.",
+              "After the wielder applies Glacio Chafe, Glacio DMG is Amplified by 42%, and Resonance Liberation DMG ignores 15% of the target's DEF.",
+              "After the wielder applies Glacio Chafe, Glacio DMG is Amplified by 49%, and Resonance Liberation DMG ignores 17.5% of the target's DEF.",
+              "After the wielder applies Glacio Chafe, Glacio DMG is Amplified by 56%, and Resonance Liberation DMG ignores 20% of the target's DEF."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "Glacio",
+                  "operation": "amplifyPercent",
+                  "value": 28
+                },
+                {
+                  "stat": "DEFIgnore:Liberation",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "Glacio",
+                    "operation": "amplifyPercent",
+                    "value": 28
+                  },
+                  {
+                    "stat": "DEFIgnore:Liberation",
+                    "operation": "addPercent",
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "Glacio",
+                    "operation": "amplifyPercent",
+                    "value": 35
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "Glacio",
+                    "operation": "amplifyPercent",
+                    "value": 42
+                  },
+                  {
+                    "stat": "DEFIgnore:Liberation",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "Glacio",
+                    "operation": "amplifyPercent",
+                    "value": 49
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "Glacio",
+                    "operation": "amplifyPercent",
+                    "value": 56
+                  },
+                  {
+                    "stat": "DEFIgnore:Liberation",
+                    "operation": "addPercent",
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21020086:effect:2",
+            "sourceName": "Self No More",
+            "text": "If the wielder is the active Resonator in the team, Glacio Chafe DMG dealt to all targets within a certain range is Amplified by 20% for 6s. This effect can be triggered up to 1 every 0.1s.",
+            "refinementTexts": [
+              "If the wielder is the active Resonator in the team, Glacio Chafe DMG dealt to all targets within a certain range is Amplified by 20% for 6s. This effect can be triggered up to 1 every 0.1s.",
+              "If the wielder is the active Resonator in the team, Glacio Chafe DMG dealt to all targets within a certain range is Amplified by 25% for 6s. This effect can be triggered up to 1 every 0.1s.",
+              "If the wielder is the active Resonator in the team, Glacio Chafe DMG dealt to all targets within a certain range is Amplified by 30% for 6s. This effect can be triggered up to 1 every 0.1s.",
+              "If the wielder is the active Resonator in the team, Glacio Chafe DMG dealt to all targets within a certain range is Amplified by 35% for 6s. This effect can be triggered up to 1 every 0.1s.",
+              "If the wielder is the active Resonator in the team, Glacio Chafe DMG dealt to all targets within a certain range is Amplified by 40% for 6s. This effect can be triggered up to 1 every 0.1s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 6,
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "amplifyPercent",
+                  "value": 20
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "damageBonus",
+                    "operation": "amplifyPercent",
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "damageBonus",
+                    "operation": "amplifyPercent",
+                    "value": 25
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "damageBonus",
+                    "operation": "amplifyPercent",
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "damageBonus",
+                    "operation": "amplifyPercent",
+                    "value": 35
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "damageBonus",
+                    "operation": "amplifyPercent",
+                    "value": 40
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21020086:effect:3",
+            "sourceName": "Self No More",
+            "text": "Only the strongest effect of the same name applies.",
+            "refinementTexts": [
+              "Only the strongest effect of the same name applies.",
+              "Only the strongest effect of the same name applies.",
+              "Only the strongest effect of the same name applies.",
+              "Only the strongest effect of the same name applies.",
+              "Only the strongest effect of the same name applies."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

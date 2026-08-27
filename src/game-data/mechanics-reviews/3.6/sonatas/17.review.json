@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "sonata",
+  "entityId": "17",
+  "entityName": "Windward Pilgrimage",
+  "sourceFingerprint": "e6f830ed6bce922120b8fad6e4911f2ef44f1589f3a5c0bd57575ee4d59bd875",
+  "reviewedAt": "2026-08-26T11:44:24.599Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "057b70ddc6b2fde8d5137a23b03964f72c079f0c7ad5a632828dd67e1d5e8ff2",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:17:2:0",
+            "sourceName": "Windward Pilgrimage",
+            "text": "Aero DMG + 10%",
+            "refinementTexts": [
+              "Aero DMG + 10%"
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:17:5:0",
+            "sourceName": "Windward Pilgrimage",
+            "text": "Hitting a target with Aero Erosion increases Crit. Rate by 10% and grants 30% Aero DMG Bonus, lasting for 10s.",
+            "refinementTexts": [
+              "Hitting a target with Aero Erosion increases Crit. Rate by 10% and grants 30% Aero DMG Bonus, lasting for 10s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 10,
+              "modifiers": [
+                {
+                  "stat": "critRate",
+                  "operation": "addPercent",
+                  "value": 10
+                },
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 30
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

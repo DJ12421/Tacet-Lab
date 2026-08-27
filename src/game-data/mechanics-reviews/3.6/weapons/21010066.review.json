@@ -1,0 +1,289 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21010066",
+  "entityName": "Starfield Calibrator",
+  "sourceFingerprint": "12b55f5d6d5ed6d74bc426b2ecf516acdec9b96197feba31849d9c0e74747f2a",
+  "reviewedAt": "2026-08-26T11:44:23.900Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "7c802794c4e885312977343486a5d50eb8fa5aec6cb535f170cb43033e26677a",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21010066:effect:0",
+            "sourceName": "Definite Solution",
+            "text": "Increases DEF by 16%.",
+            "refinementTexts": [
+              "Increases DEF by 16%.",
+              "Increases DEF by 20%.",
+              "Increases DEF by 24%.",
+              "Increases DEF by 28%.",
+              "Increases DEF by 32%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "defPercent",
+                  "operation": "addPercent",
+                  "value": 16
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "defPercent",
+                    "operation": "addPercent",
+                    "value": 16
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "defPercent",
+                    "operation": "addPercent",
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "defPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "defPercent",
+                    "operation": "addPercent",
+                    "value": 28
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "defPercent",
+                    "operation": "addPercent",
+                    "value": 32
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21010066:effect:1",
+            "sourceName": "Definite Solution",
+            "text": "Casting Resonance Skill restores 8 points of Concerto Energy. This effect can be triggered 1 every 20s.",
+            "refinementTexts": [
+              "Casting Resonance Skill restores 8 points of Concerto Energy. This effect can be triggered 1 every 20s.",
+              "Casting Resonance Skill restores 10 points of Concerto Energy. This effect can be triggered 1 every 20s.",
+              "Casting Resonance Skill restores 12 points of Concerto Energy. This effect can be triggered 1 every 20s.",
+              "Casting Resonance Skill restores 14 points of Concerto Energy. This effect can be triggered 1 every 20s.",
+              "Casting Resonance Skill restores 16 points of Concerto Energy. This effect can be triggered 1 every 20s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Skill",
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21010066:effect:2",
+            "sourceName": "Definite Solution",
+            "text": "When the wielder heals Resonators, increases Crit. DMG of all nearby Resonators in the team by 20% for 4s.",
+            "refinementTexts": [
+              "When the wielder heals Resonators, increases Crit. DMG of all nearby Resonators in the team by 20% for 4s.",
+              "When the wielder heals Resonators, increases Crit. DMG of all nearby Resonators in the team by 25% for 4s.",
+              "When the wielder heals Resonators, increases Crit. DMG of all nearby Resonators in the team by 30% for 4s.",
+              "When the wielder heals Resonators, increases Crit. DMG of all nearby Resonators in the team by 35% for 4s.",
+              "When the wielder heals Resonators, increases Crit. DMG of all nearby Resonators in the team by 40% for 4s."
+            ],
+            "parsed": {
+              "scope": "team",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 4,
+              "modifiers": [
+                {
+                  "stat": "critDamage",
+                  "operation": "addPercent",
+                  "value": 20
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "team",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 4,
+                "modifiers": [
+                  {
+                    "stat": "critDamage",
+                    "operation": "addPercent",
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "team",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 4,
+                "modifiers": [
+                  {
+                    "stat": "critDamage",
+                    "operation": "addPercent",
+                    "value": 25
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "team",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 4,
+                "modifiers": [
+                  {
+                    "stat": "critDamage",
+                    "operation": "addPercent",
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "team",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 4,
+                "modifiers": [
+                  {
+                    "stat": "critDamage",
+                    "operation": "addPercent",
+                    "value": 35
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "team",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 4,
+                "modifiers": [
+                  {
+                    "stat": "critDamage",
+                    "operation": "addPercent",
+                    "value": 40
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21010066:effect:3",
+            "sourceName": "Definite Solution",
+            "text": "Effects of the same name cannot be stacked.",
+            "refinementTexts": [
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

@@ -1,0 +1,238 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21030045",
+  "entityName": "Phasic Homogenizer",
+  "sourceFingerprint": "a11cc97892984b3f3ec4cf139b835a99b3bdfac51fdd16239fbdac2951179e86",
+  "reviewedAt": "2026-08-26T11:44:24.121Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "2c71622d33ae1e034d2d72db263ffed35048c4cad640e4e6559d1037a33b8222",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21030045:effect:0",
+            "sourceName": "Insight Bearer",
+            "text": "Increases ATK by 12%.",
+            "refinementTexts": [
+              "Increases ATK by 12%.",
+              "Increases ATK by 15%.",
+              "Increases ATK by 18%.",
+              "Increases ATK by 21%.",
+              "Increases ATK by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21030045:effect:1",
+            "sourceName": "Insight Bearer",
+            "text": "After a Resonator in the team casts a Tune Break skill, it grants 20% All-Attribute DMG Bonus to the wielder for 14s.",
+            "refinementTexts": [
+              "After a Resonator in the team casts a Tune Break skill, it grants 20% All-Attribute DMG Bonus to the wielder for 14s.",
+              "After a Resonator in the team casts a Tune Break skill, it grants 22.5% All-Attribute DMG Bonus to the wielder for 14s.",
+              "After a Resonator in the team casts a Tune Break skill, it grants 25% All-Attribute DMG Bonus to the wielder for 14s.",
+              "After a Resonator in the team casts a Tune Break skill, it grants 27.5% All-Attribute DMG Bonus to the wielder for 14s.",
+              "After a Resonator in the team casts a Tune Break skill, it grants 30% All-Attribute DMG Bonus to the wielder for 14s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 14,
+              "modifiers": [
+                {
+                  "stat": "AllElementAttributeBonus",
+                  "operation": "addPercent",
+                  "value": 20
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "AllElementAttributeBonus",
+                    "operation": "addPercent",
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "AllElementAttributeBonus",
+                    "operation": "addPercent",
+                    "value": 22.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "AllElementAttributeBonus",
+                    "operation": "addPercent",
+                    "value": 25
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "AllElementAttributeBonus",
+                    "operation": "addPercent",
+                    "value": 27.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "AllElementAttributeBonus",
+                    "operation": "addPercent",
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

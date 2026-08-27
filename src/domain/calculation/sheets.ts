@@ -21,7 +21,7 @@ export interface ConditionDefinition {
   inherentSkillIndex?: number
   stance?: string
   sequence?: number
-  source?: 'wutheringtools'
+  source?: 'nanoka-reviewed'
   modifiers?: CharacterConditionModifier[]
   disabled?: boolean
 }
@@ -168,12 +168,12 @@ function damageTarget(characterId: string, element: string, attack: typeof chara
 function characterSheet(character: typeof characterCatalog[number]): FormulaSheet {
   const modes = characterConditionModes(character)
   const sourcedConditions: ConditionDefinition[] = characterConditions(character).map((condition) => {
-    const sequenceAlwaysOn = condition.sequence > 0 && !characterConditionRequiresToggle(condition)
+    const alwaysOn = !characterConditionRequiresToggle(condition)
     return {
       id: characterConditionId(condition),
       label: condition.name,
       type: condition.hasStacks ? 'stack' : 'boolean',
-      defaultValue: sequenceAlwaysOn ? true : condition.hasStacks ? condition.minStacks : false,
+      defaultValue: alwaysOn ? true : condition.hasStacks ? condition.minStacks : false,
       min: condition.minStacks,
       max: condition.maxStacks,
       scope: 'self',
@@ -182,16 +182,16 @@ function characterSheet(character: typeof characterCatalog[number]): FormulaShee
       inherentSkillIndex: characterConditionInherentSkillIndex(condition, character),
       stance: condition.stance,
       sequence: condition.sequence || undefined,
-      source: 'wutheringtools',
+      source: 'nanoka-reviewed',
       modifiers: condition.modifiers,
-      disabled: sequenceAlwaysOn
+      disabled: alwaysOn
     }
   })
   return {
     id: character.id, kind: 'character', version: FORMULA_SHEET_VERSION, status: 'modeled', name: character.name,
     source: character.articleUrl, referenceText: [character.skillIcons.normalAttack.description, character.skillIcons.resonanceSkill.description, character.skillIcons.forteCircuit.description, character.skillIcons.resonanceLiberation.description].join('\n'),
     conditions: [
-      ...(modes.length ? [{ id: characterConditionModeId, label: 'Resonance Mode', type: 'enum' as const, defaultValue: modes[0], options: modes, scope: 'self' as const, source: 'wutheringtools' as const }] : []),
+      ...(modes.length ? [{ id: characterConditionModeId, label: 'Resonance Mode', type: 'enum' as const, defaultValue: modes[0], options: modes, scope: 'self' as const, source: 'nanoka-reviewed' as const }] : []),
       ...sourcedConditions
     ],
     entries: [],

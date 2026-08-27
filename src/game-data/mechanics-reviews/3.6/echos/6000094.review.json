@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000094",
+  "entityName": "Calcified Junrock",
+  "sourceFingerprint": "e9a58536575771ff3e33d63bd92493fe1a49f71acce1da4b09ebc9930564bfb9",
+  "reviewedAt": "2026-08-26T11:44:24.973Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "9fe98ecad52bd0f7d79cd48e134191315f8247aec1d1583df9fe00fe08a77d68",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000094:skill",
+            "name": "Calcified Junrock - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "hp",
+            "expressions": [
+              "Summon a Calcified Junrock that restores HP for nearby Resonators in the team by 1.40% of their Max HP, up to 5 times.\nCD: 15s",
+              "Summon a Calcified Junrock that restores HP for nearby Resonators in the team by 1.68% of their Max HP, up to 5 times.\nCD: 15s",
+              "Summon a Calcified Junrock that restores HP for nearby Resonators in the team by 1.96% of their Max HP, up to 5 times.\nCD: 15s",
+              "Summon a Calcified Junrock that restores HP for nearby Resonators in the team by 2.24% of their Max HP, up to 5 times.\nCD: 15s",
+              "Summon a Calcified Junrock that restores HP for nearby Resonators in the team by 2.52% of their Max HP, up to 5 times.\nCD: 15s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.013999999999999999
+              ],
+              [
+                0.0168
+              ],
+              [
+                0.0196
+              ],
+              [
+                0.022400000000000003
+              ],
+              [
+                0.0252
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Calcified Junrock that restores HP for nearby Resonators in the team by 1.40% of their Max HP, up to 5 times.\nCD: 15s · Summon a Calcified Junrock that restores HP for nearby Resonators in the team by 1.68% of their Max HP, up to 5 times.\nCD: 15s · Summon a Calcified Junrock that restores HP for nearby Resonators in the team by 1.96% of their Max HP, up to 5 times.\nCD: 15s · Summon a Calcified Junrock that restores HP for nearby Resonators in the team by 2.24% of their Max HP, up to 5 times.\nCD: 15s · Summon a Calcified Junrock that restores HP for nearby Resonators in the team by 2.52% of their Max HP, up to 5 times.\nCD: 15s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

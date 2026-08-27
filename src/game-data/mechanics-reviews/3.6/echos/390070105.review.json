@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390070105",
+  "entityName": "Hoartoise",
+  "sourceFingerprint": "f570eecbe83571b3fa7ef8209d383aade349d457b2bea3d2a81e58746f23b10d",
+  "reviewedAt": "2026-08-26T11:44:24.809Z",
+  "sections": {
+    "skill": {
+      "status": "approved-empty",
+      "sourceFingerprint": "a31b11866e3e573ff2736c81f114785ee5386cf601941275ee347e359c4994d1",
+      "approvedData": {
+        "attacks": []
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "3cbd5f74d391e85d8d66941b9d5674ccbc0e0f6d419738b74f1619df76853fd7",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:390070105:effect:0",
+            "sourceName": "Hoartoise",
+            "sourceType": "echo",
+            "text": "Use the Echo skill again to exit the transformation state.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

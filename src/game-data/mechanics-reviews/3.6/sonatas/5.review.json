@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "sonata",
+  "entityId": "5",
+  "entityName": "Celestial Light",
+  "sourceFingerprint": "eeeff3f1c2a44411eef110fc31a5283dd6e5c8f53867b7673b997f9bcb6f3592",
+  "reviewedAt": "2026-08-26T11:44:24.699Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "fe445c542672e0b98d3cb3f71673443af88c4579f5c004ccddfff916baa4addd",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:5:2:0",
+            "sourceName": "Celestial Light",
+            "text": "Spectro DMG + 10%.",
+            "refinementTexts": [
+              "Spectro DMG + 10%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:5:5:0",
+            "sourceName": "Celestial Light",
+            "text": "Spectro DMG + 30% for 15s after releasing Intro Skill.",
+            "refinementTexts": [
+              "Spectro DMG + 30% for 15s after releasing Intro Skill."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Intro Skill",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 30
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

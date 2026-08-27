@@ -1,0 +1,268 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21020096",
+  "entityName": "Azure Oath",
+  "sourceFingerprint": "014254fa79d5dbdf40308b3a3fc3ad0d3aa732ab10fd378c6b1fc82e6d4553f4",
+  "reviewedAt": "2026-08-26T11:44:24.064Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "fe230d802aad714fc0bbbcb3f16193d4fc5620ce3b36044682c4f19e4f28ee04",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020096:effect:0",
+            "sourceName": "Unbending",
+            "text": "Grants 12% All-Attribute DMG Bonus.",
+            "refinementTexts": [
+              "Grants 12% All-Attribute DMG Bonus.",
+              "Grants 15% All-Attribute DMG Bonus.",
+              "Grants 18% All-Attribute DMG Bonus.",
+              "Grants 21% All-Attribute DMG Bonus.",
+              "Grants 24% All-Attribute DMG Bonus."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "AllElementAttributeBonus",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "AllElementAttributeBonus",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "AllElementAttributeBonus",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "AllElementAttributeBonus",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "AllElementAttributeBonus",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "AllElementAttributeBonus",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21020096:effect:1",
+            "sourceName": "Unbending",
+            "text": "After inflicting Havoc Bane, the wielder gains 36% Heavy Attack DMG Amplification and their Heavy Attack DMG ignores 12% of the target's DEF, lasting for 8s.",
+            "refinementTexts": [
+              "After inflicting Havoc Bane, the wielder gains 36% Heavy Attack DMG Amplification and their Heavy Attack DMG ignores 12% of the target's DEF, lasting for 8s.",
+              "After inflicting Havoc Bane, the wielder gains 45% Heavy Attack DMG Amplification and their Heavy Attack DMG ignores 15% of the target's DEF, lasting for 8s.",
+              "After inflicting Havoc Bane, the wielder gains 54% Heavy Attack DMG Amplification and their Heavy Attack DMG ignores 18% of the target's DEF, lasting for 8s.",
+              "After inflicting Havoc Bane, the wielder gains 63% Heavy Attack DMG Amplification and their Heavy Attack DMG ignores 21% of the target's DEF, lasting for 8s.",
+              "After inflicting Havoc Bane, the wielder gains 72% Heavy Attack DMG Amplification and their Heavy Attack DMG ignores 24% of the target's DEF, lasting for 8s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 8,
+              "modifiers": [
+                {
+                  "stat": "heavyDamage",
+                  "operation": "amplifyPercent",
+                  "value": 36
+                },
+                {
+                  "stat": "DEFIgnore:Heavy",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "amplifyPercent",
+                    "value": 36
+                  },
+                  {
+                    "stat": "DEFIgnore:Heavy",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "amplifyPercent",
+                    "value": 45
+                  },
+                  {
+                    "stat": "DEFIgnore:Heavy",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "amplifyPercent",
+                    "value": 54
+                  },
+                  {
+                    "stat": "DEFIgnore:Heavy",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "amplifyPercent",
+                    "value": 63
+                  },
+                  {
+                    "stat": "DEFIgnore:Heavy",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "amplifyPercent",
+                    "value": 72
+                  },
+                  {
+                    "stat": "DEFIgnore:Heavy",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

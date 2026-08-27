@@ -1,0 +1,1549 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "characterId": "1103",
+  "characterName": "Baizhi",
+  "entityKind": "character",
+  "entityId": "1103",
+  "entityName": "Baizhi",
+  "sourceFingerprint": "47ec92da8bc1268f5f7e412bd7d1bd0611042fe4b19f753d6beeffc45c746b07",
+  "reviewedAt": "2026-08-26T11:44:23.166Z",
+  "sections": {
+    "attacks": {
+      "status": "approved",
+      "sourceFingerprint": "faec12eda40eb6d6f0afdde98ff96d2f13e737775a15bc008769835ab0ebe4b4",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "1103:1:0",
+            "skillType": "Normal Attack",
+            "skillName": "Destined Promise",
+            "name": "Destined Promise - Stage 1 DMG",
+            "damageType": "basic",
+            "skillSource": "basic",
+            "scaling": "atk",
+            "expressions": [
+              "32.94%",
+              "35.64%",
+              "38.34%",
+              "42.12%",
+              "44.82%",
+              "47.93%",
+              "52.25%",
+              "56.57%",
+              "60.89%",
+              "65.48%",
+              "70.88%",
+              "76.28%",
+              "81.68%",
+              "87.08%",
+              "92.48%",
+              "97.88%",
+              "103.29%",
+              "108.69%",
+              "114.09%",
+              "119.49%"
+            ],
+            "hitMultipliers": [
+              [
+                0.32939999999999997,
+                0.3564,
+                0.3834,
+                0.42119999999999996,
+                0.4482,
+                0.4793,
+                0.5225,
+                0.5657,
+                0.6089,
+                0.6548,
+                0.7088,
+                0.7628,
+                0.8168000000000001,
+                0.8708,
+                0.9248000000000001,
+                0.9788,
+                1.0329000000000002,
+                1.0869,
+                1.1409,
+                1.1948999999999999
+              ]
+            ],
+            "count": 1,
+            "classificationEvidence": "skill source fallback",
+            "sourceText": "32.94% · 35.64% · 38.34% · 42.12% · 44.82% · 47.93% · 52.25% · 56.57% · 60.89% · 65.48% · 70.88% · 76.28% · 81.68% · 87.08% · 92.48% · 97.88% · 103.29% · 108.69% · 114.09% · 119.49%"
+          },
+          {
+            "id": "1103:1:1",
+            "skillType": "Normal Attack",
+            "skillName": "Destined Promise",
+            "name": "Destined Promise - Stage 2 DMG",
+            "damageType": "basic",
+            "skillSource": "basic",
+            "scaling": "atk",
+            "expressions": [
+              "39.52%",
+              "42.76%",
+              "46.01%",
+              "50.54%",
+              "53.78%",
+              "57.51%",
+              "62.69%",
+              "67.88%",
+              "73.06%",
+              "78.57%",
+              "85.05%",
+              "91.54%",
+              "98.02%",
+              "104.50%",
+              "110.98%",
+              "117.46%",
+              "123.94%",
+              "130.42%",
+              "136.90%",
+              "143.39%"
+            ],
+            "hitMultipliers": [
+              [
+                0.39520000000000005,
+                0.4276,
+                0.46009999999999995,
+                0.5054,
+                0.5378000000000001,
+                0.5751,
+                0.6269,
+                0.6788,
+                0.7306,
+                0.7857,
+                0.8504999999999999,
+                0.9154000000000001,
+                0.9802,
+                1.045,
+                1.1098000000000001,
+                1.1745999999999999,
+                1.2394,
+                1.3041999999999998,
+                1.369,
+                1.4339
+              ]
+            ],
+            "count": 1,
+            "classificationEvidence": "skill source fallback",
+            "sourceText": "39.52% · 42.76% · 46.01% · 50.54% · 53.78% · 57.51% · 62.69% · 67.88% · 73.06% · 78.57% · 85.05% · 91.54% · 98.02% · 104.50% · 110.98% · 117.46% · 123.94% · 130.42% · 136.90% · 143.39%"
+          },
+          {
+            "id": "1103:1:2",
+            "skillType": "Normal Attack",
+            "skillName": "Destined Promise",
+            "name": "Destined Promise - Stage 3 DMG",
+            "damageType": "basic",
+            "skillSource": "basic",
+            "scaling": "atk",
+            "expressions": [
+              "6.59%*7",
+              "7.13%*7",
+              "7.67%*7",
+              "8.43%*7",
+              "8.97%*7",
+              "9.59%*7",
+              "10.45%*7",
+              "11.32%*7",
+              "12.18%*7",
+              "13.10%*7",
+              "14.18%*7",
+              "15.26%*7",
+              "16.34%*7",
+              "17.42%*7",
+              "18.50%*7",
+              "19.58%*7",
+              "20.66%*7",
+              "21.74%*7",
+              "22.82%*7",
+              "23.90%*7"
+            ],
+            "hitMultipliers": [
+              [
+                0.0659,
+                0.0713,
+                0.0767,
+                0.0843,
+                0.0897,
+                0.0959,
+                0.1045,
+                0.11320000000000001,
+                0.12179999999999999,
+                0.131,
+                0.1418,
+                0.15259999999999999,
+                0.1634,
+                0.17420000000000002,
+                0.185,
+                0.19579999999999997,
+                0.2066,
+                0.21739999999999998,
+                0.22820000000000001,
+                0.239
+              ],
+              [
+                0.0659,
+                0.0713,
+                0.0767,
+                0.0843,
+                0.0897,
+                0.0959,
+                0.1045,
+                0.11320000000000001,
+                0.12179999999999999,
+                0.131,
+                0.1418,
+                0.15259999999999999,
+                0.1634,
+                0.17420000000000002,
+                0.185,
+                0.19579999999999997,
+                0.2066,
+                0.21739999999999998,
+                0.22820000000000001,
+                0.239
+              ],
+              [
+                0.0659,
+                0.0713,
+                0.0767,
+                0.0843,
+                0.0897,
+                0.0959,
+                0.1045,
+                0.11320000000000001,
+                0.12179999999999999,
+                0.131,
+                0.1418,
+                0.15259999999999999,
+                0.1634,
+                0.17420000000000002,
+                0.185,
+                0.19579999999999997,
+                0.2066,
+                0.21739999999999998,
+                0.22820000000000001,
+                0.239
+              ],
+              [
+                0.0659,
+                0.0713,
+                0.0767,
+                0.0843,
+                0.0897,
+                0.0959,
+                0.1045,
+                0.11320000000000001,
+                0.12179999999999999,
+                0.131,
+                0.1418,
+                0.15259999999999999,
+                0.1634,
+                0.17420000000000002,
+                0.185,
+                0.19579999999999997,
+                0.2066,
+                0.21739999999999998,
+                0.22820000000000001,
+                0.239
+              ],
+              [
+                0.0659,
+                0.0713,
+                0.0767,
+                0.0843,
+                0.0897,
+                0.0959,
+                0.1045,
+                0.11320000000000001,
+                0.12179999999999999,
+                0.131,
+                0.1418,
+                0.15259999999999999,
+                0.1634,
+                0.17420000000000002,
+                0.185,
+                0.19579999999999997,
+                0.2066,
+                0.21739999999999998,
+                0.22820000000000001,
+                0.239
+              ],
+              [
+                0.0659,
+                0.0713,
+                0.0767,
+                0.0843,
+                0.0897,
+                0.0959,
+                0.1045,
+                0.11320000000000001,
+                0.12179999999999999,
+                0.131,
+                0.1418,
+                0.15259999999999999,
+                0.1634,
+                0.17420000000000002,
+                0.185,
+                0.19579999999999997,
+                0.2066,
+                0.21739999999999998,
+                0.22820000000000001,
+                0.239
+              ],
+              [
+                0.0659,
+                0.0713,
+                0.0767,
+                0.0843,
+                0.0897,
+                0.0959,
+                0.1045,
+                0.11320000000000001,
+                0.12179999999999999,
+                0.131,
+                0.1418,
+                0.15259999999999999,
+                0.1634,
+                0.17420000000000002,
+                0.185,
+                0.19579999999999997,
+                0.2066,
+                0.21739999999999998,
+                0.22820000000000001,
+                0.239
+              ]
+            ],
+            "count": 7,
+            "classificationEvidence": "skill source fallback",
+            "sourceText": "6.59%*7 · 7.13%*7 · 7.67%*7 · 8.43%*7 · 8.97%*7 · 9.59%*7 · 10.45%*7 · 11.32%*7 · 12.18%*7 · 13.10%*7 · 14.18%*7 · 15.26%*7 · 16.34%*7 · 17.42%*7 · 18.50%*7 · 19.58%*7 · 20.66%*7 · 21.74%*7 · 22.82%*7 · 23.90%*7"
+          },
+          {
+            "id": "1103:1:3",
+            "skillType": "Normal Attack",
+            "skillName": "Destined Promise",
+            "name": "Destined Promise - Stage 4 DMG",
+            "damageType": "basic",
+            "skillSource": "basic",
+            "scaling": "atk",
+            "expressions": [
+              "39.52%",
+              "42.76%",
+              "46.01%",
+              "50.54%",
+              "53.78%",
+              "57.51%",
+              "62.69%",
+              "67.88%",
+              "73.06%",
+              "78.57%",
+              "85.05%",
+              "91.54%",
+              "98.02%",
+              "104.50%",
+              "110.98%",
+              "117.46%",
+              "123.94%",
+              "130.42%",
+              "136.90%",
+              "143.39%"
+            ],
+            "hitMultipliers": [
+              [
+                0.39520000000000005,
+                0.4276,
+                0.46009999999999995,
+                0.5054,
+                0.5378000000000001,
+                0.5751,
+                0.6269,
+                0.6788,
+                0.7306,
+                0.7857,
+                0.8504999999999999,
+                0.9154000000000001,
+                0.9802,
+                1.045,
+                1.1098000000000001,
+                1.1745999999999999,
+                1.2394,
+                1.3041999999999998,
+                1.369,
+                1.4339
+              ]
+            ],
+            "count": 1,
+            "classificationEvidence": "skill source fallback",
+            "sourceText": "39.52% · 42.76% · 46.01% · 50.54% · 53.78% · 57.51% · 62.69% · 67.88% · 73.06% · 78.57% · 85.05% · 91.54% · 98.02% · 104.50% · 110.98% · 117.46% · 123.94% · 130.42% · 136.90% · 143.39%"
+          },
+          {
+            "id": "1103:1:4",
+            "skillType": "Normal Attack",
+            "skillName": "Destined Promise",
+            "name": "Destined Promise - Heavy Attack DMG",
+            "damageType": "heavy",
+            "skillSource": "basic",
+            "scaling": "atk",
+            "expressions": [
+              "24.58%",
+              "26.60%",
+              "28.61%",
+              "31.43%",
+              "33.45%",
+              "35.77%",
+              "38.99%",
+              "42.21%",
+              "45.44%",
+              "48.86%",
+              "52.90%",
+              "56.93%",
+              "60.96%",
+              "64.99%",
+              "69.02%",
+              "73.05%",
+              "77.08%",
+              "81.11%",
+              "85.14%",
+              "89.17%"
+            ],
+            "hitMultipliers": [
+              [
+                0.2458,
+                0.266,
+                0.2861,
+                0.3143,
+                0.3345,
+                0.3577,
+                0.3899,
+                0.42210000000000003,
+                0.45439999999999997,
+                0.4886,
+                0.529,
+                0.5693,
+                0.6096,
+                0.6498999999999999,
+                0.6901999999999999,
+                0.7304999999999999,
+                0.7707999999999999,
+                0.8111,
+                0.8514,
+                0.8917
+              ]
+            ],
+            "count": 1,
+            "classificationEvidence": "attack name",
+            "sourceText": "24.58% · 26.60% · 28.61% · 31.43% · 33.45% · 35.77% · 38.99% · 42.21% · 45.44% · 48.86% · 52.90% · 56.93% · 60.96% · 64.99% · 69.02% · 73.05% · 77.08% · 81.11% · 85.14% · 89.17%"
+          },
+          {
+            "id": "1103:1:5",
+            "skillType": "Normal Attack",
+            "skillName": "Destined Promise",
+            "name": "Destined Promise - Mid-air Attack DMG",
+            "damageType": "basic",
+            "skillSource": "basic",
+            "scaling": "atk",
+            "expressions": [
+              "39.68%",
+              "42.94%",
+              "46.19%",
+              "50.75%",
+              "54.00%",
+              "57.74%",
+              "62.95%",
+              "68.16%",
+              "73.36%",
+              "78.89%",
+              "85.40%",
+              "91.91%",
+              "98.42%",
+              "104.92%",
+              "111.43%",
+              "117.94%",
+              "124.45%",
+              "130.95%",
+              "137.46%",
+              "143.97%"
+            ],
+            "hitMultipliers": [
+              [
+                0.3968,
+                0.4294,
+                0.4619,
+                0.5075,
+                0.54,
+                0.5774,
+                0.6295000000000001,
+                0.6816,
+                0.7336,
+                0.7889,
+                0.8540000000000001,
+                0.9190999999999999,
+                0.9842,
+                1.0492,
+                1.1143,
+                1.1794,
+                1.2445,
+                1.3094999999999999,
+                1.3746,
+                1.4397
+              ]
+            ],
+            "count": 1,
+            "classificationEvidence": "attack name",
+            "sourceText": "39.68% · 42.94% · 46.19% · 50.75% · 54.00% · 57.74% · 62.95% · 68.16% · 73.36% · 78.89% · 85.40% · 91.91% · 98.42% · 104.92% · 111.43% · 117.94% · 124.45% · 130.95% · 137.46% · 143.97%"
+          },
+          {
+            "id": "1103:1:6",
+            "skillType": "Normal Attack",
+            "skillName": "Destined Promise",
+            "name": "Destined Promise - Dodge Counter DMG",
+            "damageType": "basic",
+            "skillSource": "basic",
+            "scaling": "atk",
+            "expressions": [
+              "89.86%",
+              "97.23%",
+              "104.60%",
+              "114.91%",
+              "122.28%",
+              "130.75%",
+              "142.54%",
+              "154.33%",
+              "166.12%",
+              "178.65%",
+              "193.38%",
+              "208.12%",
+              "222.86%",
+              "237.59%",
+              "252.33%",
+              "267.07%",
+              "281.80%",
+              "296.54%",
+              "311.28%",
+              "326.01%"
+            ],
+            "hitMultipliers": [
+              [
+                0.8986,
+                0.9723,
+                1.046,
+                1.1491,
+                1.2228,
+                1.3075,
+                1.4254,
+                1.5433000000000001,
+                1.6612,
+                1.7865,
+                1.9338,
+                2.0812,
+                2.2286,
+                2.3759,
+                2.5233000000000003,
+                2.6707,
+                2.818,
+                2.9654000000000003,
+                3.1127999999999996,
+                3.2601
+              ]
+            ],
+            "count": 1,
+            "classificationEvidence": "attack name",
+            "sourceText": "89.86% · 97.23% · 104.60% · 114.91% · 122.28% · 130.75% · 142.54% · 154.33% · 166.12% · 178.65% · 193.38% · 208.12% · 222.86% · 237.59% · 252.33% · 267.07% · 281.80% · 296.54% · 311.28% · 326.01%"
+          },
+          {
+            "id": "1103:2:0",
+            "skillType": "Resonance Skill",
+            "skillName": "Emergency Plan",
+            "name": "Emergency Plan - Skill DMG",
+            "damageType": "healing",
+            "skillSource": "skill",
+            "scaling": "hp",
+            "expressions": [
+              "8.02% HP",
+              "8.68% HP",
+              "9.34% HP",
+              "10.26% HP",
+              "10.91% HP",
+              "11.67% HP",
+              "12.72% HP",
+              "13.77% HP",
+              "14.82% HP",
+              "15.94% HP",
+              "17.26% HP",
+              "18.57% HP",
+              "19.89% HP",
+              "21.20% HP",
+              "22.52% HP",
+              "23.83% HP",
+              "25.15% HP",
+              "26.46% HP",
+              "27.77% HP",
+              "29.09% HP"
+            ],
+            "hitMultipliers": [
+              [
+                0.0802,
+                0.0868,
+                0.0934,
+                0.1026,
+                0.1091,
+                0.1167,
+                0.1272,
+                0.1377,
+                0.1482,
+                0.1594,
+                0.1726,
+                0.1857,
+                0.1989,
+                0.212,
+                0.22519999999999998,
+                0.23829999999999998,
+                0.2515,
+                0.2646,
+                0.2777,
+                0.2909
+              ]
+            ],
+            "count": 1,
+            "classificationEvidence": "skill source fallback",
+            "sourceText": "8.02% HP · 8.68% HP · 9.34% HP · 10.26% HP · 10.91% HP · 11.67% HP · 12.72% HP · 13.77% HP · 14.82% HP · 15.94% HP · 17.26% HP · 18.57% HP · 19.89% HP · 21.20% HP · 22.52% HP · 23.83% HP · 25.15% HP · 26.46% HP · 27.77% HP · 29.09% HP"
+          },
+          {
+            "id": "1103:2:1",
+            "skillType": "Resonance Skill",
+            "skillName": "Emergency Plan",
+            "name": "Emergency Plan - Healing",
+            "damageType": "skill",
+            "skillSource": "skill",
+            "scaling": "hp",
+            "expressions": [
+              "575+2.90% HP",
+              "623+3.14% HP",
+              "670+3.37% HP",
+              "736+3.71% HP",
+              "783+3.94% HP",
+              "837+4.22% HP",
+              "913+4.60% HP",
+              "988+4.98% HP",
+              "1064+5.36% HP",
+              "1144+5.76% HP",
+              "1238+6.24% HP",
+              "1332+6.71% HP",
+              "1427+7.19% HP",
+              "1521+7.66% HP",
+              "1615+8.14% HP",
+              "1709+8.61% HP",
+              "1804+9.09% HP",
+              "1898+9.56% HP",
+              "1992+10.04% HP",
+              "2087+10.51% HP"
+            ],
+            "hitMultipliers": [
+              [
+                0.028999999999999998,
+                0.031400000000000004,
+                0.0337,
+                0.0371,
+                0.0394,
+                0.042199999999999994,
+                0.046,
+                0.049800000000000004,
+                0.0536,
+                0.0576,
+                0.062400000000000004,
+                0.06709999999999999,
+                0.0719,
+                0.0766,
+                0.0814,
+                0.0861,
+                0.0909,
+                0.0956,
+                0.10039999999999999,
+                0.1051
+              ]
+            ],
+            "count": 1,
+            "classificationEvidence": "skill source fallback",
+            "sourceText": "575+2.90% HP · 623+3.14% HP · 670+3.37% HP · 736+3.71% HP · 783+3.94% HP · 837+4.22% HP · 913+4.60% HP · 988+4.98% HP · 1064+5.36% HP · 1144+5.76% HP · 1238+6.24% HP · 1332+6.71% HP · 1427+7.19% HP · 1521+7.66% HP · 1615+8.14% HP · 1709+8.61% HP · 1804+9.09% HP · 1898+9.56% HP · 1992+10.04% HP · 2087+10.51% HP"
+          },
+          {
+            "id": "1103:3:0",
+            "skillType": "Resonance Liberation",
+            "skillName": "Momentary Union",
+            "name": "Momentary Union - Remnant Entities Damage",
+            "damageType": "liberation",
+            "skillSource": "liberation",
+            "scaling": "hp",
+            "expressions": [
+              "2.05% HP",
+              "2.22% HP",
+              "2.39% HP",
+              "2.62% HP",
+              "2.79% HP",
+              "2.98% HP",
+              "3.25% HP",
+              "3.52% HP",
+              "3.79% HP",
+              "4.07% HP",
+              "4.41% HP",
+              "4.74% HP",
+              "5.08% HP",
+              "5.41% HP",
+              "5.75% HP",
+              "6.08% HP",
+              "6.42% HP",
+              "6.75% HP",
+              "7.09% HP",
+              "7.42% HP"
+            ],
+            "hitMultipliers": [
+              [
+                0.020499999999999997,
+                0.0222,
+                0.0239,
+                0.0262,
+                0.0279,
+                0.0298,
+                0.0325,
+                0.0352,
+                0.0379,
+                0.0407,
+                0.0441,
+                0.047400000000000005,
+                0.0508,
+                0.0541,
+                0.0575,
+                0.0608,
+                0.0642,
+                0.0675,
+                0.0709,
+                0.0742
+              ]
+            ],
+            "count": 1,
+            "classificationEvidence": "skill source fallback",
+            "sourceText": "2.05% HP · 2.22% HP · 2.39% HP · 2.62% HP · 2.79% HP · 2.98% HP · 3.25% HP · 3.52% HP · 3.79% HP · 4.07% HP · 4.41% HP · 4.74% HP · 5.08% HP · 5.41% HP · 5.75% HP · 6.08% HP · 6.42% HP · 6.75% HP · 7.09% HP · 7.42% HP"
+          },
+          {
+            "id": "1103:3:1",
+            "skillType": "Resonance Liberation",
+            "skillName": "Momentary Union",
+            "name": "Momentary Union - Remnant Entities Healing",
+            "damageType": "healing",
+            "skillSource": "liberation",
+            "scaling": "hp",
+            "expressions": [
+              "349+1.42% HP",
+              "378+1.53% HP",
+              "406+1.65% HP",
+              "446+1.81% HP",
+              "475+1.93% HP",
+              "508+2.06% HP",
+              "554+2.25% HP",
+              "599+2.43% HP",
+              "645+2.62% HP",
+              "694+2.82% HP",
+              "751+3.05% HP",
+              "808+3.28% HP",
+              "865+3.52% HP",
+              "923+3.75% HP",
+              "980+3.98% HP",
+              "1037+4.21% HP",
+              "1094+4.45% HP",
+              "1151+4.68% HP",
+              "1209+4.91% HP",
+              "1266+5.14% HP"
+            ],
+            "hitMultipliers": [
+              [
+                0.014199999999999999,
+                0.015300000000000001,
+                0.0165,
+                0.0181,
+                0.019299999999999998,
+                0.0206,
+                0.0225,
+                0.024300000000000002,
+                0.0262,
+                0.0282,
+                0.0305,
+                0.032799999999999996,
+                0.0352,
+                0.0375,
+                0.0398,
+                0.0421,
+                0.044500000000000005,
+                0.046799999999999994,
+                0.049100000000000005,
+                0.051399999999999994
+              ]
+            ],
+            "count": 1,
+            "classificationEvidence": "skill source fallback",
+            "sourceText": "349+1.42% HP · 378+1.53% HP · 406+1.65% HP · 446+1.81% HP · 475+1.93% HP · 508+2.06% HP · 554+2.25% HP · 599+2.43% HP · 645+2.62% HP · 694+2.82% HP · 751+3.05% HP · 808+3.28% HP · 865+3.52% HP · 923+3.75% HP · 980+3.98% HP · 1037+4.21% HP · 1094+4.45% HP · 1151+4.68% HP · 1209+4.91% HP · 1266+5.14% HP"
+          },
+          {
+            "id": "1103:3:2",
+            "skillType": "Resonance Liberation",
+            "skillName": "Momentary Union",
+            "name": "Momentary Union - Momentary Union Healing",
+            "damageType": "healing",
+            "skillSource": "liberation",
+            "scaling": "hp",
+            "expressions": [
+              "310+1.26% HP",
+              "336+1.36% HP",
+              "361+1.47% HP",
+              "397+1.61% HP",
+              "422+1.71% HP",
+              "452+1.83% HP",
+              "492+2.00% HP",
+              "533+2.16% HP",
+              "574+2.33% HP",
+              "617+2.51% HP",
+              "668+2.71% HP",
+              "718+2.92% HP",
+              "769+3.12% HP",
+              "820+3.33% HP",
+              "871+3.54% HP",
+              "922+3.74% HP",
+              "973+3.95% HP",
+              "1024+4.16% HP",
+              "1074+4.36% HP",
+              "1125+4.57% HP"
+            ],
+            "hitMultipliers": [
+              [
+                0.0126,
+                0.013600000000000001,
+                0.0147,
+                0.0161,
+                0.0171,
+                0.0183,
+                0.02,
+                0.0216,
+                0.0233,
+                0.025099999999999997,
+                0.0271,
+                0.0292,
+                0.031200000000000002,
+                0.0333,
+                0.0354,
+                0.0374,
+                0.0395,
+                0.0416,
+                0.0436,
+                0.045700000000000005
+              ]
+            ],
+            "count": 1,
+            "classificationEvidence": "skill source fallback",
+            "sourceText": "310+1.26% HP · 336+1.36% HP · 361+1.47% HP · 397+1.61% HP · 422+1.71% HP · 452+1.83% HP · 492+2.00% HP · 533+2.16% HP · 574+2.33% HP · 617+2.51% HP · 668+2.71% HP · 718+2.92% HP · 769+3.12% HP · 820+3.33% HP · 871+3.54% HP · 922+3.74% HP · 973+3.95% HP · 1024+4.16% HP · 1074+4.36% HP · 1125+4.57% HP"
+          },
+          {
+            "id": "1103:6:0",
+            "skillType": "Intro Skill",
+            "skillName": "Overflowing Frost",
+            "name": "Overflowing Frost - Skill DMG",
+            "damageType": "intro",
+            "skillSource": "intro",
+            "scaling": "atk",
+            "expressions": [
+              "40.00%",
+              "43.28%",
+              "46.56%",
+              "51.16%",
+              "54.44%",
+              "58.21%",
+              "63.46%",
+              "68.70%",
+              "73.95%",
+              "79.53%",
+              "86.09%",
+              "92.65%",
+              "99.21%",
+              "105.77%",
+              "112.33%",
+              "118.89%",
+              "125.45%",
+              "132.01%",
+              "138.57%",
+              "145.13%"
+            ],
+            "hitMultipliers": [
+              [
+                0.4,
+                0.4328,
+                0.4656,
+                0.5115999999999999,
+                0.5444,
+                0.5821000000000001,
+                0.6346,
+                0.687,
+                0.7395,
+                0.7953,
+                0.8609,
+                0.9265000000000001,
+                0.9921,
+                1.0576999999999999,
+                1.1233,
+                1.1889,
+                1.2545,
+                1.3200999999999998,
+                1.3857,
+                1.4513
+              ]
+            ],
+            "count": 1,
+            "classificationEvidence": "skill source fallback",
+            "sourceText": "40.00% · 43.28% · 46.56% · 51.16% · 54.44% · 58.21% · 63.46% · 68.70% · 73.95% · 79.53% · 86.09% · 92.65% · 99.21% · 105.77% · 112.33% · 118.89% · 125.45% · 132.01% · 138.57% · 145.13%"
+          },
+          {
+            "id": "1103:6:1",
+            "skillType": "Intro Skill",
+            "skillName": "Overflowing Frost",
+            "name": "Overflowing Frost - Overflowing Frost Healing",
+            "damageType": "healing",
+            "skillSource": "intro",
+            "scaling": "hp",
+            "expressions": [
+              "75+0.38% HP",
+              "82+0.41% HP",
+              "88+0.44% HP",
+              "96+0.48% HP",
+              "103+0.51% HP",
+              "110+0.55% HP",
+              "119+0.60% HP",
+              "129+0.65% HP",
+              "139+0.70% HP",
+              "150+0.75% HP",
+              "162+0.81% HP",
+              "174+0.88% HP",
+              "187+0.94% HP",
+              "199+1.00% HP",
+              "211+1.06% HP",
+              "223+1.12% HP",
+              "236+1.19% HP",
+              "248+1.25% HP",
+              "260+1.31% HP",
+              "273+1.37% HP"
+            ],
+            "hitMultipliers": [
+              [
+                0.0038,
+                0.0040999999999999995,
+                0.0044,
+                0.0048,
+                0.0051,
+                0.0055000000000000005,
+                0.006,
+                0.006500000000000001,
+                0.006999999999999999,
+                0.0075,
+                0.008100000000000001,
+                0.0088,
+                0.009399999999999999,
+                0.01,
+                0.0106,
+                0.011200000000000002,
+                0.011899999999999999,
+                0.0125,
+                0.0131,
+                0.0137
+              ]
+            ],
+            "count": 1,
+            "classificationEvidence": "skill source fallback",
+            "sourceText": "75+0.38% HP · 82+0.41% HP · 88+0.44% HP · 96+0.48% HP · 103+0.51% HP · 110+0.55% HP · 119+0.60% HP · 129+0.65% HP · 139+0.70% HP · 150+0.75% HP · 162+0.81% HP · 174+0.88% HP · 187+0.94% HP · 199+1.00% HP · 211+1.06% HP · 223+1.12% HP · 236+1.19% HP · 248+1.25% HP · 260+1.31% HP · 273+1.37% HP"
+          },
+          {
+            "id": "1103:7:0",
+            "skillType": "Forte Circuit",
+            "skillName": "Cycle of Life",
+            "name": "Cycle of Life - Concentration Healing",
+            "damageType": "healing",
+            "skillSource": "forte",
+            "scaling": "hp",
+            "expressions": [
+              "32+0.16% HP",
+              "34+0.17% HP",
+              "37+0.18% HP",
+              "40+0.20% HP",
+              "43+0.21% HP",
+              "46+0.23% HP",
+              "50+0.25% HP",
+              "54+0.27% HP",
+              "58+0.29% HP",
+              "63+0.31% HP",
+              "68+0.34% HP",
+              "73+0.36% HP",
+              "78+0.39% HP",
+              "83+0.42% HP",
+              "88+0.44% HP",
+              "93+0.47% HP",
+              "99+0.49% HP",
+              "104+0.52% HP",
+              "109+0.55% HP",
+              "114+0.57% HP"
+            ],
+            "hitMultipliers": [
+              [
+                0.0016,
+                0.0017000000000000001,
+                0.0018,
+                0.002,
+                0.0021,
+                0.0023,
+                0.0025,
+                0.0027,
+                0.0029,
+                0.0031,
+                0.0034000000000000002,
+                0.0036,
+                0.0039000000000000003,
+                0.0042,
+                0.0044,
+                0.004699999999999999,
+                0.0049,
+                0.0052,
+                0.0055000000000000005,
+                0.005699999999999999
+              ]
+            ],
+            "count": 1,
+            "classificationEvidence": "skill source fallback",
+            "sourceText": "32+0.16% HP · 34+0.17% HP · 37+0.18% HP · 40+0.20% HP · 43+0.21% HP · 46+0.23% HP · 50+0.25% HP · 54+0.27% HP · 58+0.29% HP · 63+0.31% HP · 68+0.34% HP · 73+0.36% HP · 78+0.39% HP · 83+0.42% HP · 88+0.44% HP · 93+0.47% HP · 99+0.49% HP · 104+0.52% HP · 109+0.55% HP · 114+0.57% HP"
+          }
+        ]
+      }
+    },
+    "forte": {
+      "status": "approved",
+      "sourceFingerprint": "1843a415a7acde0dc6ab3b8fbf6c998642ce4fa805a9123a1bc1334c1782ceca",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "1103:7",
+            "name": "Cycle of Life",
+            "type": "Forte Circuit",
+            "description": "You'tan\nA Remnant Creature that answers to Baizhi's mind and desires while sharing all her stats. You'tan goes back to Baizhi when Baizhi dodges.\nConcentration\nBaizhi consumes all \"Concentration\" when casting Heavy Attack or Resonance Skill Emergency Plan to continuously heal all Resonators on nearby teams. Each 1 \"Concentration\" consumed provides 1 healing. The healing happens every 2s.\nWhen Baizhi consumes \"Concentration\" to cast Heavy Attack, Baizhi additionally restores Concerto Energy and Resonance Energy.\nWhen Baizhi consumes \"Concentration\" to cast Resonance Skill Emergency Plan, Baizhi additionally restores Concerto Energy.\nForte Gauge: Concentration\nBaizhi can hold up to 4 \"Concentration\".\nBaizhi obtains 1 \"Concentration\" for every Basic Attack on hit."
+          }
+        ],
+        "modeGroups": []
+      }
+    },
+    "characterBuffs": {
+      "status": "approved",
+      "sourceFingerprint": "c656d128623a81acd2fee96fbe3920ff19d605a5c39229c463667116d7e265a2",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "1103:3:effect:0",
+            "sourceName": "Momentary Union",
+            "sourceType": "Resonance Liberation",
+            "text": "Baizhi summons You'tan to heal all characters on nearby teams, generating 4 stacks of Remnant Entities.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence.",
+                "Stack maximum was not explicit and requires review."
+              ]
+            },
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "1103:3:effect:3",
+            "sourceName": "Momentary Union",
+            "sourceType": "Resonance Liberation",
+            "text": "1 stack(s) of Remnant Entities are automatically consumed to perform Coordinated Attacks every 2.5s, dealing Glacio DMG on hit while healing all characters of the team when the active character is within the range.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence.",
+                "Stack maximum was not explicit and requires review."
+              ]
+            },
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "1103:4:effect:2",
+            "sourceName": "Harmonic Range",
+            "sourceType": "Inherent Skill",
+            "text": "ATK of the Resonators who pick up Euphonia is increased by 15% for 20s.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 20,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 15
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          },
+          {
+            "id": "1103:7:effect:7",
+            "sourceName": "Cycle of Life",
+            "sourceType": "Forte Circuit",
+            "text": "When Baizhi consumes \"Concentration\" to cast Heavy Attack, Baizhi additionally restores Concerto Energy and Resonance Energy.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "1103:7:effect:8",
+            "sourceName": "Cycle of Life",
+            "sourceType": "Forte Circuit",
+            "text": "When Baizhi consumes \"Concentration\" to cast Resonance Skill Emergency Plan, Baizhi additionally restores Concerto Energy.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Skill",
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "1103:8:effect:1",
+            "sourceName": "Rejuvinating Flow",
+            "sourceType": "Outro Skill",
+            "text": "The healed Resonator has their DMG Amplified by 15% for 6s.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 6,
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "amplifyPercent",
+                  "value": 15
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          },
+          {
+            "id": "1103:9:effect:0",
+            "sourceName": "Healing Bonus+",
+            "sourceType": "Unknown",
+            "text": "Healing Bonus increased by 1.80%.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "healingBonus",
+                  "operation": "addPercent",
+                  "value": 1.8
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          },
+          {
+            "id": "1103:10:effect:0",
+            "sourceName": "HP+",
+            "sourceType": "Unknown",
+            "text": "HP increased by 1.80%.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "hpPercent",
+                  "operation": "addPercent",
+                  "value": 1.8
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          },
+          {
+            "id": "1103:11:effect:0",
+            "sourceName": "HP+",
+            "sourceType": "Unknown",
+            "text": "HP increased by 1.80%.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "hpPercent",
+                  "operation": "addPercent",
+                  "value": 1.8
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          },
+          {
+            "id": "1103:12:effect:0",
+            "sourceName": "Healing Bonus+",
+            "sourceType": "Unknown",
+            "text": "Healing Bonus increased by 1.80%.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "healingBonus",
+                  "operation": "addPercent",
+                  "value": 1.8
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          },
+          {
+            "id": "1103:13:effect:0",
+            "sourceName": "Healing Bonus+",
+            "sourceType": "Unknown",
+            "text": "Healing Bonus increased by 4.20%.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "healingBonus",
+                  "operation": "addPercent",
+                  "value": 4.2
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          },
+          {
+            "id": "1103:14:effect:0",
+            "sourceName": "HP+",
+            "sourceType": "Unknown",
+            "text": "HP increased by 4.20%.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "hpPercent",
+                  "operation": "addPercent",
+                  "value": 4.2
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          },
+          {
+            "id": "1103:15:effect:0",
+            "sourceName": "HP+",
+            "sourceType": "Unknown",
+            "text": "HP increased by 4.20%.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "hpPercent",
+                  "operation": "addPercent",
+                  "value": 4.2
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          },
+          {
+            "id": "1103:16:effect:0",
+            "sourceName": "Healing Bonus+",
+            "sourceType": "Unknown",
+            "text": "Healing Bonus increased by 4.20%.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "healingBonus",
+                  "operation": "addPercent",
+                  "value": 4.2
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    },
+    "sequences": {
+      "status": "approved",
+      "sourceFingerprint": "8df53fe2470ae9d454ee1a86d0bbf1fb393ef5bd1031ae93fcb33d33ae9f87b0",
+      "approvedData": {
+        "entries": [
+          {
+            "sequence": 1,
+            "name": "Complex Simplicity",
+            "text": "Resonance Skill Emergency Plan additionally restores 2.5 Resonance Energy for every 1 Concentration consumed.",
+            "parsedEffects": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "review",
+                "warnings": [
+                  "No supported numeric modifier was parsed from this sentence."
+                ],
+                "reviewStatus": "no-mechanic"
+              }
+            ]
+          },
+          {
+            "sequence": 2,
+            "name": "Silent Tundra",
+            "text": "Resonance Skill Emergency Plan increases Baizhi's Glacio DMG Bonus by 15% and her Healing by 15% if she has 4 Concentration. These effects last for 12s.",
+            "parsedEffects": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "Glacio",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "reviewStatus": "include"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 12,
+                "modifiers": [],
+                "confidence": "review",
+                "warnings": [
+                  "No supported numeric modifier was parsed from this sentence."
+                ],
+                "reviewStatus": "no-mechanic"
+              }
+            ]
+          },
+          {
+            "sequence": 3,
+            "name": "Veritas Lux Mea",
+            "text": "Intro Skill Overflowing Frost increases Baizhi's Max HP by 12% for 10s.",
+            "parsedEffects": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "hpPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "reviewStatus": "include"
+              }
+            ]
+          },
+          {
+            "sequence": 4,
+            "name": "Eternal Verity",
+            "text": "Upon casting Resonance Liberation Momentary Union, Resonance Liberation Remnant Entities gains the following enhancements:\n-Remnant Entities can be performed 2 more time(s);\n-Healing multiplier of Remnant Entities is increased by 20%;\n-Remnant Entities deals additional Glacio DMG equal to 1.20% of Baizhi's Max HP.",
+            "parsedEffects": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation",
+                "modifiers": [],
+                "confidence": "review",
+                "warnings": [
+                  "No supported numeric modifier was parsed from this sentence."
+                ],
+                "reviewStatus": "no-mechanic"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "review",
+                "warnings": [
+                  "No supported numeric modifier was parsed from this sentence."
+                ],
+                "reviewStatus": "no-mechanic"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "review",
+                "warnings": [
+                  "No supported numeric modifier was parsed from this sentence."
+                ],
+                "reviewStatus": "no-mechanic"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "reviewStatus": "no-mechanic"
+              }
+            ]
+          },
+          {
+            "sequence": 5,
+            "name": "A Wish Answered",
+            "text": "If a team member is knocked out when Baizhi is alive on the team, immediately revive them and restore 100% of their Max HP. This effect can be triggered once every 10 minute(s).",
+            "parsedEffects": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "reviewStatus": "no-mechanic"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "review",
+                "warnings": [
+                  "No supported numeric modifier was parsed from this sentence."
+                ],
+                "reviewStatus": "no-mechanic"
+              }
+            ]
+          },
+          {
+            "sequence": 6,
+            "name": "Seeker's Devotion",
+            "text": "When Euphonia is picked up, increase the Glacio DMG Bonus of all characters nearby by 12% for 20s.",
+            "parsedEffects": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 20,
+                "modifiers": [
+                  {
+                    "stat": "Glacio",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "reviewStatus": "include"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "teamBuffs": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

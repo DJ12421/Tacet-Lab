@@ -1,0 +1,362 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21020026",
+  "entityName": "Red Spring",
+  "sourceFingerprint": "f04ec53858785d666e77fab2b4d2222fe38905a2aaa0bb2dd97dc604fa73a97b",
+  "reviewedAt": "2026-08-26T11:44:23.977Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "c68f6a4c801f496a6aebfacd3879973f5d86329ea525a81174ecb9cbdb3f47da",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020026:effect:0",
+            "sourceName": "Beyond the Cycle",
+            "text": "Increase ATK by 12%.",
+            "refinementTexts": [
+              "Increase ATK by 12%.",
+              "Increase ATK by 15%.",
+              "Increase ATK by 18%.",
+              "Increase ATK by 21%.",
+              "Increase ATK by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21020026:effect:1",
+            "sourceName": "Beyond the Cycle",
+            "text": "When dealing Basic Attack DMG, the wielder gains 10% Basic Attack DMG Bonus for 14s. This effect can be triggered once per second, stacking up to 3 times.",
+            "refinementTexts": [
+              "When dealing Basic Attack DMG, the wielder gains 10% Basic Attack DMG Bonus for 14s. This effect can be triggered once per second, stacking up to 3 times.",
+              "When dealing Basic Attack DMG, the wielder gains 12.5% Basic Attack DMG Bonus for 14s. This effect can be triggered once per second, stacking up to 3 times.",
+              "When dealing Basic Attack DMG, the wielder gains 15% Basic Attack DMG Bonus for 14s. This effect can be triggered once per second, stacking up to 3 times.",
+              "When dealing Basic Attack DMG, the wielder gains 17.5% Basic Attack DMG Bonus for 14s. This effect can be triggered once per second, stacking up to 3 times.",
+              "When dealing Basic Attack DMG, the wielder gains 20% Basic Attack DMG Bonus for 14s. This effect can be triggered once per second, stacking up to 3 times."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "trigger": "Basic Attack DMG",
+              "durationSeconds": 14,
+              "modifiers": [
+                {
+                  "stat": "basicDamage",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 12.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 17.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21020026:effect:2",
+            "sourceName": "Beyond the Cycle",
+            "text": "When the wielder's Concerto Energy is consumed, gain 40% Basic DMG Bonus for 10. This effect can be triggered once per second and ends when the wielder is switched off the field.",
+            "refinementTexts": [
+              "When the wielder's Concerto Energy is consumed, gain 40% Basic DMG Bonus for 10. This effect can be triggered once per second and ends when the wielder is switched off the field.",
+              "When the wielder's Concerto Energy is consumed, gain 50% Basic DMG Bonus for 10. This effect can be triggered once per second and ends when the wielder is switched off the field.",
+              "When the wielder's Concerto Energy is consumed, gain 60% Basic DMG Bonus for 10. This effect can be triggered once per second and ends when the wielder is switched off the field.",
+              "When the wielder's Concerto Energy is consumed, gain 70% Basic DMG Bonus for 10. This effect can be triggered once per second and ends when the wielder is switched off the field.",
+              "When the wielder's Concerto Energy is consumed, gain 80% Basic DMG Bonus for 10. This effect can be triggered once per second and ends when the wielder is switched off the field."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 40
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "damageBonus",
+                    "operation": "addPercent",
+                    "value": 40
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "damageBonus",
+                    "operation": "addPercent",
+                    "value": 50
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "damageBonus",
+                    "operation": "addPercent",
+                    "value": 60
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "damageBonus",
+                    "operation": "addPercent",
+                    "value": 70
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "damageBonus",
+                    "operation": "addPercent",
+                    "value": 80
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

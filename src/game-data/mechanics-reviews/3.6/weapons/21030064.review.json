@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21030064",
+  "entityName": "Novaburst",
+  "sourceFingerprint": "08d317032f7068b83a745c631ac109d53a9315c8c036644fb9824c168fb29d6d",
+  "reviewedAt": "2026-08-26T11:44:24.140Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "df835588a6aadf124e4794422ab411b983d60389d882fe3fe6b3ab58d1c4cc3c",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21030064:effect:0",
+            "sourceName": "Ever-changing",
+            "text": "When the Resonator dashes or dodges, increases ATK by 4%, stacking up to 3 time(s). This effect lasts for 8s.",
+            "refinementTexts": [
+              "When the Resonator dashes or dodges, increases ATK by 4%, stacking up to 3 time(s). This effect lasts for 8s.",
+              "When the Resonator dashes or dodges, increases ATK by 5%, stacking up to 3 time(s). This effect lasts for 8s.",
+              "When the Resonator dashes or dodges, increases ATK by 6%, stacking up to 3 time(s). This effect lasts for 8s.",
+              "When the Resonator dashes or dodges, increases ATK by 7%, stacking up to 3 time(s). This effect lasts for 8s.",
+              "When the Resonator dashes or dodges, increases ATK by 8%, stacking up to 3 time(s). This effect lasts for 8s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "durationSeconds": 8,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 4
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 4
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 6
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 7
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

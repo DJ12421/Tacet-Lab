@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "sonata",
+  "entityId": "19",
+  "entityName": "Dream of the Lost",
+  "sourceFingerprint": "272a68eeceb9e3bac0f9a05b2afece5da5173af16560abf654061f9ea0bd681d",
+  "reviewedAt": "2026-08-26T11:44:24.617Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "65b182e1ae602f3a5a80e20e77c25ff502218f281a7b4a6efe78dd9f0aa35afa",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:19:3:0",
+            "sourceName": "Dream of the Lost",
+            "text": "Holding 0 Resonance Energy increases Crit. Rate by 20% and grants 35% Echo Skill DMG Bonus.",
+            "refinementTexts": [
+              "Holding 0 Resonance Energy increases Crit. Rate by 20% and grants 35% Echo Skill DMG Bonus."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "critRate",
+                  "operation": "addPercent",
+                  "value": 20
+                },
+                {
+                  "stat": "echoDamage",
+                  "operation": "addPercent",
+                  "value": 35
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 3,
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

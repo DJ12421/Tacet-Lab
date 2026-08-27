@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "sonata",
+  "entityId": "10",
+  "entityName": "Frosty Resolve",
+  "sourceFingerprint": "65732bc75e9a4f0e78d7a94836fb5bb9f2b2cdafc9213f48ee020e2ae97249c4",
+  "reviewedAt": "2026-08-26T11:44:24.572Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "283f0469261c7380964542af7188d4ac950c1c0e060b222cf72b21d36780bcf8",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:10:2:0",
+            "sourceName": "Frosty Resolve",
+            "text": "Resonance Skill DMG + 12%",
+            "refinementTexts": [
+              "Resonance Skill DMG + 12%"
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "skillDamage",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:10:5:0",
+            "sourceName": "Frosty Resolve",
+            "text": "Casting Resonance Skill grants 22.5% Glacio DMG Bonus for 15s and casting Resonance Liberation increases Resonance Skill DMG by 18%, lasting for 5s. This effect stacks up to 2 times.",
+            "refinementTexts": [
+              "Casting Resonance Skill grants 22.5% Glacio DMG Bonus for 15s and casting Resonance Liberation increases Resonance Skill DMG by 18%, lasting for 5s. This effect stacks up to 2 times."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 2
+              },
+              "trigger": "Resonance Skill",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "skillDamage",
+                  "operation": "addPercent",
+                  "value": 18
+                },
+                {
+                  "stat": "Glacio",
+                  "operation": "addPercent",
+                  "value": 22.5
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "sonata",
+  "entityId": "35",
+  "entityName": "Lamp of Nether Road",
+  "sourceFingerprint": "ea918e645c9cc1d5b36f95c81bfbdfa2c638680656e2b2adca13b21beb4825f6",
+  "reviewedAt": "2026-08-26T11:44:24.693Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "dfbb4ce4cfb89232c27229a3b4e4a6eb0c2218823d35a0b1289070e5b1eea3d5",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:35:2:0",
+            "sourceName": "Lamp of Nether Road",
+            "text": "HP + 10%",
+            "refinementTexts": [
+              "HP + 10%"
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "hpPercent",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:35:5:0",
+            "sourceName": "Lamp of Nether Road",
+            "text": "Upon gaining a Shield, gain 5% increase in Crit. Rate for 5s, max 4 stacks. This effect can be triggered every 0.5s.",
+            "refinementTexts": [
+              "Upon gaining a Shield, gain 5% increase in Crit. Rate for 5s, max 4 stacks. This effect can be triggered every 0.5s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "durationSeconds": 5,
+              "modifiers": [
+                {
+                  "stat": "critRate",
+                  "operation": "addPercent",
+                  "value": 5
+                }
+              ],
+              "confidence": "review",
+              "warnings": [
+                "Stack maximum was not explicit and requires review."
+              ]
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:35:5:1",
+            "sourceName": "Lamp of Nether Road",
+            "text": "At max stacks, gain 15% Fusion DMG Bonus.",
+            "refinementTexts": [
+              "At max stacks, gain 15% Fusion DMG Bonus."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "modifiers": [
+                {
+                  "stat": "Fusion",
+                  "operation": "addPercent",
+                  "value": 15
+                }
+              ],
+              "confidence": "review",
+              "warnings": [
+                "Stack maximum was not explicit and requires review."
+              ]
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

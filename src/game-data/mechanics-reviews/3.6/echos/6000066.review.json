@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000066",
+  "entityName": "Chop Chop: Rightless",
+  "sourceFingerprint": "3e524f2eb4d054fa99ce4ee3b3f5d91eaf9084ea5e87c49ea0b86c5e38a3be78",
+  "reviewedAt": "2026-08-26T11:44:24.914Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "ff5e9e653264240324594a73ca8a5540c34539fe41edf340c262848effb4ff4f",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000066:skill",
+            "name": "Chop Chop: Rightless - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Chop Chop: Rightless to attack enemies, dealing 72.00% Havoc DMG.\nCD: 8s.",
+              "Summon a Chop Chop: Rightless to attack enemies, dealing 86.40% Havoc DMG.\nCD: 8s.",
+              "Summon a Chop Chop: Rightless to attack enemies, dealing 100.80% Havoc DMG.\nCD: 8s.",
+              "Summon a Chop Chop: Rightless to attack enemies, dealing 115.20% Havoc DMG.\nCD: 8s.",
+              "Summon a Chop Chop: Rightless to attack enemies, dealing 129.60% Havoc DMG.\nCD: 8s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.72
+              ],
+              [
+                0.8640000000000001
+              ],
+              [
+                1.008
+              ],
+              [
+                1.1520000000000001
+              ],
+              [
+                1.296
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Chop Chop: Rightless to attack enemies, dealing 72.00% Havoc DMG.\nCD: 8s. · Summon a Chop Chop: Rightless to attack enemies, dealing 86.40% Havoc DMG.\nCD: 8s. · Summon a Chop Chop: Rightless to attack enemies, dealing 100.80% Havoc DMG.\nCD: 8s. · Summon a Chop Chop: Rightless to attack enemies, dealing 115.20% Havoc DMG.\nCD: 8s. · Summon a Chop Chop: Rightless to attack enemies, dealing 129.60% Havoc DMG.\nCD: 8s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

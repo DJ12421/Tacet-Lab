@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "sonata",
+  "entityId": "2",
+  "entityName": "Molten Rift",
+  "sourceFingerprint": "e260285ac6d1838dd9901153e038171ef01a3c7f5ed0805c8bec4c9e1b4ad2e8",
+  "reviewedAt": "2026-08-26T11:44:24.628Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "48ef1121d195adea8431e17d3f3116a86908509a284612bc9217294ead49c84a",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:2:2:0",
+            "sourceName": "Molten Rift",
+            "text": "Fusion DMG + 10%.",
+            "refinementTexts": [
+              "Fusion DMG + 10%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:2:5:0",
+            "sourceName": "Molten Rift",
+            "text": "Fusion DMG + 30% for 15s after releasing Resonance Skill.",
+            "refinementTexts": [
+              "Fusion DMG + 30% for 15s after releasing Resonance Skill."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Skill",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 30
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

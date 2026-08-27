@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21050064",
+  "entityName": "Comet Flare",
+  "sourceFingerprint": "71f77a10c1c0a583533fc19f261f624be14ad56ccf22314027fbfd6cf4fc16f7",
+  "reviewedAt": "2026-08-26T11:44:24.471Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "802f0a06a9e2042b7ae016c36bbe691c4c5f480de366a5572a1ba9b8f84c7f9a",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050064:effect:0",
+            "sourceName": "Luminous Protection",
+            "text": "When dealing Basic Attack DMG or Heavy Attack DMG, increases Healing Bonus by 3%, stacking up to 3 time(s). This effect lasts for 8s and can be triggered 1 time(s) every 0.6s.",
+            "refinementTexts": [
+              "When dealing Basic Attack DMG or Heavy Attack DMG, increases Healing Bonus by 3%, stacking up to 3 time(s). This effect lasts for 8s and can be triggered 1 time(s) every 0.6s.",
+              "When dealing Basic Attack DMG or Heavy Attack DMG, increases Healing Bonus by 3.75%, stacking up to 3 time(s). This effect lasts for 8s and can be triggered 1 time(s) every 0.6s.",
+              "When dealing Basic Attack DMG or Heavy Attack DMG, increases Healing Bonus by 4.5%, stacking up to 3 time(s). This effect lasts for 8s and can be triggered 1 time(s) every 0.6s.",
+              "When dealing Basic Attack DMG or Heavy Attack DMG, increases Healing Bonus by 5.25%, stacking up to 3 time(s). This effect lasts for 8s and can be triggered 1 time(s) every 0.6s.",
+              "When dealing Basic Attack DMG or Heavy Attack DMG, increases Healing Bonus by 6%, stacking up to 3 time(s). This effect lasts for 8s and can be triggered 1 time(s) every 0.6s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "trigger": "Basic Attack DMG",
+              "durationSeconds": 8,
+              "modifiers": [
+                {
+                  "stat": "healingBonus",
+                  "operation": "addPercent",
+                  "value": 3
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "healingBonus",
+                    "operation": "addPercent",
+                    "value": 3
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "healingBonus",
+                    "operation": "addPercent",
+                    "value": 3.75
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "healingBonus",
+                    "operation": "addPercent",
+                    "value": 4.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "healingBonus",
+                    "operation": "addPercent",
+                    "value": 5.25
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "healingBonus",
+                    "operation": "addPercent",
+                    "value": 6
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

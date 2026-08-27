@@ -1,0 +1,386 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21050026",
+  "entityName": "Rime-Draped Sprouts",
+  "sourceFingerprint": "17f89befc4b5fdec2849c517fcdb6e4855992dd522587608fe752f43a97659ed",
+  "reviewedAt": "2026-08-26T11:44:24.304Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "0d3fffc5220808a4ce44cbea6179e53152a459e4080b30a35c5fb4ab8d7a7eac",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050026:effect:0",
+            "sourceName": "Panorama",
+            "text": "Increase ATK by 12%.",
+            "refinementTexts": [
+              "Increase ATK by 12%.",
+              "Increase ATK by 15%.",
+              "Increase ATK by 18%.",
+              "Increase ATK by 21%.",
+              "Increase ATK by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21050026:effect:1",
+            "sourceName": "Panorama",
+            "text": "While the wielder is on the field, using Resonance Skill grants 12% Basic Attack DMG Bonus, stacking up to 3 times for 6s.",
+            "refinementTexts": [
+              "While the wielder is on the field, using Resonance Skill grants 12% Basic Attack DMG Bonus, stacking up to 3 times for 6s.",
+              "While the wielder is on the field, using Resonance Skill grants 15% Basic Attack DMG Bonus, stacking up to 3 times for 6s.",
+              "While the wielder is on the field, using Resonance Skill grants 18% Basic Attack DMG Bonus, stacking up to 3 times for 6s.",
+              "While the wielder is on the field, using Resonance Skill grants 21% Basic Attack DMG Bonus, stacking up to 3 times for 6s.",
+              "While the wielder is on the field, using Resonance Skill grants 24% Basic Attack DMG Bonus, stacking up to 3 times for 6s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "durationSeconds": 6,
+              "modifiers": [
+                {
+                  "stat": "basicDamage",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21050026:effect:2",
+            "sourceName": "Panorama",
+            "text": "At 3 stacks or above, casting Outro Skill consumes all stacks of this effect and grants the wielder 52% Basic Attack DMG Bonus for 27s, effective when the wielder is off the field.",
+            "refinementTexts": [
+              "At 3 stacks or above, casting Outro Skill consumes all stacks of this effect and grants the wielder 52% Basic Attack DMG Bonus for 27s, effective when the wielder is off the field.",
+              "At 3 stacks or above, casting Outro Skill consumes all stacks of this effect and grants the wielder 65% Basic Attack DMG Bonus for 27s, effective when the wielder is off the field.",
+              "At 3 stacks or above, casting Outro Skill consumes all stacks of this effect and grants the wielder 78% Basic Attack DMG Bonus for 27s, effective when the wielder is off the field.",
+              "At 3 stacks or above, casting Outro Skill consumes all stacks of this effect and grants the wielder 91% Basic Attack DMG Bonus for 27s, effective when the wielder is off the field.",
+              "At 3 stacks or above, casting Outro Skill consumes all stacks of this effect and grants the wielder 104% Basic Attack DMG Bonus for 27s, effective when the wielder is off the field."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "durationSeconds": 27,
+              "modifiers": [
+                {
+                  "stat": "basicDamage",
+                  "operation": "addPercent",
+                  "value": 52
+                }
+              ],
+              "confidence": "review",
+              "warnings": [
+                "A stack threshold was used as the selectable maximum and requires review."
+              ]
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "durationSeconds": 27,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 52
+                  }
+                ],
+                "confidence": "review",
+                "warnings": [
+                  "A stack threshold was used as the selectable maximum and requires review."
+                ]
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "durationSeconds": 27,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 65
+                  }
+                ],
+                "confidence": "review",
+                "warnings": [
+                  "A stack threshold was used as the selectable maximum and requires review."
+                ]
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "durationSeconds": 27,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 78
+                  }
+                ],
+                "confidence": "review",
+                "warnings": [
+                  "A stack threshold was used as the selectable maximum and requires review."
+                ]
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "durationSeconds": 27,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 91
+                  }
+                ],
+                "confidence": "review",
+                "warnings": [
+                  "A stack threshold was used as the selectable maximum and requires review."
+                ]
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "durationSeconds": 27,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 104
+                  }
+                ],
+                "confidence": "review",
+                "warnings": [
+                  "A stack threshold was used as the selectable maximum and requires review."
+                ]
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

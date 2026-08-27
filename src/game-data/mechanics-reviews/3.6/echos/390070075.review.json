@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390070075",
+  "entityName": "Sabyr Boar",
+  "sourceFingerprint": "1cba8a85e6686c73103708af209f148d063c6b7af9df24a5ecab4671635e3b53",
+  "reviewedAt": "2026-08-26T11:44:24.786Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "9ec1c2c0667d14f48785494126a6b9ad96d1c0d3c4627402101be3fddf1b1d11",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390070075:skill",
+            "name": "Sabyr Boar - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Sabyr Boar to headbutt the enemy into the air, dealing 20.00%+40 Physical DMG.\nCD: 8s",
+              "Summon a Sabyr Boar to headbutt the enemy into the air, dealing 23.00%+46 Physical DMG.\nCD: 8s",
+              "Summon a Sabyr Boar to headbutt the enemy into the air, dealing 26.00%+52 Physical DMG.\nCD: 8s",
+              "Summon a Sabyr Boar to headbutt the enemy into the air, dealing 29.00%+58 Physical DMG.\nCD: 8s",
+              "Summon a Sabyr Boar to headbutt the enemy into the air, dealing 32.00%+64 Physical DMG.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.2
+              ],
+              [
+                0.23
+              ],
+              [
+                0.26
+              ],
+              [
+                0.29
+              ],
+              [
+                0.32
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Sabyr Boar to headbutt the enemy into the air, dealing 20.00%+40 Physical DMG.\nCD: 8s · Summon a Sabyr Boar to headbutt the enemy into the air, dealing 23.00%+46 Physical DMG.\nCD: 8s · Summon a Sabyr Boar to headbutt the enemy into the air, dealing 26.00%+52 Physical DMG.\nCD: 8s · Summon a Sabyr Boar to headbutt the enemy into the air, dealing 29.00%+58 Physical DMG.\nCD: 8s · Summon a Sabyr Boar to headbutt the enemy into the air, dealing 32.00%+64 Physical DMG.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

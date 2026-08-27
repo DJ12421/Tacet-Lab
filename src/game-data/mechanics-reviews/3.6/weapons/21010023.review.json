@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21010023",
+  "entityName": "Originite: Type I",
+  "sourceFingerprint": "5499a305828c7eebb9e4faa6b16acab147d69a6dbbaeda25ac11f7d500928c99",
+  "reviewedAt": "2026-08-26T11:44:23.829Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "359dca8f9b3af093059e345555520819f838589812543869cf7a7912ce4e624e",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21010023:effect:0",
+            "sourceName": "Temperance",
+            "text": "When Resonance Skill is cast, heals 3% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 12s.",
+            "refinementTexts": [
+              "When Resonance Skill is cast, heals 3% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 12s.",
+              "When Resonance Skill is cast, heals 3.75% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 12s.",
+              "When Resonance Skill is cast, heals 4.5% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 12s.",
+              "When Resonance Skill is cast, heals 5.25% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 12s.",
+              "When Resonance Skill is cast, heals 6% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 12s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Skill",
+              "modifiers": [],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

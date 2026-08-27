@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000069",
+  "entityName": "Hocus Pocus",
+  "sourceFingerprint": "2c1e696e20fa448f0c92990cdacd4482896cac7eab8321d2708547e109fbd30f",
+  "reviewedAt": "2026-08-26T11:44:24.920Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "2b754e195fd6100d1bfe56c20b55bec497355eb59c3d0609c9a02785892ccc98",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000069:skill",
+            "name": "Hocus Pocus - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Hocus Pocus to attack enemies with 3 consecutive strikes, each dealing 24.00% Havoc DMG.\nCD: 8s.",
+              "Summon a Hocus Pocus to attack enemies with 3 consecutive strikes, each dealing 28.80% Havoc DMG.\nCD: 8s.",
+              "Summon a Hocus Pocus to attack enemies with 3 consecutive strikes, each dealing 33.60% Havoc DMG.\nCD: 8s.",
+              "Summon a Hocus Pocus to attack enemies with 3 consecutive strikes, each dealing 38.40% Havoc DMG.\nCD: 8s.",
+              "Summon a Hocus Pocus to attack enemies with 3 consecutive strikes, each dealing 43.20% Havoc DMG.\nCD: 8s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.24
+              ],
+              [
+                0.28800000000000003
+              ],
+              [
+                0.336
+              ],
+              [
+                0.384
+              ],
+              [
+                0.43200000000000005
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Hocus Pocus to attack enemies with 3 consecutive strikes, each dealing 24.00% Havoc DMG.\nCD: 8s. · Summon a Hocus Pocus to attack enemies with 3 consecutive strikes, each dealing 28.80% Havoc DMG.\nCD: 8s. · Summon a Hocus Pocus to attack enemies with 3 consecutive strikes, each dealing 33.60% Havoc DMG.\nCD: 8s. · Summon a Hocus Pocus to attack enemies with 3 consecutive strikes, each dealing 38.40% Havoc DMG.\nCD: 8s. · Summon a Hocus Pocus to attack enemies with 3 consecutive strikes, each dealing 43.20% Havoc DMG.\nCD: 8s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

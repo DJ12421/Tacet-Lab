@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390070100",
+  "entityName": "Fusion Dreadmane",
+  "sourceFingerprint": "6781ba29718804dc09fc1be2f35a5d1e69cdae5bb269f9138a819e5ab3e9e4d2",
+  "reviewedAt": "2026-08-26T11:44:24.805Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "42851d9ac6aec306db9606bde391a7412374c584a87b4efe63f287e0ce50669d",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390070100:skill",
+            "name": "Fusion Dreadmane - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Fusion Dreadmane that fiercely strikes the enemy, dealing 20.00%+40 Fusion DMG.\nCD: 8s",
+              "Summon a Fusion Dreadmane that fiercely strikes the enemy, dealing 23.00%+46 Fusion DMG.\nCD: 8s",
+              "Summon a Fusion Dreadmane that fiercely strikes the enemy, dealing 26.00%+52 Fusion DMG.\nCD: 8s",
+              "Summon a Fusion Dreadmane that fiercely strikes the enemy, dealing 29.00%+58 Fusion DMG.\nCD: 8s",
+              "Summon a Fusion Dreadmane that fiercely strikes the enemy, dealing 32.00%+64 Fusion DMG.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.2
+              ],
+              [
+                0.23
+              ],
+              [
+                0.26
+              ],
+              [
+                0.29
+              ],
+              [
+                0.32
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Fusion Dreadmane that fiercely strikes the enemy, dealing 20.00%+40 Fusion DMG.\nCD: 8s · Summon a Fusion Dreadmane that fiercely strikes the enemy, dealing 23.00%+46 Fusion DMG.\nCD: 8s · Summon a Fusion Dreadmane that fiercely strikes the enemy, dealing 26.00%+52 Fusion DMG.\nCD: 8s · Summon a Fusion Dreadmane that fiercely strikes the enemy, dealing 29.00%+58 Fusion DMG.\nCD: 8s · Summon a Fusion Dreadmane that fiercely strikes the enemy, dealing 32.00%+64 Fusion DMG.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

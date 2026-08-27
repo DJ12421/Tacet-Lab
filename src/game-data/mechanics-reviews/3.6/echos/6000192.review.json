@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000192",
+  "entityName": "Nameless Explorer",
+  "sourceFingerprint": "d111cbb8f62508489995c3e9362e535e12360882d0c7f55694d0ada4ff5c7ec5",
+  "reviewedAt": "2026-08-26T11:44:25.107Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "afdf5f5bdd97e38bd4a33ebcdcc2bd5a311d86eb4e1502da1502d046e8154634",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000192:skill",
+            "name": "Nameless Explorer - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon Nameless Explorer to attack enemies along its path, dealing 152.00% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s.",
+              "Summon Nameless Explorer to attack enemies along its path, dealing 182.40% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s.",
+              "Summon Nameless Explorer to attack enemies along its path, dealing 212.80% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s.",
+              "Summon Nameless Explorer to attack enemies along its path, dealing 243.20% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s.",
+              "Summon Nameless Explorer to attack enemies along its path, dealing 273.60% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.52,
+                0.12,
+                0.2
+              ],
+              [
+                1.824,
+                0.12,
+                0.2
+              ],
+              [
+                2.128,
+                0.12,
+                0.2
+              ],
+              [
+                2.432,
+                0.12,
+                0.2
+              ],
+              [
+                2.736,
+                0.12,
+                0.2
+              ]
+            ],
+            "count": 3,
+            "sourceText": "Summon Nameless Explorer to attack enemies along its path, dealing 152.00% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s. · Summon Nameless Explorer to attack enemies along its path, dealing 182.40% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s. · Summon Nameless Explorer to attack enemies along its path, dealing 212.80% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s. · Summon Nameless Explorer to attack enemies along its path, dealing 243.20% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s. · Summon Nameless Explorer to attack enemies along its path, dealing 273.60% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "cf7f827be67d1bd238368ab6ac3d0fb09ef7e7cfe74338980dc9ffbb38d84437",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000192:effect:0",
+            "sourceName": "Nameless Explorer",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 20.00% Echo Skill DMG Bonus.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 12
+                },
+                {
+                  "stat": "echoDamage",
+                  "operation": "addPercent",
+                  "value": 20
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

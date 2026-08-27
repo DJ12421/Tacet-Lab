@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390077022",
+  "entityName": "Flautist",
+  "sourceFingerprint": "d12e8fb4fccf5356c4f14fe6f93f5d96f924be78b223d60eb614f8b4e0610a60",
+  "reviewedAt": "2026-08-26T11:44:24.831Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "c360e83a4a58fe204e0daf8a7c2ff23667b3972b41e59cb56adaa98f9f8a8e12",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390077022:skill",
+            "name": "Flautist - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Flautist, continuously emitting Electro lasers, dealing 33.30% Electro DMG for a total of 10 times. Gain 1 Concerto Energy every time a hit lands.\nCD: 15s",
+              "Transform into Flautist, continuously emitting Electro lasers, dealing 38.30% Electro DMG for a total of 10 times. Gain 1 Concerto Energy every time a hit lands.\nCD: 15s",
+              "Transform into Flautist, continuously emitting Electro lasers, dealing 43.29% Electro DMG for a total of 10 times. Gain 1 Concerto Energy every time a hit lands.\nCD: 15s",
+              "Transform into Flautist, continuously emitting Electro lasers, dealing 48.29% Electro DMG for a total of 10 times. Gain 1 Concerto Energy every time a hit lands.\nCD: 15s",
+              "Transform into Flautist, continuously emitting Electro lasers, dealing 53.28% Electro DMG for a total of 10 times. Gain 1 Concerto Energy every time a hit lands.\nCD: 15s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.33299999999999996
+              ],
+              [
+                0.38299999999999995
+              ],
+              [
+                0.4329
+              ],
+              [
+                0.4829
+              ],
+              [
+                0.5328
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Transform into Flautist, continuously emitting Electro lasers, dealing 33.30% Electro DMG for a total of 10 times. Gain 1 Concerto Energy every time a hit lands.\nCD: 15s · Transform into Flautist, continuously emitting Electro lasers, dealing 38.30% Electro DMG for a total of 10 times. Gain 1 Concerto Energy every time a hit lands.\nCD: 15s · Transform into Flautist, continuously emitting Electro lasers, dealing 43.29% Electro DMG for a total of 10 times. Gain 1 Concerto Energy every time a hit lands.\nCD: 15s · Transform into Flautist, continuously emitting Electro lasers, dealing 48.29% Electro DMG for a total of 10 times. Gain 1 Concerto Energy every time a hit lands.\nCD: 15s · Transform into Flautist, continuously emitting Electro lasers, dealing 53.28% Electro DMG for a total of 10 times. Gain 1 Concerto Energy every time a hit lands.\nCD: 15s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "b4d4cd55ec426c0318d38c078bcaab6013da9081a37f06a31fcc509cd0e23a27",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:390077022:effect:0",
+            "sourceName": "Flautist",
+            "sourceType": "echo",
+            "text": "Gain 1 Concerto Energy every time a hit lands.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

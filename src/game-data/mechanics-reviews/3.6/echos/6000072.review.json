@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000072",
+  "entityName": "Chest Mimic",
+  "sourceFingerprint": "67ec9f0b559b09f59bbd004c846dc08a5cf069319ab7aae4e9e5a9c2d01e6d22",
+  "reviewedAt": "2026-08-26T11:44:24.925Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "892937d007f5de3bd096ed71b977a186dd369333abe540b496dbc3ef12439a6b",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000072:skill",
+            "name": "Chest Mimic - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Chest Mimic to attack enemies with 3 consecutive strikes, each dealing 35.66% Spectro DMG.\nCD: 15s.",
+              "Summon a Chest Mimic to attack enemies with 3 consecutive strikes, each dealing 42.79% Spectro DMG.\nCD: 15s.",
+              "Summon a Chest Mimic to attack enemies with 3 consecutive strikes, each dealing 49.92% Spectro DMG.\nCD: 15s.",
+              "Summon a Chest Mimic to attack enemies with 3 consecutive strikes, each dealing 57.06% Spectro DMG.\nCD: 15s.",
+              "Summon a Chest Mimic to attack enemies with 3 consecutive strikes, each dealing 64.19% Spectro DMG.\nCD: 15s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.3566
+              ],
+              [
+                0.4279
+              ],
+              [
+                0.49920000000000003
+              ],
+              [
+                0.5706
+              ],
+              [
+                0.6419
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Chest Mimic to attack enemies with 3 consecutive strikes, each dealing 35.66% Spectro DMG.\nCD: 15s. · Summon a Chest Mimic to attack enemies with 3 consecutive strikes, each dealing 42.79% Spectro DMG.\nCD: 15s. · Summon a Chest Mimic to attack enemies with 3 consecutive strikes, each dealing 49.92% Spectro DMG.\nCD: 15s. · Summon a Chest Mimic to attack enemies with 3 consecutive strikes, each dealing 57.06% Spectro DMG.\nCD: 15s. · Summon a Chest Mimic to attack enemies with 3 consecutive strikes, each dealing 64.19% Spectro DMG.\nCD: 15s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

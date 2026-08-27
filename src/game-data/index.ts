@@ -11,7 +11,7 @@ export {
 export {
   characterConditionCard, characterConditionCatalogKey, characterConditionId, characterConditionInherentSkillIndex, characterConditionModeId,
   characterConditionModes, characterConditionRequiresToggle, characterConditionStackId, characterConditions, conditionTargetsAttack,
-  characterConditionProvenance,
+  characterConditionProvenance, legacyCharacterConditionId, legacyCharacterConditionModeId,
   type CharacterCondition, type CharacterConditionModifier, type CharacterSkillCardKey
 } from './character-conditions'
 import { generatedSonataCatalog } from './sonatas.generated'

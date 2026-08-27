@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000181",
+  "entityName": "Flora Reindeer",
+  "sourceFingerprint": "ca74460d6a148daefba25af8e6310eb9b5558fba0fa42b552397bad999bde9b4",
+  "reviewedAt": "2026-08-26T11:44:25.085Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "18501fff6d925f9e424623e2799e6e5f1358d5120b5e4a395084ca4e2291c4c7",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000181:skill",
+            "name": "Flora Reindeer - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Flora Reindeer to attack enemies within a large range, dealing 107.00% Aero DMG.\nCD: 15s.",
+              "Summon a Flora Reindeer to attack enemies within a large range, dealing 128.40% Aero DMG.\nCD: 15s.",
+              "Summon a Flora Reindeer to attack enemies within a large range, dealing 149.80% Aero DMG.\nCD: 15s.",
+              "Summon a Flora Reindeer to attack enemies within a large range, dealing 171.20% Aero DMG.\nCD: 15s.",
+              "Summon a Flora Reindeer to attack enemies within a large range, dealing 192.60% Aero DMG.\nCD: 15s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.07
+              ],
+              [
+                1.284
+              ],
+              [
+                1.4980000000000002
+              ],
+              [
+                1.712
+              ],
+              [
+                1.926
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Flora Reindeer to attack enemies within a large range, dealing 107.00% Aero DMG.\nCD: 15s. · Summon a Flora Reindeer to attack enemies within a large range, dealing 128.40% Aero DMG.\nCD: 15s. · Summon a Flora Reindeer to attack enemies within a large range, dealing 149.80% Aero DMG.\nCD: 15s. · Summon a Flora Reindeer to attack enemies within a large range, dealing 171.20% Aero DMG.\nCD: 15s. · Summon a Flora Reindeer to attack enemies within a large range, dealing 192.60% Aero DMG.\nCD: 15s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

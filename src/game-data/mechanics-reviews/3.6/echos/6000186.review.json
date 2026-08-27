@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000186",
+  "entityName": "Sabercat Prowler",
+  "sourceFingerprint": "f270bab4c4ffb97302185d10a42f4635110edd5841d581b1db6fd8c2fd616f10",
+  "reviewedAt": "2026-08-26T11:44:25.094Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "0535187b97a1a36dc3c934d2bee73bda07821cd10c1e0356056be3af3c6f6753",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000186:skill",
+            "name": "Sabercat Prowler - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Sabercat Prowler to fire beams at enemies, dealing 107.00% Havoc DMG.\nCD: 15s.",
+              "Summon a Sabercat Prowler to fire beams at enemies, dealing 128.40% Havoc DMG.\nCD: 15s.",
+              "Summon a Sabercat Prowler to fire beams at enemies, dealing 149.80% Havoc DMG.\nCD: 15s.",
+              "Summon a Sabercat Prowler to fire beams at enemies, dealing 171.20% Havoc DMG.\nCD: 15s.",
+              "Summon a Sabercat Prowler to fire beams at enemies, dealing 192.60% Havoc DMG.\nCD: 15s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.07
+              ],
+              [
+                1.284
+              ],
+              [
+                1.4980000000000002
+              ],
+              [
+                1.712
+              ],
+              [
+                1.926
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Sabercat Prowler to fire beams at enemies, dealing 107.00% Havoc DMG.\nCD: 15s. · Summon a Sabercat Prowler to fire beams at enemies, dealing 128.40% Havoc DMG.\nCD: 15s. · Summon a Sabercat Prowler to fire beams at enemies, dealing 149.80% Havoc DMG.\nCD: 15s. · Summon a Sabercat Prowler to fire beams at enemies, dealing 171.20% Havoc DMG.\nCD: 15s. · Summon a Sabercat Prowler to fire beams at enemies, dealing 192.60% Havoc DMG.\nCD: 15s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

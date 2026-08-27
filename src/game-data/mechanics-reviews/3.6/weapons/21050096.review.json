@@ -1,0 +1,364 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21050096",
+  "entityName": "Firstlight's Herald",
+  "sourceFingerprint": "efa7b4ed7d30d5650ece745ea8a3036136bb55a33f39e10554a4c8d5f0338169",
+  "reviewedAt": "2026-08-26T11:44:24.530Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "b57e831341bd2c48828332fb9046aecd44fe211f634ca9b98098ec2ab16892c1",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050096:effect:0",
+            "sourceName": "Spring Wreath",
+            "text": "Increases Max HP by 12%.",
+            "refinementTexts": [
+              "Increases Max HP by 12%.",
+              "Increases Max HP by 15%.",
+              "Increases Max HP by 18%.",
+              "Increases Max HP by 21%.",
+              "Increases Max HP by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "hpPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "hpPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "hpPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "hpPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "hpPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "hpPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21050096:effect:1",
+            "sourceName": "Spring Wreath",
+            "text": "Casting Resonance Liberation restores 8 points of Concerto Energy, triggered once every 20s.",
+            "refinementTexts": [
+              "Casting Resonance Liberation restores 8 points of Concerto Energy, triggered once every 20s.",
+              "Casting Resonance Liberation restores 10 points of Concerto Energy, triggered once every 20s.",
+              "Casting Resonance Liberation restores 12 points of Concerto Energy, triggered once every 20s.",
+              "Casting Resonance Liberation restores 14 points of Concerto Energy, triggered once every 20s.",
+              "Casting Resonance Liberation restores 16 points of Concerto Energy, triggered once every 20s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Liberation",
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21050096:effect:2",
+            "sourceName": "Spring Wreath",
+            "text": "Inflicting Glacio Chafe grants Snow Taint for 6s.",
+            "refinementTexts": [
+              "Inflicting Glacio Chafe grants Snow Taint for 6s.",
+              "Inflicting Glacio Chafe grants Snow Taint for 6s.",
+              "Inflicting Glacio Chafe grants Snow Taint for 6s.",
+              "Inflicting Glacio Chafe grants Snow Taint for 6s.",
+              "Inflicting Glacio Chafe grants Snow Taint for 6s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 6,
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21050096:effect:3",
+            "sourceName": "Spring Wreath",
+            "text": "Applying healing grants Ripples for 6s.",
+            "refinementTexts": [
+              "Applying healing grants Ripples for 6s.",
+              "Applying healing grants Ripples for 6s.",
+              "Applying healing grants Ripples for 6s.",
+              "Applying healing grants Ripples for 6s.",
+              "Applying healing grants Ripples for 6s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 6,
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21050096:effect:4",
+            "sourceName": "Spring Wreath",
+            "text": "If the wielder has done both while on the field, the next Outro Skill grants both effects for 6s.",
+            "refinementTexts": [
+              "If the wielder has done both while on the field, the next Outro Skill grants both effects for 6s.",
+              "If the wielder has done both while on the field, the next Outro Skill grants both effects for 6s.",
+              "If the wielder has done both while on the field, the next Outro Skill grants both effects for 6s.",
+              "If the wielder has done both while on the field, the next Outro Skill grants both effects for 6s.",
+              "If the wielder has done both while on the field, the next Outro Skill grants both effects for 6s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 6,
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21050096:effect:5",
+            "sourceName": "Spring Wreath",
+            "text": "When the wielder has both Snow Taint and Ripples, the ATK of all nearby Resonators in the team is increased by 20%.",
+            "refinementTexts": [
+              "When the wielder has both Snow Taint and Ripples, the ATK of all nearby Resonators in the team is increased by 20%.",
+              "When the wielder has both Snow Taint and Ripples, the ATK of all nearby Resonators in the team is increased by 25%.",
+              "When the wielder has both Snow Taint and Ripples, the ATK of all nearby Resonators in the team is increased by 30%.",
+              "When the wielder has both Snow Taint and Ripples, the ATK of all nearby Resonators in the team is increased by 35%.",
+              "When the wielder has both Snow Taint and Ripples, the ATK of all nearby Resonators in the team is increased by 40%."
+            ],
+            "parsed": {
+              "scope": "team",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 20
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "team",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "team",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 25
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "team",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "team",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 35
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "team",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 40
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21050096:effect:6",
+            "sourceName": "Spring Wreath",
+            "text": "Effects of the same name do not stack.",
+            "refinementTexts": [
+              "Effects of the same name do not stack.",
+              "Effects of the same name do not stack.",
+              "Effects of the same name do not stack.",
+              "Effects of the same name do not stack.",
+              "Effects of the same name do not stack."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence.",
+                "Stack maximum was not explicit and requires review."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

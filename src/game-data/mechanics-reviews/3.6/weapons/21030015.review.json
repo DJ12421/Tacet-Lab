@@ -1,0 +1,256 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21030015",
+  "entityName": "Static Mist",
+  "sourceFingerprint": "c6c264074f8cb3e8fa895bb7a153475893d58be4476f61c3e28ac413fd4a4e55",
+  "reviewedAt": "2026-08-26T11:44:24.087Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "1d9ed809e697bc49a948d49bc090589ac04e4bef1684dd7c1226746155c8017b",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21030015:effect:0",
+            "sourceName": "Stormy Resolution",
+            "text": "Increases Energy Regen by 12.8%.",
+            "refinementTexts": [
+              "Increases Energy Regen by 12.8%.",
+              "Increases Energy Regen by 16%.",
+              "Increases Energy Regen by 19.2%.",
+              "Increases Energy Regen by 22.4%.",
+              "Increases Energy Regen by 25.6%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "energyRegen",
+                  "operation": "addPercent",
+                  "value": 12.8
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "energyRegen",
+                    "operation": "addPercent",
+                    "value": 12.8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "energyRegen",
+                    "operation": "addPercent",
+                    "value": 16
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "energyRegen",
+                    "operation": "addPercent",
+                    "value": 19.2
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "energyRegen",
+                    "operation": "addPercent",
+                    "value": 22.4
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "energyRegen",
+                    "operation": "addPercent",
+                    "value": 25.6
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21030015:effect:1",
+            "sourceName": "Stormy Resolution",
+            "text": "Incoming Resonator's ATK is increased by 10% for 14s, stackable for up to 1 times after the wielder casts Outro Skill.",
+            "refinementTexts": [
+              "Incoming Resonator's ATK is increased by 10% for 14s, stackable for up to 1 times after the wielder casts Outro Skill.",
+              "Incoming Resonator's ATK is increased by 12.5% for 14s, stackable for up to 1 times after the wielder casts Outro Skill.",
+              "Incoming Resonator's ATK is increased by 15% for 14s, stackable for up to 1 times after the wielder casts Outro Skill.",
+              "Incoming Resonator's ATK is increased by 17.5% for 14s, stackable for up to 1 times after the wielder casts Outro Skill.",
+              "Incoming Resonator's ATK is increased by 20% for 14s, stackable for up to 1 times after the wielder casts Outro Skill."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "trigger": "Outro Skill",
+              "durationSeconds": 14,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "trigger": "Outro Skill",
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "trigger": "Outro Skill",
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "trigger": "Outro Skill",
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "trigger": "Outro Skill",
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 17.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "trigger": "Outro Skill",
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

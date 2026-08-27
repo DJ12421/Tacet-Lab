@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390070071",
+  "entityName": "Aero Predator",
+  "sourceFingerprint": "556ed07e7193de4f0eaaf2d199bbe3888745373285a7a599d6cf8a63599c960d",
+  "reviewedAt": "2026-08-26T11:44:24.779Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "33e20c4e4a2a150fd25998f1347459018fab52dc71fc753d9b6a3418978c39ae",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390070071:skill",
+            "name": "Aero Predator - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon an Aero Predator that throws a dart forward. The dart will bounce between enemies up to three times, dealing 18.00% Aero DMG each time it hits.\nCD: 8s",
+              "Summon an Aero Predator that throws a dart forward. The dart will bounce between enemies up to three times, dealing 20.70% Aero DMG each time it hits.\nCD: 8s",
+              "Summon an Aero Predator that throws a dart forward. The dart will bounce between enemies up to three times, dealing 23.40% Aero DMG each time it hits.\nCD: 8s",
+              "Summon an Aero Predator that throws a dart forward. The dart will bounce between enemies up to three times, dealing 26.10% Aero DMG each time it hits.\nCD: 8s",
+              "Summon an Aero Predator that throws a dart forward. The dart will bounce between enemies up to three times, dealing 28.80% Aero DMG each time it hits.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.18
+              ],
+              [
+                0.207
+              ],
+              [
+                0.23399999999999999
+              ],
+              [
+                0.261
+              ],
+              [
+                0.28800000000000003
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon an Aero Predator that throws a dart forward. The dart will bounce between enemies up to three times, dealing 18.00% Aero DMG each time it hits.\nCD: 8s · Summon an Aero Predator that throws a dart forward. The dart will bounce between enemies up to three times, dealing 20.70% Aero DMG each time it hits.\nCD: 8s · Summon an Aero Predator that throws a dart forward. The dart will bounce between enemies up to three times, dealing 23.40% Aero DMG each time it hits.\nCD: 8s · Summon an Aero Predator that throws a dart forward. The dart will bounce between enemies up to three times, dealing 26.10% Aero DMG each time it hits.\nCD: 8s · Summon an Aero Predator that throws a dart forward. The dart will bounce between enemies up to three times, dealing 28.80% Aero DMG each time it hits.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000047",
+  "entityName": "Chirpuff",
+  "sourceFingerprint": "488b33740a4b50d6db8ea20c116b2b3428582dd7abc718670123d703d927b78c",
+  "reviewedAt": "2026-08-26T11:44:24.875Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "e8b5f4a012dbc8ecb8573147b6aefd37aed9742ada528c35f0f49b21fcb197ba",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000047:skill",
+            "name": "Chirpuff - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Chirpuff that self-inflates and blasts a powerful gust of wind forward 3 times. Each blast inflicts 24.00% Aero DMG and pushes enemies backwards.\nCD: 8s",
+              "Summon a Chirpuff that self-inflates and blasts a powerful gust of wind forward 3 times. Each blast inflicts 27.60% Aero DMG and pushes enemies backwards.\nCD: 8s",
+              "Summon a Chirpuff that self-inflates and blasts a powerful gust of wind forward 3 times. Each blast inflicts 31.20% Aero DMG and pushes enemies backwards.\nCD: 8s",
+              "Summon a Chirpuff that self-inflates and blasts a powerful gust of wind forward 3 times. Each blast inflicts 34.80% Aero DMG and pushes enemies backwards.\nCD: 8s",
+              "Summon a Chirpuff that self-inflates and blasts a powerful gust of wind forward 3 times. Each blast inflicts 38.40% Aero DMG and pushes enemies backwards.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.24
+              ],
+              [
+                0.276
+              ],
+              [
+                0.312
+              ],
+              [
+                0.348
+              ],
+              [
+                0.384
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Chirpuff that self-inflates and blasts a powerful gust of wind forward 3 times. Each blast inflicts 24.00% Aero DMG and pushes enemies backwards.\nCD: 8s · Summon a Chirpuff that self-inflates and blasts a powerful gust of wind forward 3 times. Each blast inflicts 27.60% Aero DMG and pushes enemies backwards.\nCD: 8s · Summon a Chirpuff that self-inflates and blasts a powerful gust of wind forward 3 times. Each blast inflicts 31.20% Aero DMG and pushes enemies backwards.\nCD: 8s · Summon a Chirpuff that self-inflates and blasts a powerful gust of wind forward 3 times. Each blast inflicts 34.80% Aero DMG and pushes enemies backwards.\nCD: 8s · Summon a Chirpuff that self-inflates and blasts a powerful gust of wind forward 3 times. Each blast inflicts 38.40% Aero DMG and pushes enemies backwards.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

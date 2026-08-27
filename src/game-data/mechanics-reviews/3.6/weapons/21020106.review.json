@@ -1,0 +1,397 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21020106",
+  "entityName": "Glint of Clouds",
+  "sourceFingerprint": "2f9bedd0e020e650bb769fc4486e99afb60473f37aaee8bccb74fb27afd5c50b",
+  "reviewedAt": "2026-08-26T11:44:24.076Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "429bfd9b48c5c8db693fc1846b08ccebc471b763f8414496bd5b2326ad4e7e32",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020106:effect:0",
+            "sourceName": "Evil's Scourge",
+            "text": "ATK is increased by 12%.",
+            "refinementTexts": [
+              "ATK is increased by 12%.",
+              "ATK is increased by 15%.",
+              "ATK is increased by 18%.",
+              "ATK is increased by 21%.",
+              "ATK is increased by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21020106:effect:1",
+            "sourceName": "Evil's Scourge",
+            "text": "Inflicting Tune Strain - Shifting grants 11.2% Aero DMG Bonus for 2s, stacking up to 5 times. This effect can be triggered once every 0.5s.",
+            "refinementTexts": [
+              "Inflicting Tune Strain - Shifting grants 11.2% Aero DMG Bonus for 2s, stacking up to 5 times. This effect can be triggered once every 0.5s.",
+              "Inflicting Tune Strain - Shifting grants 14% Aero DMG Bonus for 2s, stacking up to 5 times. This effect can be triggered once every 0.5s.",
+              "Inflicting Tune Strain - Shifting grants 16.8% Aero DMG Bonus for 2s, stacking up to 5 times. This effect can be triggered once every 0.5s.",
+              "Inflicting Tune Strain - Shifting grants 19.6% Aero DMG Bonus for 2s, stacking up to 5 times. This effect can be triggered once every 0.5s.",
+              "Inflicting Tune Strain - Shifting grants 22.4% Aero DMG Bonus for 2s, stacking up to 5 times. This effect can be triggered once every 0.5s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 5
+              },
+              "durationSeconds": 2,
+              "modifiers": [
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 11.2
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "durationSeconds": 2,
+                "modifiers": [
+                  {
+                    "stat": "Aero",
+                    "operation": "addPercent",
+                    "value": 11.2
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "durationSeconds": 2,
+                "modifiers": [
+                  {
+                    "stat": "Aero",
+                    "operation": "addPercent",
+                    "value": 14
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "durationSeconds": 2,
+                "modifiers": [
+                  {
+                    "stat": "Aero",
+                    "operation": "addPercent",
+                    "value": 16.8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "durationSeconds": 2,
+                "modifiers": [
+                  {
+                    "stat": "Aero",
+                    "operation": "addPercent",
+                    "value": 19.6
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "durationSeconds": 2,
+                "modifiers": [
+                  {
+                    "stat": "Aero",
+                    "operation": "addPercent",
+                    "value": 22.4
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21020106:effect:2",
+            "sourceName": "Evil's Scourge",
+            "text": "Upon reaching the max stack limit, gain the following effects:",
+            "refinementTexts": [
+              "Upon reaching the max stack limit, gain the following effects:",
+              "Upon reaching the max stack limit, gain the following effects:",
+              "Upon reaching the max stack limit, gain the following effects:",
+              "Upon reaching the max stack limit, gain the following effects:",
+              "Upon reaching the max stack limit, gain the following effects:"
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence.",
+                "Stack maximum was not explicit and requires review."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21020106:effect:3",
+            "sourceName": "Evil's Scourge",
+            "text": "- This Aero DMG Bonus effect's duration is extended to 30s.",
+            "refinementTexts": [
+              "- This Aero DMG Bonus effect's duration is extended to 30s.",
+              "- This Aero DMG Bonus effect's duration is extended to 30s.",
+              "- This Aero DMG Bonus effect's duration is extended to 30s.",
+              "- This Aero DMG Bonus effect's duration is extended to 30s.",
+              "- This Aero DMG Bonus effect's duration is extended to 30s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21020106:effect:4",
+            "sourceName": "Evil's Scourge",
+            "text": "- Aero DMG ignores 10% of the target's DEF during this effect.",
+            "refinementTexts": [
+              "- Aero DMG ignores 10% of the target's DEF during this effect.",
+              "- Aero DMG ignores 12.5% of the target's DEF during this effect.",
+              "- Aero DMG ignores 15% of the target's DEF during this effect.",
+              "- Aero DMG ignores 17.5% of the target's DEF during this effect.",
+              "- Aero DMG ignores 20% of the target's DEF during this effect."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "DEFIgnore:Aero",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "DEFIgnore:Aero",
+                    "operation": "addPercent",
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "DEFIgnore:Aero",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "DEFIgnore:Aero",
+                    "operation": "addPercent",
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

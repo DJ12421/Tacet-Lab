@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000115",
+  "entityName": "Nightmare: Hecate",
+  "sourceFingerprint": "dfdfc32633f30bedd84238bc336e1466b232b2f99f074532a6b881c590377b15",
+  "reviewedAt": "2026-08-26T11:44:25.022Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "94ae9718717f646581bb4f29ebd6e01dc3295818ccf8feb66cd6e390b593b43e",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000115:skill",
+            "name": "Nightmare: Hecate - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Nightmare: Hecate. Leap up and smash down, dealing 3 stages of damage, each dealing Havoc DMG equal to 84.66% of her ATK.\nThe Resonator with the Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 25s",
+              "Transform into Nightmare: Hecate. Leap up and smash down, dealing 3 stages of damage, each dealing Havoc DMG equal to 101.59% of her ATK.\nThe Resonator with the Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 25s",
+              "Transform into Nightmare: Hecate. Leap up and smash down, dealing 3 stages of damage, each dealing Havoc DMG equal to 118.52% of her ATK.\nThe Resonator with the Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 25s",
+              "Transform into Nightmare: Hecate. Leap up and smash down, dealing 3 stages of damage, each dealing Havoc DMG equal to 135.46% of her ATK.\nThe Resonator with the Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 25s",
+              "Transform into Nightmare: Hecate. Leap up and smash down, dealing 3 stages of damage, each dealing Havoc DMG equal to 152.39% of her ATK.\nThe Resonator with the Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 25s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.8466,
+                0.12,
+                0.2
+              ],
+              [
+                1.0159,
+                0.12,
+                0.2
+              ],
+              [
+                1.1852,
+                0.12,
+                0.2
+              ],
+              [
+                1.3546,
+                0.12,
+                0.2
+              ],
+              [
+                1.5238999999999998,
+                0.12,
+                0.2
+              ]
+            ],
+            "count": 3,
+            "sourceText": "Transform into Nightmare: Hecate. Leap up and smash down, dealing 3 stages of damage, each dealing Havoc DMG equal to 84.66% of her ATK.\nThe Resonator with the Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 25s · Transform into Nightmare: Hecate. Leap up and smash down, dealing 3 stages of damage, each dealing Havoc DMG equal to 101.59% of her ATK.\nThe Resonator with the Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 25s · Transform into Nightmare: Hecate. Leap up and smash down, dealing 3 stages of damage, each dealing Havoc DMG equal to 118.52% of her ATK.\nThe Resonator with the Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 25s · Transform into Nightmare: Hecate. Leap up and smash down, dealing 3 stages of damage, each dealing Havoc DMG equal to 135.46% of her ATK.\nThe Resonator with the Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 25s · Transform into Nightmare: Hecate. Leap up and smash down, dealing 3 stages of damage, each dealing Havoc DMG equal to 152.39% of her ATK.\nThe Resonator with the Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 25s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "91b726ccb80d0f34cf49f9161b27b6a3f7aba57ff461b0264d07011a191df386",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000115:effect:0",
+            "sourceName": "Nightmare: Hecate",
+            "sourceType": "echo",
+            "text": "The Resonator with the Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 20.00% Echo Skill DMG Bonus.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "Havoc",
+                  "operation": "addPercent",
+                  "value": 12
+                },
+                {
+                  "stat": "echoDamage",
+                  "operation": "addPercent",
+                  "value": 20
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

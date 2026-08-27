@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21020074",
+  "entityName": "Lumingloss",
+  "sourceFingerprint": "f26dcba4d56f0bda1662216a0336a8a4c8264847340e74b6b5063a45aefc6eae",
+  "reviewedAt": "2026-08-26T11:44:24.037Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "b410879c3a92435ea8b5d45cfc3761ce6920188bd36423b908720bf00b347090",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020074:effect:0",
+            "sourceName": "Pale Gale",
+            "text": "When Resonance Skill is cast, increases Basic Attack DMG Bonus and Heavy Attack DMG Bonus by 20%, stacking up to 1 time(s). This effect lasts for 10s and can be triggered 1 time(s) every 1s.",
+            "refinementTexts": [
+              "When Resonance Skill is cast, increases Basic Attack DMG Bonus and Heavy Attack DMG Bonus by 20%, stacking up to 1 time(s). This effect lasts for 10s and can be triggered 1 time(s) every 1s.",
+              "When Resonance Skill is cast, increases Basic Attack DMG Bonus and Heavy Attack DMG Bonus by 31%, stacking up to 1 time(s). This effect lasts for 10s and can be triggered 1 time(s) every 1s.",
+              "When Resonance Skill is cast, increases Basic Attack DMG Bonus and Heavy Attack DMG Bonus by 42%, stacking up to 1 time(s). This effect lasts for 10s and can be triggered 1 time(s) every 1s.",
+              "When Resonance Skill is cast, increases Basic Attack DMG Bonus and Heavy Attack DMG Bonus by 53%, stacking up to 1 time(s). This effect lasts for 10s and can be triggered 1 time(s) every 1s.",
+              "When Resonance Skill is cast, increases Basic Attack DMG Bonus and Heavy Attack DMG Bonus by 64%, stacking up to 1 time(s). This effect lasts for 10s and can be triggered 1 time(s) every 1s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "trigger": "Resonance Skill",
+              "durationSeconds": 10,
+              "modifiers": [
+                {
+                  "stat": "basicDamage",
+                  "operation": "addPercent",
+                  "value": 20
+                },
+                {
+                  "stat": "heavyDamage",
+                  "operation": "addPercent",
+                  "value": 20
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 20
+                  },
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 31
+                  },
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 31
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 42
+                  },
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 42
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 53
+                  },
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 53
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 64
+                  },
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 64
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

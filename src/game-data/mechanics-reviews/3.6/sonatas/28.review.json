@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "sonata",
+  "entityId": "28",
+  "entityName": "Chromatic Foam",
+  "sourceFingerprint": "0063dc3ef446013912bdb67d8a75c37098801bc8bf4c870fb3e7db9e7b5e2291",
+  "reviewedAt": "2026-08-26T11:44:24.663Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "4c80a03a0b5de58fbb2f70d9b75c50c40ceef166393703f4a92edeae891bc38a",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:28:2:0",
+            "sourceName": "Chromatic Foam",
+            "text": "Fusion DMG + 10%",
+            "refinementTexts": [
+              "Fusion DMG + 10%"
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:28:5:0",
+            "sourceName": "Chromatic Foam",
+            "text": "When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain 10% Fusion DMG Bonus for 15 s.",
+            "refinementTexts": [
+              "When the Resonator inflicts Fusion Burst on the enemies, they gain the following effects: Gain 10% Fusion DMG Bonus for 15 s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "Fusion",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:28:5:1",
+            "sourceName": "Chromatic Foam",
+            "text": "While this effect is active, casting an Outro Skill grants the incoming Resonator 25% Fusion DMG Bonus for 15s.",
+            "refinementTexts": [
+              "While this effect is active, casting an Outro Skill grants the incoming Resonator 25% Fusion DMG Bonus for 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "Fusion",
+                  "operation": "addPercent",
+                  "value": 25
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

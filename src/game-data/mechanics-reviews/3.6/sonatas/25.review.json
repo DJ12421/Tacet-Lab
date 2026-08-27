@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "sonata",
+  "entityId": "25",
+  "entityName": "Halo of Starry Radiance",
+  "sourceFingerprint": "18a827bcc49bbdd66e36ae6721de938349cdee9607668596511acf732347da0a",
+  "reviewedAt": "2026-08-26T11:44:24.652Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "3e77a574f874a1ef5787b5f32c5377912215932a7c5c6000aa7b64e91c2bf124",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:25:2:0",
+            "sourceName": "Halo of Starry Radiance",
+            "text": "Healing Bonus + 10%.",
+            "refinementTexts": [
+              "Healing Bonus + 10%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "healingBonus",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:25:5:0",
+            "sourceName": "Halo of Starry Radiance",
+            "text": "When healing a Resonator in the team, every 1% of Off-Tune Buildup Rate grants a 0.2% ATK increase to all Resonators in the team for 4s, up to 25%.",
+            "refinementTexts": [
+              "When healing a Resonator in the team, every 1% of Off-Tune Buildup Rate grants a 0.2% ATK increase to all Resonators in the team for 4s, up to 25%."
+            ],
+            "parsed": {
+              "scope": "team",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 4,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 0.2
+                }
+              ],
+              "confidence": "review",
+              "warnings": [
+                "First-pass review: this text contains additional percentages; confirm that every calculator mechanic is represented."
+              ]
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:25:5:1",
+            "sourceName": "Halo of Starry Radiance",
+            "text": "Effects of the same name cannot be stacked.",
+            "refinementTexts": [
+              "Effects of the same name cannot be stacked."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

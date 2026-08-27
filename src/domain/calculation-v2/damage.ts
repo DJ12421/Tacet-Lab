@@ -1,5 +1,5 @@
 import type { DamageType, Element, FormulaResultMode } from '../types'
-import { calcDamage, calcFixedDamage, calcHeal, calcShield, calcTuneBreak } from './upstream-calculator'
+import { calcDamage, calcFixedDamage, calcHeal, calcShield, calcTuneBreak } from './formulas'
 import type {
   CalculationAttackDefinition,
   CalculationEffectAccumulator,
@@ -74,7 +74,7 @@ function trace(
     value,
     operation: attack.type,
     children: [
-      { id: `${attack.id}:formula`, label: 'WutheringTools-compatible formula', value: attack.talents['10'] ?? attack.talents['1'] ?? '0%', operation: 'talent', children: detailRows },
+      { id: `${attack.id}:formula`, label: 'Tacet Lab formula', value: attack.talents['10'] ?? attack.talents['1'] ?? '0%', operation: 'talent', children: detailRows },
       { id: `${attack.id}:effects`, label: 'Applied effects', value: effectRows.length, operation: 'effects', children: effectRows }
     ]
   }
@@ -186,25 +186,25 @@ function calculateAttackV2Internal(input: CalculateAttackV2Input, compact: boole
   const multiply = (adjustment?.motionValueMultiplier ?? 0) / 100
   const specialMultiply = (adjustment?.specialMotionValueMultiplier ?? 0) / 100
 
-  if (attack.type === 'healing') {
+  if (effectiveAttack.type === 'healing') {
     const raw = calcHeal(
       talent, scaling, accumulator.stats.healingBonus / 100, specificBonus / 100,
       add, multiply, specialMultiply, attack.count
     )
     return compact ? compactResultFromUpstream(attack, raw) : resultFromUpstream(attack, accumulator, raw)
   }
-  if (attack.type === 'shield') {
+  if (effectiveAttack.type === 'shield') {
     const raw = calcShield(
       talent, scaling, accumulator.stats.shieldBonus / 100, specificBonus / 100,
       add, multiply, attack.count
     )
     return compact ? compactResultFromUpstream(attack, raw) : resultFromUpstream(attack, accumulator, raw)
   }
-  if (attack.type === 'fixed') {
+  if (effectiveAttack.type === 'fixed') {
     const raw = calcFixedDamage(talent, attack.count)
     return compact ? compactResultFromUpstream(attack, raw, enemy.damageReduction) : resultFromUpstream(attack, accumulator, raw, enemy.damageReduction)
   }
-  if (attack.type === 'tuneBreak') {
+  if (effectiveAttack.type === 'tuneBreak') {
     const enemyClass = enemy.enemyClass === 'common' ? 'Common' : enemy.enemyClass === 'elite' ? 'Elite' : 'Overlord'
     const raw = calcTuneBreak(
       talent,

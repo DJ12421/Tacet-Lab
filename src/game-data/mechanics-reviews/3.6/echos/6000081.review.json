@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000081",
+  "entityName": "Cuddle Wuddle",
+  "sourceFingerprint": "79c7b222a49fd58e0a3b48545672e69cf58a97912d8af6a61d213ee6f21c84c6",
+  "reviewedAt": "2026-08-26T11:44:24.946Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "24c1bea7f45dbf37ba55859d9f9e0fd5172f8426554c921a921a80e303de1e3a",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000081:skill",
+            "name": "Cuddle Wuddle - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Cuddle Wuddle and attack enemies with 4 strikes dealing 26.10% Physical DMG and 1 strike dealing 69.60% Physical DMG.\nCD: 20s.",
+              "Transform into Cuddle Wuddle and attack enemies with 4 strikes dealing 31.32% Physical DMG and 1 strike dealing 83.52% Physical DMG.\nCD: 20s.",
+              "Transform into Cuddle Wuddle and attack enemies with 4 strikes dealing 36.54% Physical DMG and 1 strike dealing 97.44% Physical DMG.\nCD: 20s.",
+              "Transform into Cuddle Wuddle and attack enemies with 4 strikes dealing 41.76% Physical DMG and 1 strike dealing 111.36% Physical DMG.\nCD: 20s.",
+              "Transform into Cuddle Wuddle and attack enemies with 4 strikes dealing 46.98% Physical DMG and 1 strike dealing 125.28% Physical DMG.\nCD: 20s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.261,
+                0.696
+              ],
+              [
+                0.3132,
+                0.8351999999999999
+              ],
+              [
+                0.3654,
+                0.9743999999999999
+              ],
+              [
+                0.41759999999999997,
+                1.1136
+              ],
+              [
+                0.4698,
+                1.2528
+              ]
+            ],
+            "count": 2,
+            "sourceText": "Transform into Cuddle Wuddle and attack enemies with 4 strikes dealing 26.10% Physical DMG and 1 strike dealing 69.60% Physical DMG.\nCD: 20s. · Transform into Cuddle Wuddle and attack enemies with 4 strikes dealing 31.32% Physical DMG and 1 strike dealing 83.52% Physical DMG.\nCD: 20s. · Transform into Cuddle Wuddle and attack enemies with 4 strikes dealing 36.54% Physical DMG and 1 strike dealing 97.44% Physical DMG.\nCD: 20s. · Transform into Cuddle Wuddle and attack enemies with 4 strikes dealing 41.76% Physical DMG and 1 strike dealing 111.36% Physical DMG.\nCD: 20s. · Transform into Cuddle Wuddle and attack enemies with 4 strikes dealing 46.98% Physical DMG and 1 strike dealing 125.28% Physical DMG.\nCD: 20s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

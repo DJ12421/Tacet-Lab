@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21050084",
+  "entityName": "Fusion Accretion",
+  "sourceFingerprint": "b88de1233754f735d0ddc80ff3df92c028ade33b1e840053010ace38e0fffc4b",
+  "reviewedAt": "2026-08-26T11:44:24.517Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "a3003dc8f012a4f651f2c4aacea39f2cd5244f880849737c33f92913e84813ce",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050084:effect:0",
+            "sourceName": "Intergalactic Gaze",
+            "text": "Casting the Resonance Skill grants 6 Resonance Energy and increases ATK by 10%, lasting for 16s. This effect can be triggered once every 20s.",
+            "refinementTexts": [
+              "Casting the Resonance Skill grants 6 Resonance Energy and increases ATK by 10%, lasting for 16s. This effect can be triggered once every 20s.",
+              "Casting the Resonance Skill grants 7 Resonance Energy and increases ATK by 12.5%, lasting for 16s. This effect can be triggered once every 20s.",
+              "Casting the Resonance Skill grants 8 Resonance Energy and increases ATK by 15%, lasting for 16s. This effect can be triggered once every 20s.",
+              "Casting the Resonance Skill grants 9 Resonance Energy and increases ATK by 17.5%, lasting for 16s. This effect can be triggered once every 20s.",
+              "Casting the Resonance Skill grants 10 Resonance Energy and increases ATK by 20%, lasting for 16s. This effect can be triggered once every 20s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 16,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 16,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 16,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 16,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 16,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 17.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 16,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

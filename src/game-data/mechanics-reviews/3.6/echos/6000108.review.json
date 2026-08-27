@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000108",
+  "entityName": "Spectro Drake",
+  "sourceFingerprint": "c75206e803a2829bf5d70e5007dc421e46c69140cafb94efc16380e7e3a5c8f3",
+  "reviewedAt": "2026-08-26T11:44:25.004Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "223e2cbee5d1f46cbc84480d8c413a57cfd0c0ebeeda1462f04fb39e7247fc8c",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000108:skill",
+            "name": "Spectro Drake - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Spectro Drake to attack enemies, dealing 24.00% Spectro DMG 3 times.\nCD: 8s",
+              "Summon a Spectro Drake to attack enemies, dealing 28.80% Spectro DMG 3 times.\nCD: 8s",
+              "Summon a Spectro Drake to attack enemies, dealing 33.60% Spectro DMG 3 times.\nCD: 8s",
+              "Summon a Spectro Drake to attack enemies, dealing 38.40% Spectro DMG 3 times.\nCD: 8s",
+              "Summon a Spectro Drake to attack enemies, dealing 43.20% Spectro DMG 3 times.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.24
+              ],
+              [
+                0.28800000000000003
+              ],
+              [
+                0.336
+              ],
+              [
+                0.384
+              ],
+              [
+                0.43200000000000005
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Spectro Drake to attack enemies, dealing 24.00% Spectro DMG 3 times.\nCD: 8s · Summon a Spectro Drake to attack enemies, dealing 28.80% Spectro DMG 3 times.\nCD: 8s · Summon a Spectro Drake to attack enemies, dealing 33.60% Spectro DMG 3 times.\nCD: 8s · Summon a Spectro Drake to attack enemies, dealing 38.40% Spectro DMG 3 times.\nCD: 8s · Summon a Spectro Drake to attack enemies, dealing 43.20% Spectro DMG 3 times.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

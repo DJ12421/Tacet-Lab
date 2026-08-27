@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390070077",
+  "entityName": "Excarat",
+  "sourceFingerprint": "ad1c344dd5401f9d5c8f727d12361bff0e15a559f70f4080b9d27402f13c75f0",
+  "reviewedAt": "2026-08-26T11:44:24.796Z",
+  "sections": {
+    "skill": {
+      "status": "approved-empty",
+      "sourceFingerprint": "a31b11866e3e573ff2736c81f114785ee5386cf601941275ee347e359c4994d1",
+      "approvedData": {
+        "attacks": []
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

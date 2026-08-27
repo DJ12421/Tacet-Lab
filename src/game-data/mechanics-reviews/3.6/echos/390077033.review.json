@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390077033",
+  "entityName": "Havoc Dreadmane",
+  "sourceFingerprint": "48b6bbfb1da39c53f789ffb0213143ee118c4b02f6703f6275d6687fd1846091",
+  "reviewedAt": "2026-08-26T11:44:24.845Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "3ad352c7b75039b2df4f2b1b7f1ffd43645cf5f626b6d79665156e8f4744eab4",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390077033:skill",
+            "name": "Havoc Dreadmane - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into a Havoc Dreadmane to perform up to 2 tail strikes. Each strike deals 72.90% Havoc DMG and inflicts an additional instance of 48.60% Havoc DMG upon hitting the target.\nCD: 15s",
+              "Transform into a Havoc Dreadmane to perform up to 2 tail strikes. Each strike deals 83.84% Havoc DMG and inflicts an additional instance of 55.89% Havoc DMG upon hitting the target.\nCD: 15s",
+              "Transform into a Havoc Dreadmane to perform up to 2 tail strikes. Each strike deals 94.77% Havoc DMG and inflicts an additional instance of 63.18% Havoc DMG upon hitting the target.\nCD: 15s",
+              "Transform into a Havoc Dreadmane to perform up to 2 tail strikes. Each strike deals 105.71% Havoc DMG and inflicts an additional instance of 70.47% Havoc DMG upon hitting the target.\nCD: 15s",
+              "Transform into a Havoc Dreadmane to perform up to 2 tail strikes. Each strike deals 116.64% Havoc DMG and inflicts an additional instance of 77.76% Havoc DMG upon hitting the target.\nCD: 15s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.7290000000000001,
+                0.486
+              ],
+              [
+                0.8384,
+                0.5589
+              ],
+              [
+                0.9477,
+                0.6318
+              ],
+              [
+                1.0571,
+                0.7047
+              ],
+              [
+                1.1664,
+                0.7776000000000001
+              ]
+            ],
+            "count": 2,
+            "sourceText": "Transform into a Havoc Dreadmane to perform up to 2 tail strikes. Each strike deals 72.90% Havoc DMG and inflicts an additional instance of 48.60% Havoc DMG upon hitting the target.\nCD: 15s · Transform into a Havoc Dreadmane to perform up to 2 tail strikes. Each strike deals 83.84% Havoc DMG and inflicts an additional instance of 55.89% Havoc DMG upon hitting the target.\nCD: 15s · Transform into a Havoc Dreadmane to perform up to 2 tail strikes. Each strike deals 94.77% Havoc DMG and inflicts an additional instance of 63.18% Havoc DMG upon hitting the target.\nCD: 15s · Transform into a Havoc Dreadmane to perform up to 2 tail strikes. Each strike deals 105.71% Havoc DMG and inflicts an additional instance of 70.47% Havoc DMG upon hitting the target.\nCD: 15s · Transform into a Havoc Dreadmane to perform up to 2 tail strikes. Each strike deals 116.64% Havoc DMG and inflicts an additional instance of 77.76% Havoc DMG upon hitting the target.\nCD: 15s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

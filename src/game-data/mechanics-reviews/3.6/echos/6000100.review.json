@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000100",
+  "entityName": "Sacerdos",
+  "sourceFingerprint": "7e5cb74a0c18d2a233dab82778c8a2353feb62f0aedf4c12fd9437c759c723ec",
+  "reviewedAt": "2026-08-26T11:44:24.984Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "773a36ff533f640f0f6ff79d2bd69df0ac88309951adca7630e5ff39ba2443e5",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000100:skill",
+            "name": "Sacerdos - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Sacerdos to attack enemies, dealing 36.00% Aero DMG 2 times.\nCD: 8s.",
+              "Summon a Sacerdos to attack enemies, dealing 43.20% Aero DMG 2 times.\nCD: 8s.",
+              "Summon a Sacerdos to attack enemies, dealing 50.40% Aero DMG 2 times.\nCD: 8s.",
+              "Summon a Sacerdos to attack enemies, dealing 57.60% Aero DMG 2 times.\nCD: 8s.",
+              "Summon a Sacerdos to attack enemies, dealing 64.80% Aero DMG 2 times.\nCD: 8s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.36
+              ],
+              [
+                0.43200000000000005
+              ],
+              [
+                0.504
+              ],
+              [
+                0.5760000000000001
+              ],
+              [
+                0.648
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Sacerdos to attack enemies, dealing 36.00% Aero DMG 2 times.\nCD: 8s. · Summon a Sacerdos to attack enemies, dealing 43.20% Aero DMG 2 times.\nCD: 8s. · Summon a Sacerdos to attack enemies, dealing 50.40% Aero DMG 2 times.\nCD: 8s. · Summon a Sacerdos to attack enemies, dealing 57.60% Aero DMG 2 times.\nCD: 8s. · Summon a Sacerdos to attack enemies, dealing 64.80% Aero DMG 2 times.\nCD: 8s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

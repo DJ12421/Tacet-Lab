@@ -43,6 +43,8 @@ export interface CalculationEffectDefinition {
   name: string
   description: string
   sourceKind: CalculationSourceKind
+  /** Original equipment or character source when a runtime effect is exposed as a party output. */
+  originSourceKind?: CalculationSourceKind
   sourceId: string
   /** Runtime provider identity. Generated catalog effects intentionally omit this. */
   sourceBuildId?: string
@@ -121,6 +123,7 @@ export interface CalculationCatalogV2 {
     revision: string
     generatedAt: string
     importVersion: number
+    reviewPolicy?: 'section-approved'
   }
   characters: CharacterCalculationMechanics[]
   weapons: WeaponCalculationMechanics[]
@@ -128,6 +131,13 @@ export interface CalculationCatalogV2 {
   echoes: EchoCalculationMechanics[]
   partyEffects: CalculationEffectDefinition[]
   knownModifierKinds: string[]
+  coverage?: {
+    characters: number
+    weapons: number
+    sonatas: number
+    echoes: number
+    sections?: Record<string, { approved: number; approvedEmpty: number }>
+  }
 }
 
 export interface CalculationEffectSelection {

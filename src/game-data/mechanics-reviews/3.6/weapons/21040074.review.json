@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21040074",
+  "entityName": "Stonard",
+  "sourceFingerprint": "fb04738440df1b63a39363d2f8d8f8b8c8295bc1e9fb307f05a11e728d49040b",
+  "reviewedAt": "2026-08-26T11:44:24.249Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "8d0cdc3a2b14cc834e4d607f0a516f457a43a29648212d703f65ba3579e29526",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21040074:effect:0",
+            "sourceName": "Wallbreaker",
+            "text": "Casting Resonance Skill increases the wielder's Resonance Liberation DMG Bonus by 18%, lasting for 15s.",
+            "refinementTexts": [
+              "Casting Resonance Skill increases the wielder's Resonance Liberation DMG Bonus by 18%, lasting for 15s.",
+              "Casting Resonance Skill increases the wielder's Resonance Liberation DMG Bonus by 27%, lasting for 15s.",
+              "Casting Resonance Skill increases the wielder's Resonance Liberation DMG Bonus by 36%, lasting for 15s.",
+              "Casting Resonance Skill increases the wielder's Resonance Liberation DMG Bonus by 45%, lasting for 15s.",
+              "Casting Resonance Skill increases the wielder's Resonance Liberation DMG Bonus by 54%, lasting for 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Skill",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "liberationDamage",
+                  "operation": "addPercent",
+                  "value": 18
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 27
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 36
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 45
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 54
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

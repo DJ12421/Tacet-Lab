@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000046",
+  "entityName": "Carapace",
+  "sourceFingerprint": "d735ce6e6bca2695e4147ef1dc166bdb52f93bf1ba2b993c263cbf55351fb7c3",
+  "reviewedAt": "2026-08-26T11:44:24.874Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "f5195852a5f4466b3525e5fb4be97a5c5db728ad40afe9508c05091481f5cc18",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000046:skill",
+            "name": "Carapace - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Carapace to perform a spinning attack that deals 70.00% Aero DMG, followed by a slash that deals 105.00% Aero DMG.\nCD: 15s",
+              "Transform into Carapace to perform a spinning attack that deals 80.50% Aero DMG, followed by a slash that deals 120.75% Aero DMG.\nCD: 15s",
+              "Transform into Carapace to perform a spinning attack that deals 91.00% Aero DMG, followed by a slash that deals 136.50% Aero DMG.\nCD: 15s",
+              "Transform into Carapace to perform a spinning attack that deals 101.50% Aero DMG, followed by a slash that deals 152.25% Aero DMG.\nCD: 15s",
+              "Transform into Carapace to perform a spinning attack that deals 112.00% Aero DMG, followed by a slash that deals 168.00% Aero DMG.\nCD: 15s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.7,
+                1.05
+              ],
+              [
+                0.805,
+                1.2075
+              ],
+              [
+                0.91,
+                1.365
+              ],
+              [
+                1.015,
+                1.5225
+              ],
+              [
+                1.12,
+                1.68
+              ]
+            ],
+            "count": 2,
+            "sourceText": "Transform into Carapace to perform a spinning attack that deals 70.00% Aero DMG, followed by a slash that deals 105.00% Aero DMG.\nCD: 15s · Transform into Carapace to perform a spinning attack that deals 80.50% Aero DMG, followed by a slash that deals 120.75% Aero DMG.\nCD: 15s · Transform into Carapace to perform a spinning attack that deals 91.00% Aero DMG, followed by a slash that deals 136.50% Aero DMG.\nCD: 15s · Transform into Carapace to perform a spinning attack that deals 101.50% Aero DMG, followed by a slash that deals 152.25% Aero DMG.\nCD: 15s · Transform into Carapace to perform a spinning attack that deals 112.00% Aero DMG, followed by a slash that deals 168.00% Aero DMG.\nCD: 15s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

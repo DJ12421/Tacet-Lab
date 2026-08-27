@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000099",
+  "entityName": "Sagittario",
+  "sourceFingerprint": "8f3245f4e1b6176ede68eb229187f9421ec85f97d19d328c7368ea52f33c52ca",
+  "reviewedAt": "2026-08-26T11:44:24.983Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "583f632edf5ade7db6588ebafd8d03e90a6a2111ed448a33b937fff12bee14c4",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000099:skill",
+            "name": "Sagittario - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Sagittario to move a certain distance and perform a ranged attack, dealing 149.00% Spectro DMG.\nGetting attacked while moving in the Sagittario form triggers form triggers a damage avoiding enhanced Dodge Counter, dealing 149.00% Spectro DMG once and 29.80% Spectro DMG 5 times.\nCD: 15s.",
+              "Transform into Sagittario to move a certain distance and perform a ranged attack, dealing 178.80% Spectro DMG.\nGetting attacked while moving in the Sagittario form triggers form triggers a damage avoiding enhanced Dodge Counter, dealing 178.80% Spectro DMG once and 35.76% Spectro DMG 5 times.\nCD: 15s.",
+              "Transform into Sagittario to move a certain distance and perform a ranged attack, dealing 208.60% Spectro DMG.\nGetting attacked while moving in the Sagittario form triggers form triggers a damage avoiding enhanced Dodge Counter, dealing 208.60% Spectro DMG once and 41.72% Spectro DMG 5 times.\nCD: 15s.",
+              "Transform into Sagittario to move a certain distance and perform a ranged attack, dealing 238.40% Spectro DMG.\nGetting attacked while moving in the Sagittario form triggers form triggers a damage avoiding enhanced Dodge Counter, dealing 238.40% Spectro DMG once and 47.68% Spectro DMG 5 times.\nCD: 15s.",
+              "Transform into Sagittario to move a certain distance and perform a ranged attack, dealing 268.20% Spectro DMG.\nGetting attacked while moving in the Sagittario form triggers form triggers a damage avoiding enhanced Dodge Counter, dealing 268.20% Spectro DMG once and 53.64% Spectro DMG 5 times.\nCD: 15s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.49,
+                1.49,
+                0.298
+              ],
+              [
+                1.788,
+                1.788,
+                0.3576
+              ],
+              [
+                2.086,
+                2.086,
+                0.4172
+              ],
+              [
+                2.384,
+                2.384,
+                0.4768
+              ],
+              [
+                2.682,
+                2.682,
+                0.5364
+              ]
+            ],
+            "count": 3,
+            "sourceText": "Transform into Sagittario to move a certain distance and perform a ranged attack, dealing 149.00% Spectro DMG.\nGetting attacked while moving in the Sagittario form triggers form triggers a damage avoiding enhanced Dodge Counter, dealing 149.00% Spectro DMG once and 29.80% Spectro DMG 5 times.\nCD: 15s. · Transform into Sagittario to move a certain distance and perform a ranged attack, dealing 178.80% Spectro DMG.\nGetting attacked while moving in the Sagittario form triggers form triggers a damage avoiding enhanced Dodge Counter, dealing 178.80% Spectro DMG once and 35.76% Spectro DMG 5 times.\nCD: 15s. · Transform into Sagittario to move a certain distance and perform a ranged attack, dealing 208.60% Spectro DMG.\nGetting attacked while moving in the Sagittario form triggers form triggers a damage avoiding enhanced Dodge Counter, dealing 208.60% Spectro DMG once and 41.72% Spectro DMG 5 times.\nCD: 15s. · Transform into Sagittario to move a certain distance and perform a ranged attack, dealing 238.40% Spectro DMG.\nGetting attacked while moving in the Sagittario form triggers form triggers a damage avoiding enhanced Dodge Counter, dealing 238.40% Spectro DMG once and 47.68% Spectro DMG 5 times.\nCD: 15s. · Transform into Sagittario to move a certain distance and perform a ranged attack, dealing 268.20% Spectro DMG.\nGetting attacked while moving in the Sagittario form triggers form triggers a damage avoiding enhanced Dodge Counter, dealing 268.20% Spectro DMG once and 53.64% Spectro DMG 5 times.\nCD: 15s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

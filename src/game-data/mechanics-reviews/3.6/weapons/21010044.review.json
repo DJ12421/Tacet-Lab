@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21010044",
+  "entityName": "Dauntless Evernight",
+  "sourceFingerprint": "ea22dd53e1b1227b10aee5aaa024052fb4e72b8f2eb1b71e7ae3bc82a94eecec",
+  "reviewedAt": "2026-08-26T11:44:23.865Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "db12f59f9b0eb05d38ce3035fd0e5d78d064f5f2f78fa5fdce77145ea0eac0b8",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21010044:effect:0",
+            "sourceName": "Battlebound",
+            "text": "When Intro Skill is cast, increases ATK by 8% and DEF by 15%, lasting for 15s.",
+            "refinementTexts": [
+              "When Intro Skill is cast, increases ATK by 8% and DEF by 15%, lasting for 15s.",
+              "When Intro Skill is cast, increases ATK by 10% and DEF by 18.75%, lasting for 15s.",
+              "When Intro Skill is cast, increases ATK by 12% and DEF by 22.5%, lasting for 15s.",
+              "When Intro Skill is cast, increases ATK by 14% and DEF by 26.25%, lasting for 15s.",
+              "When Intro Skill is cast, increases ATK by 16% and DEF by 30%, lasting for 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Intro Skill",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 8
+                },
+                {
+                  "stat": "defPercent",
+                  "operation": "addPercent",
+                  "value": 8
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 8
+                  },
+                  {
+                    "stat": "defPercent",
+                    "operation": "addPercent",
+                    "value": 8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 10
+                  },
+                  {
+                    "stat": "defPercent",
+                    "operation": "addPercent",
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  },
+                  {
+                    "stat": "defPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 14
+                  },
+                  {
+                    "stat": "defPercent",
+                    "operation": "addPercent",
+                    "value": 14
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 16
+                  },
+                  {
+                    "stat": "defPercent",
+                    "operation": "addPercent",
+                    "value": 16
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

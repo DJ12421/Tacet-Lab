@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000197",
+  "entityName": "Shadow Stepper",
+  "sourceFingerprint": "cb240b381c334628a8cab18f72493f8767948f168c371c4dbb9c6616c65e0ed0",
+  "reviewedAt": "2026-08-26T11:44:25.117Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "e26363eeae43b5833ff3b27e4d7cb1260aa0bf9377283c5b8d319c09304a7770",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000197:skill",
+            "name": "Shadow Stepper - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Shadow Stepper to attack enemies, dealing 72.00% Havoc DMG.\nCD: 8s.",
+              "Summon a Shadow Stepper to attack enemies, dealing 86.40% Havoc DMG.\nCD: 8s.",
+              "Summon a Shadow Stepper to attack enemies, dealing 100.80% Havoc DMG.\nCD: 8s.",
+              "Summon a Shadow Stepper to attack enemies, dealing 115.20% Havoc DMG.\nCD: 8s.",
+              "Summon a Shadow Stepper to attack enemies, dealing 129.60% Havoc DMG.\nCD: 8s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.72
+              ],
+              [
+                0.8640000000000001
+              ],
+              [
+                1.008
+              ],
+              [
+                1.1520000000000001
+              ],
+              [
+                1.296
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Shadow Stepper to attack enemies, dealing 72.00% Havoc DMG.\nCD: 8s. · Summon a Shadow Stepper to attack enemies, dealing 86.40% Havoc DMG.\nCD: 8s. · Summon a Shadow Stepper to attack enemies, dealing 100.80% Havoc DMG.\nCD: 8s. · Summon a Shadow Stepper to attack enemies, dealing 115.20% Havoc DMG.\nCD: 8s. · Summon a Shadow Stepper to attack enemies, dealing 129.60% Havoc DMG.\nCD: 8s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

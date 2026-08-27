@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000054",
+  "entityName": "Lava Larva",
+  "sourceFingerprint": "16c3efd770c57bfca31080749c67ecad11e99078438ed73ba7360d7fbbb2de56",
+  "reviewedAt": "2026-08-26T11:44:24.890Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "3f2d4afcddf9667cc791052bdfd18cc1f77c81befc898fe9c50ec6e86ede2129",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000054:skill",
+            "name": "Lava Larva - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Lava Larva that continuously attacks enemies, dealing 24.00% Fusion DMG with each hit. The Lava Larva disappears when the summoner is switched out or moves too far away.\nCD: 8s",
+              "Summon a Lava Larva that continuously attacks enemies, dealing 27.60% Fusion DMG with each hit. The Lava Larva disappears when the summoner is switched out or moves too far away.\nCD: 8s",
+              "Summon a Lava Larva that continuously attacks enemies, dealing 31.20% Fusion DMG with each hit. The Lava Larva disappears when the summoner is switched out or moves too far away.\nCD: 8s",
+              "Summon a Lava Larva that continuously attacks enemies, dealing 34.80% Fusion DMG with each hit. The Lava Larva disappears when the summoner is switched out or moves too far away.\nCD: 8s",
+              "Summon a Lava Larva that continuously attacks enemies, dealing 38.40% Fusion DMG with each hit. The Lava Larva disappears when the summoner is switched out or moves too far away.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.24
+              ],
+              [
+                0.276
+              ],
+              [
+                0.312
+              ],
+              [
+                0.348
+              ],
+              [
+                0.384
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Lava Larva that continuously attacks enemies, dealing 24.00% Fusion DMG with each hit. The Lava Larva disappears when the summoner is switched out or moves too far away.\nCD: 8s · Summon a Lava Larva that continuously attacks enemies, dealing 27.60% Fusion DMG with each hit. The Lava Larva disappears when the summoner is switched out or moves too far away.\nCD: 8s · Summon a Lava Larva that continuously attacks enemies, dealing 31.20% Fusion DMG with each hit. The Lava Larva disappears when the summoner is switched out or moves too far away.\nCD: 8s · Summon a Lava Larva that continuously attacks enemies, dealing 34.80% Fusion DMG with each hit. The Lava Larva disappears when the summoner is switched out or moves too far away.\nCD: 8s · Summon a Lava Larva that continuously attacks enemies, dealing 38.40% Fusion DMG with each hit. The Lava Larva disappears when the summoner is switched out or moves too far away.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

@@ -1,0 +1,289 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21030026",
+  "entityName": "Woodland Aria",
+  "sourceFingerprint": "ced0ce944eb5f77631867c5267ae02e95e88dfddcb297ec688a1cfe49ba86130",
+  "reviewedAt": "2026-08-26T11:44:24.102Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "61672bbd1a461ead6dce237443668b5e3cfae55c198653ef105adfa857217f75",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21030026:effect:0",
+            "sourceName": "Lingering Summer Tune",
+            "text": "ATK is increased by 12%.",
+            "refinementTexts": [
+              "ATK is increased by 12%.",
+              "ATK is increased by 15%.",
+              "ATK is increased by 18%.",
+              "ATK is increased by 21%.",
+              "ATK is increased by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21030026:effect:1",
+            "sourceName": "Lingering Summer Tune",
+            "text": "Inflicting Aero Erosion on the target gives 24% Aero DMG Bonus for 10s.",
+            "refinementTexts": [
+              "Inflicting Aero Erosion on the target gives 24% Aero DMG Bonus for 10s.",
+              "Inflicting Aero Erosion on the target gives 30% Aero DMG Bonus for 10s.",
+              "Inflicting Aero Erosion on the target gives 36% Aero DMG Bonus for 10s.",
+              "Inflicting Aero Erosion on the target gives 42% Aero DMG Bonus for 10s.",
+              "Inflicting Aero Erosion on the target gives 48% Aero DMG Bonus for 10s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 10,
+              "modifiers": [
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 24
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "Aero",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "Aero",
+                    "operation": "addPercent",
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "Aero",
+                    "operation": "addPercent",
+                    "value": 36
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "Aero",
+                    "operation": "addPercent",
+                    "value": 42
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "Aero",
+                    "operation": "addPercent",
+                    "value": 48
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21030026:effect:2",
+            "sourceName": "Lingering Summer Tune",
+            "text": "Hitting targets with Aero Erosion reduces their Aero RES by 10% for 20s.",
+            "refinementTexts": [
+              "Hitting targets with Aero Erosion reduces their Aero RES by 10% for 20s.",
+              "Hitting targets with Aero Erosion reduces their Aero RES by 11.5% for 20s.",
+              "Hitting targets with Aero Erosion reduces their Aero RES by 13% for 20s.",
+              "Hitting targets with Aero Erosion reduces their Aero RES by 14.5% for 20s.",
+              "Hitting targets with Aero Erosion reduces their Aero RES by 16% for 20s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 20,
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21030026:effect:3",
+            "sourceName": "Lingering Summer Tune",
+            "text": "Effects of the same name cannot be stacked.",
+            "refinementTexts": [
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

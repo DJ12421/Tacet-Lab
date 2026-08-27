@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "sonata",
+  "entityId": "33",
+  "entityName": "Song of Feathered Trace",
+  "sourceFingerprint": "e15dc17bcb8797d8d340aad3818ff98853f73ffd2d4086e21fdf576780f023db",
+  "reviewedAt": "2026-08-26T11:44:24.685Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "a73afeafc77bafd2d11227fc856e1e46f98ed6c1e151d0cc87a04174b7f4f9e7",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:33:2:0",
+            "sourceName": "Song of Feathered Trace",
+            "text": "Energy Regen + 10%",
+            "refinementTexts": [
+              "Energy Regen + 10%"
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "energyRegen",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:33:5:0",
+            "sourceName": "Song of Feathered Trace",
+            "text": "Upon inflicting Havoc Bane, gain Xuanling's Feather, which grants a 20% increase in Crit. Rate and 35% increase in Heavy Attack DMG Bonus to the Resonator, lasting 15s.",
+            "refinementTexts": [
+              "Upon inflicting Havoc Bane, gain Xuanling's Feather, which grants a 20% increase in Crit. Rate and 35% increase in Heavy Attack DMG Bonus to the Resonator, lasting 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "critRate",
+                  "operation": "addPercent",
+                  "value": 20
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:33:5:1",
+            "sourceName": "Song of Feathered Trace",
+            "text": "Upon inflicting Glacio Chafe, gain Chongming's Feather, which grants a 0.1% increase in ATK to Resonators in the team for every 1% of the Resonator's Energy Regen, up to 25%, lasting 10s.",
+            "refinementTexts": [
+              "Upon inflicting Glacio Chafe, gain Chongming's Feather, which grants a 0.1% increase in ATK to Resonators in the team for every 1% of the Resonator's Energy Regen, up to 25%, lasting 10s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 10,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 0.1
+                }
+              ],
+              "confidence": "review",
+              "warnings": [
+                "First-pass review: this text contains additional percentages; confirm that every calculator mechanic is represented."
+              ]
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

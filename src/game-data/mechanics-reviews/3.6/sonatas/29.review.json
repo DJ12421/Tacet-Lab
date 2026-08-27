@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "sonata",
+  "entityId": "29",
+  "entityName": "Sound of True Name",
+  "sourceFingerprint": "bc4e0722151e0c5bf6baa723c993ae1c51f04e6096acdbb665e2a8a494b10a98",
+  "reviewedAt": "2026-08-26T11:44:24.666Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "d5414d3aafeb37d9758f1fe0590ebee780e04daa1b104b658b70f21b4c51b252",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:29:2:0",
+            "sourceName": "Sound of True Name",
+            "text": "Aero DMG + 10%",
+            "refinementTexts": [
+              "Aero DMG + 10%"
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:29:5:0",
+            "sourceName": "Sound of True Name",
+            "text": "Dealing Echo Skill DMG to enemies increases the Resonator's Echo Skill Crit. Rate by 20%, and grants 15% Aero DMG Bonus for 5s.",
+            "refinementTexts": [
+              "Dealing Echo Skill DMG to enemies increases the Resonator's Echo Skill Crit. Rate by 20%, and grants 15% Aero DMG Bonus for 5s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Echo Skill DMG",
+              "durationSeconds": 5,
+              "modifiers": [
+                {
+                  "stat": "CritRate:Echo",
+                  "operation": "addPercent",
+                  "value": 20
+                },
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 15
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

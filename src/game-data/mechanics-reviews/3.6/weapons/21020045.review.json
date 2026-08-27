@@ -1,0 +1,177 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21020045",
+  "entityName": "Laser Shearer",
+  "sourceFingerprint": "b36b9deffd2c581cf1d3d80dc1e63a4c425fced333f9cfa30b13e536978af937",
+  "reviewedAt": "2026-08-26T11:44:24.001Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "272ac9d6b9ec12ef0299e40fd1fb8b67397cb90ba7e72de2ce2ed730745d8464",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020045:effect:0",
+            "sourceName": "Signal Catcher",
+            "text": "Increases ATK by 12%.",
+            "refinementTexts": [
+              "Increases ATK by 12%.",
+              "Increases ATK by 15%.",
+              "Increases ATK by 18%.",
+              "Increases ATK by 21%.",
+              "Increases ATK by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21020045:effect:1",
+            "sourceName": "Signal Catcher",
+            "text": "Dealing damage to targets under Tune Strain - Interfered grants 24% Resonance Skill Bonus for 3s.",
+            "refinementTexts": [
+              "Dealing damage to targets under Tune Strain - Interfered grants 24% Resonance Skill Bonus for 3s.",
+              "Dealing damage to targets under Tune Strain - Interfered grants 27% Resonance Skill Bonus for 3s.",
+              "Dealing damage to targets under Tune Strain - Interfered grants 30% Resonance Skill Bonus for 3s.",
+              "Dealing damage to targets under Tune Strain - Interfered grants 33% Resonance Skill Bonus for 3s.",
+              "Dealing damage to targets under Tune Strain - Interfered grants 36% Resonance Skill Bonus for 3s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 3,
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21020045:effect:2",
+            "sourceName": "Signal Catcher",
+            "text": "Retriggering the effect resets its duration.",
+            "refinementTexts": [
+              "Retriggering the effect resets its duration.",
+              "Retriggering the effect resets its duration.",
+              "Retriggering the effect resets its duration.",
+              "Retriggering the effect resets its duration.",
+              "Retriggering the effect resets its duration."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

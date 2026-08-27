@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "sonata",
+  "entityId": "27",
+  "entityName": "Trailblazing Star",
+  "sourceFingerprint": "3e4b0c5ad725f2328e42c78ab89b9c15e0e8b3b54cfc7a664a203a2a1c2a0150",
+  "reviewedAt": "2026-08-26T11:44:24.660Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "5343a5b2781e73e0c6c5a79a75cd633e85c4d0f9ddc0caa190fd285bccaf4fbc",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:27:2:0",
+            "sourceName": "Trailblazing Star",
+            "text": "Fusion DMG + 10%",
+            "refinementTexts": [
+              "Fusion DMG + 10%"
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:27:5:0",
+            "sourceName": "Trailblazing Star",
+            "text": "Inflicting Fusion Burst or Tune Rupture - Shifting increases the Resonator's Crit. Rate by 20% and grants 20% Fusion DMG Bonus for 8s.",
+            "refinementTexts": [
+              "Inflicting Fusion Burst or Tune Rupture - Shifting increases the Resonator's Crit. Rate by 20% and grants 20% Fusion DMG Bonus for 8s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 8,
+              "modifiers": [
+                {
+                  "stat": "critRate",
+                  "operation": "addPercent",
+                  "value": 20
+                },
+                {
+                  "stat": "Fusion",
+                  "operation": "addPercent",
+                  "value": 20
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390070064",
+  "entityName": "Fusion Warrior",
+  "sourceFingerprint": "6dfa083f060d4e2e18dd17bdaf6aa576960ed067abcfa00a3bb71c63d06e58e4",
+  "reviewedAt": "2026-08-26T11:44:24.745Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "f9b2a4fdbd8cc3b60c205d08b782b76667a68f29d726875d591b11dfd338128b",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390070064:skill",
+            "name": "Fusion Warrior - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Fusion Warrior to perform a Counterattack. If the Counterattack is successful, the cooldown time of this skill will be reduced by 70.00%, and 180.00% Fusion DMG will be dealt.\nCD: 15s",
+              "Transform into Fusion Warrior to perform a Counterattack. If the Counterattack is successful, the cooldown time of this skill will be reduced by 70.00%, and 207.00% Fusion DMG will be dealt.\nCD: 15s",
+              "Transform into Fusion Warrior to perform a Counterattack. If the Counterattack is successful, the cooldown time of this skill will be reduced by 70.00%, and 234.00% Fusion DMG will be dealt.\nCD: 15s",
+              "Transform into Fusion Warrior to perform a Counterattack. If the Counterattack is successful, the cooldown time of this skill will be reduced by 70.00%, and 261.00% Fusion DMG will be dealt.\nCD: 15s",
+              "Transform into Fusion Warrior to perform a Counterattack. If the Counterattack is successful, the cooldown time of this skill will be reduced by 70.00%, and 288.00% Fusion DMG will be dealt.\nCD: 15s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.7,
+                1.8
+              ],
+              [
+                0.7,
+                2.07
+              ],
+              [
+                0.7,
+                2.34
+              ],
+              [
+                0.7,
+                2.61
+              ],
+              [
+                0.7,
+                2.88
+              ]
+            ],
+            "count": 2,
+            "sourceText": "Transform into Fusion Warrior to perform a Counterattack. If the Counterattack is successful, the cooldown time of this skill will be reduced by 70.00%, and 180.00% Fusion DMG will be dealt.\nCD: 15s · Transform into Fusion Warrior to perform a Counterattack. If the Counterattack is successful, the cooldown time of this skill will be reduced by 70.00%, and 207.00% Fusion DMG will be dealt.\nCD: 15s · Transform into Fusion Warrior to perform a Counterattack. If the Counterattack is successful, the cooldown time of this skill will be reduced by 70.00%, and 234.00% Fusion DMG will be dealt.\nCD: 15s · Transform into Fusion Warrior to perform a Counterattack. If the Counterattack is successful, the cooldown time of this skill will be reduced by 70.00%, and 261.00% Fusion DMG will be dealt.\nCD: 15s · Transform into Fusion Warrior to perform a Counterattack. If the Counterattack is successful, the cooldown time of this skill will be reduced by 70.00%, and 288.00% Fusion DMG will be dealt.\nCD: 15s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "0a1f5666760a4fc760be585e27abba3406be9178796c20f1357bfb630bee1f6f",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:390070064:effect:0",
+            "sourceName": "Fusion Warrior",
+            "sourceType": "echo",
+            "text": "If the Counterattack is successful, the cooldown time of this skill will be reduced by 70.00%, and 180.00% Fusion DMG will be dealt.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

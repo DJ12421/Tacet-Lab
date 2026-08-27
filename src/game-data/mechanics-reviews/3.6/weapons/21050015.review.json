@@ -1,0 +1,256 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21050015",
+  "entityName": "Cosmic Ripples",
+  "sourceFingerprint": "444bf9e428aa7e12d7d07717b4033f2f1428362d33021803c002f2415d704e05",
+  "reviewedAt": "2026-08-26T11:44:24.277Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "03d25dd81a2f5ab1132c0113595619520c2a8f07e17f6367ec89f051baec7d0b",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050015:effect:0",
+            "sourceName": "Stormy Resolution",
+            "text": "Increases Energy Regen by 12.8%.",
+            "refinementTexts": [
+              "Increases Energy Regen by 12.8%.",
+              "Increases Energy Regen by 16%.",
+              "Increases Energy Regen by 19.2%.",
+              "Increases Energy Regen by 22.4%.",
+              "Increases Energy Regen by 25.6%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "energyRegen",
+                  "operation": "addPercent",
+                  "value": 12.8
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "energyRegen",
+                    "operation": "addPercent",
+                    "value": 12.8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "energyRegen",
+                    "operation": "addPercent",
+                    "value": 16
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "energyRegen",
+                    "operation": "addPercent",
+                    "value": 19.2
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "energyRegen",
+                    "operation": "addPercent",
+                    "value": 22.4
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "energyRegen",
+                    "operation": "addPercent",
+                    "value": 25.6
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21050015:effect:1",
+            "sourceName": "Stormy Resolution",
+            "text": "When dealing Basic Attack DMG, increases Basic Attack DMG Bonus by 3.2%, stacking up to 5 time(s). This effect lasts for 8s and can be triggered 1 time(s) every 0.5s.",
+            "refinementTexts": [
+              "When dealing Basic Attack DMG, increases Basic Attack DMG Bonus by 3.2%, stacking up to 5 time(s). This effect lasts for 8s and can be triggered 1 time(s) every 0.5s.",
+              "When dealing Basic Attack DMG, increases Basic Attack DMG Bonus by 4%, stacking up to 5 time(s). This effect lasts for 8s and can be triggered 1 time(s) every 0.5s.",
+              "When dealing Basic Attack DMG, increases Basic Attack DMG Bonus by 4.8%, stacking up to 5 time(s). This effect lasts for 8s and can be triggered 1 time(s) every 0.5s.",
+              "When dealing Basic Attack DMG, increases Basic Attack DMG Bonus by 5.6%, stacking up to 5 time(s). This effect lasts for 8s and can be triggered 1 time(s) every 0.5s.",
+              "When dealing Basic Attack DMG, increases Basic Attack DMG Bonus by 6.4%, stacking up to 5 time(s). This effect lasts for 8s and can be triggered 1 time(s) every 0.5s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 5
+              },
+              "trigger": "Basic Attack DMG",
+              "durationSeconds": 8,
+              "modifiers": [
+                {
+                  "stat": "basicDamage",
+                  "operation": "addPercent",
+                  "value": 3.2
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 3.2
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 4
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 4.8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 5.6
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "trigger": "Basic Attack DMG",
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 6.4
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

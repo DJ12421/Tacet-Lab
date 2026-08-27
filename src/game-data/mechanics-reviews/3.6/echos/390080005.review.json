@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390080005",
+  "entityName": "Bell-Borne Geochelone",
+  "sourceFingerprint": "25fec627421f6e79e8042fb4542d3229eece7ae26929083f335a3301f9f8e769",
+  "reviewedAt": "2026-08-26T11:44:24.851Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "359012de5da0222e68962391eb3bf89f150af04ef0e79287f2a3bbbc9ae4ea73",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390080005:skill",
+            "name": "Bell-Borne Geochelone - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "def",
+            "expressions": [
+              "Activate the protection of Bell-Borne Geochelone. Deal Glacio DMG based on 91.20% of the current character's DEF to nearby enemies, and obtain a Bell-Borne Shield that lasts for 15s\nThe Bell-Borne Shield provides 50.00% DMG Reduction and 10.00% DMG Boost for the current team members, and disappears after the current character is hit for 3 times.\nCD: 20s",
+              "Activate the protection of Bell-Borne Geochelone. Deal Glacio DMG based on 104.88% of the current character's DEF to nearby enemies, and obtain a Bell-Borne Shield that lasts for 15s\nThe Bell-Borne Shield provides 50.00% DMG Reduction and 10.00% DMG Boost for the current team members, and disappears after the current character is hit for 3 times.\nCD: 20s",
+              "Activate the protection of Bell-Borne Geochelone. Deal Glacio DMG based on 118.56% of the current character's DEF to nearby enemies, and obtain a Bell-Borne Shield that lasts for 15s\nThe Bell-Borne Shield provides 50.00% DMG Reduction and 10.00% DMG Boost for the current team members, and disappears after the current character is hit for 3 times.\nCD: 20s",
+              "Activate the protection of Bell-Borne Geochelone. Deal Glacio DMG based on 132.24% of the current character's DEF to nearby enemies, and obtain a Bell-Borne Shield that lasts for 15s\nThe Bell-Borne Shield provides 50.00% DMG Reduction and 10.00% DMG Boost for the current team members, and disappears after the current character is hit for 3 times.\nCD: 20s",
+              "Activate the protection of Bell-Borne Geochelone. Deal Glacio DMG based on 145.92% of the current character's DEF to nearby enemies, and obtain a Bell-Borne Shield that lasts for 15s\nThe Bell-Borne Shield provides 50.00% DMG Reduction and 10.00% DMG Boost for the current team members, and disappears after the current character is hit for 3 times.\nCD: 20s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.912,
+                0.5,
+                0.1
+              ],
+              [
+                1.0488,
+                0.5,
+                0.1
+              ],
+              [
+                1.1856,
+                0.5,
+                0.1
+              ],
+              [
+                1.3224,
+                0.5,
+                0.1
+              ],
+              [
+                1.4591999999999998,
+                0.5,
+                0.1
+              ]
+            ],
+            "count": 3,
+            "sourceText": "Activate the protection of Bell-Borne Geochelone. Deal Glacio DMG based on 91.20% of the current character's DEF to nearby enemies, and obtain a Bell-Borne Shield that lasts for 15s\nThe Bell-Borne Shield provides 50.00% DMG Reduction and 10.00% DMG Boost for the current team members, and disappears after the current character is hit for 3 times.\nCD: 20s · Activate the protection of Bell-Borne Geochelone. Deal Glacio DMG based on 104.88% of the current character's DEF to nearby enemies, and obtain a Bell-Borne Shield that lasts for 15s\nThe Bell-Borne Shield provides 50.00% DMG Reduction and 10.00% DMG Boost for the current team members, and disappears after the current character is hit for 3 times.\nCD: 20s · Activate the protection of Bell-Borne Geochelone. Deal Glacio DMG based on 118.56% of the current character's DEF to nearby enemies, and obtain a Bell-Borne Shield that lasts for 15s\nThe Bell-Borne Shield provides 50.00% DMG Reduction and 10.00% DMG Boost for the current team members, and disappears after the current character is hit for 3 times.\nCD: 20s · Activate the protection of Bell-Borne Geochelone. Deal Glacio DMG based on 132.24% of the current character's DEF to nearby enemies, and obtain a Bell-Borne Shield that lasts for 15s\nThe Bell-Borne Shield provides 50.00% DMG Reduction and 10.00% DMG Boost for the current team members, and disappears after the current character is hit for 3 times.\nCD: 20s · Activate the protection of Bell-Borne Geochelone. Deal Glacio DMG based on 145.92% of the current character's DEF to nearby enemies, and obtain a Bell-Borne Shield that lasts for 15s\nThe Bell-Borne Shield provides 50.00% DMG Reduction and 10.00% DMG Boost for the current team members, and disappears after the current character is hit for 3 times.\nCD: 20s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

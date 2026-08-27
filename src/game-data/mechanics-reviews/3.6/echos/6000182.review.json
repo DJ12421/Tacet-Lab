@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000182",
+  "entityName": "Mining Reindeer",
+  "sourceFingerprint": "b6c4a3c2a9b89112189ef583131ef2f217072d594a4d1e18bc449eba0086e40f",
+  "reviewedAt": "2026-08-26T11:44:25.087Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "b368e5ac2511fa5c9cd5810bdd40bbc0f551d0aab1b84c7465895c9522384f12",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000182:skill",
+            "name": "Mining Reindeer - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Mining Reindeer to launch a charged attack at enemies, dealing 132.00% Electro DMG.\nCD: 20s.",
+              "Summon a Mining Reindeer to launch a charged attack at enemies, dealing 158.40% Electro DMG.\nCD: 20s.",
+              "Summon a Mining Reindeer to launch a charged attack at enemies, dealing 184.80% Electro DMG.\nCD: 20s.",
+              "Summon a Mining Reindeer to launch a charged attack at enemies, dealing 211.20% Electro DMG.\nCD: 20s.",
+              "Summon a Mining Reindeer to launch a charged attack at enemies, dealing 237.60% Electro DMG.\nCD: 20s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.32
+              ],
+              [
+                1.584
+              ],
+              [
+                1.848
+              ],
+              [
+                2.112
+              ],
+              [
+                2.376
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Mining Reindeer to launch a charged attack at enemies, dealing 132.00% Electro DMG.\nCD: 20s. · Summon a Mining Reindeer to launch a charged attack at enemies, dealing 158.40% Electro DMG.\nCD: 20s. · Summon a Mining Reindeer to launch a charged attack at enemies, dealing 184.80% Electro DMG.\nCD: 20s. · Summon a Mining Reindeer to launch a charged attack at enemies, dealing 211.20% Electro DMG.\nCD: 20s. · Summon a Mining Reindeer to launch a charged attack at enemies, dealing 237.60% Electro DMG.\nCD: 20s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

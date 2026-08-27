@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000067",
+  "entityName": "Fae Ignis",
+  "sourceFingerprint": "ce57320ff4fac18fa8bbd4145fddff93a7765d872218798ea157ac522961920a",
+  "reviewedAt": "2026-08-26T11:44:24.917Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "1cf12b296b9ca45949fa99c719c559b4f819bc1280703118c5d51858430a5646",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000067:skill",
+            "name": "Fae Ignis - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Fae Ignis to attack enemies, dealing 72.00% Havoc DMG.\nCD: 8s.",
+              "Summon a Fae Ignis to attack enemies, dealing 86.40% Havoc DMG.\nCD: 8s.",
+              "Summon a Fae Ignis to attack enemies, dealing 100.80% Havoc DMG.\nCD: 8s.",
+              "Summon a Fae Ignis to attack enemies, dealing 115.20% Havoc DMG.\nCD: 8s.",
+              "Summon a Fae Ignis to attack enemies, dealing 129.60% Havoc DMG.\nCD: 8s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.72
+              ],
+              [
+                0.8640000000000001
+              ],
+              [
+                1.008
+              ],
+              [
+                1.1520000000000001
+              ],
+              [
+                1.296
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Fae Ignis to attack enemies, dealing 72.00% Havoc DMG.\nCD: 8s. · Summon a Fae Ignis to attack enemies, dealing 86.40% Havoc DMG.\nCD: 8s. · Summon a Fae Ignis to attack enemies, dealing 100.80% Havoc DMG.\nCD: 8s. · Summon a Fae Ignis to attack enemies, dealing 115.20% Havoc DMG.\nCD: 8s. · Summon a Fae Ignis to attack enemies, dealing 129.60% Havoc DMG.\nCD: 8s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

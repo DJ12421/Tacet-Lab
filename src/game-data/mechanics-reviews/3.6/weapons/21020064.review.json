@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21020064",
+  "entityName": "Lunar Cutter",
+  "sourceFingerprint": "47089d493a7964087aabf3d9eed8625ded61f21fa36ec7f9040dff42a1fbe8a8",
+  "reviewedAt": "2026-08-26T11:44:24.024Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "dd566732108e5960cf839f028db1cfb189534b431b4eec88d60b83b871b36295",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020064:effect:0",
+            "sourceName": "Preordained",
+            "text": "Equipped Resonator gains 6 stack(s) of Oath upon entering the battlefield.",
+            "refinementTexts": [
+              "Equipped Resonator gains 6 stack(s) of Oath upon entering the battlefield.",
+              "Equipped Resonator gains 6 stack(s) of Oath upon entering the battlefield.",
+              "Equipped Resonator gains 6 stack(s) of Oath upon entering the battlefield.",
+              "Equipped Resonator gains 6 stack(s) of Oath upon entering the battlefield.",
+              "Equipped Resonator gains 6 stack(s) of Oath upon entering the battlefield."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence.",
+                "Stack maximum was not explicit and requires review."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21020064:effect:1",
+            "sourceName": "Preordained",
+            "text": "Each stack increases ATK by 2%, up to 6 stacks. This effect can be triggered 1 time(s) every 12s.",
+            "refinementTexts": [
+              "Each stack increases ATK by 2%, up to 6 stacks. This effect can be triggered 1 time(s) every 12s.",
+              "Each stack increases ATK by 2.5%, up to 6 stacks. This effect can be triggered 1 time(s) every 12s.",
+              "Each stack increases ATK by 3%, up to 6 stacks. This effect can be triggered 1 time(s) every 12s.",
+              "Each stack increases ATK by 3.5%, up to 6 stacks. This effect can be triggered 1 time(s) every 12s.",
+              "Each stack increases ATK by 4%, up to 6 stacks. This effect can be triggered 1 time(s) every 12s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 6
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 2
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 6
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 2
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 6
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 2.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 6
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 3
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 6
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 3.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 6
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 4
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21020064:effect:2",
+            "sourceName": "Preordained",
+            "text": "The equipped Resonator loses 1 stack(s) of Oath every 2s, and gains 6 stack(s) upon defeating an enemy.",
+            "refinementTexts": [
+              "The equipped Resonator loses 1 stack(s) of Oath every 2s, and gains 6 stack(s) upon defeating an enemy.",
+              "The equipped Resonator loses 1 stack(s) of Oath every 2s, and gains 6 stack(s) upon defeating an enemy.",
+              "The equipped Resonator loses 1 stack(s) of Oath every 2s, and gains 6 stack(s) upon defeating an enemy.",
+              "The equipped Resonator loses 1 stack(s) of Oath every 2s, and gains 6 stack(s) upon defeating an enemy.",
+              "The equipped Resonator loses 1 stack(s) of Oath every 2s, and gains 6 stack(s) upon defeating an enemy."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence.",
+                "Stack maximum was not explicit and requires review."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

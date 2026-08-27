@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000095",
+  "entityName": "Aero Prism",
+  "sourceFingerprint": "e71aa0daec3f520003c11a48ac514ed9d067d61fc6667f4a00e8328fe71eaef5",
+  "reviewedAt": "2026-08-26T11:44:24.974Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "73d40a9ad8c99e0db79f15e30e35ac7d99e7d3feedd72563c5469eed4e84fabb",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000095:skill",
+            "name": "Aero Prism - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon an Aero Prism to attack enemies, dealing 10.70% Aero DMG.\nCD: 15s.",
+              "Summon an Aero Prism to attack enemies, dealing 12.84% Aero DMG.\nCD: 15s.",
+              "Summon an Aero Prism to attack enemies, dealing 14.98% Aero DMG.\nCD: 15s.",
+              "Summon an Aero Prism to attack enemies, dealing 17.12% Aero DMG.\nCD: 15s.",
+              "Summon an Aero Prism to attack enemies, dealing 19.26% Aero DMG.\nCD: 15s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.107
+              ],
+              [
+                0.1284
+              ],
+              [
+                0.14980000000000002
+              ],
+              [
+                0.17120000000000002
+              ],
+              [
+                0.19260000000000002
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon an Aero Prism to attack enemies, dealing 10.70% Aero DMG.\nCD: 15s. · Summon an Aero Prism to attack enemies, dealing 12.84% Aero DMG.\nCD: 15s. · Summon an Aero Prism to attack enemies, dealing 14.98% Aero DMG.\nCD: 15s. · Summon an Aero Prism to attack enemies, dealing 17.12% Aero DMG.\nCD: 15s. · Summon an Aero Prism to attack enemies, dealing 19.26% Aero DMG.\nCD: 15s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

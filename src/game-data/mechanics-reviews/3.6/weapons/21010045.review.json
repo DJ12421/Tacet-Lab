@@ -1,0 +1,177 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21010045",
+  "entityName": "Radiance Cleaver",
+  "sourceFingerprint": "5292e297b2eb687b815fa9a507b944e05bcabbbf5507af9e6a0c20aac05ef1db",
+  "reviewedAt": "2026-08-26T11:44:23.868Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "4c036da533381919bb37b4aab0be16a4d3b732a55403f256717acd9a211526b8",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21010045:effect:0",
+            "sourceName": "Edge Breaker",
+            "text": "Increases ATK by 12%.",
+            "refinementTexts": [
+              "Increases ATK by 12%.",
+              "Increases ATK by 15%.",
+              "Increases ATK by 18%.",
+              "Increases ATK by 21%.",
+              "Increases ATK by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21010045:effect:1",
+            "sourceName": "Edge Breaker",
+            "text": "Dealing damage to targets under Tune Strain - Interfered grants 24% Resonance Liberation Bonus for 3s.",
+            "refinementTexts": [
+              "Dealing damage to targets under Tune Strain - Interfered grants 24% Resonance Liberation Bonus for 3s.",
+              "Dealing damage to targets under Tune Strain - Interfered grants 27% Resonance Liberation Bonus for 3s.",
+              "Dealing damage to targets under Tune Strain - Interfered grants 30% Resonance Liberation Bonus for 3s.",
+              "Dealing damage to targets under Tune Strain - Interfered grants 33% Resonance Liberation Bonus for 3s.",
+              "Dealing damage to targets under Tune Strain - Interfered grants 36% Resonance Liberation Bonus for 3s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 3,
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21010045:effect:2",
+            "sourceName": "Edge Breaker",
+            "text": "Retriggering the effect resets its duration.",
+            "refinementTexts": [
+              "Retriggering the effect resets its duration.",
+              "Retriggering the effect resets its duration.",
+              "Retriggering the effect resets its duration.",
+              "Retriggering the effect resets its duration.",
+              "Retriggering the effect resets its duration."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

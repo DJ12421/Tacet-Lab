@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000040",
+  "entityName": "Hoochief",
+  "sourceFingerprint": "98f701e3aceb0d6cd72568bb76ffd37066ce2eeb6695ef261ac6fda5eab4b1c4",
+  "reviewedAt": "2026-08-26T11:44:24.860Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "bc082516d3d2390068401f09f77bd682918a5d19e392b8300f0f60c24939b93a",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000040:skill",
+            "name": "Hoochief - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Hoochief and smack the enemies, dealing 149% Aero DMG.\nCD: 15s",
+              "Transform into Hoochief and smack the enemies, dealing 178.80% Aero DMG.\nCD: 15s",
+              "Transform into Hoochief and smack the enemies, dealing 208.60% Aero DMG.\nCD: 15s",
+              "Transform into Hoochief and smack the enemies, dealing 238.40% Aero DMG.\nCD: 15s",
+              "Transform into Hoochief and smack the enemies, dealing 268.20% Aero DMG.\nCD: 15s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.49
+              ],
+              [
+                1.788
+              ],
+              [
+                2.086
+              ],
+              [
+                2.384
+              ],
+              [
+                2.682
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Transform into Hoochief and smack the enemies, dealing 149% Aero DMG.\nCD: 15s · Transform into Hoochief and smack the enemies, dealing 178.80% Aero DMG.\nCD: 15s · Transform into Hoochief and smack the enemies, dealing 208.60% Aero DMG.\nCD: 15s · Transform into Hoochief and smack the enemies, dealing 238.40% Aero DMG.\nCD: 15s · Transform into Hoochief and smack the enemies, dealing 268.20% Aero DMG.\nCD: 15s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000051",
+  "entityName": "Clang Bang",
+  "sourceFingerprint": "181f45ac5e3004eaed08800ff0a8223956e51891e7c9f2b1d53a234e425d3818",
+  "reviewedAt": "2026-08-26T11:44:24.883Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "d5a8428d2eaec7b54c9e99f44d7f04b4c6be79ead96cb7f99536981137ee4da4",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000051:skill",
+            "name": "Clang Bang - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Clang Bang that follows the enemy and eventually self-combusts, dealing 20.00%+40 Glacio DMG.\nCD: 8s",
+              "Summon a Clang Bang that follows the enemy and eventually self-combusts, dealing 23.00%+46 Glacio DMG.\nCD: 8s",
+              "Summon a Clang Bang that follows the enemy and eventually self-combusts, dealing 26.00%+52 Glacio DMG.\nCD: 8s",
+              "Summon a Clang Bang that follows the enemy and eventually self-combusts, dealing 29.00%+58 Glacio DMG.\nCD: 8s",
+              "Summon a Clang Bang that follows the enemy and eventually self-combusts, dealing 32.00%+64 Glacio DMG.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.2
+              ],
+              [
+                0.23
+              ],
+              [
+                0.26
+              ],
+              [
+                0.29
+              ],
+              [
+                0.32
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Clang Bang that follows the enemy and eventually self-combusts, dealing 20.00%+40 Glacio DMG.\nCD: 8s · Summon a Clang Bang that follows the enemy and eventually self-combusts, dealing 23.00%+46 Glacio DMG.\nCD: 8s · Summon a Clang Bang that follows the enemy and eventually self-combusts, dealing 26.00%+52 Glacio DMG.\nCD: 8s · Summon a Clang Bang that follows the enemy and eventually self-combusts, dealing 29.00%+58 Glacio DMG.\nCD: 8s · Summon a Clang Bang that follows the enemy and eventually self-combusts, dealing 32.00%+64 Glacio DMG.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

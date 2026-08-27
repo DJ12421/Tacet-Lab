@@ -1,0 +1,298 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21050066",
+  "entityName": "Lethean Elegy",
+  "sourceFingerprint": "0b1240f02587213b120db2ecc0d344488f723c6716f2c22c1c1e772933ffaf93",
+  "reviewedAt": "2026-08-26T11:44:24.499Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "284e3fb730ef4c63208042dd1ce1f70a09a7b3517ce726c5bebc32c219f4f2a7",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050066:effect:0",
+            "sourceName": "Underworld Requiem",
+            "text": "ATK is increased by 12%.",
+            "refinementTexts": [
+              "ATK is increased by 12%.",
+              "ATK is increased by 15%.",
+              "ATK is increased by 18%.",
+              "ATK is increased by 21%.",
+              "ATK is increased by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21050066:effect:1",
+            "sourceName": "Underworld Requiem",
+            "text": "Within 12s after dealing Echo Skill DMG, gain 32% Resonance Skill DMG Bonus and 32% Echo Skill DMG Amplification, and ignore 8% of the target's DEF when dealing damage.",
+            "refinementTexts": [
+              "Within 12s after dealing Echo Skill DMG, gain 32% Resonance Skill DMG Bonus and 32% Echo Skill DMG Amplification, and ignore 8% of the target's DEF when dealing damage.",
+              "Within 12s after dealing Echo Skill DMG, gain 40% Resonance Skill DMG Bonus and 40% Echo Skill DMG Amplification, and ignore 10% of the target's DEF when dealing damage.",
+              "Within 12s after dealing Echo Skill DMG, gain 48% Resonance Skill DMG Bonus and 48% Echo Skill DMG Amplification, and ignore 12% of the target's DEF when dealing damage.",
+              "Within 12s after dealing Echo Skill DMG, gain 56% Resonance Skill DMG Bonus and 56% Echo Skill DMG Amplification, and ignore 14% of the target's DEF when dealing damage.",
+              "Within 12s after dealing Echo Skill DMG, gain 64% Resonance Skill DMG Bonus and 64% Echo Skill DMG Amplification, and ignore 16% of the target's DEF when dealing damage."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Echo Skill DMG",
+              "modifiers": [
+                {
+                  "stat": "skillDamage",
+                  "operation": "amplifyPercent",
+                  "value": 32
+                },
+                {
+                  "stat": "echoDamage",
+                  "operation": "addPercent",
+                  "value": 32
+                },
+                {
+                  "stat": "DEFIgnore:Echo",
+                  "operation": "addPercent",
+                  "value": 8
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Echo Skill DMG",
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "amplifyPercent",
+                    "value": 32
+                  },
+                  {
+                    "stat": "echoDamage",
+                    "operation": "addPercent",
+                    "value": 32
+                  },
+                  {
+                    "stat": "DEFIgnore:Echo",
+                    "operation": "addPercent",
+                    "value": 8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Echo Skill DMG",
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "amplifyPercent",
+                    "value": 40
+                  },
+                  {
+                    "stat": "echoDamage",
+                    "operation": "addPercent",
+                    "value": 40
+                  },
+                  {
+                    "stat": "DEFIgnore:Echo",
+                    "operation": "addPercent",
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Echo Skill DMG",
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "amplifyPercent",
+                    "value": 48
+                  },
+                  {
+                    "stat": "echoDamage",
+                    "operation": "addPercent",
+                    "value": 48
+                  },
+                  {
+                    "stat": "DEFIgnore:Echo",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Echo Skill DMG",
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "amplifyPercent",
+                    "value": 56
+                  },
+                  {
+                    "stat": "echoDamage",
+                    "operation": "addPercent",
+                    "value": 56
+                  },
+                  {
+                    "stat": "DEFIgnore:Echo",
+                    "operation": "addPercent",
+                    "value": 14
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Echo Skill DMG",
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "amplifyPercent",
+                    "value": 64
+                  },
+                  {
+                    "stat": "echoDamage",
+                    "operation": "addPercent",
+                    "value": 64
+                  },
+                  {
+                    "stat": "DEFIgnore:Echo",
+                    "operation": "addPercent",
+                    "value": 16
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

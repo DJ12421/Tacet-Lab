@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000202",
+  "entityName": "Smiter",
+  "sourceFingerprint": "c499355899fcbbc8859146bb8562c4bd193a38e189c52315d891125bc7d2940b",
+  "reviewedAt": "2026-08-26T11:44:25.127Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "c062f6a3cfd4372ea92e2956c5b197bc413d533483c84a86cfd16119eb0122b1",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000202:skill",
+            "name": "Smiter - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Use Echo Skill to summon a Smiter to jab at enemies, dealing 7 instances of 10.70% Spectro DMG, and finish with an uppercut, dealing 32.10% Spectro DMG.\nCD: 15s",
+              "Use Echo Skill to summon a Smiter to jab at enemies, dealing 7 instances of 12.84% Spectro DMG, and finish with an uppercut, dealing 38.52% Spectro DMG.\nCD: 15s",
+              "Use Echo Skill to summon a Smiter to jab at enemies, dealing 7 instances of 14.98% Spectro DMG, and finish with an uppercut, dealing 44.94% Spectro DMG.\nCD: 15s",
+              "Use Echo Skill to summon a Smiter to jab at enemies, dealing 7 instances of 17.12% Spectro DMG, and finish with an uppercut, dealing 51.36% Spectro DMG.\nCD: 15s",
+              "Use Echo Skill to summon a Smiter to jab at enemies, dealing 7 instances of 19.26% Spectro DMG, and finish with an uppercut, dealing 57.78% Spectro DMG.\nCD: 15s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.107,
+                0.321
+              ],
+              [
+                0.1284,
+                0.38520000000000004
+              ],
+              [
+                0.14980000000000002,
+                0.44939999999999997
+              ],
+              [
+                0.17120000000000002,
+                0.5136
+              ],
+              [
+                0.19260000000000002,
+                0.5778
+              ]
+            ],
+            "count": 2,
+            "sourceText": "Use Echo Skill to summon a Smiter to jab at enemies, dealing 7 instances of 10.70% Spectro DMG, and finish with an uppercut, dealing 32.10% Spectro DMG.\nCD: 15s · Use Echo Skill to summon a Smiter to jab at enemies, dealing 7 instances of 12.84% Spectro DMG, and finish with an uppercut, dealing 38.52% Spectro DMG.\nCD: 15s · Use Echo Skill to summon a Smiter to jab at enemies, dealing 7 instances of 14.98% Spectro DMG, and finish with an uppercut, dealing 44.94% Spectro DMG.\nCD: 15s · Use Echo Skill to summon a Smiter to jab at enemies, dealing 7 instances of 17.12% Spectro DMG, and finish with an uppercut, dealing 51.36% Spectro DMG.\nCD: 15s · Use Echo Skill to summon a Smiter to jab at enemies, dealing 7 instances of 19.26% Spectro DMG, and finish with an uppercut, dealing 57.78% Spectro DMG.\nCD: 15s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

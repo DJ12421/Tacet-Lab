@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000184",
+  "entityName": "Spacetrek Explorer",
+  "sourceFingerprint": "26810fe935b06a8ce536837ef0461c91d3ddb32be10969592dd13de406b0b342",
+  "reviewedAt": "2026-08-26T11:44:25.091Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "b9da5998cb84501a75e56cb90d4b68374bf008ab52bb23370a6922cb3509ec8a",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000184:skill",
+            "name": "Spacetrek Explorer - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Spacetrek Explorer to grant nearby active Resonators in the team a Shield equal to 10% of the summoner's Max HP for 4s.\nCD: 20s",
+              "Summon a Spacetrek Explorer to grant nearby active Resonators in the team a Shield equal to 10% of the summoner's Max HP for 4s.\nCD: 20s",
+              "Summon a Spacetrek Explorer to grant nearby active Resonators in the team a Shield equal to 10% of the summoner's Max HP for 4s.\nCD: 20s",
+              "Summon a Spacetrek Explorer to grant nearby active Resonators in the team a Shield equal to 10% of the summoner's Max HP for 4s.\nCD: 20s",
+              "Summon a Spacetrek Explorer to grant nearby active Resonators in the team a Shield equal to 10% of the summoner's Max HP for 4s.\nCD: 20s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.1
+              ],
+              [
+                0.1
+              ],
+              [
+                0.1
+              ],
+              [
+                0.1
+              ],
+              [
+                0.1
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Spacetrek Explorer to grant nearby active Resonators in the team a Shield equal to 10% of the summoner's Max HP for 4s.\nCD: 20s · Summon a Spacetrek Explorer to grant nearby active Resonators in the team a Shield equal to 10% of the summoner's Max HP for 4s.\nCD: 20s · Summon a Spacetrek Explorer to grant nearby active Resonators in the team a Shield equal to 10% of the summoner's Max HP for 4s.\nCD: 20s · Summon a Spacetrek Explorer to grant nearby active Resonators in the team a Shield equal to 10% of the summoner's Max HP for 4s.\nCD: 20s · Summon a Spacetrek Explorer to grant nearby active Resonators in the team a Shield equal to 10% of the summoner's Max HP for 4s.\nCD: 20s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

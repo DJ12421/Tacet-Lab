@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21020023",
+  "entityName": "Originite: Type II",
+  "sourceFingerprint": "bb20b582441fd4556ff135dcf4f0737975a7490abcd2ac384e3fa93d92a3de64",
+  "reviewedAt": "2026-08-26T11:44:23.970Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "abfb934f836fffdc620415ad5f49b45240193b97694d4a9bf3b927ad9f131a72",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020023:effect:0",
+            "sourceName": "Vanquish",
+            "text": "When Resonance Liberation is cast, heals 5% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 20s.",
+            "refinementTexts": [
+              "When Resonance Liberation is cast, heals 5% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 20s.",
+              "When Resonance Liberation is cast, heals 6.25% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 20s.",
+              "When Resonance Liberation is cast, heals 7.5% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 20s.",
+              "When Resonance Liberation is cast, heals 8.75% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 20s.",
+              "When Resonance Liberation is cast, heals 10% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 20s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Liberation",
+              "modifiers": [],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "sonata",
+  "entityId": "9",
+  "entityName": "Lingering Tunes",
+  "sourceFingerprint": "9efb3a8f0235db8b3ca34ef0c544680a51e14d1cd38a1100603e4fb9df89cb05",
+  "reviewedAt": "2026-08-26T11:44:24.719Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "c24fc6d82f365bde4836ab58cccd7d73320089635d5dd08faf5f9e302d6e66de",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:9:2:0",
+            "sourceName": "Lingering Tunes",
+            "text": "ATK +10%",
+            "refinementTexts": [
+              "ATK +10%"
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:9:5:0",
+            "sourceName": "Lingering Tunes",
+            "text": "While on the field, ATK increases by 5% every 1.5s. This effect stacks up to 4 times.",
+            "refinementTexts": [
+              "While on the field, ATK increases by 5% every 1.5s. This effect stacks up to 4 times."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 4
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 5
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:9:5:1",
+            "sourceName": "Lingering Tunes",
+            "text": "Outro Skill DMG + 60%.",
+            "refinementTexts": [
+              "Outro Skill DMG + 60%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

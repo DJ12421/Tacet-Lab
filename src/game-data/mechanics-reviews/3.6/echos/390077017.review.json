@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390077017",
+  "entityName": "Havoc Prism",
+  "sourceFingerprint": "0d2a55bb96ebc7da93332c4aaa70cb073079466bed4722084e26dd78e73c7d4e",
+  "reviewedAt": "2026-08-26T11:44:24.825Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "2ffb3bf53173b818344e33e0191894144b5c355d5b9e7bf3863bc91e4a2cc8ae",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390077017:skill",
+            "name": "Havoc Prism - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Havoc Prism to fire five crystal shards, each dealing 14.40% Havoc DMG.\nCD: 8s",
+              "Summon a Havoc Prism to fire five crystal shards, each dealing 16.56% Havoc DMG.\nCD: 8s",
+              "Summon a Havoc Prism to fire five crystal shards, each dealing 18.72% Havoc DMG.\nCD: 8s",
+              "Summon a Havoc Prism to fire five crystal shards, each dealing 20.88% Havoc DMG.\nCD: 8s",
+              "Summon a Havoc Prism to fire five crystal shards, each dealing 23.04% Havoc DMG.\nCD: 8s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.14400000000000002
+              ],
+              [
+                0.1656
+              ],
+              [
+                0.18719999999999998
+              ],
+              [
+                0.20879999999999999
+              ],
+              [
+                0.2304
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Summon a Havoc Prism to fire five crystal shards, each dealing 14.40% Havoc DMG.\nCD: 8s · Summon a Havoc Prism to fire five crystal shards, each dealing 16.56% Havoc DMG.\nCD: 8s · Summon a Havoc Prism to fire five crystal shards, each dealing 18.72% Havoc DMG.\nCD: 8s · Summon a Havoc Prism to fire five crystal shards, each dealing 20.88% Havoc DMG.\nCD: 8s · Summon a Havoc Prism to fire five crystal shards, each dealing 23.04% Havoc DMG.\nCD: 8s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

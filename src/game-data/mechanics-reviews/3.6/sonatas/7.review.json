@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "sonata",
+  "entityId": "7",
+  "entityName": "Rejuvenating Glow",
+  "sourceFingerprint": "3f2fe04dcdb0485bdd682a0142645e6640ac2e7f382809af75f9d859055e85fa",
+  "reviewedAt": "2026-08-26T11:44:24.708Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "f191b479f7e3260ecefe0b1d71c3dea34275856a02214c890b9ccc9a38fcc5f4",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:7:2:0",
+            "sourceName": "Rejuvenating Glow",
+            "text": "Healing Bonus + 10%.",
+            "refinementTexts": [
+              "Healing Bonus + 10%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "healingBonus",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:7:5:0",
+            "sourceName": "Rejuvenating Glow",
+            "text": "Increases the ATK of all party members by 15% for 30s upon healing allies.",
+            "refinementTexts": [
+              "Increases the ATK of all party members by 15% for 30s upon healing allies."
+            ],
+            "parsed": {
+              "scope": "team",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 30,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 15
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

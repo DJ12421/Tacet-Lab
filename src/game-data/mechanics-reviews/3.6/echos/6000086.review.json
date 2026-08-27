@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000086",
+  "entityName": "Nightmare: Feilian Beringal",
+  "sourceFingerprint": "765586ccc1e6d56068f8cbf739196e26954d98e95c9e78a1305bd6e2375f5a6d",
+  "reviewedAt": "2026-08-26T11:44:24.956Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "db7dde3ee3acc1e76cf28492e119d5327135094d095e564b91172fab8ea6c1f1",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000086:skill",
+            "name": "Nightmare: Feilian Beringal - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Summon a Nightmare: Feilian Beringal to attack enemies, dealing 91.20% Aero DMG. The remaining Whirlwind Beam will continuously attack surrounding enemies up to 5 times, each dealing 12.16% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s.",
+              "Summon a Nightmare: Feilian Beringal to attack enemies, dealing 109.44% Aero DMG. The remaining Whirlwind Beam will continuously attack surrounding enemies up to 5 times, each dealing 14.59% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s.",
+              "Summon a Nightmare: Feilian Beringal to attack enemies, dealing 127.68% Aero DMG. The remaining Whirlwind Beam will continuously attack surrounding enemies up to 5 times, each dealing 17.02% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s.",
+              "Summon a Nightmare: Feilian Beringal to attack enemies, dealing 145.92% Aero DMG. The remaining Whirlwind Beam will continuously attack surrounding enemies up to 5 times, each dealing 19.46% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s.",
+              "Summon a Nightmare: Feilian Beringal to attack enemies, dealing 164.16% Aero DMG. The remaining Whirlwind Beam will continuously attack surrounding enemies up to 5 times, each dealing 21.89% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s."
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.912,
+                0.1216,
+                0.12,
+                0.12
+              ],
+              [
+                1.0944,
+                0.1459,
+                0.12,
+                0.12
+              ],
+              [
+                1.2768000000000002,
+                0.1702,
+                0.12,
+                0.12
+              ],
+              [
+                1.4591999999999998,
+                0.1946,
+                0.12,
+                0.12
+              ],
+              [
+                1.6416,
+                0.2189,
+                0.12,
+                0.12
+              ]
+            ],
+            "count": 4,
+            "sourceText": "Summon a Nightmare: Feilian Beringal to attack enemies, dealing 91.20% Aero DMG. The remaining Whirlwind Beam will continuously attack surrounding enemies up to 5 times, each dealing 12.16% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s. · Summon a Nightmare: Feilian Beringal to attack enemies, dealing 109.44% Aero DMG. The remaining Whirlwind Beam will continuously attack surrounding enemies up to 5 times, each dealing 14.59% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s. · Summon a Nightmare: Feilian Beringal to attack enemies, dealing 127.68% Aero DMG. The remaining Whirlwind Beam will continuously attack surrounding enemies up to 5 times, each dealing 17.02% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s. · Summon a Nightmare: Feilian Beringal to attack enemies, dealing 145.92% Aero DMG. The remaining Whirlwind Beam will continuously attack surrounding enemies up to 5 times, each dealing 19.46% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s. · Summon a Nightmare: Feilian Beringal to attack enemies, dealing 164.16% Aero DMG. The remaining Whirlwind Beam will continuously attack surrounding enemies up to 5 times, each dealing 21.89% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s."
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "0e1a5a73e0dbad5614b8ecd2dd495180099f5881141411c67adcb46d12a47447",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000086:effect:0",
+            "sourceName": "Nightmare: Feilian Beringal",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

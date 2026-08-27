@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000050",
+  "entityName": "Traffic Illuminator",
+  "sourceFingerprint": "4252ba1ee019db71813336869cc175957aee2eb7fd1281244d4e61fcb3211a17",
+  "reviewedAt": "2026-08-26T11:44:24.881Z",
+  "sections": {
+    "skill": {
+      "status": "approved-empty",
+      "sourceFingerprint": "a31b11866e3e573ff2736c81f114785ee5386cf601941275ee347e359c4994d1",
+      "approvedData": {
+        "attacks": []
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

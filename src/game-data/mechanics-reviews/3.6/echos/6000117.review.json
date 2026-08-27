@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000117",
+  "entityName": "Nightmare: Havoc Warrior",
+  "sourceFingerprint": "00044fbd529003d567cdf99f884efdd6e6d41a65ab3b59696315572ac86b54d3",
+  "reviewedAt": "2026-08-26T11:44:25.028Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "4d6401a33b1e835a6d4e18734d37e5ed0ec5737597a594b09f92c3a90ef9a190",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000117:skill",
+            "name": "Nightmare: Havoc Warrior - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "expressions": [
+              "Transform into Havoc Warrior to attack up to 3 times, dealing 107.33% Havoc DMG each time.\nCD: 15s",
+              "Transform into Havoc Warrior to attack up to 3 times, dealing 123.43% Havoc DMG each time.\nCD: 15s",
+              "Transform into Havoc Warrior to attack up to 3 times, dealing 139.53% Havoc DMG each time.\nCD: 15s",
+              "Transform into Havoc Warrior to attack up to 3 times, dealing 155.63% Havoc DMG each time.\nCD: 15s",
+              "Transform into Havoc Warrior to attack up to 3 times, dealing 171.73% Havoc DMG each time.\nCD: 15s"
+            ],
+            "talentLevels": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.0733
+              ],
+              [
+                1.2343000000000002
+              ],
+              [
+                1.3953
+              ],
+              [
+                1.5563
+              ],
+              [
+                1.7172999999999998
+              ]
+            ],
+            "count": 1,
+            "sourceText": "Transform into Havoc Warrior to attack up to 3 times, dealing 107.33% Havoc DMG each time.\nCD: 15s · Transform into Havoc Warrior to attack up to 3 times, dealing 123.43% Havoc DMG each time.\nCD: 15s · Transform into Havoc Warrior to attack up to 3 times, dealing 139.53% Havoc DMG each time.\nCD: 15s · Transform into Havoc Warrior to attack up to 3 times, dealing 155.63% Havoc DMG each time.\nCD: 15s · Transform into Havoc Warrior to attack up to 3 times, dealing 171.73% Havoc DMG each time.\nCD: 15s"
+          }
+        ]
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}
