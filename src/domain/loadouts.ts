@@ -78,7 +78,7 @@ export function theorycraftSubstatLines(build: TheorycraftBuild): StatLine[] {
   }
   const values = build.substats.mode === 'values'
     ? build.substats.values
-    : Object.fromEntries(Object.entries(build.substats.rolls).map(([key, count]) => [key, theorycraftRollValue(key as StatKey, Number(count), build.substats.quality)]))
+    : Object.fromEntries(Object.entries(build.substats.rolls).map(([key, count]) => [key, theorycraftRollValue(key as StatKey, Number(count), build.substats.mode === 'rolls' ? build.substats.quality : 'mid')]))
   return Object.entries(values).flatMap(([key, value]) => Number.isFinite(value) && Number(value) !== 0
     ? [{ key: key as StatKey, value: Number(value) }] : [])
 }
