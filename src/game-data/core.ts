@@ -30,5 +30,6 @@ export const defaultSettings: AppSettings = {
   displayName: 'Resonator', uid: '', privacyMode: false, background: 'signal', scanIntervalMs: 900,
   roverGender: 'male',
   scoreWeights: {},
-  characterSubstatWeights: {}
+  characterSubstatWeights: {},
+  characterEnergyRegenMinimums: {}
 }

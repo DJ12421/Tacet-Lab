@@ -1,9 +1,37 @@
 import { createLocalId } from '../domain/id'
-import type { Build, Echo, EquippedLoadout, LoadoutSourceRef, OwnedCharacter, StatKey, TheorycraftBuild } from '../domain/types'
+import type { Build, Echo, EquippedLoadout, LoadoutSourceRef, OwnedCharacter, OwnedWeapon, StatKey, TheorycraftBuild } from '../domain/types'
 import { createTheorycraftBuild } from '../domain/loadouts'
 import { effectiveSubStats } from '../game-data/echo-main-stats'
 import { characterCatalog, echoCatalog, weaponCatalog } from '../game-data'
 import { db } from './database'
+
+function defaultWeaponFor(character: OwnedCharacter) {
+  const characterEntry = characterCatalog.find((entry) => entry.id === character.catalogId)
+  const weaponEntry = weaponCatalog.find((entry) => entry.rarity === 1
+    && entry.name.startsWith('Training ')
+    && entry.type.toLowerCase() === characterEntry?.weaponType.toLowerCase())
+  if (!characterEntry || !weaponEntry) throw new Error('A matching Training weapon could not be found for this character.')
+  return weaponEntry
+}
+
+export async function createOwnedCharacterWithDefaultWeapon(catalogId: string): Promise<OwnedCharacter> {
+  const now = Date.now()
+  const character: OwnedCharacter = {
+    id: createLocalId(), catalogId, level: 1, sequence: 0, locked: false, favorite: false,
+    skillLevels: [1, 1, 1, 1, 1], createdAt: now
+  }
+  const weaponEntry = defaultWeaponFor(character)
+  const weapon: OwnedWeapon = {
+    id: createLocalId(), catalogId: weaponEntry.id, level: 1, rank: 1, locked: false,
+    equippedBy: character.id, createdAt: now
+  }
+  await db.transaction('rw', [db.characters, db.weapons, db.equippedLoadouts], async () => {
+    await db.characters.add(character)
+    await db.weapons.add(weapon)
+    await db.equippedLoadouts.add({ id: `equipped:${character.id}`, characterId: character.id, weaponId: weapon.id, echoIds: [], updatedAt: now })
+  })
+  return character
+}
 
 export async function ensureEquippedLoadout(character: OwnedCharacter): Promise<EquippedLoadout> {
   const existing = await db.equippedLoadouts.where('characterId').equals(character.id).first()

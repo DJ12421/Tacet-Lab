@@ -810,7 +810,8 @@ function isTheorycraftBuild(value: unknown) {
   if (typeof value.mainEchoName !== 'string' || !Array.isArray(value.slots) || value.slots.length !== 5) return false
   if (!value.slots.every((slot) => isRecord(slot) && [1, 3, 4].includes(Number(slot.cost)) && [1, 2, 3, 4, 5].includes(Number(slot.rarity)) && isFiniteNumber(slot.level) && typeof slot.mainStatKey === 'string' && slot.mainStatKey in statLabels)) return false
   if (!Array.isArray(value.sonatas) || !value.sonatas.every((entry) => isRecord(entry) && typeof entry.name === 'string' && isFiniteNumber(entry.pieces))) return false
-  if (!isRecord(value.substats) || !['values', 'rolls'].includes(String(value.substats.mode))) return false
+  if (!isRecord(value.substats) || !['slots', 'values', 'rolls'].includes(String(value.substats.mode))) return false
+  if (value.substats.mode === 'slots' && (!Array.isArray(value.substats.slots) || value.substats.slots.length !== 5 || !value.substats.slots.every((slot) => Array.isArray(slot) && slot.length <= 5 && slot.every(isStatLine)))) return false
   if (value.substats.mode === 'values' && (!isRecord(value.substats.values) || !Object.entries(value.substats.values).every(([key, amount]) => key in statLabels && isFiniteNumber(amount)))) return false
   if (value.substats.mode === 'rolls' && (!['low', 'mid', 'high'].includes(String(value.substats.quality)) || !isRecord(value.substats.rolls) || !Object.entries(value.substats.rolls).every(([key, amount]) => key in statLabels && isFiniteNumber(amount)))) return false
   return isFiniteNumber(value.createdAt) && isFiniteNumber(value.updatedAt)
@@ -936,4 +937,6 @@ function isSettings(value: unknown) {
     && (value.characterSubstatWeights === undefined || (isRecord(value.characterSubstatWeights)
       && Object.values(value.characterSubstatWeights).every((weights) => isRecord(weights)
         && Object.entries(weights).every(([key, weight]) => key in statLabels && isFiniteNumber(weight) && weight >= 0 && weight <= 4))))
+    && (value.characterEnergyRegenMinimums === undefined || (isRecord(value.characterEnergyRegenMinimums)
+      && Object.values(value.characterEnergyRegenMinimums).every((minimum) => isFiniteNumber(minimum) && minimum >= 0 && minimum <= 500)))
 }

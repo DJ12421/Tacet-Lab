@@ -20,6 +20,7 @@ export interface TheorycraftSonata { name: string; pieces: number }
 export type TheorycraftSubstats =
   | { mode: 'values'; values: Partial<Record<StatKey, number>> }
   | { mode: 'rolls'; quality: 'low' | 'mid' | 'high'; rolls: Partial<Record<StatKey, number>> }
+  | { mode: 'slots'; slots: StatLine[][] }
 export interface TheorycraftBuild {
   id: string
   name: string
@@ -183,5 +184,5 @@ export interface OptimizerRun {
   highlightedBuildKeys?: string[]
 }
 export interface AccountDocument { schemaVersion: 1 | 2 | 3 | 4 | 5 | 6 | 7; gameDataVersion: string; exportedAt: string; echoes: Echo[]; characters: OwnedCharacter[]; weapons: OwnedWeapon[]; builds: Build[]; equippedLoadouts?: EquippedLoadout[]; theorycraftBuilds?: TheorycraftBuild[]; teams: Team[]; optimizerProfiles?: OptimizerProfile[]; optimizerRuns?: OptimizerRun[]; settings: AppSettings }
-export interface AppSettings { displayName: string; uid: string; privacyMode: boolean; background: 'signal' | 'tacet' | 'plain'; scanIntervalMs: number; roverGender: 'male' | 'female'; scoreWeights: Record<string, Partial<Record<StatKey, number>>>; characterSubstatWeights: Record<string, Partial<Record<StatKey, number>>> }
+export interface AppSettings { displayName: string; uid: string; privacyMode: boolean; background: 'signal' | 'tacet' | 'plain'; scanIntervalMs: number; roverGender: 'male' | 'female'; scoreWeights: Record<string, Partial<Record<StatKey, number>>>; characterSubstatWeights: Record<string, Partial<Record<StatKey, number>>>; characterEnergyRegenMinimums: Record<string, number> }
 export type AppView = 'dashboard' | 'archive' | 'scanner' | 'echoes' | 'weapons' | 'characters' | 'teams' | 'legal'

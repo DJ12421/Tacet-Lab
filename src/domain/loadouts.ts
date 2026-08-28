@@ -46,9 +46,10 @@ export function theorycraftRollValue(key: StatKey, count: number, quality: 'low'
 }
 
 export function theorycraftSubstatLines(build: TheorycraftBuild): StatLine[] {
+  if (build.substats.mode === 'slots') return build.substats.slots.flat()
   const values = build.substats.mode === 'values'
     ? build.substats.values
-    : Object.fromEntries(Object.entries(build.substats.rolls).map(([key, count]) => [key, theorycraftRollValue(key as StatKey, Number(count), build.substats.mode === 'rolls' ? build.substats.quality : 'mid')]))
+    : Object.fromEntries(Object.entries(build.substats.rolls).map(([key, count]) => [key, theorycraftRollValue(key as StatKey, Number(count), build.substats.quality)]))
   return Object.entries(values).flatMap(([key, value]) => Number.isFinite(value) && Number(value) !== 0
     ? [{ key: key as StatKey, value: Number(value) }] : [])
 }
@@ -79,7 +80,7 @@ export function theorycraftWarnings(build: TheorycraftBuild) {
       const availableSlots = build.slots.filter((slot) => slot.mainStatKey !== key && maxSubStatsForLevel(slot.level) > 0).length
       if (Number(count) > availableSlots) warnings.push(`${key} appears on more Echoes than the configured main stats permit.`)
     }
-  } else {
+  } else if (build.substats.mode === 'values') {
     for (const [key, value] of Object.entries(build.substats.values)) {
       if (Number(value) > 0 && !build.slots.some((slot) => slot.mainStatKey !== key && maxSubStatsForLevel(slot.level) > 0)) warnings.push(`${key} cannot be placed because every eligible slot uses it as a main stat.`)
     }
@@ -89,9 +90,8 @@ export function theorycraftWarnings(build: TheorycraftBuild) {
 
 function syntheticTheorycraftEchoes(build: TheorycraftBuild): Echo[] {
   const sonatas = build.sonatas.flatMap((entry) => Array.from({ length: Math.max(0, Math.floor(entry.pieces)) }, () => entry.name))
-  const substats = theorycraftSubstatLines(build)
-  const distributed: StatLine[][] = build.slots.map(() => [])
-  substats.forEach((line, index) => distributed[index % Math.max(1, distributed.length)].push(line))
+  const distributed: StatLine[][] = build.slots.map((_, index) => build.substats.mode === 'slots' ? build.substats.slots[index] ?? [] : [])
+  if (build.substats.mode !== 'slots') theorycraftSubstatLines(build).forEach((line, index) => distributed[index % Math.max(1, distributed.length)].push(line))
   return build.slots.slice(0, 5).map((slot, index) => ({
     id: `theorycraft:${build.id}:echo:${index}`,
     name: index === 0 ? build.mainEchoName || 'Theorycrafted main Echo' : `Theorycrafted Echo ${index + 1}`,
