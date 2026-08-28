@@ -46,7 +46,7 @@ export interface TeamScenario {
   compareBuildId?: string
 }
 export interface RotationAction { id: string; timestamp: number; duration?: number; multiplier?: number; buildId: string; attackId: string; formulaTargetId?: string; inputs?: Record<string, ScenarioValue> }
-export interface BuffEffect { id: string; name: string; sourceBuildId: string; target: 'self' | 'next' | 'character' | 'team'; recipientBuildId?: string; triggerAttackId: string; duration: number; stat: StatKey | 'amplify'; value: number; stackingGroup: string }
+export interface BuffEffect { id: string; name: string; sourceBuildId: string; target: 'self' | 'next' | 'team'; triggerAttackId: string; duration: number; stat: StatKey | 'amplify'; value: number; stackingGroup: string }
 export interface EnemyConfig {
   level: number
   resistance: number
@@ -61,7 +61,7 @@ export interface AggregatedStats { baseHp: number; baseAtk: number; baseDef: num
 export interface DamageResult { normal: number; critical: number; expected: number; hits: number; attackId: string }
 export interface RotationResult { total: number; dps: number; actions: Array<DamageResult & { timestamp: number; buildId: string }>; byBuild: Record<string, number>; byType: Partial<Record<DamageType, number>> }
 export interface ScanField<T> { value: T; confidence: number; raw?: string }
-export interface BuildCardDetails { id: string; formatId?: string; formatConfidence?: number; character: ScanField<string>; characterCatalogId?: string; characterLevel: ScanField<number>; sequence: ScanField<number>; skillLevels: ScanField<number>[]; weapon: ScanField<string>; weaponCatalogId?: string; weaponLevel: ScanField<number>; weaponRank: ScanField<number>; sourceImageDataUrl: string }
+export interface BuildCardDetails { id: string; character: ScanField<string>; characterCatalogId?: string; characterLevel: ScanField<number>; sequence: ScanField<number>; skillLevels: ScanField<number>[]; weapon: ScanField<string>; weaponCatalogId?: string; weaponLevel: ScanField<number>; sourceImageDataUrl: string }
 export interface ScanCandidate { id: string; createdAt: number; imageDataUrl: string; fingerprint: string; fields: { name: ScanField<string>; cost: ScanField<1 | 3 | 4>; rarity: ScanField<1 | 2 | 3 | 4 | 5>; level: ScanField<number>; sonata: ScanField<string>; mainStat: ScanField<StatLine>; subStats: ScanField<StatLine>[]; equippedBy: ScanField<string>; locked: ScanField<boolean>; excluded: ScanField<boolean> }; source: 'screen' | 'screenshot' | 'video' | 'manual'; duplicateOf?: string; buildCard?: BuildCardDetails }
 export type OptimizerStatKey = Exclude<keyof AggregatedStats, 'baseHp' | 'baseAtk' | 'baseDef'>
 export type OptimizerObjective = 'expected' | 'normal' | 'critical' | OptimizerStatKey
