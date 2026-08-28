@@ -1,4 +1,5 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
+import type { TheorycraftBuild } from '../domain/types'
 import { db, ensureSeedData, exportAccount, importAccount, previewAccountImport, requestPersistentStorage, validateAccount } from './database'
 
 describe('local account persistence', () => {
@@ -22,6 +23,18 @@ describe('local account persistence', () => {
     await db.echoes.add({ id: 'old-rounded-main', name: 'Fusion Warrior', cost: 3, rarity: 5, level: 1, sonata: 'Molten Rift', mainStat: { key: 'fusionDamage', value: 7 }, subStats: [], locked: false, excluded: false, createdAt: 1, source: 'scan' })
     await ensureSeedData()
     expect((await db.echoes.get('old-rounded-main'))?.mainStat.value).toBe(6.9)
+  })
+
+  it('repairs theorycraft roll mode saved without a rolls map', async () => {
+    await db.theorycraftBuilds.add({
+      id: 'missing-rolls', name: 'Legacy theorycraft', description: '', characterId: 'character',
+      weapon: { catalogId: 'weapon', level: 90, rank: 1 }, mainEchoName: '', slots: [], sonatas: [],
+      substats: { mode: 'rolls', quality: 'mid' }, createdAt: 1, updatedAt: 1
+    } as unknown as TheorycraftBuild)
+
+    await ensureSeedData()
+
+    expect((await db.theorycraftBuilds.get('missing-rolls'))?.substats).toEqual({ mode: 'rolls', quality: 'mid', rolls: {} })
   })
 
   it('round-trips a versioned account document atomically', async () => {

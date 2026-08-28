@@ -362,9 +362,14 @@ export async function requestPersistentStorage(): Promise<boolean | undefined> {
 }
 
 export async function ensureSeedData() {
-  await db.transaction('rw', [db.settings, db.echoes], async () => {
+  await db.transaction('rw', [db.settings, db.echoes, db.theorycraftBuilds], async () => {
     if (!(await db.settings.get('settings'))) await db.settings.put({ id: 'settings', ...structuredClone(defaultSettings) })
     await db.echoes.toCollection().modify((echo) => { echo.mainStat = normalizeEchoMainStat(echo); echo.subStats = effectiveSubStats(echo) })
+    await db.theorycraftBuilds.toCollection().modify((build) => {
+      if (build.substats?.mode === 'rolls') build.substats = { ...build.substats, rolls: build.substats.rolls ?? {} }
+      else if (build.substats?.mode === 'values') build.substats = { ...build.substats, values: build.substats.values ?? {} }
+      else build.substats = { mode: 'values', values: {} }
+    })
   })
 }
 
