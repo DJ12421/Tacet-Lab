@@ -8,6 +8,7 @@
     "data:sync:echoes": "node scripts/sync-nanoka-echoes.mjs",
     "data:sync:conditions": "node scripts/sync-wutheringtools-conditions.mjs",
     "data:sync:calculation-v2": "node scripts/sync-wutheringtools-calculation-v2.mjs",
+    "data:sync:scanner-signatures": "node scripts/generate-scanner-signatures.mjs",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
