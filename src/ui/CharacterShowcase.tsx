@@ -10,6 +10,7 @@ import { resolveCharacterSubstatProfile, scoreCharacterSubstats } from '../domai
 import { createLocalId } from '../domain/id'
 import { resolveLoadout, type LoadoutCollections } from '../domain/loadouts'
 import { db, saveSettings, setOwnedWeaponOwner } from '../storage/database'
+import { deleteCharacterArtwork, loadCharacterArtwork, saveCharacterArtwork } from '../storage/character-art-cache'
 import { setEquippedEchoIds } from '../storage/loadouts'
 import type { AppSettings, Build, Echo, EquippedLoadout, LoadoutSourceRef, OwnedCharacter, OwnedWeapon, StatKey, TheorycraftBuild } from '../domain/types'
 import { CharacterSubstatProfileContext, EchoMiniCard, EquippedCharacterLabel, Icon, Panel } from './components'
@@ -327,6 +328,8 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
   const [layoutControlsHost, setLayoutControlsHost] = useState<HTMLDivElement | null>(null)
   const [layoutPanelHost, setLayoutPanelHost] = useState<HTMLDivElement | null>(null)
   const [cardAccent, setCardAccent] = useState<string | null>(null)
+  const [customArtwork, setCustomArtwork] = useState<Blob | undefined>()
+  const [customArtworkUrl, setCustomArtworkUrl] = useState<string | undefined>()
   const [loadoutSource, setLoadoutSource] = useState<LoadoutSourceRef>({ type: 'equipped', characterId: character.id })
   const exportRef = useRef<HTMLDivElement>(null)
   const portraitRef = useRef<HTMLImageElement>(null)
@@ -338,6 +341,20 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
     setPortraitFailed(false)
     setAnimatedPortraitReady(false)
   }, [catalog.id])
+
+  useEffect(() => {
+    let active = true
+    setCustomArtwork(undefined)
+    void loadCharacterArtwork(character.id).then((artwork) => { if (active) setCustomArtwork(artwork) }).catch(() => { if (active) setCustomArtwork(undefined) })
+    return () => { active = false }
+  }, [character.id])
+
+  useEffect(() => {
+    if (!customArtwork) { setCustomArtworkUrl(undefined); return }
+    const url = URL.createObjectURL(customArtwork)
+    setCustomArtworkUrl(url)
+    return () => URL.revokeObjectURL(url)
+  }, [customArtwork])
 
   useEffect(() => {
     if (!exportMessage) return
@@ -388,6 +405,7 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
         if (team.calculationV2) team.calculationV2 = { ...team.calculationV2, memberEffects: keep(team.calculationV2.memberEffects), partyEffects: Object.fromEntries(Object.entries(keep(team.calculationV2.partyEffects)).map(([sourceId, effects]) => [sourceId, Object.fromEntries(Object.entries(effects).map(([effectId, selection]) => [effectId, { ...selection, recipientBuildId: selection.recipientBuildId && !removed.has(selection.recipientBuildId) ? selection.recipientBuildId : undefined }]))])), selectedAttackByBuild: keep(team.calculationV2.selectedAttackByBuild) }
       })
     })
+    await deleteCharacterArtwork(character.id).catch(() => undefined)
     await refresh()
     onBack()
   }
@@ -529,6 +547,9 @@ export function CharacterShowcase({ character, catalog, weapons, echoes, builds,
       onEditEcho={setEditingEcho}
       onEditPriorities={() => setScoreEditorOpen(true)}
       onShowScoreInfo={() => setScoreInfoOpen(true)}
+      customArtworkUrl={customArtworkUrl}
+      onUploadArtwork={async (file) => { await saveCharacterArtwork(character.id, file); setCustomArtwork(file); setPortraitFailed(false); setAnimatedPortraitReady(false) }}
+      onRestoreArtwork={async () => { await deleteCharacterArtwork(character.id); setCustomArtwork(undefined); setPortraitFailed(false); setAnimatedPortraitReady(false) }}
       onAccentChange={setCardAccent}
       layoutControlsHost={layoutControlsHost}
       layoutPanelHost={layoutPanelHost}

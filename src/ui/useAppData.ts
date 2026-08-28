@@ -52,6 +52,7 @@ export function useAppData() {
       await repairNamedEchoAssignments()
       await repairEchoAssignmentConsistency()
       await repairWeaponAssignmentConsistency()
+      await ensureAllEquippedLoadouts()
       await refresh()
     }).catch((caught) => setError(caught instanceof Error ? caught.message : 'The local archive could not be opened.')).finally(() => setReady(true))
   }, [])
