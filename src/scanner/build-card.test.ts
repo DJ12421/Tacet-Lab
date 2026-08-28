@@ -40,4 +40,24 @@ describe('official build-card stat parsing', () => {
     ])
     expect(parsed.subStats[1]).toMatchObject({ raw: '1.6', confidence: .8 })
   })
+
+  it('joins separate WuWaFlex main-stat OCR while preserving the same substat', () => {
+    const parsed = parseBuildCardStats('Crit. Rate 8.1%\nHP 8.6%', 4, { label: 'Crit. Rate\n', value: '22%\n' })
+
+    expect(parsed.mainStat).toEqual({ key: 'critRate', value: 22 })
+    expect(parsed.subStats.map((field) => field.value)).toEqual([
+      { key: 'critRate', value: 8.1 },
+      { key: 'hpPercent', value: 8.6 }
+    ])
+  })
+
+  it('treats a one-cost WuWaFlex HP main as percentage when number OCR drops the percent sign', () => {
+    const parsed = parseBuildCardStats('HP 8.6%\nCrit. Rate 8.1%', 1, { label: 'HP', value: '22.8' })
+
+    expect(parsed.mainStat).toEqual({ key: 'hpPercent', value: 22.8 })
+    expect(parsed.subStats.map((field) => field.value)).toEqual([
+      { key: 'hpPercent', value: 8.6 },
+      { key: 'critRate', value: 8.1 }
+    ])
+  })
 })

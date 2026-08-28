@@ -231,6 +231,12 @@
   align-items: stretch;
 }
 
+@media (min-width:1500px) {
+  .archive-character-grid {
+    grid-template-columns: repeat(8,minmax(0,1fr));
+  }
+}
+
 .archive-weapon-grid,.archive-echo-grid {
   grid-template-columns: repeat(auto-fill,minmax(min(100%,210px),1fr));
 }

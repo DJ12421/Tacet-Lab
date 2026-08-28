@@ -1,7 +1,7 @@
 import type { Echo } from '../domain/types'
 import type { VisualRecognition } from './parser'
 import type { ScanRect } from './types'
-import { generatedSonataIconSources } from '../game-data/sonatas.generated'
+import { generatedSonataSignatures } from '../game-data/scanner-signatures.generated'
 
 const DETAIL_VISUAL_CROPS = {
   sonata: { x: 0.54, y: 0.035, width: 0.13, height: 0.085 },
@@ -13,8 +13,6 @@ const INVENTORY_VISUAL_CROPS = {
   discard: { x: 0.11, y: 0.255, width: 0.15, height: 0.11 },
   lock: { x: 0.29, y: 0.255, width: 0.15, height: 0.11 }
 }
-let sonataSignaturesPromise: Promise<Array<{ name: string; signature: number[] }>> | undefined
-
 function rgbToHsl(red: number, green: number, blue: number) {
   const [r, g, b] = [red, green, blue].map((value) => value / 255)
   const max = Math.max(r, g, b), min = Math.min(r, g, b), lightness = (max + min) / 2, delta = max - min
@@ -92,16 +90,16 @@ function sonataSignaturesInBox(image: HTMLImageElement, crop: ScanRect) {
   const boxX = image.naturalWidth * crop.x, boxY = image.naturalHeight * crop.y
   const boxWidth = image.naturalWidth * crop.width, boxHeight = image.naturalHeight * crop.height
   const shortestSide = Math.max(1, Math.min(boxWidth, boxHeight))
-  const canvas = document.createElement('canvas'); canvas.width = 24; canvas.height = 24
+  const canvas = document.createElement('canvas'); canvas.width = 16; canvas.height = 16
   const context = canvas.getContext('2d', { willReadFrequently: true }); if (!context) return []
   const signatures: number[][] = []
   for (const scale of [.45, .6, .75, .9, 1]) {
     const size = shortestSide * scale
     const xTravel = Math.max(0, boxWidth - size), yTravel = Math.max(0, boxHeight - size)
     for (const xStep of [0, .25, .5, .75, 1]) for (const yStep of [0, .5, 1]) {
-      context.clearRect(0, 0, 24, 24)
-      context.drawImage(image, boxX + xTravel * xStep, boxY + yTravel * yStep, size, size, 0, 0, 24, 24)
-      signatures.push(pixelSignature(context.getImageData(0, 0, 24, 24).data))
+      context.clearRect(0, 0, 16, 16)
+      context.drawImage(image, boxX + xTravel * xStep, boxY + yTravel * yStep, size, size, 0, 0, 16, 16)
+      signatures.push(pixelSignature(context.getImageData(0, 0, 16, 16).data))
     }
   }
   return signatures
@@ -129,17 +127,10 @@ export function classifySonataSignatures(captured: number[], templates: Array<{ 
 }
 
 function loadSonataSignatures() {
-  if (sonataSignaturesPromise) return sonataSignaturesPromise
-  sonataSignaturesPromise = Promise.all(Object.entries(generatedSonataIconSources).filter((entry) => entry[1]).map(async ([name, url]) => {
-    try {
-      const image = new Image(); image.crossOrigin = 'anonymous'; image.src = url; await image.decode()
-      const canvas = document.createElement('canvas'); canvas.width = 24; canvas.height = 24
-      const context = canvas.getContext('2d', { willReadFrequently: true }); if (!context) return
-      context.drawImage(image, 0, 0, 24, 24)
-      return { name, signature: pixelSignature(context.getImageData(0, 0, 24, 24).data) }
-    } catch { return undefined }
-  })).then((signatures) => signatures.filter((entry): entry is { name: string; signature: number[] } => Boolean(entry)))
-  return sonataSignaturesPromise
+  return generatedSonataSignatures.map((entry) => ({
+    name: entry.name,
+    signature: Array.from(entry.signature, (value) => value / 32)
+  }))
 }
 
 export async function recognizeSonataAt(imageDataUrl: string, rect: ScanRect, allowedNames?: string[]) {

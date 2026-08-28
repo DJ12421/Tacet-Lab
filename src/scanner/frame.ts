@@ -2,7 +2,8 @@ import { createCalibrationProfile, detectRightPanel, findCompatibleProfile } fro
 import { createLocalId } from '../domain/id'
 import { defaultPanelRectForLayout } from './regions'
 import type { CalibrationProfile, ScanFrame, ScanLayout, ScanRect, ScanSource } from './types'
-import { looksLikeOfficialBuildCard } from './build-card'
+import { detectBuildCardFormat } from './build-card-detection'
+import type { BuildCardFormatPreference } from './build-card-formats'
 
 const loadImage = async (dataUrl: string) => { const image = new Image(); image.src = dataUrl; await image.decode(); return image }
 
@@ -26,18 +27,26 @@ export async function prepareScanFrame(
   sessionId: string,
   sequence: number,
   preferredProfile?: CalibrationProfile,
-  preferredLayout?: Exclude<ScanLayout, 'unknown'>
+  preferredLayout?: Exclude<ScanLayout, 'unknown'>,
+  preferredBuildCardFormat: BuildCardFormatPreference = 'auto'
 ): Promise<PreparedFrame> {
   const image = await loadImage(sourceDataUrl)
   const width = image.naturalWidth, height = image.naturalHeight
   const detected = detectRightPanel(image, width, height)
   const dimensionCompatiblePreferred = preferredProfile && Math.abs(preferredProfile.sourceWidth - width) <= 2 && Math.abs(preferredProfile.sourceHeight - height) <= 2 ? preferredProfile : undefined
-  const buildCard = source === 'screenshot' && (preferredLayout === 'build-card' || await looksLikeOfficialBuildCard(sourceDataUrl))
-  const layout: Exclude<ScanLayout, 'unknown'> = buildCard ? 'build-card' : dimensionCompatiblePreferred?.layout ?? preferredLayout ?? (detected.layout === 'unknown' ? 'echo-detail' : detected.layout)
-  const compatiblePreferred = dimensionCompatiblePreferred?.layout === layout ? dimensionCompatiblePreferred : undefined
-  const saved = findCompatibleProfile(width, height, layout, compatiblePreferred?.uiScale)
+  const formatDetection = source === 'screenshot'
+    ? detectBuildCardFormat(image, preferredBuildCardFormat)
+    : { id: 'discord-bot' as const, confidence: 0, certain: false }
+  const buildCard = source === 'screenshot' && (preferredLayout === 'build-card' || formatDetection.certain)
+  const layout: Exclude<ScanLayout, 'unknown'> = buildCard ? 'build-card' : preferredLayout ?? dimensionCompatiblePreferred?.layout ?? (detected.layout === 'unknown' ? 'echo-detail' : detected.layout)
+  const format = buildCard ? formatDetection.id : undefined
+  const compatiblePreferred = dimensionCompatiblePreferred?.layout === layout
+    && (layout !== 'build-card' || (dimensionCompatiblePreferred.buildCardFormat ?? 'discord-bot') === format)
+    ? dimensionCompatiblePreferred
+    : undefined
+  const saved = findCompatibleProfile(width, height, layout, compatiblePreferred?.uiScale, format)
   const defaultPanel = defaultPanelRectForLayout(layout)
-  const profile = compatiblePreferred ?? saved ?? createCalibrationProfile(width, height, defaultPanel, layout)
+  const profile = compatiblePreferred ?? saved ?? createCalibrationProfile(width, height, defaultPanel, layout, 1, format)
   const rect: ScanRect = profile.panelRect
   const canvas = document.createElement('canvas')
   canvas.width = Math.max(1, Math.round(width * rect.width)); canvas.height = Math.max(1, Math.round(height * rect.height))
@@ -48,7 +57,9 @@ export async function prepareScanFrame(
   return {
     frame: {
       id: createLocalId(), sessionId, sequence, source, capturedAt: Date.now(), width, height,
-      panelRect: { ...rect }, panelImageDataUrl, fingerprint: panelFingerprint(context), layout: profile.layout, calibrationProfileId: saved?.id ?? compatiblePreferred?.id
+      panelRect: { ...rect }, panelImageDataUrl, fingerprint: panelFingerprint(context), layout: profile.layout,
+      buildCardFormat: buildCard ? formatDetection.id : undefined, buildCardFormatConfidence: buildCard ? formatDetection.confidence : undefined,
+      calibrationProfileId: saved?.id ?? compatiblePreferred?.id
     },
     profile, detectionConfidence: layout === 'build-card' ? 1 : detected.confidence, needsCalibration: !saved && !compatiblePreferred
   }

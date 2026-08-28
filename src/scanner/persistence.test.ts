@@ -2,7 +2,7 @@ import { afterAll, beforeEach, describe, expect, it } from 'vitest'
 import type { DiagnosticScanCandidate } from './types'
 import { characterCatalog, weaponCatalog } from '../game-data'
 import { db } from '../storage/database'
-import { saveScannedCandidate } from './persistence'
+import { saveScannedCandidate, saveScannedCandidates } from './persistence'
 
 const character = characterCatalog.find((entry) => entry.name === 'Changli') ?? characterCatalog[0]
 const weapon = weaponCatalog.find((entry) => entry.name === 'Blazing Brilliance') ?? weaponCatalog[0]
@@ -18,7 +18,7 @@ function candidate(id: string): DiagnosticScanCandidate {
     buildCard: {
       id: 'card', character: { value: character.name, confidence: 1 }, characterCatalogId: character.id, characterLevel: { value: 90, confidence: 1 },
       sequence: { value: 2, confidence: 1 }, skillLevels: [10, 10, 6, 10, 10].map((value) => ({ value, confidence: 1 })),
-      weapon: { value: weapon.name, confidence: 1 }, weaponCatalogId: weapon.id, weaponLevel: { value: 90, confidence: 1 }, sourceImageDataUrl: ''
+      weapon: { value: weapon.name, confidence: 1 }, weaponCatalogId: weapon.id, weaponLevel: { value: 90, confidence: 1 }, weaponRank: { value: 2, confidence: 1 }, sourceImageDataUrl: ''
     }
   }
 }
@@ -28,14 +28,17 @@ describe('scanner inventory ownership', () => {
   afterAll(() => db.close())
 
   it('adds build-card ownership once while saving every reviewed Echo', async () => {
-    await saveScannedCandidate(candidate('first'))
-    await saveScannedCandidate(candidate('second'))
+    const progress: number[] = []
+    await saveScannedCandidates([candidate('first'), candidate('second')], (state) => progress.push(state.completed))
 
     expect(await db.echoes.count()).toBe(2)
     expect(await db.characters.count()).toBe(1)
     expect(await db.weapons.count()).toBe(1)
     expect(await db.characters.toCollection().first()).toMatchObject({ catalogId: character.id, level: 90, sequence: 2, skillLevels: [10, 10, 6, 10, 10] })
-    expect(await db.weapons.toCollection().first()).toMatchObject({ catalogId: weapon.id, level: 90 })
+    expect(await db.weapons.toCollection().first()).toMatchObject({ catalogId: weapon.id, level: 90, rank: 2, locked: true })
+    expect((await db.echoes.toArray()).every((echo) => echo.locked)).toBe(true)
+    expect((await db.equippedLoadouts.toCollection().first())?.echoIds).toHaveLength(2)
+    expect(progress.at(-1)).toBe(2)
   })
 
   it('adds the catalog character from a normal equipped Echo scan', async () => {

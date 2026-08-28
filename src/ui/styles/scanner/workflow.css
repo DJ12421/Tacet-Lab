@@ -111,6 +111,82 @@
   color: var(--gold);
 }
 
+.scanner-source-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.scanner-beta-tag {
+  display: inline-block;
+  margin-left: 7px;
+  padding: 2px 5px;
+  border: 1px solid rgba(141,228,212,.35);
+  border-radius: 999px;
+  color: var(--mint);
+  font-size: 9px;
+  font-style: normal;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  vertical-align: 1px;
+}
+
+.scanner-format-select {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: var(--font-size-caption);
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.scanner-format-select select {
+  min-height: 34px;
+  padding: 0 30px 0 10px;
+  border: 1px solid rgba(228,187,94,.32);
+  background: #090d0e;
+  color: #e8efec;
+}
+
+.scanner-drop-overlay {
+  position: fixed;
+  z-index: 1000;
+  inset: 14px;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 10px;
+  border: 2px dashed var(--mint);
+  border-radius: 16px;
+  background: rgba(5,12,13,.94);
+  color: #e8efec;
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+}
+
+.scanner-drop-overlay .icon {
+  width: 42px;
+  height: 42px;
+  color: var(--mint);
+}
+
+.scanner-drop-overlay strong { font-size: clamp(22px,3vw,38px); }
+.scanner-drop-overlay span { color: var(--muted); }
+
+.scanner-save-progress {
+  display: grid;
+  grid-template-columns: minmax(160px,1fr) auto;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 14px;
+  color: var(--mint);
+  font-size: var(--font-size-small);
+}
+
 .scanner-source-picker span {
   display: grid;
   gap: 2px;
@@ -814,9 +890,8 @@
 .scanned-loadout-card {
   align-self: stretch;
   display: flex;
-  min-width: 0;
+  max-width: 100%;
   height: 100%;
-  padding: 0;
   overflow: hidden;
   flex-direction: column;
   border: 1px solid rgba(228,187,94,.35);
@@ -852,7 +927,7 @@
 
 .scanned-loadout-art>img {
   position: absolute;
-  inset: 0;
+  inset: 5px;
   width: 100%;
   height: 100%;
   object-fit: contain;

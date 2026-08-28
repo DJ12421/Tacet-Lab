@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 import type { ScanRect } from './types'
 
-type Strategy = 'name' | 'text' | 'substat' | 'visual' | 'plain'
+type Strategy = 'name' | 'label' | 'text' | 'substat' | 'visual' | 'plain'
 interface Request { id: string; bitmap: ImageBitmap; rect: ScanRect; strategy: Strategy }
 
 function percentile(values: Uint8Array, ratio: number) {
@@ -184,6 +184,41 @@ function removeLargeNameArtwork(values: Uint8Array, width: number, height: numbe
   return output
 }
 
+function removeSmallLabelNoise(values: Uint8Array, width: number, height: number) {
+  const output = new Uint8Array(values), visited = new Uint8Array(values.length)
+  const minimumGlyphSize = height * .18
+  const components: Array<{ pixels: number[]; minX: number; maxX: number; minY: number; maxY: number }> = []
+  for (let start = 0; start < values.length; start += 1) {
+    if (values[start] !== 0 || visited[start]) continue
+    const stack = [start], component: number[] = []
+    visited[start] = 1
+    let minX = width, maxX = 0, minY = height, maxY = 0
+    while (stack.length) {
+      const index = stack.pop()!, x = index % width, y = Math.floor(index / width)
+      component.push(index); minX = Math.min(minX, x); maxX = Math.max(maxX, x); minY = Math.min(minY, y); maxY = Math.max(maxY, y)
+      for (const next of [index - 1, index + 1, index - width, index + width]) {
+        if (next < 0 || next >= values.length || visited[next] || values[next] !== 0) continue
+        if (Math.abs(next % width - x) > 1) continue
+        visited[next] = 1; stack.push(next)
+      }
+    }
+    components.push({ pixels: component, minX, maxX, minY, maxY })
+  }
+  for (const component of components) {
+    const componentWidth = component.maxX - component.minX + 1, componentHeight = component.maxY - component.minY + 1
+    if (componentWidth >= minimumGlyphSize || componentHeight >= minimumGlyphSize) continue
+    const centerX = (component.minX + component.maxX) / 2
+    const isLetterDot = components.some((stem) => stem !== component
+      && stem.maxY - stem.minY + 1 >= minimumGlyphSize
+      && component.maxY < stem.minY
+      && stem.minY - component.maxY <= height * .18
+      && centerX >= stem.minX - height * .03
+      && centerX <= stem.maxX + height * .03)
+    if (!isLetterDot) for (const index of component.pixels) output[index] = 255
+  }
+  return output
+}
+
 function renderBinary(context: OffscreenCanvasRenderingContext2D, values: Uint8Array, width: number, height: number) {
   const image = context.createImageData(width, height)
   for (let index = 0, offset = 0; index < values.length; index += 1, offset += 4) {
@@ -208,7 +243,7 @@ self.onmessage = async (event: MessageEvent<Request>) => {
     const sourceX = Math.max(0, Math.round(expanded.x * bitmap.width)), sourceY = Math.max(0, Math.round(expanded.y * bitmap.height))
     const sourceWidth = Math.max(1, Math.min(bitmap.width - sourceX, Math.round(expanded.width * bitmap.width)))
     const sourceHeight = Math.max(1, Math.min(bitmap.height - sourceY, Math.round(expanded.height * bitmap.height)))
-    const scale = strategy === 'name' || strategy === 'text' || strategy === 'substat' ? 3 : 1
+    const scale = strategy === 'name' || strategy === 'label' || strategy === 'text' || strategy === 'substat' ? 3 : 1
     const canvas = new OffscreenCanvas(Math.max(1, Math.round(sourceWidth * scale)), Math.max(1, Math.round(sourceHeight * scale)))
     const context = canvas.getContext('2d', { willReadFrequently: true })
     if (!context) throw new Error('Offscreen preprocessing canvas is unavailable.')
@@ -219,6 +254,7 @@ self.onmessage = async (event: MessageEvent<Request>) => {
       const normalized = ensureLightBackground(normalize(grayscale(source.data)), canvas.width, canvas.height)
       let binary = globalThreshold(normalized)
       if (strategy === 'name') binary = removeLargeNameArtwork(binary, canvas.width, canvas.height)
+      if (strategy === 'label') binary = removeSmallLabelNoise(binary, canvas.width, canvas.height)
       if (strategy === 'substat') {
         binary = removeSubstatHighlight(binary, canvas.width, canvas.height)
         binary = trimSubstatFooter(binary, canvas.width, canvas.height)

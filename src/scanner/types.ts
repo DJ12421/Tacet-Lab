@@ -1,4 +1,5 @@
 import type { ScanCandidate, ScanField, StatLine } from '../domain/types'
+import type { BuildCardFormatId } from './build-card-formats'
 
 export type ScanSource = 'screen' | 'screenshot' | 'video' | 'manual'
 export type ScanLayout = 'echo-detail' | 'echo-management' | 'build-card' | 'unknown'
@@ -49,6 +50,8 @@ export interface ScanFrame {
   panelImageDataUrl: string
   fingerprint: number[]
   layout: ScanLayout
+  buildCardFormat?: BuildCardFormatId
+  buildCardFormatConfidence?: number
   calibrationProfileId?: string
 }
 
@@ -98,6 +101,7 @@ export interface CalibrationProfile {
   id: string
   name: string
   layout: Exclude<ScanLayout, 'unknown'>
+  buildCardFormat?: BuildCardFormatId
   sourceWidth: number
   sourceHeight: number
   uiScale: number

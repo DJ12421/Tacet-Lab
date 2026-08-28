@@ -1,6 +1,6 @@
 import type { HTMLAttributes, PropsWithChildren, ReactNode } from 'react'
 
-export function Icon({ name }: { name: 'home' | 'scan' | 'echo' | 'weapon' | 'build' | 'team' | 'optimize' | 'download' | 'upload' | 'lock' | 'unlock' | 'discard' | 'trash' | 'edit' | 'plus' | 'settings' | 'discord' }) {
+export function Icon({ name }: { name: 'home' | 'scan' | 'echo' | 'backpack' | 'weapon' | 'build' | 'team' | 'optimize' | 'download' | 'upload' | 'lock' | 'unlock' | 'discard' | 'trash' | 'edit' | 'plus' | 'settings' | 'discord' }) {
   const paths: Record<typeof name, ReactNode> = {
     home: <><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10M9 20v-6h6v6"/></>,
     scan: <><path d="M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4"/><path d="M7 12h10M12 7v10"/></>,
@@ -10,6 +10,7 @@ export function Icon({ name }: { name: 'home' | 'scan' | 'echo' | 'weapon' | 'bu
         <path fill="currentColor" stroke="none" d="m11.2 8.1-4-2.8L9.4 2l3.3 2.3-1.5 3.8Zm2.1.5 1.4-4.1L17.6 2l1.3 2.7-3.5 4.1-2.1-.2Z"/>
       </g>
     </>,
+    backpack: <><path d="M7 8V6a5 5 0 0 1 10 0v2"/><path d="M5 8h14l1 13H4L5 8Z"/><path d="M8 13h8v5H8z"/><path d="M4.5 12H3v6h1M19.5 12H21v6h-1"/></>,
     weapon: <>
       <g fill="currentColor" stroke="none" transform="rotate(-45 12 12)">
         <path d="m12 1.2 2.4 1.7-1.5 9.2h-1.8L9.6 2.9 12 1.2Z"/>
