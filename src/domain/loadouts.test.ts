@@ -45,12 +45,12 @@ describe('loadout resolution', () => {
 
   it('keeps exact legal substats on their individual Echo slots', () => {
     const build = createTheorycraftBuild(ownedCharacter)
-    build.substats = { mode:'slots', slots:[[{ key:'critRate', value:6.3 },{ key:'critDamage', value:12.6 }], [], [], [], []] }
+    build.substats = { mode:'slots', slots:[[{ key:'atk', value:30 },{ key:'critDamage', value:12.6 }], [], [], [], []] }
     const collections = { characters:[ownedCharacter], weapons:[], echoes:[], builds:[], equippedLoadouts:[], theorycraftBuilds:[build] }
     expect(theorycraftWarnings(build)).toEqual([])
     expect(resolveLoadout({ type:'theorycraft', theorycraftBuildId:build.id }, collections).echoes[0].subStats).toEqual(build.substats.slots[0])
-    build.substats.slots[0].push({ key:'critRate', value:6.9 })
-    expect(theorycraftWarnings(build).join(' ')).toContain('duplicate Crit. Rate')
+    build.substats.slots[0].push({ key:'atk', value:40 })
+    expect(theorycraftWarnings(build).join(' ')).toContain('duplicate ATK')
   })
 
   it('identifies a single changed equipment axis for what-if comparisons', () => {
