@@ -6,6 +6,7 @@ import { effectiveSubStats, maxSubStatsForLevel, normalizeEchoMainStat } from '.
 import type { AccountDocument, AppSettings, Build, Echo, EquippedLoadout, LoadoutSourceRef, OptimizerProfile, OptimizerRun, OwnedCharacter, OwnedWeapon, Team, TeamMember, TheorycraftBuild } from '../domain/types'
 import { createLocalId } from '../domain/id'
 import { clearCharacterArtwork } from './character-art-cache'
+import { dedupeBySubstatKey, duplicateSubstatKeys } from '../domain/echo-substats'
 
 type SettingsRow = AppSettings & { id: 'settings' }
 
@@ -110,7 +111,7 @@ class TacetDatabase extends Dexie {
         const character = legacyBuild ? characterByCatalog.get(legacyBuild.resonatorId) : characters.find((entry) => entry.id === echo.equippedBy)
         const selected = character ? selectedByCharacter.get(character.id) : undefined
         const equipped = Boolean(character && selected?.echoIds.includes(echo.id))
-        await transaction.table<Echo, string>('echoes').put({ ...echo, equippedBy: equipped ? character!.id : undefined, equippedByName: equipped ? characterCatalog.find((entry) => entry.id === character!.catalogId)?.name : undefined })
+        await transaction.table<Echo, string>('echoes').put({ ...echo, subStats: dedupeBySubstatKey(echo.subStats, (stat) => stat.key).values, equippedBy: equipped ? character!.id : undefined, equippedByName: equipped ? characterCatalog.find((entry) => entry.id === character!.catalogId)?.name : undefined })
       }
       const remapRecord = <T,>(record: Record<string, T> | undefined, ids: Map<string, string>) => record
         ? Object.fromEntries(Object.entries(record).map(([id, value]) => [ids.get(id) ?? id, value])) as Record<string, T> : record
@@ -154,6 +155,11 @@ class TacetDatabase extends Dexie {
       })
       for (const run of optimizerRuns) await transaction.table<OptimizerRun, string>('optimizerRuns').put({ ...run, buildId: memberIdByBuild.get(run.buildId) ?? run.buildId })
     })
+    const assertUniqueSubstats = (echo: Pick<Echo, 'subStats'>) => {
+      if (duplicateSubstatKeys(echo.subStats).length) throw new Error('Each Echo substat type can only appear once.')
+    }
+    this.echoes.hook('creating', (_primaryKey, echo) => { assertUniqueSubstats(echo) })
+    this.echoes.hook('updating', (changes, _primaryKey, echo) => { assertUniqueSubstats({ ...echo, ...changes } as Echo) })
   }
 }
 
@@ -239,21 +245,34 @@ export async function setOwnedWeaponOwner(weaponId: string, characterId?: string
   await db.transaction('rw', [db.weapons, db.characters, db.equippedLoadouts], async () => {
     const weapon = await db.weapons.get(weaponId)
     if (!weapon) throw new Error('The selected weapon no longer exists.')
+    const displacedCharacterId = weapon.equippedBy && weapon.equippedBy !== characterId ? weapon.equippedBy : undefined
     await db.equippedLoadouts.where('weaponId').equals(weaponId).modify({ weaponId: '', updatedAt: Date.now() })
     if (!characterId) {
       await db.weapons.update(weaponId, { equippedBy: undefined })
-      return
+    } else {
+      const character = await db.characters.get(characterId)
+      if (!character) throw new Error('The selected character no longer exists.')
+      const characterEntry = characterCatalog.find((entry) => entry.id === character.catalogId)
+      const weaponEntry = weaponCatalog.find((entry) => entry.id === weapon.catalogId)
+      if (!characterEntry || !weaponEntry || characterEntry.weaponType.toLowerCase() !== weaponEntry.type.toLowerCase()) throw new Error('That weapon type is incompatible with this character.')
+      await db.weapons.where('equippedBy').equals(characterId).modify({ equippedBy: undefined })
+      await db.weapons.update(weaponId, { equippedBy: characterId })
+      const loadout = await db.equippedLoadouts.where('characterId').equals(character.id).first()
+      if (loadout) await db.equippedLoadouts.update(loadout.id, { weaponId, updatedAt: Date.now() })
+      else await db.equippedLoadouts.add({ id: `equipped:${character.id}`, characterId: character.id, weaponId, echoIds: [], updatedAt: Date.now() })
     }
-    const character = await db.characters.get(characterId)
-    if (!character) throw new Error('The selected character no longer exists.')
-    const characterEntry = characterCatalog.find((entry) => entry.id === character.catalogId)
-    const weaponEntry = weaponCatalog.find((entry) => entry.id === weapon.catalogId)
-    if (!characterEntry || !weaponEntry || characterEntry.weaponType.toLowerCase() !== weaponEntry.type.toLowerCase()) throw new Error('That weapon type is incompatible with this character.')
-    await db.weapons.where('equippedBy').equals(characterId).modify({ equippedBy: undefined })
-    await db.weapons.update(weaponId, { equippedBy: characterId })
-    const loadout = await db.equippedLoadouts.where('characterId').equals(character.id).first()
-    if (loadout) await db.equippedLoadouts.update(loadout.id, { weaponId, updatedAt: Date.now() })
-    else await db.equippedLoadouts.add({ id: `equipped:${character.id}`, characterId: character.id, weaponId, echoIds: [], updatedAt: Date.now() })
+    if (displacedCharacterId) {
+      const displaced = await db.characters.get(displacedCharacterId)
+      const displacedCatalog = characterCatalog.find((entry) => entry.id === displaced?.catalogId)
+      const training = weaponCatalog.find((entry) => entry.rarity === 1 && entry.name.startsWith('Training ') && entry.type.toLowerCase() === displacedCatalog?.weaponType.toLowerCase())
+      if (!displaced || !training) throw new Error('A matching Training weapon could not be found for the previous owner.')
+      const now = Date.now()
+      const replacement: OwnedWeapon = { id: createLocalId(), catalogId: training.id, level: 1, rank: 1, locked: false, equippedBy: displaced.id, createdAt: now }
+      await db.weapons.add(replacement)
+      const displacedLoadout = await db.equippedLoadouts.where('characterId').equals(displaced.id).first()
+      if (displacedLoadout) await db.equippedLoadouts.update(displacedLoadout.id, { weaponId: replacement.id, updatedAt: now })
+      else await db.equippedLoadouts.add({ id: `equipped:${displaced.id}`, characterId: displaced.id, weaponId: replacement.id, echoIds: [], updatedAt: now })
+    }
   })
 }
 
@@ -365,7 +384,7 @@ export async function requestPersistentStorage(): Promise<boolean | undefined> {
 export async function ensureSeedData() {
   await db.transaction('rw', [db.settings, db.echoes], async () => {
     if (!(await db.settings.get('settings'))) await db.settings.put({ id: 'settings', ...structuredClone(defaultSettings) })
-    await db.echoes.toCollection().modify((echo) => { echo.mainStat = normalizeEchoMainStat(echo); echo.subStats = effectiveSubStats(echo) })
+    await db.echoes.toCollection().modify((echo) => { echo.mainStat = normalizeEchoMainStat(echo); echo.subStats = dedupeBySubstatKey(effectiveSubStats(echo), (stat) => stat.key).values })
   })
 }
 
@@ -557,7 +576,7 @@ function remapTeam(team: Team, buildIds: Map<string, string>): Team {
 
 async function createAccountImportPlan(document: AccountDocument) {
   const current = await exportAccount()
-  const incomingEchoes = document.echoes.map((echo) => ({ ...echo, mainStat: normalizeEchoMainStat(echo), subStats: effectiveSubStats(echo), source: 'import' as const }))
+  const incomingEchoes = document.echoes.map((echo) => ({ ...echo, mainStat: normalizeEchoMainStat(echo), subStats: dedupeBySubstatKey(effectiveSubStats(echo), (stat) => stat.key).values, source: 'import' as const }))
   const incomingCharacters = document.characters ?? []
   const incomingWeapons = document.weapons ?? []
   const incomingBuilds = document.builds
@@ -810,10 +829,26 @@ function isTheorycraftBuild(value: unknown) {
   if (typeof value.mainEchoName !== 'string' || !Array.isArray(value.slots) || value.slots.length !== 5) return false
   if (!value.slots.every((slot) => isRecord(slot) && [1, 3, 4].includes(Number(slot.cost)) && [1, 2, 3, 4, 5].includes(Number(slot.rarity)) && isFiniteNumber(slot.level) && typeof slot.mainStatKey === 'string' && slot.mainStatKey in statLabels)) return false
   if (!Array.isArray(value.sonatas) || !value.sonatas.every((entry) => isRecord(entry) && typeof entry.name === 'string' && isFiniteNumber(entry.pieces))) return false
-  if (!isRecord(value.substats) || !['values', 'rolls'].includes(String(value.substats.mode))) return false
+  if (!isRecord(value.substats) || !['slots', 'values', 'rolls'].includes(String(value.substats.mode))) return false
+  if (value.substats.mode === 'slots' && (!Array.isArray(value.substats.slots) || value.substats.slots.length !== 5 || !value.substats.slots.every((slot) => Array.isArray(slot) && slot.length <= 5 && slot.every(isStatLine)))) return false
   if (value.substats.mode === 'values' && (!isRecord(value.substats.values) || !Object.entries(value.substats.values).every(([key, amount]) => key in statLabels && isFiniteNumber(amount)))) return false
   if (value.substats.mode === 'rolls' && (!['low', 'mid', 'high'].includes(String(value.substats.quality)) || !isRecord(value.substats.rolls) || !Object.entries(value.substats.rolls).every(([key, amount]) => key in statLabels && isFiniteNumber(amount)))) return false
   return isFiniteNumber(value.createdAt) && isFiniteNumber(value.updatedAt)
+}
+
+function isRotationPreset(value: unknown) {
+  if (!isRecord(value) || value.schemaVersion !== 1 || typeof value.id !== 'string' || typeof value.name !== 'string') return false
+  if (value.description !== undefined && typeof value.description !== 'string') return false
+  if (!isFiniteNumber(value.duration) || value.duration <= 0 || !isFiniteNumber(value.createdAt) || !['bundled', 'user'].includes(String(value.source))) return false
+  if (!Array.isArray(value.characters) || !value.characters.every((entry) => isRecord(entry) && Number.isInteger(entry.slot) && Number(entry.slot) >= 0 && Number(entry.slot) < 3 && typeof entry.catalogId === 'string' && typeof entry.name === 'string')) return false
+  const slots = value.characters.map((entry) => Number((entry as Record<string, unknown>).slot))
+  if (new Set(slots).size !== slots.length) return false
+  const duration = Number(value.duration)
+  return Array.isArray(value.actions) && value.actions.every((action) => isRecord(action) && Number.isInteger(action.slot) && Number(action.slot) >= 0 && Number(action.slot) < 3
+    && slots.includes(Number(action.slot)) && typeof action.attackId === 'string' && isFiniteNumber(action.timestamp) && action.timestamp >= 0 && action.timestamp <= duration
+    && (action.duration === undefined || (isFiniteNumber(action.duration) && action.duration > 0 && action.timestamp + action.duration <= duration))
+    && (action.multiplier === undefined || (isFiniteNumber(action.multiplier) && action.multiplier >= 1 && action.multiplier <= 99 && Number.isInteger(action.multiplier)))
+    && (action.inputs === undefined || (isRecord(action.inputs) && Object.values(action.inputs).every((input) => isFiniteNumber(input) || typeof input === 'string' || typeof input === 'boolean'))))
 }
 
 function isTeam(value: unknown) {
@@ -832,6 +867,7 @@ function isTeam(value: unknown) {
       && (action.multiplier === undefined || (isFiniteNumber(action.multiplier) && action.multiplier >= 1 && action.multiplier <= 99 && Number.isInteger(action.multiplier)))
       && (action.formulaTargetId === undefined || typeof action.formulaTargetId === 'string')
       && (action.inputs === undefined || (isRecord(action.inputs) && Object.values(action.inputs).every((input) => isFiniteNumber(input) || typeof input === 'string' || typeof input === 'boolean'))))
+    && (value.rotationPresets === undefined || (Array.isArray(value.rotationPresets) && value.rotationPresets.every(isRotationPreset)))
     && (value.buffs === undefined || (Array.isArray(value.buffs) && value.buffs.every((buff) => isRecord(buff)
       && typeof buff.id === 'string' && typeof buff.sourceBuildId === 'string' && typeof buff.triggerAttackId === 'string'
       && ['self', 'next', 'team'].includes(String(buff.target))
@@ -936,4 +972,6 @@ function isSettings(value: unknown) {
     && (value.characterSubstatWeights === undefined || (isRecord(value.characterSubstatWeights)
       && Object.values(value.characterSubstatWeights).every((weights) => isRecord(weights)
         && Object.entries(weights).every(([key, weight]) => key in statLabels && isFiniteNumber(weight) && weight >= 0 && weight <= 4))))
+    && (value.characterEnergyRegenMinimums === undefined || (isRecord(value.characterEnergyRegenMinimums)
+      && Object.values(value.characterEnergyRegenMinimums).every((minimum) => isFiniteNumber(minimum) && minimum >= 0 && minimum <= 500)))
 }
