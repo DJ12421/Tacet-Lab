@@ -123,9 +123,10 @@ export async function saveScannedCandidates(
         loadout = { ...loadout, echoIds: [], updatedAt: Date.now() }
       }
 
-      const storedAssigned = loadout && (!first.buildCard || group.length === 1) ? await db.echoes.bulkGet(loadout.echoIds) : []
+      const loadoutEchoIds = loadout?.echoIds ?? []
+      const storedAssigned = loadout && (!first.buildCard || group.length === 1) ? await db.echoes.bulkGet(loadoutEchoIds) : []
       const existingAssigned = loadout
-        ? storedAssigned.map((echo, index) => echo ?? pendingEchoesById.get(loadout.echoIds[index])).filter((echo): echo is Echo => Boolean(echo))
+        ? storedAssigned.map((echo, index) => echo ?? pendingEchoesById.get(loadoutEchoIds[index])).filter((echo): echo is Echo => Boolean(echo))
         : []
       const assigned: Echo[] = [...existingAssigned]
       const newlyAssigned: Echo[] = []
