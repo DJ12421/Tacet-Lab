@@ -2,9 +2,9 @@ import type {
   Build, Echo, EquippedLoadout, LoadoutSourceRef, OwnedCharacter, OwnedWeapon, StatKey, StatLine,
   TheorycraftBuild, TheorycraftEchoSlot
 } from './types'
-import { characterCatalog, echoCatalog, sonataCatalog, weaponCatalog } from '../game-data'
+import { characterCatalog, echoCatalog, sonataCatalog, statLabels, weaponCatalog } from '../game-data'
 import { maxLevelByRarity, maxSubStatsForLevel, primaryMainStatValue } from '../game-data/echo-main-stats'
-import { tunableRolls } from '../game-data/tunable-rolls'
+import { exactTunableRoll, tunableRolls } from '../game-data/tunable-rolls'
 
 export interface LoadoutCollections {
   characters: OwnedCharacter[]
@@ -23,6 +23,31 @@ export interface ResolvedLoadout {
   echoes: Echo[]
   theorycraft?: TheorycraftBuild
   warnings: string[]
+}
+
+export type TheorycraftAxis = 'weapon' | 'sonata' | 'mainEcho' | 'mainStats' | 'substats'
+
+const comparable = (value: unknown) => JSON.stringify(value)
+
+const comparableSubstats = (slots: Array<Array<{ key: StatKey; value: number }>>) => slots.map((slot) =>
+  [...slot].sort((left, right) => left.key.localeCompare(right.key)).map(({ key, value }) => ({ key, value }))
+)
+
+export function changedTheorycraftAxes(candidate: TheorycraftBuild, baseline: Pick<ResolvedLoadout, 'weapon' | 'echoes'>): TheorycraftAxis[] {
+  const axes: TheorycraftAxis[] = []
+  const baselineWeapon = baseline.weapon ? { catalogId:baseline.weapon.catalogId, level:baseline.weapon.level, rank:baseline.weapon.rank } : undefined
+  if (comparable(candidate.weapon) !== comparable(baselineWeapon)) axes.push('weapon')
+  const baselineSonatas = [...new Map(baseline.echoes.map((echo) => [echo.sonata, baseline.echoes.filter((entry) => entry.sonata === echo.sonata).length]))]
+    .map(([name, pieces]) => ({ name, pieces })).sort((left, right) => left.name.localeCompare(right.name))
+  const candidateSonatas = [...candidate.sonatas].filter((entry) => entry.pieces > 0).sort((left, right) => left.name.localeCompare(right.name))
+  if (comparable(candidateSonatas) !== comparable(baselineSonatas)) axes.push('sonata')
+  if (candidate.mainEchoName !== (baseline.echoes[0]?.name ?? '')) axes.push('mainEcho')
+  const baselineMainStats = baseline.echoes.map((echo) => ({ cost:echo.cost, rarity:echo.rarity, level:echo.level, mainStatKey:echo.mainStat.key }))
+  if (comparable(candidate.slots) !== comparable(baselineMainStats)) axes.push('mainStats')
+  const baselineSubstats = comparableSubstats(baseline.echoes.map((echo) => echo.subStats))
+  const candidateSubstats = candidate.substats.mode === 'slots' ? comparableSubstats(candidate.substats.slots) : [theorycraftSubstatLines(candidate)]
+  if (comparable(candidateSubstats) !== comparable(baselineSubstats)) axes.push('substats')
+  return axes
 }
 
 const sourceId = (source: LoadoutSourceRef) => source.type === 'equipped'
@@ -46,7 +71,11 @@ export function theorycraftRollValue(key: StatKey, count: number, quality: 'low'
 }
 
 export function theorycraftSubstatLines(build: TheorycraftBuild): StatLine[] {
-  if (build.substats.mode === 'slots') return build.substats.slots.flat()
+  if (build.substats.mode === 'slots') {
+    const totals = new Map<StatKey, number>()
+    build.substats.slots.flat().forEach((line) => totals.set(line.key, (totals.get(line.key) ?? 0) + line.value))
+    return [...totals].map(([key, value]) => ({ key, value }))
+  }
   const values = build.substats.mode === 'values'
     ? build.substats.values
     : Object.fromEntries(Object.entries(build.substats.rolls).map(([key, count]) => [key, theorycraftRollValue(key as StatKey, Number(count), build.substats.quality)]))
@@ -72,7 +101,22 @@ export function theorycraftWarnings(build: TheorycraftBuild) {
     const selected = new Set(build.sonatas.filter((entry) => entry.pieces > 0).map((entry) => entry.name))
     if (selected.size && !main.sonatas.some((name) => selected.has(name))) warnings.push('The main Echo is incompatible with the selected Sonata composition.')
   }
-  if (build.substats.mode === 'rolls') {
+  if (build.substats.mode === 'slots') {
+    if (build.substats.slots.length !== 5) warnings.push(`Substats cover ${build.substats.slots.length}/5 Echo slots.`)
+    build.slots.forEach((slot, index) => {
+      const lines = build.substats.mode === 'slots' ? build.substats.slots[index] ?? [] : []
+      const capacity = maxSubStatsForLevel(slot.level)
+      if (lines.length > capacity) warnings.push(`Slot ${index + 1} has ${lines.length}/${capacity} available substats.`)
+      const seen = new Set<StatKey>()
+      for (const line of lines) {
+        if (line.key === slot.mainStatKey) warnings.push(`Slot ${index + 1} repeats its main stat ${statLabels[line.key]} as a substat.`)
+        if (seen.has(line.key)) warnings.push(`Slot ${index + 1} has duplicate ${statLabels[line.key]} substats.`)
+        seen.add(line.key)
+        if (!exactTunableRoll(line.key, line.value)) warnings.push(`Slot ${index + 1} has an invalid ${statLabels[line.key]} roll of ${line.value}.`)
+      }
+    })
+  } else if (build.substats.mode === 'rolls') {
+    warnings.push('Legacy aggregate substats must be converted to exact per-Echo rolls before saving.')
     const capacity = build.slots.reduce((sum, slot) => sum + maxSubStatsForLevel(slot.level), 0)
     const total = Object.values(build.substats.rolls).reduce((sum, count) => sum + Math.max(0, Math.floor(Number(count) || 0)), 0)
     if (total > capacity) warnings.push(`Substat allocation uses ${total}/${capacity} available rolls.`)
@@ -80,7 +124,8 @@ export function theorycraftWarnings(build: TheorycraftBuild) {
       const availableSlots = build.slots.filter((slot) => slot.mainStatKey !== key && maxSubStatsForLevel(slot.level) > 0).length
       if (Number(count) > availableSlots) warnings.push(`${key} appears on more Echoes than the configured main stats permit.`)
     }
-  } else if (build.substats.mode === 'values') {
+  } else {
+    warnings.push('Legacy aggregate substats must be converted to exact per-Echo rolls before saving.')
     for (const [key, value] of Object.entries(build.substats.values)) {
       if (Number(value) > 0 && !build.slots.some((slot) => slot.mainStatKey !== key && maxSubStatsForLevel(slot.level) > 0)) warnings.push(`${key} cannot be placed because every eligible slot uses it as a main stat.`)
     }
@@ -90,8 +135,11 @@ export function theorycraftWarnings(build: TheorycraftBuild) {
 
 function syntheticTheorycraftEchoes(build: TheorycraftBuild): Echo[] {
   const sonatas = build.sonatas.flatMap((entry) => Array.from({ length: Math.max(0, Math.floor(entry.pieces)) }, () => entry.name))
-  const distributed: StatLine[][] = build.slots.map((_, index) => build.substats.mode === 'slots' ? build.substats.slots[index] ?? [] : [])
-  if (build.substats.mode !== 'slots') theorycraftSubstatLines(build).forEach((line, index) => distributed[index % Math.max(1, distributed.length)].push(line))
+  const substats = theorycraftSubstatLines(build)
+  const distributed: StatLine[][] = build.substats.mode === 'slots'
+    ? build.slots.map((_, index) => build.substats.mode === 'slots' ? build.substats.slots[index] ?? [] : [])
+    : build.slots.map(() => [])
+  if (build.substats.mode !== 'slots') substats.forEach((line, index) => distributed[index % Math.max(1, distributed.length)].push(line))
   return build.slots.slice(0, 5).map((slot, index) => ({
     id: `theorycraft:${build.id}:echo:${index}`,
     name: index === 0 ? build.mainEchoName || 'Theorycrafted main Echo' : `Theorycrafted Echo ${index + 1}`,
@@ -167,6 +215,6 @@ export function createTheorycraftBuild(character: OwnedCharacter, name = 'Theory
     id: `theorycraft-${now}-${Math.random().toString(36).slice(2, 8)}`, name, description: '', characterId: character.id,
     weapon: { catalogId: compatibleWeapon?.id ?? '', level: 90, rank: 1 }, mainEchoName: mainEcho?.name ?? '',
     slots: defaultTheorycraftSlots(), sonatas: sonata ? [{ name: sonata, pieces: 5 }] : [],
-    substats: { mode: 'values', values: {} }, createdAt: now, updatedAt: now
+    substats: { mode: 'slots', slots: Array.from({ length: 5 }, () => []) }, createdAt: now, updatedAt: now
   }
 }

@@ -1,5 +1,8 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import { db, ensureSeedData, exportAccount, importAccount, previewAccountImport, requestPersistentStorage, validateAccount } from './database'
+import type { TheorycraftBuild } from '../domain/types'
+import { characterCatalog, weaponCatalog } from '../game-data'
+import { db, ensureSeedData, exportAccount, importAccount, previewAccountImport, requestPersistentStorage, setOwnedWeaponOwner, validateAccount } from './database'
+import { createOwnedCharacterWithDefaultWeapon, ensureAllEquippedLoadouts } from './loadouts'
 
 describe('local account persistence', () => {
   beforeEach(async () => {
@@ -18,10 +21,58 @@ describe('local account persistence', () => {
     expect(await db.teams.count()).toBe(0)
   })
 
+  it('creates a matching one-star Training weapon with every new character', async () => {
+    const catalog = characterCatalog.find((entry) => entry.name === 'Lucy')!
+    const character = await createOwnedCharacterWithDefaultWeapon(catalog.id)
+    const loadout = await db.equippedLoadouts.where('characterId').equals(character.id).first()
+    const weapon = await db.weapons.get(loadout?.weaponId ?? '')
+    const weaponEntry = weaponCatalog.find((entry) => entry.id === weapon?.catalogId)
+
+    expect(weapon).toMatchObject({ level: 1, rank: 1, equippedBy: character.id })
+    expect(weaponEntry).toMatchObject({ rarity: 1, type: catalog.weaponType })
+    expect(weaponEntry?.name).toMatch(/^Training /)
+  })
+
+  it('backfills the displaced owner when an equipped weapon moves to another character', async () => {
+    const catalog = characterCatalog.find((entry) => entry.name === 'Lucy')!
+    const first = await createOwnedCharacterWithDefaultWeapon(catalog.id)
+    const second = await createOwnedCharacterWithDefaultWeapon(catalog.id)
+    const firstLoadout = await db.equippedLoadouts.where('characterId').equals(first.id).first()
+
+    await setOwnedWeaponOwner(firstLoadout!.weaponId, second.id)
+
+    const repairedFirst = await db.equippedLoadouts.where('characterId').equals(first.id).first()
+    expect(repairedFirst?.weaponId).not.toBe(firstLoadout?.weaponId)
+    expect((await db.weapons.get(repairedFirst?.weaponId ?? ''))?.equippedBy).toBe(first.id)
+  })
+
+  it('repairs an existing character whose equipped loadout has no weapon', async () => {
+    const catalog = characterCatalog.find((entry) => entry.name === 'Lucy')!
+    await db.characters.add({ id: 'legacy-lucy', catalogId: catalog.id, level: 1, sequence: 0, locked: false, createdAt: 1 })
+    await db.equippedLoadouts.add({ id: 'equipped:legacy-lucy', characterId: 'legacy-lucy', weaponId: '', echoIds: [], updatedAt: 1 })
+
+    await ensureAllEquippedLoadouts()
+
+    const loadout = await db.equippedLoadouts.get('equipped:legacy-lucy')
+    expect((await db.weapons.get(loadout?.weaponId ?? ''))?.equippedBy).toBe('legacy-lucy')
+  })
+
   it('repairs main stats saved with the old nearest-rounding rule', async () => {
     await db.echoes.add({ id: 'old-rounded-main', name: 'Fusion Warrior', cost: 3, rarity: 5, level: 1, sonata: 'Molten Rift', mainStat: { key: 'fusionDamage', value: 7 }, subStats: [], locked: false, excluded: false, createdAt: 1, source: 'scan' })
     await ensureSeedData()
     expect((await db.echoes.get('old-rounded-main'))?.mainStat.value).toBe(6.9)
+  })
+
+  it('repairs theorycraft roll mode saved without a rolls map', async () => {
+    await db.theorycraftBuilds.add({
+      id: 'missing-rolls', name: 'Legacy theorycraft', description: '', characterId: 'character',
+      weapon: { catalogId: 'weapon', level: 90, rank: 1 }, mainEchoName: '', slots: [], sonatas: [],
+      substats: { mode: 'rolls', quality: 'mid' }, createdAt: 1, updatedAt: 1
+    } as unknown as TheorycraftBuild)
+
+    await ensureSeedData()
+
+    expect((await db.theorycraftBuilds.get('missing-rolls'))?.substats).toEqual({ mode: 'rolls', quality: 'mid', rolls: {} })
   })
 
   it('round-trips a versioned account document atomically', async () => {
@@ -76,6 +127,16 @@ describe('local account persistence', () => {
 
   it('rejects malformed nested records', () => {
     expect(validateAccount({ schemaVersion: 1, gameDataVersion: 'x', exportedAt: '', echoes: [{ id: 'broken' }], builds: [], teams: [], settings: {} })).toBe(false)
+  })
+
+  it('validates versioned rotation presets inside account imports', async () => {
+    await ensureSeedData()
+    const base = await exportAccount()
+    const team = { id:'team', name:'Team', buildIds:[], enemy:{ level:90, resistance:10, damageReduction:0 }, rotationDuration:20, actions:[], rotationPresets:[{
+      schemaVersion:1 as const, id:'preset', name:'Preset', duration:20, characters:[], actions:[], source:'user' as const, createdAt:1
+    }] }
+    expect(validateAccount({ ...base, teams:[team] })).toBe(true)
+    expect(validateAccount({ ...base, teams:[{ ...team, rotationPresets:[{ ...team.rotationPresets[0], schemaVersion:2 }] }] })).toBe(false)
   })
 
   it('requests persistent browser storage when it is not already granted', async () => {

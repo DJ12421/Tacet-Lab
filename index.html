@@ -6,6 +6,13 @@
     <meta name="theme-color" content="#080b0d" />
     <meta name="description" content="A private, local-first Echo scanner and build optimizer for Wuthering Waves." />
     <title>Tacet Lab | WuWa Optimizer</title>
+    <script>
+      const url = new URL(window.location.href)
+      if (url.pathname.replace(/\/+$/, '') === '/Tacet-Lab' && !url.searchParams.has('__route')) {
+        url.pathname = '/Tacet-Lab/home'
+        window.location.replace(url)
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { characterCatalog, echoCatalog, weaponCatalog } from '../game-data'
 import type { Echo, OwnedCharacter } from './types'
-import { createTheorycraftBuild, resolveLoadout, theorycraftRollValue, theorycraftWarnings } from './loadouts'
+import { changedTheorycraftAxes, createTheorycraftBuild, resolveLoadout, theorycraftRollValue, theorycraftWarnings } from './loadouts'
 
 const ownedCharacter: OwnedCharacter = { id: 'character', catalogId: characterCatalog[0].id, level: 90, sequence: 0, locked: false, skillLevels: [10, 10, 10, 10, 10], createdAt: 1 }
 
@@ -52,5 +52,25 @@ describe('loadout resolution', () => {
     expect(theorycraftRollValue('critRate', 2, 'low')).toBe(12.6)
     expect(theorycraftRollValue('critRate', 2, 'high')).toBe(21)
     expect(theorycraftRollValue('critRate', 0, 'mid')).toBe(0)
+  })
+
+  it('keeps exact legal substats on their individual Echo slots', () => {
+    const build = createTheorycraftBuild(ownedCharacter)
+    build.substats = { mode:'slots', slots:[[{ key:'atk', value:30 },{ key:'critDamage', value:12.6 }], [], [], [], []] }
+    const collections = { characters:[ownedCharacter], weapons:[], echoes:[], builds:[], equippedLoadouts:[], theorycraftBuilds:[build] }
+    expect(theorycraftWarnings(build)).toEqual([])
+    expect(resolveLoadout({ type:'theorycraft', theorycraftBuildId:build.id }, collections).echoes[0].subStats).toEqual(build.substats.slots[0])
+    build.substats.slots[0].push({ key:'atk', value:40 })
+    expect(theorycraftWarnings(build).join(' ')).toContain('duplicate ATK')
+  })
+
+  it('identifies a single changed equipment axis for what-if comparisons', () => {
+    const build = createTheorycraftBuild(ownedCharacter)
+    const resolved = resolveLoadout({ type:'theorycraft', theorycraftBuildId:build.id }, { characters:[ownedCharacter], weapons:[], echoes:[], builds:[], equippedLoadouts:[], theorycraftBuilds:[build] })
+    expect(changedTheorycraftAxes(build, resolved)).toEqual([])
+    build.weapon.rank = 2
+    expect(changedTheorycraftAxes(build, resolved)).toEqual(['weapon'])
+    build.slots[1].mainStatKey = 'hpPercent'
+    expect(changedTheorycraftAxes(build, resolved)).toEqual(['weapon', 'mainStats'])
   })
 })

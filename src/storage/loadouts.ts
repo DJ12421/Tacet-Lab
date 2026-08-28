@@ -1,7 +1,6 @@
 import { createLocalId } from '../domain/id'
-import type { Build, Echo, EquippedLoadout, LoadoutSourceRef, OwnedCharacter, OwnedWeapon, StatKey, TheorycraftBuild } from '../domain/types'
+import type { Build, Echo, EquippedLoadout, LoadoutSourceRef, OwnedCharacter, OwnedWeapon, TheorycraftBuild } from '../domain/types'
 import { createTheorycraftBuild } from '../domain/loadouts'
-import { effectiveSubStats } from '../game-data/echo-main-stats'
 import { characterCatalog, echoCatalog, weaponCatalog } from '../game-data'
 import { db } from './database'
 
@@ -34,15 +33,29 @@ export async function createOwnedCharacterWithDefaultWeapon(catalogId: string): 
 }
 
 export async function ensureEquippedLoadout(character: OwnedCharacter): Promise<EquippedLoadout> {
-  const existing = await db.equippedLoadouts.where('characterId').equals(character.id).first()
-  if (existing) return existing
-  const legacy = await db.builds.where('resonatorId').equals(character.catalogId).first()
-  const created: EquippedLoadout = {
-    id: `equipped:${character.id}`, characterId: character.id, weaponId: legacy?.weaponId ?? '',
-    echoIds: [...(legacy?.echoIds ?? [])], updatedAt: Date.now()
-  }
-  await db.equippedLoadouts.put(created)
-  return created
+  return db.transaction('rw', [db.weapons, db.builds, db.equippedLoadouts], async () => {
+    const existing = await db.equippedLoadouts.where('characterId').equals(character.id).first()
+    const existingWeapon = existing?.weaponId ? await db.weapons.get(existing.weaponId) : undefined
+    if (existing && existingWeapon) return existing
+    const legacy = await db.builds.where('resonatorId').equals(character.catalogId).first()
+    const legacyWeapon = legacy?.weaponId ? await db.weapons.get(legacy.weaponId) : undefined
+    if (legacyWeapon && !legacyWeapon.equippedBy) {
+      await db.weapons.update(legacyWeapon.id, { equippedBy: character.id })
+      const restored = { id: existing?.id ?? `equipped:${character.id}`, characterId: character.id, weaponId: legacyWeapon.id, echoIds: [...(existing?.echoIds ?? legacy?.echoIds ?? [])], updatedAt: Date.now() }
+      await db.equippedLoadouts.put(restored)
+      return restored
+    }
+    const now = Date.now()
+    const weaponEntry = defaultWeaponFor(character)
+    const weapon: OwnedWeapon = { id: createLocalId(), catalogId: weaponEntry.id, level: 1, rank: 1, locked: false, equippedBy: character.id, createdAt: now }
+    const created: EquippedLoadout = {
+      id: existing?.id ?? `equipped:${character.id}`, characterId: character.id, weaponId: weapon.id,
+      echoIds: [...(existing?.echoIds ?? legacy?.echoIds ?? [])], updatedAt: now
+    }
+    await db.weapons.add(weapon)
+    await db.equippedLoadouts.put(created)
+    return created
+  })
 }
 
 export async function ensureAllEquippedLoadouts() {
@@ -196,9 +209,7 @@ export async function theorycraftFromBuild(source: LoadoutSourceRef, name?: stri
   const counts = new Map<string, number>()
   echoes.forEach((echo) => counts.set(echo.sonata, (counts.get(echo.sonata) ?? 0) + 1))
   theorycraft.sonatas = [...counts].map(([sonataName, pieces]) => ({ name: sonataName, pieces }))
-  const values: Partial<Record<StatKey, number>> = {}
-  echoes.flatMap(effectiveSubStats).forEach((line) => { values[line.key] = (values[line.key] ?? 0) + line.value })
-  theorycraft.substats = { mode: 'values', values }
+  theorycraft.substats = { mode: 'slots', slots: Array.from({ length: 5 }, (_, index) => echoes[index]?.subStats.map((line) => ({ ...line })) ?? []) }
   theorycraft.updatedAt = Date.now()
   await db.theorycraftBuilds.add(theorycraft)
   return theorycraft

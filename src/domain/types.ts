@@ -18,6 +18,7 @@ export interface TeamMember { memberId: string; characterId: string; loadoutSour
 export interface TheorycraftEchoSlot { cost: Echo['cost']; rarity: Echo['rarity']; level: number; mainStatKey: StatKey }
 export interface TheorycraftSonata { name: string; pieces: number }
 export type TheorycraftSubstats =
+  | { mode: 'slots'; slots: Array<Array<{ key: StatKey; value: number }>> }
   | { mode: 'values'; values: Partial<Record<StatKey, number>> }
   | { mode: 'rolls'; quality: 'low' | 'mid' | 'high'; rolls: Partial<Record<StatKey, number>> }
   | { mode: 'slots'; slots: StatLine[][] }
@@ -35,7 +36,7 @@ export interface TheorycraftBuild {
   updatedAt: number
   source?: { type: 'equipped' | 'saved' | 'optimizer'; id?: string }
 }
-export interface Team { id: string; name: string; /** Stable member IDs in schema v7; legacy backups contain saved-build IDs and are migrated. */ buildIds: string[]; members?: TeamMember[]; enemy: EnemyConfig; rotationDuration: number; actions: RotationAction[]; buffs?: BuffEffect[]; scenario?: TeamScenario; calculationV2?: import('./calculation-v2/types').CalculationScenarioV2 }
+export interface Team { id: string; name: string; /** Stable member IDs in schema v7; legacy backups contain saved-build IDs and are migrated. */ buildIds: string[]; members?: TeamMember[]; enemy: EnemyConfig; rotationDuration: number; actions: RotationAction[]; rotationPresets?: import('./rotation-presets').RotationPresetDocument[]; buffs?: BuffEffect[]; scenario?: TeamScenario; calculationV2?: import('./calculation-v2/types').CalculationScenarioV2 }
 export type ScenarioValue = number | string | boolean
 export type FormulaResultMode = 'normal' | 'expected' | 'critical'
 export interface TeamScenario {
