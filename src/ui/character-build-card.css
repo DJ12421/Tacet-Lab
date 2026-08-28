@@ -2318,6 +2318,26 @@
   text-transform: none;
 }
 
+.cbc-skill-level-popover input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 38px;
+  border: 1px solid var(--cbc-edge);
+  border-right: 0;
+  border-left: 0;
+  background: rgba(7,16,22,.96);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  text-align: center;
+  -moz-appearance: textfield;
+}
+
+.cbc-skill-level-popover input::-webkit-inner-spin-button,.cbc-skill-level-popover input::-webkit-outer-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
 .cbc-extra-skills {
   height: 88px;
 }

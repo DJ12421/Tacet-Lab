@@ -35,6 +35,13 @@ export interface CharacterSubstatScore {
   contributions: CharacterSubstatContribution[]
 }
 
+export interface CharacterBuildSubstatScore extends CharacterSubstatScore {
+  earnedGrade?: CharacterSubstatGrade
+  eligibleSubstatCount: number
+  energyRegenSubstatCount: number
+  energyRequirementMet: boolean
+}
+
 const gradeBands: ReadonlyArray<{ minimum: number; grade: CharacterSubstatGrade }> = [
   { minimum: 75, grade: 'SSS' },
   { minimum: 65, grade: 'SS' },
@@ -45,6 +52,10 @@ const gradeBands: ReadonlyArray<{ minimum: number; grade: CharacterSubstatGrade 
   { minimum: 15, grade: 'D' },
   { minimum: 0, grade: 'E' }
 ]
+
+const gradeOrder: CharacterSubstatGrade[] = ['E', 'D', 'C', 'B', 'A', 'S', 'SS', 'SSS']
+const gradeFor = (percentage: number) => gradeBands.find((band) => percentage >= band.minimum)?.grade
+const lowerGrade = (grade: CharacterSubstatGrade) => gradeOrder[Math.max(0, gradeOrder.indexOf(grade) - 1)]
 
 export function resolveCharacterSubstatProfile(
   catalog: CharacterCatalogEntry,
@@ -57,17 +68,18 @@ export function resolveCharacterSubstatProfile(
       .map(([key, weight]) => [key, Math.min(4, Math.max(0.5, Math.round(weight * 2) / 2)) as CharacterSubstatWeight]))
     : preference.weights
   const flatStats = new Set<StatKey>(['hp', 'atk', 'def'])
-  const nonFlatWeights = Object.entries(weights)
+  const scoringWeights = Object.entries(weights).filter(([key]) => key !== 'energyRegen')
+  const nonFlatWeights = scoringWeights
     .filter(([key, weight]) => !flatStats.has(key as StatKey) && weight > 0)
     .map(([, weight]) => weight)
     .sort((left, right) => right - left)
     .slice(0, 5)
-  const flatWeight = Object.entries(weights)
+  const flatWeight = scoringWeights
     .filter(([key, weight]) => flatStats.has(key as StatKey) && weight > 0)
     .map(([, weight]) => weight)
     .sort((left, right) => right - left)[0] ?? 0
   const configuredWeightCount = nonFlatWeights.length + (flatWeight > 0 ? 1 : 0)
-  const customMaximum = Object.entries(weights)
+  const customMaximum = scoringWeights
     .map(([key, weight]) => (flatStats.has(key as StatKey) ? 3 : 8) * weight)
     .sort((left, right) => right - left)
     .slice(0, 5)
@@ -90,21 +102,58 @@ export function scoreCharacterSubstats(
   profile: CharacterSubstatProfile
 ): CharacterSubstatScore {
   const subStats = effectiveSubStats(echo)
-  const contributions = subStats.map((stat) => {
+  const energyRegenSubstatCount = subStats.filter((stat) => stat.key === 'energyRegen').length
+  const contributions = subStats.filter((stat) => stat.key !== 'energyRegen').map((stat) => {
     const tier = substatTierPoints(stat.key, stat.value)
     const weight = profile.weights[stat.key] ?? 0
     return { key: stat.key, tier, weight, points: tier * weight }
   })
-  const valid = profile.maximum > 0 && subStats.length > 0 && contributions.every((entry) => entry.tier > 0)
+  const maximum = profile.maximum * (5 - energyRegenSubstatCount) / 5
+  const valid = maximum > 0 && subStats.length > 0 && contributions.length > 0 && contributions.every((entry) => entry.tier > 0)
   const points = contributions.reduce((sum, entry) => sum + entry.points, 0)
-  const percentage = valid && profile.maximum > 0 ? Math.min(100, points / profile.maximum * 100) : 0
+  const percentage = valid ? Math.min(100, points / maximum * 100) : 0
   return {
     points,
-    maximum: profile.maximum,
+    maximum,
     percentage,
-    grade: valid ? gradeBands.find((band) => percentage >= band.minimum)?.grade : undefined,
+    grade: valid ? gradeFor(percentage) : undefined,
     provisional: subStats.length < 5,
     valid,
     contributions
+  }
+}
+
+export function scoreCharacterBuildSubstats(
+  echoes: Array<Pick<Echo, 'level' | 'subStats'>>,
+  profile: CharacterSubstatProfile,
+  minimumEnergyRegen = 0,
+  totalEnergyRegen = 0
+): CharacterBuildSubstatScore {
+  const subStats = echoes.flatMap(effectiveSubStats)
+  const energyRegenSubstatCount = subStats.filter((stat) => stat.key === 'energyRegen').length
+  const contributions = subStats.filter((stat) => stat.key !== 'energyRegen').map((stat) => {
+    const tier = substatTierPoints(stat.key, stat.value)
+    const weight = profile.weights[stat.key] ?? 0
+    return { key: stat.key, tier, weight, points: tier * weight }
+  })
+  const eligibleSubstatCount = 25 - energyRegenSubstatCount
+  const maximum = profile.maximum * 5 * eligibleSubstatCount / 25
+  const valid = maximum > 0 && echoes.length > 0 && contributions.length > 0 && contributions.every((entry) => entry.tier > 0)
+  const points = contributions.reduce((sum, entry) => sum + entry.points, 0)
+  const percentage = valid ? Math.min(100, points / maximum * 100) : 0
+  const earnedGrade = valid ? gradeFor(percentage) : undefined
+  const energyRequirementMet = minimumEnergyRegen <= 0 || totalEnergyRegen >= minimumEnergyRegen
+  return {
+    points,
+    maximum,
+    percentage,
+    grade: earnedGrade && !energyRequirementMet ? lowerGrade(earnedGrade) : earnedGrade,
+    earnedGrade,
+    provisional: echoes.length < 5 || echoes.some((echo) => effectiveSubStats(echo).length < 5),
+    valid,
+    contributions,
+    eligibleSubstatCount,
+    energyRegenSubstatCount,
+    energyRequirementMet
   }
 }

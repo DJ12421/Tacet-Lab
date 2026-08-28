@@ -143,6 +143,27 @@ describe('CharacterBuildCard direct editing', () => {
     expect(second.callbacks.onOpenEcho).toHaveBeenCalledWith(0)
   })
 
+  it('dismisses skill and Echo edit popovers when the pointer leaves their owner', () => {
+    const echo: Echo = {
+      id: 'echo-1', name: 'Hooscamp', cost: 4, rarity: 5, level: 25, sonata: 'Lingering Tunes',
+      mainStat: { key: 'critRate', value: 22 }, subStats: [{ key: 'critRate', value: 10.5 }],
+      locked: false, excluded: false, createdAt: 1, source: 'manual'
+    }
+    const { container } = card(true, { echoSlots: [echo, undefined, undefined, undefined, undefined], equippedEchoes: [echo], totalEchoCost: 4 })
+
+    const skillColumn = container.querySelector<HTMLElement>('.cbc-skill-column')!
+    fireEvent.click(skillColumn.querySelector<HTMLButtonElement>('.cbc-main-skill')!)
+    expect(within(skillColumn).getByRole('spinbutton')).toBeInTheDocument()
+    fireEvent.mouseLeave(skillColumn)
+    expect(within(skillColumn).queryByRole('spinbutton')).not.toBeInTheDocument()
+
+    const echoRow = screen.getByRole('button', { name: 'Edit Hooscamp' })
+    fireEvent.click(echoRow)
+    expect(screen.getByText('Edit Echo')).toBeInTheDocument()
+    fireEvent.mouseLeave(echoRow)
+    expect(screen.queryByText('Edit Echo')).not.toBeInTheDocument()
+  })
+
   it('keeps Saved and Theorycraft presentations read-only through the shared editable contract', () => {
     const { container, callbacks } = card(false)
 

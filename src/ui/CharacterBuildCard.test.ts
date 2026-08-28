@@ -12,12 +12,12 @@ function profile(weights: CharacterSubstatProfile['weights']): CharacterSubstatP
 describe('prioritizedBuildCardStats', () => {
   it('keeps core stats and merges percentage priorities into their displayed totals', () => {
     const rows = prioritizedBuildCardStats(lucy, profile({ atk: 1, atkPercent: 3, critRate: 4, heavyDamage: 2 }))
-    expect(rows.map((row) => row.key)).toEqual(['hp', 'atk', 'def', 'critRate', 'heavyDamage', 'spectroDamage'])
+    expect(rows.map((row) => row.key)).toEqual(['hp', 'atk', 'def', 'energyRegen', 'critRate', 'heavyDamage', 'spectroDamage'])
   })
 
   it('uses a compact general-purpose fallback when no character profile is configured', () => {
     const rows = prioritizedBuildCardStats(lucy, profile({}))
-    expect(rows.map((row) => row.key)).toEqual(['hp', 'atk', 'def', 'critRate', 'critDamage', 'energyRegen', 'spectroDamage'])
+    expect(rows.map((row) => row.key)).toEqual(['hp', 'atk', 'def', 'energyRegen', 'critRate', 'critDamage', 'spectroDamage'])
   })
 })
 

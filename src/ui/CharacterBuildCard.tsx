@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode, type RefObject } from 'react'
 import { createPortal } from 'react-dom'
 import type { AppSettings, Echo, OwnedCharacter, StatKey } from '../domain/types'
-import { scoreCharacterSubstats, type CharacterSubstatProfile } from '../domain/character-substat-score'
+import { scoreCharacterBuildSubstats, scoreCharacterSubstats, type CharacterSubstatProfile } from '../domain/character-substat-score'
 import { effectiveSubStats, fixedSecondaryMainStat } from '../game-data/echo-main-stats'
 import { echoCatalog, sonataCatalog, statLabels, type CharacterCatalogEntry } from '../game-data'
 import { generatedSonataIconSources } from '../game-data/sonatas.generated'
@@ -209,15 +209,12 @@ const contributingStatKeys = (key: BuildCardStatKey): StatKey[] => key === 'hp' 
 const contributesToStat = (source: StatKey, target: BuildCardStatKey | null) => Boolean(target && contributingStatKeys(target).includes(source))
 const displayedStatKey = (source: StatKey): BuildCardStatKey => source === 'hpPercent' ? 'hp' : source === 'atkPercent' ? 'atk' : source === 'defPercent' ? 'def' : source
 
-const BUILD_SCORE_GRADES = [
-  [75, 'SSS'], [65, 'SS'], [55, 'S'], [45, 'A'], [35, 'B'], [25, 'C'], [15, 'D'], [0, 'E']
-] as const
-
 export function prioritizedBuildCardStats(catalog: CharacterCatalogEntry, profile: CharacterSubstatProfile): BuildCardStatRow[] {
   const rows: BuildCardStatRow[] = [
     { key: 'hp', label: 'HP' },
     { key: 'atk', label: 'ATK' },
-    { key: 'def', label: 'DEF' }
+    { key: 'def', label: 'DEF' },
+    { key: 'energyRegen', label: 'Energy Regen' }
   ]
   const weights = new Map<BuildCardStatKey, number>()
   for (const [sourceKey, weight] of Object.entries(profile.weights) as Array<[StatKey, number]>) {
@@ -233,7 +230,6 @@ export function prioritizedBuildCardStats(catalog: CharacterCatalogEntry, profil
   const fallback = [
     { key: 'critRate', label: 'Crit. Rate' },
     { key: 'critDamage', label: 'Crit. DMG' },
-    { key: 'energyRegen', label: 'Energy Regen' },
     { key: elementKey, label: `${catalog.element} DMG` }
   ] as BuildCardStatRow[]
   const ordered = [...rows, ...(priorities.length ? priorities : fallback), { key: elementKey, label: `${catalog.element} DMG` }]
@@ -326,7 +322,7 @@ function EchoRow({ echo, index, profile, editable, onOpen, onEdit, debugSection,
   const sonataIconSourceUrl = generatedSonataIconSources[echo.sonata]
   const scoreText = score.valid && score.grade ? `${score.grade} · ${score.percentage.toFixed(1)}%${score.provisional ? '*' : ''}` : profile.maximum > 0 ? 'Unverified' : 'Unconfigured'
   const scoreGradeClass = score.valid && score.grade ? `cbc-score-grade-${score.grade.toLowerCase()}` : ''
-  return <article className={`cbc-echo-row cbc-echo-slot-${index} ${index === 0 ? 'is-main' : ''} ${editable ? 'is-editable' : ''} ${colorGrades ? 'is-grade-colored' : ''} ${debugClassName}`} data-debug-section={debugSection} style={debugStyle} role={editable ? 'button' : undefined} aria-label={editable ? `Edit ${echo.name}` : `${echo.name} Echo`} tabIndex={0} onClick={editable ? () => setActionsOpen((open) => !open) : undefined} onKeyDown={editable ? (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setActionsOpen((open) => !open) } } : undefined}>
+  return <article className={`cbc-echo-row cbc-echo-slot-${index} ${index === 0 ? 'is-main' : ''} ${editable ? 'is-editable' : ''} ${colorGrades ? 'is-grade-colored' : ''} ${debugClassName}`} data-debug-section={debugSection} style={debugStyle} role={editable ? 'button' : undefined} aria-label={editable ? `Edit ${echo.name}` : `${echo.name} Echo`} tabIndex={0} onMouseLeave={() => setActionsOpen(false)} onClick={editable ? () => setActionsOpen((open) => !open) : undefined} onKeyDown={editable ? (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setActionsOpen((open) => !open) } } : undefined}>
     <div className="cbc-echo-visual">
       <span className="cbc-echo-art">{catalog?.iconSourceUrl ? <img src={catalog.iconSourceUrl} alt=""/> : <b>◆</b>}</span>
       {sonataIconSourceUrl && <img className="cbc-echo-sonata-icon" src={sonataIconSourceUrl} alt="" title={echo.sonata}/>} 
@@ -637,18 +633,14 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
     effects: sonataCatalog.find((entry) => entry.name === active.name)?.effects.filter((effect) => active.count >= effect.pieces) ?? []
   })), [model.sonatas])
 
+  const energyRegenMinimum = settings.characterEnergyRegenMinimums[catalog.id] ?? 0
   const buildScore = useMemo(() => {
-    const scores = model.equippedEchoes.map((echo) => scoreCharacterSubstats(echo, profile))
-    if (profile.maximum <= 0) return { label: 'Unconfigured', percentage: 0, grade: undefined as string | undefined }
-    if (!scores.length) return { label: 'No Echoes', percentage: 0, grade: undefined as string | undefined }
-    if (scores.some((score) => !score.valid)) return { label: 'Unverified', percentage: 0, grade: undefined as string | undefined }
-    const percentage = Math.min(100, scores.reduce((total, score) => total + score.points, 0) / (profile.maximum * 5) * 100)
-    return {
-      label: `${percentage.toFixed(1)}%${scores.length < 5 || scores.some((score) => score.provisional) ? '*' : ''}`,
-      percentage,
-      grade: BUILD_SCORE_GRADES.find(([minimum]) => percentage >= minimum)?.[1]
-    }
-  }, [model.equippedEchoes, profile])
+    if (profile.maximum <= 0) return { label: 'Unconfigured', grade: undefined as string | undefined, energyRequirementMet: true }
+    if (!model.equippedEchoes.length) return { label: 'No Echoes', grade: undefined as string | undefined, energyRequirementMet: true }
+    const score = scoreCharacterBuildSubstats(model.equippedEchoes, profile, energyRegenMinimum, model.finalStats.energyRegen)
+    if (!score.valid) return { label: 'Unverified', grade: undefined as string | undefined, energyRequirementMet: score.energyRequirementMet }
+    return { ...score, label: `${score.percentage.toFixed(1)}%${score.provisional ? '*' : ''}${score.energyRequirementMet ? '' : ' · ER ↓'}` }
+  }, [energyRegenMinimum, model.equippedEchoes, model.finalStats.energyRegen, profile])
   const bonusSourceContributes = (idPrefix: string) => Boolean(highlightedStat && model.statBonusSources.some((source) => source.id.startsWith(idPrefix) && source.lines.some((line) => contributesToStat(line.key, highlightedStat))))
   const bonusSourceStat = (idPrefix: string) => model.statBonusSources.find((source) => source.id.startsWith(idPrefix))?.lines[0]?.key
   const weaponContributes = highlightedStat === 'atk' || Boolean(model.weapon?.secondaryStat && contributesToStat(model.weapon.secondaryStat.key, highlightedStat)) || bonusSourceContributes('weapon-')
@@ -683,12 +675,12 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
           const skill = catalog.skillIcons[key]
           const regularBonuses = catalog.skillTreeExtras.bonusStatBranches[key].map((bonus, sourceIndex) => ({ bonus, id: skillTreeBonusId(key, sourceIndex) }))
           const bonuses = index === 2 ? [...regularBonuses, ...catalog.skillTreeExtras.inherentSkills.map((bonus, sourceIndex) => ({ bonus, id: inherentSkillBonusId(sourceIndex) }))] : regularBonuses
-          return <div className="cbc-skill-column" key={key}>
+          return <div className="cbc-skill-column" onMouseLeave={() => setSkillLevelOpen((open) => open === index ? null : open)} key={key}>
             <div className="cbc-skill-bonuses">
               <div className="cbc-skill-bonus-nodes">{bonuses.map(({ bonus, id }) => { const nodeStat = skillTreeStatLine(bonus.name, bonus.description); const contributes = enabledSkillTreeNodeIds.includes(id) && Boolean(nodeStat && contributesToStat(nodeStat.key, highlightedStat)); return <button type="button" aria-label={bonus.name} aria-disabled={!editable} className={`${enabledSkillTreeNodeIds.includes(id) ? 'is-enabled' : 'is-disabled'} cbc-stat-source${contributes ? ' is-contributing' : ''}`} onMouseEnter={() => nodeStat && setHighlightedStat(displayedStatKey(nodeStat.key))} onMouseLeave={() => setHighlightedStat(null)} onFocus={() => nodeStat && setHighlightedStat(displayedStatKey(nodeStat.key))} onBlur={() => setHighlightedStat(null)} onClick={() => { if (editable) onToggleSkillTreeNode(id) }} key={id}><span><img src={bonus.iconSourceUrl} alt=""/></span></button> })}</div>
             </div>
             <button type="button" className="cbc-main-skill" aria-label={`${skill.name}, level ${model.skillLevels[index]}`} aria-disabled={!editable} onClick={() => { if (editable) setSkillLevelOpen(skillLevelOpen === index ? null : index) }}><span><img src={skill.iconSourceUrl} alt=""/></span><small>Lv. {model.skillLevels[index]}</small></button>
-            {skillLevelOpen === index && editable && <div className="cbc-edit-popover cbc-skill-level-popover"><strong className="cbc-skill-level-title">{label}</strong><div><button type="button" disabled={model.skillLevels[index] <= 1} onClick={() => onSetSkillLevel(index, model.skillLevels[index] - 1)}>−</button><strong>Lv. {model.skillLevels[index]}</strong><button type="button" disabled={model.skillLevels[index] >= 10} onClick={() => onSetSkillLevel(index, model.skillLevels[index] + 1)}>+</button></div></div>}
+            {skillLevelOpen === index && editable && <div className="cbc-edit-popover cbc-skill-level-popover"><strong className="cbc-skill-level-title">{label}</strong><div><button type="button" disabled={model.skillLevels[index] <= 1} onClick={() => onSetSkillLevel(index, model.skillLevels[index] - 1)}>−</button><input type="number" aria-label={`${label} level`} min="1" max="10" step="1" value={model.skillLevels[index]} onChange={(event) => onSetSkillLevel(index, Math.max(1, Math.min(10, Number(event.target.value) || 1)))}/><button type="button" disabled={model.skillLevels[index] >= 10} onClick={() => onSetSkillLevel(index, model.skillLevels[index] + 1)}>+</button></div></div>}
           </div>
         })}</div>
         <div className="cbc-extra-skills">{[catalog.skillTreeExtras.outroSkill, catalog.skillTreeExtras.tuneBreakSkill].map((skill, index) => skill?.iconSourceUrl && <button type="button" aria-label={skill.name} key={`${skill.name}-${index}`}><span><img src={skill.iconSourceUrl} alt=""/></span></button>)}</div>
@@ -724,7 +716,7 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
       <div className="cbc-center-column"/>
 
       <div className="cbc-right-column">
-        <header className={debugSectionClass('echoHeader', 'cbc-build-score cbc-glass')} data-debug-section="echoHeader" style={debugSectionStyle('echoHeader')}><span>Build score</span><div><strong>{buildScore.grade ?? '—'}</strong><b>{buildScore.label}</b><button type="button" className="cbc-build-score-info" aria-label="How Substat Score works" title="How Substat Score works" onClick={onShowScoreInfo}>?</button></div></header>
+        <header className={debugSectionClass('echoHeader', 'cbc-build-score cbc-glass')} data-debug-section="echoHeader" style={debugSectionStyle('echoHeader')}><span>Build score</span><div><strong>{buildScore.grade ?? '—'}</strong><b title={buildScore.energyRequirementMet ? undefined : `Below ${energyRegenMinimum}% Energy Regen`}>{buildScore.label}</b><button type="button" className="cbc-build-score-info" aria-label="How Substat Score works" title="How Substat Score works" onClick={onShowScoreInfo}>?</button></div></header>
         <section className="cbc-echo-stage">{model.echoSlots.map((echo, index) => {
           const debugSection = `echo${index}` as DebugSectionKey
           return <EchoRow echo={echo} index={index} profile={profile} editable={editable} onOpen={() => onOpenEcho(index)} onEdit={onEditEcho} debugSection={debugSection} debugClassName={debugSectionClass(debugSection, '')} debugStyle={debugSectionStyle(debugSection)} highlightedStat={highlightedStat} setHighlightedStat={setHighlightedStat} colorGrades={colorEchoGrades} key={echo?.id ?? `empty-${index}`}/>

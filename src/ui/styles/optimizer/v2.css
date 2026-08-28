@@ -1,5 +1,9 @@
 /* Embedded Teams optimizer: constraints, baseline, and explicit swap plan. */
 
+.optimizer-v2-workspace {
+  --optimizer-current-gold: #e4bb5e;
+}
+
 .optimizer-constraints {
   display: grid;
   grid-template-columns: minmax(230px,1.2fr) minmax(180px,.8fr) minmax(170px,.7fr) minmax(170px,.7fr);
@@ -433,9 +437,9 @@
 }
 
 .optimizer-toggle-row button,.optimizer-main-stat-card section button,.optimizer-sonata-picker button {
-  border: 1px solid var(--optimizer-line);
-  background: #0b1112;
-  color: #87928f;
+  border: 1px solid color-mix(in srgb,var(--tw-member-accent,#8de4d4) 52%,var(--optimizer-line));
+  background: color-mix(in srgb,var(--tw-member-accent,#8de4d4) 14%,#0b1112);
+  color: #e8f1ee;
 }
 
 .optimizer-toggle-row button {
@@ -449,9 +453,17 @@
 }
 
 .optimizer-toggle-row button.active,.optimizer-main-stat-card section button.active,.optimizer-sonata-picker button.active {
-  border-color: var(--optimizer-strong);
-  background: color-mix(in srgb,var(--tw-member-accent,#8de4d4) 13%,#0b1112);
-  color: #eff6f3;
+  border-color: #46524f;
+  background: #090e0f;
+  color: #aebbb7;
+  box-shadow: inset 3px 0 0 var(--gold);
+}
+
+.optimizer-toggle-row button.active::after,.optimizer-main-stat-card section button.active::after,.optimizer-sonata-picker>div:last-child button.active::after {
+  content: '✓';
+  margin-left: auto;
+  color: var(--gold);
+  font-weight: 800;
 }
 
 .optimizer-main-stat-card>section {
@@ -915,7 +927,7 @@
 
 .optimizer-chart-legend i.current {
   border-radius: 0;
-  background: var(--gold);
+  background: var(--optimizer-current-gold,#e4bb5e);
 }
 
 .optimizer-distribution-chart circle {
@@ -942,7 +954,7 @@
 }
 
 .optimizer-distribution-chart .optimizer-current-point {
-  fill: var(--gold);
+  fill: var(--optimizer-current-gold,#e4bb5e);
   stroke: #171b1b;
   stroke-width: 2;
 }

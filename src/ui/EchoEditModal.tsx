@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useRef, useState, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import { statLabels } from '../game-data/core'
 import { echoCatalog } from '../game-data/echoes'
 import { generatedSonataCatalog, generatedSonataIconSources } from '../game-data/sonatas.generated'
@@ -7,6 +8,7 @@ import { tunableRolls } from '../game-data/tunable-rolls'
 import type { Echo, StatKey } from '../domain/types'
 import { EchoMiniCard, formatStat, Panel } from './components'
 import { useDismissableLayer } from './useDismissableLayer'
+import { availableSubstatKeys, duplicateSubstatKeys } from '../domain/echo-substats'
 
 const sonataNames = generatedSonataCatalog.map((sonata) => sonata.name)
 const subStatKeys = Object.keys(tunableRolls) as StatKey[]
@@ -58,6 +60,7 @@ export function EchoEditModal({ echo, onClose, onSave }: { echo: Echo; onClose: 
   const submit = async () => {
     if (!draft.name.trim() || !draft.sonata.trim()) { setError('Name and Sonata are required.'); return }
     if (!selectedEcho?.sonatas.includes(draft.sonata)) { setError('Choose an Echo available for the selected Sonata.'); return }
+    if (duplicateSubstatKeys(draft.subStats).length) { setError('Each substat type can only appear once.'); return }
     const normalizedDraft = draft.cost === canonicalCost
       ? draft
       : { ...draft, cost: canonicalCost, mainStat: normalizeEchoMainStat({ ...draft, cost: canonicalCost }) }
@@ -66,7 +69,7 @@ export function EchoEditModal({ echo, onClose, onSave }: { echo: Echo; onClose: 
     await onSave(normalizedDraft)
   }
 
-  return <div className="modal-backdrop echo-editor-backdrop" onMouseDown={onClose}>
+  return createPortal(<div className="modal-backdrop echo-editor-backdrop" onMouseDown={onClose}>
     <Panel className="echo-edit-modal" onMouseDown={(event) => event.stopPropagation()}>
       <header className="echo-editor-header"><div><span className="eyebrow">Edit Echo</span><h2>{draft.name}</h2></div><button className="close" aria-label="Close Echo editor" onClick={onClose}>×</button></header>
       <div className="echo-editor-layout">
@@ -83,7 +86,7 @@ export function EchoEditModal({ echo, onClose, onSave }: { echo: Echo; onClose: 
             <div className="echo-stat-line main"><span>Primary</span><select value={draft.mainStat.key} onChange={(event) => updateCore({}, event.target.value as StatKey)}>{mainStatKeysByCost[draft.cost].map((key) => <option key={key} value={key}>{statLabels[key]}</option>)}</select><ReadOnlyStat label="Level value"><strong>{formatStat(draft.mainStat.key, draft.mainStat.value)}</strong></ReadOnlyStat></div>
             <div className="echo-stat-line secondary-main"><span>Secondary</span><div className="echo-readonly-name">{statLabels[secondary.key]}</div><ReadOnlyStat label="Fixed value"><strong>{formatStat(secondary.key, secondary.value)}</strong></ReadOnlyStat></div>
           </div>
-          <div className="echo-editor-substats"><header><h3>Substats</h3><span>{draft.subStats.length}/{maxSubStats} tuned</span></header>{draft.subStats.map((stat, index) => { const rolls = tunableRolls[stat.key] ?? []; const rollIndex = Math.max(0, rolls.findIndex((roll) => Math.abs(roll.value - stat.value) < 0.001)); return <div className="echo-substat-row" key={index}><div className="echo-stat-line"><span>#{index + 1}</span><select value={stat.key} onChange={(event) => setSubStat(index, event.target.value as StatKey, 0)}>{subStatKeys.map((key) => <option key={key} value={key}>{statLabels[key]}</option>)}</select><strong>{formatStat(stat.key, rolls[rollIndex]?.value ?? stat.value)}</strong><button type="button" className="text-button" onClick={() => setDraft({ ...draft, subStats: draft.subStats.filter((_, statIndex) => statIndex !== index) })}>Remove</button></div><div className="echo-roll-slider"><input aria-label={`Substat ${index + 1} roll`} type="range" min="0" max={Math.max(0, rolls.length - 1)} step="1" value={rollIndex} onChange={(event) => setSubStat(index, stat.key, Number(event.target.value))}/><div>{rolls.map((roll, point) => <i className={point === rollIndex ? 'active' : ''} key={roll.value}>{roll.value}</i>)}</div></div></div> })}<button type="button" className="secondary add-substat" disabled={draft.subStats.length >= maxSubStats} onClick={() => setDraft({ ...draft, subStats: [...draft.subStats, { key: 'critRate', value: tunableRolls.critRate?.[0].value ?? 6.3 }] })}><span aria-hidden="true">+</span> Add substat</button></div>
+          <div className="echo-editor-substats"><header><h3>Substats</h3><span>{draft.subStats.length}/{maxSubStats} tuned</span></header>{draft.subStats.map((stat, index) => { const rolls = tunableRolls[stat.key] ?? []; const rollIndex = Math.max(0, rolls.findIndex((roll) => Math.abs(roll.value - stat.value) < 0.001)); const keys = availableSubstatKeys(subStatKeys, draft.subStats, index); return <div className="echo-substat-row" key={index}><div className="echo-stat-line"><span>#{index + 1}</span><select value={stat.key} onChange={(event) => setSubStat(index, event.target.value as StatKey, 0)}>{keys.map((key) => <option key={key} value={key}>{statLabels[key]}</option>)}</select><strong>{formatStat(stat.key, rolls[rollIndex]?.value ?? stat.value)}</strong><button type="button" className="text-button" onClick={() => setDraft({ ...draft, subStats: draft.subStats.filter((_, statIndex) => statIndex !== index) })}>Remove</button></div><div className="echo-roll-slider"><input aria-label={`Substat ${index + 1} roll`} type="range" min="0" max={Math.max(0, rolls.length - 1)} step="1" value={rollIndex} onChange={(event) => setSubStat(index, stat.key, Number(event.target.value))}/><div>{rolls.map((roll, point) => <i className={point === rollIndex ? 'active' : ''} key={roll.value}>{roll.value}</i>)}</div></div></div> })}{(() => { const keys = availableSubstatKeys(subStatKeys, draft.subStats); const key = keys[0]; return <button type="button" className="secondary add-substat" disabled={draft.subStats.length >= maxSubStats || !key} onClick={() => key && setDraft({ ...draft, subStats: [...draft.subStats, { key, value: tunableRolls[key]?.[0].value ?? 0 }] })}><span aria-hidden="true">+</span> Add substat</button> })()}</div>
           <div className="echo-editor-states"><label><input type="checkbox" checked={draft.locked} onChange={(event) => setDraft({ ...draft, locked: event.target.checked, excluded: event.target.checked ? false : draft.excluded })}/>Locked</label><label><input type="checkbox" checked={draft.excluded} onChange={(event) => setDraft({ ...draft, excluded: event.target.checked, locked: event.target.checked ? false : draft.locked })}/>Discarded</label></div>
           {error && <div className="notice error">{error}</div>}
         </section>
@@ -91,5 +94,5 @@ export function EchoEditModal({ echo, onClose, onSave }: { echo: Echo; onClose: 
       </div>
       <footer className="echo-editor-actions"><button className="text-button" onClick={onClose}>Cancel</button><button className="primary" onClick={() => void submit()}>Save Echo</button></footer>
     </Panel>
-  </div>
+  </div>, document.body)
 }

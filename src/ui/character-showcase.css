@@ -2599,6 +2599,51 @@
   gap: 7px;
 }
 
+.cs-er-requirement {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 0 0 12px;
+  padding: 12px;
+  border: 1px solid rgba(var(--cs-accent-rgb),.32);
+  background: rgba(var(--cs-accent-rgb),.055);
+}
+
+.cs-er-requirement>span:first-child {
+  display: grid;
+  gap: 3px;
+}
+
+.cs-er-requirement small {
+  max-width: 440px;
+  color: #7f8e8a;
+  font-size: var(--font-size-caption);
+  font-weight: 500;
+}
+
+.cs-er-requirement>span:last-child {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cs-er-requirement input {
+  box-sizing: border-box;
+  width: 82px;
+  height: 36px;
+  border: 1px solid rgba(var(--cs-accent-rgb),.42);
+  background: #0c1516;
+  color: #eef5f3;
+  font-weight: 800;
+  text-align: center;
+}
+
+.cs-er-requirement b {
+  color: var(--cs-accent);
+}
+
 .cs-weight-grid>label {
   min-width: 0;
   display: flex;
@@ -3422,6 +3467,15 @@
   .cs-layout-panel-host .cbc-debug-controls {
     overflow: visible;
   }
+}
+
+.cs-weapon-picker-card .wv-card-footer {
+  grid-template-columns: minmax(0,1fr);
+}
+
+.cs-weapon-picker-owner i {
+  font-size: var(--font-size-caption);
+  font-weight: 700;
 }
 
 /* Final character-card toolbar ownership. */

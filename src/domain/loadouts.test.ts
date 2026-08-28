@@ -25,6 +25,17 @@ describe('loadout resolution', () => {
     expect(collections.weapons).toEqual([])
   })
 
+  it('preserves exact per-Echo theorycraft substats', () => {
+    const build = createTheorycraftBuild(ownedCharacter)
+    build.substats = { mode: 'slots', slots: [[{ key: 'critRate', value: 10.5 }], [{ key: 'critDamage', value: 21 }], [], [], []] }
+    const collections = { characters: [ownedCharacter], weapons: [], echoes: [], builds: [], equippedLoadouts: [], theorycraftBuilds: [build] }
+
+    const resolved = resolveLoadout({ type: 'theorycraft', theorycraftBuildId: build.id }, collections)
+
+    expect(resolved.echoes[0].subStats).toEqual([{ key: 'critRate', value: 10.5 }])
+    expect(resolved.echoes[1].subStats).toEqual([{ key: 'critDamage', value: 21 }])
+  })
+
   it('reports illegal cost, slot, Sonata, and roll-count configurations', () => {
     const build = createTheorycraftBuild(ownedCharacter)
     build.slots = build.slots.map((slot) => ({ ...slot, cost: 4 as Echo['cost'], level: 25 }))

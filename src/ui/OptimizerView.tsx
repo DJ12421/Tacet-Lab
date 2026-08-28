@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type Dispatch, type SetStateAction } from 'react'
 import { characterCatalog, GAME_DATA_VERSION, sonataCatalog, statLabels } from '../game-data'
 import { createTheorycraftBuild } from '../domain/loadouts'
-import { effectiveSubStats } from '../game-data/echo-main-stats'
 import { db } from '../storage/database'
 import { setEquippedEchoIds } from '../storage/loadouts'
 import {
@@ -459,9 +458,11 @@ export function OptimizerView({
     theorycraft.slots = [...resultSlots, ...theorycraft.slots.slice(resultSlots.length)].slice(0, 5)
     const counts = new Map<string, number>(); resultEchoes.forEach((echo) => counts.set(echo.sonata, (counts.get(echo.sonata) ?? 0) + 1))
     theorycraft.sonatas = [...counts].map(([name, pieces]) => ({ name, pieces }))
-    const values: Partial<Record<Echo['mainStat']['key'], number>> = {}
-    resultEchoes.flatMap(effectiveSubStats).forEach((line) => { values[line.key] = (values[line.key] ?? 0) + line.value })
-    theorycraft.substats = { mode: 'values', values }; theorycraft.source = { type: 'optimizer', id: activeRunId }; theorycraft.updatedAt = Date.now()
+    theorycraft.substats = {
+      mode: 'slots',
+      slots: Array.from({ length: 5 }, (_, index) => resultEchoes[index]?.subStats.map((line) => ({ ...line })) ?? [])
+    }
+    theorycraft.source = { type: 'optimizer', id: activeRunId }; theorycraft.updatedAt = Date.now()
     await db.theorycraftBuilds.add(theorycraft); await refresh(); setMessage('Optimizer result converted to theorycraft. Equipment was not changed.')
   }
 

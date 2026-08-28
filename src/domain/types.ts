@@ -21,6 +21,7 @@ export type TheorycraftSubstats =
   | { mode: 'slots'; slots: Array<Array<{ key: StatKey; value: number }>> }
   | { mode: 'values'; values: Partial<Record<StatKey, number>> }
   | { mode: 'rolls'; quality: 'low' | 'mid' | 'high'; rolls: Partial<Record<StatKey, number>> }
+  | { mode: 'slots'; slots: StatLine[][] }
 export interface TheorycraftBuild {
   id: string
   name: string
