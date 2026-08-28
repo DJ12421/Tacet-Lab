@@ -1,17 +1,19 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type DragEvent } from 'react'
+import { createPortal } from 'react-dom'
 import type { BuildCardDetails, Echo } from '../domain/types'
 import { createLocalId } from '../domain/id'
 import { generatedCharacterSummaries as characterCatalog } from '../game-data/character-summaries.generated'
 import { generatedWeaponSummaries as weaponCatalog } from '../game-data/weapon-summaries.generated'
 import { candidateErrors, candidateToEcho, parseEchoText } from '../scanner/parser'
-import { saveScannedCandidate } from '../scanner/persistence'
+import { saveScannedCandidates, type ScanSaveProgress } from '../scanner/persistence'
+import { buildCardFormats, type BuildCardFormatPreference } from '../scanner/build-card-formats'
 import { StableFrameDetector } from '../scanner/stability'
 import { probeEchoPanel } from '../scanner/capture'
 import { captureScreenFrame, requestScreenSource, stopScreenSource } from '../scanner/sources/screen-source'
 import { readScreenshot } from '../scanner/sources/screenshot-source'
 import { LocalVideoSource, videoSampleTimes, type VideoTrim } from '../scanner/sources/video-source'
 import { prepareScanFrame } from '../scanner/frame'
-import { loadLatestCalibrationProfile } from '../scanner/calibration'
+import { createCalibrationProfile, findCompatibleProfile, loadLatestCalibrationProfile } from '../scanner/calibration'
 import { ScanSessionController } from '../scanner/session'
 import { copyDiagnosticReport } from '../scanner/debug'
 import type { CalibrationProfile, DiagnosticScanCandidate, OcrWorkerPreference, ScanSession, ScanSource } from '../scanner/types'
@@ -20,7 +22,7 @@ import { ScanReviewCard } from './ScanReviewCard'
 import { ScannerDebugOverlay } from './ScannerDebugOverlay'
 import { ScannerCalibration } from './ScannerCalibration'
 import { ScanSessionSummary } from './ScanSessionSummary'
-import { defaultPanelRectForLayout, regionsForLayout } from '../scanner/regions'
+import { defaultPanelRectForLayout } from '../scanner/regions'
 import { echoRollRating } from '../domain/echo-grade'
 import { useBodyScrollLock, useDismissableLayer } from './useDismissableLayer'
 
@@ -51,7 +53,7 @@ function ScannedLoadoutCards({ details, onReview }: { details: BuildCardDetails;
         <span className="eyebrow">Scanned weapon</span>
         <h3>{weapon?.name ?? (details.weapon.value || 'Unknown weapon')}</h3>
         <p>{weapon ? `${weapon.type} · ${weapon.secondaryStat} ${weapon.secondaryStatValue}` : 'Choose a weapon during review'}</p>
-        <dl><div><dt>Level</dt><dd>{details.weaponLevel.value}/90</dd></div><div><dt>Rank</dt><dd>R1</dd></div></dl>
+        <dl><div><dt>Level</dt><dd>{details.weaponLevel.value}/90</dd></div><div><dt>Rank</dt><dd>R{details.weaponRank.value}</dd></div></dl>
         <small>Review weapon details</small>
       </div>
     </button>
@@ -72,6 +74,7 @@ function feedbackTone(context: AudioContext, kind: 'new' | 'duplicate' | 'error'
 }
 
 export function ScannerView({ echoes, refresh, scanIntervalMs, onScanIntervalChange, onSessionRiskChange }: { echoes: Echo[]; refresh: () => Promise<void>; scanIntervalMs: number; onScanIntervalChange: (scanIntervalMs: number) => Promise<void>; onSessionRiskChange?: (atRisk: boolean) => void }) {
+  const sidebarIconRoot = `${import.meta.env.BASE_URL}sidebar-icons/`
   const videoRef = useRef<HTMLVideoElement>(null), screenshotRef = useRef<HTMLInputElement>(null), videoFileRef = useRef<HTMLInputElement>(null)
   const streamRef = useRef<MediaStream | null>(null), controllerRef = useRef<ScanSessionController | null>(null), detector = useRef(new StableFrameDetector())
   const feedbackAudioRef = useRef<AudioContext | null>(null), audioFeedbackRef = useRef(true)
@@ -85,11 +88,15 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onScanIntervalCha
   const [calibrationNotice, setCalibrationNotice] = useState('')
   const [workerPreference, setWorkerPreference] = useState<OcrWorkerPreference>('auto'), [debugVisible, setDebugVisible] = useState(true)
   const [profile, setProfile] = useState<CalibrationProfile | undefined>(() => loadLatestCalibrationProfile()), [calibrationImage, setCalibrationImage] = useState(''), [calibrating, setCalibrating] = useState(false)
-  const [selectedLayout, setSelectedLayout] = useState<CalibrationProfile['layout']>(() => loadLatestCalibrationProfile()?.layout ?? 'echo-detail')
+  const [selectedLayout, setSelectedLayout] = useState<CalibrationProfile['layout']>('echo-management')
   const [audioFeedback, setAudioFeedback] = useState(true)
   const [videoTrim, setVideoTrim] = useState<VideoTrim>({ start: 0, end: 0, fps: 2 }), [videoDuration, setVideoDuration] = useState(0)
   const [videoEta, setVideoEta] = useState('')
   const [reviewOpen, setReviewOpen] = useState(false), [activeReviewId, setActiveReviewId] = useState<string>()
+  const [buildCardFormatPreference, setBuildCardFormatPreference] = useState<BuildCardFormatPreference>('auto')
+  const [savingProgress, setSavingProgress] = useState<ScanSaveProgress>()
+  const [dragActive, setDragActive] = useState(false)
+  const dragDepth = useRef(0)
   const closeReview = useCallback(() => setReviewOpen(false), [])
   useDismissableLayer(reviewOpen, reviewRef, closeReview)
   useBodyScrollLock(reviewOpen)
@@ -120,7 +127,7 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onScanIntervalCha
     strip.addEventListener('wheel', captureCandidateWheel, { passive: false })
     return () => strip.removeEventListener('wheel', captureCandidateWheel)
   }, [reviewOpen, candidates.length])
-  useLayoutEffect(() => { onSessionRiskChange?.(streaming || videoScanning || imageScanning || candidates.length > 0 || session?.status === 'running' || session?.status === 'stopping') })
+  useLayoutEffect(() => { onSessionRiskChange?.(streaming || videoScanning || imageScanning || Boolean(savingProgress) || candidates.length > 0 || session?.status === 'running' || session?.status === 'stopping') })
 
   const acceptCandidate = (candidate: DiagnosticScanCandidate) => {
     setCandidates((current) => {
@@ -149,12 +156,13 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onScanIntervalCha
       onProgress: (value, nextStatus) => { setProgress(value); setStatus(nextStatus) },
       getEchoes: () => echoesRef.current, getPending: () => candidatesRef.current
     }, workerPreference)
+    controller.setBuildCardFormatPreference(buildCardFormatPreference)
     controllerRef.current = controller
     return controller
   }
 
-  const prepareCalibration = async (dataUrl: string, source: ScanSource, preferredProfile = profile) => {
-    const prepared = await prepareScanFrame(dataUrl, source, controllerRef.current?.session.id ?? createLocalId(), 0, preferredProfile, selectedLayout)
+  const prepareCalibration = async (dataUrl: string, source: ScanSource, preferredProfile = profile, formatPreference = buildCardFormatPreference) => {
+    const prepared = await prepareScanFrame(dataUrl, source, controllerRef.current?.session.id ?? createLocalId(), 0, preferredProfile, selectedLayout, formatPreference)
     setCalibrationImage(dataUrl); setProfile(prepared.profile); setSelectedLayout(prepared.profile.layout)
     setCalibrationNotice(prepared.needsCalibration ? `Scan used detected defaults because no saved ${prepared.frame.width}x${prepared.frame.height} ${prepared.frame.layout} calibration matched. Review and save the panel if any fields are misplaced.` : '')
     return prepared.profile
@@ -293,8 +301,19 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onScanIntervalCha
   }))
   const discard = (candidate: DiagnosticScanCandidate) => { controllerRef.current?.markRejected(); setCandidates((current) => current.filter((item) => item.id !== candidate.id)) }
   const save = async (candidate: DiagnosticScanCandidate) => {
-    if (candidateErrors(candidate).length) return
-    await saveScannedCandidate(candidate); controllerRef.current?.markApproved(); setCandidates((current) => current.filter((item) => item.id !== candidate.id)); await refresh()
+    const batch = candidate.buildCard ? candidates.filter((entry) => entry.buildCard?.id === candidate.buildCard?.id) : [candidate]
+    if (batch.some((entry) => candidateErrors(entry).length) || savingProgress) {
+      if (candidate.buildCard) setError('Review every Echo on this build card before saving it.')
+      return
+    }
+    try {
+      setError(''); setSavingProgress({ completed: 0, total: batch.length, phase: 'preparing' })
+      await saveScannedCandidates(batch, setSavingProgress)
+      batch.forEach(() => controllerRef.current?.markApproved())
+      const savedIds = new Set(batch.map((entry) => entry.id))
+      setCandidates((current) => current.filter((item) => !savedIds.has(item.id))); await refresh()
+    } catch (caught) { setError(caught instanceof Error ? caught.message : 'The scan could not be saved.') }
+    finally { setSavingProgress(undefined) }
   }
   const validCandidates = candidates.filter((candidate) => candidateErrors(candidate).length === 0)
   const approvableCandidates = validCandidates.filter((candidate) => !candidate.duplicateOf)
@@ -302,10 +321,16 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onScanIntervalCha
   const scannedBuildCards = candidates.flatMap((candidate) => candidate.buildCard ? [{ candidate, details: candidate.buildCard }] : [])
     .filter((entry, index, entries) => entries.findIndex((candidate) => candidate.details.id === entry.details.id) === index)
   const approveCandidates = async (batch: DiagnosticScanCandidate[]) => {
-    for (const candidate of batch) { await saveScannedCandidate(candidate); controllerRef.current?.markApproved() }
-    const approvedIds = new Set(batch.map((candidate) => candidate.id))
-    setCandidates((current) => current.filter((candidate) => !approvedIds.has(candidate.id)))
-    if (approvedIds.size) await refresh()
+    if (!batch.length || savingProgress) return
+    try {
+      setError(''); setSavingProgress({ completed: 0, total: batch.length, phase: 'preparing' })
+      await saveScannedCandidates(batch, setSavingProgress)
+      batch.forEach(() => controllerRef.current?.markApproved())
+      const approvedIds = new Set(batch.map((candidate) => candidate.id))
+      setCandidates((current) => current.filter((candidate) => !approvedIds.has(candidate.id)))
+      await refresh()
+    } catch (caught) { setError(caught instanceof Error ? caught.message : 'The scans could not be saved.') }
+    finally { setSavingProgress(undefined) }
   }
   const approveAll = () => approveCandidates(approvableCandidates)
   const approveAllDuplicates = () => approveCandidates(approvableDuplicates)
@@ -322,9 +347,11 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onScanIntervalCha
 
   const activeReview = candidates.find((candidate) => candidate.id === activeReviewId) ?? candidates[0]
   const selectLayout = (layout: CalibrationProfile['layout']) => {
-    const regions = regionsForLayout(layout)
     setSelectedLayout(layout)
-    if (profile) setProfile({ ...profile, layout, panelRect: defaultPanelRectForLayout(layout), regions, updatedAt: Date.now() })
+    if (!profile) return
+    const format = layout === 'build-card' ? buildCardFormatPreference === 'auto' ? profile.buildCardFormat ?? 'discord-bot' : buildCardFormatPreference : undefined
+    setProfile(findCompatibleProfile(profile.sourceWidth, profile.sourceHeight, layout, profile.uiScale, format)
+      ?? createCalibrationProfile(profile.sourceWidth, profile.sourceHeight, defaultPanelRectForLayout(layout), layout, profile.uiScale, format))
   }
   const toggleCalibration = () => {
     if (!profile || !calibrationImage) {
@@ -336,15 +363,31 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onScanIntervalCha
     setCalibrating((value) => !value)
   }
 
-  return <div className="scanner-view" onClickCapture={(event) => { if ((event.target as Element).closest('button')) setError('') }}>
+  const dragImages = (event: DragEvent<HTMLDivElement>) => Array.from(event.dataTransfer.files).filter((file) => file.type.startsWith('image/'))
+  const onDragEnter = (event: DragEvent<HTMLDivElement>) => {
+    if (!Array.from(event.dataTransfer.items).some((item) => item.kind === 'file')) return
+    event.preventDefault(); dragDepth.current += 1; setDragActive(true)
+  }
+  const onDragOver = (event: DragEvent<HTMLDivElement>) => { event.preventDefault(); event.dataTransfer.dropEffect = 'copy' }
+  const onDragLeave = (event: DragEvent<HTMLDivElement>) => { event.preventDefault(); dragDepth.current = Math.max(0, dragDepth.current - 1); if (!dragDepth.current) setDragActive(false) }
+  const onDrop = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault(); dragDepth.current = 0; setDragActive(false)
+    const images = dragImages(event)
+    if (images.length) void acceptScreenshots(images)
+    else setError('Drop PNG, JPEG, or WebP images on this page.')
+  }
+
+  return <div className={`scanner-view${dragActive ? ' is-dragging' : ''}`} onDragEnter={onDragEnter} onDragOver={onDragOver} onDragLeave={onDragLeave} onDrop={onDrop} onClickCapture={(event) => { if ((event.target as Element).closest('button')) setError('') }}>
+    {dragActive && <div className="scanner-drop-overlay"><Icon name="upload"/><strong>Drop images to scan</strong><span>PNG, JPEG, and WebP stay on this device</span></div>}
     <PageHeader eyebrow="Echo scanner" title="Scan Echoes. Skip the typing." description="Choose what you see in-game, then start. Everything stays on this device."/>
     <Panel className="scanner-launchpad">
       <header className="scanner-launchpad-head"><span className="eyebrow">Start here</span><span className="scanner-private-pill">Private & local</span></header>
       <div className="scanner-step">
         <h2><b>1</b><span>Choose what you’re scanning</span></h2>
         <div className="scanner-source-picker" role="group" aria-label="Scan source layout">
-          {([['echo-detail', 'Character menu', 'Equipped Echo details'], ['echo-management', 'Echo backpack', 'Inventory details'], ['build-card', 'Build card', 'Discord export image']] as const).map(([layout, label, hint]) => <button type="button" className={selectedLayout === layout ? 'active' : ''} aria-pressed={selectedLayout === layout} key={layout} onClick={() => selectLayout(layout)}><Icon name={layout === 'build-card' ? 'build' : 'echo'}/><span><strong>{label}</strong><small>{hint}</small></span><i>{selectedLayout === layout ? '✓' : ''}</i></button>)}
+          {([['echo-management', 'Inventory', 'Echo backpack', 'backpack'], ['build-card', 'Build cards', 'Six supported formats', 'build'], ['echo-detail', 'Character menu', 'Equipped Echo details', 'sidebar']] as const).map(([layout, label, hint, icon]) => <button type="button" className={selectedLayout === layout ? 'active' : ''} aria-pressed={selectedLayout === layout} key={layout} onClick={() => selectLayout(layout)}>{icon === 'sidebar' ? <img className="scanner-source-icon" src={`${sidebarIconRoot}echoes.svg`} alt=""/> : <Icon name={icon}/>}<span><strong>{label}{layout === 'echo-detail' && <em className="scanner-beta-tag">Beta</em>}</strong><small>{hint}</small></span><i>{selectedLayout === layout ? '✓' : ''}</i></button>)}
         </div>
+        {selectedLayout === 'build-card' && <label className="scanner-format-select">Build card format<select value={buildCardFormatPreference} onChange={(event) => { const value = event.target.value as BuildCardFormatPreference; setBuildCardFormatPreference(value); controllerRef.current?.setBuildCardFormatPreference(value); if (calibrationImage) void prepareCalibration(calibrationImage, 'screenshot', profile, value) }}><option value="auto">Auto detect</option>{buildCardFormats.map((format) => <option value={format.id} key={format.id}>{format.label}</option>)}</select></label>}
       </div>
       <div className="scanner-step">
         <h2><b>2</b><span>Choose how to scan</span></h2>
@@ -357,7 +400,7 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onScanIntervalCha
       </div>
       <input ref={screenshotRef} hidden multiple type="file" accept="image/png,image/jpeg,image/webp" onChange={(event) => { const files = Array.from(event.target.files ?? []); event.target.value = ''; void acceptScreenshots(files) }}/>
       <input ref={videoFileRef} hidden type="file" accept="video/*" onChange={(event) => { const file = event.target.files?.[0]; event.target.value = ''; void openVideo(file) }}/>
-      {(imageScanning || status !== 'Idle') && !streaming && <div className="scanner-inline-status"><span className={`live-dot ${imageScanning ? 'on' : ''}`}/><strong>{status}</strong>{imageScanning && <><div className="progress"><i style={{ width: `${progress * 100}%` }}/></div><b>{Math.round(progress * 100)}%</b></>}</div>}
+      {(imageScanning || savingProgress || status !== 'Idle') && !streaming && <div className="scanner-inline-status"><span className={`live-dot ${imageScanning || savingProgress ? 'on' : ''}`}/><strong>{savingProgress ? (savingProgress.phase === 'writing' ? 'Finishing save…' : `Preparing ${savingProgress.completed} of ${savingProgress.total}…`) : status}</strong>{(imageScanning || savingProgress) && <><div className="progress"><i style={{ width: `${savingProgress ? savingProgress.completed / Math.max(1, savingProgress.total) * 100 : progress * 100}%` }}/></div><b>{savingProgress ? `${savingProgress.completed}/${savingProgress.total}` : `${Math.round(progress * 100)}%`}</b></>}</div>}
       {error && <div className="notice error scanner-capture-error">{error}</div>}
       {calibrationNotice && <div className="notice warning scanner-calibration-notice">{calibrationNotice}</div>}
       <div className="scanner-step scanner-final-step"><h2><b>3</b><span>Check and save</span></h2><small>Tip: paste an image directly with Ctrl+V</small></div>
@@ -369,7 +412,7 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onScanIntervalCha
       </details>
     </Panel>
     {calibrating && profile && calibrationImage && <ScannerCalibration
-      key={profile.layout}
+      key={`${profile.layout}:${profile.buildCardFormat ?? ''}`}
       imageDataUrl={calibrationImage}
       profile={profile}
       onChange={(next) => { setProfile(next); setSelectedLayout(next.layout) }}
@@ -378,9 +421,10 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onScanIntervalCha
     {streaming && <div className="scanner-layout scanner-layout-wide"><Panel className="capture-panel"><div className="capture-head"><div><span className="live-dot on"/><strong>Scanning live</strong></div><span>{status}</span></div><div className="video-stage active"><video ref={videoRef} muted playsInline autoPlay/>{profile && <div className="live-panel-overlay" style={{ left: `${profile.panelRect.x * 100}%`, top: `${profile.panelRect.y * 100}%`, width: `${profile.panelRect.width * 100}%`, height: `${profile.panelRect.height * 100}%` }}><ScannerDebugOverlay regions={profile.regions} visible={debugVisible}/></div>}</div><div className="capture-status"><div className="progress"><i style={{ width: `${progress * 100}%` }}/></div><span>{Math.round(progress * 100)}%</span><button className="text-button" onClick={() => void scanCurrentFrame()}>Scan now</button></div><div className="privacy-strip"><strong>Local only</strong><span>No frames leave this device.</span></div></Panel></div>}
     {videoDuration > 0 && <Panel className="video-scan-controls"><header><div><span className="eyebrow">Local video scan</span><h3>Trim and sample</h3></div><span>{videoEta}</span></header><div className="video-trim"><label>Start {videoTrim.start.toFixed(1)}s<input type="range" min="0" max={videoDuration} step=".1" value={videoTrim.start} onChange={(event) => setVideoTrim((value) => ({ ...value, start: Math.min(Number(event.target.value), value.end) }))}/></label><label>End {videoTrim.end.toFixed(1)}s<input type="range" min="0" max={videoDuration} step=".1" value={videoTrim.end} onChange={(event) => setVideoTrim((value) => ({ ...value, end: Math.max(Number(event.target.value), value.start) }))}/></label><label>Sampling<select value={videoTrim.fps} onChange={(event) => setVideoTrim((value) => ({ ...value, fps: Number(event.target.value) as VideoTrim['fps'] }))}>{[1, 2, 5, 10].map((fps) => <option value={fps} key={fps}>{fps} fps</option>)}</select></label>{videoScanning ? <button className="danger" onClick={cancelVideo}>Cancel immediately</button> : <button className="primary" onClick={() => void scanVideo()}>Scan video</button>}</div></Panel>}
     {candidates.length > 0 && <section className="scanned-echoes">
-      <div className="section-heading scanned-echoes-heading"><div><span className="eyebrow">Ready to save</span><h2>Your scans <b>{candidates.length}</b></h2></div><div className="scanned-echo-actions"><button className="secondary" onClick={() => { setReviewOpen(true); setActiveReviewId(candidates[0]?.id) }}>Check scans</button><button className="primary" disabled={!approvableCandidates.length} onClick={() => void approveAll()}>Save all</button><button className="secondary" disabled={!approvableDuplicates.length} onClick={() => void approveAllDuplicates()}>Save duplicates</button><button className="danger" onClick={discardAll}>Discard all</button></div></div>
+      <div className="section-heading scanned-echoes-heading"><div><span className="eyebrow">Ready to save</span><h2>Your scans <b>{candidates.length}</b></h2></div><div className="scanned-echo-actions"><button className="secondary" disabled={Boolean(savingProgress)} onClick={() => { setReviewOpen(true); setActiveReviewId(candidates[0]?.id) }}>Check scans</button><button className="primary" disabled={!approvableCandidates.length || Boolean(savingProgress)} onClick={() => void approveAll()}>{savingProgress ? 'Saving…' : 'Save all'}</button><button className="secondary" disabled={!approvableDuplicates.length || Boolean(savingProgress)} onClick={() => void approveAllDuplicates()}>Save duplicates</button><button className="danger" disabled={Boolean(savingProgress)} onClick={discardAll}>Discard all</button></div></div>
+      {savingProgress && <div className="scanner-save-progress" role="status"><div className="progress"><i style={{ width: `${savingProgress.completed / Math.max(1, savingProgress.total) * 100}%` }}/></div><strong>{savingProgress.phase === 'writing' ? 'Finishing save…' : `Saving ${savingProgress.completed} of ${savingProgress.total}`}</strong></div>}
       <div className="scanned-echo-grid">{scannedBuildCards.map(({ candidate, details }) => <ScannedLoadoutCards key={details.id} details={details} onReview={() => { setActiveReviewId(candidate.id); setReviewOpen(true) }}/>)}{candidates.map((candidate) => { const duplicateBadge = candidate.duplicateOf ? <span className="scan-duplicate-badge">Duplicate</span> : null; if (candidateErrors(candidate).length > 0) return <button className={`scan-error-card${candidate.duplicateOf ? ' duplicate' : ''}`} key={candidate.id} onClick={() => { setActiveReviewId(candidate.id); setReviewOpen(true) }}>{duplicateBadge}<span>Needs a check</span><strong>{candidate.fields.name.value || 'Unknown Echo'}</strong><small>{candidateErrors(candidate).join(' ')}</small></button>; const echo = candidateToEcho(candidate); return <div className={`scanned-echo-card${candidate.duplicateOf ? ' duplicate' : ''}`} key={candidate.id}>{duplicateBadge}<EchoMiniCard echo={echo} rollRating={echoRollRating(echo)} equipment={<EquippedCharacterLabel name={candidate.fields.equippedBy.value}/>} onClick={() => { setActiveReviewId(candidate.id); setReviewOpen(true) }}/></div> })}</div>
     </section>}
-    {reviewOpen && <div className="modal-backdrop scan-review-backdrop" role="dialog" aria-modal="true" aria-label="Review scans"><section className="panel scan-review-popout" ref={reviewRef}><header><div><span className="eyebrow">Check before saving</span><h2>Review your scans <b>{candidates.length}</b></h2></div><button className="close" aria-label="Close review" onClick={closeReview}>×</button></header>{candidates.length > 1 && <div className="review-candidate-tabs" ref={candidateTabsRef}>{candidates.map((candidate, index) => <button className={candidate.id === activeReview?.id ? 'active' : ''} onClick={() => setActiveReviewId(candidate.id)} key={candidate.id}>{index + 1}. {candidate.fields.name.value}</button>)}</div>}<div className="scan-review-scroll">{activeReview ? <ScanReviewCard candidate={activeReview} onChange={updateCandidate} onDiscard={() => { discard(activeReview); setActiveReviewId(undefined) }} onSave={() => { void save(activeReview); setActiveReviewId(undefined) }} onRerunField={(regionId) => void rerunField(activeReview, regionId)} onCopyDiagnostic={(includeImages) => void copyDiagnosticReport(activeReview, includeImages)}/> : <div className="empty-state compact"><h3>All done</h3><p>Close this window to scan more Echoes.</p></div>}</div></section></div>}
+    {reviewOpen && createPortal(<div className="modal-backdrop scan-review-backdrop" role="dialog" aria-modal="true" aria-label="Review scans"><section className="panel scan-review-popout" ref={reviewRef}><header><div><span className="eyebrow">Check before saving</span><h2>Review your scans <b>{candidates.length}</b></h2></div><button className="close" aria-label="Close review" onClick={closeReview}>×</button></header>{candidates.length > 1 && <div className="review-candidate-tabs" ref={candidateTabsRef}>{candidates.map((candidate, index) => <button className={candidate.id === activeReview?.id ? 'active' : ''} onClick={() => setActiveReviewId(candidate.id)} key={candidate.id}>{index + 1}. {candidate.fields.name.value}</button>)}</div>}<div className="scan-review-scroll">{activeReview ? <ScanReviewCard candidate={activeReview} onChange={updateCandidate} onDiscard={() => { discard(activeReview); setActiveReviewId(undefined) }} onSave={() => { void save(activeReview); setActiveReviewId(undefined) }} onRerunField={(regionId) => void rerunField(activeReview, regionId)} onCopyDiagnostic={(includeImages) => void copyDiagnosticReport(activeReview, includeImages)}/> : <div className="empty-state compact"><h3>All done</h3><p>Close this window to scan more Echoes.</p></div>}</div></section></div>, document.body)}
   </div>
 }

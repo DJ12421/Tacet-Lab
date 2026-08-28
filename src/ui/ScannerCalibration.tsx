@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { calibrationExportProfiles, createCalibrationProfile, deleteCalibrationProfile, parseCalibrationProfiles, saveCalibrationProfile } from '../scanner/calibration'
 import type { CalibrationProfile, ScanRect } from '../scanner/types'
-import { defaultPanelRectForLayout, regionColor, regionsForLayout } from '../scanner/regions'
+import { defaultPanelRectForLayout, regionColor } from '../scanner/regions'
 
 const clampPanelRect = (rect: ScanRect): ScanRect => ({
   x: Math.max(0, Math.min(.96, rect.x)), y: Math.max(0, Math.min(.96, rect.y)),
@@ -60,18 +60,19 @@ export function ScannerCalibration({ imageDataUrl, profile, onChange, onSaved }:
   }
 
   const exportProfile = () => {
-    const bundle = { version: 1, exportedAt: Date.now(), profiles: calibrationExportProfiles(profile) }
+    const bundle = { version: 2, exportedAt: Date.now(), profiles: calibrationExportProfiles(profile) }
     const blob = new Blob([JSON.stringify(bundle, null, 2)], { type: 'application/json' })
     const url = URL.createObjectURL(blob), link = document.createElement('a')
     link.href = url; link.download = `tacet-lab-calibrations-${profile.sourceWidth}x${profile.sourceHeight}.json`; link.click()
-    URL.revokeObjectURL(url); setProfileMessage('Character Menu, Backpack, and build-card profiles exported')
+    URL.revokeObjectURL(url); setProfileMessage('Character Menu, Backpack, and all six build-card profiles exported')
   }
 
   const importProfile = async (file?: File) => {
     if (!file) return
     try {
       const imported = parseCalibrationProfiles(await file.text()).map(saveCalibrationProfile)
-      const active = imported.find((entry) => entry.layout === profile.layout) ?? imported[0]
+      const active = imported.find((entry) => entry.layout === profile.layout
+        && (entry.layout !== 'build-card' || entry.buildCardFormat === profile.buildCardFormat)) ?? imported[0]
       setSelectedRegionId(active.regions[0]?.id ?? ''); onChange(active); setProfileMessage(`${imported.length} calibration profile${imported.length === 1 ? '' : 's'} imported and saved`)
     } catch (error) {
       setProfileMessage(error instanceof Error ? error.message : 'Calibration import failed.')
@@ -80,7 +81,7 @@ export function ScannerCalibration({ imageDataUrl, profile, onChange, onSaved }:
 
   const deleteProfile = () => {
     deleteCalibrationProfile(profile)
-    const reset = createCalibrationProfile(profile.sourceWidth, profile.sourceHeight, defaultPanelRectForLayout(profile.layout), profile.layout, profile.uiScale)
+    const reset = createCalibrationProfile(profile.sourceWidth, profile.sourceHeight, defaultPanelRectForLayout(profile.layout), profile.layout, profile.uiScale, profile.buildCardFormat)
     setSelectedRegionId(reset.regions[0]?.id ?? ''); onChange(reset); setProfileMessage('Saved profile deleted; defaults restored')
   }
 
