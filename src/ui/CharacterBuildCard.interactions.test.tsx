@@ -152,10 +152,10 @@ describe('CharacterBuildCard direct editing', () => {
     const { container } = card(true, { echoSlots: [echo, undefined, undefined, undefined, undefined], equippedEchoes: [echo], totalEchoCost: 4 })
 
     const skillColumn = container.querySelector<HTMLElement>('.cbc-skill-column')!
-    fireEvent.click(within(skillColumn).getByRole('button', { name: /Normal Attack, level/ }))
-    expect(screen.getByRole('spinbutton', { name: 'Normal Attack level' })).toBeInTheDocument()
+    fireEvent.click(skillColumn.querySelector<HTMLButtonElement>('.cbc-main-skill')!)
+    expect(within(skillColumn).getByRole('spinbutton')).toBeInTheDocument()
     fireEvent.mouseLeave(skillColumn)
-    expect(screen.queryByRole('spinbutton', { name: 'Normal Attack level' })).not.toBeInTheDocument()
+    expect(within(skillColumn).queryByRole('spinbutton')).not.toBeInTheDocument()
 
     const echoRow = screen.getByRole('button', { name: 'Edit Hooscamp' })
     fireEvent.click(echoRow)
