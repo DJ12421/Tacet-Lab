@@ -41,6 +41,13 @@ const quickStarts = [
 ]
 
 const changelogEntries = [
+  { hash: '88c13dc', date: 'Aug 31, 2026', title: 'Add ranked Team Theorizer comparisons' },
+  { hash: '88c13dc', date: 'Aug 31, 2026', title: 'Enforce character-restricted Sonata effects' },
+  { hash: '88c13dc', date: 'Aug 31, 2026', title: 'Redesign mobile navigation and responsive workflows' },
+  { hash: '88c13dc', date: 'Aug 31, 2026', title: 'Improve Archive, Echo, and weapon inventory controls' },
+  { hash: '88c13dc', date: 'Aug 31, 2026', title: 'Add live character artwork settings and card polish' },
+  { hash: '88c13dc', date: 'Aug 31, 2026', title: 'Refine scanner calibration and review controls' },
+  { hash: '88c13dc', date: 'Aug 31, 2026', title: 'Improve site discovery metadata and app visuals' },
   { hash: '1ba32e2', date: 'Aug 28, 2026', title: 'Fix scanner build-card type integration' },
   { hash: 'e70a3f9', date: 'Aug 28, 2026', title: 'Add the local scanner signature command' },
   { hash: '97dc7b8', date: 'Aug 28, 2026', title: 'Make the skill popover independent of test fixtures' },
@@ -181,7 +188,7 @@ export function HomeView({ echoes, characters, builds, teams, navigate }: HomeVi
         <a href="https://github.com/dj12421/Tacet-Lab/commits/main/" target="_blank" rel="noreferrer">Full history <span aria-hidden="true">→</span></a>
       </header>
       <ol className="home-changelog-list">
-        {(showAllChanges ? changelogEntries : changelogEntries.slice(0, 3)).map((entry) => <li key={entry.hash}><time>{entry.date}</time><div><h3>{entry.title}</h3><a href={`https://github.com/dj12421/Tacet-Lab/commit/${entry.hash}`} target="_blank" rel="noreferrer">{entry.hash} <span aria-hidden="true">→</span></a></div></li>)}
+        {(showAllChanges ? changelogEntries : changelogEntries.slice(0, 3)).map((entry) => <li key={`${entry.hash}:${entry.title}`}><time>{entry.date}</time><div><h3>{entry.title}</h3><a href={`https://github.com/dj12421/Tacet-Lab/commit/${entry.hash}`} target="_blank" rel="noreferrer">{entry.hash} <span aria-hidden="true">→</span></a></div></li>)}
       </ol>
       <button className="home-changelog-toggle" type="button" aria-expanded={showAllChanges} onClick={() => setShowAllChanges((current) => !current)}>{showAllChanges ? 'Show less' : `See all ${changelogEntries.length} updates`}</button>
     </article>
