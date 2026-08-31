@@ -133,6 +133,9 @@ export function HomeView({ echoes, characters, builds, teams, navigate }: HomeVi
   }
   const closeHeroPicker = () => {
     setHeroPickerOpen(false)
+  }
+  const dismissHeroPicker = () => {
+    setHeroPickerOpen(false)
     setHeroControlDismissed(true)
   }
 
@@ -140,7 +143,7 @@ export function HomeView({ echoes, characters, builds, teams, navigate }: HomeVi
     <article className="home-hero">
       <div className="home-hero-grid"/>
       <img className="home-hero-art" src={featured.portraitSourceUrl || featured.iconSourceUrl} alt=""/>
-      <div className="home-hero-art-zone" onMouseEnter={() => setHeroControlDismissed(false)} onMouseLeave={closeHeroPicker}>
+      <div className="home-hero-art-zone" onMouseEnter={() => setHeroControlDismissed(false)} onMouseLeave={dismissHeroPicker}>
         <div className={`home-hero-character-control${heroPickerOpen ? ' is-open' : ''}${heroControlDismissed ? ' is-dismissed' : ''}`}>
           <div className="home-hero-character-pill"><span>{featured.name}</span><b aria-hidden="true">⌄</b></div>
           {heroPickerOpen && <div className="home-hero-character-menu" role="listbox" aria-label="Home hero character">{characterCatalog.map((entry) => <button type="button" role="option" aria-selected={entry.id === featured.id} className={entry.id === featured.id ? 'is-selected' : ''} key={entry.id} onClick={() => { closeHeroPicker(); void changeFeaturedCharacter(entry.id) }}><img src={entry.iconSourceUrl} alt=""/><span>{entry.name}</span></button>)}</div>}
@@ -149,8 +152,8 @@ export function HomeView({ echoes, characters, builds, teams, navigate }: HomeVi
       </div>
       <div className="home-hero-copy">
         <span className="home-kicker">Tacet Lab Optimizer</span>
-        <h1>Build stronger teams.<br/><em>Without the guesswork.</em></h1>
-        <p>Pick a character, add your Echoes, and see what improves your damage.</p>
+        <h1><span className="home-hero-title-desktop">THE ULTIMATE<br/><em>One for All SITE</em></span><span className="home-hero-title-mobile">THE ULTIMATE<br/><em>One for All SITE</em></span></h1>
+        <p><span className="home-hero-summary-desktop">Pick a character, add your Echoes, and see what improves your damage.</span><span className="home-hero-summary-mobile">Pick a character. See what hits harder.</span></p>
         <div className="home-hero-actions">
           <button className="primary" onClick={() => navigate(primaryView)}>{hasStarted ? 'Continue your build' : 'Start scanning'}<span aria-hidden="true">→</span></button>
           <button className="secondary" onClick={() => navigate(hasStarted ? 'scanner' : 'archive')}><HomeNavIcon view={hasStarted ? 'scanner' : 'archive'}/>{hasStarted ? 'Add my Echoes' : 'Browse characters'}</button>
