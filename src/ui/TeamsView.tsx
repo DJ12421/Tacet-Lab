@@ -18,6 +18,7 @@ import { CalculatedValue, traceCalculationDetail } from './CalculationDetails'
 import { showcaseStatDetail, sumDetail } from './calculation-detail-model'
 import { OptimizerView } from './OptimizerView'
 import { BuildsView } from './BuildsView'
+import { TheorizerWorkspace } from './teams/TheorizerWorkspace'
 import {
   echoArtwork, formatWorkspaceStat, resolveTeamWorkspace, teamBuffLabel,
   type TeamActionModel, type TeamAttackGroup, type TeamMemberModel, type TeamWorkspaceModel
@@ -26,13 +27,14 @@ import { defaultEnabledSkillTreeBonusIds, inherentSkillBonusId, skillTreeBonusId
 import './team-workspace.css'
 
 type WorkspaceTab = 'settings' | 0 | 1 | 2
-type MemberSection = 'overview' | 'forte' | 'optimizer' | 'rotation'
-type TeamRouteSection = 'overview' | 'forte' | 'optimize' | 'rotation'
+type MemberSection = 'overview' | 'forte' | 'optimizer' | 'theorizer' | 'rotation'
+type TeamRouteSection = 'overview' | 'forte' | 'optimize' | 'theorizer' | 'rotation'
 
 const MEMBER_SECTIONS: Array<{ id: MemberSection; label: string }> = [
   { id: 'overview', label: 'Overview' },
   { id: 'forte', label: 'Forte' },
   { id: 'optimizer', label: 'Optimize' },
+  { id: 'theorizer', label: 'Theorizer' },
   { id: 'rotation', label: 'Rotation' }
 ]
 
@@ -148,7 +150,7 @@ interface TeamsViewProps {
 
 const routeKey = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, '')
 const memberSectionFromRoute = (section?: TeamRouteSection): MemberSection => section === 'optimize' ? 'optimizer' : section ?? 'overview'
-const memberSectionToRoute = (section: MemberSection): TeamRouteSection => section === 'optimizer' ? 'optimize' : section === 'forte' || section === 'rotation' ? section : 'overview'
+const memberSectionToRoute = (section: MemberSection): TeamRouteSection => section === 'optimizer' ? 'optimize' : section === 'forte' || section === 'theorizer' || section === 'rotation' ? section : 'overview'
 
 function percent(value: number, total: number) {
   return total > 0 ? `${(value / total * 100).toFixed(1)}%` : '0.0%'
@@ -1787,7 +1789,7 @@ function CharacterOverviewWorkspace({ member, model, updateTeam, weaponPassive }
   </>
 }
 
-function MemberWorkspace({ member, model, section, setSection, updateTeam, echoes, builds, characters, weapons, openScanner, refresh, roverGender }: { member: TeamMemberModel; model: TeamWorkspaceModel; section: MemberSection; setSection: (section: MemberSection) => void; updateTeam: (patch: Partial<Team>) => Promise<void>; echoes: Echo[]; builds: Build[]; characters: OwnedCharacter[]; weapons: OwnedWeapon[]; openScanner: () => void; refresh: () => Promise<void>; roverGender: 'male' | 'female' }) {
+function MemberWorkspace({ member, model, section, setSection, updateTeam, echoes, builds, equippedLoadouts, theorycraftBuilds, characters, weapons, openScanner, refresh, roverGender }: { member: TeamMemberModel; model: TeamWorkspaceModel; section: MemberSection; setSection: (section: MemberSection) => void; updateTeam: (patch: Partial<Team>) => Promise<void>; echoes: Echo[]; builds: Build[]; equippedLoadouts: EquippedLoadout[]; theorycraftBuilds: TheorycraftBuild[]; characters: OwnedCharacter[]; weapons: OwnedWeapon[]; openScanner: () => void; refresh: () => Promise<void>; roverGender: 'male' | 'female' }) {
   if (!member.build || !member.catalog || !member.character || !member.showcase) return <section className="tw-member-empty tw-panel"><MemberAvatar member={member}/><h2>Member {member.slot + 1} is empty</h2><p>Return to Team Settings and click the empty member card to add a saved build.</p></section>
   const isTeamTba = TEAM_TBA_CHARACTER_IDS.has(member.catalog.id)
   const showcase = member.showcase
@@ -1809,6 +1811,7 @@ function MemberWorkspace({ member, model, section, setSection, updateTeam, echoe
       : section === 'overview' ? <CharacterOverviewWorkspace member={member} model={model} updateTeam={updateTeam} weaponPassive={weaponPassive}/>
       : section === 'rotation' ? <RotationWorkspace model={model} updateTeam={updateTeam} focusBuildId={member.build.id}/>
       : section === 'optimizer' ? <OptimizerView echoes={[...echoes, ...member.resolvedEchoes.filter((echo) => !echoes.some((owned) => owned.id === echo.id))]} builds={[...builds.filter((build) => build.id !== member.build!.id), member.build]} characters={characters} ownedWeapons={member.resolvedWeapon && !weapons.some((weapon) => weapon.id === member.resolvedWeapon?.id) ? [...weapons, member.resolvedWeapon] : weapons} refresh={refresh} openScanner={openScanner} buildId={member.build.id} teamBuildIds={model.members.flatMap((entry) => entry.character ? [entry.character.id] : [])} initialEnemy={model.team.enemy} damageMode={calculationV2.resultMode} scenario={scenario} calculationScenarioV2={calculationV2} calculationAttacksV2={member.calculationMechanicsV2?.attacks} partyEffectsV2={member.calculationEffectsV2.filter((effect) => effect.sourceKind === 'party')} partyEffectSourceStatsV2={model.sourceStatsV2} roverGender={roverGender}/>
+      : section === 'theorizer' ? <TheorizerWorkspace member={member} model={model} echoes={echoes} builds={builds} characters={characters} weapons={weapons} equippedLoadouts={equippedLoadouts} theorycraftBuilds={theorycraftBuilds} roverGender={roverGender} refresh={refresh}/>
       : <section className="tw-member-hero tw-panel forte-mode" style={{ '--tw-element': member.catalog.element.toLowerCase() } as CSSProperties}>
       <div className="tw-member-art"><img src={member.catalog.portraitSourceUrl || member.catalog.iconSourceUrl} alt=""/><div className="tw-sequence-rail">{member.catalog.sequenceIcons.slice(0, 6).map((sequence) => <span className={member.character && member.character.sequence >= sequence.sequence ? 'unlocked' : ''} key={sequence.sequence} title={sequence.name}><img src={sequence.iconSourceUrl} alt=""/><b>S{sequence.sequence}</b></span>)}</div><div><span>{member.catalog.element} · {member.catalog.weaponType}</span><h1>{member.catalog.name}</h1><p>{member.catalog.title}</p><strong>Lv. {member.character.level} · Sequence {member.character.sequence}</strong></div><EchoWaveform element={member.catalog.element}/></div>
       <div className="tw-member-summary">
@@ -1935,6 +1938,6 @@ export function TeamsView({ echoes, builds, equippedLoadouts, theorycraftBuilds,
     </nav>
     {!model ? <section className="tw-first-team tw-panel"><span className="eyebrow">No teams yet</span><h1>Start a team workspace</h1><p>Create a local team, assign up to three saved builds, and author its rotation without leaving this page.</p><button className="primary" onClick={() => void createTeam()}><Icon name="plus"/>Create team</button></section>
       : tab === 'settings' ? <TeamOverview model={model} echoes={echoes} builds={builds} characters={characters} weapons={weapons} equippedLoadouts={equippedLoadouts} theorycraftBuilds={theorycraftBuilds} refresh={refresh} updateTeam={updateTeam} openMember={(slot) => openMemberRoute(slot as 0 | 1 | 2)}/>
-        : <MemberWorkspace member={model.members[tab]} model={model} section={memberSection} setSection={setMemberSectionRoute} updateTeam={updateTeam} echoes={echoes} builds={builds} characters={characters} weapons={weapons} openScanner={openScanner} refresh={refresh} roverGender={roverGender}/>}
+        : <MemberWorkspace member={model.members[tab]} model={model} section={memberSection} setSection={setMemberSectionRoute} updateTeam={updateTeam} echoes={echoes} builds={builds} equippedLoadouts={equippedLoadouts} theorycraftBuilds={theorycraftBuilds} characters={characters} weapons={weapons} openScanner={openScanner} refresh={refresh} roverGender={roverGender}/>}
   </main>
 }

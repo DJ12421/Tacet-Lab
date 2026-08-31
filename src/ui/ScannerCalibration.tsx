@@ -14,12 +14,13 @@ const clampFieldRect = (rect: ScanRect, minimumSize = .02): ScanRect => {
 }
 const minimumFieldSize = (regionId: string) => /^echo-\d+-cost$/.test(regionId) ? .004 : .02
 
-export function ScannerCalibration({ imageDataUrl, profile, onChange, onSaved }: {
-  imageDataUrl: string; profile: CalibrationProfile; onChange: (profile: CalibrationProfile) => void; onSaved?: (profile: CalibrationProfile) => void
+export function ScannerCalibration({ imageDataUrl, profile, showScanBoxes, onChange, onShowScanBoxesChange, onSaved }: {
+  imageDataUrl: string; profile: CalibrationProfile; showScanBoxes: boolean; onChange: (profile: CalibrationProfile) => void; onShowScanBoxesChange: (visible: boolean) => void; onSaved?: (profile: CalibrationProfile) => void
 }) {
   const stageRef = useRef<HTMLDivElement>(null), panelRef = useRef<HTMLDivElement>(null), importRef = useRef<HTMLInputElement>(null)
   const [selectedRegionId, setSelectedRegionId] = useState(profile.regions[0]?.id ?? '')
   const [profileMessage, setProfileMessage] = useState('')
+  const [showCalibrationText, setShowCalibrationText] = useState(true)
   const selectedRegion = profile.regions.find((region) => region.id === selectedRegionId) ?? profile.regions[0]
 
   const updateRegion = (regionId: string, rect: ScanRect) => onChange({
@@ -86,20 +87,20 @@ export function ScannerCalibration({ imageDataUrl, profile, onChange, onSaved }:
   }
 
   return <div className="scanner-calibration">
-    <div className="calibration-toolbar"><div><strong>Calibration</strong><span>{profile.name}</span>{profileMessage && <small>{profileMessage}</small>}</div><label>UI scale<input type="number" min=".5" max="2" step=".05" value={profile.uiScale} onChange={(event) => onChange({ ...profile, uiScale: Number(event.target.value), updatedAt: Date.now() })}/></label><button type="button" className="secondary" onClick={() => { const saved = saveCalibrationProfile(profile); onChange(saved); onSaved?.(saved) }}>Save profile</button><button type="button" className="text-button" onClick={exportProfile}>Export</button><button type="button" className="text-button" onClick={() => importRef.current?.click()}>Import</button><button type="button" className="text-button danger" onClick={deleteProfile}>Delete</button><input ref={importRef} hidden type="file" accept="application/json,.json" onChange={(event) => { const file = event.target.files?.[0]; event.target.value = ''; void importProfile(file) }}/></div>
+  <div className="calibration-toolbar"><div><strong>Calibration</strong><span>{profile.name}</span>{profileMessage && <small>{profileMessage}</small>}</div><label className="check"><input type="checkbox" checked={showScanBoxes} onChange={(event) => onShowScanBoxesChange(event.target.checked)}/>SHOW CALIBRATION BOXES</label><label className="check"><input type="checkbox" checked={showCalibrationText} disabled={!showScanBoxes} onChange={(event) => setShowCalibrationText(event.target.checked)}/>SHOW CALIBRATION BOX NAMES</label><button type="button" className="secondary" onClick={() => { const saved = saveCalibrationProfile(profile); onChange(saved); onSaved?.(saved) }}>Save profile</button><button type="button" className="text-button" onClick={exportProfile}>Export</button><button type="button" className="text-button" onClick={() => importRef.current?.click()}>Import</button><button type="button" className="text-button danger" onClick={deleteProfile}>Delete</button><input ref={importRef} hidden type="file" accept="application/json,.json" onChange={(event) => { const file = event.target.files?.[0]; event.target.value = ''; void importProfile(file) }}/></div>
     <div className="calibration-workspace">
       <div className="calibration-stage" ref={stageRef}>
         <img src={imageDataUrl} alt="Calibration source"/>
-        <div ref={panelRef} className="calibration-panel-box" style={{ left: `${profile.panelRect.x * 100}%`, top: `${profile.panelRect.y * 100}%`, width: `${profile.panelRect.width * 100}%`, height: `${profile.panelRect.height * 100}%` }} onPointerDown={(event) => beginPanelDrag(event, 'move')}>
-          <span>Panel</span>
+        {showScanBoxes && <div ref={panelRef} className="calibration-panel-box" style={{ left: `${profile.panelRect.x * 100}%`, top: `${profile.panelRect.y * 100}%`, width: `${profile.panelRect.width * 100}%`, height: `${profile.panelRect.height * 100}%` }} onPointerDown={(event) => beginPanelDrag(event, 'move')}>
+          {showCalibrationText && <span>Panel</span>}
           <div className="calibration-region-preview">{profile.regions.map((region) => <div
             role="button" tabIndex={0} aria-label={`Calibrate ${region.label}`} title={`${region.label}: drag to move; use the corner to resize`}
             className={`calibration-field-box ${selectedRegion?.id === region.id ? 'selected' : ''}`} key={region.id}
             style={{ left: `${region.rect.x * 100}%`, top: `${region.rect.y * 100}%`, width: `${region.rect.width * 100}%`, height: `${region.rect.height * 100}%`, borderColor: regionColor(region), color: regionColor(region) }}
             onPointerDown={(event) => beginFieldDrag(event, region.id, 'move')} onFocus={() => setSelectedRegionId(region.id)}
-          ><span>{region.label}</span><button type="button" aria-label={`Resize ${region.label}`} onPointerDown={(event) => beginFieldDrag(event, region.id, 'resize')}/></div>)}</div>
+          >{showCalibrationText && <span>{region.label}</span>}<button type="button" aria-label={`Resize ${region.label}`} onPointerDown={(event) => beginFieldDrag(event, region.id, 'resize')}/></div>)}</div>
           <button type="button" className="panel-resize-handle" aria-label="Resize panel" onPointerDown={(event) => { event.stopPropagation(); beginPanelDrag(event, 'resize') }}/>
-        </div>
+        </div>}
       </div>
       <aside className="calibration-field-inspector">
         <span className="eyebrow">Selected field</span><h3>{selectedRegion?.label ?? 'None'}</h3><p>Drag the field box to move it. Drag its lower-right square to resize it.</p>

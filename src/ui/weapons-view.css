@@ -47,7 +47,7 @@
   gap: 9px;
   overflow-x: auto;
   border: 1px solid var(--line);
-  border-radius: 9px;
+  border-radius: 0px;
   background: rgba(8,13,14,.96);
   backdrop-filter: blur(16px);
   scrollbar-width: thin;
@@ -116,10 +116,10 @@
 }
 
 .wv-card-art img {
-  width: 118px;
-  height: 138px;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
   transition: transform .18s;
+  border-radius: 0px;
 }
 
 .wv-card:hover .wv-card-art img {
@@ -131,7 +131,7 @@
   left: 9px;
   bottom: 8px;
   color: var(--weapon-accent);
-  font-size: var(--font-size-caption);
+  font-size: var(--font-size-caption+1);
   letter-spacing: 1px;
 }
 
@@ -197,6 +197,7 @@
   gap: 6px;
   align-items: center;
   border-top: 1px solid rgba(255,255,255,.065);
+  border-radius: 0px;
 }
 
 .wv-card-footer .character-equip-trigger {
@@ -255,9 +256,10 @@
   color: var(--gold);
 }
 
-.wv-empty-art .icon {
+.wv-empty-art :is(.icon,img) {
   width: 32px;
   height: 32px;
+  object-fit: contain;
 }
 
 .wv-empty h2 {
@@ -507,6 +509,45 @@
   }
 }
 
+@media (max-width:650px) {
+  .wv-toolbar {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0,1fr);
+    align-items: stretch;
+    gap: 9px;
+    overflow: visible;
+  }
+
+  .wv-toolbar>.search,
+  .wv-toolbar>.owned-chip-filter,
+  .wv-toolbar>.primary {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    flex: none;
+  }
+
+  .wv-toolbar .filter-chips {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .wv-toolbar>.owned-chip-filter .filter-chips button {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: clip;
+    white-space: nowrap;
+  }
+
+  .wv-toolbar .filter-chips::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @media (max-width:860px) {
   .wv-summary>div {
     min-width: 0;
@@ -519,7 +560,7 @@
     grid-template-columns: 106px minmax(0,1fr);
   }
   .wv-card-art img {
-    width: 105px;
+    width: 100%;
   }
   .wv-detail-grid {
     grid-template-columns: 1fr;
@@ -604,11 +645,13 @@
   padding: 2px 0;
   border-top: 1px solid rgba(255,255,255,.11);
   border-bottom: 1px solid rgba(255,255,255,.11);
+  border-radius: 0px;
 }
 
 .wv-card-stats span {
   min-height: 36px;
   align-items: center;
+  border-radius: 0px;
 }
 
 .wv-card-stats span+span {
@@ -692,7 +735,7 @@
 }
 
 .wv-card-art img {
-  height: 150px;
+  height: 100%;
 }
 
 .wv-card-copy {
@@ -734,11 +777,13 @@
 @media (max-width:860px) {
   .wv-card-main {
     min-height: 168px;
-    grid-template-columns: 112px minmax(0,1fr);
+    grid-template-columns: 168px minmax(0,1fr);
   }
   .wv-card-art img {
-    width: 112px;
-    height: 136px;
+    width: 168px;
+    height: 168px;
+    object-fit: contain;
+    object-position: center;
   }
   .wv-card-copy {
     padding: 12px 10px 9px 2px;
@@ -848,7 +893,7 @@
     padding: 10px;
   }
   .weapon-config-modal.wv-detail {
-    width: calc(100vw - 20px);
+    width: 100%;
     height: auto;
     max-height: calc(100dvh - 20px);
     border-radius: 10px;

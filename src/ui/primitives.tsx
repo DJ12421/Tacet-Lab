@@ -1,6 +1,6 @@
 import type { HTMLAttributes, PropsWithChildren, ReactNode } from 'react'
 
-export function Icon({ name }: { name: 'home' | 'scan' | 'echo' | 'backpack' | 'weapon' | 'build' | 'team' | 'optimize' | 'download' | 'upload' | 'lock' | 'unlock' | 'discard' | 'trash' | 'edit' | 'plus' | 'settings' | 'discord' }) {
+export function Icon({ name }: { name: 'home' | 'scan' | 'echo' | 'backpack' | 'weapon' | 'build' | 'team' | 'optimize' | 'download' | 'upload' | 'lock' | 'unlock' | 'discard' | 'trash' | 'edit' | 'plus' | 'info' | 'settings' | 'more' | 'discord' | 'chevron' }) {
   const paths: Record<typeof name, ReactNode> = {
     home: <><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10M9 20v-6h6v6"/></>,
     scan: <><path d="M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4"/><path d="M7 12h10M12 7v10"/></>,
@@ -32,10 +32,13 @@ export function Icon({ name }: { name: 'home' | 'scan' | 'echo' | 'backpack' | '
     trash: <><path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13"/></>,
     edit: <><path d="m4 20 4.5-1 10-10-3.5-3.5-10 10L4 20Z"/><path d="m13.5 7 3.5 3.5"/></>,
     plus: <><path d="M12 5v14M5 12h14"/></>,
+    info: <><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><path d="M12 7h.01"/></>,
     settings: <><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></>,
-    discord: <path fill="currentColor" stroke="none" d="M19.3 5.4A16 16 0 0 0 15.4 4l-.5 1.1a14.7 14.7 0 0 0-5.8 0L8.6 4a16 16 0 0 0-3.9 1.4C2.2 9.1 1.5 12.7 1.8 16.2a16 16 0 0 0 4.8 2.4l1.2-1.7-1.8-.8.4-.3c3.5 1.6 7.7 1.6 11.2 0l.4.3-1.8.8 1.2 1.7a16 16 0 0 0 4.8-2.4c.4-4.1-.7-7.7-2.9-10.8ZM8.7 14.2c-1 0-1.9-1-1.9-2.2s.8-2.2 1.9-2.2 1.9 1 1.9 2.2-.8 2.2-1.9 2.2Zm6.6 0c-1 0-1.9-1-1.9-2.2s.8-2.2 1.9-2.2 1.9 1 1.9 2.2-.8 2.2-1.9 2.2Z"/>
+    more: <><circle cx="5" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.5" fill="currentColor" stroke="none"/></>,
+    discord: <path fill="currentColor" stroke="none" d="M19.3 5.4A16 16 0 0 0 15.4 4l-.5 1.1a14.7 14.7 0 0 0-5.8 0L8.6 4a16 16 0 0 0-3.9 1.4C2.2 9.1 1.5 12.7 1.8 16.2a16 16 0 0 0 4.8 2.4l1.2-1.7-1.8-.8.4-.3c3.5 1.6 7.7 1.6 11.2 0l.4.3-1.8.8 1.2 1.7a16 16 0 0 0 4.8-2.4c.4-4.1-.7-7.7-2.9-10.8ZM8.7 14.2c-1 0-1.9-1-1.9-2.2s.8-2.2 1.9-2.2 1.9 1 1.9 2.2-.8 2.2-1.9 2.2Zm6.6 0c-1 0-1.9-1-1.9-2.2s.8-2.2 1.9-2.2 1.9 1 1.9 2.2-.8 2.2-1.9 2.2Z"/>,
+    chevron: <path d="m7 9 5 5 5-5"/>
   }
-  return <svg className="icon" viewBox="0 0 24 24" aria-hidden="true">{paths[name]}</svg>
+  return <svg className={`icon${name === 'plus' ? ' icon-plus' : ''}`} viewBox="0 0 24 24" aria-hidden="true">{paths[name]}</svg>
 }
 
 export function Panel({ children, className = '', ...props }: PropsWithChildren<HTMLAttributes<HTMLElement>>) {

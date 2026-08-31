@@ -166,8 +166,28 @@
 }
 
 .sonata-picker-trigger i {
-  color: var(--gold);
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  transform: translateY(3px);
+  color: var(--mint);
+  font-size: 0;
   font-style: normal;
+}
+
+.sonata-picker-trigger i::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform .16s ease;
+}
+
+.sonata-picker-trigger[aria-expanded="true"] i::before {
+  transform: translateY(2px) rotate(225deg);
 }
 
 .sonata-picker-menu {
@@ -421,7 +441,7 @@
   border: 1px solid var(--line);
   background: #080d0e;
   color: var(--muted);
-  font-size: var(--font-size-caption);
+  font-size: var(--font-size-caption+1);
 }
 
 .echo-grid+.echo-pagination {
@@ -460,9 +480,10 @@
 }
 
 .echo-page-arrow {
-  width: 34px;
-  height: 34px;
-  padding: 0;
+  width: 37px;
+  height: 37px;
+  transform: translateY(-2px);
+  padding: 0px 0 37px;
   border: 1px solid transparent;
   background: transparent;
   color: var(--gold);
@@ -766,9 +787,10 @@
   box-shadow: 0 0 50px rgba(228,187,94,.1);
 }
 
-.echo-empty-welcome .empty-glyph .icon {
+.echo-empty-welcome .empty-glyph :is(.icon,img) {
   width: 42px;
   height: 42px;
+  object-fit: contain;
 }
 
 .echo-empty-welcome h2 {

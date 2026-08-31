@@ -53,10 +53,14 @@
     max-width: 100%;
     overflow-x: hidden;
   }
+  html {
+    scroll-padding-bottom: calc(84px + env(safe-area-inset-bottom));
+  }
   .app-shell {
     width: 100%;
     min-width: 0;
-    padding-bottom: calc(74px + env(safe-area-inset-bottom));
+    min-height: 100dvh;
+    padding-bottom: calc(72px + env(safe-area-inset-bottom));
   }
   main,.content,.panel,.page-header,.toolbar {
     min-width: 0;
@@ -66,7 +70,8 @@
     padding: 20px 10px calc(34px + env(safe-area-inset-bottom));
   }
   .topbar {
-    height: 48px;
+    min-height: 52px;
+    height: auto;
     padding: 0 10px;
     gap: 8px;
   }
@@ -75,19 +80,11 @@
     margin-left: auto;
   }
   .topbar button {
-    min-width: 40px;
-    padding: 0 10px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0 9px;
   }
-  .sidebar {
-    height: calc(68px + env(safe-area-inset-bottom));
-    padding: 6px 7px env(safe-area-inset-bottom);
-    touch-action: pan-x;
-  }
-  .sidebar nav button {
-    flex-basis: 78px;
-    min-width: 78px;
-    min-height: 55px;
-  }
+  .sidebar { touch-action: manipulation; }
   .page-header {
     margin-bottom: 22px;
   }
@@ -110,18 +107,24 @@
     min-width: 0;
     justify-content: center;
   }
+  button {
+    touch-action: manipulation;
+  }
   button.primary,button.secondary,button.danger {
-    min-height: 42px;
+    min-height: 44px;
   }
   input,select,textarea {
     max-width: 100%;
     font-size: var(--font-size-body);
   }
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),select,textarea {
+    min-height: 44px;
+  }
   .metric-grid {
     grid-template-columns: 1fr 1fr;
     gap: 8px;
   }
-  .dashboard-grid>.panel,.panel {
+  .dashboard-grid>.panel,.content .panel {
     padding-left: 12px;
     padding-right: 12px;
   }
@@ -169,11 +172,14 @@
   .filter-chips {
     flex-wrap: nowrap;
     overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
   }
+  .filter-chips::-webkit-scrollbar { display: none; }
   .filter-chips button {
     flex: 0 0 auto;
     min-width: 58px;
-    min-height: 40px;
+    min-height: 44px;
     white-space: nowrap;
   }
   .inventory-sort {
@@ -367,20 +373,33 @@
   }
   .modal-backdrop,.catalog-picker-backdrop,.weapon-detail-backdrop,.character-detail-backdrop,.echo-editor-backdrop {
     padding: 0;
+    overscroll-behavior: contain;
   }
   .modal-backdrop>*,.catalog-picker-backdrop>*,.weapon-detail-backdrop>*,.character-detail-backdrop>* {
     width: 100%;
     max-width: 100%;
-    min-height: 100dvh;
+    height: 100dvh;
+    min-height: 0;
+    max-height: 100dvh;
     margin: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
     border-radius: 0;
   }
   .catalog-picker {
-    padding: 12px 10px calc(82px + env(safe-area-inset-bottom));
+    padding: 0 10px calc(82px + env(safe-area-inset-bottom));
   }
   .catalog-picker>header,.echo-editor-header,.weapon-detail>header,.character-detail>header {
+    position: sticky;
+    z-index: 3;
+    top: 0;
     gap: 10px;
     padding: 12px;
+    background: rgba(10,16,17,.97);
+    backdrop-filter: blur(12px);
+  }
+  .catalog-picker>header {
+    margin-inline: -10px;
   }
   .catalog-picker>header h2,.echo-editor-header h2,.weapon-detail>header h2,.character-detail>header h2 {
     font-size: var(--font-size-heading-small);
@@ -422,17 +441,32 @@
   }
   .settings-modal {
     width: 100%;
-    min-height: 100dvh;
-    max-height: none;
+    height: 100dvh;
+    min-height: 0;
+    max-height: 100dvh;
     border-radius: 0;
+  }
+  .settings-header {
+    position: sticky;
+    z-index: 2;
+    top: 0;
+  }
+  .close {
+    min-width: 44px;
+    min-height: 44px;
   }
   .roll-quality-modal {
     width: 100%;
-    min-height: 100dvh;
-    max-height: none;
-    border-radius: 0;
+    height: auto;
+    min-height: 0;
+    max-height: calc(100dvh - 20px);
+    overflow: hidden;
+    border-radius: 10px;
   }
-  .roll-quality-modal>header,.roll-quality-modal>p,.roll-quality-modal>section {
+  .roll-quality-backdrop {
+    padding: 10px;
+  }
+  .roll-quality-modal>header,.roll-quality-scroll>p,.roll-quality-scroll>section {
     padding-left: 14px;
     padding-right: 14px;
   }
@@ -455,39 +489,28 @@ img,video,canvas,svg {
   main {
     width: 100%;
   }
-  .sidebar nav {
-    display: flex;
-    grid-template-columns: none;
-    gap: 2px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x proximity;
-    scrollbar-width: none;
-  }
-  .sidebar nav::-webkit-scrollbar {
-    display: none;
-  }
-  .sidebar nav button {
-    flex: 0 0 78px;
-    min-width: 78px;
-    scroll-snap-align: start;
-  }
   .topbar {
     position: relative;
     width: 100%;
   }
   .topbar>div:last-child {
-    gap: 2px;
+    gap: 4px;
   }
   .topbar button {
-    min-height: 40px;
+    min-height: 44px;
     padding: 0 8px;
     white-space: nowrap;
   }
   .topbar .discord-button {
-    width: 40px;
-    min-width: 40px;
-    height: 40px;
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    flex-basis: 36px;
+    transform: none;
+  }
+  .topbar .discord-button .icon {
+    width: 17px;
+    height: 17px;
   }
   .topbar .settings-button {
     width: 40px;
@@ -534,20 +557,19 @@ img,video,canvas,svg {
 }
 
 @media (max-width:380px) {
+  .topbar button>span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
   .topbar button {
     font-size: var(--font-size-caption);
     padding: 0 6px;
   }
-  .topbar .discord-button {
-    width: 38px;
-    min-width: 38px;
-    height: 38px;
-  }
-  .topbar .settings-button {
-    width: 38px;
-    min-width: 38px;
-    height: 38px;
-  }
+  .topbar .discord-button { width: 36px; min-width: 36px; height: 36px; flex-basis: 36px; transform: none; }
 }
 
 @media (max-width:360px) {

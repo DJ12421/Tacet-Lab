@@ -90,7 +90,7 @@
   background: transparent;
   color: #87918f;
   padding: 12px 13px;
-  border-radius: 4px;
+  border-radius: 0px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -108,6 +108,7 @@
   border-color: rgba(228,187,94,.24);
   background: linear-gradient(90deg, rgba(228,187,94,.13), transparent);
   box-shadow: inset 2px 0 var(--gold);
+  border-radius: 0;
 }
 
 .sidebar nav button b {
@@ -188,8 +189,15 @@ main {
 }
 
 .topbar .discord-button {
-  width: 36px;
-  height: 36px;
+  box-sizing: border-box;
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  transform: translateX(15px);
+  align-self: center;
+  margin: 0;
+  padding: 0;
   display: grid;
   place-items: center;
   border: 1px solid rgba(228,187,94,.5);
@@ -206,24 +214,8 @@ main {
 }
 
 .topbar .discord-button .icon {
-  width: 19px;
-  height: 19px;
-}
-
-.topbar .settings-button {
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  border: 1px solid rgba(228,187,94,.5);
-  color: var(--gold);
-  border-radius: 50%;
-  justify-content: center;
-  margin-left: 8px;
-}
-
-.topbar .settings-button:hover {
-  border-color: var(--gold);
-  background: rgba(228,187,94,.1);
+  width: 20px;
+  height: 20px;
 }
 
 .pulse {

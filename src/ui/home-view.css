@@ -43,7 +43,7 @@
   align-items: center;
   overflow: hidden;
   padding: 48px 42px;
-  border-radius: 0 0 18px 0;
+  border-radius: var(--radius-subtle) var(--radius-subtle) var(--radius-subtle) var(--radius-subtle);
   background: radial-gradient(circle at 77% 42%, color-mix(in srgb, var(--home-accent) 22%, transparent), transparent 34%), linear-gradient(120deg, #10191b, #040708 72%);
 }
 
@@ -327,8 +327,8 @@
 }
 
 .home-start {
-  padding: 26px;
-  border-radius: 0 0 14px 0;
+  padding: 20px;
+  border-radius: var(--radius-subtle) var(--radius-subtle) var(--radius-subtle) var(--radius-subtle);
 }
 
 .home-section-heading {
@@ -433,7 +433,7 @@
   align-items: center;
   gap: 20px;
   padding: 15px 22px;
-  border-radius: 0 0 14px 0;
+  border-radius: var(--radius-subtle) var(--radius-subtle) var(--radius-subtle) var(--radius-subtle);
 }
 
 .home-account-band h2 {
@@ -494,7 +494,7 @@
   align-items: center;
   gap: 13px;
   padding: 18px;
-  border-radius: 0 0 12px 0;
+  border-radius: var(--radius-subtle) var(--radius-subtle) var(--radius-subtle) var(--radius-subtle);
   color: #dbe3e1;
   text-align: left;
   cursor: pointer;
@@ -555,7 +555,7 @@
   justify-content: space-between;
   gap: 24px;
   padding: 18px 24px;
-  border-radius: 0 0 12px 0;
+  border-radius: var(--radius-subtle) var(--radius-subtle) var(--radius-subtle) var(--radius-subtle);
 }
 
 .home-community > div {
@@ -668,6 +668,7 @@
   }
   .home-hero-art-zone {
     width: 100%;
+    z-index: auto;
   }
   .home-hero-art {
     right: -34%;
@@ -691,7 +692,7 @@
   }
   .home-hero h1 {
     margin-top: 10px;
-    font-size: clamp(38px, 12vw, 54px);
+    font-size: clamp(32px, 10vw, 42px);
   }
   .home-hero p {
     max-width: 88%;

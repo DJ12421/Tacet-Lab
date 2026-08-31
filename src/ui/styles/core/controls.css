@@ -7,6 +7,15 @@
   letter-spacing: .06em;
 }
 
+.mobile-topbar-brand {
+  transform:translatey(3px);
+  display: none;
+}
+
+.primary>.icon-plus {
+  stroke: #000;
+}
+
 .local-only-status>span:last-child {
   display: grid;
   line-height: 1.15;
@@ -194,13 +203,22 @@
   width: fit-content;
   max-width: none;
   margin-inline: auto;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .owned-chip-filter:has(.filter-element-icon) .filter-chips button {
   width: 48px;
   min-width: 0;
   padding: 4px 0;
+}
+
+.catalog-picker-filters .owned-chip-filter:first-child {
+  flex: 1;
+  justify-items: start;
+}
+
+.catalog-picker-filters .owned-chip-filter:first-child .filter-chips {
+  margin-inline: 0;
 }
 
 .archive-toolbar.chip-toolbar {
@@ -236,4 +254,75 @@
 .echo-canonical-cost small {
   color: var(--muted);
   font-size: var(--font-size-caption);
+}
+
+@media (max-width:650px) {
+  .topbar>div.local-only-status {
+    display: flex;
+    min-width: 0;
+  }
+
+  .topbar .mobile-topbar-brand {
+    display: block;
+    color: var(--gold);
+    font-size: var(--font-size-small);
+    font-weight: 800;
+    letter-spacing: .15em;
+    white-space: nowrap;
+  }
+
+  .topbar .local-only-status>.pulse,
+  .topbar .local-only-status>span:last-child {
+    display: none;
+  }
+
+  .chip-toolbar {
+    width: 100%;
+    align-items: stretch;
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+
+  .chip-toolbar>.search,
+  .chip-toolbar>.owned-chip-filter {
+    width: 100%;
+    max-width: 100%;
+    flex: 1 0 100%;
+  }
+
+  .chip-toolbar>.search {
+    min-width: 0;
+  }
+
+  .owned-chip-filter:has(.filter-element-icon) {
+    width: 100%;
+    max-width: 100%;
+    justify-items: stretch;
+  }
+
+  .owned-chip-filter .filter-chips,
+  .owned-chip-filter:has(.filter-element-icon) .filter-chips {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .owned-chip-filter .filter-chips::-webkit-scrollbar {
+    display: none;
+  }
+
+  .owned-chip-filter:has(.filter-element-icon)>span {
+    text-align: left;
+  }
+
+  .owned-chip-filter .filter-chips button,
+  .owned-chip-filter:has(.filter-element-icon) .filter-chips button {
+    width: auto;
+    flex: 1 0 48px;
+    min-width: 48px;
+  }
 }

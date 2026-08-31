@@ -1,11 +1,70 @@
-import type { CSSProperties } from 'react'
+import { useEffect, useRef, type CSSProperties } from 'react'
 import './echo-waveform.css'
 
 const elementColors: Record<string, string> = { Spectro: '#e8cc72', Fusion: '#ee715e', Glacio: '#76cef2', Electro: '#b581ef', Aero: '#62d7ae', Havoc: '#d36adf' }
+const WIDTH = 1200
+const HEIGHT = 24
+const STEP = 10
+const TAU = Math.PI * 2
 
-export function EchoWaveform({ element }: { element?: string } = {}) {
-  const style = element ? { '--wave-accent': elementColors[element] ?? '#d1aa4c' } as CSSProperties : undefined
-  return <svg className="cs-echo-waveform" style={style} viewBox="0 0 1200 48" preserveAspectRatio="none" fill="none"><path d="M0,22.96 L10,22.41 L20,21.85 L30,21.28 L40,20.72 L50,20.17 L60,19.64 L70,19.15 L80,18.70 L90,18.30 L100,17.95 L110,17.67 L120,17.46 L130,17.33 L140,17.26 L150,17.27 L160,17.35 L170,17.50 L180,17.70 L190,17.96 L200,18.26 L210,18.60 L220,18.97 L230,19.34 L240,19.72 L250,20.09 L260,20.45 L270,20.77 L280,21.05 L290,21.29 L300,21.48 L310,21.62 L320,21.70 L330,21.71 L340,21.67 L350,21.58 L360,21.44 L370,21.25 L380,21.02 L390,20.77 L400,20.49 L410,20.20 L420,19.91 L430,19.62 L440,19.35 L450,19.10 L460,18.88 L470,18.69 L480,18.54 L490,18.43 L500,18.36 L510,18.34 L520,18.36 L530,18.42 L540,18.52 L550,18.65 L560,18.80 L570,18.98 L580,19.18 L590,19.39 L600,19.60 L610,19.81 L620,20.03 L630,20.24 L640,20.44 L650,20.63 L660,20.81 L670,20.99 L680,21.16 L690,21.33 L700,21.50 L710,21.68 L720,21.86 L730,22.06 L740,22.28 L750,22.52 L760,22.78 L770,23.08 L780,23.40 L790,23.76 L800,24.14 L810,24.55 L820,24.98 L830,25.43 L840,25.89 L850,26.35 L860,26.81 L870,27.25 L880,27.67 L890,28.05 L900,28.38 L910,28.67 L920,28.88 L930,29.03 L940,29.10 L950,29.08 L960,28.98 L970,28.79 L980,28.51 L990,28.14 L1000,27.70 L1010,27.17 L1020,26.58 L1030,25.92 L1040,25.22 L1050,24.48 L1060,23.71 L1070,22.93 L1080,22.15 L1090,21.37 L1100,20.63 L1110,19.91 L1120,19.24 L1130,18.62 L1140,18.06 L1150,17.57 L1160,17.14 L1170,16.78 L1180,16.50 L1190,16.28 L1200,16.12 L1200,48 L0,48 Z" className="cs-echo-wave-fill"></path><path d="M0,26.39 L10,27.13 L20,27.83 L30,28.48 L40,29.05 L50,29.52 L60,29.87 L70,30.10 L80,30.18 L90,30.12 L100,29.92 L110,29.57 L120,29.10 L130,28.50 L140,27.80 L150,27.01 L160,26.16 L170,25.26 L180,24.34 L190,23.42 L200,22.51 L210,21.63 L220,20.79 L230,20.01 L240,19.29 L250,18.64 L260,18.06 L270,17.55 L280,17.10 L290,16.71 L300,16.37 L310,16.07 L320,15.81 L330,15.58 L340,15.37 L350,15.19 L360,15.01 L370,14.86 L380,14.72 L390,14.61 L400,14.52 L410,14.47 L420,14.46 L430,14.50 L440,14.60 L450,14.77 L460,15.00 L470,15.31 L480,15.69 L490,16.15 L500,16.68 L510,17.27 L520,17.91 L530,18.58 L540,19.28 L550,19.98 L560,20.66 L570,21.31 L580,21.91 L590,22.45 L600,22.90 L610,23.25 L620,23.50 L630,23.65 L640,23.69 L650,23.62 L660,23.46 L670,23.21 L680,22.90 L690,22.54 L700,22.15 L710,21.76 L720,21.38 L730,21.04 L740,20.77 L750,20.57 L760,20.47 L770,20.48 L780,20.60 L790,20.84 L800,21.20 L810,21.67 L820,22.24 L830,22.89 L840,23.61 L850,24.38 L860,25.17 L870,25.97 L880,26.74 L890,27.47 L900,28.14 L910,28.72 L920,29.21 L930,29.59 L940,29.85 L950,29.99 L960,30.01 L970,29.92 L980,29.72 L990,29.42 L1000,29.04 L1010,28.58 L1020,28.07 L1030,27.51 L1040,26.93 L1050,26.32 L1060,25.72 L1070,25.11 L1080,24.51 L1090,23.93 L1100,23.36 L1110,22.80 L1120,22.26 L1130,21.72 L1140,21.18 L1150,20.65 L1160,20.11 L1170,19.55 L1180,18.99 L1190,18.42 L1200,17.83" className="cs-echo-wave-gold-dark cs-echo-wave-path" strokeWidth="1" vectorEffect="non-scaling-stroke" strokeLinecap="round" opacity="0.35"></path><path d="M0,18.16 L10,18.70 L20,19.25 L30,19.81 L40,20.36 L50,20.91 L60,21.43 L70,21.93 L80,22.39 L90,22.81 L100,23.18 L110,23.50 L120,23.77 L130,23.98 L140,24.14 L150,24.24 L160,24.28 L170,24.28 L180,24.23 L190,24.14 L200,24.01 L210,23.85 L220,23.67 L230,23.48 L240,23.27 L250,23.07 L260,22.87 L270,22.68 L280,22.50 L290,22.35 L300,22.22 L310,22.12 L320,22.05 L330,22.02 L340,22.01 L350,22.04 L360,22.11 L370,22.20 L380,22.31 L390,22.46 L400,22.62 L410,22.80 L420,22.99 L430,23.19 L440,23.39 L450,23.60 L460,23.79 L470,23.99 L480,24.17 L490,24.33 L500,24.48 L510,24.61 L520,24.72 L530,24.82 L540,24.89 L550,24.94 L560,24.96 L570,24.97 L580,24.96 L590,24.93 L600,24.89 L610,24.82 L620,24.74 L630,24.65 L640,24.54 L650,24.42 L660,24.28 L670,24.13 L680,23.96 L690,23.78 L700,23.59 L710,23.37 L720,23.15 L730,22.90 L740,22.64 L750,22.36 L760,22.07 L770,21.75 L780,21.42 L790,21.08 L800,20.72 L810,20.35 L820,19.97 L830,19.59 L840,19.21 L850,18.83 L860,18.45 L870,18.10 L880,17.75 L890,17.44 L900,17.15 L910,16.89 L920,16.68 L930,16.51 L940,16.38 L950,16.30 L960,16.28 L970,16.31 L980,16.39 L990,16.53 L1000,16.72 L1010,16.96 L1020,17.24 L1030,17.57 L1040,17.93 L1050,18.32 L1060,18.74 L1070,19.17 L1080,19.61 L1090,20.05 L1100,20.47 L1110,20.89 L1120,21.28 L1130,21.63 L1140,21.95 L1150,22.23 L1160,22.46 L1170,22.64 L1180,22.76 L1190,22.84 L1200,22.85" className="cs-echo-wave-gold cs-echo-wave-path" strokeWidth="1.5" vectorEffect="non-scaling-stroke" strokeLinecap="round" opacity="0.5"></path><path d="M0,22.96 L10,22.41 L20,21.85 L30,21.28 L40,20.72 L50,20.17 L60,19.64 L70,19.15 L80,18.70 L90,18.30 L100,17.95 L110,17.67 L120,17.46 L130,17.33 L140,17.26 L150,17.27 L160,17.35 L170,17.50 L180,17.70 L190,17.96 L200,18.26 L210,18.60 L220,18.97 L230,19.34 L240,19.72 L250,20.09 L260,20.45 L270,20.77 L280,21.05 L290,21.29 L300,21.48 L310,21.62 L320,21.70 L330,21.71 L340,21.67 L350,21.58 L360,21.44 L370,21.25 L380,21.02 L390,20.77 L400,20.49 L410,20.20 L420,19.91 L430,19.62 L440,19.35 L450,19.10 L460,18.88 L470,18.69 L480,18.54 L490,18.43 L500,18.36 L510,18.34 L520,18.36 L530,18.42 L540,18.52 L550,18.65 L560,18.80 L570,18.98 L580,19.18 L590,19.39 L600,19.60 L610,19.81 L620,20.03 L630,20.24 L640,20.44 L650,20.63 L660,20.81 L670,20.99 L680,21.16 L690,21.33 L700,21.50 L710,21.68 L720,21.86 L730,22.06 L740,22.28 L750,22.52 L760,22.78 L770,23.08 L780,23.40 L790,23.76 L800,24.14 L810,24.55 L820,24.98 L830,25.43 L840,25.89 L850,26.35 L860,26.81 L870,27.25 L880,27.67 L890,28.05 L900,28.38 L910,28.67 L920,28.88 L930,29.03 L940,29.10 L950,29.08 L960,28.98 L970,28.79 L980,28.51 L990,28.14 L1000,27.70 L1010,27.17 L1020,26.58 L1030,25.92 L1040,25.22 L1050,24.48 L1060,23.71 L1070,22.93 L1080,22.15 L1090,21.37 L1100,20.63 L1110,19.91 L1120,19.24 L1130,18.62 L1140,18.06 L1150,17.57 L1160,17.14 L1170,16.78 L1180,16.50 L1190,16.28 L1200,16.12" className="cs-echo-wave-gold-light cs-echo-wave-path" strokeWidth="1.75" vectorEffect="non-scaling-stroke" strokeLinecap="round" opacity="0.9"></path><path d="M0,20.88 L10,21.07 L20,21.27 L30,21.47 L40,21.68 L50,21.88 L60,22.08 L70,22.27 L80,22.44 L90,22.59 L100,22.73 L110,22.83 L120,22.91 L130,22.97 L140,22.99 L150,22.99 L160,22.96 L170,22.90 L180,22.82 L190,22.72 L200,22.59 L210,22.46 L220,22.31 L230,22.15 L240,21.99 L250,21.82 L260,21.66 L270,21.51 L280,21.37 L290,21.23 L300,21.12 L310,21.01 L320,20.93 L330,20.86 L340,20.81 L350,20.78 L360,20.77 L370,20.77 L380,20.78 L390,20.81 L400,20.85 L410,20.89 L420,20.94 L430,21.00 L440,21.06 L450,21.11 L460,21.17 L470,21.22 L480,21.27 L490,21.32 L500,21.36 L510,21.40 L520,21.43 L530,21.46 L540,21.49 L550,21.52 L560,21.55 L570,21.58 L580,21.61 L590,21.65 L600,21.69 L610,21.74 L620,21.79 L630,21.84 L640,21.91 L650,21.98 L660,22.05 L670,22.12 L680,22.19 L690,22.27 L700,22.33 L710,22.40 L720,22.45 L730,22.50 L740,22.53 L750,22.54 L760,22.54 L770,22.52 L780,22.48 L790,22.42 L800,22.34 L810,22.24 L820,22.12 L830,21.99 L840,21.84 L850,21.67 L860,21.50 L870,21.32 L880,21.15 L890,20.97 L900,20.80 L910,20.64 L920,20.50 L930,20.37 L940,20.26 L950,20.18 L960,20.13 L970,20.10 L980,20.11 L990,20.14 L1000,20.21 L1010,20.31 L1020,20.43 L1030,20.58 L1040,20.75 L1050,20.93 L1060,21.14 L1070,21.35 L1080,21.57 L1090,21.79 L1100,22.01 L1110,22.22 L1120,22.42 L1130,22.60 L1140,22.76 L1150,22.90 L1160,23.01 L1170,23.09 L1180,23.15 L1190,23.17 L1200,23.16" className="cs-echo-wave-gold-mid cs-echo-wave-path" strokeWidth="1" vectorEffect="non-scaling-stroke" strokeLinecap="round" opacity="0.5"></path><path d="M0,21.09 L10,20.90 L20,20.73 L30,20.58 L40,20.45 L50,20.34 L60,20.26 L70,20.20 L80,20.15 L90,20.12 L100,20.10 L110,20.09 L120,20.08 L130,20.08 L140,20.07 L150,20.06 L160,20.05 L170,20.04 L180,20.02 L190,20.01 L200,19.99 L210,19.99 L220,19.99 L230,20.00 L240,20.03 L250,20.09 L260,20.16 L270,20.26 L280,20.39 L290,20.55 L300,20.73 L310,20.94 L320,21.17 L330,21.42 L340,21.68 L350,21.95 L360,22.23 L370,22.50 L380,22.76 L390,23.00 L400,23.23 L410,23.42 L420,23.59 L430,23.72 L440,23.81 L450,23.87 L460,23.90 L470,23.89 L480,23.85 L490,23.78 L500,23.68 L510,23.57 L520,23.44 L530,23.30 L540,23.16 L550,23.02 L560,22.88 L570,22.74 L580,22.61 L590,22.49 L600,22.37 L610,22.26 L620,22.16 L630,22.06 L640,21.95 L650,21.85 L660,21.74 L670,21.62 L680,21.49 L690,21.35 L700,21.20 L710,21.04 L720,20.86 L730,20.68 L740,20.49 L750,20.31 L760,20.12 L770,19.94 L780,19.78 L790,19.63 L800,19.51 L810,19.42 L820,19.35 L830,19.32 L840,19.33 L850,19.37 L860,19.45 L870,19.56 L880,19.71 L890,19.88 L900,20.07 L910,20.28 L920,20.51 L930,20.73 L940,20.96 L950,21.18 L960,21.40 L970,21.59 L980,21.77 L990,21.93 L1000,22.06 L1010,22.18 L1020,22.27 L1030,22.34 L1040,22.40 L1050,22.44 L1060,22.47 L1070,22.50 L1080,22.52 L1090,22.55 L1100,22.57 L1110,22.61 L1120,22.64 L1130,22.69 L1140,22.74 L1150,22.80 L1160,22.86 L1170,22.92 L1180,22.98 L1190,23.03 L1200,23.06" className="cs-echo-wave-white cs-echo-wave-path" strokeWidth="1" vectorEffect="non-scaling-stroke" strokeLinecap="round" opacity="0.4"></path></svg>
+type Wave = {
+  center: number
+  amplitude: number
+  cycles: number
+  speed: number
+  phase: number
+  detailAmplitude: number
+  detailCycles: number
+  detailSpeed: number
 }
 
+const waves: readonly Wave[] = [
+  { center: 11.5, amplitude: 5.2, cycles: 1.72, speed: .00042, phase: .2, detailAmplitude: 1.4, detailCycles: 3.15, detailSpeed: -.00024 },
+  { center: 11.8, amplitude: 4.3, cycles: 2.08, speed: -.00034, phase: 1.6, detailAmplitude: 1.1, detailCycles: 3.7, detailSpeed: .00019 },
+  { center: 11.2, amplitude: 5.4, cycles: 1.86, speed: .00038, phase: 2.9, detailAmplitude: 1.2, detailCycles: 3.35, detailSpeed: -.00021 },
+  { center: 11.7, amplitude: 2.2, cycles: 1.45, speed: -.00027, phase: 4.1, detailAmplitude: .7, detailCycles: 3.9, detailSpeed: .00017 },
+  { center: 11.9, amplitude: 1.8, cycles: 1.62, speed: .00023, phase: 5.2, detailAmplitude: .65, detailCycles: 3.25, detailSpeed: -.00015 },
+]
 
+const waveClasses = ['cs-echo-wave-gold-dark', 'cs-echo-wave-gold', 'cs-echo-wave-gold-light', 'cs-echo-wave-gold-mid', 'cs-echo-wave-white']
+const waveWidths = [1, 1.5, 1.75, 1, 1]
+const waveOpacities = [.35, .5, .9, .5, .4]
+
+function wavePath(time: number, wave: Wave) {
+  let path = ''
+  for (let x = 0; x <= WIDTH; x += STEP) {
+    const position = x / WIDTH
+    const y = wave.center
+      + Math.sin(position * TAU * wave.cycles + time * wave.speed + wave.phase) * wave.amplitude
+      + Math.sin(position * TAU * wave.detailCycles + time * wave.detailSpeed + wave.phase * .63) * wave.detailAmplitude
+    path += `${x ? ' L' : 'M'}${x},${y.toFixed(2)}`
+  }
+  return path
+}
+
+const initialPaths = waves.map((wave) => wavePath(0, wave))
+
+export function EchoWaveform({ element }: { element?: string } = {}) {
+  const svgRef = useRef<SVGSVGElement>(null)
+  const style = element ? { '--wave-accent': elementColors[element] ?? '#d1aa4c' } as CSSProperties : undefined
+
+  useEffect(() => {
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return
+    const paths = svgRef.current?.querySelectorAll<SVGPathElement>('path')
+    if (!paths?.length) return
+    let frame = 0
+    const render = (time: number) => {
+      const nextPaths = waves.map((wave) => wavePath(time, wave))
+      paths[0]?.setAttribute('d', `${nextPaths[2]} L${WIDTH},${HEIGHT} L0,${HEIGHT} Z`)
+      nextPaths.forEach((path, index) => paths[index + 1]?.setAttribute('d', path))
+      frame = requestAnimationFrame(render)
+    }
+    frame = requestAnimationFrame(render)
+    return () => cancelAnimationFrame(frame)
+  }, [])
+
+  return <svg ref={svgRef} className="cs-echo-waveform" style={style} viewBox={`0 0 ${WIDTH} ${HEIGHT}`} preserveAspectRatio="none" fill="none" aria-hidden="true">
+    <path d={`${initialPaths[2]} L${WIDTH},${HEIGHT} L0,${HEIGHT} Z`} className="cs-echo-wave-fill"/>
+    {initialPaths.map((path, index) => <path key={waveClasses[index]!} d={path} className={`${waveClasses[index]!} cs-echo-wave-path`} strokeWidth={waveWidths[index]!} vectorEffect="non-scaling-stroke" strokeLinecap="round" opacity={waveOpacities[index]!}/>) }
+  </svg>
+}

@@ -54,4 +54,21 @@ describe('team formula workspace', () => {
     expect(model.actions[2].warnings).toContain('Main Echo is still on cooldown (20s).')
     expect(model.actions[3].activeSelfEffectsV2).toHaveLength(0)
   })
+
+  it('groups Resonance Skill attacks by origin instead of damage type', () => {
+    const match = characterCatalog.flatMap((catalog) => {
+      const candidate: OwnedCharacter = { id: 'candidate', catalogId: catalog.id, level: 90, sequence: 0, skillLevels: [10, 10, 10, 10, 10], locked: false, createdAt: 1 }
+      const attack = resolveCharacterMechanicsV2(catalog, candidate)?.attacks.find((entry) => entry.group === 'Resonance Skill' && entry.type === 'basic')
+      return attack ? [{ catalog, attack }] : []
+    })[0]!
+    const weaponCatalogEntry = weaponCatalog.find((entry) => entry.type.toLowerCase() === match.catalog.weaponType.toLowerCase())!
+    const character: OwnedCharacter = { id: 'skill-character', catalogId: match.catalog.id, level: 90, sequence: 0, skillLevels: [10, 10, 10, 10, 10], locked: false, createdAt: 1 }
+    const weapon: OwnedWeapon = { id: 'skill-weapon', catalogId: weaponCatalogEntry.id, level: 90, rank: 1, locked: false, equippedBy: character.id, createdAt: 1 }
+    const build: Build = { id: 'skill-build', name: 'Skill build', resonatorId: match.catalog.id, weaponId: weapon.id, echoIds: [], level: 90, skillLevel: 10 }
+    const team: Team = { id: 'skill-team', name: 'Skill team', buildIds: [build.id], enemy: { level: 90, resistance: 10, damageReduction: 0 }, rotationDuration: 10, actions: [], calculationV2: emptyCalculationScenarioV2() }
+
+    const model = resolveTeamWorkspace({ team, builds: [build], characters: [character], weapons: [weapon], echoes: [] })
+
+    expect(model.members[0].attacks.find((attack) => attack.id === match.attack.id)).toMatchObject({ group: 'skill', type: 'basic' })
+  })
 })

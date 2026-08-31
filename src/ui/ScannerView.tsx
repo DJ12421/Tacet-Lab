@@ -102,6 +102,11 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onScanIntervalCha
   useBodyScrollLock(reviewOpen)
 
   useEffect(() => { candidatesRef.current = candidates }, [candidates])
+  useLayoutEffect(() => {
+    if (!reviewOpen || candidates.length > 0) return
+    setReviewOpen(false)
+    setActiveReviewId(undefined)
+  }, [candidates.length, reviewOpen])
   useEffect(() => { echoesRef.current = echoes }, [echoes])
   useEffect(() => {
     if (!audioFeedback || feedbackAudioRef.current?.state === 'running') return
@@ -385,7 +390,7 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onScanIntervalCha
       <div className="scanner-step">
         <h2><b>1</b><span>Choose what you’re scanning</span></h2>
         <div className="scanner-source-picker" role="group" aria-label="Scan source layout">
-          {([['echo-management', 'Inventory', 'Echo backpack', 'backpack'], ['build-card', 'Build cards', 'Six supported formats', 'build'], ['echo-detail', 'Character menu', 'Equipped Echo details', 'sidebar']] as const).map(([layout, label, hint, icon]) => <button type="button" className={selectedLayout === layout ? 'active' : ''} aria-pressed={selectedLayout === layout} key={layout} onClick={() => selectLayout(layout)}>{icon === 'sidebar' ? <img className="scanner-source-icon" src={`${sidebarIconRoot}echoes.svg`} alt=""/> : <Icon name={icon}/>}<span><strong>{label}{layout === 'echo-detail' && <em className="scanner-beta-tag">Beta</em>}</strong><small>{hint}</small></span><i>{selectedLayout === layout ? '✓' : ''}</i></button>)}
+          {([['echo-management', 'Inventory', 'Echo backpack', `${sidebarIconRoot}backpack.webp`], ['build-card', 'Build cards', 'Six supported formats', `${import.meta.env.BASE_URL}build-cards.webp`], ['echo-detail', 'Character menu', 'Equipped Echo details', `${sidebarIconRoot}echoes.svg`]] as const).map(([layout, label, hint, iconSource]) => <button type="button" className={selectedLayout === layout ? 'active' : ''} aria-pressed={selectedLayout === layout} key={layout} onClick={() => selectLayout(layout)}><img className="scanner-source-icon" src={iconSource} alt=""/><span><strong>{label}{layout === 'echo-detail' && <em className="scanner-beta-tag">Beta</em>}</strong><small>{hint}</small></span><i>{selectedLayout === layout ? '✓' : ''}</i></button>)}
         </div>
         {selectedLayout === 'build-card' && <label className="scanner-format-select">Build card format<select value={buildCardFormatPreference} onChange={(event) => { const value = event.target.value as BuildCardFormatPreference; setBuildCardFormatPreference(value); controllerRef.current?.setBuildCardFormatPreference(value); if (calibrationImage) void prepareCalibration(calibrationImage, 'screenshot', profile, value) }}><option value="auto">Auto detect</option>{buildCardFormats.map((format) => <option value={format.id} key={format.id}>{format.label}</option>)}</select></label>}
       </div>
@@ -393,8 +398,9 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onScanIntervalCha
         <h2><b>2</b><span>Choose how to scan</span></h2>
         <div className="scanner-start-actions">
           {streaming ? <button className="danger scanner-live-action" onClick={stopScreen}><span className="scanner-action-icon"><Icon name="scan"/></span><span><strong>Stop live scan</strong><small>End window sharing</small></span></button> : <button className="primary scanner-live-action" onClick={() => void startScreen()}><span className="scanner-action-icon"><Icon name="scan"/></span><span><strong>Scan game window</strong><small>Best for multiple Echoes</small></span></button>}
-          <button className="secondary" disabled={imageScanning} onClick={() => screenshotRef.current?.click()}><Icon name="upload"/><span><strong>{imageScanning ? 'Scanning…' : 'Use images'}</strong><small>Screenshots or build cards</small></span></button>
-          <button className="secondary scanner-video-action" onClick={() => videoFileRef.current?.click()}><span><strong>Use a video</strong><small>Choose a local recording</small></span></button>
+          <p className="scanner-mobile-note">Live window scanning is available on laptop/pc only. Please use images, video, or manual entry on mobile.</p>
+          <button className="secondary" disabled={imageScanning} onClick={() => screenshotRef.current?.click()}><img className="scanner-image-action-icon" src={`${sidebarIconRoot}camera.webp`} alt=""/><span><strong>{imageScanning ? 'Scanning…' : 'Use images'}</strong><small>Screenshots or build cards</small></span></button>
+          <button className="secondary scanner-video-action" onClick={() => videoFileRef.current?.click()}><Icon name="upload"/><span><strong>Use a video</strong><small>Choose a local recording</small></span></button>
           <button className="secondary" onClick={() => void addManual()}><Icon name="plus"/><span><strong>Enter manually</strong><small>No image needed</small></span></button>
         </div>
       </div>
@@ -405,8 +411,8 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onScanIntervalCha
       {calibrationNotice && <div className="notice warning scanner-calibration-notice">{calibrationNotice}</div>}
       <div className="scanner-step scanner-final-step"><h2><b>3</b><span>Check and save</span></h2><small>Tip: paste an image directly with Ctrl+V</small></div>
       <details className="scanner-advanced">
-        <summary><span><Icon name="settings"/>Advanced scanner settings</span><i aria-hidden="true"/></summary>
-        <div className="scanner-controls"><label>Scan speed<select value={scanIntervalMs} onChange={(event) => void onScanIntervalChange(Number(event.target.value))}>{![500, 900, 1500].includes(scanIntervalMs) && <option value={scanIntervalMs}>Custom</option>}<option value="1500">Careful</option><option value="900">Balanced</option><option value="500">Fast</option></select></label><label>OCR workers<select value={workerPreference} onChange={(event) => { const value = event.target.value === 'auto' ? 'auto' : Number(event.target.value) as 1 | 2 | 4; setWorkerPreference(value); controllerRef.current?.setWorkerPreference(value) }}><option value="auto">Auto</option><option value="1">1</option><option value="2">2</option><option value="4">4</option></select></label><label className="check"><input type="checkbox" checked={debugVisible} onChange={(event) => setDebugVisible(event.target.checked)}/>Show scan boxes</label><label className="check"><input type="checkbox" checked={audioFeedback} onChange={(event) => void toggleAudioFeedback(event.target.checked)}/>Sound feedback</label><button className="secondary scanner-calibration-button" onClick={toggleCalibration}><Icon name="scan"/>{calibrating ? 'Close calibration' : 'Calibrate'}</button></div>
+        <summary><span><Icon name="settings"/>Advanced scanner settings</span><span className="scanner-advanced-arrow"><Icon name="chevron"/></span></summary>
+        <div className="scanner-controls"><label>Scan speed<select value={scanIntervalMs} onChange={(event) => void onScanIntervalChange(Number(event.target.value))}>{![500, 900, 1500].includes(scanIntervalMs) && <option value={scanIntervalMs}>Custom</option>}<option value="1500">Careful</option><option value="900">Balanced</option><option value="500">Fast</option></select></label><label>OCR workers<select value={workerPreference} onChange={(event) => { const value = event.target.value === 'auto' ? 'auto' : Number(event.target.value) as 1 | 2 | 4; setWorkerPreference(value); controllerRef.current?.setWorkerPreference(value) }}><option value="auto">Auto</option><option value="1">1</option><option value="2">2</option><option value="4">4</option></select></label><label className="check"><input type="checkbox" checked={audioFeedback} onChange={(event) => void toggleAudioFeedback(event.target.checked)}/>Sound feedback</label><button className="secondary scanner-calibration-button" onClick={toggleCalibration}><Icon name="scan"/>{calibrating ? 'Close calibration' : 'Calibrate'}</button></div>
         <p className="scanner-setting-note">Scan speed changes how often the live window is checked. OCR workers split one scan’s text fields across CPU cores.</p>
         <ScanSessionSummary session={session}/>
       </details>
@@ -415,7 +421,9 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onScanIntervalCha
       key={`${profile.layout}:${profile.buildCardFormat ?? ''}`}
       imageDataUrl={calibrationImage}
       profile={profile}
+      showScanBoxes={debugVisible}
       onChange={(next) => { setProfile(next); setSelectedLayout(next.layout) }}
+      onShowScanBoxesChange={setDebugVisible}
       onSaved={(saved) => { setProfile(saved); setSelectedLayout(saved.layout); setError(''); setCalibrationNotice(''); setCalibrating(false); setStatus('Calibration profile saved locally') }}
     />}
     {streaming && <div className="scanner-layout scanner-layout-wide"><Panel className="capture-panel"><div className="capture-head"><div><span className="live-dot on"/><strong>Scanning live</strong></div><span>{status}</span></div><div className="video-stage active"><video ref={videoRef} muted playsInline autoPlay/>{profile && <div className="live-panel-overlay" style={{ left: `${profile.panelRect.x * 100}%`, top: `${profile.panelRect.y * 100}%`, width: `${profile.panelRect.width * 100}%`, height: `${profile.panelRect.height * 100}%` }}><ScannerDebugOverlay regions={profile.regions} visible={debugVisible}/></div>}</div><div className="capture-status"><div className="progress"><i style={{ width: `${progress * 100}%` }}/></div><span>{Math.round(progress * 100)}%</span><button className="text-button" onClick={() => void scanCurrentFrame()}>Scan now</button></div><div className="privacy-strip"><strong>Local only</strong><span>No frames leave this device.</span></div></Panel></div>}

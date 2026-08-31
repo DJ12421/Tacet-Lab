@@ -1,5 +1,5 @@
 import { createRef } from 'react'
-import { fireEvent, render, screen, within } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Echo, OwnedCharacter } from '../domain/types'
 import { resolveCharacterSubstatProfile } from '../domain/character-substat-score'
@@ -8,7 +8,7 @@ import type { NanokaSpinePortraitHandle } from './NanokaSpinePortrait'
 import { CharacterBuildCard, prioritizedBuildCardStats } from './CharacterBuildCard'
 import { defaultEnabledSkillTreeBonusIds, resolveCharacterShowcaseModel } from './character-showcase-model'
 
-vi.mock('./NanokaSpinePortrait', () => ({ NanokaSpinePortrait: () => null }))
+vi.mock('./NanokaSpinePortrait', () => ({ NanokaSpinePortrait: () => <div data-testid="live-character-art"/> }))
 
 beforeEach(() => {
   class ResizeObserverMock {
@@ -27,7 +27,7 @@ const character: OwnedCharacter = {
 const profile = resolveCharacterSubstatProfile(catalog)
 const baseModel = resolveCharacterShowcaseModel({ character, catalog, weapons: [], echoes: [], builds: [] })!
 
-function card(editable: boolean, overrides: Partial<typeof baseModel> = {}) {
+function card(editable: boolean, overrides: Partial<typeof baseModel> = {}, settings = defaultSettings) {
   const callbacks = {
     onSetLevel: vi.fn(), onSetSequence: vi.fn(), onSetSkillLevel: vi.fn(), onToggleSkillTreeNode: vi.fn(),
     onOpenWeapon: vi.fn(), onOpenEcho: vi.fn(), onEditEcho: vi.fn(), onEditPriorities: vi.fn(), onShowScoreInfo: vi.fn()
@@ -36,7 +36,7 @@ function card(editable: boolean, overrides: Partial<typeof baseModel> = {}) {
     character={character}
     catalog={catalog}
     model={{ ...baseModel, ...overrides }}
-    settings={defaultSettings}
+    settings={settings}
     profile={profile}
     statRows={prioritizedBuildCardStats(catalog, profile)}
     statDetail={(_key, label) => ({ title: label, value: '0', formula: 'Test formula', rows: [] })}
@@ -57,6 +57,13 @@ function card(editable: boolean, overrides: Partial<typeof baseModel> = {}) {
 }
 
 describe('CharacterBuildCard direct editing', () => {
+  it('does not mount live character art and defaults static art to 135% zoom when disabled', async () => {
+    const { container, queryByTestId } = card(true, {}, { ...defaultSettings, liveCharacterArt: false })
+    expect(queryByTestId('live-character-art')).not.toBeInTheDocument()
+    expect(container.querySelector('.cbc-live-portrait-snapshot')).not.toBeInTheDocument()
+    await waitFor(() => expect(container.querySelector('.cbc-art-positioner')).toHaveStyle({ width: '2592px', height: '1458px' }))
+  })
+
   it('synchronizes the layout sidebar host to the rendered card height', () => {
     const clientWidth = vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(1920)
     const layoutPanelHost = document.createElement('div')

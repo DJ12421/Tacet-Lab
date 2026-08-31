@@ -2,7 +2,7 @@
 
 .content {
   max-width: none;
-  padding: 32px clamp(12px,1.6vw,26px) 60px;
+  padding: 12px clamp(12px,1.6vw,10px) 10px;
 }
 
 .character-candy-grid {
@@ -169,6 +169,7 @@
 .candy-level {
   display: flex;
   align-items: center;
+  border-radius: 0px;
   gap: 8px;
   margin-top: -29px;
 }
@@ -760,52 +761,50 @@
 }
 
 @media (max-width:650px) {
-  .sidebar {
-    overflow-x: auto;
-    overflow-y: hidden;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-  .sidebar::-webkit-scrollbar {
-    display: none;
-  }
-  .sidebar nav {
-    display: flex;
-    width: max-content;
-    min-width: 100%;
-    height: 100%;
-    grid-template-columns: none;
-    gap: 2px;
-  }
-  .sidebar nav button {
-    flex: 0 0 88px;
-    min-width: 88px;
-    height: 100%;
-  }
   .character-catalog-picker-backdrop {
-    padding: 0;
+    padding: 10px;
+    align-items: center;
+    overflow: hidden;
+    overscroll-behavior: contain;
   }
   .character-catalog-picker-backdrop>.catalog-picker {
-    width: 100%;
-    min-height: 100dvh;
-    max-height: 100dvh;
-    border-radius: 0;
-    padding: 13px 10px 82px;
+    width: calc(100vw - 20px);
+    height: calc(100dvh - 20px);
+    min-height: 0;
+    max-height: none;
+    margin: auto;
+    padding: 0 10px 16px;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+
+  .character-catalog-picker .catalog-picker-grid {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
   }
 }
 
-.catalog-picker,.weapon-detail,.character-detail,.character-detail.redesigned {
+.weapon-detail,.character-detail,.character-detail.redesigned {
   height: auto;
   max-height: none;
   overflow: visible;
 }
 
-.catalog-picker-grid,.echo-picker-list,.character-detail-identity,.character-detail-left,.character-detail-workspace {
+.character-detail-identity,.character-detail-left,.character-detail-workspace {
   overflow-y: visible;
 }
 
-.echo-edit-modal {
-  max-height: none;
-  overflow-y: visible;
+.character-catalog-picker {
+  display: grid;
+  grid-template-rows: auto auto minmax(0,1fr);
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+.character-catalog-picker .catalog-picker-grid {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }

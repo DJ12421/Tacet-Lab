@@ -42,10 +42,11 @@ export function StatValue({ label, value, accent = false, detail }: { label: str
   return <div className="stat-value"><span>{label}</span>{detail ? <CalculatedValue detail={detail}>{output}</CalculatedValue> : output}</div>
 }
 
-export function FilterChips<T extends string | number>({ values, selected, label, onChange, renderValue }: {
+export function FilterChips<T extends string | number>({ values, selected, label, hideLabel = false, onChange, renderValue }: {
   values: readonly T[]
   selected: readonly T[]
   label: string
+  hideLabel?: boolean
   onChange: (values: T[]) => void
   renderValue?: (value: T) => ReactNode
 }) {
@@ -54,7 +55,7 @@ export function FilterChips<T extends string | number>({ values, selected, label
     else if (selected.length === 1 && selected.includes(value)) onChange([...values])
     else onChange(selected.includes(value) ? selected.filter((entry) => entry !== value) : [...selected, value])
   }
-  return <div className="owned-chip-filter"><span>{label}</span><div className="filter-chips">{values.map((value) => <button type="button" aria-pressed={selected.includes(value)} className={selected.includes(value) ? 'active' : ''} key={value} onClick={() => toggle(value)}>{renderValue?.(value) ?? value}</button>)}</div></div>
+  return <div className="owned-chip-filter"><span className={hideLabel ? 'sr-only' : undefined}>{label}</span><div className="filter-chips">{values.map((value) => <button type="button" aria-pressed={selected.includes(value)} className={selected.includes(value) ? 'active' : ''} key={value} onClick={() => toggle(value)}>{renderValue?.(value) ?? value}</button>)}</div></div>
 }
 
 const elementSonataNames: Record<string, string> = {
@@ -73,7 +74,7 @@ export function ElementFilterIcon({ element }: { element: string }) {
     : <span>{element}</span>
 }
 
-export const EchoMiniCard = memo(function EchoMiniCard({ echo, selected, onClick, actions, equipment, grade, rollRating, scoreLabel }: { echo: Echo; selected?: boolean; onClick?: () => void; actions?: ReactNode; equipment?: ReactNode; grade?: string; rollRating?: EchoRollRating; scoreLabel?: string }) {
+export const EchoMiniCard = memo(function EchoMiniCard({ echo, selected, onClick, actions, equipment, grade, rollRating, scoreLabel }: { echo: Echo; selected?: boolean; onClick?: () => void; actions?: ReactNode; equipment?: ReactNode; grade?: string; rollRating?: EchoRollRating; scoreLabel?: ReactNode }) {
   const characterProfile = useContext(CharacterSubstatProfileContext)
   const characterScore = characterProfile ? scoreCharacterSubstats(echo, characterProfile) : undefined
   const catalog = echoCatalogByName.get(echo.name)

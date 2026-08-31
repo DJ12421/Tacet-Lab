@@ -1,5 +1,6 @@
 import { useCallback, useContext, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import { toPng } from 'html-to-image'
 import { baseTuneBreakBoost, characterCatalog, sonataNames, statLabels, weaponCatalog, type CharacterCatalogEntry, type WeaponCatalogEntry } from '../game-data'
 import { characterSubstatScoreKeys } from '../game-data/character-substat-preferences'
@@ -97,6 +98,8 @@ async function bakeExportGlassBackdrops(exportFrame: HTMLDivElement) {
 
   const backgroundFrame = exportFrame.cloneNode(true) as HTMLDivElement
   backgroundFrame.classList.add('is-exporting-background')
+  backgroundFrame.classList.remove('has-live-portrait-snapshot')
+  backgroundFrame.querySelector('.cbc-live-portrait-snapshot')?.remove()
   host.append(backgroundFrame)
   await nextPaint()
 
@@ -184,14 +187,14 @@ function WeaponPicker({ character, characters, catalog, weapons, refresh, onClos
     await db.weapons.add(weapon)
     await equip(weapon)
   }
-  return <div className="catalog-picker-backdrop cs-picker-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}><section className="catalog-picker cs-picker" role="dialog" aria-modal="true" aria-label="Equip weapon"><header><div><span className="eyebrow">{catalog.weaponType} inventory</span><h2>{adding ? 'Add and equip weapon' : 'Equip weapon'}</h2></div><div>{adding && <button className="secondary" onClick={() => setAdding(false)}>Owned</button>}<button className="text-button" onClick={onClose}>Close</button></div></header><div className="catalog-picker-grid">
+  return createPortal(<div className={`catalog-picker-backdrop cs-picker-backdrop cs-element-${catalog.element.toLowerCase()}`} onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}><section className="catalog-picker cs-picker" role="dialog" aria-modal="true" aria-label="Equip weapon"><header><div><span className="eyebrow">{catalog.weaponType} inventory</span><h2>{adding ? 'Add and equip weapon' : 'Equip weapon'}</h2></div><div>{adding && <button className="secondary" onClick={() => setAdding(false)}>Owned</button>}<button className="text-button" onClick={onClose}>Close</button></div></header><div className="catalog-picker-grid">
     {!adding && eligibleOwned.map(({ owned, entry }) => { const owner = characters.find((candidate) => candidate.id === owned.equippedBy); const ownerCatalog = characterCatalog.find((candidate) => candidate.id === owner?.catalogId); return <WeaponInventoryCard weapon={owned} catalog={entry} className="cs-weapon-picker-card" ariaLabel={`Equip ${entry.name}`} onClick={() => void equip(owned)} footer={<button type="button" className="character-equip-trigger cs-weapon-picker-owner" onClick={() => void equip(owned)}>{ownerCatalog ? <img src={ownerCatalog.iconSourceUrl} alt=""/> : <span className="equip-empty">—</span>}<b>{ownerCatalog?.name ?? 'Unequipped'}</b><i>Equip</i></button>} key={owned.id}/> })}
     {!adding && <button className="catalog-choice add-owned-choice" onClick={() => setAdding(true)}><span className="add-glyph">+</span><span><strong>Add weapon</strong><small>Create a local copy and equip it.</small></span></button>}
     {adding && eligibleCatalog.map((entry) => <button className={`catalog-choice weapon-choice rarity-${entry.rarity}`} key={entry.id} onClick={() => void add(entry)}><img src={entry.iconSourceUrl} alt=""/><span><strong>{entry.name}</strong><small>{entry.type}</small><Stars rarity={entry.rarity}/></span></button>)}
-  </div></section></div>
+  </div></section></div>, document.body)
 }
 
-function EchoPicker({ slot, characterId, currentIds, echoes, refresh, onClose }: { slot: number; characterId: string; currentIds: string[]; echoes: Echo[]; refresh: () => Promise<void>; onClose: () => void }) {
+function EchoPicker({ slot, characterId, currentIds, echoes, accentClass, refresh, onClose }: { slot: number; characterId: string; currentIds: string[]; echoes: Echo[]; accentClass: string; refresh: () => Promise<void>; onClose: () => void }) {
   const characterSubstatProfile = useContext(CharacterSubstatProfileContext)
   const currentId = currentIds[slot]
   const [query, setQuery] = useState('')
@@ -247,7 +250,7 @@ function EchoPicker({ slot, characterId, currentIds, echoes, refresh, onClose }:
       setError(cause instanceof Error ? cause.message : 'The Echo could not be switched.')
     }
   }
-  return <div className="catalog-picker-backdrop cs-picker-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}>
+  return createPortal(<div className={`catalog-picker-backdrop cs-picker-backdrop ${accentClass}`} onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}>
     <section className="catalog-picker cs-picker cs-echo-picker" role="dialog" aria-modal="true" aria-label={`Equip Echo slot ${slot + 1}`}>
       <header><div><span className="eyebrow">Echo slot {slot + 1}</span><h2>Equip Echo</h2></div><button className="text-button" onClick={onClose}>Close</button></header>
       <div className="cs-echo-picker-filters">
@@ -270,11 +273,12 @@ function EchoPicker({ slot, characterId, currentIds, echoes, refresh, onClose }:
         <div className="echo-picker-options">{options.map((echo) => <EchoMiniCard key={echo.id} echo={echo} selected={echo.id === currentId} rollRating={echoMeta.get(echo.id)?.rollRating} onClick={() => void choose(echo)} equipment={echo.equippedBy && echo.equippedBy !== characterId ? <EquippedCharacterLabel name={echo.equippedByName ?? 'Another character'}/> : undefined}/>)}</div>
       </div>
     </section>
-  </div>
+  </div>, document.body)
 }
 
-function SubstatWeightEditor({ characterName, initialWeights, recommendedWeights, initialEnergyRegenMinimum, onSave, onReset, onClose }: {
+function SubstatWeightEditor({ characterName, accentClass, initialWeights, recommendedWeights, initialEnergyRegenMinimum, onSave, onReset, onClose }: {
   characterName: string
+  accentClass: string
   initialWeights: Partial<Record<StatKey, number>>
   recommendedWeights: Partial<Record<StatKey, number>>
   initialEnergyRegenMinimum: number
@@ -295,7 +299,7 @@ function SubstatWeightEditor({ characterName, initialWeights, recommendedWeights
       await onSave(Object.fromEntries(characterSubstatScoreKeys.filter((key) => key !== 'energyRegen').flatMap((key) => {
         const weight = Math.round((weights[key] ?? 0) * 2) / 2
         return weight > 0 ? [[key, weight]] : []
-      })), Math.max(0, Math.min(500, energyRegenMinimum)))
+      })), Math.max(0, Math.min(300, energyRegenMinimum)))
       onClose()
     } finally {
       setSaving(false)
@@ -310,13 +314,13 @@ function SubstatWeightEditor({ characterName, initialWeights, recommendedWeights
       setSaving(false)
     }
   }
-  return <div className="modal-backdrop cs-weight-editor-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}><Panel className="cs-weight-editor" role="dialog" aria-modal="true" aria-labelledby="substat-weight-editor-title">
+  return createPortal(<div className={`modal-backdrop cs-weight-editor-backdrop ${accentClass}`} onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}><Panel className="cs-weight-editor" role="dialog" aria-modal="true" aria-labelledby="substat-weight-editor-title">
     <header><div><span className="eyebrow">Character substat priorities</span><h2 id="substat-weight-editor-title">Configure {characterName}</h2></div><button type="button" className="close" aria-label="Close substat priority editor" onClick={onClose}>×</button></header>
-    <p>Set a priority from 0 to 4 in 0.5 intervals. Energy Regen is handled separately as a build requirement and does not add Substat Score.</p>
-    <label className="cs-er-requirement"><span><strong>Minimum Energy Regen</strong><small>Falling below this value lowers the final build grade by one tier. Use 0 to disable.</small></span><span><input aria-label="Minimum Energy Regen" type="number" min="0" max="500" step="0.1" value={energyRegenMinimum} onChange={(event) => setEnergyRegenMinimum(Number(event.target.value) || 0)}/><b>%</b></span></label>
-    <div className="cs-weight-grid">{characterSubstatScoreKeys.filter((key) => key !== 'energyRegen').map((key) => <label key={key}><span>{statLabels[key]}<small>Recommended: {recommendedWeights[key] ?? 0}</small></span><div><button type="button" aria-label={`Decrease ${statLabels[key]} priority`} disabled={(weights[key] ?? 0) <= 0} onClick={() => setWeight(key, (weights[key] ?? 0) - 0.5)}>−</button><input aria-label={`${statLabels[key]} priority`} type="number" min="0" max="4" step="0.5" value={weights[key] ?? 0} onChange={(event) => setWeight(key, Number(event.target.value) || 0)}/><button type="button" aria-label={`Increase ${statLabels[key]} priority`} disabled={(weights[key] ?? 0) >= 4} onClick={() => setWeight(key, (weights[key] ?? 0) + 0.5)}>+</button></div></label>)}</div>
+    <div className="cs-weight-editor-scroll"><p>Set a priority from 0 to 4 in 0.5 intervals. Energy Regen is handled separately as a build requirement and does not add Substat Score.</p>
+    <label className="cs-er-requirement"><span><strong>Minimum Energy Regen</strong><small>Falling below this value lowers the final build grade by one tier. Use 0 to disable.</small></span><span><input aria-label="Minimum Energy Regen" type="number" min="0" max="300" step="0.1" value={energyRegenMinimum} onChange={(event) => setEnergyRegenMinimum(Number(event.target.value) ||0)}/><b>%</b></span></label>
+    <div className="cs-weight-grid">{characterSubstatScoreKeys.filter((key) => key !== 'energyRegen').map((key) => <label key={key}><span>{statLabels[key]}<small>Recommended: {recommendedWeights[key] ?? 0}</small></span><div><button type="button" aria-label={`Decrease ${statLabels[key]} priority`} disabled={(weights[key] ?? 0) <= 0} onClick={() => setWeight(key, (weights[key] ?? 0) - 0.5)}>−</button><input aria-label={`${statLabels[key]} priority`} type="number" min="0" max="4" step="0.5" value={weights[key] ?? 0} onChange={(event) => setWeight(key, Number(event.target.value) || 0)}/><button type="button" aria-label={`Increase ${statLabels[key]} priority`} disabled={(weights[key] ?? 0) >= 4} onClick={() => setWeight(key, (weights[key] ?? 0) + 0.5)}>+</button></div></label>)}</div></div>
     <footer><button type="button" className="secondary" disabled={saving} onClick={() => void reset()}>Reset to recommended</button><div><button type="button" className="text-button" disabled={saving} onClick={onClose}>Cancel</button><button type="button" className="primary" disabled={saving} onClick={() => void submit()}>{saving ? 'Saving...' : 'Save priorities'}</button></div></footer>
-  </Panel></div>
+  </Panel></div>, document.body)
 }
 
 export function CharacterShowcase({ character, characters, catalog, weapons, echoes, builds, equippedLoadouts, theorycraftBuilds, settings, refresh, onBack }: CharacterShowcaseProps) {
@@ -346,6 +350,10 @@ export function CharacterShowcase({ character, characters, catalog, weapons, ech
     setPortraitFailed(false)
     setAnimatedPortraitReady(false)
   }, [catalog.id])
+
+  useEffect(() => {
+    if (!settings.liveCharacterArt) setAnimatedPortraitReady(false)
+  }, [settings.liveCharacterArt])
 
   useEffect(() => {
     let active = true
@@ -431,7 +439,7 @@ export function CharacterShowcase({ character, characters, catalog, weapons, ech
     let originalPortraitSource: string | undefined
     let exportHost: HTMLDivElement | undefined
     try {
-      const livePortraitSnapshot = animatedPortraitReady ? livePortraitRef.current?.captureFrame() : undefined
+      const livePortraitSnapshot = settings.liveCharacterArt && animatedPortraitReady ? livePortraitRef.current?.captureFrame() : undefined
       if (portraitRef.current) {
         try {
           originalPortraitSource = await inlineImageSource(portraitRef.current)
@@ -451,6 +459,8 @@ export function CharacterShowcase({ character, characters, catalog, weapons, ech
       if (livePortraitSnapshot && snapshotImage) {
         snapshotImage.src = livePortraitSnapshot
         exportFrame.classList.add('has-live-portrait-snapshot')
+      } else {
+        snapshotImage?.remove()
       }
       exportHost = document.createElement('div')
       exportHost.style.position = 'fixed'
@@ -524,8 +534,7 @@ export function CharacterShowcase({ character, characters, catalog, weapons, ech
   }
 
   return <CharacterSubstatProfileContext.Provider value={characterSubstatProfile}><section className={`cs-page cs-element-${catalog.element.toLowerCase()}`} style={customAccentStyle(cardAccent)}>
-    <header className="cs-toolbar"><div className="cs-toolbar-leading"><button className="cs-back" onClick={onBack}>← Characters</button><button className={character.favorite ? 'cs-favorite active' : 'cs-favorite'} onClick={() => void updateCharacter({ favorite: !character.favorite })}>{character.favorite ? '♥ Favorited' : '♡ Favorite'}</button><button className={`danger ${deleteArmed ? 'is-armed' : ''}`} onClick={() => void removeCharacter()}><Icon name="trash"/>{deleteArmed ? 'Confirm delete' : 'Delete'}</button></div><strong className="cs-toolbar-title">{catalog.name}</strong><label className="cs-loadout-source"><select aria-label="Build" value={loadoutSource.type === 'equipped' ? `equipped:${loadoutSource.characterId}` : loadoutSource.type === 'saved' ? `saved:${loadoutSource.buildId}` : `theorycraft:${loadoutSource.theorycraftBuildId}`} onChange={(event) => { const separator = event.target.value.indexOf(':'); const type = event.target.value.slice(0, separator); const id = event.target.value.slice(separator + 1); setLoadoutSource(type === 'equipped' ? { type, characterId: id } : type === 'saved' ? { type, buildId: id } : { type: 'theorycraft', theorycraftBuildId: id }) }}>{loadoutSources.map(({ source, label }) => { const value = source.type === 'equipped' ? `equipped:${source.characterId}` : source.type === 'saved' ? `saved:${source.buildId}` : `theorycraft:${source.theorycraftBuildId}`; return <option value={value} key={value}>{label}</option> })}</select></label><div className="cs-layout-controls-host" ref={setLayoutControlsHost}/><div className="cs-toolbar-actions"><button className="secondary cs-export-button" disabled={exporting} onClick={() => void exportCharacterCard()}><Icon name="download"/><span>{exporting ? 'Rendering...' : 'Export'}</span></button></div></header>
-    <p className="cs-card-edit-hint">Click any card section to configure the character, or use Change layout to customize the card composition.</p>
+    <header className="cs-toolbar"><button className="cs-back" onClick={onBack}>← Characters</button><div className="cs-toolbar-identity"><strong>{catalog.name}</strong><small>{loadoutSource.type === 'equipped' ? 'Tap a card section to edit' : 'Build preview'}</small></div><label className="cs-loadout-source"><select aria-label="Build" value={loadoutSource.type === 'equipped' ? `equipped:${loadoutSource.characterId}` : loadoutSource.type === 'saved' ? `saved:${loadoutSource.buildId}` : `theorycraft:${loadoutSource.theorycraftBuildId}`} onChange={(event) => { const separator = event.target.value.indexOf(':'); const type = event.target.value.slice(0, separator); const id = event.target.value.slice(separator + 1); setLoadoutSource(type === 'equipped' ? { type, characterId: id } : type === 'saved' ? { type, buildId: id } : { type: 'theorycraft', theorycraftBuildId: id }) }}>{loadoutSources.map(({ source, label }) => { const value = source.type === 'equipped' ? `equipped:${source.characterId}` : source.type === 'saved' ? `saved:${source.buildId}` : `theorycraft:${source.theorycraftBuildId}`; return <option value={value} key={value}>{label}</option> })}</select></label><div className="cs-layout-controls-host" ref={setLayoutControlsHost}/><div className="cs-toolbar-actions"><button aria-label={character.favorite ? 'Remove from favorites' : 'Add to favorites'} className={character.favorite ? 'cs-favorite active' : 'cs-favorite'} onClick={() => void updateCharacter({ favorite: !character.favorite })}>{character.favorite ? '♥ Favorited' : '♡ Favorite'}</button><button aria-label={deleteArmed ? 'Confirm character deletion' : 'Delete character'} className={`danger ${deleteArmed ? 'is-armed' : ''}`} onClick={() => void removeCharacter()}><Icon name="trash"/><span>{deleteArmed ? 'Confirm delete' : 'Delete'}</span></button><button aria-label="Export character card" className="secondary cs-export-button" disabled={exporting} onClick={() => void exportCharacterCard()}><Icon name="download"/><span>{exporting ? 'Rendering...' : 'Export'}</span></button></div></header>
     {exportMessage && <div className={`cs-export-message ${exportMessage.startsWith('Image export failed') ? 'is-error' : ''}`} role="status">{exportMessage}</div>}
 
     <div className="cs-card-workspace"><CharacterBuildCard
@@ -565,15 +574,25 @@ export function CharacterShowcase({ character, characters, catalog, weapons, ech
     <div className="cs-layout-panel-host" ref={setLayoutPanelHost}/></div>
 
     {weaponPickerOpen && <WeaponPicker character={character} characters={characters} catalog={catalog} weapons={weapons} refresh={refresh} onClose={() => setWeaponPickerOpen(false)}/>}
-    {echoSlot !== null && loadoutSource.type === 'equipped' && <EchoPicker slot={echoSlot} characterId={character.id} currentIds={resolvedLoadout.build?.echoIds ?? []} echoes={echoes} refresh={refresh} onClose={() => setEchoSlot(null)}/>} 
+    {echoSlot !== null && loadoutSource.type === 'equipped' && <EchoPicker
+      slot={echoSlot}
+      characterId={character.id}
+      currentIds={resolvedLoadout.build?.echoIds ?? []}
+      echoes={echoes}
+      accentClass={`cs-element-${catalog.element.toLowerCase()}`}
+      refresh={refresh}
+      onClose={() => setEchoSlot(null)}
+    />}
     {editingEcho && <EchoEditModal echo={editingEcho} onClose={() => setEditingEcho(null)} onSave={async (updated) => { await db.echoes.put(updated); setEditingEcho(null); await refresh() }}/>}
-    {scoreEditorOpen && <SubstatWeightEditor characterName={catalog.name} initialWeights={characterSubstatProfile.weights} recommendedWeights={recommendedSubstatProfile.weights} initialEnergyRegenMinimum={settings.characterEnergyRegenMinimums[catalog.id] ?? 0} onSave={saveSubstatWeights} onReset={resetSubstatWeights} onClose={() => setScoreEditorOpen(false)}/>}
-    {scoreInfoOpen && <div className="modal-backdrop roll-quality-backdrop" onMouseDown={() => setScoreInfoOpen(false)}><Panel className="roll-quality-modal cs-score-info-modal" role="dialog" aria-modal="true" aria-labelledby="substat-score-info-title" onMouseDown={(event) => event.stopPropagation()}>
+    {scoreEditorOpen && <SubstatWeightEditor characterName={catalog.name} accentClass={`cs-element-${catalog.element.toLowerCase()}`} initialWeights={characterSubstatProfile.weights} recommendedWeights={recommendedSubstatProfile.weights} initialEnergyRegenMinimum={settings.characterEnergyRegenMinimums[catalog.id] ?? 0} onSave={saveSubstatWeights} onReset={resetSubstatWeights} onClose={() => setScoreEditorOpen(false)}/>}
+    {scoreInfoOpen && createPortal(<div className={`modal-backdrop roll-quality-backdrop cs-element-${catalog.element.toLowerCase()}`} onMouseDown={() => setScoreInfoOpen(false)}><Panel className="roll-quality-modal cs-score-info-modal" role="dialog" aria-modal="true" aria-labelledby="substat-score-info-title" onMouseDown={(event) => event.stopPropagation()}>
       <header><div><span className="eyebrow">Character-specific Echo evaluation</span><h2 id="substat-score-info-title">How Substat Score works</h2></div><button className="close" aria-label="Close Substat Score information" onClick={() => setScoreInfoOpen(false)}>×</button></header>
+      <div className="roll-quality-scroll">
       <p>Substat Score measures how useful an Echo's revealed rolls are for {catalog.name}. Unlike Roll Grade, it values the stats this character actually wants.</p>
       <section><h3>1. Find the roll tier</h3><p>Percentage substats earn 1–8 tier points from their position among the eight fixed in-game roll values. Flat HP, ATK, and DEF use 3 tier points.</p><div className="roll-tier-legend"><span className="tier-low">1–2 Low</span><span className="tier-mid">3–4 Mid</span><span className="tier-high">5–6 High</span><span className="tier-perfect">7–8 Elite</span></div></section>
       <section><h3>2. Apply this character's priority</h3><p>Every configured stat has a character-specific weight. Energy Regen is excluded and instead uses the configured minimum requirement.</p><div className="score-weight-legend"><span className="weight-4">4 Highest</span><span className="weight-3">3 Strong</span><span className="weight-2">2 Useful</span><span className="weight-1">1 Marginal</span></div><div className="quality-formula"><b>Roll tier</b><span>×</span><b>Character weight</b><span>= contribution</span></div></section>
       <section><h3>3. Normalize the total</h3><p>Each ER substat is removed from both the earned points and the 25-roll denominator. If total ER is below the configured minimum, the earned build grade drops by one tier. Fewer than five revealed substats produce a provisional score marked with an asterisk.</p><div className="quality-formula"><b>Earned non-ER points</b><span>÷</span><b>25 minus ER rolls</b><span>= score %</span></div><div className="score-grade-legend"><span className="grade-e">E<small>0–14.9%</small></span><span className="grade-d">D<small>15–24.9%</small></span><span className="grade-c">C<small>25–34.9%</small></span><span className="grade-b">B<small>35–44.9%</small></span><span className="grade-a">A<small>45–54.9%</small></span><span className="grade-s">S<small>55–64.9%</small></span><span className="grade-ss">SS<small>65–74.9%</small></span><span className="grade-sss">SSS<small>75–100%</small></span></div></section>
-    </Panel></div>}
+      </div>
+    </Panel></div>, document.body)}
   </section></CharacterSubstatProfileContext.Provider>
 }

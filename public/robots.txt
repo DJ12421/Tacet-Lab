@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /Tacet-Lab/
+
+Sitemap: https://dj12421.github.io/Tacet-Lab/sitemap.xml

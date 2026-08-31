@@ -1,7 +1,7 @@
 .home-changelog {
   padding: 22px 26px;
   border: 1px solid color-mix(in srgb, var(--home-accent) 22%, rgba(255, 255, 255, .08));
-  border-radius: 0 0 12px 0;
+  border-radius: var(--radius-subtle) var(--radius-subtle) var(--radius-subtle) var(--radius-subtle);
   background: linear-gradient(145deg, rgba(14, 20, 22, .96), rgba(4, 7, 8, .98));
 }
 

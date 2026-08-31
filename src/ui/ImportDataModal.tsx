@@ -89,6 +89,7 @@ export function ImportDataModal({ onClose, onImported }: ImportDataModalProps) {
         <button className="close" aria-label="Close import" disabled={importing} onClick={onClose}>×</button>
       </header>
 
+      <div className="import-data-scroll">
       <section className="import-data-source">
         <div className="import-file-row">
           <button className="secondary" type="button" disabled={importing} onClick={() => fileRef.current?.click()}><Icon name="upload"/>Open JSON</button>
@@ -128,6 +129,7 @@ export function ImportDataModal({ onClose, onImported }: ImportDataModalProps) {
           </article>)}
         </div>
       </section>}
+      </div>
 
       <footer className="import-data-actions">
         <div>{preview && !hasChanges ? <span>Everything in this backup is already present.</span> : <span>Importing updates matching IDs and appends new records.</span>}</div>

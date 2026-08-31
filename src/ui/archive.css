@@ -47,8 +47,8 @@
 }
 
 .archive-section-tabs i {
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   display: grid;
   place-items: center;
   border-radius: 50%;
@@ -57,9 +57,10 @@
   font-style: normal;
 }
 
-.archive-section-tabs i .icon {
-  width: 19px;
-  height: 19px;
+.archive-section-tabs i img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
 }
 
 .archive-section-tabs strong {
@@ -70,12 +71,11 @@
 }
 
 .archive-section-tabs b {
-  min-width: 30px;
+  min-width: 34px;
   padding: 5px;
   border-radius: 99px;
-  background: rgba(228,187,94,.1);
   color: var(--gold);
-  font-size: var(--font-size-caption);
+  font-size: var(--font-size-caption+1);
   text-align: center;
 }
 
@@ -159,27 +159,132 @@
   grid-template-columns: auto minmax(0,1fr);
   align-items: center;
   gap: 8px;
+  position: relative;
   padding-left: 10px;
   border: 1px solid rgba(255,255,255,.09);
   border-radius: 6px;
   background: #070b0c;
 }
 
-.archive-sort span {
+.archive-sort:focus-within,
+.archive-sort.open {
+  border-color: rgba(141,228,212,.75);
+  box-shadow: 0 0 0 2px rgba(141,228,212,.12),inset 0 0 0 1px rgba(141,228,212,.18);
+}
+
+.archive-sort>span {
   color: #70807c;
   font-size: var(--font-size-caption);
   text-transform: uppercase;
 }
 
-.archive-sort select {
+.archive-sort-picker {
+  min-width: 0;
+  position: relative;
+}
+
+.archive-sort-trigger {
   min-width: 0;
   width: 100%;
   height: 40px;
-  padding: 0 8px;
+  padding: 0 9px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   border: 0;
+  border-left: 1px solid rgba(255,255,255,.08);
+  border-radius: 0 6px 6px 0;
   background: #070b0c;
   color: #e6eeeb;
+  text-align: left;
+  cursor: pointer;
+}
+
+.archive-sort-trigger b {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--font-size-caption);
+}
+
+.archive-sort-trigger strong {
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  flex: none;
+  transform: translateY(3px);
+  color: var(--mint);
+  font-size: 0;
+}
+
+.archive-sort-trigger strong::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform .16s ease;
+}
+
+.archive-sort-trigger[aria-expanded="true"] strong::before {
+  transform: translateY(2px) rotate(225deg);
+}
+
+.archive-sort button:focus-visible {
   outline: 0;
+}
+
+.archive-sort-menu {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + 7px);
+  right: 0;
+  width: min(310px,calc(100vw - 32px));
+  padding: 6px;
+  display: grid;
+  grid-template-columns: repeat(1,minmax(0,1fr));
+  gap: 3px;
+  border: 1px solid rgba(228,187,94,.48);
+  border-radius: 8px;
+  background: #070b0c;
+  box-shadow: 0 20px 48px rgba(0,0,0,.72);
+}
+
+.archive-sort-menu button {
+  min-height: 38px;
+  padding: 6px 10px;
+  display: grid;
+  grid-template-columns: minmax(0,1fr) 18px;
+  align-items: center;
+  gap: 7px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #adb8b5;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.archive-sort-menu button:hover,
+.archive-sort-menu button:focus-visible {
+  background: rgba(141,228,212,.1);
+  color: #fff;
+}
+
+.archive-sort-menu button.active {
+  background: rgba(228,187,94,.14);
+  color: #fff1c7;
+}
+
+.archive-sort-menu i {
+  color: var(--mint);
+  font-style: normal;
+  text-align: center;
 }
 
 .archive-filter-row {
@@ -351,6 +456,20 @@
   font-size: var(--font-size-caption);
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.archive-echo-sonatas {
+  min-height: 27px;
+  margin: 3px 0 5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.archive-echo-sonatas img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
 }
 
 .archive-entry-copy footer {
@@ -562,7 +681,7 @@
     top: auto;
   }
   .archive-results-grid,.archive-weapon-grid,.archive-echo-grid {
-    grid-template-columns: repeat(2,minmax(0,1fr));
+    grid-template-columns: repeat(1,minmax(0,1fr));
   }
   .archive-sonata-grid {
     grid-template-columns: 1fr;
@@ -645,6 +764,10 @@
   scrollbar-width: thin;
 }
 
+.archive-toolbar-row:has(.archive-sort.open) {
+  overflow: visible;
+}
+
 .archive-toolbar-row>.archive-search {
   width: 220px;
   flex: 0 0 220px;
@@ -665,6 +788,7 @@
 
 .archive-toolbar-row .filter-chips button {
   min-height: 34px;
+  border-radius:0px;
 }
 
 .archive-browser .archive-cost.cost-1 {
@@ -735,6 +859,26 @@
   flex: 0 0 190px;
 }
 
+.archive-browser .archive-toolbar-weapons {
+  flex-wrap: wrap;
+  overflow-x: visible;
+}
+
+.archive-browser .archive-toolbar-weapons>.owned-chip-filter {
+  flex: 1 1 280px;
+}
+
+.archive-browser .archive-toolbar-weapons>.owned-chip-filter .filter-chips {
+  width: 100%;
+}
+
+.archive-browser .archive-toolbar-weapons>.owned-chip-filter .filter-chips button {
+  min-width: 0;
+  flex: 1 1 0;
+  overflow: hidden;
+  text-overflow: clip;
+}
+
 .archive-browser .archive-toolbar-row:has(>.sonata-picker) {
   overflow: visible;
 }
@@ -742,11 +886,12 @@
 .archive-browser .archive-toolbar-row>.sonata-picker .sonata-picker-menu {
   left: auto;
   right: 0;
-  width: min(560px,calc(100vw - 32px));
+  top: calc(100% + 7px);
+  width: min(330px,calc(100vw - 32px));
   max-height: none;
   overflow: visible;
   display: grid;
-  grid-template-columns: repeat(2,minmax(0,1fr));
+  grid-template-columns: minmax(0,1fr);
   gap: 2px;
 }
 
@@ -764,17 +909,84 @@
   text-overflow: ellipsis;
 }
 
-.archive-browser .archive-toolbar-row>.sonata-picker .sonata-picker-menu button b {
-  overflow: visible;
-  text-overflow: clip;
-}
-
 @media (max-width:600px) {
+  .archive-toolbar-row {
+    display: grid;
+    grid-template-columns: minmax(0,1fr);
+    align-items: stretch;
+    gap: 9px;
+    overflow: visible;
+  }
+
+  .archive-browser .archive-toolbar-row>.archive-search,
+  .archive-browser .archive-toolbar-row>.archive-sort,
+  .archive-browser .archive-toolbar-row>.owned-chip-filter,
+  .archive-browser .archive-toolbar-row>.sonata-picker {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    flex: none;
+  }
+
+  .archive-browser .archive-toolbar-row>.owned-chip-filter .filter-chips,
+  .archive-browser .archive-toolbar-row>.owned-chip-filter:has(.filter-element-icon) .filter-chips {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .archive-browser .archive-toolbar-row>.owned-chip-filter .filter-chips::-webkit-scrollbar {
+    display: none;
+  }
+
+  .archive-browser .archive-toolbar-row>.owned-chip-filter .filter-chips button {
+    width: auto;
+    min-width: 48px;
+    flex: 1 0 48px;
+    padding: 7px 10px;
+    overflow: hidden;
+    text-overflow: clip;
+    white-space: nowrap;
+  }
+
+  .archive-browser .archive-toolbar-row>.owned-chip-filter:has(.filter-element-icon) .filter-chips button {
+    width: auto;
+    min-width: 48px;
+    flex: 1 0 48px;
+    flex-basis: 48px;
+    padding: 7px 10px;
+  }
+
+  .archive-browser .archive-toolbar-weapons>.owned-chip-filter {
+    grid-column: 1/-1;
+  }
+
+  .archive-browser .archive-toolbar-row>.archive-sort .archive-sort-menu,
   .archive-browser .archive-toolbar-row>.sonata-picker .sonata-picker-menu {
+    left: 0;
+    right: auto;
+    width: min(100%,calc(100vw - 32px));
+    max-width: calc(100vw - 32px);
+    max-height: min(50dvh,360px);
+    overflow-y: auto;
     grid-template-columns: 1fr;
+  }
+
+  .archive-results-grid.archive-character-grid,
+  .archive-results-grid.archive-weapon-grid,
+  .archive-results-grid.archive-echo-grid {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+  }
+
+  .archive-weapon-card .archive-entry-copy dl>div:nth-child(2) {
+    display: block;
   }
 }
 
 .archive-browser .archive-controls {
   top: 0;
+  border-radius: 0;
 }

@@ -188,6 +188,14 @@
   outline: 0;
 }
 
+.search-count {
+  flex: none;
+  color: var(--muted);
+  font-size: var(--font-size-caption);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
 .segmented {
   display: flex;
   background: #080b0c;
@@ -318,7 +326,7 @@
 .filter-chips button.active {
   background: rgba(141,228,212,.16);
   color: var(--mint);
-  box-shadow: inset 0 -2px var(--mint);
+  border-radius: 0px;
 }
 
 .inventory-sort {

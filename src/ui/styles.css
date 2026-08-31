@@ -35,3 +35,26 @@
 @import './styles/optimizer/v2.css';
 @import './styles/account-import.css';
 @import './styles/builds/loadouts.css';
+
+/* Keep one vertical scroll owner: the page, or the open dialog, never both. */
+html:has(.modal-backdrop,.catalog-picker-backdrop,.weapon-detail-backdrop,.character-detail-backdrop,.weapon-config-backdrop,.calculation-backdrop,.tw-trace-backdrop),
+body:has(.modal-backdrop,.catalog-picker-backdrop,.weapon-detail-backdrop,.character-detail-backdrop,.weapon-config-backdrop,.calculation-backdrop,.tw-trace-backdrop) {
+  overflow-y: hidden;
+}
+
+.modal-backdrop:not(.scan-review-backdrop):not(.import-data-backdrop):not(.roll-quality-backdrop):not(.echo-editor-backdrop):not(.cs-weight-editor-backdrop)>* {
+  max-height: none;
+  overflow: visible;
+}
+
+.content :is(
+  .tw-rotation-analysis,
+  .tw-member-page.section-overview .tw-weapon-passive,
+  .tw-main-echo-details .game-description,
+  .optimizer-exclusion-list,
+  .optimizer-sonata-picker>div:last-child
+) {
+  height: auto;
+  max-height: none;
+  overflow: visible;
+}

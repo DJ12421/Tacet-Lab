@@ -3,23 +3,33 @@ import { generatedCharacterSummaries as characterCatalog } from '../game-data/ch
 import { echoCatalog } from '../game-data/echoes'
 import { generatedSonataCatalog as sonataCatalog, generatedSonataIconSources } from '../game-data/sonatas.generated'
 import { generatedWeaponSummaries as weaponCatalog } from '../game-data/weapon-summaries.generated'
+import { getSettings } from '../storage/database'
 import { ElementFilterIcon, FilterChips, Icon, PageHeader } from './components'
 import { SonataPicker } from './SonataPicker'
 
 type ArchiveTab = 'characters' | 'weapons' | 'sonatas' | 'echoes'
 type SortMode = 'release-order' | 'name-asc' | 'name-desc' | 'rarity-desc' | 'cost-desc'
 
+const sortOptionsFor = (tab: ArchiveTab): Array<{ value: SortMode; label: string }> => [
+  ...(tab === 'sonatas' ? [{ value: 'release-order' as const, label: 'Release order' }] : []),
+  { value: 'name-asc', label: 'Name A–Z' },
+  { value: 'name-desc', label: 'Name Z–A' },
+  ...((tab === 'characters' || tab === 'weapons') ? [{ value: 'rarity-desc' as const, label: 'Highest rarity' }] : []),
+  ...(tab === 'echoes' ? [{ value: 'cost-desc' as const, label: 'Highest cost' }] : [])
+]
+
 const PAGE_SIZE = 48
-const tabs: Array<{ id: ArchiveTab; label: string; count: number; icon: Parameters<typeof Icon>[0]['name'] }> = [
-  { id: 'characters', label: 'Characters', count: characterCatalog.length, icon: 'team' },
-  { id: 'weapons', label: 'Weapons', count: weaponCatalog.length, icon: 'build' },
-  { id: 'sonatas', label: 'Sonatas', count: sonataCatalog.length, icon: 'optimize' },
-  { id: 'echoes', label: 'Echoes', count: echoCatalog.length, icon: 'echo' }
+const archiveIconRoot = `${import.meta.env.BASE_URL}sidebar-icons/`
+const tabs: Array<{ id: ArchiveTab; label: string; count: number; iconSource: string }> = [
+  { id: 'characters', label: 'Characters', count: characterCatalog.length, iconSource: `${archiveIconRoot}characters.svg` },
+  { id: 'weapons', label: 'Weapons', count: weaponCatalog.length, iconSource: `${archiveIconRoot}weapons.svg` },
+  { id: 'sonatas', label: 'Sonatas', count: sonataCatalog.length, iconSource: generatedSonataIconSources['Freezing Frost'] },
+  { id: 'echoes', label: 'Echoes', count: echoCatalog.length, iconSource: `${archiveIconRoot}echoes.svg` }
 ]
 const weaponTypes = [...new Set(weaponCatalog.map((item) => item.type))]
 const characterElements = [...new Set(characterCatalog.map((item) => item.element))]
 const weaponSecondaryStats = [...new Set(weaponCatalog.map((item) => item.secondaryStat))].filter((value) => value !== 'Unreleased')
-const echoCosts = ['1-cost', '3-cost', '4-cost']
+const echoCosts = ['1 cost', '3 cost', '4 cost']
 const characterRarities = [5, 4]
 const weaponRarities = [5, 4, 3, 2, 1]
 const categoryOptionsFor = (tab: ArchiveTab) => tab === 'characters' ? characterElements : tab === 'weapons' ? weaponSecondaryStats : tab === 'echoes' ? echoCosts : []
@@ -42,18 +52,25 @@ function CatalogImage({ src, alt }: { src?: string; alt: string }) {
 }
 
 export function ArchiveView({ roverGender, tab, onTabChange }: { roverGender: 'male' | 'female'; tab: ArchiveTab; onTabChange: (tab: ArchiveTab) => void }) {
+  const [featuredCharacterId, setFeaturedCharacterId] = useState('1506')
   const [query, setQuery] = useState('')
   const [rarities, setRarities] = useState<number[]>(() => rarityOptionsFor(tab))
   const [categories, setCategories] = useState<string[]>(() => categoryOptionsFor(tab))
   const [selectedWeaponTypes, setSelectedWeaponTypes] = useState<string[]>(weaponTypes)
   const [sonata, setSonata] = useState('all')
   const [sort, setSort] = useState<SortMode>(() => tab === 'sonatas' ? 'release-order' : 'name-asc')
+  const [sortOpen, setSortOpen] = useState(false)
   const [visibleLimit, setVisibleLimit] = useState(PAGE_SIZE)
   const searchRef = useRef<HTMLInputElement>(null)
   const deferredQuery = useDeferredValue(query.trim().toLowerCase())
   const categoryOptions = categoryOptionsFor(tab)
   const rarityOptions = rarityOptionsFor(tab)
   const currentTab = tabs.find((item) => item.id === tab) ?? tabs[0]
+  const sortOptions = sortOptionsFor(tab)
+  const featuredElement = characterCatalog.find((item) => item.id === featuredCharacterId)?.element ?? 'Spectro'
+  const featuredElementIcon = generatedSonataIconSources[elementSonatas[featuredElement]]
+
+  useEffect(() => { void getSettings().then((settings) => setFeaturedCharacterId((settings as typeof settings & { homeFeaturedCharacterId?: string }).homeFeaturedCharacterId ?? '1506')) }, [])
 
   useEffect(() => {
     setQuery('')
@@ -62,6 +79,7 @@ export function ArchiveView({ roverGender, tab, onTabChange }: { roverGender: 'm
     setSelectedWeaponTypes(weaponTypes)
     setSonata('all')
     setSort(tab === 'sonatas' ? 'release-order' : 'name-asc')
+    setSortOpen(false)
     setVisibleLimit(PAGE_SIZE)
   }, [tab])
 
@@ -92,10 +110,10 @@ export function ArchiveView({ roverGender, tab, onTabChange }: { roverGender: 'm
     if (tab === 'characters') return byName(characterCatalog.filter((item) => isSelectedGenderVariant(item, roverGender) && includesQuery(item.name) && includesRarity(item.rarity) && includesCategory(item.element)))
     if (tab === 'weapons') return byName(weaponCatalog.filter((item) => includesQuery(item.name) && includesRarity(item.rarity) && includesCategory(item.secondaryStat) && selectedWeaponTypes.includes(item.type)))
     if (tab === 'sonatas') return byName(sonataCatalog.filter((item) => includesQuery(item.name)))
-    return byName(echoCatalog.filter((item) => includesQuery(`${item.name} ${item.sonatas.join(' ')}`) && includesCategory(`${item.cost}-cost`) && (sonata === 'all' || item.sonatas.includes(sonata))))
+    return byName(echoCatalog.filter((item) => includesQuery(`${item.name} ${item.sonatas.join(' ')}`) && includesCategory(`${item.cost} cost`) && (sonata === 'all' || item.sonatas.includes(sonata))))
   }, [categories, deferredQuery, rarities, roverGender, selectedWeaponTypes, sonata, sort, tab])
 
-  const visibleResults = tab === 'characters' ? results : results.slice(0, visibleLimit)
+  const visibleResults = tab === 'characters' || tab === 'weapons' ? results : results.slice(0, visibleLimit)
   const hasFilters = Boolean(query) || rarities.length !== rarityOptions.length || categories.length !== categoryOptions.length || selectedWeaponTypes.length !== weaponTypes.length || sonata !== 'all'
   const clearFilters = () => {
     setQuery('')
@@ -111,26 +129,33 @@ export function ArchiveView({ roverGender, tab, onTabChange }: { roverGender: 'm
 
     <nav className="archive-section-tabs" aria-label="Archive categories">
       {tabs.map((item) => <button type="button" aria-current={tab === item.id ? 'page' : undefined} className={tab === item.id ? 'active' : ''} onClick={() => onTabChange(item.id)} key={item.id}>
-        <i><Icon name={item.icon}/></i><strong>{item.label}</strong><b>{item.count}</b>
+        <i><img src={item.id === 'sonatas' ? featuredElementIcon : item.iconSource} alt=""/></i><strong>{item.label}</strong><b>{item.count}</b>
       </button>)}
     </nav>
 
     <section className="archive-controls" aria-label={`${currentTab.label} filters`}>
-      <div className="archive-toolbar-row">
+      <div className={`archive-toolbar-row archive-toolbar-${tab}`}>
         <label className="archive-search"><Icon name="scan"/><input ref={searchRef} aria-label={`Search ${currentTab.label}`} value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`Search ${currentTab.label.toLowerCase()}`}/>{query && <button type="button" aria-label="Clear search" onClick={() => setQuery('')}>×</button>}<kbd>Ctrl K</kbd></label>
-        <label className="archive-sort"><span>Sort</span><select value={sort} onChange={(event) => setSort(event.target.value as SortMode)}>
-          {tab === 'sonatas' && <option value="release-order">Release order</option>}
-          <option value="name-asc">Name A–Z</option><option value="name-desc">Name Z–A</option>
-          {(tab === 'characters' || tab === 'weapons') && <option value="rarity-desc">Highest rarity</option>}
-          {tab === 'echoes' && <option value="cost-desc">Highest cost</option>}
-        </select></label>
+        <div className={`archive-sort${sortOpen ? ' open' : ''}`} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setSortOpen(false) }} onKeyDown={(event) => { if (event.key === 'Escape') { setSortOpen(false); event.currentTarget.querySelector<HTMLButtonElement>('.archive-sort-trigger')?.focus() } }}>
+          <span>Sort</span><div className="archive-sort-picker">
+            <button type="button" className="archive-sort-trigger" aria-label="Sort archive" aria-haspopup="true" aria-expanded={sortOpen} onClick={() => setSortOpen((open) => !open)}><b>{sortOptions.find((option) => option.value === sort)?.label}</b><strong aria-hidden="true">⌄</strong></button>
+            {sortOpen && <div className="archive-sort-menu" aria-label="Archive sort options">{sortOptions.map((option) => <button type="button" aria-pressed={sort === option.value} className={sort === option.value ? 'active' : ''} onClick={() => { setSort(option.value); setSortOpen(false) }} key={option.value}><span>{option.label}</span><i aria-hidden="true">{sort === option.value ? '✓' : ''}</i></button>)}</div>}
+          </div>
+        </div>
       {tab !== 'sonatas' && <>
-        {tab !== 'echoes' && <FilterChips label="Rarity" values={rarityOptions} selected={rarities} onChange={setRarities} renderValue={(value) => `${value} ★`}/>} 
-        {tab === 'characters' && <FilterChips label="Element" values={categoryOptions} selected={categories} onChange={setCategories} renderValue={(value) => <ElementFilterIcon element={value}/>}/>} 
-        {tab === 'weapons' && <FilterChips label="Weapon type" values={weaponTypes} selected={selectedWeaponTypes} onChange={setSelectedWeaponTypes}/>} 
-        {tab === 'weapons' && <FilterChips label="Secondary stat" values={categoryOptions} selected={categories} onChange={setCategories}/>} 
+        {tab !== 'echoes' && <FilterChips label="Rarity" hideLabel values={rarityOptions} selected={rarities} onChange={setRarities} renderValue={(value) => `${value} ★`}/>}
+        {tab === 'characters' && <FilterChips
+          label="Element"
+          hideLabel
+          values={categoryOptions}
+          selected={categories}
+          onChange={setCategories}
+          renderValue={(value) => <ElementFilterIcon element={value}/>}
+        />}
+        {tab === 'weapons' && <FilterChips label="Weapon type" hideLabel values={weaponTypes} selected={selectedWeaponTypes} onChange={setSelectedWeaponTypes}/>}
+        {tab === 'weapons' && <FilterChips label="Secondary stat" hideLabel values={categoryOptions} selected={categories} onChange={setCategories}/>}
         {tab === 'echoes' && <SonataPicker id="archive-sonata-filter" value={sonata} onChange={setSonata} allowAll/>}
-        {tab === 'echoes' && <FilterChips label="Cost" values={categoryOptions} selected={categories} onChange={setCategories}/>} 
+        {tab === 'echoes' && <FilterChips label="Cost" hideLabel values={categoryOptions} selected={categories} onChange={setCategories}/>}
       </>}
       </div>
       <div className="archive-result-bar" aria-live="polite"><span><strong>{results.length}</strong> {results.length === 1 ? 'entry' : 'entries'} found</span>{hasFilters && <button type="button" className="text-button" onClick={clearFilters}>Reset filters</button>}</div>
@@ -141,9 +166,9 @@ export function ArchiveView({ roverGender, tab, onTabChange }: { roverGender: 'm
     {tab === 'characters' && <div className="archive-results-grid archive-character-grid">{(visibleResults as typeof characterCatalog).map((item) => <a className="archive-entry-card archive-character-card" href={item.articleUrl} target="_blank" rel="noreferrer" key={item.id}><div className="archive-entry-art"><CatalogImage src={item.iconSourceUrl} alt={item.name}/><span className="archive-external" aria-hidden="true">↗</span></div><div className="archive-entry-copy"><div><h2>{item.name}</h2><ElementIcon element={item.element}/></div><p>{item.title}</p><footer><span>{item.weaponType}</span><b aria-label={`${item.rarity} stars`}>{'★'.repeat(item.rarity)}</b></footer></div></a>)}</div>}
     {tab === 'weapons' && <div className="archive-results-grid archive-weapon-grid">{(visibleResults as typeof weaponCatalog).map((item) => <a className="archive-entry-card archive-weapon-card" href={item.articleUrl} target="_blank" rel="noreferrer" key={item.id}><div className="archive-entry-art"><CatalogImage src={item.iconSourceUrl} alt={item.name}/><span className="archive-external" aria-hidden="true">↗</span></div><div className="archive-entry-copy"><h2>{item.name}</h2><p>{item.type}</p><dl><div><dt>ATK</dt><dd>{item.baseAtk}</dd></div><div><dt>{item.secondaryStat}</dt><dd>{item.secondaryStatValue}</dd></div></dl><footer><b aria-label={`${item.rarity} stars`}>{'★'.repeat(item.rarity)}</b></footer></div></a>)}</div>}
     {tab === 'sonatas' && <div className="archive-results-grid archive-sonata-grid">{(visibleResults as typeof sonataCatalog).map((item) => <article className="archive-sonata-card" key={item.id}><header><span><CatalogImage src={generatedSonataIconSources[item.name]} alt=""/></span><div><h2>{item.name}</h2><p>{item.echoCount} compatible Echoes</p></div></header><div className="archive-sonata-effects">{item.effects.map((effect) => <div key={effect.pieces}><b>{effect.pieces}<small>PC</small></b><p>{effect.description}</p></div>)}</div></article>)}</div>}
-    {tab === 'echoes' && <div className="archive-results-grid archive-echo-grid">{(visibleResults as typeof echoCatalog).map((item) => <a className="archive-entry-card archive-echo-card" href={item.articleUrl} target="_blank" rel="noreferrer" key={item.id}><div className="archive-entry-art"><CatalogImage src={item.iconSourceUrl} alt={item.name}/><b className={`archive-cost cost-${item.cost}`}>{item.cost}</b><span className="archive-external" aria-hidden="true">↗</span></div><div className="archive-entry-copy"><h2>{item.name}</h2><p>{item.sonatas.join(' · ')}</p><footer><span>{item.cost} cost</span><b aria-label={`${Math.max(...(item.rarities ?? [1]))} stars`}>{'★'.repeat(Math.max(...(item.rarities ?? [1])))}</b></footer></div></a>)}</div>}
+    {tab === 'echoes' && <div className="archive-results-grid archive-echo-grid">{(visibleResults as typeof echoCatalog).map((item) => <a className="archive-entry-card archive-echo-card" href={item.articleUrl} target="_blank" rel="noreferrer" key={item.id}><div className="archive-entry-art"><CatalogImage src={item.iconSourceUrl} alt={item.name}/><b className={`archive-cost cost-${item.cost}`}>{item.cost}</b><span className="archive-external" aria-hidden="true">↗</span></div><div className="archive-entry-copy"><h2>{item.name}</h2><div className="archive-echo-sonatas" aria-label={`Sonatas: ${item.sonatas.join(', ')}`}>{item.sonatas.map((name) => <img src={generatedSonataIconSources[name]} alt="" title={name} key={name}/>)}</div><footer><span>{item.cost} cost</span><b aria-label={`${Math.max(...(item.rarities ?? [1]))} stars`}>{'★'.repeat(Math.max(...(item.rarities ?? [1])))}</b></footer></div></a>)}</div>}
 
-    {tab !== 'characters' && visibleLimit < results.length && <div className="archive-load-more"><p>Showing {visibleResults.length} of {results.length}</p><button type="button" className="secondary" onClick={() => setVisibleLimit((value) => value + PAGE_SIZE)}>Show {Math.min(PAGE_SIZE, results.length - visibleLimit)} more</button></div>}
+    {tab !== 'characters' && tab !== 'weapons' && visibleLimit < results.length && <div className="archive-load-more"><p>Showing {visibleResults.length} of {results.length}</p><button type="button" className="secondary" onClick={() => setVisibleLimit((value) => value + PAGE_SIZE)}>Show {Math.min(PAGE_SIZE, results.length - visibleLimit)} more</button></div>}
     <p className="archive-credit">Catalog and artwork from Nanoka 3.6. Cards open Nanoka in a new tab.</p>
   </section>
 }

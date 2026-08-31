@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { Echo, OwnedCharacter } from '../types'
-import { resolveEchoMechanicsV2, skillLevelForAttackV2 } from './context'
+import { resolveEchoMechanicsV2, resolveSonataMechanicsV2, skillLevelForAttackV2 } from './context'
 
 const character: OwnedCharacter = {
   id: 'echo-test-character', catalogId: 'echo-test-character', level: 90, sequence: 0,
@@ -32,5 +32,17 @@ describe('Calculation V2 main Echo mechanics', () => {
     const mechanics = resolveEchoMechanicsV2(echo('Nightmare: Crownless'))!
     expect(mechanics.effects[0].alwaysEnabled).toBe(true)
     expect(mechanics.cooldown).toBe(12)
+  })
+})
+
+describe('Calculation V2 Sonata mechanics', () => {
+  it('activates Sonata effects only when their piece threshold is met', () => {
+    expect(resolveSonataMechanicsV2('Crown of Valor', 2)).toEqual([])
+    expect(resolveSonataMechanicsV2('Crown of Valor', 3)).not.toEqual([])
+    expect(resolveSonataMechanicsV2('Shadow of Shattered Dreams', 0, '1511')).toEqual([])
+    expect(resolveSonataMechanicsV2('Shadow of Shattered Dreams', 1, '1511')).not.toEqual([])
+    expect(resolveSonataMechanicsV2('Shadow of Shattered Dreams', 1, '1308')).not.toEqual([])
+    expect(resolveSonataMechanicsV2('Shadow of Shattered Dreams', 1, '1506')).toEqual([])
+    expect(resolveSonataMechanicsV2('Shadow of Shattered Dreams', 1)).toEqual([])
   })
 })

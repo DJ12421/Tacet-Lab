@@ -216,8 +216,28 @@
 }
 
 .character-equip-trigger i {
-  color: var(--weapon-accent,var(--gold));
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  transform: translateY(3px);
+  color: var(--mint);
+  font-size: 0;
   font-style: normal;
+}
+
+.character-equip-trigger i::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform .16s ease;
+}
+
+.character-equip-trigger[aria-expanded="true"] i::before {
+  transform: translateY(2px) rotate(225deg);
 }
 
 .equip-empty {
@@ -262,6 +282,19 @@
 .character-equip-menu button:hover,.character-equip-menu button.active {
   background: var(--weapon-glow,rgba(228,187,94,.13));
   color: #fff;
+}
+
+@media (max-width:650px) {
+  .character-equip-menu {
+    top: auto;
+    bottom: calc(100% + 5px);
+    max-height: min(42dvh,260px);
+    z-index: 240;
+  }
+
+  .character-equip-menu button {
+    min-height: 44px;
+  }
 }
 
 .catalog-picker {

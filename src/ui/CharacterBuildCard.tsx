@@ -17,6 +17,7 @@ const CARD_WIDTH = 1920
 const CARD_HEIGHT = 1080
 const ART_CANVAS_WIDTH = 5000
 const ART_CANVAS_HEIGHT = 5000
+const STATIC_CHARACTER_ART_ZOOM = 1.35
 const DEBUG_LAYOUT_STORAGE_KEY = 'tacet-lab-character-card-layout-debug-v1'
 const LEVELS = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90]
 const SKILLS = [
@@ -476,6 +477,10 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
           ...DEFAULT_STRAIGHT_SECTION_RECTS,
           ...(catalog.rarity === 4 || catalog.name.startsWith('Rover:') || STANDARD_FIVE_STAR_NAMES.has(catalog.name) ? { art: SHARED_CHARACTER_ART_RECT } : {})
         }
+        if (!settings.liveCharacterArt && defaults.art) {
+          const width = CARD_WIDTH * STATIC_CHARACTER_ART_ZOOM, height = CARD_HEIGHT * STATIC_CHARACTER_ART_ZOOM
+          defaults.art = { x: defaults.art.x - (width - defaults.art.width) / 2, y: defaults.art.y - (height - defaults.art.height) / 2, width, height }
+        }
         debugSectionOriginRectsRef.current = measured
         defaultDebugSectionRectsRef.current = defaults
         const restored = { ...defaults, ...(savedDebugLayoutRef.current?.rects ?? {}) }
@@ -490,7 +495,7 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
       })
     })
     return () => { cancelAnimationFrame(resetFrame); cancelAnimationFrame(measureFrame) }
-  }, [catalog.id])
+  }, [catalog.id, settings.liveCharacterArt])
 
   const updateDebugSectionRect = (section: DebugSectionKey, rect: DebugSectionRect) => {
     if (LAYOUT_PRESET_DEBUG_SECTIONS.includes(section)) setEchoLayoutPreset(null)
@@ -655,9 +660,9 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
     <div ref={forwardedRef} className={`cs-export-frame cbc-card cbc-debug-enabled${highlightedStat ? ' is-stat-highlighting' : ''}`} style={{ ...accentStyle, transform: `scale(${scale})` }}>
       <section className="cbc-art-stage" aria-label={`${catalog.name} character artwork`}>
         <div className={debugSectionClass('art', 'cbc-art-positioner')} data-debug-section="art" style={debugSectionStyle('art')}>
-          <img ref={portraitRef} className={`cbc-character-art ${portraitFailed && !customArtworkUrl ? 'is-fallback' : ''} ${animatedPortraitReady && !customArtworkUrl ? 'is-live-hidden' : ''}`} src={customArtworkUrl ?? (portraitFailed ? catalog.iconSourceUrl : (catalog.portraitSourceUrl || catalog.iconSourceUrl))} alt={catalog.name} onError={onPortraitError}/>
-          <img className="cbc-live-portrait-snapshot" alt="" aria-hidden="true"/>
-          {!customArtworkUrl && catalog.spineSkeletonSourceUrl && catalog.spineAtlasSourceUrl && <NanokaSpinePortrait ref={livePortraitRef} skeletonSourceUrl={catalog.spineSkeletonSourceUrl} atlasSourceUrl={catalog.spineAtlasSourceUrl} renderScale={scale} onReady={onLiveReady} onFallback={onLiveFallback}/>}
+          <img ref={portraitRef} className={`cbc-character-art ${portraitFailed && !customArtworkUrl ? 'is-fallback' : ''} ${settings.liveCharacterArt && animatedPortraitReady && !customArtworkUrl ? 'is-live-hidden' : ''}`} src={customArtworkUrl ?? (portraitFailed ? catalog.iconSourceUrl : (catalog.portraitSourceUrl || catalog.iconSourceUrl))} alt={catalog.name} onError={onPortraitError}/>
+          {settings.liveCharacterArt && <img className="cbc-live-portrait-snapshot" alt="" aria-hidden="true"/>}
+          {settings.liveCharacterArt && !customArtworkUrl && catalog.spineSkeletonSourceUrl && catalog.spineAtlasSourceUrl && <NanokaSpinePortrait ref={livePortraitRef} skeletonSourceUrl={catalog.spineSkeletonSourceUrl} atlasSourceUrl={catalog.spineAtlasSourceUrl} renderScale={scale} onReady={onLiveReady} onFallback={onLiveFallback}/>}
         </div>
       </section>
 
@@ -737,7 +742,7 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
     </div>
     </div>
     {layoutControlsHost && createPortal(<details className="cbc-debug-controls" style={accentStyle} open={debugCalibrationEnabled}>
-      <summary aria-expanded={debugCalibrationEnabled} onClick={(event) => { event.preventDefault(); if (debugCalibrationEnabled) cancelDebugPositioning(); else beginDebugPositioning() }}>Change layout</summary>
+      <summary aria-expanded={debugCalibrationEnabled} onClick={(event) => { event.preventDefault(); if (debugCalibrationEnabled) cancelDebugPositioning(); else beginDebugPositioning() }}>Customize</summary>
     </details>, layoutControlsHost)}
     {debugCalibrationEnabled && layoutPanelHost && createPortal(<div className="cbc-debug-controls cbc-debug-sidebar-controls" style={accentStyle}>
       <div className="cbc-debug-menu">

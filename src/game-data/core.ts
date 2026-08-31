@@ -29,6 +29,7 @@ export const weapons: Weapon[] = []
 export const defaultSettings: AppSettings = {
   displayName: 'Resonator', uid: '', privacyMode: false, background: 'signal', scanIntervalMs: 900,
   roverGender: 'male',
+  liveCharacterArt: true,
   scoreWeights: {},
   characterSubstatWeights: {},
   characterEnergyRegenMinimums: {}

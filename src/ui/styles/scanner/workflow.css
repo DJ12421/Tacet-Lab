@@ -218,6 +218,10 @@
   gap: 7px;
 }
 
+.scanner-mobile-note {
+  display: none;
+}
+
 .scanner-start-actions>button {
   display: flex;
   align-items: center;
@@ -260,6 +264,17 @@
   border: 1px solid rgba(6,18,18,.2);
   border-radius: 50%;
   background: rgba(255,255,255,.16);
+}
+
+.scanner-start-actions .primary .scanner-action-icon .icon {
+  stroke: #16140d;
+}
+
+.scanner-image-action-icon {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  object-fit: contain;
 }
 
 .scanner-video-action {
@@ -346,23 +361,27 @@
   color: var(--gold);
 }
 
-.scanner-advanced>summary>i {
-  width: 11px;
-  height: 11px;
-  margin-right: 4px;
-  border-right: 2px solid rgba(228,187,94,.7);
-  border-bottom: 2px solid rgba(228,187,94,.7);
-  font-style: normal;
-  transform: rotate(45deg);
-  transition: transform .18s,border-color .18s;
+.scanner-advanced-arrow {
+  width: 24px;
+  height: 24px;
+  display: grid!important;
+  place-items: center;
+  flex: 0 0 24px;
+  color: rgba(228,187,94,.7);
 }
 
-.scanner-advanced>summary:hover>i {
-  border-color: var(--gold);
+.scanner-advanced-arrow .icon {
+  width: 18px!important;
+  height: 18px!important;
+  transition: transform .18s,color .18s;
 }
 
-.scanner-advanced[open]>summary>i {
-  transform: rotate(225deg);
+.scanner-advanced>summary:hover .scanner-advanced-arrow {
+  color: var(--gold);
+}
+
+.scanner-advanced[open] .scanner-advanced-arrow .icon {
+  transform: rotate(180deg);
 }
 
 .scanner-advanced .scanner-controls {
@@ -512,6 +531,7 @@
 .debug-region {
   position: absolute;
   border: 1px solid;
+  border-radius: 0;
   background: rgba(0,0,0,.12);
   box-shadow: inset 0 0 0 1px rgba(0,0,0,.3);
 }
@@ -566,6 +586,10 @@
   width: 70px;
 }
 
+.calibration-toolbar .check input {
+  width: auto;
+}
+
 .calibration-workspace {
   min-width: 0;
   display: grid;
@@ -592,6 +616,7 @@
 .calibration-panel-box {
   position: absolute;
   border: 2px solid var(--gold);
+  border-radius: 0;
   background: rgba(232,189,103,.04);
   cursor: move;
 }
@@ -629,6 +654,7 @@
   position: absolute;
   z-index: 8;
   border: 1px solid;
+  border-radius: 0;
   background: rgba(0,0,0,.12);
   cursor: move;
   touch-action: none;
@@ -1338,10 +1364,6 @@
   font-size: var(--font-size-body);
 }
 
-.scan-review-popout .echo-search-trigger i,.scan-review-popout .sonata-picker-trigger i {
-  font-size: var(--font-size-body-large);
-}
-
 .scan-review-popout .echo-search-menu>input,.scan-review-popout .sonata-picker-search {
   min-height: 44px;
   font-size: var(--font-size-body);
@@ -1463,6 +1485,10 @@
   .calibration-workspace, .scan-session-summary>div {
     grid-template-columns: 1fr;
   }
+  .calibration-toolbar>.secondary {
+    width: 100%;
+    flex: 1 0 100%;
+  }
   .calibration-field-inspector {
     position: static;
   }
@@ -1523,12 +1549,50 @@
     order: 3;
     width: calc(100% - 40px);
   }
+  .scanned-echoes-heading {
+    align-items: stretch;
+  }
+  .scanned-echo-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 8px;
+  }
+  .scanned-echo-actions>button {
+    width: 100%;
+    min-width: 0;
+  }
   .scanner-advanced .scanner-controls {
     display: grid;
     grid-template-columns: 1fr;
+    width: calc(100% - 24px);
+    max-width: 420px;
+    margin-inline: auto;
+    padding: 12px;
+    border-width: 1px;
+    border-radius: 8px;
   }
   .scanner-advanced .scanner-controls>* {
     width: 100%;
+  }
+  .scanner-advanced .scanner-controls>label:not(.check) {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) auto;
+    align-items: center;
+    gap: 12px;
+  }
+  .scanner-advanced .scanner-controls>label:not(.check)>select {
+    width: 132px;
+    max-width: 42vw;
+  }
+  .scanner-advanced .scanner-controls>.check {
+    justify-content: flex-start;
+  }
+  .scanner-advanced .scanner-setting-note,
+  .scanner-advanced .scan-session-summary {
+    width: calc(100% - 24px);
+    max-width: 420px;
+    margin-inline: auto;
   }
 }
 
@@ -1539,6 +1603,21 @@
 }
 
 @media (max-width: 720px) {
+  .scanner-start-actions > .scanner-live-action {
+    display: none;
+  }
+
+  .scanner-mobile-note {
+    display: block;
+    margin: 0;
+    padding: 10px 12px;
+    border: 1px solid rgba(141,228,212,.25);
+    background: rgba(141,228,212,.06);
+    color: #a9c8c2;
+    font-size: var(--font-size-caption);
+    line-height: 1.45;
+  }
+
   .scanner-controls .scanner-layout-control {
     width: 100%;
     margin-left: 0;

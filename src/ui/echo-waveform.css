@@ -15,49 +15,22 @@
   fill: #020405;
 }
 
-.cs-echo-wave-path {
-  transform-box: fill-box;
-  transform-origin: center;
-}
-
 .cs-echo-wave-gold-dark {
   stroke: color-mix(in srgb,var(--wave-color) 48%,#07090a);
 }
 
 .cs-echo-wave-gold {
   stroke: color-mix(in srgb,var(--wave-color) 72%,#d7d2c6);
-  animation-delay: -1.2s;
 }
 
 .cs-echo-wave-gold-light {
   stroke: color-mix(in srgb,var(--wave-color) 88%,#fff);
-  animation: cs-echo-wave-pulse 2.8s -2.3s ease-in-out infinite;
 }
 
 .cs-echo-wave-gold-mid {
   stroke: var(--wave-color);
-  animation-delay: -3.1s;
 }
 
 .cs-echo-wave-white {
   stroke: color-mix(in srgb,var(--wave-color) 36%,#fff);
-  animation-delay: -4.2s;
-}
-
-@keyframes cs-echo-wave-pulse {
-  0%,100% {
-    transform: translateY(-1px);
-  }
-  35% {
-    transform: translateY(2px);
-  }
-  70% {
-    transform: translateY(-2px);
-  }
-}
-
-@media (prefers-reduced-motion:reduce) {
-  .cs-echo-wave-path {
-    animation: none;
-  }
 }

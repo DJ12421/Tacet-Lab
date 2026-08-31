@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { AppView } from '../domain/types'
 import { clearAccount, exportAccount, saveSettings } from '../storage/database'
 import { ArchiveView } from './ArchiveView'
@@ -13,21 +13,29 @@ import { PwaUpdatePrompt } from './PwaUpdatePrompt'
 import { ScannerView } from './ScannerView'
 import { TeamsView } from './TeamsView'
 import { useAppData } from './useAppData'
+import { useBodyScrollLock } from './useDismissableLayer'
 
 const sidebarIconRoot = `${import.meta.env.BASE_URL}sidebar-icons/`
-const nav: Array<{ view: AppView; label: string; icon?: string; legacyIcon?: Parameters<typeof Icon>[0]['name'] }> = [
+type NavItem = { view: AppView; label: string; icon?: string; legacyIcon?: Parameters<typeof Icon>[0]['name'] }
+const nav: NavItem[] = [
   { view: 'dashboard', label: 'Home', icon: 'home.svg' },
   { view: 'archive', label: 'Archive', icon: 'archive.svg' },
   { view: 'echoes', label: 'Echoes', icon: 'echoes.svg' },
   { view: 'weapons', label: 'Weapons', icon: 'weapons.svg' },
   { view: 'characters', label: 'Characters', icon: 'characters.svg' },
-  { view: 'teams', label: 'Teams', legacyIcon: 'team' },
+  { view: 'teams', label: 'Teams', icon: 'teams.webp' },
   { view: 'scanner', label: 'Scanner', legacyIcon: 'scan' }
 ]
+const mobilePrimaryNav = nav.filter((item) => ['dashboard', 'echoes', 'characters', 'teams'].includes(item.view))
+const mobileMoreNav = (['weapons', 'archive', 'scanner'] as AppView[]).flatMap((view) => nav.find((item) => item.view === view) ?? [])
 const sidebarPinStorageKey = 'tacet-lab-sidebar-pinned'
 
+function NavIcon({ item }: { item: NavItem }) {
+  return item.legacyIcon ? <Icon name={item.legacyIcon}/> : <img className="sidebar-nav-icon" src={`${sidebarIconRoot}${item.icon}`} alt="" width="24" height="24"/>
+}
+
 const viewPaths: Record<AppView, string> = {
-  dashboard: 'home',
+  dashboard: '',
   archive: 'archive',
   scanner: 'scanner',
   echoes: 'echoes',
@@ -37,7 +45,7 @@ const viewPaths: Record<AppView, string> = {
   legal: 'privacy'
 }
 type ArchiveTab = 'characters' | 'weapons' | 'sonatas' | 'echoes'
-type TeamSection = 'overview' | 'forte' | 'optimize' | 'rotation'
+type TeamSection = 'overview' | 'forte' | 'optimize' | 'theorizer' | 'rotation'
 interface AppRoute {
   view: AppView
   archiveTab?: ArchiveTab
@@ -59,7 +67,7 @@ const archivePathTabs: Record<string, ArchiveTab> = {
   sonatas: 'sonatas',
   echoes: 'echoes'
 }
-const teamSections = new Set<TeamSection>(['overview', 'forte', 'optimize', 'rotation'])
+const teamSections = new Set<TeamSection>(['overview', 'forte', 'optimize', 'theorizer', 'rotation'])
 const routeHeads = new Set(['home', ...Object.values(viewPaths).filter(Boolean)])
 const initialUrl = new URL(window.location.href)
 const restoredRoute = initialUrl.searchParams.get('__route')
@@ -74,8 +82,6 @@ if (restoredRoute) {
   initialUrl.searchParams.delete('__route')
   const restoredPath = `${appRootPath}${restoredRoute.replace(/^\/+/, '')}`
   window.history.replaceState({}, '', `${restoredPath}${initialUrl.search}${initialUrl.hash}`)
-} else if (initialRouteIndex < 0) {
-  window.history.replaceState({}, '', `${appRootPath}home${initialUrl.search}${initialUrl.hash}`)
 }
 
 function routeSegments() {
@@ -122,6 +128,8 @@ export default function App() {
   const view = route.view
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [importOpen, setImportOpen] = useState(false)
+  const [mobileMoreOpen, setMobileMoreOpen] = useState(false)
+  const mobileMoreRef = useRef<HTMLDialogElement>(null)
   const [toast, setToast] = useState('')
   const [scannerSessionAtRisk, setScannerSessionAtRisk] = useState(false)
   const [teamsGalleryRequest, setTeamsGalleryRequest] = useState(0)
@@ -133,6 +141,15 @@ export default function App() {
   const data = useAppData()
   const sidebarOpen = sidebarPinned || (sidebarOpenOverride ?? view === 'dashboard')
   const sidebarReserved = sidebarPinned || (view === 'dashboard' && sidebarOpenOverride !== false)
+  const mobileMoreActive = ['weapons', 'archive', 'scanner', 'legal'].includes(view)
+  useBodyScrollLock(mobileMoreOpen)
+
+  useEffect(() => {
+    const dialog = mobileMoreRef.current
+    if (!dialog) return
+    if (mobileMoreOpen && !dialog.open) dialog.showModal()
+    if (!mobileMoreOpen && dialog.open) dialog.close()
+  }, [mobileMoreOpen])
 
   const notify = (message: string) => { setToast(message); window.setTimeout(() => setToast(''), 2600) }
   const setRoute = (nextRoute: AppRoute, historyMode: 'push' | 'replace' = 'push') => {
@@ -150,6 +167,12 @@ export default function App() {
       : { view: nextView }
     setRoute(nextRoute)
   }
+  const navigateFromShell = (nextView: AppView) => {
+    setMobileMoreOpen(false)
+    if (nextView === 'teams') setTeamsGalleryRequest((request) => request + 1)
+    setSidebarOpenOverride(null)
+    setView(nextView)
+  }
   useEffect(() => {
     const handleHistoryNavigation = () => {
       const nextRoute = routeFromLocation()
@@ -166,7 +189,7 @@ export default function App() {
   }, [route, scannerSessionAtRisk, view])
   useEffect(() => {
     const label = nav.find((item) => item.view === view)?.label ?? (view === 'legal' ? 'Privacy & Legal' : 'Tacet Lab')
-    document.title = `${label} | Tacet Lab`
+    document.title = view === 'dashboard' ? 'Tacet Lab | Wuthering Waves Build Optimizer' : `${label} | Tacet Lab`
   }, [view])
   useEffect(() => {
     try { window.localStorage.setItem(sidebarPinStorageKey, String(sidebarPinned)) } catch { /* Keep the preference session-only when storage is unavailable. */ }
@@ -187,7 +210,8 @@ export default function App() {
       ...data.settings,
       displayName: String(values.get('displayName') || 'Resonator').trim() || 'Resonator',
       uid: String(values.get('uid') || '').trim(),
-      roverGender: String(values.get('roverGender')) as typeof data.settings.roverGender
+      roverGender: String(values.get('roverGender')) as typeof data.settings.roverGender,
+      liveCharacterArt: values.has('liveCharacterArt')
     })
     await data.refresh()
     setSettingsOpen(false)
@@ -204,16 +228,17 @@ export default function App() {
         <button className="sidebar-pin" type="button" aria-pressed={sidebarPinned} title={sidebarPinned ? 'Unpin sidebar' : 'Pin sidebar'} onClick={() => { setSidebarPinned(!sidebarPinned); setSidebarOpenOverride(sidebarPinned ? false : true) }}><svg className="sidebar-pin-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m15.8 3.4 4.8 4.8-2.6 1.3-3.2 3.2.8 3.9-1.5 1.5-4.1-4.1-5.1 5.1-1.2-1.2 5.1-5.1-4.1-4.1 1.5-1.5 3.9.8 3.2-3.2 1.3-2.6Z"/></svg><span>{sidebarPinned ? 'Unpin' : 'Pin'}</span></button>
       </div>
       <button className="brand" onClick={() => setView('dashboard')}><div className="brand-mark"><i/><i/><i/></div><div><strong>TACET LAB</strong><span>WUWA OPTIMIZER</span></div></button>
-      <nav>{nav.map((item) => <button key={item.view} title={item.label} className={view === item.view ? 'active' : ''} onClick={() => { if (item.view === 'teams') setTeamsGalleryRequest((request) => request + 1); setSidebarOpenOverride(null); setView(item.view) }}>{item.legacyIcon ? <Icon name={item.legacyIcon}/> : <img className="sidebar-nav-icon" src={`${sidebarIconRoot}${item.icon}`} alt=""/>}<span>{item.label}</span>{item.view === 'scanner' && <b>EN</b>}</button>)}</nav>
+      <nav className="desktop-nav">{nav.map((item) => <button key={item.view} type="button" title={item.label} aria-current={view === item.view ? 'page' : undefined} className={view === item.view ? 'active' : ''} onClick={() => navigateFromShell(item.view)}><NavIcon item={item}/><span>{item.label}</span>{item.view === 'scanner' && <b>EN</b>}</button>)}</nav>
+      <nav className="mobile-nav" aria-label="Mobile navigation">{mobilePrimaryNav.map((item) => <button key={item.view} type="button" aria-current={view === item.view ? 'page' : undefined} className={view === item.view ? 'active' : ''} onClick={() => navigateFromShell(item.view)}><NavIcon item={item}/><span>{item.label}</span></button>)}<button type="button" className={mobileMoreActive ? 'active' : ''} aria-current={mobileMoreActive ? 'page' : undefined} aria-haspopup="dialog" aria-expanded={mobileMoreOpen} onClick={() => setMobileMoreOpen(true)}><Icon name="more"/><span>More</span></button></nav>
       <div className="side-bottom"><div className="local-status"><i/><div><strong>Local inventory</strong><span>{data.echoes.length} Echoes · {data.characters.length} characters · {data.weapons.length} weapons</span></div></div><button className={view === 'legal' ? 'active' : ''} onClick={() => setView('legal')}><Icon name="lock"/><span>Privacy & Legal</span></button><button onClick={() => setSettingsOpen(true)}><Icon name="settings"/><span>Settings</span></button></div>
     </aside>
     <main>
-      <div className="topbar"><div className="local-only-status" title="Inventory, builds, settings, and captured frames stay in this browser."><span className="pulse"/><span><strong>LOCAL ONLY</strong><small>Data stays on this device</small></span></div><div><button onClick={() => setImportOpen(true)}><Icon name="upload"/>Import</button><button onClick={exportData}><Icon name="download"/>Export</button><a className="discord-button" href="https://discord.gg/fy66NmapWb" target="_blank" rel="noreferrer" aria-label="Join the Tacet Lab Discord" title="Join the Tacet Lab Discord"><Icon name="discord"/></a></div></div>
+      <div className="topbar"><div className="local-only-status" title="Inventory, builds, settings, and captured frames stay in this browser."><span className="mobile-topbar-brand">TACET LAB</span><span className="pulse"/><span><strong>LOCAL ONLY</strong><small>Data stays on this device</small></span></div><div><button type="button" aria-label="Import data" onClick={() => setImportOpen(true)}><Icon name="upload"/><span>Import</span></button><button type="button" aria-label="Export data" onClick={exportData}><Icon name="download"/><span>Export</span></button><a className="discord-button" href="https://discord.gg/fy66NmapWb" target="_blank" rel="noreferrer" aria-label="Join the Tacet Lab Discord" title="Join the Tacet Lab Discord"><Icon name="discord"/></a></div></div>
       <div className={`content${view === 'teams' ? ' teams-content' : ''}`}>
         {view === 'dashboard' && <HomeView echoes={data.echoes} characters={data.characters} weapons={data.weapons} builds={data.builds} teams={data.teams} navigate={setView}/>}
         {view === 'archive' && <ArchiveView roverGender={data.settings.roverGender} tab={route.archiveTab ?? 'characters'} onTabChange={(archiveTab) => setRoute({ view: 'archive', archiveTab })}/>}
         {view === 'scanner' && <ScannerView echoes={data.echoes} refresh={data.refresh} scanIntervalMs={data.settings.scanIntervalMs} onScanIntervalChange={async (scanIntervalMs) => { await saveSettings({ ...data.settings, scanIntervalMs }); await data.refresh(); notify('Scan speed saved') }} onSessionRiskChange={setScannerSessionAtRisk}/>}
-        {view === 'echoes' && <InventoryView echoes={data.echoes} builds={data.builds} refresh={data.refresh} openScanner={() => setView('scanner')}/>}
+        {view === 'echoes' && <InventoryView echoes={data.echoes} builds={data.builds} characters={data.characters} refresh={data.refresh} openScanner={() => setView('scanner')}/>}
         {view === 'weapons' && <WeaponInventory owned={data.weapons} characters={data.characters} builds={data.builds} refresh={data.refresh} weaponIdentifier={route.weapon} onWeaponChange={(weapon) => setRoute({ view: 'weapons', weapon: weapon?.id })}/>}
         {view === 'characters' && <CharacterInventory owned={data.characters} weapons={data.weapons} echoes={data.echoes} builds={data.builds} equippedLoadouts={data.equippedLoadouts} theorycraftBuilds={data.theorycraftBuilds} teams={data.teams} settings={data.settings} roverGender={data.settings.roverGender} refresh={data.refresh} characterIdentifier={route.character} onCharacterChange={(entry) => setRoute({ view: 'characters', character: entry ? characterSlug(entry.name) : undefined })}/>} 
         {view === 'teams' && <TeamsView echoes={data.echoes} builds={data.builds} equippedLoadouts={data.equippedLoadouts} theorycraftBuilds={data.theorycraftBuilds} teams={data.teams} characters={data.characters} weapons={data.weapons} refresh={data.refresh} openScanner={() => setView('scanner')} galleryRequest={teamsGalleryRequest} roverGender={data.settings.roverGender} route={{ team: route.team, character: route.teamCharacter, section: route.teamSection }} onRouteChange={(next) => setRoute({ view: 'teams', team: next.team, teamCharacter: next.character, teamSection: next.section })}/>} 
@@ -221,21 +246,27 @@ export default function App() {
       </div>
       <footer className="site-footer"><span>This is an independent fan project not affiliated with/endorsed by Wuthering Waves or Kuro Games.</span><span>Catalog data: Nanoka 3.6</span></footer>
     </main>
+    <dialog ref={mobileMoreRef} className="mobile-more-sheet" aria-labelledby="mobile-more-title" onClose={() => setMobileMoreOpen(false)} onMouseDown={(event) => { if (event.target === event.currentTarget) setMobileMoreOpen(false) }}>
+      <div className="mobile-more-handle" aria-hidden="true"/>
+      <header><div><span className="eyebrow">Navigation</span><h2 id="mobile-more-title">More</h2></div><button type="button" className="close" aria-label="Close navigation menu" onClick={() => setMobileMoreOpen(false)}>×</button></header>
+      <nav aria-label="More destinations">{mobileMoreNav.map((item) => <button key={item.view} type="button" aria-current={view === item.view ? 'page' : undefined} className={view === item.view ? 'active' : ''} onClick={() => navigateFromShell(item.view)}><NavIcon item={item}/><span><strong>{item.label}</strong>{item.view === 'scanner' && <small>Upload or enter Echoes manually on mobile</small>}</span></button>)}<button type="button" className={view === 'legal' ? 'active' : ''} aria-current={view === 'legal' ? 'page' : undefined} onClick={() => navigateFromShell('legal')}><Icon name="lock"/><span><strong>Privacy & Legal</strong><small>How Tacet Lab keeps your data local</small></span></button><button type="button" onClick={() => { setMobileMoreOpen(false); setSettingsOpen(true) }}><Icon name="settings"/><span><strong>Settings</strong><small>Appearance, build cards, and local data</small></span></button></nav>
+    </dialog>
     {importOpen && <ImportDataModal onClose={() => setImportOpen(false)} onImported={async (preview) => { await data.refresh(); notify(`Import merged: ${preview.added} new, ${preview.updated} updated, ${preview.duplicates} duplicates skipped`) }}/>} 
-    {settingsOpen && <div className="modal-backdrop" onMouseDown={() => setSettingsOpen(false)}><Panel className="settings-modal" onMouseDown={(event) => event.stopPropagation()}>
-      <div className="settings-header"><div><span className="eyebrow">Make it yours</span><h2>Settings</h2></div><button className="close" aria-label="Close settings" onClick={() => setSettingsOpen(false)}>×</button></div>
+    {settingsOpen && <div className="modal-backdrop" onMouseDown={() => setSettingsOpen(false)}><Panel className="settings-modal" role="dialog" aria-modal="true" aria-labelledby="settings-title" onMouseDown={(event) => event.stopPropagation()}>
+      <div className="settings-header"><div><span className="eyebrow">Make it yours</span><h2 id="settings-title">Settings</h2></div><button className="close" aria-label="Close settings" onClick={() => setSettingsOpen(false)}>×</button></div>
       <form onSubmit={(event) => { event.preventDefault(); void savePreferences(event.currentTarget) }}>
         <section className="settings-section">
-          <div className="settings-section-title"><span className="settings-section-icon">◇</span><div><strong>Rover</strong><small>Used anywhere Rover appears.</small></div></div>
+          <div className="settings-section-title"><span className="settings-section-icon"><img src={`${import.meta.env.BASE_URL}black-shores-emblem.webp`} alt="" width="20" height="20"/></span><div><strong>Rover</strong><small>Used anywhere Rover appears.</small></div></div>
           <div className="settings-choice" role="radiogroup" aria-label="Rover appearance">
             <label><input type="radio" name="roverGender" value="male" defaultChecked={data.settings.roverGender === 'male'}/><span><b>Male Rover</b><small>Use the male artwork</small></span></label>
             <label><input type="radio" name="roverGender" value="female" defaultChecked={data.settings.roverGender === 'female'}/><span><b>Female Rover</b><small>Use the female artwork</small></span></label>
           </div>
         </section>
         <section className="settings-section">
-          <div className="settings-section-title"><span className="settings-section-icon"><Icon name="build"/></span><div><strong>Build cards</strong><small>Applied to exported character cards.</small></div></div>
+          <div className="settings-section-title"><span className="settings-section-icon"><img src={`${import.meta.env.BASE_URL}build-cards.webp`} alt="" width="20" height="20"/></span><div><strong>Build cards</strong><small>Applied to character cards.</small></div></div>
           <label className="settings-name-field"><span>Display name</span><input name="displayName" maxLength={40} defaultValue={data.settings.displayName} placeholder="Resonator"/></label>
           <label className="settings-name-field"><span>User UID</span><input name="uid" inputMode="numeric" maxLength={20} defaultValue={data.settings.uid} placeholder="Enter your in-game UID"/></label>
+          <label className="settings-toggle"><input type="checkbox" name="liveCharacterArt" defaultChecked={data.settings.liveCharacterArt}/><span><b>Live character artwork</b><small>Animate character art while viewing build cards.</small></span></label>
         </section>
         <section className="settings-section settings-data-section">
           <div className="settings-section-title"><span className="settings-section-icon"><Icon name="lock"/></span><div><strong>Your data</strong><small>Stored only in this browser.</small></div></div>
@@ -245,7 +276,7 @@ export default function App() {
         <div className="settings-save"><button className="primary" type="submit">Save changes</button></div>
       </form>
     </Panel></div>}
-    {toast && <div className="toast">{toast}</div>}
+    {toast && <div className="toast" role="status" aria-live="polite">{toast}</div>}
     <PwaUpdatePrompt safeToActivate={!scannerSessionAtRisk && !importOpen && !settingsOpen} navigationVersion={navigationVersion}/>
   </div>
 }

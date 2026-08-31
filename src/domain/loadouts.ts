@@ -27,6 +27,15 @@ export interface ResolvedLoadout {
 
 export type TheorycraftAxis = 'weapon' | 'sonata' | 'mainEcho' | 'mainStats' | 'substats'
 
+const characterRestrictedSonatas: Partial<Record<string, readonly string[]>> = {
+  'Shadow of Shattered Dreams': ['1511', '1308']
+}
+
+export function isSonataAvailableToCharacter(name: string, characterCatalogId?: string) {
+  const allowedCharacterIds = characterRestrictedSonatas[name]
+  return !allowedCharacterIds || Boolean(characterCatalogId && allowedCharacterIds.includes(characterCatalogId))
+}
+
 const comparable = (value: unknown) => JSON.stringify(value)
 
 const comparableSubstats = (slots: Array<Array<{ key: StatKey; value: number }>>) => slots.map((slot) =>
@@ -94,6 +103,12 @@ export function theorycraftWarnings(build: TheorycraftBuild) {
   }
   const pieces = build.sonatas.reduce((sum, entry) => sum + entry.pieces, 0)
   if (pieces !== 5) warnings.push(`Sonata composition accounts for ${pieces}/5 Echoes.`)
+  for (const selected of build.sonatas.filter((entry) => entry.pieces > 0)) {
+    const sonata = sonataCatalog.find((entry) => entry.name === selected.name)
+    const maximum = sonata ? Math.max(...sonata.effects.map((effect) => effect.pieces)) : 0
+    if (!sonata) warnings.push(`${selected.name || 'Selected Sonata'} is not a valid Sonata set.`)
+    else if (selected.pieces > maximum) warnings.push(`${selected.name} supports at most ${maximum} Sonata piece${maximum === 1 ? '' : 's'}.`)
+  }
   const main = echoCatalog.find((entry) => entry.name === build.mainEchoName)
   if (!main) warnings.push('Select a valid main Echo.')
   else {
@@ -131,6 +146,24 @@ export function theorycraftWarnings(build: TheorycraftBuild) {
     }
   }
   return [...new Set(warnings)]
+}
+
+const normalizedSonataEffect = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, '')
+const activeSonataEffects = (name: string, pieces: number) => sonataCatalog.find((entry) => entry.name === name)?.effects
+  .filter((effect) => effect.pieces <= pieces).map((effect) => effect.description) ?? []
+const sonataEffectKey = (name: string, pieces: number) => activeSonataEffects(name, pieces).map(normalizedSonataEffect).sort().join('|') || `sonata:${name}`
+
+export function theorycraftSonataPlanKey(sonatas: TheorycraftBuild['sonatas']) {
+  return sonatas.filter((entry) => entry.pieces > 0).map((entry) => `${entry.pieces}:${sonataEffectKey(entry.name, entry.pieces)}`).sort().join('|')
+}
+
+export function groupTheorycraftSonatas(sonatas: TheorycraftBuild['sonatas']) {
+  return sonatas.filter((entry) => entry.pieces > 0).map((sonata) => {
+    const key = sonataEffectKey(sonata.name, sonata.pieces)
+    const effects = activeSonataEffects(sonata.name, sonata.pieces)
+    const names = sonataCatalog.filter((entry) => sonataEffectKey(entry.name, sonata.pieces) === key).map((entry) => entry.name)
+    return { key, pieces: sonata.pieces, names, label: names.length > 1 ? effects.join(' + ') : sonata.name }
+  })
 }
 
 function syntheticTheorycraftEchoes(build: TheorycraftBuild): Echo[] {

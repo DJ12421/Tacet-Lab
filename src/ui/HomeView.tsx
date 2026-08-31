@@ -24,7 +24,8 @@ const sidebarIconFiles: Partial<Record<AppView, string>> = {
   archive: 'archive.svg',
   echoes: 'echoes.svg',
   weapons: 'weapons.svg',
-  characters: 'characters.svg'
+  characters: 'characters.svg',
+  teams: 'teams.webp'
 }
 
 function HomeNavIcon({ view }: { view: AppView }) {
@@ -40,6 +41,28 @@ const quickStarts = [
 ]
 
 const changelogEntries = [
+  { hash: '1ba32e2', date: 'Aug 28, 2026', title: 'Fix scanner build-card type integration' },
+  { hash: 'e70a3f9', date: 'Aug 28, 2026', title: 'Add the local scanner signature command' },
+  { hash: '97dc7b8', date: 'Aug 28, 2026', title: 'Make the skill popover independent of test fixtures' },
+  { hash: '9cc3156', date: 'Aug 28, 2026', title: 'Preserve theorycraft substat narrowing' },
+  { hash: 'f90d565', date: 'Aug 28, 2026', title: 'Fix missing loadout UI dependencies' },
+  { hash: '6d710b4', date: 'Aug 28, 2026', title: 'Fix Teams section rendering' },
+  { hash: '9455c1d', date: 'Aug 28, 2026', title: 'Fix the legal substat slot fixture' },
+  { hash: 'ec249c5', date: 'Aug 28, 2026', title: 'Narrow legacy substat mode in the editor' },
+  { hash: 'db5a3ba', date: 'Aug 28, 2026', title: 'Fix inventory foundation type errors' },
+  { hash: '8f480a0', date: 'Aug 28, 2026', title: 'Fix character card test assumptions' },
+  { hash: '513d074', date: 'Aug 28, 2026', title: 'Adjust the default character card artwork position' },
+  { hash: '78ef342', date: 'Aug 28, 2026', title: 'Add the inventory and loadout foundation' },
+  { hash: 'ffd9ce1', date: 'Aug 28, 2026', title: 'Add character loadout and scoring UI' },
+  { hash: '2ce1d76', date: 'Aug 28, 2026', title: 'Improve scanner formats and OCR' },
+  { hash: '87cfb24', date: 'Aug 28, 2026', title: 'Polish the Archive and PWA experience' },
+  { hash: '912e066', date: 'Aug 27, 2026', title: 'Redirect the Pages root to the homepage' },
+  { hash: 'dd656ea', date: 'Aug 25, 2026', title: 'Add character card layout controls' },
+  { hash: '9e46bb9', date: 'Aug 23, 2026', title: 'Update the GitHub Pages URL' },
+  { hash: '74e4cf6', date: 'Aug 23, 2026', title: 'Remove the custom domain configuration' },
+  { hash: 'b8687d4', date: 'Aug 23, 2026', title: 'Update the custom domain configuration' },
+  { hash: '5d64947', date: 'Aug 23, 2026', title: 'Add the custom domain configuration' },
+  { hash: '9630484', date: 'Aug 19, 2026', title: 'Polish scrolling and update the changelog' },
   { hash: 'e7bcaa5', date: 'Aug 19, 2026', title: 'Update game data and characters for version 3.6' },
   { hash: 'd00cd2f', date: 'Aug 17, 2026', title: 'Improve character card layouts and exports' },
   { hash: '296bdfa', date: 'Aug 17, 2026', title: 'Expand loadout workflows and refresh app UI' },

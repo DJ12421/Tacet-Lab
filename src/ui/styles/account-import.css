@@ -3,17 +3,27 @@
 .import-data-backdrop {
   z-index: 180;
   padding: 3vh 2vw;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
 }
 
 .import-data-modal {
   width: min(1180px,96vw);
   max-height: 94vh;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto minmax(0,1fr) auto;
   overflow: hidden;
   border-color: rgba(228,187,94,.42);
   background: linear-gradient(145deg,#101718,#070b0c 75%);
   box-shadow: 0 36px 120px #000;
+}
+
+.import-data-scroll {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
 }
 
 .import-data-header {
@@ -35,6 +45,17 @@
   margin: 0;
   color: #8e9a97;
   font-size: var(--font-size-small);
+}
+
+.import-data-header .close {
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  flex: none;
+  font-size: var(--font-size-display);
+  line-height: 1;
 }
 
 .import-data-source,.import-preview {
@@ -187,7 +208,7 @@
   min-height: 0;
   display: grid;
   gap: 10px;
-  overflow-y: auto;
+  overflow: visible;
 }
 
 .import-preview>header {
@@ -367,13 +388,16 @@
 
 @media (max-width:900px) {
   .import-data-backdrop {
-    padding: 0;
+    padding: 10px;
+    overflow: hidden;
+    overscroll-behavior: contain;
   }
   .import-data-modal {
     width: 100%;
-    min-height: 100dvh;
-    max-height: 100dvh;
-    border-radius: 0;
+    height: calc(100dvh - 20px);
+    min-height: 0;
+    max-height: none;
+    border-radius: 10px;
   }
   .import-guardrails {
     grid-template-columns: 1fr;
@@ -410,6 +434,10 @@
   }
   .import-data-header p {
     display: none;
+  }
+  .import-data-header .close {
+    width: 56px;
+    height: 56px;
   }
   .import-data-source,.import-preview {
     padding: 10px;

@@ -2826,3 +2826,26 @@
 .cbc-card {
   border-radius:0;
 }
+
+@media (max-width:650px) {
+  .cbc-edit-popover {
+    padding: 9px;
+    border-color: color-mix(in srgb,var(--cbc-accent) 52%,transparent);
+    border-radius: 9px;
+    background: linear-gradient(145deg,rgba(18,31,37,.98),rgba(3,9,13,.99));
+  }
+
+  .cbc-edit-popover button,.cbc-edit-popover input {
+    min-height: 44px;
+  }
+
+  .cbc-level-popover {
+    grid-template-columns: repeat(5,44px);
+    gap: 5px;
+  }
+
+  .cbc-echo-actions {
+    top: auto;
+    bottom: calc(100% + 5px);
+  }
+}

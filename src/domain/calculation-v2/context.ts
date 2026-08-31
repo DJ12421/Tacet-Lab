@@ -1,4 +1,5 @@
 import type { AggregatedStats, BuffEffect, Build, Echo, EnemyConfig, OwnedCharacter, OwnedWeapon } from '../types'
+import { isSonataAvailableToCharacter } from '../loadouts'
 import { calculationCatalogV2 } from '../../game-data/calculation-v2.generated'
 import type { CharacterCatalogEntry, WeaponCatalogEntry } from '../../game-data'
 import { applyCalculationEffects, createEffectAccumulator } from './effects'
@@ -50,7 +51,8 @@ export function resolveWeaponMechanicsV2(catalog: WeaponCatalogEntry | undefined
   return catalog ? closestByName(calculationCatalogV2.weapons, catalog.name, catalog.id) : undefined
 }
 
-export function resolveSonataMechanicsV2(name: string, pieces: number): SonataCalculationMechanics[] {
+export function resolveSonataMechanicsV2(name: string, pieces: number, characterCatalogId?: string): SonataCalculationMechanics[] {
+  if (!isSonataAvailableToCharacter(name, characterCatalogId)) return []
   const target = normalized(name)
   const matches = calculationCatalogV2.sonatas.filter((entry) =>
     normalized(entry.name) === target && entry.pieces <= pieces
@@ -178,6 +180,7 @@ export interface BuildCalculationV2Sources {
   sourceStats?: CalculationSourceStats
   activeCustomBuffs?: BuffEffect[]
   effectActivationOverrides?: Record<string, boolean>
+  includeMainEchoEffects?: boolean
   roverGender?: 'male' | 'female'
 }
 
@@ -194,14 +197,14 @@ export function createBuildCalculationV2Context(input: BuildCalculationV2Sources
   const mechanics = resolveCharacterMechanicsV2(input.characterCatalog, input.character, input.roverGender)
   if (!mechanics) return undefined
   const weapon = resolveWeaponMechanicsV2(input.weaponCatalog)
-  const sonatas = input.showcase.sonatas.flatMap((sonata) => resolveSonataMechanicsV2(sonata.name, sonata.count))
+  const sonatas = input.showcase.sonatas.flatMap((sonata) => resolveSonataMechanicsV2(sonata.name, sonata.count, input.characterCatalog.id))
   const mainEcho = resolveEchoMechanicsV2(input.showcase.echoSlots[0])
   const ownEffects = [
     ...mechanics.effects,
     ...mechanics.sequences,
     ...(weapon?.effects ?? []),
     ...sonatas.flatMap((sonata) => sonata.effects),
-    ...(mainEcho?.effects ?? [])
+    ...(input.includeMainEchoEffects === false ? [] : (mainEcho?.effects ?? []))
   ].filter((effect) => effect.scope === 'self')
   const partyEffects = input.partyEffects ?? []
   const strongestCustomBuffs = new Map<string, BuffEffect>()
@@ -379,7 +382,8 @@ export function outgoingPartyEffectsV2(
   weaponCatalog: WeaponCatalogEntry | undefined,
   mainEcho: Echo | undefined,
   sonatas: Array<{ name: string; count: number }>,
-  characterMechanicsKey?: string
+  characterMechanicsKey?: string,
+  includeMainEchoEffects = true
 ) {
   if (!characterCatalog) return []
   const characterNames = new Set([
@@ -389,23 +393,24 @@ export function outgoingPartyEffectsV2(
   ].filter(Boolean))
   const weaponNames = new Set(weaponCatalog ? [normalized(weaponCatalog.name)] : [])
   const echoNames = new Set(mainEcho ? [normalized(mainEcho.name)] : [])
-  const sonataNames = new Set(sonatas.map((sonata) => normalized(sonata.name)))
+  const eligibleSonatas = sonatas.filter((sonata) => isSonataAvailableToCharacter(sonata.name, characterCatalog.id))
+  const sonataNames = new Set(eligibleSonatas.map((sonata) => normalized(sonata.name)))
   const importedPartyEffects = calculationCatalogV2.partyEffects.filter((effect) => {
     const source = normalized(effect.sourceId)
     if (source.startsWith('weapon')) return [...weaponNames].some((name) => source.includes(name))
-    if (source.startsWith('echo')) return [...echoNames, ...sonataNames].some((name) => source.includes(name))
+    if (source.startsWith('echo')) return [...(includeMainEchoEffects ? echoNames : []), ...sonataNames].some((name) => source.includes(name))
     return characterNames.has(source)
   })
   const characterMechanics = calculationCatalogV2.characters.find((entry) => characterNames.has(normalized(entry.key)) || characterNames.has(normalized(entry.name)))
   const weaponMechanics = weaponCatalog ? resolveWeaponMechanicsV2(weaponCatalog) : undefined
-  const sonataMechanics = sonatas.flatMap((sonata) => resolveSonataMechanicsV2(sonata.name, sonata.count))
+  const sonataMechanics = eligibleSonatas.flatMap((sonata) => resolveSonataMechanicsV2(sonata.name, sonata.count, characterCatalog.id))
   const echoMechanics = resolveEchoMechanicsV2(mainEcho)
   const sourceOwnedEffects = [
     ...(characterMechanics?.effects ?? []),
     ...(characterMechanics?.sequences ?? []),
     ...(weaponMechanics?.effects ?? []),
     ...sonataMechanics.flatMap((sonata) => sonata.effects),
-    ...(echoMechanics?.effects ?? [])
+    ...(includeMainEchoEffects ? (echoMechanics?.effects ?? []) : [])
   ].filter((effect) => effect.scope !== 'self')
   const resolved = new Map(sourceOwnedEffects.map((effect) => [effect.id, effect]))
   for (const importedEffect of importedPartyEffects) {

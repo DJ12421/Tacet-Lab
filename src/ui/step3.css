@@ -67,8 +67,8 @@
 }
 
 .echo-edit-modal {
-  max-height: min(850px, calc(100vh - 30px));
-  overflow-y: auto;
+  max-height: none;
+  overflow-y: visible;
 }
 
 .edit-grid {

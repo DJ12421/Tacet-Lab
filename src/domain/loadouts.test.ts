@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { characterCatalog, echoCatalog, weaponCatalog } from '../game-data'
 import type { Echo, OwnedCharacter } from './types'
-import { changedTheorycraftAxes, createTheorycraftBuild, resolveLoadout, theorycraftRollValue, theorycraftWarnings } from './loadouts'
+import { changedTheorycraftAxes, createTheorycraftBuild, groupTheorycraftSonatas, isSonataAvailableToCharacter, resolveLoadout, theorycraftRollValue, theorycraftSonataPlanKey, theorycraftWarnings } from './loadouts'
 
 const ownedCharacter: OwnedCharacter = { id: 'character', catalogId: characterCatalog[0].id, level: 90, sequence: 0, locked: false, skillLevels: [10, 10, 10, 10, 10], createdAt: 1 }
 
@@ -46,6 +46,39 @@ describe('loadout resolution', () => {
     expect(warnings).toContain('20/12')
     expect(warnings).toContain('0/5')
     expect(warnings).toContain('more Echoes')
+  })
+
+  it('rejects Sonata counts above the set effect limit', () => {
+    const build = createTheorycraftBuild(ownedCharacter)
+    build.sonatas = [{ name: 'Shadow of Shattered Dreams', pieces: 2 }, { name: 'Crown of Valor', pieces: 3 }]
+    expect(theorycraftWarnings(build).join(' ')).toContain('Shadow of Shattered Dreams supports at most 1 Sonata piece.')
+
+    build.sonatas = [{ name: 'Shadow of Shattered Dreams', pieces: 1 }, { name: 'Crown of Valor', pieces: 4 }]
+    expect(theorycraftWarnings(build).join(' ')).toContain('Crown of Valor supports at most 3 Sonata pieces.')
+  })
+
+  it('limits Shadow of Shattered Dreams to Lucy and Rebecca', () => {
+    expect(isSonataAvailableToCharacter('Shadow of Shattered Dreams', '1511')).toBe(true)
+    expect(isSonataAvailableToCharacter('Shadow of Shattered Dreams', '1308')).toBe(true)
+    expect(isSonataAvailableToCharacter('Shadow of Shattered Dreams', characterCatalog.find((entry) => !['1511', '1308'].includes(entry.id))!.id)).toBe(false)
+    expect(isSonataAvailableToCharacter('Celestial Light', characterCatalog[0].id)).toBe(true)
+  })
+
+  it('groups Sonata sets that activate the same buff', () => {
+    const groups = groupTheorycraftSonatas([
+      { name: 'Lingering Tunes', pieces: 2 },
+      { name: 'Reel of Spliced Memories', pieces: 2 },
+      { name: 'Shadow of Shattered Dreams', pieces: 1 }
+    ])
+
+    expect(groups).toHaveLength(3)
+    expect(groups[0]).toMatchObject({ pieces: 2, names: ['Lingering Tunes', 'Reel of Spliced Memories'] })
+    expect(groups[1]).toMatchObject({ pieces: 2, names: ['Lingering Tunes', 'Reel of Spliced Memories'] })
+    expect(theorycraftSonataPlanKey([
+      { name: 'Shadow of Shattered Dreams', pieces: 1 }, { name: 'Celestial Light', pieces: 2 }, { name: 'Eternal Radiance', pieces: 2 }
+    ])).toBe(theorycraftSonataPlanKey([
+      { name: 'Shadow of Shattered Dreams', pieces: 1 }, { name: 'Pact of Neonlight Leap', pieces: 2 }, { name: 'Rite of Gilded Revelation', pieces: 2 }
+    ]))
   })
 
   it('converts low, mid, and high roll counts deterministically', () => {

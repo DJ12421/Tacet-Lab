@@ -83,7 +83,7 @@
     width: calc(100vw - 20px);
     height: calc(100dvh - 20px);
     min-height: 0;
-    padding: 12px 10px 16px;
+    padding: 0 10px 16px;
     border-radius: 10px;
   }
   .weapon-catalog-picker .catalog-picker-grid {

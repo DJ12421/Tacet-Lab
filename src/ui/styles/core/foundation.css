@@ -29,12 +29,17 @@
   --scrollbar-track: #0b0f10;
   --scrollbar-thumb: #806d42;
   --scrollbar-thumb-hover: var(--gold);
+  --radius-subtle: 8px;
   scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
   scrollbar-width: thin;
 }
 
 * {
   box-sizing: border-box;
+}
+
+:where(*:not(html, body)) {
+  border-radius: var(--radius-subtle);
 }
 
 /* Chromium, Safari, and other WebKit-based browsers. */
@@ -87,6 +92,21 @@ button, input, select, textarea {
   font: inherit;
 }
 
+select {
+  color-scheme: dark;
+}
+
+select option,
+select optgroup {
+  background: #080c0d;
+  color: #edf3ef;
+}
+
+select option:checked {
+  background: #173b37;
+  color: var(--mint);
+}
+
 button {
   color: inherit;
 }
@@ -105,7 +125,7 @@ button:disabled {
   width: 18px;
   height: 18px;
   fill: none;
-  stroke: currentColor;
+  stroke: white;
   stroke-width: 1.7;
   stroke-linecap: round;
   stroke-linejoin: round;

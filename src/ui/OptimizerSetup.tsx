@@ -22,7 +22,7 @@ const STAT_ICON_NAMES: Partial<Record<StatKey, string>> = {
   spectroDamage: 'Icon_Spectro_DMG_Bonus.webp', havocDamage: 'Icon_Havoc_DMG_Bonus.webp'
 }
 
-function optimizerStatIconSource(stat: StatKey) {
+export function optimizerStatIconSource(stat: StatKey) {
   return `https://wuwa-optimizer.com/images/icons/${STAT_ICON_NAMES[stat] ?? 'Icon_Attribute_Attack.webp'}`
 }
 
