@@ -367,6 +367,7 @@
   display: grid;
   grid-template-rows: 104px minmax(0,1fr) 352px;
   gap: 9px;
+  pointer-events: none;
 }
 
 .cbc-right-column {
@@ -583,7 +584,7 @@
 
 .cbc-stat-actions button:hover {
   border-color: color-mix(in srgb,var(--cbc-accent) 60%,white);
-  background: color-mix(in srgb,var(--cbc-accent) 10%,transparent);
+  background: rgba(255,0,0,.35);
   color: var(--cbc-accent);
   box-shadow: 0 0 16px color-mix(in srgb,var(--cbc-accent) 18%,transparent);
 }
@@ -2531,8 +2532,8 @@
 }
 
 .cbc-stat-actions button {
-  width: 38px;
-  height: 38px;
+  width: 44px;
+  height: 44px;
 }
 
 .cbc-stat-actions .icon {
