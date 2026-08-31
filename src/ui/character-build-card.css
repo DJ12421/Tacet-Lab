@@ -584,7 +584,7 @@
 
 .cbc-stat-actions button:hover {
   border-color: color-mix(in srgb,var(--cbc-accent) 60%,white);
-  background: rgba(255,0,0,.35);
+  background: color-mix(in srgb,var(--cbc-accent) 10%,transparent);
   color: var(--cbc-accent);
   box-shadow: 0 0 16px color-mix(in srgb,var(--cbc-accent) 18%,transparent);
 }
