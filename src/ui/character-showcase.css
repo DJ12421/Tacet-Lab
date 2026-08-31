@@ -3507,19 +3507,22 @@
 .cs-toolbar-identity strong,.cs-toolbar-identity small {
   max-width: 100%;
   overflow: hidden;
+  border-radius:0px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.cs-toolbar-identity strong {
+.cs-toolbar>div.cs-toolbar-identity strong {
   color: #edf3f1;
-  font-size: var(--font-size-body);
+  margin-top: -5px;
+  font-size: 22px;
 }
 
 .cs-toolbar-identity small {
-  margin-top: 3px;
+  margin-top: 0px;
+  margin-bottom: -10px;
   color: #879490;
-  font-size: var(--font-size-caption);
+  font-size: var(--font-size-caption+1);
   font-weight: 700;
 }
 
@@ -3663,10 +3666,6 @@
 
   .cs-toolbar-identity {
     justify-items: start;
-  }
-
-  .cs-toolbar-identity small {
-    font-size: 10px;
   }
 
   .cs-toolbar .cs-back {

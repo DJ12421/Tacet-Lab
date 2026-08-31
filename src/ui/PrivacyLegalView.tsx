@@ -93,7 +93,7 @@ export function PrivacyLegalView() {
           <header><span>08</span><div><p>Updates and questions</p><h2>Policy changes and contact</h2></div></header>
           <div className="legal-copy">
             <p>This notice may change when Tacet Lab&apos;s features, data flows, or legal obligations change. Material changes will be published on this page with a revised effective date.</p>
-            <p>Questions, corrections, or rights concerns can be submitted through the project&apos;s <a href="https://github.com/dj12421/Tacet-Lab/issues" target="_blank" rel="noreferrer">GitHub issue tracker</a>. Do not include screenshots, exports, account details, or other private information in a public issue.</p>
+            <p>Questions, corrections, or rights concerns can be submitted through the project&apos;s <a href="https://github.com/DJ12421/Tacet-Lab/issues" target="_blank" rel="noreferrer">GitHub issue tracker</a>. Do not include screenshots, exports, account details, or other private information in a public issue.</p>
           </div>
         </Panel>
       </article>
@@ -114,7 +114,7 @@ export function PrivacyLegalView() {
         <Panel>
           <span className="eyebrow">Community & support</span>
           <a href="https://discord.gg/fy66NmapWb" target="_blank" rel="noreferrer">Join the Tacet Lab Discord <span>↗</span></a>
-          <a href="https://github.com/dj12421/Tacet-Lab/issues" target="_blank" rel="noreferrer">GitHub issue tracker <span>↗</span></a>
+          <a href="https://github.com/DJ12421/Tacet-Lab/issues" target="_blank" rel="noreferrer">GitHub issue tracker <span>↗</span></a>
         </Panel>
         <Panel>
           <span className="eyebrow">Official references</span>

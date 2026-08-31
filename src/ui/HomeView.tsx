@@ -179,16 +179,16 @@ export function HomeView({ echoes, characters, builds, teams, navigate }: HomeVi
 
     <article className="home-community">
       <div><Icon name="discord"/><span><strong>Tacet Lab community</strong><small>Questions, feedback, and updates</small></span></div>
-      <nav aria-label="Community links"><a href="https://discord.gg/fy66NmapWb" target="_blank" rel="noreferrer">Join Discord</a><a href="https://github.com/dj12421/Tacet-Lab/issues/new" target="_blank" rel="noreferrer">Report a bug</a><a href="https://github.com/dj12421/Tacet-Lab" target="_blank" rel="noreferrer">GitHub</a></nav>
+      <nav aria-label="Community links"><a href="https://discord.gg/fy66NmapWb" target="_blank" rel="noreferrer">Join Discord</a><a href="https://github.com/DJ12421/Tacet-Lab/issues/new" target="_blank" rel="noreferrer">Report a bug</a><a href="https://github.com/DJ12421/Tacet-Lab" target="_blank" rel="noreferrer">GitHub</a></nav>
     </article>
 
     <article className="home-changelog">
       <header className="home-changelog-header">
         <div><span className="eyebrow">What’s new</span><h2>Recent updates</h2></div>
-        <a href="https://github.com/dj12421/Tacet-Lab/commits/main/" target="_blank" rel="noreferrer">Full history <span aria-hidden="true">→</span></a>
+        <a href="https://github.com/DJ12421/Tacet-Lab/commits/main/" target="_blank" rel="noreferrer">Full history <span aria-hidden="true">→</span></a>
       </header>
       <ol className="home-changelog-list">
-        {(showAllChanges ? changelogEntries : changelogEntries.slice(0, 3)).map((entry) => <li key={`${entry.hash}:${entry.title}`}><time>{entry.date}</time><div><h3>{entry.title}</h3><a href={`https://github.com/dj12421/Tacet-Lab/commit/${entry.hash}`} target="_blank" rel="noreferrer">{entry.hash} <span aria-hidden="true">→</span></a></div></li>)}
+        {(showAllChanges ? changelogEntries : changelogEntries.slice(0, 3)).map((entry) => <li key={`${entry.hash}:${entry.title}`}><time>{entry.date}</time><div><h3>{entry.title}</h3><a href={`https://github.com/DJ12421/Tacet-Lab/commit/${entry.hash}`} target="_blank" rel="noreferrer">{entry.hash} <span aria-hidden="true">→</span></a></div></li>)}
       </ol>
       <button className="home-changelog-toggle" type="button" aria-expanded={showAllChanges} onClick={() => setShowAllChanges((current) => !current)}>{showAllChanges ? 'Show less' : `See all ${changelogEntries.length} updates`}</button>
     </article>

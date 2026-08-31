@@ -94,7 +94,7 @@ export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaS
     let isIntersecting = true
     const updatePlayback = () => {
       if (!app) return
-      if (isIntersecting && document.visibilityState === 'visible') app.start()
+      if (isIntersecting && document.visibilityState === 'visible' && document.hasFocus()) app.start()
       else app.stop()
     }
     const disposeRuntime = () => {
@@ -103,6 +103,8 @@ export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaS
       intersectionObserver?.disconnect()
       intersectionObserver = undefined
       document.removeEventListener('visibilitychange', updatePlayback)
+      window.removeEventListener('focus', updatePlayback)
+      window.removeEventListener('blur', updatePlayback)
       app?.destroy(true, { children: true, texture: false, baseTexture: false })
       if (appRef.current === app) appRef.current = undefined
       app = undefined
@@ -125,7 +127,7 @@ export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaS
         })
         app = runtimeApp
         appRef.current = runtimeApp
-        runtimeApp.ticker.maxFPS = 60
+        runtimeApp.ticker.maxFPS = 30
         const canvas = runtimeApp.view as HTMLCanvasElement
         canvas.setAttribute('aria-hidden', 'true')
         host.replaceChildren(canvas)
@@ -211,6 +213,8 @@ export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaS
         })
         intersectionObserver.observe(host)
         document.addEventListener('visibilitychange', updatePlayback)
+        window.addEventListener('focus', updatePlayback)
+        window.addEventListener('blur', updatePlayback)
         updatePlayback()
         setStatus('ready')
         onReady()
