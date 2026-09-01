@@ -68,7 +68,7 @@ function sonataSuggestions(input: TheorizerRankingRequest): DraftSuggestion[] {
 
 function substatSuggestions(input: TheorizerRankingRequest): DraftSuggestion[] {
   const totals = Object.fromEntries(theorycraftSubstatLines(input.baseline).map((line) => [line.key, line.value])) as Partial<Record<StatKey, number>>
-  return (Object.keys(tunableRolls) as StatKey[]).flatMap((key) => { const step = theorycraftRollValue(key, 1, 'mid'); return ([['add', 1], ['remove', -1]] as const).map(([direction, multiplier]) => { const draft: TheorycraftBuild = { ...clone(input.baseline), id: `preview:substat:${direction}:${key}`, substats: { mode: 'values', values: { ...totals, [key]: (totals[key] ?? 0) + step * multiplier } }; return { id: draft.id, label: statLabels[key], detail: `${multiplier > 0 ? '+' : '−'}${step} ${statLabels[key]}`, draft } }) })
+  return (Object.keys(tunableRolls) as StatKey[]).flatMap((key) => { const step = theorycraftRollValue(key, 1, 'mid'); return ([['add', 1], ['remove', -1]] as const).map(([direction, multiplier]) => { const draft: TheorycraftBuild = { ...clone(input.baseline), id: `preview:substat:${direction}:${key}`, substats: { mode: 'values', values: { ...totals, [key]: (totals[key] ?? 0) + step * multiplier } } }; return { id: draft.id, label: statLabels[key], detail: `${multiplier > 0 ? '+' : '−'}${step} ${statLabels[key]}`, draft } }) })
 }
 
 function suggestionsFor(input: TheorizerRankingRequest) { return input.mode === 'mainStats' ? mainStatSuggestions(input) : input.mode === 'weapons' ? weaponSuggestions(input) : input.mode === 'sonatas' ? sonataSuggestions(input) : substatSuggestions(input) }
