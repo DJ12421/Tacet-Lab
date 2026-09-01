@@ -1,5 +1,5 @@
 import { aggregateStats, applyBuffEffects, defenseMultiplier, floorGameValue, resistanceMultiplier } from '../damage'
-import type { AttackDefinition, BuffEffect, Build, Echo, EnemyConfig, OwnedCharacter, OwnedWeapon, Resonator, TeamScenario, Weapon } from '../types'
+import type { AggregatedStats, AttackDefinition, BuffEffect, Build, Echo, EnemyConfig, OwnedCharacter, OwnedWeapon, Resonator, TeamScenario, Weapon } from '../types'
 import { baseTuneBreakBoost, characterCatalog, isFixedSkillValueName, weaponCatalog, weaponPassiveConditions } from '../../game-data'
 import { resolveCharacterShowcaseModel, weaponSecondaryStat } from '../../ui/character-showcase-model'
 import type { CalculationContext, FormulaEntry, FormulaScalar } from './engine'
@@ -39,7 +39,7 @@ export function resolveRuntimeBuild(build: Build, characters: OwnedCharacter[], 
   }
 }
 
-export function createBuildCalculationContext(input: BuildCalculationInput): CalculationContext {
+export function createBuildCalculationContext(input: BuildCalculationInput): CalculationContext & { stats: AggregatedStats } {
   const character = characterCatalog.find((entry) => entry.id === input.character.catalogId)
   const weapon = weaponCatalog.find((entry) => entry.id === input.weapon.catalogId)
   if (!character || !weapon) throw new Error('Character or weapon catalog data is unavailable.')
