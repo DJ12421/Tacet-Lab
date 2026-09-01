@@ -41,6 +41,9 @@ const quickStarts = [
 ]
 
 const changelogEntries = [
+  { hash: '424fe33', date: 'Sep 1, 2026', title: 'Unify damage calculations across Teams and Theorizer' },
+  { hash: '424fe33', date: 'Sep 1, 2026', title: 'Refresh the Teams Formation Console and member workspaces' },
+  { hash: '424fe33', date: 'Sep 1, 2026', title: 'Improve responsive build, scanner, inventory, and optimizer workflows' },
   { hash: '88c13dc', date: 'Aug 31, 2026', title: 'Add ranked Team Theorizer comparisons' },
   { hash: '88c13dc', date: 'Aug 31, 2026', title: 'Enforce character-restricted Sonata effects' },
   { hash: '88c13dc', date: 'Aug 31, 2026', title: 'Redesign mobile navigation and responsive workflows' },
@@ -78,7 +81,6 @@ const changelogEntries = [
   { hash: 'a91225c', date: 'Aug 6, 2026', title: 'Stabilize optimizer and refine team UI' },
   { hash: '644b989', date: 'Aug 6, 2026', title: 'Expand optimizer and team workflows' },
   { hash: '6310093', date: 'Jul 30, 2026', title: 'Extend home cards to right edge' },
-  { hash: '4957c53', date: 'Jul 30, 2026', title: 'Add Calculation V2 and route-aware UI' },
   { hash: '4e1e21a', date: 'Jul 29, 2026', title: 'Refresh game data and refine optimizer UI' },
   { hash: '6c52ea1', date: 'Jul 28, 2026', title: 'Update default scanner calibrations' },
   { hash: '609dfd3', date: 'Jul 28, 2026', title: 'Improve Echo scoring and scanner reliability' },
