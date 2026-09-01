@@ -36,7 +36,7 @@ export interface TheorycraftBuild {
   updatedAt: number
   source?: { type: 'equipped' | 'saved' | 'optimizer'; id?: string }
 }
-export interface Team { id: string; name: string; /** Stable member IDs in schema v7; legacy backups contain saved-build IDs and are migrated. */ buildIds: string[]; members?: TeamMember[]; enemy: EnemyConfig; rotationDuration: number; actions: RotationAction[]; rotationPresets?: import('./rotation-presets').RotationPresetDocument[]; buffs?: BuffEffect[]; scenario?: TeamScenario; calculationV2?: import('./calculation-v2/types').CalculationScenarioV2 }
+export interface Team { id: string; name: string; /** Stable member IDs in schema v7; legacy backups contain saved-build IDs and are migrated. */ buildIds: string[]; members?: TeamMember[]; enemy: EnemyConfig; rotationDuration: number; actions: RotationAction[]; rotationPresets?: import('./rotation-presets').RotationPresetDocument[]; buffs?: BuffEffect[]; scenario?: TeamScenario }
 export type ScenarioValue = number | string | boolean
 export type FormulaResultMode = 'normal' | 'expected' | 'critical'
 export interface TeamScenario {
@@ -72,18 +72,6 @@ export interface OptimizerFormulaConfig {
   node: import('./calculation/engine').FormulaNode
   inputs: Record<string, ScenarioValue>
   entries: import('./calculation/engine').FormulaEntry[]
-}
-export interface OptimizerCalculationV2Config {
-  build: Build
-  character: OwnedCharacter
-  characterCatalog: import('../game-data').CharacterCatalogEntry
-  weapon?: OwnedWeapon
-  weaponCatalog?: import('../game-data').WeaponCatalogEntry
-  attack: import('./calculation-v2/types').CalculationAttackDefinition
-  scenario?: import('./calculation-v2/types').CalculationScenarioV2
-  partyEffects?: import('./calculation-v2/types').CalculationEffectDefinition[]
-  sourceStats?: import('./calculation-v2/types').CalculationSourceStats
-  roverGender?: 'male' | 'female'
 }
 export type OptimizerEquippedPolicy = 'current' | 'team' | 'all'
 export type OptimizerMainEchoPolicy = 'current' | 'any' | 'selected'
@@ -150,7 +138,6 @@ export interface OptimizerRequest {
   currentMainEchoId?: string
   bonusStatLines?: StatLine[]
   formula?: OptimizerFormulaConfig
-  calculationV2?: OptimizerCalculationV2Config
   profile?: OptimizerProfile
   partition?: { index: number; count: number }
   /** Global top-N cutoff supplied by the coordinator. Branches must beat it. */

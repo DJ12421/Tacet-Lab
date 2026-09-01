@@ -1,0 +1,223 @@
+/* Archive readability, icon filters, and neutral Echo cost labels. */
+
+.app-shell .cost,.app-shell .cost-orb,.app-shell .cost-1,.app-shell .cost-3,.app-shell .cost-4 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 2px;
+  border-color: var(--gold);
+  background: var(--gold);
+  color: #17130a;
+  line-height: 1;
+}
+
+.archive-view .page-header .eyebrow {
+  font-size: var(--font-size-caption);
+}
+
+.archive-view .page-header p {
+  font-size: var(--font-size-body);
+}
+
+.archive-tabs button {
+  font-size: var(--font-size-small);
+}
+
+.archive-tabs b,.archive-count {
+  font-size: var(--font-size-caption);
+}
+
+.archive-toolbar input,.archive-toolbar select {
+  font-size: var(--font-size-small);
+}
+
+.archive-toolbar .sonata-picker,.archive-toolbar .element-picker {
+  min-width: 190px;
+}
+
+.archive-toolbar .sonata-picker-trigger b {
+  font-size: var(--font-size-caption);
+}
+
+.archive-toolbar .sonata-picker-menu b {
+  font-size: var(--font-size-caption);
+}
+
+.catalog-grid {
+  grid-template-columns: repeat(auto-fill,minmax(210px,1fr));
+  gap: 13px;
+}
+
+.catalog-grid.weapons,.catalog-grid.echoes {
+  grid-template-columns: repeat(auto-fill,minmax(235px,1fr));
+}
+
+.catalog-copy {
+  padding: 14px 15px 13px;
+}
+
+.catalog-copy h2 {
+  font-size: var(--font-size-body-large);
+}
+
+.catalog-copy p {
+  font-size: var(--font-size-caption);
+  line-height: 1.35;
+  min-height: 16px;
+}
+
+.catalog-copy footer {
+  gap: 9px;
+  font-size: var(--font-size-caption);
+}
+
+.catalog-copy footer strong {
+  color: #f3f5f4;
+  font-size: var(--font-size-small);
+}
+
+.catalog-copy footer b {
+  font-size: var(--font-size-caption);
+}
+
+.sonata-heading h2 {
+  font-size: var(--font-size-body-large);
+}
+
+.sonata-heading span,.sonata-effects b,.archive-credit {
+  font-size: var(--font-size-caption);
+}
+
+.sonata-effects p {
+  font-size: var(--font-size-small);
+}
+
+.character-name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.character-name h2 {
+  min-width: 0;
+}
+
+.element-icon {
+  width: 26px;
+  height: 26px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 50%;
+  color: var(--gold);
+  background: transparent;
+}
+
+.element-icon img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.element-picker {
+  position: relative;
+  min-width: 0;
+}
+
+.element-picker-trigger {
+  width: 100%;
+  min-height: 38px;
+  border: 1px solid rgba(255,255,255,.1);
+  background: #090c0d;
+  color: #e8efec;
+  padding: 5px 9px;
+  display: grid;
+  grid-template-columns: 30px minmax(0,1fr) auto;
+  align-items: center;
+  gap: 7px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.element-picker-trigger b {
+  font-size: var(--font-size-caption);
+}
+
+.element-picker-trigger i {
+  color: var(--gold);
+  font-style: normal;
+}
+
+.element-picker-menu {
+  position: absolute;
+  z-index: 25;
+  left: 0;
+  right: 0;
+  top: calc(100% + 4px);
+  padding: 5px;
+  border: 1px solid var(--gold-soft);
+  background: #080b0c;
+  box-shadow: 0 18px 45px #000;
+}
+
+.element-picker-menu button {
+  width: 100%;
+  min-height: 38px;
+  border: 0;
+  background: transparent;
+  color: #aeb8b5;
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  align-items: center;
+  gap: 7px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.element-picker-menu button:hover,.element-picker-menu button.active {
+  background: rgba(228,187,94,.11);
+  color: #fff1c7;
+}
+
+.element-picker-menu b {
+  font-size: var(--font-size-caption);
+}
+
+.all-elements {
+  font-size: var(--font-size-caption);
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.cost,.cost-orb,.cost-1,.cost-3,.cost-4 {
+  width: 29px;
+  min-width: 29px;
+  height: 29px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--gold);
+  box-shadow: none;
+  font-size: var(--font-size-body);
+  font-weight: 700;
+}
+
+.echo-portrait .cost-orb {
+  right: 7px;
+  bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 2px;
+  border-color: var(--gold);
+  background: var(--gold);
+  color: #17130a;
+  line-height: 1;
+}
+
+.catalog-copy footer b {
+  font-size: var(--font-size-body);
+  line-height: 1;
+}

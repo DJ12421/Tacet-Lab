@@ -1,0 +1,349 @@
+/* Full Forte and skill workspace */
+
+.tw-member-hero.forte-mode {
+  display: block;
+}
+
+.tw-member-hero.forte-mode>.tw-member-art {
+  display: none;
+}
+
+.tw-member-hero.forte-mode>.tw-member-summary {
+  display: block;
+}
+
+.tw-forte-workspace {
+  display: grid;
+  grid-template-columns: 270px minmax(0,1fr);
+  gap: 6px;
+  padding: 6px;
+  background: #070c0d;
+}
+
+.tw-sequence-column {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+}
+
+.tw-sequence-column>header {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  border: 1px solid rgba(141,228,212,.35);
+  background: linear-gradient(90deg,rgba(141,228,212,.2),rgba(141,228,212,.07));
+  font-size: var(--font-size-small);
+}
+
+.tw-sequence-column>header b {
+  color: var(--mint);
+}
+
+.tw-sequence-column>article {
+  display: grid;
+  grid-template-columns: 48px minmax(0,1fr);
+  gap: 8px;
+  min-height: 125px;
+  padding: 12px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: #0b1314;
+  color: #697572;
+}
+
+.tw-sequence-column>article.unlocked {
+  border-color: rgba(228,187,94,.34);
+  background: linear-gradient(135deg,rgba(228,187,94,.08),#0b1314);
+  color: #edf3f1;
+}
+
+.tw-sequence-column>article>img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  filter: grayscale(1) brightness(.48);
+}
+
+.tw-sequence-column>article.unlocked>img {
+  filter: none;
+}
+
+.tw-sequence-column>article>div {
+  min-width: 0;
+  display: grid;
+  align-content: center;
+  gap: 3px;
+}
+
+.tw-sequence-column>article strong {
+  font-size: var(--font-size-small);
+  line-height: 1.2;
+}
+
+.tw-sequence-column>article small {
+  color: #82908c;
+  font-size: var(--font-size-caption);
+}
+
+.tw-sequence-column>article p {
+  grid-column: 1/-1;
+  margin: 0;
+  color: inherit;
+  font-size: var(--font-size-caption);
+  line-height: 1.5;
+}
+
+.tw-skill-board {
+  min-width: 0;
+  display: grid;
+  align-content: start;
+  gap: 6px;
+}
+
+.tw-skill-grid {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  align-items: stretch;
+  gap: 6px;
+}
+
+.tw-skill-card,.tw-passive-card,.tw-bonus-nodes {
+  min-width: 0;
+  border: 1px solid rgba(141,228,212,.15);
+  background: #101a1b;
+}
+
+.tw-skill-card>header {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid rgba(141,228,212,.28);
+  background: linear-gradient(90deg,rgba(141,228,212,.22),rgba(55,118,112,.24));
+  color: #effffc;
+  font-size: var(--font-size-small);
+  font-weight: 700;
+}
+
+.tw-skill-title {
+  display: grid;
+  grid-template-columns: 46px minmax(0,1fr);
+  align-items: center;
+  gap: 9px;
+  padding: 12px 12px 6px;
+}
+
+.tw-skill-title>img {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+}
+
+.tw-skill-title>div {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.tw-skill-title strong {
+  font-size: var(--font-size-body);
+  line-height: 1.2;
+}
+
+.tw-skill-title small {
+  color: var(--mint);
+  font-size: var(--font-size-caption);
+  text-transform: capitalize;
+}
+
+.tw-skill-card>p,.tw-passive-card>p {
+  margin: 0;
+  padding: 6px 12px 12px;
+  color: #aebbb8;
+  font-size: var(--font-size-caption);
+  line-height: 1.55;
+  white-space: pre-line;
+}
+
+.tw-skill-card dl {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0 10px 12px;
+}
+
+.tw-skill-card dl>div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 35px;
+  padding: 5px 8px;
+  background: #071011;
+  font-size: var(--font-size-caption);
+}
+
+.tw-skill-card dt {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+  color: #e8efed;
+}
+
+.tw-skill-card dt small {
+  color: #d6b763;
+  font-size: var(--font-size-caption);
+  text-transform: capitalize;
+}
+
+.tw-skill-card dd {
+  flex: none;
+  margin: 0;
+  color: var(--mint);
+  font-weight: 700;
+}
+
+.tw-passive-grid {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 6px;
+}
+
+.tw-passive-card {
+  min-height: 185px;
+}
+
+.tw-bonus-nodes {
+  padding: 12px;
+}
+
+.tw-bonus-nodes>header h3 {
+  margin: 3px 0 10px;
+  font-size: var(--font-size-body-large);
+}
+
+.tw-bonus-nodes>div {
+  display: grid;
+  grid-template-columns: repeat(4,minmax(0,1fr));
+  gap: 5px;
+}
+
+.tw-bonus-nodes article {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 38px minmax(0,1fr);
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: #091112;
+}
+
+.tw-bonus-nodes article img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+}
+
+.tw-bonus-nodes article span {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.tw-bonus-nodes article strong {
+  font-size: var(--font-size-caption);
+}
+
+.tw-bonus-nodes article small {
+  overflow: hidden;
+  color: #879592;
+  font-size: var(--font-size-caption);
+  line-height: 1.35;
+}
+
+@media (max-width:1180px) {
+  .tw-forte-workspace {
+    grid-template-columns: 230px minmax(0,1fr);
+  }
+  .tw-skill-grid {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+  }
+  .tw-passive-grid {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+  }
+  .tw-bonus-nodes>div {
+    grid-template-columns: repeat(3,minmax(0,1fr));
+  }
+}
+
+@media (max-width:760px) {
+  .tw-forte-workspace {
+    grid-template-columns: 1fr;
+  }
+  .tw-sequence-column {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+  }
+  .tw-sequence-column>header {
+    grid-column: 1/-1;
+  }
+  .tw-skill-grid,.tw-passive-grid {
+    grid-template-columns: 1fr;
+  }
+  .tw-bonus-nodes>div {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+  }
+}
+
+@media (max-width:480px) {
+  .tw-sequence-column {
+    grid-template-columns: 1fr;
+  }
+  .tw-sequence-column>header {
+    grid-column: 1;
+  }
+  .tw-bonus-nodes>div {
+    grid-template-columns: 1fr;
+  }
+  .tw-skill-title strong {
+    font-size: var(--font-size-small);
+  }
+}
+
+.tw-game-description {
+  display: grid;
+  gap: 7px;
+  color: #aebbb8;
+  font-size: var(--font-size-caption);
+  line-height: 1.55;
+}
+
+.tw-game-description>span {
+  display: block;
+}
+
+.tw-game-description>i {
+  height: 3px;
+}
+
+.tw-game-description-title {
+  display: block;
+  margin-top: 5px;
+  color: #edf3f1;
+  font-size: var(--font-size-small);
+  line-height: 1.3;
+}
+
+.tw-sequence-column>article>.tw-game-description {
+  color: inherit;
+}
+
+.tw-skill-card>.tw-game-description,.tw-passive-card>.tw-game-description {
+  padding: 6px 12px 12px;
+}
+
+.tw-skill-card dl dd {
+  max-width: 48%;
+  text-align: right;
+}

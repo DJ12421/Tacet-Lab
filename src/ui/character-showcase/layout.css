@@ -1,0 +1,396 @@
+/* Casual-first character page: keep the hero visible and reveal one task at a time. */
+
+.cs-toolbar {
+  grid-template-columns: auto minmax(0,1fr) auto auto;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.cs-toolbar-title {
+  justify-self: center;
+  overflow: hidden;
+  color: #edf3f1;
+  font-size: var(--font-size-body);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cs-loadout-source {
+  position: relative;
+  display: grid;
+  gap: 3px;
+  min-width: 190px;
+}
+
+.cs-loadout-source>span {
+  color: #879490;
+  font-size: var(--font-size-caption);
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.cs-loadout-source::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  left: 12px;
+  bottom: 11px;
+  width: 13px;
+  height: 11px;
+  border: 2px solid var(--cs-accent);
+  border-radius: 2px;
+  box-shadow: inset 0 -3px rgba(var(--cs-accent-rgb),.18);
+  pointer-events: none;
+}
+
+.cs-loadout-source::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  right: 14px;
+  bottom: 15px;
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid var(--cs-accent);
+  border-bottom: 2px solid var(--cs-accent);
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+.cs-loadout-source select {
+  width: 100%;
+  min-width: 190px;
+  height: 39px;
+  padding: 0 38px;
+  border: 1px solid rgba(var(--cs-accent-rgb),.48);
+  border-radius: 7px;
+  -webkit-appearance: none;
+  appearance: none;
+  color-scheme: dark;
+  background: linear-gradient(135deg,rgba(var(--cs-accent-rgb),.16),rgba(var(--cs-accent-rgb),.04) 52%),#0a1113;
+  color: #edf3f1;
+  box-shadow: inset 0 1px rgba(255,255,255,.06),0 5px 18px rgba(0,0,0,.24);
+  font: inherit;
+  font-size: var(--font-size-small);
+  font-weight: 800;
+  cursor: pointer;
+  transition: border-color .16s ease,background .16s ease,box-shadow .16s ease,transform .16s ease;
+}
+
+.cs-loadout-source:hover select {
+  border-color: var(--cs-accent);
+  background: linear-gradient(135deg,rgba(var(--cs-accent-rgb),.23),rgba(var(--cs-accent-rgb),.07) 55%),#0b1315;
+  box-shadow: inset 0 1px rgba(255,255,255,.08),0 7px 22px rgba(0,0,0,.3);
+}
+
+.cs-loadout-source:focus-within select {
+  border-color: var(--cs-accent);
+  outline: 2px solid rgba(var(--cs-accent-rgb),.22);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 1px rgba(var(--cs-accent-rgb),.16),0 8px 26px rgba(0,0,0,.34);
+}
+
+.cs-loadout-source select:active {
+  transform: translateY(1px);
+}
+
+.cs-loadout-source option {
+  background: #0b1113;
+  color: #edf3f1;
+}
+
+.cs-view-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 7px;
+  padding: 4px;
+  border: 1px solid rgba(var(--cs-accent-rgb),.22);
+  border-radius: 7px;
+  background: #050a0b;
+}
+
+.cs-view-tabs button {
+  min-height: 39px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: transparent;
+  color: #8f9d99;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cs-view-tabs button:hover {
+  color: #e8efed;
+}
+
+.cs-view-tabs button.active {
+  border-color: rgba(var(--cs-accent-rgb),.4);
+  background: rgba(var(--cs-accent-rgb),.11);
+  color: var(--cs-accent);
+}
+
+.cs-view-tabs span {
+  display: grid;
+  place-items: center;
+  min-width: 25px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.08);
+  font-size: var(--font-size-caption);
+}
+
+.cs-layout {
+  grid-template-columns: minmax(340px,.82fr) minmax(520px,1.38fr);
+  grid-template-rows: 220px minmax(390px,auto);
+  gap: 8px;
+}
+
+.cs-layout.cs-view-overview {
+  grid-template-areas: "character weapon" "character stats";
+}
+
+.cs-view-overview .cs-skills-panel,.cs-view-overview .cs-echo-section {
+  display: none;
+}
+
+.cs-view-skills {
+  grid-template-rows: minmax(610px,auto);
+  grid-template-areas: "character skills";
+}
+
+.cs-view-skills .cs-stats-panel,.cs-view-skills .cs-weapon-panel,.cs-view-skills .cs-echo-section {
+  display: none;
+}
+
+.cs-view-echoes {
+  grid-template-rows: minmax(610px,auto);
+  grid-template-areas: "character echoes";
+}
+
+.cs-view-echoes .cs-stats-panel,.cs-view-echoes .cs-weapon-panel,.cs-view-echoes .cs-skills-panel {
+  display: none;
+}
+
+.cs-view-overview .cs-character-panel,.cs-view-skills .cs-character-panel,.cs-view-echoes .cs-character-panel {
+  min-height: 618px;
+}
+
+.cs-view-overview .cs-weapon-panel {
+  min-height: 220px;
+}
+
+.cs-view-overview .cs-stats-panel {
+  min-height: 390px;
+  padding-bottom: 14px;
+}
+
+.cs-more-stats {
+  margin-top: 6px;
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+
+.cs-more-stats summary {
+  padding: 10px 1px;
+  color: var(--cs-accent);
+  font-size: var(--font-size-caption);
+  font-weight: 700;
+  cursor: pointer;
+  list-style-position: inside;
+}
+
+.cs-more-stats .cs-stat-list {
+  margin-top: 0;
+}
+
+.cs-view-overview .cs-warning {
+  margin: 9px 0 0;
+}
+
+.cs-view-skills .cs-skills-panel {
+  min-height: 610px;
+  padding: 20px 24px;
+}
+
+.cs-view-skills .cs-source-skill-tree {
+  height: 525px;
+  padding-top: 36px;
+}
+
+.cs-view-skills .cs-skill-side-0,.cs-view-skills .cs-skill-side-4 {
+  padding-top: 56px;
+}
+
+.cs-view-skills .cs-skill-side-1,.cs-view-skills .cs-skill-side-3 {
+  padding-top: 28px;
+}
+
+.cs-view-echoes .cs-echo-section {
+  min-width: 0;
+  overflow: hidden;
+  padding: 18px;
+  border: 1px solid rgba(var(--cs-accent-rgb),.28);
+  border-radius: 5px;
+  background: linear-gradient(145deg,rgba(14,22,24,.98),rgba(4,8,9,.99) 68%);
+}
+
+.cs-view-echoes .cs-echo-section>header {
+  padding: 0 0 13px;
+}
+
+.cs-view-echoes .cs-substat-preferences {
+  grid-template-columns: auto minmax(0,1fr) auto;
+  margin: 0 0 12px;
+  padding: 11px 12px;
+}
+
+.cs-view-echoes .cs-substat-preferences>small {
+  display: none;
+}
+
+.cs-view-echoes .cs-echo-row {
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 9px;
+  align-content: start;
+}
+
+.cs-view-echoes .cs-echo-row>:last-child:nth-child(odd) {
+  grid-column: 1/-1;
+  max-width: calc(50% - 5px);
+}
+
+.cs-export-frame.is-exporting .cs-layout.is-exporting-all {
+  grid-template-columns: minmax(380px,.9fr) minmax(330px,.75fr) minmax(440px,1.1fr);
+  grid-template-rows: auto auto auto;
+  grid-template-areas: "character stats weapon" "character stats skills" "echoes echoes echoes";
+}
+
+.cs-export-frame.is-exporting .is-exporting-all .cs-stats-panel,.cs-export-frame.is-exporting .is-exporting-all .cs-weapon-panel,.cs-export-frame.is-exporting .is-exporting-all .cs-skills-panel,.cs-export-frame.is-exporting .is-exporting-all .cs-echo-section {
+  display: flex;
+}
+
+.cs-export-frame.is-exporting .is-exporting-all .cs-stats-panel,.cs-export-frame.is-exporting .is-exporting-all .cs-skills-panel {
+  flex-direction: column;
+}
+
+.cs-export-frame.is-exporting .is-exporting-all .cs-weapon-panel {
+  display: grid;
+}
+
+.cs-export-frame.is-exporting .is-exporting-all .cs-echo-section {
+  display: block;
+}
+
+.cs-export-frame.is-exporting .is-exporting-all .cs-more-stats {
+  display: contents;
+}
+
+.cs-export-frame.is-exporting .is-exporting-all .cs-more-stats summary {
+  display: none;
+}
+
+@media (max-width:900px) {
+  .cs-toolbar {
+    grid-template-areas: "back title actions" "build build build";
+    gap: 7px;
+  }
+  .cs-back {
+    grid-area: back;
+  }
+  .cs-toolbar-title {
+    grid-area: title;
+  }
+  .cs-loadout-source {
+    grid-area: build;
+    width: 100%;
+  }
+  .cs-loadout-source select {
+    width: 100%;
+  }
+  .cs-toolbar-actions {
+    grid-area: actions;
+  }
+  .cs-layout,.cs-view-skills,.cs-view-echoes {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: "character" "weapon" "stats";
+  }
+  .cs-view-skills {
+    grid-template-areas: "character" "skills";
+  }
+  .cs-view-echoes {
+    grid-template-areas: "character" "echoes";
+  }
+  .cs-view-overview .cs-character-panel,.cs-view-skills .cs-character-panel,.cs-view-echoes .cs-character-panel {
+    min-height: 540px;
+  }
+  .cs-view-skills .cs-skills-panel {
+    min-height: 470px;
+    padding: 16px 12px;
+  }
+  .cs-view-skills .cs-source-skill-tree {
+    height: 410px;
+    padding-top: 10px;
+  }
+}
+
+@media (max-width:650px) {
+  .cs-toolbar {
+    margin: 0 0 6px;
+    padding: 7px;
+  }
+  .cs-toolbar-title {
+    font-size: var(--font-size-small);
+  }
+  .cs-back {
+    min-width: 0;
+    font-size: var(--font-size-caption);
+  }
+  .cs-back::after {
+    content: none;
+  }
+  .cs-view-tabs {
+    position: sticky;
+    z-index: 24;
+    top: 0;
+    overflow-x: auto;
+  }
+  .cs-view-tabs button {
+    flex: 1;
+    min-width: 96px;
+    padding: 8px 12px;
+  }
+  .cs-view-overview .cs-character-panel,.cs-view-skills .cs-character-panel,.cs-view-echoes .cs-character-panel {
+    min-height: 480px;
+  }
+  .cs-view-echoes .cs-echo-row {
+    display: flex;
+    overflow-x: auto;
+  }
+  .cs-view-echoes .cs-echo-row>* {
+    flex: 0 0 min(82vw,300px);
+  }
+  .cs-view-echoes .cs-echo-row>:last-child:nth-child(odd) {
+    max-width: none;
+  }
+  .cs-view-echoes .cs-substat-preferences {
+    grid-template-columns: minmax(0,1fr) auto;
+  }
+  .cs-view-echoes .cs-substat-preferences>span {
+    grid-column: 1;
+  }
+  .cs-view-echoes .cs-substat-preferences>div:not(.cs-substat-actions) {
+    grid-column: 1/-1;
+  }
+  .cs-view-echoes .cs-substat-actions {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}

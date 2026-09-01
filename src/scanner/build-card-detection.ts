@@ -31,7 +31,6 @@ export function detectBuildCardFormat(image: HTMLImageElement, preference: Build
     const topRight = regionMetrics(image, .88, .015, .105, .085)
     const bottomCenter = regionMetrics(image, .35, .93, .3, .055)
     if (topRight && topRight.brightNeutral > .055) scores.set('discord-bot', (scores.get('discord-bot') ?? 0) + .7)
-    else if (bottomCenter && bottomCenter.lightness > .09 && bottomCenter.neutral > .72) scores.set('wuthering-tools', (scores.get('wuthering-tools') ?? 0) + .65)
     else scores.set('tacet-lab', (scores.get('tacet-lab') ?? 0) + .6)
   }
 

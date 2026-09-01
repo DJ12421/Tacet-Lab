@@ -1,0 +1,145 @@
+/* Final node geometry, score tones and foreground layering. */
+.cbc-card.is-stat-highlighting .cbc-skill-bonus-nodes button.cbc-stat-source.is-contributing {
+  border-color: transparent!important;
+  background: transparent;
+  box-shadow: none;
+}
+.cbc-card.is-stat-highlighting .cbc-skill-bonus-nodes button.cbc-stat-source.is-contributing>span:first-child {
+  border-color: color-mix(in srgb,var(--cbc-accent) 78%,white)!important;
+  background: color-mix(in srgb,var(--cbc-accent) 18%,rgba(3,10,16,.88));
+  box-shadow: 0 0 22px color-mix(in srgb,var(--cbc-accent) 48%,transparent),inset 0 0 0 1px color-mix(in srgb,var(--cbc-accent) 28%,transparent);
+}
+.cbc-skill-bonus-nodes button:first-child::after {
+  display: none;
+}
+.cbc-main-skill::before {
+  content:"";
+  position:absolute;
+  z-index:0;
+  left:50%;
+  top:-50px;
+  width:2px;
+  height:50px;
+  opacity:0;
+  transform:translateX(-50%);
+  background:linear-gradient(color-mix(in srgb,var(--cbc-accent) 52%,transparent),var(--cbc-accent));
+  box-shadow:0 0 7px color-mix(in srgb,var(--cbc-accent) 32%,transparent);
+  transition:opacity .18s ease;
+  pointer-events:none;
+}
+.cbc-skills:hover .cbc-main-skill::before,.cbc-skills:focus-within .cbc-main-skill::before,.cbc-skills.is-stat-node-active .cbc-main-skill::before {
+  opacity:1;
+}
+.cbc-echo-row .cbc-echo-score strong.cbc-score-grade-e { color:#fff; }
+.cbc-echo-row .cbc-echo-score strong.cbc-score-grade-d { color:#69cf7c; }
+.cbc-echo-row .cbc-echo-score strong.cbc-score-grade-c { color:#65b9ff; }
+.cbc-echo-row .cbc-echo-score strong.cbc-score-grade-b,.cbc-echo-row .cbc-echo-score strong.cbc-score-grade-a { color:#c374ff; }
+.cbc-echo-row .cbc-echo-score strong.cbc-score-grade-s,.cbc-echo-row .cbc-echo-score strong.cbc-score-grade-ss { color:#ffbf25; }
+.cbc-echo-row .cbc-echo-score strong.cbc-score-grade-sss { color:#ff554f; text-shadow:0 0 12px rgba(255,64,55,.42); }
+.cbc-sonatas,.cbc-sonata-content {
+  position:relative;
+  z-index:120;
+  overflow:visible;
+}
+.cbc-sonatas button,.cbc-sonatas button:hover,.cbc-sonatas button:focus-visible {
+  background:linear-gradient(145deg,rgba(226,247,250,.055),transparent 24%),linear-gradient(135deg,var(--cbc-glass-soft),var(--cbc-glass-deep));
+  box-shadow:inset 0 1px rgba(255,255,255,.1),inset 0 -1px rgba(255,255,255,.025),0 12px 30px -22px rgba(0,0,0,.95);
+}
+.cbc-sonatas button>small {
+  width:23px;
+  height:23px;
+  font-size:16px;
+}
+.cbc-sonatas button:hover,.cbc-sonatas button:focus-visible {
+  z-index:900!important;
+}
+.cbc-sonatas button>.cbc-tooltip {
+  z-index:1000;
+}
+.cbc-footer>span {
+  color:var(--cbc-accent);
+  text-shadow:0 0 7px var(--cbc-accent),0 0 18px color-mix(in srgb,var(--cbc-accent) 72%,transparent),0 0 32px color-mix(in srgb,var(--cbc-accent) 38%,transparent);
+}
+.cbc-footer>strong {
+  color:var(--cbc-accent);
+  text-shadow:0 0 12px color-mix(in srgb,var(--cbc-accent) 45%,transparent);
+}
+/* html-to-image rasterizes backdrop blur at the unscaled export size, which
+   creates oversized rectangular blur regions around rotated glass nodes. */
+.cbc-card.is-exporting,.cbc-card.is-exporting * {
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+.cbc-card.is-exporting .cbc-glass {
+  background:linear-gradient(145deg,rgba(226,247,250,.14),rgba(183,225,234,.035) 28%,transparent 54%),linear-gradient(135deg,rgba(15,32,42,.74),rgba(3,9,15,.88));
+  box-shadow:inset 0 1px rgba(255,255,255,.18),inset 0 -1px rgba(255,255,255,.035),0 22px 48px -28px rgba(0,0,0,.96);
+}
+.cbc-card.is-exporting .cbc-echo-row {
+  background:linear-gradient(145deg,rgba(227,247,250,.14),rgba(194,229,237,.03) 30%,transparent 54%),linear-gradient(104deg,color-mix(in srgb,var(--cbc-accent) 11%,rgba(18,34,43,.76)),rgba(3,9,16,.9) 70%);
+  box-shadow:inset 0 1px rgba(255,255,255,.17),inset 2px 0 color-mix(in srgb,var(--cbc-accent) 54%,transparent),0 18px 34px -17px rgba(0,0,0,.94);
+}
+.cbc-card.is-exporting .cbc-skill-bonus-nodes button>span:first-child,.cbc-card.is-exporting .cbc-main-skill>span:first-child,.cbc-card.is-exporting .cbc-extra-skills button>span:first-child {
+  background:linear-gradient(145deg,rgba(198,225,231,.22),rgba(4,13,20,.94));
+}
+.cbc-card.is-exporting .cbc-sonatas button {
+  background:linear-gradient(145deg,rgba(226,247,250,.14),rgba(183,225,234,.035) 30%,transparent 56%),linear-gradient(135deg,rgba(15,32,42,.76),rgba(3,9,15,.9));
+  box-shadow:inset 0 1px rgba(255,255,255,.17),0 8px 20px rgba(0,0,0,.38);
+}
+/* Export uses a two-pass backdrop. The first pass keeps only the card
+   background and character art; the final pass places crops from that blurred
+   image beneath each translucent surface. This avoids foreignObject's broken
+   backdrop-filter tiling while preserving real background detail in the blur. */
+.cbc-card.is-exporting-background>.cbc-sequences,
+.cbc-card.is-exporting-background>.cbc-skills,
+.cbc-card.is-exporting-background>.cbc-left-column,
+.cbc-card.is-exporting-background>.cbc-center-column,
+.cbc-card.is-exporting-background>.cbc-right-column,
+.cbc-card.is-exporting-background>.cbc-footer,
+.cbc-card.is-exporting-background>.cbc-layout-calibration-layer {
+  visibility:hidden!important;
+}
+.cbc-card.is-exporting .cbc-glass.has-export-backdrop {
+  background-image:linear-gradient(145deg,rgba(226,247,250,.14),rgba(183,225,234,.035) 28%,transparent 54%),linear-gradient(135deg,rgba(15,32,42,.56),rgba(3,9,15,.76)),var(--cbc-export-backdrop-image);
+  background-position:center;
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+}
+.cbc-card.is-exporting .cbc-echo-row.has-export-backdrop {
+  background-image:linear-gradient(145deg,rgba(227,247,250,.14),rgba(194,229,237,.03) 30%,transparent 54%),linear-gradient(104deg,color-mix(in srgb,var(--cbc-accent) 11%,rgba(18,34,43,.54)),rgba(3,9,16,.78) 70%),var(--cbc-export-backdrop-image);
+  background-position:center;
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+}
+.cbc-card.is-exporting .cbc-sonatas button.has-export-backdrop {
+  background-image:linear-gradient(145deg,rgba(226,247,250,.14),rgba(183,225,234,.035) 30%,transparent 56%),linear-gradient(135deg,rgba(15,32,42,.56),rgba(3,9,15,.78)),var(--cbc-export-backdrop-image);
+  background-position:center;
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+}
+/* The canvas background is rectangular; individual content panels retain
+   their own rounded glass silhouettes. */
+.cbc-card {
+  border-radius:0;
+}
+@media (max-width:650px) {
+  .cbc-edit-popover {
+    padding: 9px;
+    border-color: color-mix(in srgb,var(--cbc-accent) 52%,transparent);
+    border-radius: 9px;
+    background: linear-gradient(145deg,rgba(18,31,37,.98),rgba(3,9,13,.99));
+  }
+
+  .cbc-edit-popover button,.cbc-edit-popover input {
+    min-height: 44px;
+  }
+
+  .cbc-level-popover {
+    grid-template-columns: repeat(5,44px);
+    gap: 5px;
+  }
+
+  .cbc-echo-actions {
+    top: auto;
+    bottom: calc(100% + 5px);
+  }
+}

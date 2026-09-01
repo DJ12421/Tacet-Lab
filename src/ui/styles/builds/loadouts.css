@@ -264,9 +264,6 @@
     order: 3;
     width: 100%;
   }
-  .cs-loadout-source select {
-    width: 100%;
-  }
 }
 
 @media (max-width:560px) {

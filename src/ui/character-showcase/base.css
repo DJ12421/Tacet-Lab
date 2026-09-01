@@ -1,0 +1,443 @@
+.cs-page {
+  --cs-accent: #e4bb5e;
+  --cs-accent-rgb: 228,187,94;
+  min-width: 0;
+  color: #edf3f1;
+}
+
+.cs-element-spectro {
+  --cs-accent: #e8cc72;
+  --cs-accent-rgb: 232,204,114;
+}
+
+.cs-element-fusion {
+  --cs-accent: #ee715e;
+  --cs-accent-rgb: 238,113,94;
+}
+
+.cs-element-glacio {
+  --cs-accent: #76cef2;
+  --cs-accent-rgb: 118,206,242;
+}
+
+.cs-element-electro {
+  --cs-accent: #b581ef;
+  --cs-accent-rgb: 181,129,239;
+}
+
+.cs-element-aero {
+  --cs-accent: #62d7ae;
+  --cs-accent-rgb: 98,215,174;
+}
+
+.cs-element-havoc {
+  --cs-accent: #d36adf;
+  --cs-accent-rgb: 211,106,223;
+}
+
+.cs-toolbar {
+  position: sticky;
+  z-index: 25;
+  top: 0;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 18px;
+  margin: -4px 0 8px;
+  padding: 11px 14px;
+  border: 1px solid rgba(var(--cs-accent-rgb),.3);
+  background: rgba(5,10,12,.94);
+  box-shadow: 0 14px 36px rgba(0,0,0,.28);
+  backdrop-filter: blur(16px);
+}
+
+.cs-toolbar>div:nth-child(2) {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+}
+
+.cs-toolbar>div:nth-child(2) strong {
+  font-size: var(--font-size-small);
+}
+
+.cs-back {
+  justify-self: start;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  background: #0b1316;
+  color: #dbe4e1;
+  cursor: pointer;
+}
+
+.cs-back:hover {
+  border-color: var(--cs-accent);
+  color: var(--cs-accent);
+}
+
+.cs-toolbar-actions {
+  justify-self: end;
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.cs-toolbar-actions button {
+  white-space: nowrap;
+}
+
+.cs-favorite {
+  border: 1px solid rgba(255,255,255,.14);
+  background: #101719;
+  color: #b8c3c0;
+}
+
+.cs-favorite.active {
+  border-color: #ef6a79;
+  color: #ff8794;
+}
+
+.cs-toolbar .danger.is-armed {
+  border-color: #ff6570;
+  background: #5a1c24;
+  color: #fff;
+}
+
+.cs-export-button .icon {
+  color: var(--cs-accent);
+}
+
+.cs-export-message {
+  margin: -2px 0 8px;
+  padding: 8px 12px;
+  border: 1px solid rgba(var(--cs-accent-rgb),.3);
+  background: rgba(var(--cs-accent-rgb),.08);
+  color: #dce8e4;
+  font-size: var(--font-size-caption);
+}
+
+.cs-export-message.is-error {
+  border-color: rgba(255,101,112,.45);
+  background: rgba(255,101,112,.08);
+  color: #ffadb3;
+}
+
+.cs-direct-character-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin: -2px 0 7px;
+}
+
+.cs-direct-character-actions button {
+  min-height: 36px;
+  padding: 7px 10px;
+}
+
+.cs-direct-character-actions .danger.is-armed {
+  border-color: #ff6570;
+  background: #5a1c24;
+  color: #fff;
+}
+
+.cs-export-frame {
+  min-width: 0;
+}
+
+.cs-export-masthead,.cs-export-footer {
+  display: none;
+}
+
+.cs-layout {
+  display: grid;
+  grid-template-columns: minmax(350px,1.08fr) minmax(270px,.7fr) minmax(375px,1fr);
+  grid-template-rows: 210px minmax(390px,1fr) auto;
+  grid-template-areas: "character stats weapon" "character stats skills" "echoes echoes echoes";
+  gap: 7px;
+  padding: 7px;
+  border: 1px solid rgba(var(--cs-accent-rgb),.22);
+  background: linear-gradient(135deg,rgba(var(--cs-accent-rgb),.045),transparent 38%),#030708;
+}
+
+.cs-panel {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(var(--cs-accent-rgb),.28);
+  border-radius: 5px;
+  background: linear-gradient(145deg,rgba(14,22,24,.98),rgba(4,8,9,.99) 68%);
+  box-shadow: inset 0 0 50px rgba(0,0,0,.24);
+}
+
+.cs-character-panel {
+  grid-area: character;
+  min-height: 607px;
+  background: radial-gradient(circle at 59% 37%,rgba(var(--cs-accent-rgb),.19),transparent 50%),linear-gradient(160deg,#0d1719,#040809 74%);
+}
+
+.cs-art-grid {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg,transparent 49%,rgba(255,255,255,.035) 50%,transparent 51%),repeating-linear-gradient(90deg,transparent 0 54px,rgba(255,255,255,.018) 55px),repeating-linear-gradient(0deg,transparent 0 54px,rgba(255,255,255,.018) 55px);
+  mask-image: linear-gradient(#000,transparent 86%);
+}
+
+.cs-character-panel::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: 42% 0 0;
+  background: linear-gradient(transparent,rgba(3,7,8,.94) 82%);
+  pointer-events: none;
+}
+
+.cs-character-art {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  object-position: center bottom;
+  opacity: 1;
+  visibility: visible;
+  filter: drop-shadow(0 24px 28px rgba(0,0,0,.72));
+}
+
+.cs-character-art.is-fallback {
+  inset: 5% 5% 0;
+  width: 90%;
+  height: 95%;
+  object-fit: contain;
+  object-position: center 18%;
+  filter: drop-shadow(0 20px 25px rgba(0,0,0,.7));
+}
+
+.cs-character-art {
+  transition: opacity .24s ease;
+}
+
+.cs-character-art.is-live-hidden {
+  opacity: 0;
+}
+
+.cs-live-portrait,.cs-live-portrait-snapshot {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .24s ease;
+  filter: drop-shadow(0 24px 28px rgba(0,0,0,.72));
+}
+
+.cs-live-portrait.is-ready {
+  opacity: 1;
+}
+
+.cs-live-portrait canvas {
+  width: 100%!important;
+  height: 100%!important;
+  display: block;
+}
+
+.cs-live-portrait-snapshot {
+  display: none;
+  object-fit: contain;
+  object-position: center;
+}
+
+.cs-sequence-rail {
+  position: absolute;
+  z-index: 7;
+  left: 12px;
+  top: 13px;
+  display: grid;
+  gap: 8px;
+}
+
+.cs-sequence-rail button {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  padding: 5px;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 50%;
+  background: rgba(4,9,11,.8);
+  color: #75817f;
+}
+
+.cs-sequence-rail button::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 1px;
+  height: 9px;
+  background: rgba(255,255,255,.15);
+}
+
+.cs-sequence-rail button:last-child::after {
+  display: none;
+}
+
+.cs-sequence-rail button:disabled {
+  cursor: default;
+}
+
+.cs-sequence-rail button:not(:disabled) {
+  cursor: pointer;
+}
+
+.cs-sequence-rail img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: grayscale(1) brightness(.45);
+}
+
+.cs-sequence-rail .is-unlocked {
+  border-color: var(--cs-accent);
+  box-shadow: 0 0 15px rgba(var(--cs-accent-rgb),.2);
+}
+
+.cs-sequence-rail .is-unlocked img {
+  filter: none;
+}
+
+.cs-sequence-rail span {
+  position: absolute;
+  left: 100%;
+  top: 14px;
+  margin-left: 6px;
+  color: currentColor;
+}
+
+.cs-character-copy {
+  position: absolute;
+  z-index: 6;
+  left: 20px;
+  right: 20px;
+  text-shadow: 0 2px 9px #000;
+}
+
+.cs-character-kicker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.cs-character-kicker span {
+  padding: 3px 6px;
+  border: 1px solid rgba(var(--cs-accent-rgb),.35);
+  background: rgba(3,7,8,.72);
+  color: var(--cs-accent);
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.cs-character-copy h1 {
+  margin: 6px 0 1px;
+  font-size: var(--font-size-heading-large);
+  line-height: 1;
+}
+
+.cs-character-copy p {
+  margin: 0;
+  color: #aebbb8;
+  font-size: var(--font-size-caption);
+}
+
+.cs-level-rarity {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 9px;
+}
+
+.cs-level-rarity>strong {
+  padding: 4px 7px;
+  border: 1px solid rgba(255,255,255,.17);
+  background: rgba(3,7,8,.72);
+  font-size: var(--font-size-caption);
+}
+
+.cs-stars {
+  color: #f1cc70;
+  letter-spacing: 1px;
+}
+
+.cs-favorite-mark {
+  color: #ff7585;
+}
+
+.cs-level-editor {
+  display: grid;
+  grid-template-columns: repeat(10,1fr);
+  gap: 2px;
+  margin-top: 9px;
+}
+
+.cs-level-editor button {
+  min-width: 0;
+  height: 24px;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,.13);
+  background: #0a1113;
+  color: #8d9996;
+  cursor: pointer;
+}
+
+.cs-level-editor button.active {
+  border-color: var(--cs-accent);
+  background: rgba(var(--cs-accent-rgb),.13);
+  color: var(--cs-accent);
+}
+
+.cs-sonatas {
+  position: absolute;
+  z-index: 7;
+  left: 15px;
+  right: 15px;
+  bottom: 31px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.cs-sonatas>span {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 7px;
+  border: 1px solid rgba(var(--cs-accent-rgb),.35);
+  border-radius: 16px;
+  background: rgba(3,8,9,.88);
+}
+
+.cs-sonatas img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.cs-sonatas b {
+  max-width: 145px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.cs-sonatas small {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.1);
+  color: var(--cs-accent);
+}

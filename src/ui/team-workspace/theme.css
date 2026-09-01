@@ -1,0 +1,552 @@
+/* Canonical Teams theme: Scanner-black surfaces with restrained member-element identity. */
+
+.team-workspace {
+  --mint: #c8d0ce;
+  --gold: #c8d0ce;
+  --gold-soft: #77817f;
+  --tw-canvas: #050809;
+  --tw-surface: #080b0d;
+  --tw-surface-raised: #0f1415;
+  --tw-surface-hover: #151b1c;
+  --tw-line: rgba(255,255,255,.085);
+  --tw-line-strong: rgba(255,255,255,.18);
+  --tw-mint-line: rgba(255,255,255,.13);
+  --tw-text: #edf3ef;
+  --tw-muted: #87928f;
+  --tw-subtle: #6f7a77;
+  color: var(--tw-text);
+}
+
+.team-workspace .tw-panel,
+.team-workspace .panel {
+  border-color: var(--tw-line);
+  background: var(--tw-surface);
+  box-shadow: none;
+}
+
+.team-workspace .eyebrow {
+  color: #c8d0ce;
+}
+
+.team-workspace input,
+.team-workspace select,
+.team-workspace textarea {
+  border-color: rgba(255,255,255,.11);
+  background: #090c0d;
+  color: var(--tw-text);
+}
+
+.team-workspace input:hover,
+.team-workspace select:hover,
+.team-workspace textarea:hover,
+.team-workspace input:focus,
+.team-workspace select:focus,
+.team-workspace textarea:focus {
+  border-color: rgba(255,255,255,.25);
+  box-shadow: none;
+}
+
+.team-workspace button:focus-visible,
+.team-workspace input:focus-visible,
+.team-workspace select:focus-visible {
+  outline-color: #c8d0ce;
+}
+
+.team-workspace button.primary,
+.team-workspace button.secondary {
+  border-color: rgba(255,255,255,.16);
+  background: #111718;
+  color: #edf3ef;
+  box-shadow: none;
+}
+
+.team-workspace button.primary:hover,
+.team-workspace button.secondary:hover {
+  border-color: rgba(255,255,255,.3);
+  background: #1b2324;
+  box-shadow: none;
+  filter: none;
+}
+
+/* Archive and team picker. */
+
+.tw-gallery-controls.tw-panel,
+.tw-gallery-empty.tw-panel,
+.tw-gallery-card {
+  border-color: var(--tw-line);
+  background: var(--tw-surface);
+  box-shadow: none;
+}
+
+.tw-gallery-controls .eyebrow {
+  color: #c8d0ce;
+}
+
+.tw-gallery-controls>div h1 {
+  color: var(--tw-text);
+}
+
+.tw-gallery-controls>div p,
+.tw-gallery-controls label,
+.tw-gallery-count {
+  color: var(--tw-muted);
+}
+
+.tw-gallery-count {
+  border-top-color: var(--tw-line);
+}
+
+.tw-character-filter summary,
+.tw-character-filter-menu {
+  border-color: var(--tw-line);
+  background: #090c0d;
+  color: var(--tw-text);
+  box-shadow: none;
+}
+
+.tw-character-filter summary:hover,
+.tw-character-filter[open] summary {
+  border-color: var(--tw-line-strong);
+  background: #111718;
+}
+
+.tw-character-filter-all {
+  border-color: var(--tw-line);
+  background: #080b0d;
+  color: #c8d0ce;
+}
+
+.tw-character-filter-menu button {
+  color: #cbd5d2;
+}
+
+.tw-character-filter-menu button:hover,
+.tw-character-filter-menu button.active {
+  background: var(--tw-surface-hover);
+  color: #fff;
+  box-shadow: inset 2px 0 #c8d0ce;
+}
+
+.tw-gallery-create.primary {
+  border-color: rgba(255,255,255,.18);
+  background: #151b1c;
+  color: #edf3ef;
+}
+
+.tw-gallery-card:hover {
+  border-color: var(--tw-line-strong);
+  transform: none;
+  box-shadow: 0 18px 40px rgba(0,0,0,.35);
+}
+
+.tw-gallery-card>header,
+.tw-gallery-delete,
+.tw-gallery-footer {
+  border-color: var(--tw-line);
+  background: var(--tw-surface-raised);
+}
+
+.tw-gallery-card>header input {
+  color: var(--tw-text);
+}
+
+.tw-gallery-card>header input:hover,
+.tw-gallery-card>header input:focus {
+  background: rgba(255,255,255,.035);
+  color: #fff;
+}
+
+.tw-gallery-delete {
+  color: #bc6b76;
+}
+
+.tw-gallery-delete:hover {
+  background: #171214;
+  color: #ff9ba7;
+}
+
+.tw-gallery-member {
+  border-bottom-color: var(--tw-line);
+  border-left: 2px solid color-mix(in srgb,var(--tw-card-element,#c8d0ce) 52%,transparent);
+  background: linear-gradient(105deg,#0f1415,#080b0d 72%);
+}
+
+.tw-gallery-member::after {
+  background: linear-gradient(90deg,transparent 12%,rgba(8,11,13,.12) 38%,rgba(8,11,13,.88) 72%);
+}
+
+.tw-gallery-character strong {
+  color: var(--tw-text);
+}
+
+.tw-gallery-character small {
+  color: #9ca7a4;
+}
+
+.tw-gallery-character em {
+  color: var(--tw-card-element,#c8d0ce);
+}
+
+.tw-gallery-loadout>span {
+  border-color: var(--tw-line);
+  background: #090c0d;
+  box-shadow: none;
+}
+
+.tw-gallery-loadout>span:hover {
+  border-color: color-mix(in srgb,var(--tw-card-element,#c8d0ce) 42%,transparent);
+}
+
+.tw-gallery-loadout>span b,
+.tw-gallery-loadout>span small {
+  background: rgba(3,6,8,.88);
+}
+
+.tw-gallery-loadout>span small {
+  color: #bac3c0;
+}
+
+.tw-gallery-footer {
+  color: var(--tw-muted);
+}
+
+.tw-gallery-footer b {
+  color: #c8d0ce;
+}
+
+.tw-gallery-card:hover .tw-gallery-footer b {
+  color: #fff;
+}
+
+/* Sticky workspace chrome and settings. */
+
+.tw-workspace-header {
+  z-index: 39;
+  border-color: var(--tw-line);
+  background: rgba(8,11,13,.97);
+  box-shadow: none;
+}
+
+.tw-workspace-header label>span,
+.tw-workspace-status small {
+  color: var(--tw-muted);
+}
+
+.tw-workspace-name input {
+  color: var(--tw-text);
+}
+
+.tw-workspace-status {
+  border-color: var(--tw-line);
+  background: var(--tw-surface);
+}
+
+.tw-workspace-status>span {
+  border-right-color: var(--tw-line);
+}
+
+.tw-workspace-status b {
+  color: var(--tw-text);
+}
+
+.tw-back-to-gallery {
+  border-color: var(--tw-line-strong);
+  background: #090c0d;
+  color: #d8dfdd;
+}
+
+.tw-back-to-gallery:hover {
+  border-color: rgba(255,255,255,.3);
+  background: var(--tw-surface-hover);
+  color: #fff;
+}
+
+.tw-primary-tabs {
+  border-color: var(--tw-line);
+  background: var(--tw-surface);
+}
+
+.tw-primary-tabs>button {
+  background: #090c0d;
+  color: var(--tw-muted);
+}
+
+.tw-primary-tabs>button>span {
+  color: #d9e0dd;
+}
+
+.tw-primary-tabs>button>small {
+  color: var(--tw-subtle);
+}
+
+.tw-primary-tabs>button.active {
+  border-color: var(--tw-line-strong);
+  background: var(--tw-surface-hover);
+  box-shadow: inset 2px 0 #c8d0ce;
+}
+
+.tw-primary-tabs>button.active>span {
+  color: #fff;
+}
+
+.tw-settings-intro,
+.tw-environment-details,
+.tw-advanced-modifiers {
+  border-color: var(--tw-line);
+  background: var(--tw-surface-raised);
+}
+
+.tw-settings-intro {
+  background: var(--tw-surface-raised);
+}
+
+.tw-settings-intro p,
+.tw-advanced-modifiers-body p {
+  color: var(--tw-muted);
+}
+
+.tw-settings-intro>div:last-child>span {
+  border-color: var(--tw-line);
+  background: var(--tw-surface);
+}
+
+.tw-settings-intro>div:last-child b,
+.tw-metrics>div strong {
+  color: var(--tw-text);
+}
+
+.tw-settings-intro>div:last-child small {
+  color: var(--tw-subtle);
+}
+
+.tw-environment-details[open]>summary,
+.tw-advanced-modifiers[open]>summary {
+  border-bottom-color: var(--tw-line);
+  background: var(--tw-surface-raised);
+}
+
+.tw-environment-details>summary>i,
+.tw-advanced-modifiers>summary>i {
+  background: #151b1c;
+  color: #c8d0ce;
+}
+
+.tw-environment-details>summary:hover>i {
+  background: #1b2324;
+}
+
+.tw-environment-summary>b,
+.tw-environment-summary>b.dps {
+  background: #1a2020;
+  color: #dce3e1;
+}
+
+.tw-advanced-modifiers>summary small {
+  color: #aeb8b5;
+}
+
+.tw-role-list span,
+.tw-chip {
+  border-color: var(--tw-line);
+  background: var(--tw-surface-raised);
+  color: #dce3e1;
+}
+
+.tw-chip small {
+  color: #aeb8b5;
+}
+
+.tw-avatar {
+  border-color: var(--tw-line);
+  background: var(--tw-surface);
+}
+
+.tw-avatar>b {
+  color: #dce3e1;
+}
+
+.tw-chain>div,
+.tw-buff-row,
+.tw-action {
+  border-color: var(--tw-line);
+  background: var(--tw-surface);
+}
+
+.tw-chain strong {
+  color: #edf3ef;
+}
+
+/* Warnings stay semantic without turning their container brown. */
+
+.tw-warnings,
+.tw-warnings.compact {
+  border-color: rgba(230,165,92,.28);
+  background: var(--tw-surface);
+}
+
+.tw-warnings>header>span,
+.tw-warnings>header>b {
+  border-color: rgba(230,165,92,.42);
+  background: transparent;
+  color: #e6a55c;
+}
+
+.tw-warnings>header small {
+  color: var(--tw-muted);
+}
+
+.tw-warnings .tw-warning-items>p,
+.tw-warnings.compact .tw-warning-items>p {
+  border-color: var(--tw-line);
+  background: #090c0d;
+  color: #c9d1ce;
+}
+
+.tw-warning-items>p>i {
+  border-color: #c58449;
+  color: #e6a55c;
+}
+
+.tw-workspace-status .has-warnings b,
+.tw-settings-intro .has-warnings b {
+  color: #e6a55c;
+}
+
+/* Team member cards: neutral surfaces, element identity only. */
+
+.tw-member-column {
+  border-color: var(--tw-line);
+  background: var(--tw-surface);
+  box-shadow: none;
+}
+
+.tw-member-column:not(.is-empty) {
+  border-left: 2px solid color-mix(in srgb,var(--tw-member-accent,#c8d0ce) 58%,transparent);
+}
+
+.tw-member-column>header,
+.tw-member-column>header.tw-member-open {
+  border-bottom-color: var(--tw-line);
+  background: var(--tw-surface-raised);
+}
+
+.tw-member-column>header.tw-member-open:hover,
+.tw-member-column>header.tw-member-open:focus-visible,
+.tw-empty-member-picker:hover {
+  background: var(--tw-surface-hover);
+}
+
+.tw-member-column>header.tw-member-open>strong,
+.tw-member-column .eyebrow,
+.tw-member-showcase-copy>span,
+.tw-member-switcher>span {
+  color: var(--tw-member-accent,#c8d0ce);
+}
+
+.tw-member-heading-icon {
+  border-color: color-mix(in srgb,var(--tw-member-accent,#c8d0ce) 38%,transparent);
+  background: #090c0d;
+}
+
+.tw-member-switcher,
+.tw-member-showcase,
+.tw-member-column>.tw-member-weapon,
+.tw-member-column>.tw-member-loadout-row,
+.tw-member-buffs {
+  border-color: var(--tw-line);
+  background: var(--tw-surface);
+}
+
+.tw-member-showcase::after {
+  background: linear-gradient(90deg,transparent 18%,rgba(8,11,13,.15) 42%,rgba(8,11,13,.91) 75%);
+}
+
+.tw-member-showcase-copy>strong b,
+.tw-member-buffs>summary>b {
+  border: 1px solid color-mix(in srgb,var(--tw-member-accent,#c8d0ce) 48%,transparent);
+  background: transparent;
+  color: var(--tw-member-accent,#c8d0ce);
+}
+
+.tw-member-loadout-row>.tw-member-weapon,
+.tw-member-column>.tw-echo-thumbs>span,
+.tw-member-loadout-row>.tw-echo-thumbs>span {
+  border-color: var(--tw-line);
+  background: #090c0d;
+}
+
+.tw-member-column>.tw-echo-thumbs>span:hover,
+.tw-member-loadout-row>.tw-echo-thumbs>span:hover {
+  border-color: color-mix(in srgb,var(--tw-member-accent,#c8d0ce) 46%,transparent);
+}
+
+.tw-member-column>.tw-chip-list .tw-chip,
+.tw-member-buffs>summary {
+  border-color: var(--tw-line);
+  background: var(--tw-surface-raised);
+}
+
+.tw-member-buffs>summary>i {
+  color: var(--tw-member-accent,#c8d0ce);
+}
+
+.tw-member-column .tw-progress span {
+  background: var(--tw-member-accent,#c8d0ce);
+}
+
+.tw-member-column .tw-open-build {
+  color: var(--tw-member-accent,#c8d0ce);
+}
+
+/* Member workspaces share the same black system with one restrained element token. */
+
+.tw-member-page {
+  --gold: var(--tw-member-accent,#c8d0ce);
+  --mint: var(--tw-member-accent,#c8d0ce);
+  --gold-soft: color-mix(in srgb,var(--tw-member-accent,#c8d0ce) 42%,transparent);
+  --tw-line: rgba(255,255,255,.085);
+  --tw-line-strong: color-mix(in srgb,var(--tw-member-accent,#c8d0ce) 44%,transparent);
+  --tw-mint-line: rgba(255,255,255,.13);
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.tw-member-page .tw-panel,
+.tw-member-page .tw-subnav,
+.tw-member-page .tw-overview-strip-weapon,
+.tw-member-page .tw-overview-top-echoes>a,
+.tw-member-page .tw-overview-gear-card,
+.tw-member-page .tw-sheet-column,
+.tw-member-page .tw-skill-card,
+.tw-member-page .tw-sequence-column,
+.tw-member-page .tw-passive-card,
+.tw-member-page .tw-bonus-nodes,
+.tw-member-page .tw-rotation-card,
+.tw-member-page .optimizer-build-result,
+.tw-member-page .optimizer-result-details>section {
+  border-color: var(--tw-line);
+  background: var(--tw-surface);
+}
+
+.tw-member-page .tw-subnav button {
+  background: #090c0d;
+  color: var(--tw-muted);
+}
+
+.tw-member-page .tw-subnav button.active,
+.tw-member-page .tw-nav-result-modes button.active,
+.tw-member-page .tw-result-modes button.active {
+  border-color: var(--tw-line-strong);
+  background: var(--tw-surface-hover);
+  color: var(--tw-member-accent);
+  box-shadow: inset 2px 0 var(--tw-member-accent);
+}
+
+.tw-member-page .eyebrow,
+.tw-member-page .tw-overview-art>div>span,
+.tw-member-page .tw-overview-skills>header b,
+.tw-member-page .tw-overview-sequences>header b {
+  color: var(--tw-member-accent);
+}

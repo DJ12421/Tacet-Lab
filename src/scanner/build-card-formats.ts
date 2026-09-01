@@ -1,6 +1,6 @@
 import type { ScanRect, ScanRegion } from './types'
 
-export type BuildCardFormatId = 'discord-bot' | 'wuwaflex' | 'wuwa-optimizer' | 'wuthering-tools' | 'the-wuwa-calculator' | 'tacet-lab'
+export type BuildCardFormatId = 'discord-bot' | 'wuwaflex' | 'wuwa-optimizer' | 'the-wuwa-calculator' | 'tacet-lab'
 export type BuildCardFormatPreference = BuildCardFormatId | 'auto'
 
 export interface BuildCardEchoLayout {
@@ -95,22 +95,6 @@ export const buildCardFormats: BuildCardFormat[] = [
       { x: .92, y: .42, width: .06, height: .06 }
     ],
     echoes: horizontalEchoes([.009, .205, .402, .599, .796], .195, { artY: .57, artHeight: .105, nameY: .56, nameHeight: .035, statsY: .675, statsHeight: .22 })
-  },
-  {
-    id: 'wuthering-tools', label: 'Wuthering Tools', aspectRatio: 16 / 9,
-    character: { x: .008, y: .015, width: .18, height: .05 },
-    characterLevel: { x: .008, y: .065, width: .08, height: .035 },
-    weapon: { x: .41, y: .035, width: .2, height: .045 },
-    weaponLevel: { x: .44, y: .115, width: .08, height: .04 },
-    weaponRank: { x: .405, y: .115, width: .045, height: .04 },
-    skills: horizontalEchoes([.36, .415, .47, .525, .58], .045, { artY: .29, artHeight: .03, statsY: .29, statsHeight: .03 }).map((entry) => entry.art),
-    echoes: [.03, .225, .42, .615, .81].map((y): BuildCardEchoLayout => ({
-      art: { x: .675, y, width: .13, height: .165 },
-      name: { x: .675, y: y + .105, width: .13, height: .04 },
-      cost: { x: .79, y: y + .005, width: .025, height: .03 },
-      sonata: { x: .795, y: y + .005, width: .03, height: .03 },
-      stats: { x: .81, y, width: .18, height: .165 }
-    }))
   },
   {
     id: 'the-wuwa-calculator', label: 'The WuWa Calculator', aspectRatio: 1984 / 1440,

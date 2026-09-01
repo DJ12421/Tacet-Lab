@@ -1,0 +1,245 @@
+.cbc-skills {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 54px;
+  width: 760px;
+  height: 352px;
+  padding: 4px 20px 10px;
+  overflow: visible;
+  background: transparent;
+  transform: translateX(-50%);
+}
+
+.cbc-skill-columns {
+  height: 268px;
+  display: grid;
+  grid-template-columns: repeat(5,1fr);
+  gap: 10px;
+}
+
+.cbc-skill-column {
+  position: relative;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cbc-skill-column:nth-child(1) {
+  transform: translate(-12px,58px);
+}
+
+.cbc-skill-column:nth-child(2) {
+  transform: translate(-5px,21px);
+}
+
+.cbc-skill-column:nth-child(4) {
+  transform: translate(5px,21px);
+}
+
+.cbc-skill-column:nth-child(5) {
+  transform: translate(12px,58px);
+}
+
+.cbc-skill-bonuses {
+  position: relative;
+  width: 100%;
+  height: 134px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.cbc-skill-bonuses::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  top: auto;
+  bottom: -48px;
+  width: 1px;
+  height: 42px;
+  opacity: .55;
+  background: linear-gradient(rgba(226,243,246,.08),var(--cbc-accent));
+  transform: translateX(-50%);
+  transition: height .2s ease,opacity .2s ease;
+}
+
+.cbc-skills:hover .cbc-skill-bonuses::after,.cbc-skills:focus-within .cbc-skill-bonuses::after {
+  opacity: 1;
+}
+
+.cbc-skill-bonus-nodes {
+  height: 132px;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0;
+}
+
+.cbc-skill-bonus-nodes button,.cbc-extra-skills button {
+  position: relative;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #dce5e2;
+  cursor: pointer;
+}
+
+.cbc-skill-bonus-nodes button {
+  position: absolute;
+  bottom: 0;
+  width: 44px;
+  height: 33px;
+  display: grid;
+  place-items: center;
+  transform: translateY(18px) scale(.58);
+  transition: opacity .16s ease,transform .2s ease,visibility 0s linear .2s;
+}
+
+.cbc-skills:hover .cbc-skill-bonus-nodes button,.cbc-skills:focus-within .cbc-skill-bonus-nodes button {
+  position: relative;
+  bottom: auto;
+  transform: none;
+}
+
+.cbc-skill-bonus-nodes button:disabled,.cbc-main-skill:disabled {
+  opacity: 1;
+  cursor: default;
+}
+
+.cbc-skill-bonus-nodes button>span:first-child {
+  width: 29px;
+  height: 29px;
+  display: grid;
+  place-items: center;
+  transform: rotate(45deg);
+  border: 1px solid color-mix(in srgb,var(--cbc-accent) 76%,white);
+  background: linear-gradient(145deg,rgba(226,244,247,.09),rgba(3,10,16,.68));
+  box-shadow: inset 0 1px rgba(255,255,255,.08),0 6px 14px rgba(0,0,0,.35);
+}
+
+.cbc-skill-bonus-nodes img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  transform: rotate(-45deg);
+}
+
+.cbc-skill-bonus-nodes .is-disabled>span:first-child {
+  border-color: rgba(199,220,222,.18);
+  background: rgba(5,13,19,.48);
+}
+
+.cbc-skill-bonus-nodes .is-disabled img {
+  filter: grayscale(1);
+  opacity: .38;
+}
+
+.cbc-main-skill {
+  position: relative;
+  width: 112px;
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #e7eeec;
+  cursor: pointer;
+}
+
+.cbc-main-skill>span:first-child {
+  width: 70px;
+  height: 70px;
+  display: grid;
+  place-items: center;
+  transform: rotate(45deg);
+  border-radius: 0px;
+  border: 2px solid color-mix(in srgb,var(--cbc-accent) 70%,white);
+  background: linear-gradient(145deg,rgba(225,244,247,.11),rgba(3,10,16,.7));
+  box-shadow: inset 0 1px rgba(255,255,255,.1),0 0 22px color-mix(in srgb,var(--cbc-accent) 12%,transparent),0 10px 22px rgba(0,0,0,.42);
+}
+
+.cbc-main-skill img {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+  transform: rotate(-45deg);
+}
+
+.cbc-main-skill>strong {
+  max-width: 122px;
+  transform: translateY(35%);
+  margin-top: 7px;
+  overflow: hidden;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-shadow: 0 1px 5px rgba(0,0,0,.7);
+}
+
+.cbc-main-skill>small {
+  color: var(--cbc-accent);
+  font-size: 11px;
+}
+
+.cbc-skill-level-popover {
+  left: 50%;
+  bottom: 88px;
+  display: grid;
+  grid-template-columns: 34px 64px 34px;
+  align-items: center;
+  transform: translateX(-50%);
+}
+
+.cbc-skill-level-popover button {
+  height: 34px;
+  border: 1px solid var(--cbc-edge);
+  background: rgba(15,30,38,.82);
+  color: #fff;
+  cursor: pointer;
+}
+
+.cbc-skill-level-popover strong {
+  text-align: center;
+  font-size: 12px;
+}
+
+.cbc-extra-skills {
+  height: 74px;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  gap: 66px;
+}
+
+.cbc-extra-skills button {
+  display: grid;
+  justify-items: center;
+  gap: 5px;
+}
+
+.cbc-extra-skills button>span:first-child {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1px solid color-mix(in srgb,var(--cbc-accent) 62%,white);
+  border-radius: 50%;
+  background: linear-gradient(145deg,rgba(226,244,247,.1),rgba(3,10,16,.7));
+  box-shadow: inset 0 1px rgba(255,255,255,.1),0 8px 18px rgba(0,0,0,.4);
+}
+
+.cbc-extra-skills img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.cbc-extra-skills small {
+  font-size: 10px;
+  text-shadow: 0 1px 5px rgba(0,0,0,.7);
+}

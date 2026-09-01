@@ -1,0 +1,154 @@
+/* Bidirectional stat tracing and final card-density adjustments. */
+.cbc-skills.is-stat-node-active .cbc-skill-bonus-nodes button {
+  opacity: 1!important;
+  visibility: visible!important;
+  transform: translateY(0) scale(1)!important;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+.cbc-card.is-stat-highlighting .cbc-skills.is-stat-node-active .cbc-skill-bonus-nodes button.cbc-stat-source:not(.is-contributing) {
+  opacity: .26!important;
+}
+.cbc-card.is-stat-highlighting .cbc-skills.is-stat-node-active .cbc-skill-bonus-nodes button.cbc-stat-source.is-contributing {
+  opacity: 1!important;
+}
+.cbc-skill-bonuses {
+  bottom: 110px;
+}
+.cbc-skill-bonus-nodes button::after {
+  width: 2px;
+  height: 50px;
+}
+.cbc-main-skill>small {
+  font-size: 20px;
+}
+.cbc-identity.is-editable,.cbc-stats.is-editable {
+  cursor: pointer;
+  transition: border-color .16s ease,box-shadow .16s ease,background .16s ease;
+}
+.cbc-identity.is-editable:hover,.cbc-identity.is-editable:focus-visible,.cbc-stats.is-editable:hover,.cbc-stats.is-editable:focus-visible {
+  border-color: color-mix(in srgb,var(--cbc-accent) 72%,white);
+  outline: 1px solid color-mix(in srgb,var(--cbc-accent) 72%,white);
+  outline-offset: -2px;
+  box-shadow: inset 0 1px rgba(255,255,255,.12),0 0 24px color-mix(in srgb,var(--cbc-accent) 20%,transparent);
+}
+.cbc-stat-actions button {
+  width: 44px;
+  height: 44px;
+}
+.cbc-stat-actions .icon {
+  width: 22px;
+  height: 22px;
+}
+.cbc-weapon.is-contributing-source-panel {
+  border-color: color-mix(in srgb,var(--cbc-accent) 68%,white);
+  box-shadow: 0 0 20px color-mix(in srgb,var(--cbc-accent) 22%,transparent),inset 0 0 0 1px color-mix(in srgb,var(--cbc-accent) 16%,transparent);
+}
+.cbc-weapon .cbc-stars {
+  color: #edca66;
+  font-size: 27px;
+  letter-spacing: 4px;
+}
+.cbc-weapon>div>span {
+  font-size: 18px;
+  font-weight: 800;
+}
+.cbc-echo-main-stats small,.cbc-echo-main-stats b {
+  color: #fff!important;
+}
+.cbc-echo-main-stats small {
+  font-size: 15px;
+}
+.cbc-echo-main-stats b {
+  font-size: 22px;
+}
+.cbc-echo-row.is-grade-colored .cbc-echo-score strong {
+  color: var(--cbc-accent);
+}
+.cbc-echo-row.is-grade-colored .cbc-echo-substats b.roll-color-red { color:#ff6969; }
+.cbc-echo-row.is-grade-colored .cbc-echo-substats b.roll-color-gold { color:#ffd76b; }
+.cbc-echo-row.is-grade-colored .cbc-echo-substats b.roll-color-purple { color:#d999ff; }
+.cbc-echo-row.is-grade-colored .cbc-echo-substats b.roll-color-blue { color:#64c6ff; }
+.cbc-echo-row.is-grade-colored .cbc-echo-substats b.roll-color-green { color:#64dda7; }
+.cbc-echo-row.is-grade-colored .cbc-echo-substats b.roll-color-white { color:#f2f5f4; }
+.cbc-echo-row.is-grade-colored .cbc-echo-substats b.roll-color-unknown { color:#ff7b78; }
+.cbc-build-score>span {
+  font-size: 18px;
+  letter-spacing: .2em;
+}
+.cbc-build-score strong {
+  font-size: 66px;
+}
+.cbc-build-score b {
+  font-size: 27px;
+}
+.cbc-sonatas button,.cbc-sonatas button:hover,.cbc-sonatas button:focus-visible {
+  background: linear-gradient(145deg,color-mix(in srgb,var(--cbc-accent) 12%,rgba(17,29,40,.94)),rgba(3,10,16,.92));
+  box-shadow: inset 0 1px rgba(255,255,255,.12),0 8px 20px rgba(0,0,0,.28);
+}
+.cbc-sonatas button>.cbc-tooltip {
+  width: 500px;
+  max-height: none;
+  padding: 20px 22px;
+  overflow: visible;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.cbc-sonatas button>.cbc-tooltip>strong {
+  margin-bottom: 12px;
+  font-size: 18px;
+}
+.cbc-debug-inspector {
+  font-size: 14px;
+}
+.cbc-debug-inspector>strong {
+  font-size: 16px;
+}
+.cbc-debug-inspector label,.cbc-debug-inspector input,.cbc-debug-inspector output,.cbc-debug-inspector>button {
+  font-size: 13px;
+}
+.cbc-grade-color-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0 8px 12px;
+  padding: 11px;
+  border: 1px solid color-mix(in srgb,var(--cbc-accent) 30%,rgba(255,255,255,.14));
+  border-radius: 8px;
+  background: color-mix(in srgb,var(--cbc-accent) 5%,transparent);
+  cursor: pointer;
+}
+.cbc-grade-color-option input {
+  width: 18px;
+  height: 18px;
+  margin: 1px 0 0;
+  accent-color: var(--cbc-accent);
+}
+.cbc-grade-color-option span {
+  display: grid;
+  gap: 3px;
+}
+.cbc-grade-color-option b {
+  color: #edf4f2;
+  font-size: 13px;
+}
+.cbc-grade-color-option small {
+  color: #8f9d99;
+  font-size: 11px;
+  line-height: 1.35;
+}
+.cbc-footer {
+  padding: 20px 12px;
+}
+.cbc-footer>span {
+  font-size: 22px;
+  letter-spacing: .18em;
+  text-shadow: 0 0 15px color-mix(in srgb,var(--cbc-accent) 38%,transparent);
+}
+.cbc-footer>strong {
+  color: #9caaa7;
+  font-size: 15px;
+  font-weight: 1000;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}

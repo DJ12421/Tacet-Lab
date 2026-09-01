@@ -250,12 +250,12 @@ export function TheorizerWorkspace({ member, model, echoes, builds, characters, 
   equippedLoadouts: EquippedLoadout[]; theorycraftBuilds: TheorycraftBuild[]; roverGender: 'male' | 'female'; refresh: () => Promise<void>
 }) {
   const [mode, setMode] = useState<TheorizerMode>('mainStats')
-  const [targetId, setTargetId] = useState(() => model.team.calculationV2?.selectedAttackByBuild[member.build!.id] ?? member.calculationRowsV2[0]?.attack.id ?? '')
+  const [targetId, setTargetId] = useState(() => model.team.scenario?.selectedTargetByBuild[member.build!.id] ?? member.formulaRows[0]?.target.id ?? '')
   const [selectedId, setSelectedId] = useState('')
   const [ranking, setRanking] = useState<Pick<TheorizerRankingResponse, 'baselineScore' | 'baselineStats' | 'results'>>({ baselineScore: 0, results: [] })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const resultMode: FormulaResultMode = model.team.calculationV2?.resultMode ?? model.team.scenario?.resultMode ?? 'expected'
+  const resultMode: FormulaResultMode = model.team.scenario?.resultMode ?? 'expected'
   const baseline = useMemo(() => baselineDraft(member), [member])
   /* Previous editable substat draft/save state, retained with SubstatEditor.
   const [substatSlots, setSubstatSlots] = useState<StatLine[][]>(() => member.resolvedEchoes.map((echo) => clone(echo.subStats)))
@@ -289,10 +289,10 @@ export function TheorizerWorkspace({ member, model, echoes, builds, characters, 
     }
   }
   */
-  const targetGroups = [...member.calculationRowsV2.reduce((groups, row) => {
-    const targets = groups.get(row.attack.group) ?? []
-    targets.push({ id: row.attack.id, label: row.attack.name })
-    groups.set(row.attack.group, targets)
+  const targetGroups = [...member.formulaRows.reduce((groups, row) => {
+    const targets = groups.get(row.target.group) ?? []
+    targets.push({ id: row.target.id, label: row.target.label })
+    groups.set(row.target.group, targets)
     return groups
   }, new Map<string, Array<{ id: string; label: string }>>())]
   const targets = targetGroups.flatMap(([, entries]) => entries)

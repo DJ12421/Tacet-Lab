@@ -1,0 +1,430 @@
+/* Character showcase typography is intentionally larger than the dense inventory UI. */
+
+.cs-page .eyebrow {
+  font-size: var(--font-size-caption);
+}
+
+.cs-toolbar>div:nth-child(2) strong {
+  font-size: var(--font-size-body);
+}
+
+.cs-back,.cs-toolbar-actions button {
+  font-size: var(--font-size-small);
+}
+
+.cs-character-kicker span {
+  font-size: var(--font-size-caption);
+}
+
+.cs-character-copy p {
+  font-size: var(--font-size-small);
+}
+
+.cs-level-rarity>strong {
+  font-size: var(--font-size-small);
+}
+
+.cs-stars {
+  font-size: var(--font-size-caption);
+}
+
+.cs-level-editor button {
+  font-size: var(--font-size-caption);
+}
+
+.cs-sequence-rail span {
+  font-size: var(--font-size-caption);
+}
+
+.cs-sonatas b {
+  font-size: var(--font-size-caption);
+}
+
+.cs-sonatas small {
+  font-size: var(--font-size-caption);
+}
+
+.cs-stats-panel h2,.cs-skills-panel h2,.cs-echo-section h2 {
+  font-size: var(--font-size-heading-small);
+}
+
+.cs-stats-panel>header>span,.cs-skills-panel>header>small,.cs-echo-section>header>span {
+  font-size: var(--font-size-caption);
+}
+
+.cs-stat-list>div {
+  font-size: var(--font-size-small);
+}
+
+.cs-stat-list>div>b {
+  font-size: var(--font-size-small);
+}
+
+.cs-warning {
+  font-size: var(--font-size-caption);
+}
+
+.cs-weapon-copy h2 {
+  font-size: var(--font-size-heading);
+}
+
+.cs-weapon-copy>div {
+  font-size: var(--font-size-caption);
+}
+
+.cs-weapon-copy>small {
+  font-size: var(--font-size-caption);
+}
+
+.cs-empty-weapon strong {
+  font-size: var(--font-size-body);
+}
+
+.cs-empty-weapon small {
+  font-size: var(--font-size-caption);
+}
+
+.cs-main-skill>strong {
+  font-size: var(--font-size-caption);
+}
+
+.cs-skill-level b {
+  font-size: var(--font-size-caption);
+}
+
+.cs-echo-card>header strong {
+  font-size: var(--font-size-small);
+}
+
+.cs-echo-primary span,.cs-echo-secondary,.cs-echo-substats>div {
+  font-size: var(--font-size-caption);
+}
+
+.cs-echo-primary b {
+  font-size: var(--font-size-body-large);
+}
+
+.cs-echo-empty small {
+  font-size: var(--font-size-caption);
+}
+
+/* Character-card readability and Echo roll quality. */
+
+.cs-stars {
+  font-size: var(--font-size-body-large);
+  line-height: 1;
+  letter-spacing: 2px;
+}
+
+.cs-skills-panel h2,.cs-echo-section h2 {
+  font-size: var(--font-size-heading);
+}
+
+.cs-skills-panel>header>small,.cs-echo-section>header>span {
+  font-size: var(--font-size-small);
+}
+
+.cs-main-skill>strong {
+  font-size: var(--font-size-small);
+}
+
+.cs-skill-level b {
+  font-size: var(--font-size-body);
+}
+
+.cs-skill-tooltip {
+  width: 220px;
+}
+
+.cs-skill-tooltip b {
+  font-size: var(--font-size-caption);
+}
+
+.cs-skill-tooltip small {
+  font-size: var(--font-size-caption);
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+.cs-echo-card>header strong {
+  font-size: var(--font-size-body);
+}
+
+.cs-echo-card>header span,.cs-echo-card>header small {
+  font-size: var(--font-size-caption);
+}
+
+.cs-echo-art>b {
+  font-size: var(--font-size-caption);
+}
+
+.cs-echo-primary span,.cs-echo-secondary,.cs-echo-substats>div {
+  font-size: var(--font-size-small);
+}
+
+.cs-echo-primary b {
+  font-size: var(--font-size-heading-small);
+}
+
+.cs-echo-substats>div {
+  align-items: center;
+}
+
+.cs-echo-substats>div>span {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.cs-echo-substats b {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.cs-echo-substats b>span {
+  color: inherit;
+}
+
+.cs-echo-substats em {
+  min-width: 34px;
+  padding: 2px 3px;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  font-size: var(--font-size-caption);
+  font-style: normal;
+  text-align: center;
+}
+
+.cs-echo-substats .roll-tier-0,.cs-echo-substats .roll-tier-1,.cs-echo-substats .roll-tier-2 {
+  color: #f1f4f3;
+}
+
+.cs-echo-substats .roll-tier-3 {
+  color: #69cf7c;
+}
+
+.cs-echo-substats .roll-tier-4 {
+  color: #65b9ff;
+}
+
+.cs-echo-substats .roll-tier-5,.cs-echo-substats .roll-tier-6 {
+  color: #c374ff;
+}
+
+.cs-echo-substats .roll-tier-7,.cs-echo-substats .roll-tier-8 {
+  color: #ffb000;
+  text-shadow: 0 0 10px rgba(255,176,0,.22);
+}
+
+.cs-weapon-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 310px;
+}
+
+.cs-weapon-copy .cs-weapon-title {
+  justify-content: flex-start;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.cs-weapon-copy .cs-weapon-title h2 {
+  min-width: 0;
+  margin: 4px 0 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: var(--font-size-heading);
+}
+
+.cs-weapon-title>b {
+  flex: none;
+  padding: 3px 6px;
+  border: 1px solid color-mix(in srgb,var(--cs-accent) 65%,transparent);
+  border-radius: 9px;
+  color: var(--cs-accent);
+  font-size: var(--font-size-caption);
+  white-space: nowrap;
+}
+
+/* Export mode is a fixed editorial composition, independent of the current viewport. */
+
+.cs-export-frame.is-exporting {
+  width: 1600px;
+  height: auto;
+  max-width: none;
+  overflow: visible;
+  padding: 16px;
+  background: #030708;
+  color: #edf3f1;
+}
+
+.cs-export-frame.is-exporting .cs-export-masthead {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  border: 1px solid rgba(var(--cs-accent-rgb),.3);
+  border-bottom: 0;
+  background: rgba(3,8,9,.9);
+}
+
+.cs-export-frame.is-exporting .cs-export-masthead>div {
+  display: grid;
+  gap: 4px;
+}
+
+.cs-export-frame.is-exporting .cs-export-masthead>div:last-child {
+  text-align: right;
+}
+
+.cs-export-frame.is-exporting .cs-export-masthead span,.cs-export-frame.is-exporting .cs-export-masthead small {
+  color: var(--cs-accent);
+  font-size: var(--font-size-caption);
+  letter-spacing: .2em;
+}
+
+.cs-export-frame.is-exporting .cs-export-masthead strong {
+  font-size: var(--font-size-body-large);
+  letter-spacing: .12em;
+}
+
+.cs-export-frame.is-exporting .cs-export-masthead b {
+  font-size: var(--font-size-heading-large);
+  letter-spacing: .04em;
+}
+
+.cs-export-frame.is-exporting .cs-layout {
+  width: 1568px;
+  height: auto;
+  max-width: none;
+  overflow: visible;
+  display: grid;
+  grid-template-columns: minmax(380px,.9fr) minmax(330px,.75fr) minmax(440px,1.1fr);
+  grid-template-rows: auto auto auto;
+  grid-template-areas: "character stats weapon" "character stats skills" "echoes echoes echoes";
+  gap: 7px;
+  padding: 7px;
+}
+
+.cs-export-frame.is-exporting .cs-character-panel {
+  min-height: 550px;
+}
+
+.cs-export-frame.is-exporting .cs-sequence-rail button>span:not(.cs-skill-tooltip),.cs-export-frame.is-exporting .cs-warning {
+  display: none;
+}
+
+.cs-export-frame.is-exporting .cs-weapon-panel {
+  min-height: 0;
+  grid-template-columns: minmax(0,1fr) 175px;
+}
+
+.cs-export-frame.is-exporting .cs-weapon-panel>img {
+  width: 229px;
+  height: 197px;
+}
+
+.cs-export-frame.is-exporting .cs-stats-panel {
+  min-height: 0;
+  align-self: stretch;
+}
+
+.cs-export-frame.is-exporting .cs-skills-panel {
+  min-height: 370px;
+}
+
+.cs-export-frame.is-exporting .cs-source-skill-tree {
+  height: 330px;
+  padding-top: 0;
+}
+
+.cs-export-frame.is-exporting .cs-skill-special {
+  transform: translateY(-14px);
+}
+
+.cs-export-frame.is-exporting .cs-skill-special .cs-special-step {
+  min-height: 65px;
+}
+
+.cs-export-frame.is-exporting .cs-echo-section {
+  overflow: visible;
+  display: block;
+  padding-top: 0;
+}
+
+.cs-export-frame.is-exporting .cs-echo-section>header,.cs-export-frame.is-exporting .cs-substat-preferences {
+  display: none;
+}
+
+.cs-export-frame.is-exporting .cs-echo-row {
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(5,minmax(0,1fr));
+  overflow: visible;
+}
+
+.cs-export-frame.is-exporting .cs-echo-row>.cs-echo-tab-card {
+  height: auto;
+  min-width: 0;
+  min-height: 0;
+  flex: none;
+  overflow: visible;
+}
+
+.cs-export-frame.is-exporting .cs-echo-row>.cs-echo-tab-card>.echo-card {
+  height: auto;
+  min-height: 0;
+  padding: 9px;
+}
+
+.cs-export-frame.is-exporting .cs-echo-row .substats {
+  padding-bottom: 3px;
+}
+
+.cs-export-frame.is-exporting .cs-echo-row .echo-card>footer {
+  min-height: 36px;
+  padding-top: 8px;
+}
+
+.cs-export-frame.is-exporting .cs-character-art,.cs-export-frame.is-exporting .cs-character-art.is-live-hidden {
+  opacity: 1!important;
+  visibility: visible!important;
+  transition: none!important;
+}
+
+.cs-export-frame.is-exporting .cs-live-portrait {
+  display: none!important;
+}
+
+.cs-export-frame.is-exporting.has-live-portrait-snapshot .cs-character-art {
+  opacity: 0!important;
+}
+
+.cs-export-frame.is-exporting.has-live-portrait-snapshot .cs-live-portrait-snapshot {
+  display: block;
+  opacity: 1!important;
+  visibility: visible!important;
+  transform: scale(1.28);
+  transform-origin: 50% 47%;
+}
+
+.cs-export-frame.is-exporting .cs-export-footer {
+  height: 38px;
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 17px;
+  border: 1px solid rgba(var(--cs-accent-rgb),.3);
+  border-top: 0;
+  background: #050a0b;
+  color: #9aa9a5;
+  font-size: var(--font-size-small);
+  letter-spacing: .1em;
+}

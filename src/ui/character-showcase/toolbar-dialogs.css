@@ -1,0 +1,294 @@
+/* Final character-card toolbar ownership. */
+.cs-toolbar {
+  grid-template-columns: auto minmax(120px,1fr) 190px 190px auto;
+  grid-template-areas: "back identity build layout actions";
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding: 9px;
+  border-color: rgba(var(--cs-accent-rgb),.38);
+  border-radius: 10px;
+  background: linear-gradient(110deg,rgba(var(--cs-accent-rgb),.09),transparent 32%),rgba(5,10,12,.96);
+  box-shadow: inset 0 1px rgba(255,255,255,.05),0 14px 36px rgba(0,0,0,.28);
+}
+.cs-toolbar .cs-back {
+  grid-area: back;
+}
+.cs-toolbar-identity {
+  grid-area: identity;
+  min-width: 0;
+  display: grid;
+  justify-items: center;
+  line-height: 1.15;
+}
+.cs-toolbar-identity strong,.cs-toolbar-identity small {
+  max-width: 100%;
+  overflow: hidden;
+  border-radius:0px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cs-toolbar>div.cs-toolbar-identity strong {
+  color: #edf3f1;
+  margin-top: -5px;
+  font-size: 22px;
+}
+.cs-toolbar-identity small {
+  margin-top: 0px;
+  margin-bottom: -10px;
+  color: #879490;
+  font-size: var(--font-size-caption+1);
+  font-weight: 700;
+}
+.cs-toolbar .cs-back,.cs-loadout-source select,.cs-layout-controls-host .cbc-debug-controls>summary,.cs-toolbar-actions button {
+  box-sizing: border-box;
+  height: 39px;
+  min-height: 39px;
+}
+.cs-toolbar .cs-back,.cs-toolbar-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 0;
+  padding: 0 13px;
+  border-radius: 7px;
+  white-space: nowrap;
+}
+.cs-toolbar-actions .cs-favorite,.cs-toolbar-actions .danger {
+  border: 1px solid rgba(225,240,241,.14);
+  background: rgba(7,15,20,.72);
+  color: #b9c5c3;
+}
+.cs-toolbar-actions .cs-favorite.active {
+  border-color: color-mix(in srgb,var(--cs-accent) 54%,transparent);
+  color: var(--cs-accent);
+}
+.cs-toolbar-actions .danger.is-armed {
+  border-color: rgba(255,97,105,.72);
+  background: rgba(111,19,26,.7);
+  color: #fff;
+}
+@media (min-width:1101px) {
+  .cs-toolbar {
+    grid-template-columns: auto auto auto minmax(120px,1fr) 190px 190px auto;
+    grid-template-areas: "back favorite delete identity build layout export";
+  }
+
+  .cs-toolbar-actions {
+    display: contents;
+  }
+
+  .cs-toolbar-actions .cs-favorite { grid-area: favorite; }
+  .cs-toolbar-actions .danger { grid-area: delete; }
+  .cs-toolbar-actions .cs-export-button { grid-area: export; }
+}
+.cs-card-workspace:has(>.cs-layout-panel-host:not(:empty)) {
+  grid-template-columns: minmax(0,1fr) 390px;
+}
+@media (max-width:1100px) {
+  .cs-toolbar {
+    grid-template-columns: auto minmax(0,1fr) auto;
+    grid-template-areas: "back identity actions" ". build layout";
+  }
+  .cs-loadout-source { justify-self: end; }
+}
+@media (max-width:900px) {
+  .cs-card-workspace:has(>.cs-layout-panel-host:not(:empty)) { grid-template-columns: 1fr; }
+}
+.cs-loadout-source {
+  grid-area: build;
+  gap: 0;
+}
+.cs-layout-controls-host {
+  grid-area: layout;
+  display: flex;
+  align-items: center;
+}
+.cs-loadout-source,.cs-layout-controls-host,.cs-toolbar-actions {
+  height: 39px;
+  align-self: center;
+}
+.cs-toolbar-actions {
+  grid-area: actions;
+  align-items: center;
+}
+.cs-loadout-source::before {
+  display: none;
+}
+.cs-loadout-source select {
+  padding: 0 38px 0 15px;
+}
+/* Character-card dialogs own their chrome and one bounded scroll region. */
+.cs-picker-backdrop,.cs-weight-editor-backdrop {
+  z-index: 240;
+}
+.cs-weight-editor {
+  display: grid;
+  grid-template-rows: auto minmax(0,1fr) auto;
+  overflow: hidden;
+  padding: 0;
+}
+.cs-weight-editor>header,.cs-weight-editor>footer {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  padding: 18px 22px;
+  background: rgba(5,10,12,.98);
+}
+.cs-weight-editor-scroll {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 22px;
+}
+.cs-weight-editor-scroll>p {
+  margin: 14px 0;
+  color: #91a09c;
+  font-size: var(--font-size-small);
+  line-height: 1.55;
+}
+@media (max-width:650px) {
+  .cs-toolbar {
+    position: relative;
+    grid-template-columns: 44px minmax(0,1fr) auto;
+    grid-template-areas: "back identity actions" "build build layout";
+    align-items: center;
+    gap: 7px;
+    padding: 9px;
+  }
+
+  .cs-toolbar-identity {
+    justify-items: start;
+  }
+
+  .cs-toolbar .cs-back {
+    width: 44px;
+    padding: 0;
+    overflow: hidden;
+    justify-content: center;
+    font-size: 0;
+  }
+
+  .cs-toolbar .cs-back::before {
+    content: "←";
+    font-size: var(--font-size-body);
+  }
+
+  .cs-toolbar .cs-back,.cs-loadout-source select,.cs-layout-controls-host .cbc-debug-controls>summary,.cs-toolbar-actions button {
+    height: 44px;
+    min-height: 44px;
+  }
+
+  .cs-toolbar-actions {
+    display: grid;
+    grid-template-columns: repeat(3,44px);
+    gap: 5px;
+  }
+
+  .cs-toolbar-actions .cs-favorite {
+    padding: 0;
+    overflow: hidden;
+    font-size: 0;
+  }
+
+  .cs-toolbar-actions .cs-favorite::before {
+    content: "♡";
+    font-size: 21px;
+  }
+
+  .cs-toolbar-actions .cs-favorite.active::before {
+    content: "♥";
+  }
+
+  .cs-toolbar-actions .danger,.cs-toolbar-actions .cs-export-button {
+    width: 44px;
+    padding: 0;
+    font-size: inherit;
+  }
+
+  .cs-toolbar-actions .danger span,.cs-export-button span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .cs-loadout-source,.cs-layout-controls-host {
+    min-width: 0;
+    width: 100%;
+    height: 44px;
+  }
+
+  .cs-toolbar-actions { height: 44px; }
+
+  .cs-loadout-source select,.cs-layout-controls-host .cbc-debug-controls {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .cs-loadout-source {
+    justify-self: stretch;
+  }
+
+  .cs-picker-backdrop,.cs-weight-editor-backdrop {
+    align-items: center;
+    padding: 10px;
+    overflow: hidden;
+    overscroll-behavior: contain;
+  }
+
+  .cs-picker-backdrop>.cs-picker,.cs-weight-editor-backdrop>.cs-weight-editor {
+    width: calc(100vw - 20px);
+    height: calc(100dvh - 20px);
+    min-height: 0;
+    max-height: none;
+    margin: auto;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+
+  .cs-picker-backdrop>.cs-echo-picker {
+    display: grid;
+    grid-template-rows: auto auto minmax(0,1fr);
+  }
+
+  .cs-echo-picker-filters {
+    max-height: 44dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .cs-echo-picker .echo-picker-list {
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+  }
+
+  .cs-weight-editor>header,.cs-weight-editor>footer {
+    padding: 14px 12px;
+  }
+
+  .cs-weight-editor-scroll {
+    padding: 0 12px;
+  }
+
+  .cs-weight-editor>footer {
+    align-items: stretch;
+    flex-direction: column-reverse;
+    padding-bottom: max(14px,env(safe-area-inset-bottom));
+  }
+
+  .cs-weight-editor>footer>div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .cs-weight-editor>footer button {
+    min-height: 44px;
+  }
+}

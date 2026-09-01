@@ -1,0 +1,99 @@
+/* Embedded Teams optimizer: constraints, baseline, and explicit swap plan. */
+
+.optimizer-v2-workspace {
+  --optimizer-current-gold: #e4bb5e;
+}
+
+.optimizer-constraints {
+  display: grid;
+  grid-template-columns: minmax(230px,1.2fr) minmax(180px,.8fr) minmax(170px,.7fr) minmax(170px,.7fr);
+  align-items: end;
+  gap: 8px;
+  padding: 11px;
+}
+
+.optimizer-constraints>div:first-child {
+  display: grid;
+  gap: 3px;
+}
+
+.optimizer-constraints>div:first-child>strong {
+  font-size: var(--font-size-body);
+}
+
+.optimizer-constraints>div:first-child>small {
+  color: var(--muted);
+  font-size: var(--font-size-caption);
+}
+
+.optimizer-constraints label {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.optimizer-constraints label>span,.optimizer-current-baseline>span {
+  color: #7f8c89;
+  font-size: var(--font-size-caption);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.optimizer-constraints input,.optimizer-constraints select {
+  width: 100%;
+  min-width: 0;
+  height: 38px;
+  padding: 0 9px;
+  border: 1px solid rgba(141,228,212,.28);
+  background: #071011;
+  color: #edf3f1;
+}
+
+.optimizer-current-baseline {
+  height: 60px;
+  display: grid;
+  align-content: center;
+  gap: 3px;
+  padding: 7px 10px;
+  border: 1px solid rgba(228,187,94,.22);
+  background: rgba(228,187,94,.055);
+}
+
+.optimizer-current-baseline b {
+  color: var(--gold);
+  font-size: var(--font-size-body-large);
+}
+
+.optimizer-score em {
+  font-size: var(--font-size-caption);
+  font-style: normal;
+}
+
+.optimizer-score em.positive,.optimizer-damage-table b.positive {
+  color: #58d996;
+}
+
+.optimizer-score em.negative,.optimizer-damage-table b.negative {
+  color: #ec777b;
+}
+
+@media (max-width:1050px) {
+  .optimizer-constraints {
+    grid-template-columns: 1fr 1fr;
+  }
+  .optimizer-constraints>div:first-child {
+    grid-column: 1/-1;
+  }
+}
+
+@media (max-width:700px) {
+  .optimizer-constraints {
+    grid-template-columns: 1fr;
+  }
+  .optimizer-constraints>div:first-child {
+    grid-column: 1;
+  }
+  .optimizer-score em {
+    white-space: normal;
+  }
+}

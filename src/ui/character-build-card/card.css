@@ -1,0 +1,639 @@
+.cbc-card {
+  --cbc-accent: #e4bb5e;
+  --cbc-glass: rgba(7,17,26,.54);
+  --cbc-glass-soft: rgba(8,19,29,.4);
+  --cbc-glass-deep: rgba(3,9,15,.66);
+  --cbc-edge: rgba(224,241,246,.12);
+  --cbc-edge-soft: rgba(224,241,246,.075);
+  box-sizing: border-box;
+  position: absolute;
+  isolation: isolate;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  display: grid;
+  grid-template-columns: 400px minmax(0,1fr) 450px;
+  grid-template-rows: 1012px 30px;
+  gap: 10px 12px;
+  padding: 14px 18px;
+  overflow: hidden;
+  border: 1px solid rgba(232,246,248,.16);
+  border-radius: 28px;
+  transform-origin: top left;
+  color: #edf4f2;
+  background: #03070b;
+  font-family: mc-gamefont,sans-serif;
+  box-shadow: inset 0 1px rgba(255,255,255,.12),inset 0 -28px 70px rgba(0,0,0,.28),0 28px 80px rgba(0,0,0,.5);
+  contain: layout paint style;
+}
+
+/* The live Spine canvas changes every frame. Keep screen surfaces opaque enough
+   to preserve the glass treatment without forcing Chromium to re-blur that
+   canvas through every panel on every tick. Native-size exports retain blur. */
+
+.cbc-card:not(.is-exporting) .cbc-glass {
+  background: linear-gradient(145deg,rgba(226,247,250,.075),transparent 24%),linear-gradient(135deg,rgba(8,19,29,.78),rgba(3,9,15,.9));
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.cbc-card:not(.is-exporting) .cbc-echo-row {
+  background: linear-gradient(145deg,rgba(227,247,250,.085),transparent 28%),linear-gradient(104deg,color-mix(in srgb,var(--cbc-accent) 9%,rgba(13,27,35,.82)),rgba(3,9,16,.92) 70%);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.cbc-card:not(.is-exporting) .cbc-sonatas button {
+  background: linear-gradient(145deg,color-mix(in srgb,var(--cbc-accent) 10%,rgba(17,29,40,.94)),rgba(3,10,16,.94));
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.cbc-card::before,.cbc-card::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.cbc-card::before {
+  z-index: 0;
+  inset: 0;
+  background: radial-gradient(ellipse at 17% 14%,rgba(87,205,232,.26),transparent 27%),radial-gradient(ellipse at 49% 48%,color-mix(in srgb,var(--cbc-accent) 25%,transparent),transparent 39%),radial-gradient(ellipse at 82% 83%,rgba(119,100,223,.22),transparent 34%),linear-gradient(118deg,transparent 0 11%,rgba(156,239,255,.12) 12%,transparent 15% 25%,rgba(255,255,255,.06) 26%,transparent 29%),linear-gradient(145deg,#0c2330,#08111d 46%,#0c1022 76%,#03070b);
+}
+
+.cbc-card::after {
+  z-index: 0;
+  inset: -8%;
+  opacity: .58;
+  background: radial-gradient(ellipse at 24% 38%,rgba(105,231,234,.2),transparent 22%),radial-gradient(ellipse at 73% 61%,color-mix(in srgb,var(--cbc-accent) 18%,transparent),transparent 25%),linear-gradient(112deg,transparent 0 18%,rgba(255,255,255,.09) 19%,transparent 21% 58%,rgba(121,231,255,.055) 59%,transparent 62%);
+  filter: blur(14px);
+  mix-blend-mode: screen;
+}
+
+.cbc-left-column,.cbc-center-column,.cbc-right-column,.cbc-footer {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+}
+
+.cbc-left-column {
+  display: grid;
+  grid-template-rows: 178px minmax(0,1fr) 225px;
+  gap: 9px;
+}
+
+.cbc-center-column {
+  display: grid;
+  grid-template-rows: 104px minmax(0,1fr) 352px;
+  gap: 9px;
+  pointer-events: none;
+}
+
+.cbc-right-column {
+  display: grid;
+  grid-template-rows: 76px 786px 134px;
+  gap: 8px;
+}
+
+.cbc-glass {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid var(--cbc-edge);
+  border-radius: 17px;
+  background: linear-gradient(145deg,rgba(226,247,250,.055),transparent 24%),linear-gradient(135deg,var(--cbc-glass-soft),var(--cbc-glass-deep));
+  box-shadow: inset 0 1px rgba(255,255,255,.1),inset 0 -1px rgba(255,255,255,.025),0 22px 48px -30px rgba(0,0,0,.95);
+  backdrop-filter: blur(24px) saturate(1.38);
+  -webkit-backdrop-filter: blur(24px) saturate(1.38);
+}
+
+.cbc-glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(ellipse at 12% 0,rgba(255,255,255,.1),transparent 34%),linear-gradient(118deg,rgba(255,255,255,.035),transparent 31% 72%,color-mix(in srgb,var(--cbc-accent) 5%,transparent));
+  pointer-events: none;
+}
+
+.cbc-identity {
+  padding: 22px 24px;
+  overflow: visible;
+  background: linear-gradient(105deg,color-mix(in srgb,var(--cbc-accent) 13%,rgba(11,27,35,.48)),rgba(4,11,18,.59) 76%);
+}
+
+.cbc-identity>div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.cbc-identity h1 {
+  margin: 0;
+  color: #fff;
+  font-family: var(--ss-names-font,var(--bench-rail-font));
+  font-size: 38px;
+  line-height: 1;
+}
+
+.cbc-identity-owner {
+  display: grid;
+  gap: 3px;
+  padding-left: 15px;
+  border-radius:0px;
+  border-left: 1px solid color-mix(in srgb,var(--cbc-accent) 34%,transparent);
+}
+
+.cbc-identity-owner>span {
+  color: var(--cbc-accent);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.cbc-identity-owner>small {
+  color: #82908d;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.cbc-identity>p {
+  margin: 4px 0 0px;
+  color: #9daaa7;
+  font-size: 15px;
+}
+
+.cbc-identity>button {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #edf4f2;
+  font: inherit;
+}
+
+.cbc-identity>button.is-editable {
+  cursor: pointer;
+}
+
+.cbc-identity>button:disabled {
+  opacity: 1;
+}
+
+.cbc-identity>button strong {
+  font-size: 18px;
+}
+
+.cbc-stars {
+  color: #edca66;
+  font-size: 20px;
+  letter-spacing: 3px;
+  text-shadow: 0 0 10px rgba(237,202,102,.25);
+  margin-bottom: 3px;
+}
+
+.cbc-identity-tags {
+  position: absolute;
+  left: 22px;
+  bottom: 17px;
+  display: flex;
+  gap: 6px;
+}
+
+.cbc-identity-tags span {
+  padding: 5px 8px;
+  border: 1px solid color-mix(in srgb,var(--cbc-accent) 38%,transparent);
+  background: rgba(0,0,0,.28);
+  color: #dce5e2;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.cbc-edit-popover {
+  position: absolute;
+  z-index: 100;
+  padding: 8px;
+  border: 1px solid color-mix(in srgb,var(--cbc-accent) 38%,rgba(255,255,255,.2));
+  border-radius: 11px;
+  background: linear-gradient(145deg,rgba(29,46,55,.91),rgba(3,9,15,.94));
+  box-shadow: inset 0 1px rgba(255,255,255,.1),0 18px 50px rgba(0,0,0,.72);
+  backdrop-filter: blur(20px) saturate(1.3);
+  -webkit-backdrop-filter: blur(20px) saturate(1.3);
+  color: #edf4f2;
+}
+
+.cbc-level-popover {
+  left: 20px;
+  top: 126px;
+  display: grid;
+  grid-template-columns: repeat(5,52px);
+  gap: 4px;
+}
+
+.cbc-level-popover button {
+  height: 34px;
+  border: 1px solid var(--cbc-edge-soft);
+  border-radius: 6px;
+  background: rgba(223,242,245,.045);
+  color: #aab6b3;
+  cursor: pointer;
+}
+
+.cbc-level-popover button.active {
+  border-color: var(--cbc-accent);
+  background: color-mix(in srgb,var(--cbc-accent) 10%,transparent);
+  color: var(--cbc-accent);
+}
+
+.cbc-stats {
+  min-height: 0;
+  padding: 17px 20px 14px;
+  overflow: hidden;
+}
+
+.cbc-stats>header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 11px;
+}
+
+.cbc-stats>header>div:first-child {
+  display: grid;
+  gap: 4px;
+}
+
+.cbc-stats>header span,.cbc-weapon small,.cbc-sonatas>span,.cbc-echo-header span {
+  color: color-mix(in srgb,var(--cbc-accent) 84%,#eef8f7);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+}
+
+.cbc-stats>header strong {
+  font-size: 18px;
+}
+
+.cbc-stat-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.cbc-stat-actions button {
+  position: relative;
+  z-index: 2;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--cbc-edge);
+  border-radius: 50%;
+  background: rgba(224,242,246,.045);
+  box-shadow: inset 0 1px rgba(255,255,255,.06);
+  color: #99a6a2;
+  cursor: pointer;
+}
+
+.cbc-stat-actions button:hover {
+  border-color: color-mix(in srgb,var(--cbc-accent) 60%,white);
+  background: color-mix(in srgb,var(--cbc-accent) 10%,transparent);
+  color: var(--cbc-accent);
+  box-shadow: 0 0 16px color-mix(in srgb,var(--cbc-accent) 18%,transparent);
+}
+
+.cbc-stat-actions .icon {
+  width: 15px;
+  height: 15px;
+}
+
+.cbc-stats>div {
+  display: grid;
+}
+
+.cbc-stat-row {
+  position: relative;
+  min-height: 43px;
+  display: grid;
+  grid-template-columns: 22px auto minmax(12px,1fr) auto;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--cbc-edge-soft);
+  font-size: 14px;
+}
+
+.cbc-stat-row:focus-visible {
+  outline: 1px solid var(--cbc-accent);
+  outline-offset: -1px;
+}
+
+.cbc-stat-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 5px rgba(0,0,0,.5));
+}
+
+.cbc-stat-row>span {
+  color: #becac8;
+}
+
+.cbc-stat-row>i {
+  height: 1px;
+  background: linear-gradient(90deg,rgba(225,241,244,.18),transparent);
+}
+
+.cbc-stat-row .calculated-value {
+  color: #f2f5f4;
+  font-size: 15px;
+  text-shadow: 0 1px 6px rgba(0,0,0,.65);
+}
+
+.cbc-stats>p {
+  margin: 10px 0 0;
+  color: #83918f;
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.cbc-weapon {
+  display: grid;
+  grid-template-columns: 205px minmax(0,1fr);
+  align-items: center;
+  padding: 0px 16px 4px 0px;
+  overflow: visible;
+}
+
+.cbc-weapon.is-editable {
+  cursor: pointer;
+}
+
+.cbc-weapon.is-editable:hover {
+  border-color: color-mix(in srgb,var(--cbc-accent) 62%,white);
+  box-shadow: inset 0 1px rgba(255,255,255,.12),0 0 28px color-mix(in srgb,var(--cbc-accent) 13%,transparent),0 22px 48px -30px rgba(0,0,0,.95);
+}
+
+.cbc-weapon>img {
+  width: 205px;
+  height: 190px;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 18px rgba(0,0,0,.55));
+}
+
+.cbc-weapon>div {
+  min-width: 0;
+}
+
+.cbc-weapon h2 {
+  margin: 5px 0 6px;
+  overflow: hidden;
+  color: #fff;
+  font-size: 22px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-shadow: 0 2px 10px rgba(0,0,0,.6);
+}
+
+.cbc-weapon>div>span {
+  display: block;
+  margin-top: 7px;
+  color: #aab7b5;
+  font-size: 13px;
+}
+
+.cbc-weapon dl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin: 12px 0 0;
+}
+
+.cbc-weapon dl>div {
+  padding: 7px 8px;
+  border: 1px solid var(--cbc-edge-soft);
+  border-radius: 7px;
+  background: rgba(224,242,246,.04);
+}
+
+.cbc-weapon dt {
+  color: #8f9d9a;
+  font-size: 11px;
+}
+
+.cbc-weapon dd {
+  margin: 2px 0 0;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.cbc-weapon>button {
+  grid-column: 1/-1;
+  align-self: stretch;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 5px;
+  border: 1px dashed color-mix(in srgb,var(--cbc-accent) 40%,var(--cbc-edge));
+  border-radius: 10px;
+  background: rgba(224,242,246,.035);
+  color: #a8b5b2;
+}
+
+.cbc-weapon>button:disabled {
+  opacity: 1;
+}
+
+.cbc-weapon>button>span {
+  color: var(--cbc-accent);
+  font-size: 35px;
+}
+
+.cbc-sequences {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: 22px;
+  width: 680px;
+  height: 124px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 0;
+  overflow: visible;
+  transform: translateX(-50%);
+}
+
+.cbc-sequences::before {
+  content: "";
+  position: absolute;
+  left: 54px;
+  right: 54px;
+  top: 50%;
+  height: 1px;
+  background: linear-gradient(90deg,transparent,rgba(225,242,246,.22) 14%,color-mix(in srgb,var(--cbc-accent) 38%,rgba(255,255,255,.12)) 50%,rgba(225,242,246,.22) 86%,transparent);
+  box-shadow: 0 0 12px color-mix(in srgb,var(--cbc-accent) 14%,transparent);
+}
+
+.cbc-sequences>button {
+  position: relative;
+  z-index: 1;
+  width: 96px;
+  height: 118px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #82908e;
+  cursor: pointer;
+}
+
+.cbc-sequences>button:disabled {
+  opacity: 1;
+  cursor: default;
+}
+
+.cbc-sequence-frame {
+  position: relative;
+  width: 92px;
+  height: 100px;
+  display: grid;
+  place-items: center;
+  filter: drop-shadow(0 6px 9px rgba(0,0,0,.62));
+}
+
+.cbc-sequence-star {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.cbc-sequence-star path {
+  fill: rgba(7,14,19,.76);
+  stroke: none;
+}
+
+.cbc-sequence-icon {
+  position: relative;
+  z-index: 1;
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  filter: grayscale(1) brightness(.58);
+}
+
+.cbc-sequences small {
+  position: absolute;
+  bottom: 0;
+  font-size: 10px;
+  font-weight: 800;
+  text-shadow: 0 1px 5px rgba(0,0,0,.8);
+}
+
+.cbc-sequences .is-unlocked {
+  color: var(--cbc-accent);
+}
+
+.cbc-sequences .is-unlocked .cbc-sequence-frame {
+  filter: drop-shadow(0 0 14px color-mix(in srgb,var(--cbc-accent) 42%,transparent));
+}
+
+.cbc-sequences .is-unlocked .cbc-sequence-star path {
+  fill: color-mix(in srgb,var(--cbc-accent) 24%,rgba(8,14,17,.88));
+  stroke: none;
+}
+
+.cbc-sequences .is-unlocked .cbc-sequence-icon {
+  filter: none;
+}
+
+.cbc-art-stage {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 50%;
+  width: 5000px;
+  height: 5000px;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  pointer-events: none;
+  transform: translate(-50%,-50%);
+}
+
+.cbc-art-positioner {
+  position: absolute;
+  left: 1540px;
+  top: 1916px;
+  width: 1920px;
+  height: 1080px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.cbc-character-art,.cbc-live-portrait-snapshot {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 50%;
+  width: auto;
+  max-width: none;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  filter: drop-shadow(0 25px 30px rgba(0,0,0,.7));
+  transform: translateX(-50%);
+  transition: opacity .2s;
+}
+
+.cbc-character-art.is-live-hidden {
+  opacity: 0;
+}
+
+.cbc-character-art.is-fallback {
+  top: auto;
+  bottom: 0;
+  width: auto;
+  height: 72%;
+}
+
+.cbc-live-portrait-snapshot {
+  display: none;
+}
+
+.cbc-art-stage .cs-live-portrait {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  filter: drop-shadow(0 25px 30px rgba(0,0,0,.7));
+  transition: opacity .2s;
+}
+
+.cbc-art-stage .cs-live-portrait.is-ready {
+  opacity: 1;
+}
+
+.cbc-art-stage .cs-live-portrait canvas {
+  width: 100%!important;
+  height: 100%!important;
+}

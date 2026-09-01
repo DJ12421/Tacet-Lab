@@ -8,7 +8,6 @@ import type { BuffEffect, Build, DamageType, Echo, EquippedLoadout, FormulaResul
 import { characterCatalog, statLabels, weaponCatalog } from '../game-data'
 import { generatedSonataIconSources } from '../game-data/sonatas.generated'
 import type { CalculationTrace } from '../domain/calculation'
-import { emptyCalculationScenarioV2, resolveSourceScaledModifierValue, type CalculationEffectDefinition, type CalculationEffectSelection, type CalculationModifier, type CalculationSourceStats, type CalculationTraceV2 } from '../domain/calculation-v2'
 import { db } from '../storage/database'
 import { EchoWaveform } from './EchoWaveform'
 import { richSkillDescription } from './CharacterShowcase'
@@ -68,30 +67,14 @@ const DAMAGE_STATS: Array<[StatKey, string]> = [
 ]
 
 function resolvedMemberStat(member: TeamMemberModel, key: StatKey) {
-  const fallback = member.conditionedStats?.[key]
+  return member.conditionedStats?.[key]
     ?? (member.showcase ? member.showcase.finalStats[key as keyof typeof member.showcase.finalStats] : 0)
-  const stats = member.resolvedStatsV2
-  if (!stats) return fallback
-  if (key === 'basicDamage') return stats.typeDamage.basic ?? 0
-  if (key === 'heavyDamage') return stats.typeDamage.heavy ?? 0
-  if (key === 'skillDamage') return stats.typeDamage.skill ?? 0
-  if (key === 'liberationDamage') return stats.typeDamage.liberation ?? 0
-  const direct = stats[key as keyof typeof stats]
-  return typeof direct === 'number' ? direct : fallback
 }
 
 function resolvedMemberStatDetail(member: TeamMemberModel, key: StatKey, label: string) {
   if (!member.showcase) return sumDetail(label, 0, [])
   const baseDetail = showcaseStatDetail(member.showcase, key, label)
-  const resolved = Number(resolvedMemberStat(member, key) ?? 0)
-  const base = Number(member.conditionedStats?.[key]
-    ?? member.showcase.finalStats[key as keyof typeof member.showcase.finalStats]
-    ?? 0)
-  if (!member.resolvedStatsV2 || Math.abs(resolved - base) < 1e-9) return baseDetail
-  return sumDetail(`${label} with active team effects`, resolved, [
-    { label: 'Equipment, skills, and self effects', value: base },
-    { label: 'Active team effects', value: resolved - base }
-  ])
+  return baseDetail
 }
 
 const ELEMENT_COLORS: Record<string, string> = {
@@ -211,7 +194,7 @@ function TeamMemberColumn({ member, model, loadoutOptions, onOpen, onChooseChara
   onManage: () => void
 }) {
   const buffs = [...member.receivedBuffs, ...member.appliedBuffs]
-  const resultMode = model.team.calculationV2?.resultMode ?? model.team.scenario?.resultMode ?? 'expected'
+  const resultMode = model.team.scenario?.resultMode ?? 'expected'
   const currentSource = member.source ? (member.source.type === 'equipped' ? `equipped:${member.source.characterId}` : member.source.type === 'saved' ? `saved:${member.source.buildId}` : `theorycraft:${member.source.theorycraftBuildId}`) : ''
   const currentBuildLabel = loadoutOptions.find((option) => option.value === currentSource)?.label ?? 'Choose Build'
   return <article className={`tw-member-column ${member.build ? '' : 'is-empty'}`} style={member.catalog ? { '--tw-member-accent': ELEMENT_COLORS[member.catalog.element] ?? '#c8d0ce' } as CSSProperties : undefined}>
@@ -508,7 +491,7 @@ function TeamOverview({ model, echoes, builds, characters, weapons, equippedLoad
 }) {
   const [managingMemberSlot, setManagingMemberSlot] = useState<number>()
   const [choosingMemberSlot, setChoosingMemberSlot] = useState<number>()
-  const resultMode = model.team.calculationV2?.resultMode ?? model.team.scenario?.resultMode ?? 'expected'
+  const resultMode = model.team.scenario?.resultMode ?? 'expected'
   const resultModeLabel = resultMode === 'expected' ? 'Average' : resultMode === 'normal' ? 'Non-crit' : 'Critical'
   const loadoutOptions = characters.flatMap((character) => {
     const catalog = characterCatalog.find((entry) => entry.id === character.catalogId)
@@ -532,14 +515,12 @@ function TeamOverview({ model, echoes, builds, characters, weapons, equippedLoad
     } else members.splice(slot, 1)
     const buildIds = members.map((member) => member.memberId)
     const scenario = model.team.scenario
-    const calculationV2 = model.team.calculationV2
     const keepBuildRecords = <T,>(records: Record<string, T> = {}) => Object.fromEntries(Object.entries(records).filter(([buildId]) => buildIds.includes(buildId)))
     await updateTeam({
       members, buildIds,
       actions: model.team.actions.filter((action) => buildIds.includes(action.buildId)),
       buffs: (model.team.buffs ?? []).filter((buff) => buildIds.includes(buff.sourceBuildId)),
-      ...(scenario ? { scenario: { ...scenario, memberConditions: keepBuildRecords(scenario.memberConditions), selectedTargetByBuild: keepBuildRecords(scenario.selectedTargetByBuild), ...(scenario.compareBuildId && buildIds.includes(scenario.compareBuildId) ? {} : { compareBuildId: undefined }) } } : {}),
-      ...(calculationV2 ? { calculationV2: { ...calculationV2, memberEffects: keepBuildRecords(calculationV2.memberEffects), partyEffects: keepBuildRecords(calculationV2.partyEffects), selectedAttackByBuild: keepBuildRecords(calculationV2.selectedAttackByBuild) } } : {})
+      ...(scenario ? { scenario: { ...scenario, memberConditions: keepBuildRecords(scenario.memberConditions), selectedTargetByBuild: keepBuildRecords(scenario.selectedTargetByBuild), ...(scenario.compareBuildId && buildIds.includes(scenario.compareBuildId) ? {} : { compareBuildId: undefined }) } } : {})
     })
   }
   return <div className="tw-settings-page">
@@ -578,7 +559,6 @@ function TeamOverview({ model, echoes, builds, characters, weapons, equippedLoad
     </details>
 
     <section className="tw-member-columns">{model.members.map((member) => { const memberOptions = member.character ? loadoutOptions.filter((option) => option.characterId === member.character?.id).map((option) => ({ ...option, label: option.shortLabel })) : loadoutOptions; return <TeamMemberColumn key={member.slot} member={member} model={model} loadoutOptions={memberOptions} onOpen={() => openMember(member.slot)} onChooseCharacter={() => setChoosingMemberSlot(member.slot)} onAssign={(source) => chooseMember(member.slot, source)} onManage={() => { if (member.character) setManagingMemberSlot(member.slot) }}/> })}</section>
-    <TeamBuffWorkspace model={model} updateTeam={updateTeam}/>
     <BuffWorkspace model={model} updateTeam={updateTeam}/>
     <WarningList warnings={model.warnings}/>
     {managingMemberSlot !== undefined && model.members[managingMemberSlot]?.character && <BuildManagementModal characterId={model.members[managingMemberSlot].character!.id} echoes={echoes} builds={builds} characters={characters} weapons={weapons} equippedLoadouts={equippedLoadouts} theorycraftBuilds={theorycraftBuilds} refresh={refresh} onSelect={(source) => { const value = source.type === 'equipped' ? `equipped:${source.characterId}` : source.type === 'saved' ? `saved:${source.buildId}` : `theorycraft:${source.theorycraftBuildId}`; void chooseMember(managingMemberSlot, value); setManagingMemberSlot(undefined) }} onClose={() => setManagingMemberSlot(undefined)}/>} 
@@ -597,7 +577,7 @@ function BuffWorkspace({ model, updateTeam }: { model: TeamWorkspaceModel; updat
   }
   return <details className="tw-panel tw-buff-workspace tw-advanced-modifiers">
     <summary><span><small>Advanced scenario tools</small><strong>Manual buffs and amplification</strong></span><b>{buffs.length} authored</b><i aria-hidden="true">⌄</i></summary>
-    <div className="tw-advanced-modifiers-body"><header><div><span className="eyebrow">Advanced custom modifiers</span><h2>Manual buffs and amplification</h2><p>Built-in Calculation V2 effects are controlled beside their source. Add a row here only when you need to model a custom scenario that is not covered by the imported mechanics.</p></div><button className="secondary" onClick={() => void addBuff()} disabled={!model.members.some((member) => member.build && member.attacks.length)}><Icon name="plus"/>Add modifier</button></header>
+    <div className="tw-advanced-modifiers-body"><header><div><span className="eyebrow">Advanced custom modifiers</span><h2>Manual buffs and amplification</h2><p>Add buffs that should apply during the configured rotation.</p></div><button className="secondary" onClick={() => void addBuff()} disabled={!model.members.some((member) => member.build && member.attacks.length)}><Icon name="plus"/>Add modifier</button></header>
     <div className="tw-buff-list">{buffs.map((buff) => {
       const source = model.members.find((member) => member.build?.id === buff.sourceBuildId)
       const attacks = source?.attacks ?? []
@@ -611,37 +591,9 @@ function BuffWorkspace({ model, updateTeam }: { model: TeamWorkspaceModel; updat
         <label><span>Duration</span><input type="number" min="0" step="0.1" value={buff.duration} onChange={(event) => void updateBuff(buff.id, { duration: Math.max(0, Number(event.target.value)) })}/></label>
         <button className="tw-remove" aria-label={`Remove ${buff.name}`} onClick={() => void updateTeam({ buffs: buffs.filter((entry) => entry.id !== buff.id) })}><Icon name="trash"/></button>
       </div>
-    })}{!buffs.length && <p className="tw-empty-state">No authored modifiers. The supported weapon, character, sequence, Sonata, Echo and teammate effects remain automatic or are controlled in their relevant member sections.</p>}</div>
+    })}{!buffs.length && <p className="tw-empty-state">No authored modifiers.</p>}</div>
     </div>
   </details>
-}
-
-function TeamBuffWorkspace({ model, updateTeam }: { model: TeamWorkspaceModel; updateTeam: (patch: Partial<Team>) => Promise<void> }) {
-  const providers = model.members.filter((member) => member.build && member.outgoingEffectsV2.length)
-  const effectCount = providers.reduce((total, member) => total + member.outgoingEffectsV2.length, 0)
-  const setProviderEffects = (member: TeamMemberModel, enabled: boolean) => {
-    if (!member.build) return
-    const scenario = model.team.calculationV2 ?? emptyCalculationScenarioV2()
-    const current = scenario.partyEffects[member.build.id] ?? {}
-    const next = Object.fromEntries(member.outgoingEffectsV2.map((effect) => [effect.id, {
-      ...current[effect.id],
-      enabled: effect.alwaysEnabled || enabled,
-      ...(effect.hasStacks && enabled ? { stacks: effect.maxStacks } : {}),
-      ...(effect.scope === 'next' && !current[effect.id]?.recipientBuildId ? { recipientBuildId: model.members.find((entry) => entry.build && entry.build.id !== member.build!.id)?.build?.id } : {})
-    }]))
-    void updateTeam({ calculationV2: { ...scenario, partyEffects: { ...scenario.partyEffects, [member.build.id]: { ...current, ...next } } } })
-  }
-  return <section className="tw-panel tw-team-buffs">
-    <header><div><span className="eyebrow">Team mechanics</span><h2>Team Buffs</h2><p>Configure every supported outgoing character, sequence, weapon, Sonata and Echo effect once at its source. The same state feeds Overview, Forte, Rotation and Optimize.</p></div><b>{effectCount} effects</b></header>
-    <div className="tw-team-buff-providers">{providers.map((member) => {
-      const buildId = member.build!.id
-      const stats = model.sourceStatsV2[buildId]
-      return <article className="tw-team-buff-provider" style={{ '--tw-member-accent': member.catalog ? ELEMENT_COLORS[member.catalog.element] ?? '#c8d0ce' : '#c8d0ce' } as CSSProperties} key={buildId}>
-        <header><span>{member.catalog?.iconSourceUrl && <img src={member.catalog.iconSourceUrl} alt=""/>}<span><strong>{teamMemberName(member)}</strong><small>{member.outgoingEffectsV2.length} outgoing effects</small></span></span><div className="tw-team-buff-provider-tools">{stats && <dl><div><dt>ER</dt><dd>{stats.energyRegen.toFixed(1)}%</dd></div><div><dt>ATK</dt><dd>{Math.floor(stats.atk).toLocaleString('en-US')}</dd></div><div><dt>HP</dt><dd>{Math.floor(stats.hp).toLocaleString('en-US')}</dd></div></dl>}<span><button type="button" onClick={() => setProviderEffects(member, true)}>Enable all</button><button type="button" onClick={() => setProviderEffects(member, false)}>Clear</button></span></div></header>
-        <CalculationEffectControls effects={member.outgoingEffectsV2} member={member} model={model} updateTeam={updateTeam}/>
-      </article>
-    })}{!providers.length && <p className="tw-empty-state">Assign supported builds to discover their outgoing team effects.</p>}</div>
-  </section>
 }
 
 const ROTATION_DEFAULT_CLIP_DURATION = 0.8
@@ -721,7 +673,7 @@ function RotationWorkspace({ model, updateTeam, focusBuildId }: { model: TeamWor
   const undoStackRef = useRef<RotationAction[][]>([])
   const redoStackRef = useRef<RotationAction[][]>([])
   const [clipboardActions, setClipboardActions] = useState<RotationAction[]>([])
-  const resultMode = model.team.calculationV2?.resultMode ?? model.team.scenario?.resultMode ?? 'expected'
+  const resultMode = model.team.scenario?.resultMode ?? 'expected'
   useEffect(() => { setTimelineActions(model.team.actions) }, [model.team.actions])
   useEffect(() => {
     if (!focusBuildId || !model.members.some((entry) => entry.build?.id === focusBuildId)) return
@@ -998,7 +950,7 @@ function RotationWorkspace({ model, updateTeam, focusBuildId }: { model: TeamWor
   const activeRows = model.actions.filter((row) => row.action.timestamp <= playhead && playhead < row.action.timestamp + actionDuration(row.action, model.team.rotationDuration))
   const activeActionIds = new Set(activeRows.map((row) => row.action.id))
   const currentDamage = activeRows.reduce((total, row) => total + row[resultMode], 0)
-  const activeEffectCount = activeRows.reduce((total, row) => total + row.activeBuffs.length + row.activePartyEffectsV2.length + row.activeSelfEffectsV2.length + row.activates.length + row.activatesSelfEffectsV2.length, 0)
+  const activeEffectCount = activeRows.reduce((total, row) => total + row.activeBuffs.length + row.activates.length, 0)
   const damageSources = model.actions.flatMap((row) => {
     const memberIndex = members.findIndex((member) => member.build.id === row.action.buildId)
     if (memberIndex < 0) return []
@@ -1031,7 +983,7 @@ function RotationWorkspace({ model, updateTeam, focusBuildId }: { model: TeamWor
   const damageTimeTicks = Array.from({ length: 5 }, (_, index) => model.team.rotationDuration * index / 4)
   const rulerTicks = Array.from({ length: Math.floor(model.team.rotationDuration) + 1 }, (_, index) => index)
 
-  return <section className="tw-panel tw-rotation"><header><div><span className="eyebrow">Calculation V2 mechanics</span><h2>Rotation workspace</h2><p>Edit timing in the full-width timeline, then refine mechanics and review calculated damage below.</p></div></header>
+  return <section className="tw-panel tw-rotation"><header><div><span className="eyebrow">Rotation analysis</span><h2>Rotation workspace</h2><p>Edit timing in the full-width timeline, then refine mechanics and review calculated damage below.</p></div></header>
     <section className="tw-sequencer" aria-label="Interactive rotation timeline">
       <header className="tw-sequencer-toolbar">
         <div className="tw-transport" role="group" aria-label="Playback controls">
@@ -1098,10 +1050,8 @@ function RotationWorkspace({ model, updateTeam, focusBuildId }: { model: TeamWor
         <div className="tw-rotation-sequence-head"><span>Play order</span><b>{model.actions.length} {model.actions.length === 1 ? 'action' : 'actions'}</b></div>
         <div className="tw-rotation-timeline">{model.actions.map((row, index) => {
           const value = row[resultMode]
-          const trace = row.tracesV2?.[resultMode] ?? row.traces?.[resultMode]
-          const partySelections = row.member?.build ? model.team.calculationV2?.partyEffects[row.member.build.id] ?? {} : {}
-          const selectedPartyEffects = row.activePartyEffectsV2.filter((effect) => effect.alwaysEnabled || partySelections[effect.id]?.enabled)
-          const effectCount = selectedPartyEffects.length + row.activeSelfEffectsV2.length + row.activeBuffs.length + row.activates.length + row.activatesSelfEffectsV2.length
+          const trace = row.traces?.[resultMode]
+          const effectCount = row.activeBuffs.length + row.activates.length
           const multiplier = actionMultiplier(row.action)
           const dragTarget = cardDropTarget?.actionId === row.action.id
           return <article id={`rotation-action-${row.action.id}`} draggable className={`tw-rotation-card ${row.warnings.length ? 'is-invalid' : ''} ${selectedActionIds.includes(row.action.id) ? 'is-selected' : ''} ${activeActionIds.has(row.action.id) ? 'is-playing' : ''} ${draggedCardId === row.action.id ? 'is-dragging' : ''} ${dragTarget ? cardDropTarget.after ? 'drop-after' : 'drop-before' : ''}`} key={row.action.id} onClick={() => setSelectedActionIds([row.action.id])} onDragStart={(event: ReactDragEvent<HTMLElement>) => { setDraggedCardId(row.action.id); event.dataTransfer.effectAllowed = 'move'; event.dataTransfer.setData('text/plain', row.action.id) }} onDragOver={(event) => { event.preventDefault(); if (draggedCardId === row.action.id) return; const rect = event.currentTarget.getBoundingClientRect(); setCardDropTarget({ actionId: row.action.id, after: event.clientY >= rect.top + rect.height / 2 }) }} onDrop={(event) => { event.preventDefault(); const sourceId = event.dataTransfer.getData('text/plain') || draggedCardId; const rect = event.currentTarget.getBoundingClientRect(); if (sourceId) reorderActionCard(sourceId, row.action.id, event.clientY >= rect.top + rect.height / 2); setDraggedCardId(null); setCardDropTarget(null) }} onDragEnd={() => { setDraggedCardId(null); setCardDropTarget(null) }}>
@@ -1110,7 +1060,7 @@ function RotationWorkspace({ model, updateTeam, focusBuildId }: { model: TeamWor
               <div className="tw-rotation-action-summary"><div><small>{row.member ? teamMemberName(row.member) : 'Unassigned'}</small><strong>{row.attack?.name ?? 'Missing attack'}</strong><span className="tw-action-tags">{row.attack && <><em className="forte">{forteGroupLabel(row.attack.group)}</em><em className="damage">{damageSourceLabel(row.attack.type)}</em></>}</span></div><label className="tw-action-multiplier" title="Repeat this action without adding duplicate cards" onClick={(event) => event.stopPropagation()}><b>×</b><input aria-label={`Action ${index + 1} repeat multiplier`} type="number" min="1" max="99" step="1" value={multiplier} onChange={(event) => void updateAction(row.action.id, { multiplier: Math.max(1, Math.min(99, Math.round(Number(event.target.value) || 1))) })}/></label><CalculatedValue detail={multiplier > 1 ? sumDetail(`${row.attack?.name ?? 'Action'} · ${resultMode}`, value, [{ label: `One action × ${multiplier}`, value: value / multiplier }]) : trace ? traceCalculationDetail(trace, `${row.attack?.name ?? 'Action'} · ${resultMode}`) : sumDetail(`${resultMode} damage`, value, [{ label: 'Calculated action', value }])}><strong className="tw-rotation-result"><small>{resultMode === 'expected' ? 'Avg DMG' : resultMode === 'normal' ? 'Non-crit' : 'Crit DMG'}</small>{formatDamage(value)}</strong></CalculatedValue></div>
               <details className="tw-rotation-action-editor"><summary>Edit action and mechanics <span>{effectCount ? `${effectCount} active effects` : 'No additional effects'}</span></summary><div>
                 <div className="tw-rotation-action-fields"><label><span>Character</span><select aria-label={`Action ${index + 1} character`} value={row.action.buildId} onChange={(event) => { const member = model.members.find((entry) => entry.build?.id === event.target.value); const attackId = member?.attacks[0]?.id ?? ''; void updateAction(row.action.id, { buildId: event.target.value, attackId, formulaTargetId: member?.catalog ? `${member.catalog.id}:${attackId}` : undefined }) }}>{model.members.flatMap((member) => member.build ? [<option value={member.build.id} key={member.build.id}>{teamMemberName(member)}</option>] : [])}</select></label><label><span>Attack</span><select aria-label={`Action ${index + 1} attack`} value={row.attack?.id ?? row.action.attackId} onChange={(event) => void updateAction(row.action.id, { attackId: event.target.value, formulaTargetId: row.member?.catalog ? `${row.member.catalog.id}:${event.target.value}` : undefined })}>{ROTATION_ATTACK_GROUPS.map((group) => { const attacks = row.member?.attacks.filter((attack) => attack.group === group.id) ?? []; return attacks.length ? <optgroup label={group.label} key={group.id}>{attacks.map((attack) => <option value={attack.id} key={attack.id}>{attack.name}</option>)}</optgroup> : null })}</select></label><label><span>Time</span><input aria-label={`Action ${index + 1} timestamp`} type="number" min="0" max={model.team.rotationDuration} step="0.1" value={row.action.timestamp} onChange={(event) => void updateAction(row.action.id, { timestamp: Number(event.target.value) })}/></label><label><span>Duration</span><input aria-label={`Action ${index + 1} duration`} type="number" min={ROTATION_MIN_CLIP_DURATION} max={Math.max(ROTATION_MIN_CLIP_DURATION, model.team.rotationDuration - row.action.timestamp)} step="0.1" value={actionDuration(row.action, model.team.rotationDuration)} onChange={(event) => void updateAction(row.action.id, { duration: Number(event.target.value) })}/></label></div>
-                <div className="tw-rotation-mechanics"><span className="tw-buff-state"><b>{row.activeSelfEffectsV2.length ? 'Active Main Echo buffs' : row.activeBuffs.length ? 'Active authored buffs' : selectedPartyEffects.length ? 'Selected team conditions' : 'No additional effects'}</b>{selectedPartyEffects.map((effect) => <small key={effect.id}>Selected: {effect.name}</small>)}{row.activeSelfEffectsV2.map((effect) => <small key={effect.id}>Main Echo: {effect.name}{effect.duration ? ` · ${effect.duration}s window` : ''}</small>)}{row.activeBuffs.map((buff) => <small key={buff.id}>{teamBuffLabel(buff)}</small>)}{row.activatesSelfEffectsV2.map((effect) => <small className="activates" key={effect.id}>Activates Main Echo buff{effect.duration ? ` until ${(row.action.timestamp + effect.duration).toFixed(1)}s` : ''}</small>)}{row.activates.map((buff) => <small className="activates" key={buff.id}>Activates {buff.name} until {(row.action.timestamp + buff.duration).toFixed(1)}s</small>)}</span><span className="tw-rotation-level">{row.attack?.group === 'echo' ? `Rarity ${row.attack.skillLevel}` : `Lv. ${row.attack?.skillLevel ?? '—'}`}<small>{row.attack?.scalesWith.toUpperCase() ?? '—'} scaling</small></span></div>
+                <div className="tw-rotation-mechanics"><span className="tw-buff-state"><b>{row.activeBuffs.length ? 'Active authored buffs' : 'No additional effects'}</b>{row.activeBuffs.map((buff) => <small key={buff.id}>{teamBuffLabel(buff)}</small>)}{row.activates.map((buff) => <small className="activates" key={buff.id}>Activates {buff.name} until {(row.action.timestamp + buff.duration).toFixed(1)}s</small>)}</span><span className="tw-rotation-level">Lv. {row.attack?.skillLevel ?? '—'}<small>{row.attack?.scalesWith.toUpperCase() ?? '—'} scaling</small></span></div>
                 <div className="tw-action-breakdown"><div><span>Non-crit <b>{formatDamage(row.normal)}</b></span><span>Average <b>{formatDamage(row.expected)}</b></span><span>Critical <b>{formatDamage(row.critical)}</b></span><span>Multiplier <b>{row.attack?.multiplierLabel ?? 'Missing'}</b></span></div></div>
               </div></details>
               {row.warnings.length > 0 && <p className="tw-action-warning">{row.warnings.join(' ')}</p>}
@@ -1254,256 +1204,18 @@ function flatValueLabel(valueName: string, skillName: string, sectionTitle: stri
 function ForteDamageRows({ attacks, member, resultMode, skillName }: { attacks: ForteAttackGroup[]; member: TeamMemberModel; resultMode: 'normal' | 'expected' | 'critical'; skillName: string }) {
   if (!attacks.length) return null
   return <dl className="tw-skill-damage-rows">{attacks.map((attack) => {
-    const calculationRows = attack.attackIds.flatMap((attackId) => member.calculationRowsV2.filter((row) => row.attack.id === attackId))
-    const damage = calculationRows.reduce((total, row) => total + row.result[resultMode], 0)
+    const calculationRows = attack.attackIds.flatMap((attackId) => member.formulaRows.filter((row) => row.target.id.endsWith(`:${attackId}`)))
+    const damage = calculationRows.reduce((total, row) => total + row[resultMode], 0)
     const detail = calculationRows.length === 1
-      ? traceCalculationDetail(calculationRows[0].result.trace[resultMode], attack.name)
-      : sumDetail(`${attack.name} · ${resultMode}`, damage, calculationRows.map((row, rowIndex) => ({ label: row.attack.name || String(rowIndex + 1), value: row.result[resultMode] })))
-    const hitValues = calculationRows.flatMap((row) => row.result.instances.length
-      ? row.result.instances.flatMap((instance) => {
-          const resultScale = row.result.normal ? row.result[resultMode] / row.result.normal : 1
-          return Array.from({ length: instance.count }, () => instance.normal * resultScale)
-        })
-      : [row.result[resultMode]])
+      ? traceCalculationDetail(calculationRows[0].traces[resultMode], attack.name)
+      : sumDetail(`${attack.name} · ${resultMode}`, damage, calculationRows.map((row, rowIndex) => ({ label: row.target.label || String(rowIndex + 1), value: row[resultMode] })))
+    const hitValues = calculationRows.map((row) => row[resultMode])
     const label = attack.name.startsWith(`${skillName} - `) ? attack.name.slice(skillName.length + 3) : attack.name
     return <div key={`${attack.name}:${attack.type}`}><dt>{label}<small>{attack.type}{hitValues.length > 1 ? ` · ${hitValues.length}-hit sequence` : ''}</small></dt><dd><CalculatedValue detail={detail} presentation="tooltip" tooltipValues={hitValues.map(formatDamage)}><b>{calculationRows.length ? formatDamage(damage) : '—'}</b></CalculatedValue><small>{resultMode}</small></dd></div>
   })}</dl>
 }
 
-const EFFECT_MODIFIER_LABELS: Record<string, string> = {
-  ATK: 'ATK', HP: 'HP', DEF: 'DEF', ATK_FLAT: 'ATK', ATK_FLAT2: 'ATK',
-  Aero: 'Aero DMG', Electro: 'Electro DMG', Fusion: 'Fusion DMG', Glacio: 'Glacio DMG', Havoc: 'Havoc DMG', Spectro: 'Spectro DMG',
-  AllElementAttributeBonus: 'All DMG', DMGBonus: 'DMG Bonus', CritRate: 'Crit Rate', CritDMG: 'Crit DMG', EnergyRegen: 'Energy Regen', HealingBonus: 'Healing Bonus',
-  BasicAttackDMGBonus: 'Basic Attack DMG', HeavyAttackDMGBonus: 'Heavy Attack DMG', ResonanceSkillDMGBonus: 'Resonance Skill DMG',
-  ResonanceLiberationDMGBonus: 'Resonance Liberation DMG', IntroSkillDMGBonus: 'Intro Skill DMG', OutroSkillDMGBonus: 'Outro Skill DMG',
-  EchoDMGBonus: 'Echo DMG', CoordinatedDMGBonus: 'Coordinated Attack DMG', CounterAttackDMGBonus: 'Counterattack DMG',
-  DEFIgnore: 'DEF Ignore', DefReduction: 'DEF Reduction', tuneBreakBoost: 'Tune Break DMG'
-}
-
-const HIDDEN_EFFECT_MODIFIERS = new Set([
-  '', '(empty)', 'AppendAnotherTalent', 'EnableAttack', 'MultiplySelfBuff', 'Talent', 'talentModifierMultiply', 'talentModifierMultiplyAdd',
-  'talentModifierMultiplySetValue', 'talentModifierSpecialMultiply', 'talentReplace', 'talentTypeOverride'
-])
-
-function readableEffectText(value: string) {
-  return value
-    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
-    .replace(/([A-Za-z])(\d)/g, '$1 $2')
-    .replace(/(\d)([A-Za-z])/g, '$1 $2')
-    .replace(/\b(Song|Heart|Shadow|Reel|Wishes|Lamp)of\b/g, '$1 of')
-    .replace(/\s+/g, ' ')
-    .trim()
-}
-
-function effectModifierLabel(modifier: string) {
-  const key = modifier.replace(/:AdditionalBase$/, '')
-  if (HIDDEN_EFFECT_MODIFIERS.has(key)) return ''
-  if (EFFECT_MODIFIER_LABELS[key]) return EFFECT_MODIFIER_LABELS[key]
-  const [kind, ...scopeParts] = key.split(':')
-  const scope = scopeParts.join(' ')
-    .replace(/Basic\b/g, 'Basic Attack')
-    .replace(/Heavy\b/g, 'Heavy Attack')
-    .replace(/Skill\b/g, 'Resonance Skill')
-    .replace(/Liberation\b/g, 'Resonance Liberation')
-  if (kind === 'DMGDeepen') return scope ? `${scope} DMG Amplification` : 'DMG Amplification'
-  if (kind === 'DEFIgnore') return scope ? `${scope} DEF Ignore` : 'DEF Ignore'
-  if (kind === 'ResistIgnore') return scope ? `${scope} RES Ignore` : 'RES Ignore'
-  if (kind === 'ResistShred') return scope ? `${scope} RES Reduction` : 'RES Reduction'
-  if (kind === 'specialMultiplier') return scope ? `${scope} DMG Multiplier` : 'DMG Multiplier'
-  if (kind === 'CritRate') return scope ? `${scope} Crit Rate` : 'Crit Rate'
-  if (kind === 'CritDMG') return scope ? `${scope} Crit DMG` : 'Crit DMG'
-  if (kind === 'CritOverflow') return 'Crit DMG from excess Crit Rate'
-  if (kind === 'ForteBased') return `${scope || 'Forte'} DMG`
-  return readableEffectText(key.replace(/:/g, ' '))
-}
-
-function effectModifierValue(modifier: CalculationModifier, selection: CalculationEffectSelection) {
-  if (modifier.modifierByRefinement) return modifier.modifierByRefinement[String(Math.max(1, Math.min(5, selection.refinement ?? 1)))]
-  if (typeof modifier.modifierValue === 'number' || typeof modifier.modifierValue === 'string') return Number(modifier.modifierValue)
-  if (Array.isArray(modifier.modifierValue)) return Number(modifier.modifierValue[0])
-  if (modifier.modifierValue && typeof modifier.modifierValue === 'object') return Number(Object.values(modifier.modifierValue)[0])
-  return undefined
-}
-
-function conciseEffectRows(effect: CalculationEffectDefinition, selection: CalculationEffectSelection, sourceStats: CalculationSourceStats) {
-  const stacks = effect.hasStacks ? Math.max(1, selection.stacks ?? effect.maxStacks) : 1
-  const rows = effect.modifiers.flatMap((modifier, index) => {
-    const key = modifier.modifier ?? ''
-    const label = effectModifierLabel(key)
-    const rawValue = effectModifierValue(modifier, selection)
-    if (!label) return []
-    if (rawValue === undefined || !Number.isFinite(rawValue)) return [{ key: `${key}-${index}`, label, value: '' }]
-    const isFlat = effect.valueUnit === 'flat' || /^(?:ATK|HP|DEF)_FLAT/.test(key)
-    const maximum = modifier.maximumValue
-    const resolvedSourceValue = resolveSourceScaledModifierValue(effect, modifier, selection, sourceStats)
-    const scaled = resolvedSourceValue !== undefined
-      ? resolvedSourceValue
-      : maximum !== undefined ? Math.min(rawValue * stacks, maximum) : rawValue * stacks
-    const value = isFlat ? scaled : effect.valueUnit === 'decimal' ? scaled * 100 : scaled
-    const rounded = Math.round(value * 100) / 100
-    return [{
-      key: `${key}-${index}`,
-      label: `${modifier.modifierBasedOn && resolvedSourceValue === undefined && maximum !== undefined ? 'Up to ' : ''}${label}`,
-      value: `${rounded >= 0 ? '+' : ''}${rounded}${isFlat ? '' : '%'}`
-    }]
-  })
-  return effect.duration ? [...rows, { key: 'duration', label: 'Duration', value: `${effect.duration}s` }] : rows
-}
-
-function conciseEffectTitle(effect: CalculationEffectDefinition) {
-  if (effect.sourceKind === 'sonata') return readableEffectText(effect.sourceId).replace(/\s+\d+\s+Set$/i, '')
-  const rawName = effect.name.startsWith(effect.sourceId) ? effect.name.slice(effect.sourceId.length) : effect.name
-  return readableEffectText(rawName)
-    .replace(/^Stat Bonus:\s*/i, '')
-    .replace(/^Sequence Node (\d+):\s*/i, '')
-    .replace(/^Inherent Skill:\s*/i, '') || readableEffectText(effect.sourceId)
-}
-
-function conciseEffectBadge(effect: CalculationEffectDefinition) {
-  if (effect.sourceKind === 'sonata') {
-    const pieces = effect.sourceId.match(/(\d+)Set/i)?.[1]
-    return pieces ? `${pieces}-Set` : 'Set'
-  }
-  if (effect.sourceKind === 'sequence' && effect.sequence) return `S${effect.sequence}`
-  if (effect.sourceKind === 'party') return 'Team'
-  if (effect.sourceKind === 'weapon') return 'Weapon'
-  return ''
-}
-
-function conciseEffectCondition(effect: CalculationEffectDefinition) {
-  if (effect.trigger) return `After ${readableEffectText(effect.trigger)}`
-  return 'Apply this buff'
-}
-
-function conciseEffectContext(effect: CalculationEffectDefinition) {
-  const setPieces = effect.sourceKind === 'sonata' ? effect.sourceId.match(/(\d+)Set/i)?.[1] : undefined
-  return setPieces ? `${setPieces}-piece set` : ''
-}
-
-function CalculationEffectControls({ effects, member, model, updateTeam, disabled = false }: {
-  effects: CalculationEffectDefinition[]
-  member: TeamMemberModel
-  model: TeamWorkspaceModel
-  updateTeam: (patch: Partial<Team>) => Promise<void>
-  disabled?: boolean
-}) {
-  const buildId = member.build?.id
-  if (!buildId || !effects.length) return null
-  const scenario = model.team.calculationV2 ?? emptyCalculationScenarioV2()
-  const selectionFor = (effect: CalculationEffectDefinition): CalculationEffectSelection => {
-    const isPartyEffect = effect.sourceKind === 'party' || Boolean(effect.sourceBuildId)
-    const bucket = isPartyEffect ? scenario.partyEffects : scenario.memberEffects
-    const ownerBuildId = isPartyEffect ? effect.sourceBuildId ?? buildId : buildId
-    const defaults: CalculationEffectSelection = {
-      enabled: effect.alwaysEnabled || /^Stat Bonus:/i.test(effect.name),
-      ...(effect.hasStacks ? { stacks: effect.minStacks } : {}),
-      ...(effect.scope === 'next' ? { recipientBuildId: model.members.find((entry) => entry.build && entry.build.id !== ownerBuildId)?.build?.id } : {}),
-      ...(effect.sourceKind === 'weapon' ? { refinement: member.showcase?.weapon?.owned.rank ?? 1 } : {})
-    }
-    return {
-      ...defaults,
-      ...(bucket[ownerBuildId]?.[effect.id]
-        ?? (effect.definitionId ? bucket[ownerBuildId]?.[effect.definitionId] : undefined)
-        ?? bucket[buildId]?.[effect.id]
-        ?? (effect.definitionId ? bucket[buildId]?.[effect.definitionId] : undefined)
-        ?? {})
-    }
-  }
-  const setEffect = (effect: CalculationEffectDefinition, patch: Partial<CalculationEffectSelection>) => {
-    const isPartyEffect = effect.sourceKind === 'party' || Boolean(effect.sourceBuildId)
-    const bucketKey = isPartyEffect ? 'partyEffects' : 'memberEffects'
-    const bucket = scenario[bucketKey]
-    const ownerBuildId = isPartyEffect ? effect.sourceBuildId ?? buildId : buildId
-    void updateTeam({
-      calculationV2: {
-        ...scenario,
-        [bucketKey]: {
-          ...bucket,
-          [ownerBuildId]: {
-            ...bucket[ownerBuildId],
-            [effect.id]: { ...selectionFor(effect), ...patch }
-          }
-        }
-      }
-    })
-  }
-  return <div className={`tw-v2-effect-list ${disabled ? 'is-disabled' : ''}`}>
-    {effects.map((effect) => {
-      const selection = selectionFor(effect)
-      const fixed = effect.alwaysEnabled || /^Stat Bonus:/i.test(effect.name)
-      const active = fixed || selection.enabled
-      const context = conciseEffectContext(effect)
-      const rows = conciseEffectRows(effect, selection, model.sourceStatsV2)
-      const title = conciseEffectTitle(effect)
-      const badge = conciseEffectBadge(effect)
-      const condition = conciseEffectCondition(effect)
-      const inlineToggle = !fixed && !effect.trigger
-      const toggleEffect = () => setEffect(effect, {
-        enabled: !active,
-        ...(!active && effect.hasStacks && !(selection.stacks ?? 0) ? { stacks: effect.maxStacks } : {})
-      })
-      return <article className={fixed ? 'is-fixed' : active ? 'is-active' : 'is-inactive'} key={effect.id} title={effect.description || undefined}>
-        <header className="tw-effect-copy"><span>{inlineToggle ? <button type="button" className="tw-effect-title-toggle" disabled={disabled} aria-label={`Toggle ${title}`} aria-pressed={active} onClick={toggleEffect}><i aria-hidden="true"/><strong>{title}</strong></button> : <strong>{title}</strong>}{context && <small>{context}</small>}</span>{badge && <b>{badge}</b>}</header>
-        {((!fixed && Boolean(effect.trigger)) || (effect.hasStacks && active) || (effect.scope === 'next' && active)) && <div className="tw-effect-condition">
-          {!fixed && !inlineToggle && <button type="button" className="tw-condition-toggle" disabled={disabled} aria-pressed={active} onClick={toggleEffect}><i aria-hidden="true"/><strong>{condition}</strong></button>}
-          {effect.hasStacks && active && <label><span>Stacks</span><select disabled={disabled} value={selection.stacks ?? effect.minStacks} onChange={(event) => setEffect(effect, { enabled: true, stacks: Number(event.target.value) })}>{Array.from({ length: Math.max(1, effect.maxStacks - effect.minStacks + 1) }, (_, index) => effect.minStacks + index).map((stack) => <option value={stack} key={stack}>{stack}</option>)}</select><small>/{effect.maxStacks}</small></label>}
-          {effect.scope === 'next' && active && <label><span>Recipient</span><select disabled={disabled} value={selection.recipientBuildId ?? ''} onChange={(event) => setEffect(effect, { enabled: true, recipientBuildId: event.target.value })}>{model.members.flatMap((entry) => entry.build && entry.build.id !== (effect.sourceBuildId ?? buildId) ? [<option value={entry.build.id} key={entry.build.id}>{teamMemberName(entry)}</option>] : [])}</select></label>}
-        </div>}
-        {active && rows.length > 0 && <dl className="tw-effect-results">{rows.map((row) => <div key={row.key}><dt className={member.catalog?.element && row.label.toLowerCase().includes(member.catalog.element.toLowerCase()) ? 'is-character-element' : ''}>{row.label}</dt><dd>{row.value}</dd></div>)}</dl>}
-      </article>
-    })}
-  </div>
-}
-
-function CalculationStanceControl({ member, model, updateTeam }: {
-  member: TeamMemberModel
-  model: TeamWorkspaceModel
-  updateTeam: (patch: Partial<Team>) => Promise<void>
-}) {
-  const buildId = member.build?.id
-  const mechanics = member.calculationMechanicsV2
-  if (!buildId || !mechanics || mechanics.stances.length < 2) return null
-  const scenario = model.team.calculationV2 ?? emptyCalculationScenarioV2()
-  const effectId = `character:${mechanics.key}:stance`
-  const current = String(scenario.memberEffects[buildId]?.[effectId]?.value ?? mechanics.stances[0])
-  return <label className="tw-v2-stance"><span>Calculation stance</span><select value={current} onChange={(event) => void updateTeam({
-    calculationV2: {
-      ...scenario,
-      memberEffects: {
-        ...scenario.memberEffects,
-        [buildId]: {
-          ...scenario.memberEffects[buildId],
-          [effectId]: { enabled: true, value: event.target.value }
-        }
-      }
-    }
-  })}>{mechanics.stances.map((stance) => <option value={stance} key={stance}>{stance}</option>)}</select></label>
-}
-
-function normalizedEffectTarget(value: string) {
-  return value.toLowerCase().replace(/[^a-z0-9]/g, '')
-}
-
-function effectTargetsAttacks(effect: CalculationEffectDefinition, attacks: NonNullable<TeamMemberModel['calculationMechanicsV2']>['attacks']) {
-  const attackTargets = attacks.flatMap((attack) => [attack.id, attack.key, attack.name]).map(normalizedEffectTarget).filter(Boolean)
-  const effectTargets = [effect.key, effect.name].map(normalizedEffectTarget).filter((target) => target.length > 4)
-  if (effectTargets.some((target) => attackTargets.some((attack) => target === attack || attack.includes(target)))) return true
-  return effect.modifiers.some((modifier) => {
-    const modifierTargets = [
-      ...(modifier.modifySpecificTalents ?? []),
-      ...(modifier.modifierTalentKey ? [modifier.modifierTalentKey] : [])
-    ].map(normalizedEffectTarget).filter(Boolean)
-    return modifierTargets.some((target) => attackTargets.some((attack) => target === attack || target.endsWith(attack) || attack.endsWith(target)))
-  })
-}
-
-function effectMatchesPassive(effect: CalculationEffectDefinition, passiveName: string) {
-  const passive = normalizedEffectTarget(passiveName)
-  if (!passive) return false
-  return normalizedEffectTarget(effect.name).includes(passive) || normalizedEffectTarget(effect.key).includes(passive)
-}
-
-function ForteWorkspace({ member, model, refresh, updateTeam }: { member: TeamMemberModel; model: TeamWorkspaceModel; refresh: () => Promise<void>; updateTeam: (patch: Partial<Team>) => Promise<void> }) {
+function ForteWorkspace({ member, model, refresh }: { member: TeamMemberModel; model: TeamWorkspaceModel; refresh: () => Promise<void> }) {
   if (!member.catalog || !member.character || !member.showcase) return null
   const skillEntries = [
     ...Object.entries(member.catalog.skillIcons).map(([key, skill], index) => ({ key, skill, level: member.showcase!.skillLevels[index] ?? 1, skillLevelIndex: index })),
@@ -1516,40 +1228,7 @@ function ForteWorkspace({ member, model, refresh, updateTeam }: { member: TeamMe
     ...member.catalog.skillTreeExtras.inherentSkills.map((skill, index) => ({ ...skill, eyebrow: `Inherent Skill ${index + 1}`, id: inherentSkillBonusId(index), inherentSkillIndex: index })),
     { ...member.catalog.skillTreeExtras.tuneBreakSkill, eyebrow: 'Tune Break', id: undefined, inherentSkillIndex: undefined }
   ].filter((skill) => skill.name || skill.description || skill.iconSourceUrl)
-  const resultMode = model.team.calculationV2?.resultMode ?? 'expected'
-  const characterEffects = member.calculationEffectsV2.filter((effect) => effect.sourceKind === 'character' || effect.sourceKind === 'inherent')
-  const skillEffects = new Map(skillEntries.map(({ key }) => [key, [] as CalculationEffectDefinition[]]))
-  const assignedEffectIds = new Set<string>()
-  skillEntries.forEach(({ key }) => {
-    const group = key === 'normalAttack' ? 'Basic Attack'
-      : key === 'resonanceSkill' ? 'Resonance Skill'
-        : key === 'forteCircuit' ? 'Forte Circuit'
-          : key === 'resonanceLiberation' ? 'Resonance Liberation'
-            : key === 'introSkill' ? 'Intro Skill'
-              : 'Outro Skill'
-    const attacks = member.calculationMechanicsV2?.attacks.filter((attack) => attack.group === group) ?? []
-    const matches = characterEffects.filter((effect) => !assignedEffectIds.has(effect.id) && effectTargetsAttacks(effect, attacks))
-    matches.forEach((effect) => assignedEffectIds.add(effect.id))
-    skillEffects.set(key, matches)
-  })
-  const passiveEffects = new Map(passiveCards.map((passive) => {
-    const matches = characterEffects.filter((effect) => !assignedEffectIds.has(effect.id) && effectMatchesPassive(effect, passive.name))
-    matches.forEach((effect) => assignedEffectIds.add(effect.id))
-    return [`${passive.eyebrow}-${passive.name}`, matches] as const
-  }))
-  const generalEffects = characterEffects.filter((effect) => !assignedEffectIds.has(effect.id) && !/^Stat Bonus:/i.test(effect.name))
-  const statBonusEffects = characterEffects.filter((effect) => !assignedEffectIds.has(effect.id) && /^Stat Bonus:/i.test(effect.name))
-  const mainEcho = member.showcase.echoSlots[0]
-  const mainEchoAttacks = member.attacks.filter((attack) => attack.group === 'echo')
-  const mainEchoAttackGroups = [...mainEchoAttacks.reduce((groups, attack) => {
-    const groupKey = `${attack.name}:${attack.type}`
-    const existing = groups.get(groupKey)
-    if (existing) {
-      existing.multipliers.push(attack.multiplier)
-      existing.attackIds.push(attack.id)
-    } else groups.set(groupKey, { name: attack.name, type: attack.type, multipliers: [attack.multiplier], attackIds: [attack.id] })
-    return groups
-  }, new Map<string, ForteAttackGroup>()).values()]
+  const resultMode = model.team.scenario?.resultMode ?? 'expected'
   const updateCharacter = async (patch: Partial<OwnedCharacter>) => {
     await db.characters.update(member.character!.id, patch)
     await refresh()
@@ -1564,15 +1243,12 @@ function ForteWorkspace({ member, model, refresh, updateTeam }: { member: TeamMe
   return <section className="tw-forte-workspace">
     <aside className="tw-sequence-column">
       <header><span>Sequence</span><b>S{member.character.sequence}</b></header>
-      {member.catalog.sequenceIcons.slice(0, 6).map((sequence) => { const active = member.character!.sequence >= sequence.sequence; const sequenceEffects = member.calculationEffectsV2.filter((effect) => effect.sourceKind === 'sequence' && effect.sequence === sequence.sequence); return <article className={active ? 'unlocked' : ''} key={sequence.sequence}>
+      {member.catalog.sequenceIcons.slice(0, 6).map((sequence) => { const active = member.character!.sequence >= sequence.sequence; return <article className={active ? 'unlocked' : ''} key={sequence.sequence}>
         <button type="button" className="tw-node-header" aria-pressed={active} onClick={() => void updateCharacter({ sequence: active ? sequence.sequence - 1 : sequence.sequence })}><img src={sequence.iconSourceUrl} alt=""/><span><strong>{sequence.name}</strong><small>Sequence Node {sequence.sequence}</small></span></button>
         <GameDescription value={sequence.description}/>
-        <CalculationEffectControls effects={sequenceEffects} member={member} model={model} updateTeam={updateTeam} disabled={!active}/>
       </article>})}
     </aside>
     <div className="tw-skill-board">
-      <CalculationStanceControl member={member} model={model} updateTeam={updateTeam}/>
-      {generalEffects.length > 0 && <section className="tw-v2-character-effects"><header><span className="eyebrow">Character mechanics</span><h3>General skill effects</h3></header><CalculationEffectControls effects={generalEffects} member={member} model={model} updateTeam={updateTeam}/></section>}
       <div className="tw-skill-grid">{skillEntries.map(({ key, skill, level, skillLevelIndex }) => {
         const attacks = member.attacks.filter((attack) => attack.skillName === skill.name)
         const flatValues = member.catalog!.flatSkillValues.filter((value) => value.skillLevelIndex === skillLevelIndex)
@@ -1612,7 +1288,6 @@ function ForteWorkspace({ member, model, refresh, updateTeam }: { member: TeamMe
         return <article className={`tw-skill-card skill-${key}`} key={key}>
           <header><span>{level === undefined ? 'Outro Skill' : `Skill Lv. ${level}`}</span></header>
           <div className="tw-skill-title"><img src={skill.iconSourceUrl} alt=""/><div><strong>{skill.name}</strong><small>{key.replace(/([A-Z])/g, ' $1')}</small></div></div>
-          <CalculationEffectControls effects={skillEffects.get(key) ?? []} member={member} model={model} updateTeam={updateTeam}/>
           <div className="tw-skill-sections">{sectionBlocks.map((section, sectionIndex) => <section key={`${section.title}-${sectionIndex}`}>
             {section.title && <h3>{section.title}</h3>}
             {section.description && <GameDescription value={section.description}/>}
@@ -1624,18 +1299,11 @@ function ForteWorkspace({ member, model, refresh, updateTeam }: { member: TeamMe
           </section>)}</div>
         </article>
       })}</div>
-      {mainEcho && <section className="tw-main-echo-attacks">
-        <header><span><img src={echoArtwork(mainEcho)} alt=""/><span><small>Main Echo · Rarity {mainEcho.rarity}</small><h3>{mainEcho.name}</h3></span></span><b>Echo Skill</b></header>
-        <p>Echo Skill actions are calculated from the main Echo's rarity and remain separate from the Resonator's character skills.</p>
-        <ForteDamageRows attacks={mainEchoAttackGroups} member={member} resultMode={resultMode} skillName={mainEcho.name}/>
-        {!mainEchoAttackGroups.length && <p className="tw-sheet-empty">No supported Echo Skill attack data is available.</p>}
-      </section>}
       <div className="tw-passive-grid">{passiveCards.map((skill) => { const active = skill.id ? enabledNodeIds.includes(skill.id) : undefined; return <article className={`tw-passive-card ${active === true ? 'is-enabled' : active === false ? 'is-disabled' : ''}`} key={`${skill.eyebrow}-${skill.name}`}>
         {skill.id ? <button type="button" className="tw-skill-title tw-node-toggle" aria-pressed={active} onClick={() => void toggleNode(skill.id!)}><img src={skill.iconSourceUrl} alt=""/><span><strong>{skill.name}</strong><small>{skill.eyebrow}</small></span></button> : <div className="tw-skill-title"><img src={skill.iconSourceUrl} alt=""/><div><strong>{skill.name}</strong><small>{skill.eyebrow}</small></div></div>}
         <GameDescription value={skill.description}/>
-        <CalculationEffectControls effects={passiveEffects.get(`${skill.eyebrow}-${skill.name}`) ?? []} member={member} model={model} updateTeam={updateTeam} disabled={active === false}/>
       </article>})}</div>
-      {bonusNodes.length > 0 && <section className="tw-bonus-nodes"><header><span className="eyebrow">Skill tree</span><h3>Bonus stat nodes</h3></header><div>{bonusNodes.map((node) => { const active = enabledNodeIds.includes(node.id); return <article className={active ? 'is-enabled' : 'is-disabled'} key={node.id}><button type="button" className="tw-bonus-node-header" aria-pressed={active} onClick={() => void toggleNode(node.id)}><img src={node.iconSourceUrl} alt=""/><strong>{node.name}</strong></button><GameDescription value={node.description}/></article> })}</div><CalculationEffectControls effects={statBonusEffects} member={member} model={model} updateTeam={updateTeam}/></section>}
+      {bonusNodes.length > 0 && <section className="tw-bonus-nodes"><header><span className="eyebrow">Skill tree</span><h3>Bonus stat nodes</h3></header><div>{bonusNodes.map((node) => { const active = enabledNodeIds.includes(node.id); return <article className={active ? 'is-enabled' : 'is-disabled'} key={node.id}><button type="button" className="tw-bonus-node-header" aria-pressed={active} onClick={() => void toggleNode(node.id)}><img src={node.iconSourceUrl} alt=""/><strong>{node.name}</strong></button><GameDescription value={node.description}/></article> })}</div></section>}
     </div>
   </section>
 }
@@ -1652,19 +1320,17 @@ function TeamEchoCard({ echo, ownerName }: { echo: Echo; ownerName: string }) {
   </CharacterSubstatProfileContext.Provider>
 }
 
-function TraceBranch({ trace, depth = 0 }: { trace: CalculationTrace | CalculationTraceV2; depth?: number }) {
+function TraceBranch({ trace, depth = 0 }: { trace: CalculationTrace; depth?: number }) {
   return <li style={{ '--trace-depth': depth } as CSSProperties}><span>{trace.label}</span><b>{typeof trace.value === 'number' ? (depth === 0 ? Math.floor(trace.value + 1e-9).toLocaleString('en-US') : Number(trace.value).toLocaleString('en-US', { maximumFractionDigits: 3 })) : String(trace.value)}</b>{trace.children.length > 0 && <ul>{trace.children.map((child, index) => <TraceBranch trace={child} depth={depth + 1} key={`${'id' in child ? child.id : child.entryId ?? child.label}-${index}`}/>)}</ul>}</li>
 }
 
 function FormulaResultSheet({ member, model, updateTeam }: { member: TeamMemberModel; model: TeamWorkspaceModel; updateTeam: (patch: Partial<Team>) => Promise<void> }) {
-  const [trace, setTrace] = useState<CalculationTraceV2 | null>(null)
-  const scenario = model.team.calculationV2 ?? emptyCalculationScenarioV2()
+  const [trace, setTrace] = useState<CalculationTrace | null>(null)
+  const scenario = model.team.scenario ?? { resultMode: 'expected' as const, memberConditions: {}, enemyConditions: {}, selectedTargetByBuild: {} }
   const mode = scenario.resultMode
   const buildId = member.build?.id ?? ''
-  const echoRows = member.calculationRowsV2.filter((row) => row.attack.group === 'Echo Skill')
-  const characterRows = member.calculationRowsV2.filter((row) => !echoRows.includes(row))
-  const groups = [...new Set(characterRows.map((row) => row.attack.group))]
-  const rowsByGroup = new Map(groups.map((group) => [group, characterRows.filter((row) => row.attack.group === group)]))
+  const groups = [...new Set(member.formulaRows.map((row) => row.target.group))]
+  const rowsByGroup = new Map(groups.map((group) => [group, member.formulaRows.filter((row) => row.target.group === group)]))
   const leftGroups = ['Basic Attack', 'Resonance Skill', 'Intro Skill'].filter((group) => rowsByGroup.has(group))
   const rightGroups = ['Forte Circuit', 'Resonance Liberation', 'Outro Skill'].filter((group) => rowsByGroup.has(group))
   const assignedGroups = new Set([...leftGroups, ...rightGroups, 'Tune Break'])
@@ -1675,16 +1341,15 @@ function FormulaResultSheet({ member, model, updateTeam }: { member: TeamMemberM
   if (rowsByGroup.has('Tune Break')) {
     (columnLength(leftGroups) <= columnLength(rightGroups) ? leftGroups : rightGroups).push('Tune Break')
   }
-  const updateScenario = (patch: Partial<typeof scenario>) => updateTeam({ calculationV2: { ...scenario, ...patch } })
-  const selectRow = (row: TeamMemberModel['calculationRowsV2'][number]) => {
-    if (buildId) void updateScenario({ selectedAttackByBuild: { ...scenario.selectedAttackByBuild, [buildId]: row.attack.id } })
-    setTrace(row.result.trace[mode])
+  const updateScenario = (patch: Partial<typeof scenario>) => updateTeam({ scenario: { ...scenario, ...patch } })
+  const selectRow = (row: TeamMemberModel['formulaRows'][number]) => {
+    if (buildId) void updateScenario({ selectedTargetByBuild: { ...scenario.selectedTargetByBuild, [buildId]: row.target.id } })
+    setTrace(row.traces[mode])
   }
   const renderGroup = (group: string) => <article className="tw-sheet-column" key={group}>
     <header><span>{group}</span><small>{mode}</small></header>
-    {rowsByGroup.get(group)?.map((row) => <button className={scenario.selectedAttackByBuild[buildId] === row.attack.id ? 'selected' : ''} onClick={() => selectRow(row)} key={row.attack.id}><span>{row.attack.name}<small>{row.attack.type}{row.attack.subtype ? ` · ${row.attack.subtype}` : ''}</small></span><b>{formatDamage(row.result[mode])}</b></button>)}
+    {rowsByGroup.get(group)?.map((row) => <button className={scenario.selectedTargetByBuild[buildId] === row.target.id ? 'selected' : ''} onClick={() => selectRow(row)} key={row.target.id}><span>{row.target.label}<small>{row.target.kind}</small></span><b>{formatDamage(row[mode])}</b></button>)}
   </article>
-  const partyEffects = member.calculationEffectsV2.filter((effect) => effect.sourceKind === 'party')
   return <>
     <section className="tw-formula-grid">
       <article className="tw-sheet-column tw-sheet-stats"><header><span>Basic Stats</span></header><dl>{CORE_STATS.map(([key, label]) => <div key={key}><dt>{label}</dt><dd>{member.showcase ? <CalculatedValue detail={resolvedMemberStatDetail(member, key, label)}>{formatWorkspaceStat(key, resolvedMemberStat(member, key))}</CalculatedValue> : '—'}</dd></div>)}</dl><header><span>Bonus Stats</span></header><dl>{DAMAGE_STATS.map(([key, label]) => <div key={key}><dt>{label}</dt><dd>{member.showcase ? <CalculatedValue detail={resolvedMemberStatDetail(member, key, label)}>{formatWorkspaceStat(key, resolvedMemberStat(member, key))}</CalculatedValue> : '—'}</dd></div>)}</dl></article>
@@ -1692,34 +1357,17 @@ function FormulaResultSheet({ member, model, updateTeam }: { member: TeamMemberM
         <div className="tw-sheet-result-stack">{leftGroups.map(renderGroup)}</div>
         <div className="tw-sheet-result-stack">{rightGroups.map(renderGroup)}</div>
       </div>
-      <aside className="tw-sheet-side"><article className="tw-sheet-column"><header><span>Received Team Buffs</span><small>Calculation V2</small></header><CalculationEffectControls effects={partyEffects} member={member} model={model} updateTeam={updateTeam}/>{!partyEffects.length && <p className="tw-sheet-empty">No teammate buffs are available for this member.</p>}</article><article className="tw-sheet-column"><header><span>Enemy</span><small title="Calculation V2 uses the imported GPL mechanics catalog.">V2 mechanics</small></header><label>Level<input type="number" min="1" max="200" value={model.team.enemy.level} onChange={(event) => void updateTeam({ enemy: { ...model.team.enemy, level: Number(event.target.value) } })}/></label><label>Resistance %<input type="number" min="-100" max="100" value={model.team.enemy.resistance} onChange={(event) => void updateTeam({ enemy: { ...model.team.enemy, resistance: Number(event.target.value) } })}/></label><label>Reduction %<input type="number" min="0" max="100" value={model.team.enemy.damageReduction} onChange={(event) => void updateTeam({ enemy: { ...model.team.enemy, damageReduction: Number(event.target.value) } })}/></label></article></aside>
+      <aside className="tw-sheet-side"><article className="tw-sheet-column"><header><span>Enemy</span><small>Damage settings</small></header><label>Level<input type="number" min="1" max="200" value={model.team.enemy.level} onChange={(event) => void updateTeam({ enemy: { ...model.team.enemy, level: Number(event.target.value) } })}/></label><label>Resistance %<input type="number" min="-100" max="100" value={model.team.enemy.resistance} onChange={(event) => void updateTeam({ enemy: { ...model.team.enemy, resistance: Number(event.target.value) } })}/></label><label>Reduction %<input type="number" min="0" max="100" value={model.team.enemy.damageReduction} onChange={(event) => void updateTeam({ enemy: { ...model.team.enemy, damageReduction: Number(event.target.value) } })}/></label></article></aside>
     </section>
-    {echoRows.length > 0 && <section className="tw-sheet-echo-attacks">
-      <header><span><small>Main Echo attacks</small><strong>{member.showcase?.echoSlots[0]?.name ?? 'Echo Skill'}</strong></span><b>{mode}</b></header>
-      <div>{echoRows.map((row) => <button className={scenario.selectedAttackByBuild[buildId] === row.attack.id ? 'selected' : ''} onClick={() => selectRow(row)} key={row.attack.id}><span><strong>{row.attack.name}</strong><small>Echo Skill · Rarity {member.showcase?.echoSlots[0]?.rarity ?? 1} · {row.attack.attribute.toUpperCase()} scaling</small></span><b>{formatDamage(row.result[mode])}</b></button>)}</div>
-    </section>}
     {trace && <div className="tw-trace-backdrop" onMouseDown={() => setTrace(null)}><article className="tw-trace tw-panel" onMouseDown={(event) => event.stopPropagation()}><header><div><span className="eyebrow">Calculation trace</span><h2>{trace.label}</h2></div><button className="close" onClick={() => setTrace(null)}>×</button></header><ul><TraceBranch trace={trace}/></ul></article></div>}
   </>
 }
 
-function MainEchoOverviewCard({ member, model, updateTeam }: { member: TeamMemberModel; model: TeamWorkspaceModel; updateTeam: (patch: Partial<Team>) => Promise<void> }) {
+function MainEchoOverviewCard({ member }: { member: TeamMemberModel }) {
   const mainEcho = member.showcase?.echoSlots[0]
-  const mechanics = member.mainEchoMechanicsV2
-  const effects = member.calculationEffectsV2.filter((effect) => effect.sourceKind === 'echo')
-  const rows = member.calculationRowsV2.filter((row) => row.attack.group === 'Echo Skill')
-  const mode = model.team.calculationV2?.resultMode ?? 'expected'
-  if (!mainEcho) return <article className="tw-main-echo-overview is-empty"><header><span className="eyebrow">Main Echo</span><h2>No main Echo</h2></header><p>Equip an Echo in slot 1 to add its active skill, damage and buffs.</p></article>
+  if (!mainEcho) return <article className="tw-main-echo-overview is-empty"><header><span className="eyebrow">Main Echo</span><h2>No main Echo</h2></header><p>Equip an Echo in slot 1 to complete this loadout.</p></article>
   return <article className="tw-main-echo-overview">
-    <header className="tw-main-echo-identity"><img src={echoArtwork(mainEcho)} alt=""/><span><span className="eyebrow">Main Echo mechanics</span><h2>{mainEcho.name}</h2><small>Rarity {mainEcho.rarity} · Cost {mainEcho.cost} · +{mainEcho.level}{mechanics?.cooldown ? ` · ${mechanics.cooldown}s cooldown` : ''}</small></span></header>
-    <section className="tw-main-echo-details"><header><h3>Details</h3><b>Echo Skill</b></header>
-      {mechanics?.description ? <GameDescription value={mechanics.description}/> : <p>Structured description data is unavailable for this Echo; supported actions are shown below.</p>}
-      <div className="tw-main-echo-damage-list">{rows.map((row) => <CalculatedValue detail={traceCalculationDetail(row.result.trace[mode], `${mainEcho.name} · ${row.attack.name}`)} key={row.attack.id}><span><span><strong>{row.attack.name}</strong><small>{row.attack.talents[String(mainEcho.rarity)] ?? row.attack.talents['1'] ?? 'Multiplier unavailable'} · {row.attack.attribute.toUpperCase()} scaling</small></span><b>{formatDamage(row.result[mode])}<small>{mode} DMG</small></b></span></CalculatedValue>)}</div>
-      {!rows.length && <p>No supported Echo Skill damage action is available.</p>}
-    </section>
-    <section className="tw-main-echo-buffs"><header><h3>Stat boosts and buffs</h3><b>{effects.length}</b></header>
-      <CalculationEffectControls effects={effects} member={member} model={model} updateTeam={updateTeam}/>
-      {!effects.length && <p>No supported main-slot stat boost or cast buff is available.</p>}
-    </section>
+    <header className="tw-main-echo-identity"><img src={echoArtwork(mainEcho)} alt=""/><span><span className="eyebrow">Main Echo</span><h2>{mainEcho.name}</h2><small>Rarity {mainEcho.rarity} · Cost {mainEcho.cost} · +{mainEcho.level}</small></span></header>
   </article>
 }
 
@@ -1758,7 +1406,6 @@ function CharacterOverviewWorkspace({ member, model, updateTeam, weaponPassive }
         <article className="tw-overview-weapon-passive">
           <header><span className="eyebrow">Weapon passive</span><h2>{showcase.weapon?.catalog.passiveName ?? 'No weapon passive'}</h2></header>
           <p>{weaponPassive ?? 'Equip a supported weapon to display its generated passive text.'}</p>
-          <CalculationEffectControls effects={member.calculationEffectsV2.filter((effect) => effect.sourceKind === 'weapon')} member={member} model={model} updateTeam={updateTeam}/>
         </article>
       </aside>
 
@@ -1778,9 +1425,8 @@ function CharacterOverviewWorkspace({ member, model, updateTeam, weaponPassive }
         <article className="tw-overview-sonatas">
           <header><span className="eyebrow">Sonata effects</span><h2>Equipped sets</h2></header>
           <SonataChips member={member}/>
-          <CalculationEffectControls effects={member.calculationEffectsV2.filter((effect) => effect.sourceKind === 'sonata')} member={member} model={model} updateTeam={updateTeam}/>
         </article>
-        <MainEchoOverviewCard member={member} model={model} updateTeam={updateTeam}/>
+        <MainEchoOverviewCard member={member}/>
       </aside>
       <div className="tw-overview-equipment-grid">
         {showcase.echoSlots.map((echo, index) => <div id={`tw-overview-equipped-echo-${index}`} className="cs-echo-tab-card" key={echo?.id ?? index}>{echo ? <TeamEchoCard echo={echo} ownerName={catalog.name}/> : <article className="detail-empty"><span>+</span><small>Empty Echo slot {index + 1}</small></article>}</div>)}
@@ -1795,27 +1441,23 @@ function MemberWorkspace({ member, model, section, setSection, updateTeam, echoe
   const showcase = member.showcase
   const weaponPassive = showcase.weapon?.catalog.passiveEffects[Math.max(0, (showcase.weapon?.owned.rank ?? 1) - 1)] ?? showcase.weapon?.catalog.passiveEffects[0]
   const scenario = model.team.scenario ?? { resultMode: 'expected' as const, memberConditions: {}, enemyConditions: {}, selectedTargetByBuild: {} }
-  const calculationV2 = model.team.calculationV2 ?? emptyCalculationScenarioV2()
-  const setResultMode = (resultMode: FormulaResultMode) => updateTeam({
-    scenario: { ...scenario, resultMode },
-    calculationV2: { ...calculationV2, resultMode }
-  })
+  const setResultMode = (resultMode: FormulaResultMode) => updateTeam({ scenario: { ...scenario, resultMode } })
   return <div className={`tw-member-page section-${section}`} style={{ '--tw-member-accent': ELEMENT_COLORS[member.catalog.element] ?? '#c8d0ce' } as CSSProperties}>
     <nav className="tw-subnav" aria-label={`${member.catalog.name} sections`} role="tablist">
       {MEMBER_SECTIONS.map((item) => <button key={item.id} role="tab" className={section === item.id ? 'active' : ''} aria-selected={section === item.id} onClick={() => setSection(item.id)}>{item.label}</button>)}
       {!isTeamTba && <div className="tw-nav-result-modes" role="group" aria-label="Damage result mode">
-        {DAMAGE_RESULT_MODES.map((mode) => <button type="button" aria-pressed={calculationV2.resultMode === mode.id} className={calculationV2.resultMode === mode.id ? 'active' : ''} key={mode.id} onClick={() => void setResultMode(mode.id)}>{mode.label}</button>)}
+        {DAMAGE_RESULT_MODES.map((mode) => <button type="button" aria-pressed={scenario.resultMode === mode.id} className={scenario.resultMode === mode.id ? 'active' : ''} key={mode.id} onClick={() => void setResultMode(mode.id)}>{mode.label}</button>)}
       </div>}
     </nav>
     {isTeamTba ? <section className="tw-member-empty tw-panel"><h2>TBA</h2></section>
       : section === 'overview' ? <CharacterOverviewWorkspace member={member} model={model} updateTeam={updateTeam} weaponPassive={weaponPassive}/>
       : section === 'rotation' ? <RotationWorkspace model={model} updateTeam={updateTeam} focusBuildId={member.build.id}/>
-      : section === 'optimizer' ? <OptimizerView echoes={[...echoes, ...member.resolvedEchoes.filter((echo) => !echoes.some((owned) => owned.id === echo.id))]} builds={[...builds.filter((build) => build.id !== member.build!.id), member.build]} characters={characters} ownedWeapons={member.resolvedWeapon && !weapons.some((weapon) => weapon.id === member.resolvedWeapon?.id) ? [...weapons, member.resolvedWeapon] : weapons} refresh={refresh} openScanner={openScanner} buildId={member.build.id} teamBuildIds={model.members.flatMap((entry) => entry.character ? [entry.character.id] : [])} initialEnemy={model.team.enemy} damageMode={calculationV2.resultMode} scenario={scenario} calculationScenarioV2={calculationV2} calculationAttacksV2={member.calculationMechanicsV2?.attacks} partyEffectsV2={member.calculationEffectsV2.filter((effect) => effect.sourceKind === 'party')} partyEffectSourceStatsV2={model.sourceStatsV2} roverGender={roverGender}/>
+      : section === 'optimizer' ? <OptimizerView echoes={[...echoes, ...member.resolvedEchoes.filter((echo) => !echoes.some((owned) => owned.id === echo.id))]} builds={[...builds.filter((build) => build.id !== member.build!.id), member.build]} characters={characters} ownedWeapons={member.resolvedWeapon && !weapons.some((weapon) => weapon.id === member.resolvedWeapon?.id) ? [...weapons, member.resolvedWeapon] : weapons} refresh={refresh} openScanner={openScanner} buildId={member.build.id} teamBuildIds={model.members.flatMap((entry) => entry.character ? [entry.character.id] : [])} initialEnemy={model.team.enemy} damageMode={scenario.resultMode} scenario={scenario} roverGender={roverGender}/>
       : section === 'theorizer' ? <TheorizerWorkspace member={member} model={model} echoes={echoes} builds={builds} characters={characters} weapons={weapons} equippedLoadouts={equippedLoadouts} theorycraftBuilds={theorycraftBuilds} roverGender={roverGender} refresh={refresh}/>
       : <section className="tw-member-hero tw-panel forte-mode" style={{ '--tw-element': member.catalog.element.toLowerCase() } as CSSProperties}>
       <div className="tw-member-art"><img src={member.catalog.portraitSourceUrl || member.catalog.iconSourceUrl} alt=""/><div className="tw-sequence-rail">{member.catalog.sequenceIcons.slice(0, 6).map((sequence) => <span className={member.character && member.character.sequence >= sequence.sequence ? 'unlocked' : ''} key={sequence.sequence} title={sequence.name}><img src={sequence.iconSourceUrl} alt=""/><b>S{sequence.sequence}</b></span>)}</div><div><span>{member.catalog.element} · {member.catalog.weaponType}</span><h1>{member.catalog.name}</h1><p>{member.catalog.title}</p><strong>Lv. {member.character.level} · Sequence {member.character.sequence}</strong></div><EchoWaveform element={member.catalog.element}/></div>
       <div className="tw-member-summary">
-        <ForteWorkspace member={member} model={model} refresh={refresh} updateTeam={updateTeam}/>
+        <ForteWorkspace member={member} model={model} refresh={refresh}/>
       </div>
     </section>}
     {!isTeamTba && <WarningList warnings={section === 'rotation' ? model.warnings : member.warnings}/>}
@@ -1880,7 +1522,7 @@ export function TeamsView({ echoes, builds, equippedLoadouts, theorycraftBuilds,
     await updateTeamById(team.id, patch)
   }
   const createTeam = async () => {
-    const next: Team = { id: createLocalId(), name: `Team ${teams.length + 1}`, members: [], buildIds: [], enemy: { level: 90, resistance: 10, damageReduction: 0 }, rotationDuration: 20, actions: [], buffs: [], scenario: { resultMode: 'expected', memberConditions: {}, enemyConditions: {}, selectedTargetByBuild: {} }, calculationV2: emptyCalculationScenarioV2() }
+    const next: Team = { id: createLocalId(), name: `Team ${teams.length + 1}`, members: [], buildIds: [], enemy: { level: 90, resistance: 10, damageReduction: 0 }, rotationDuration: 20, actions: [], buffs: [], scenario: { resultMode: 'expected', memberConditions: {}, enemyConditions: {}, selectedTargetByBuild: {} } }
     await db.teams.add(next); await refresh(); setSelectedId(next.id); setTab('settings'); setShowGallery(false)
     onRouteChange?.({ team: `team_${teams.length + 1}` })
   }

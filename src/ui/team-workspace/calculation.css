@@ -1,0 +1,435 @@
+.tw-formula-toolbar {
+  position: sticky;
+  z-index: 20;
+  top: 126px;
+  display: grid;
+  grid-template-columns: auto minmax(260px,1fr) 170px auto;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 9px;
+  background: rgba(5,9,10,.96);
+  backdrop-filter: blur(16px);
+}
+
+.tw-result-modes {
+  display: flex;
+  gap: 3px;
+}
+
+.tw-result-modes button {
+  height: 31px;
+  padding: 0 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: #121a1b;
+  color: #a7b2af;
+  font-size: var(--font-size-caption);
+  cursor: pointer;
+}
+
+.tw-result-modes button.active {
+  border-color: var(--mint);
+  background: rgba(141,228,212,.2);
+  color: #eafffb;
+}
+
+.tw-condition-chips {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  overflow-x: auto;
+}
+
+.tw-condition-chips label {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 31px;
+  padding: 0 8px;
+  border: 1px solid rgba(255,255,255,.1);
+  background: #0b1213;
+  color: #8f9c99;
+  font-size: var(--font-size-caption);
+}
+
+.tw-condition-chips label.active {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.tw-condition-chips input[type=checkbox] {
+  width: 12px;
+  height: 12px;
+}
+
+.tw-condition-chips input[type=number] {
+  width: 52px;
+  border: 0;
+  border-bottom: 1px solid var(--tw-mint-line);
+  background: transparent;
+  color: white;
+}
+
+.tw-compare {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 5px;
+  color: #82908d;
+  font-size: var(--font-size-caption);
+  text-transform: uppercase;
+}
+
+.tw-compare select {
+  height: 31px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: #091011;
+  color: white;
+  font-size: var(--font-size-caption);
+}
+
+.tw-provenance {
+  display: grid;
+  justify-items: end;
+  color: #72807d;
+  font-size: var(--font-size-caption);
+}
+
+.tw-provenance b {
+  color: var(--mint);
+  font-size: var(--font-size-caption);
+}
+
+.tw-formula-grid {
+  display: grid;
+  grid-template-columns: 265px minmax(0,1fr) 265px;
+  align-items: start;
+  gap: 7px;
+}
+
+.tw-sheet-results {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  align-items: start;
+  gap: 7px;
+}
+
+.tw-sheet-result-stack {
+  min-width: 0;
+  display: grid;
+  align-content: start;
+  gap: 7px;
+}
+
+.tw-sheet-column {
+  overflow: hidden;
+  border: 1px solid rgba(141,228,212,.16);
+  background: #0b1314;
+}
+
+.tw-sheet-column>header {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 9px;
+  border-bottom: 1px solid rgba(141,228,212,.2);
+  background: #132024;
+  color: #dbe7e4;
+  font-size: var(--font-size-caption);
+}
+
+.tw-sheet-column>header small {
+  color: var(--mint);
+  font-size: var(--font-size-caption);
+  text-transform: uppercase;
+}
+
+.tw-sheet-column dl {
+  margin: 0;
+}
+
+.tw-sheet-column dl>div,.tw-sheet-buff {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 9px;
+  border-bottom: 1px solid rgba(255,255,255,.055);
+  font-size: var(--font-size-caption);
+}
+
+.tw-sheet-column dt {
+  color: #a4b0ad;
+}
+
+.tw-sheet-column dd {
+  margin: 0;
+  color: #f1f5f4;
+}
+
+.tw-sheet-column>button {
+  width: 100%;
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 9px;
+  padding: 5px 8px;
+  border: 0;
+  border-bottom: 1px solid rgba(255,255,255,.055);
+  background: transparent;
+  color: #eef4f2;
+  text-align: left;
+  cursor: pointer;
+}
+
+.tw-sheet-column>button:hover,.tw-sheet-column>button.selected {
+  background: rgba(228,187,94,.09);
+}
+
+.tw-sheet-column>button>span {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+  font-size: var(--font-size-caption);
+}
+
+.tw-sheet-column>button small {
+  overflow: hidden;
+  color: #71817d;
+  font-size: var(--font-size-caption);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tw-sheet-column>button b {
+  flex: none;
+  color: var(--gold);
+  font-size: var(--font-size-caption);
+}
+
+.tw-sheet-side {
+  display: grid;
+  gap: 7px;
+}
+
+.tw-sheet-side p {
+  padding: 8px;
+  color: #74827f;
+  font-size: var(--font-size-caption);
+}
+
+.tw-sheet-side label {
+  display: grid;
+  grid-template-columns: 1fr 70px;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  color: #9ba8a5;
+  font-size: var(--font-size-caption);
+}
+
+.tw-sheet-side input {
+  min-width: 0;
+  border: 0;
+  border-bottom: 1px solid var(--tw-mint-line);
+  background: transparent;
+  color: white;
+  text-align: right;
+}
+
+.tw-sheet-buff b {
+  color: var(--mint);
+}
+
+.tw-trace-backdrop {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0,0,0,.72);
+  backdrop-filter: blur(5px);
+}
+
+.tw-trace {
+  width: min(680px,100%);
+  max-height: min(760px,90vh);
+  overflow: auto;
+  padding: 14px;
+}
+
+.tw-trace>header {
+  position: sticky;
+  top: -14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  background: #0b1213;
+}
+
+.tw-trace h2 {
+  margin: 3px 0;
+}
+
+.tw-trace ul {
+  display: grid;
+  gap: 3px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tw-trace li {
+  margin-left: calc(var(--trace-depth) * 13px);
+  border-left: 1px solid rgba(141,228,212,.2);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  padding: 4px 6px;
+  color: #9facaa;
+  font-size: var(--font-size-caption);
+}
+
+.tw-trace li>b {
+  color: #e9f1ef;
+}
+
+.tw-trace li>ul {
+  grid-column: 1/-1;
+}
+
+.tw-v2-effect-list {
+  display: grid;
+  gap: 5px;
+  margin: 8px 10px 10px;
+}
+
+.tw-v2-effect-list>article {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0,1fr) auto;
+  align-items: center;
+  gap: 8px;
+  padding: 7px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-left: 2px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.18);
+}
+
+.tw-v2-effect-list>article.is-active {
+  border-left-color: var(--gold);
+  background: rgba(228,187,94,.07);
+}
+
+.tw-v2-effect-list>article>span {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.tw-v2-effect-list strong {
+  overflow: hidden;
+  color: #e7efec;
+  font-size: var(--font-size-caption);
+  text-overflow: ellipsis;
+}
+
+.tw-v2-effect-list small {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  color: #7f8e8a;
+  font-size: var(--font-size-caption);
+  line-height: 1.35;
+}
+
+.tw-v2-effect-list label {
+  display: grid;
+  grid-template-columns: auto 50px auto;
+  align-items: center;
+  gap: 4px;
+  color: #7f8e8a;
+  font-size: var(--font-size-caption);
+}
+
+.tw-v2-effect-list select,.tw-v2-stance select {
+  height: 29px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: #070b0c;
+  color: var(--gold);
+}
+
+.tw-v2-effect-list.is-disabled {
+  opacity: .45;
+}
+
+.tw-sequence-column>article>.tw-v2-effect-list {
+  grid-column: 1/-1;
+  margin: 4px 0 0;
+}
+
+.tw-skill-card>.tw-v2-effect-list,.tw-passive-card>.tw-v2-effect-list {
+  margin-top: 5px;
+}
+
+.tw-sheet-column>.tw-v2-effect-list {
+  margin: 7px;
+}
+
+.tw-sheet-column>.tw-v2-effect-list>article {
+  grid-template-columns: auto minmax(0,1fr);
+}
+
+.tw-sheet-column>.tw-v2-effect-list label {
+  grid-column: 1/-1;
+}
+
+.tw-overview-weapon-passive>.tw-v2-effect-list,.tw-overview-sonatas>.tw-v2-effect-list {
+  margin: 9px 0 0;
+}
+
+.tw-v2-stance {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 6px 10px;
+  border: 1px solid rgba(141,228,212,.18);
+  background: #0b1314;
+  color: #91a09d;
+  font-size: var(--font-size-caption);
+  text-transform: uppercase;
+}
+
+.tw-v2-character-effects {
+  border: 1px solid rgba(228,187,94,.2);
+  background: rgba(228,187,94,.035);
+}
+
+.tw-v2-character-effects>header {
+  padding: 10px 12px 0;
+}
+
+.tw-v2-character-effects h3 {
+  margin: 3px 0 0;
+  font-size: var(--font-size-body);
+}
+
+.tw-bonus-nodes>.tw-v2-effect-list {
+  margin: 10px 0 0;
+}
+
+.tw-sheet-empty {
+  margin: 0;
+}
+
+.tw-overview-echo-passive>p {
+  margin: 0;
+  color: #7f8e8a;
+  font-size: var(--font-size-caption);
+  line-height: 1.45;
+}

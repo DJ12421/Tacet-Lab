@@ -1285,7 +1285,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1403-1-6",
         "name": "Half Truths - Aimed Shot Damage",
-        "type": "heavy",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -1338,7 +1338,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1403-1-7",
         "name": "Half Truths - Fully Charged Aimed Shot Damage",
-        "type": "heavy",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -3189,7 +3189,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1210-1-4",
         "name": "Infinity Calibration - Heavy Attack - Aemeath Charged I DMG",
-        "type": "liberation",
+        "type": "heavy",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -3264,7 +3264,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1210-1-5",
         "name": "Infinity Calibration - Heavy Attack - Aemeath Charged II DMG",
-        "type": "liberation",
+        "type": "heavy",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -3599,7 +3599,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1210-2-0",
         "name": "Shared Voyage - Sync Strike: Armament Merge DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -3815,7 +3815,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1210-2-2",
         "name": "Shared Voyage - Basic Attack - Mech Stage 1 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -3912,7 +3912,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1210-2-3",
         "name": "Shared Voyage - Basic Attack - Mech Stage 2 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -3987,7 +3987,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1210-2-4",
         "name": "Shared Voyage - Basic Attack - Mech Stage 3 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -4194,7 +4194,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1210-2-5",
         "name": "Shared Voyage - Basic Attack - Mech Stage 4 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -4269,7 +4269,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1210-2-6",
         "name": "Shared Voyage - Heavy Attack - Mech Charged I DMG",
-        "type": "liberation",
+        "type": "heavy",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -4322,7 +4322,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1210-2-7",
         "name": "Shared Voyage - Heavy Attack - Mech Charged II DMG",
-        "type": "liberation",
+        "type": "heavy",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -4375,7 +4375,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1210-2-8",
         "name": "Shared Voyage - Mid-air Attack - Mech DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -4494,7 +4494,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1210-2-9",
         "name": "Shared Voyage - Dodge Counter - Mech DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -5045,7 +5045,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1210-7-0",
         "name": "To Sculpt the Silence - Seraphic Duet: Encore DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -5252,7 +5252,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1210-7-1",
         "name": "To Sculpt the Silence - Seraphic Duet: Overture DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -7784,7 +7784,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1306-1-12",
         "name": "Hunter's Path - Dodge Counter - Thunderoar: Backstep DMG",
-        "type": "heavy",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -7934,7 +7934,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1306-3-0",
         "name": "Sunward Conquest - Resonance Liberation - Sword of Eternal Oath DMG",
-        "type": "heavy",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -8141,7 +8141,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1306-3-1",
         "name": "Sunward Conquest - Sublime is the Sun - Sunborne DMG",
-        "type": "heavy",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -8194,7 +8194,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1306-3-2",
         "name": "Sunward Conquest - Sublime is the Sun - Everbright Protector DMG",
-        "type": "heavy",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -8736,7 +8736,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1306-7-2",
         "name": "Call Me By the Sun - Resonance Skill - Undying Sunlight: Plunge DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -13751,7 +13751,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1206-2-1",
         "name": "Anchors Aweigh! - Plunging Attack DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -16297,7 +16297,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1307-7-1",
         "name": "Thunder Begets Life - Five Thunders Spell Array Continuous DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -18018,7 +18018,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1301-2-0",
         "name": "Extermination Order - Extermination Order Stage 1 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -18115,7 +18115,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1301-2-1",
         "name": "Extermination Order - Extermination Order Stage 2 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -22058,7 +22058,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1603-2-0",
         "name": "Valse of Bloom and Blight - Crimson Blossom DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -22133,7 +22133,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1603-2-1",
         "name": "Valse of Bloom and Blight - Vining Waltz 1 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -22186,7 +22186,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1603-2-2",
         "name": "Valse of Bloom and Blight - Vining Waltz 2 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -22261,7 +22261,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1603-2-3",
         "name": "Valse of Bloom and Blight - Vining Waltz 3 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -22424,7 +22424,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1603-2-4",
         "name": "Valse of Bloom and Blight - Vining Waltz 4 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -22521,7 +22521,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1603-2-5",
         "name": "Valse of Bloom and Blight - Blazing Waltz DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -22970,7 +22970,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1603-2-6",
         "name": "Valse of Bloom and Blight - Floral Ravage DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -23111,7 +23111,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1603-2-7",
         "name": "Valse of Bloom and Blight - Vining Ronde DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -23208,7 +23208,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1603-2-8",
         "name": "Valse of Bloom and Blight - Atonement DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -23389,7 +23389,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1603-7-0",
         "name": "Vegetative Universe - Ephemeral DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -24922,7 +24922,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1607-1-4",
         "name": "Illusion Collapse - Delusive Dive DMG",
-        "type": "heavy",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -25319,7 +25319,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1607-2-2",
         "name": "Dance with Shadows - Jolt DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -25372,7 +25372,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1607-3-0",
         "name": "Beneath the Sea - Flowing Suffocation DMG",
-        "type": "basic",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -25425,7 +25425,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1607-3-1",
         "name": "Beneath the Sea - Diffusion DMG",
-        "type": "basic",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -26328,7 +26328,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1607-7-2",
         "name": "Between Illusion and Reality - Phantom Sting Stage 3 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -26447,7 +26447,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1607-7-3",
         "name": "Between Illusion and Reality - Abysmal Vortex DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -26522,7 +26522,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1607-7-4",
         "name": "Between Illusion and Reality - Perception Drain DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -26597,7 +26597,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1607-7-5",
         "name": "Between Illusion and Reality - Shadowy Sweep DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -28530,7 +28530,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1107-1-6",
         "name": "Silent Execution - Containment Tactics DMG",
-        "type": "heavy",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -29099,7 +29099,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1107-3-1",
         "name": "Era of New Wave - Death Knell DMG",
-        "type": "skill",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -29240,7 +29240,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1107-3-2",
         "name": "Era of New Wave - Fatal Finale DMG",
-        "type": "skill",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -31326,7 +31326,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1409-1-5",
         "name": "Sword to Carve My Forms - Heavy Attack DMG",
-        "type": "basic",
+        "type": "heavy",
         "skillLevelIndex": 0,
         "scalesWith": "hp",
         "multipliers": [
@@ -32243,7 +32243,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1409-7-0",
         "name": "Tempest - Basic Attack Stage 1 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "hp",
         "multipliers": [
@@ -32296,7 +32296,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1409-7-1",
         "name": "Tempest - Basic Attack Stage 2 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "hp",
         "multipliers": [
@@ -32415,7 +32415,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1409-7-2",
         "name": "Tempest - Basic Attack Stage 3 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "hp",
         "multipliers": [
@@ -32534,7 +32534,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1409-7-3",
         "name": "Tempest - Basic Attack Stage 4 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "hp",
         "multipliers": [
@@ -32675,7 +32675,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1409-7-4",
         "name": "Tempest - Basic Attack Stage 5 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "hp",
         "multipliers": [
@@ -32750,7 +32750,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1409-7-5",
         "name": "Tempest - Dodge Counter DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "hp",
         "multipliers": [
@@ -32869,7 +32869,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1409-7-6",
         "name": "Tempest - Upward Cut DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "hp",
         "multipliers": [
@@ -32944,7 +32944,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1409-7-7",
         "name": "Tempest - Heavy Attack DMG",
-        "type": "basic",
+        "type": "heavy",
         "skillLevelIndex": 2,
         "scalesWith": "hp",
         "multipliers": [
@@ -33019,7 +33019,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1409-7-8",
         "name": "Tempest - Enhanced Heavy Attack DMG",
-        "type": "basic",
+        "type": "heavy",
         "skillLevelIndex": 2,
         "scalesWith": "hp",
         "multipliers": [
@@ -33116,7 +33116,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1409-7-9",
         "name": "Tempest - Mid-air Attack 1 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "hp",
         "multipliers": [
@@ -33213,7 +33213,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1409-7-10",
         "name": "Tempest - Mid-air Attack 2 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "hp",
         "multipliers": [
@@ -33310,7 +33310,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1409-7-11",
         "name": "Tempest - Mid-air Attack 3 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "hp",
         "multipliers": [
@@ -37429,7 +37429,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1508-1-2",
         "name": "Reign of Silence - Death Snip DMG",
-        "type": "liberation",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -37526,7 +37526,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1508-1-3",
         "name": "Reign of Silence - Death Snip Additional DMG",
-        "type": "liberation",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -37998,7 +37998,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1508-1-9",
         "name": "Reign of Silence - Severed Facet DMG",
-        "type": "heavy",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -39514,7 +39514,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1508-7-2",
         "name": "Sight of Unraveling - Oblivion - Sawring - Blitz Stage 3 DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -39721,7 +39721,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1508-7-3",
         "name": "Sight of Unraveling - Oblivion - Sawring - Eradication DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -39849,7 +39849,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1508-7-5",
         "name": "Sight of Unraveling - Oblivion - Sawring - Eradication Shield",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -39902,7 +39902,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1508-7-6",
         "name": "Sight of Unraveling - Oblivion - Sawring - Blitz Stage 2 Hold DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -40153,7 +40153,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1508-7-7",
         "name": "Sight of Unraveling - Oblivion - Sawring - Blitz Stage 2: Discordance DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -40250,7 +40250,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1508-7-8",
         "name": "Sight of Unraveling - Oblivion - Sawring - Blitz Stage 3 Hold DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -40413,7 +40413,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1508-7-9",
         "name": "Sight of Unraveling - Oblivion - Sawring - Blitz Stage 3: Falltone DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -40717,7 +40717,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1508-7-11",
         "name": "Sight of Unraveling - Oblivion - Chainsaw Mode - Dodge Counter Hold DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -44673,7 +44673,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1407-1-5",
         "name": "Quadruple Time Steps - Aimed Shot DMG",
-        "type": "heavy",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -45788,7 +45788,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1407-7-0",
         "name": "Symphony of Wind and Verse - Quadruple Downbeat DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -51551,7 +51551,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1211-2-2",
         "name": "Bubbles and Baits - Banish - Breakdown Form Stage 1 DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -51648,7 +51648,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1211-2-3",
         "name": "Bubbles and Baits - Banish - Breakdown Form Stage 2 DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -52023,7 +52023,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1211-7-0",
         "name": "\"Flawless\" - Erosion Field DMG per tick",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -53959,7 +53959,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1203-3-0",
         "name": "Cosmos Rave - Cosmos: Frolicking Stage 1 DMG",
-        "type": "basic",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -54034,7 +54034,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1203-3-1",
         "name": "Cosmos Rave - Cosmos: Frolicking Stage 2 DMG",
-        "type": "basic",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -54131,7 +54131,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1203-3-2",
         "name": "Cosmos Rave - Cosmos: Frolicking Stage 3 DMG",
-        "type": "basic",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -54250,7 +54250,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1203-3-3",
         "name": "Cosmos Rave - Stage 4 DMG",
-        "type": "basic",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -54519,7 +54519,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1203-3-6",
         "name": "Cosmos Rave - Cosmos: Dodge Counter DMG",
-        "type": "basic",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -56168,7 +56168,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1208-1-0",
         "name": "Slayer's Trigger - Basic Attack Stage 1 DMG",
-        "type": "heavy",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -56221,7 +56221,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1208-1-1",
         "name": "Slayer's Trigger - Basic Attack Stage 2 DMG",
-        "type": "heavy",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -56318,7 +56318,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1208-1-2",
         "name": "Slayer's Trigger - Basic Attack Stage 3 DMG",
-        "type": "heavy",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -56437,7 +56437,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1208-1-3",
         "name": "Slayer's Trigger - Basic Attack Stage 4 DMG",
-        "type": "heavy",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -56609,7 +56609,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1208-1-5",
         "name": "Slayer's Trigger - Mid-air Attack - Ashfall Barrage Plunging Attack DMG",
-        "type": "heavy",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -56662,7 +56662,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1208-1-6",
         "name": "Slayer's Trigger - Mid-air Attack - Ashfall Barrage Sustained Fire DMG",
-        "type": "heavy",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -58333,7 +58333,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1208-7-9",
         "name": "Beyond Threshold - Mid-air Attack - Hellsent Barrage Plunging Attack DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -58386,7 +58386,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1208-7-10",
         "name": "Beyond Threshold - Mid-air Attack - Hellsent Barrage Sustained Fire DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -58439,7 +58439,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1208-7-11",
         "name": "Beyond Threshold - Resonance Skill - Ravage DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -60121,7 +60121,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1108-1-3",
         "name": "Flaming Sakura Blade Art - Heavy Attack - Frost Splinter: Present Self DMG",
-        "type": "liberation",
+        "type": "heavy",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -60324,7 +60324,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1108-1-6",
         "name": "Flaming Sakura Blade Art - Basic Attack - Foreclaimed Self Stage 1 DMG",
-        "type": "liberation",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -60377,7 +60377,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1108-1-7",
         "name": "Flaming Sakura Blade Art - Basic Attack - Foreclaimed Self Stage 2 DMG",
-        "type": "liberation",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -60452,7 +60452,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1108-1-8",
         "name": "Flaming Sakura Blade Art - Basic Attack - Foreclaimed Self Stage 3 DMG",
-        "type": "liberation",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -60593,7 +60593,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1108-1-9",
         "name": "Flaming Sakura Blade Art - Basic Attack - Foreclaimed Self Stage 4 DMG",
-        "type": "liberation",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -60734,7 +60734,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1108-1-10",
         "name": "Flaming Sakura Blade Art - Basic Attack - Foreclaimed Self Stage 5 DMG",
-        "type": "liberation",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -60809,7 +60809,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1108-1-11",
         "name": "Flaming Sakura Blade Art - Heavy Attack - Foreclaimed Self DMG",
-        "type": "liberation",
+        "type": "heavy",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -60862,7 +60862,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1108-1-12",
         "name": "Flaming Sakura Blade Art - Heavy Attack - Bitterfrost: Foreclaimed Self DMG",
-        "type": "liberation",
+        "type": "heavy",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -61091,7 +61091,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1108-1-13",
         "name": "Flaming Sakura Blade Art - Mid-air Attack - Foreclaimed Self Stage 1 DMG",
-        "type": "liberation",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -61188,7 +61188,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1108-1-14",
         "name": "Flaming Sakura Blade Art - Mid-air Attack - Foreclaimed Self Stage 2 DMG",
-        "type": "liberation",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -61307,7 +61307,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1108-1-15",
         "name": "Flaming Sakura Blade Art - Mid-air Plunging Attack - Foreclaimed Self DMG",
-        "type": "liberation",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -61360,7 +61360,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1108-1-16",
         "name": "Flaming Sakura Blade Art - Dodge Counter - Foreclaimed Self DMG",
-        "type": "liberation",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -62070,7 +62070,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1108-7-0",
         "name": "Everfrost Dominion - Basic Attack - Iai DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -63908,7 +63908,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1410-1-5",
         "name": "Moon Steps - Moonbow - Basic Attack 1 DMG",
-        "type": "liberation",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -63961,7 +63961,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1410-1-6",
         "name": "Moon Steps - Moonbow - Basic Attack 2 DMG",
-        "type": "liberation",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -64058,7 +64058,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1410-1-7",
         "name": "Moon Steps - Moonbow - Basic Attack 3 DMG",
-        "type": "liberation",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -64133,7 +64133,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1410-1-8",
         "name": "Moon Steps - Moonbow - Dodge Counter DMG",
-        "type": "liberation",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -64230,7 +64230,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1410-2-0",
         "name": "Foresight Fugue - Pulse of Origins DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -64437,7 +64437,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1410-2-1",
         "name": "Foresight Fugue - Closing Refrain DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -64794,7 +64794,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1410-7-0",
         "name": "Ebb and Flow - Flux - Moonbow DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -64847,7 +64847,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1410-7-1",
         "name": "Ebb and Flow - Flux - Moonring DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -64966,7 +64966,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1410-7-2",
         "name": "Ebb and Flow - Enhanced Moonbow - Basic Attack 1 DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -65019,7 +65019,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1410-7-3",
         "name": "Ebb and Flow - Enhanced Moonbow - Basic Attack 2 DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -65116,7 +65116,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1410-7-4",
         "name": "Ebb and Flow - Enhanced Moonbow - Basic Attack 3 DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -65191,7 +65191,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1410-7-5",
         "name": "Ebb and Flow - Enhanced Moonbow - Dodge Counter DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -65288,7 +65288,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1410-7-6",
         "name": "Ebb and Flow - Enhanced Arc Beyond the Edge DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -65628,7 +65628,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1410-7-12",
         "name": "Ebb and Flow - Absolute Fullness DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -74327,7 +74327,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1304-7-5",
         "name": "Luminal Synthesis - Incarnation - Dodge Counter DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -79634,7 +79634,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1104-7-1",
         "name": "Unification of Spirits - Feral Gyrate Stage 1 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -79731,7 +79731,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1104-7-2",
         "name": "Unification of Spirits - Feral Gyrate Stage 2 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -81819,7 +81819,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1109-3-0",
         "name": "Clear As Day - Clear As Day DMG",
-        "type": "basic",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -81872,7 +81872,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1109-3-1",
         "name": "Clear As Day - Basic Attack - Tracing Forms Stage 1 DMG",
-        "type": "basic",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -81947,7 +81947,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1109-3-2",
         "name": "Clear As Day - Basic Attack - Tracing Forms Stage 2 DMG",
-        "type": "basic",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -82022,7 +82022,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1109-3-3",
         "name": "Clear As Day - Basic Attack - Tracing Forms Stage 3 DMG",
-        "type": "basic",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -82229,7 +82229,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1109-3-4",
         "name": "Clear As Day - Letting It Go DMG",
-        "type": "basic",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -82348,7 +82348,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1109-3-5",
         "name": "Clear As Day - Mid-air Attack - Reminiscence DMG",
-        "type": "basic",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -82401,7 +82401,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1109-3-6",
         "name": "Clear As Day - Dodge Counter - Reminiscence DMG",
-        "type": "basic",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -82582,7 +82582,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1109-7-0",
         "name": "Memory Palace - Oblivion DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -84907,7 +84907,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1511-1-10",
         "name": "Locked Thread - Basic Attack - Thread Shredding Stage 1 DMG",
-        "type": "heavy",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -85026,7 +85026,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1511-1-11",
         "name": "Locked Thread - Basic Attack - Thread Shredding Stage 2 DMG",
-        "type": "heavy",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -85167,7 +85167,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1511-1-12",
         "name": "Locked Thread - Basic Attack - Thread Shredding Stage 3 DMG",
-        "type": "heavy",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -85308,7 +85308,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1511-1-13",
         "name": "Locked Thread - Basic Attack - Thread Shredding Stage 4 DMG",
-        "type": "heavy",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -85850,7 +85850,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1511-2-0",
         "name": "Protocol Breach - Resonance Skill - Payload Charge DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -85925,7 +85925,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1511-2-1",
         "name": "Protocol Breach - Resonance Skill - Payload Follow-Up Attack DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -86022,7 +86022,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1511-2-2",
         "name": "Protocol Breach - Resonance Skill - Pulse Interference DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -86185,7 +86185,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1511-2-3",
         "name": "Protocol Breach - Resonance Skill - Deadlock DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -86260,7 +86260,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1511-3-0",
         "name": "Netrunner - Resonance Liberation - Netrunner: Override DMG",
-        "type": "heavy",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -86313,7 +86313,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1511-3-1",
         "name": "Netrunner - Spoofing Program: Ping DMG",
-        "type": "heavy",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -86366,7 +86366,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1511-3-2",
         "name": "Netrunner - Spoofing Program: Synapse Burnout DMG",
-        "type": "heavy",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -86472,7 +86472,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1511-3-4",
         "name": "Netrunner - Resonance Liberation - Old Net Deep Dive: Override DMG",
-        "type": "heavy",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -88243,7 +88243,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1504-1-6",
         "name": "Navigation Support - Red Light: Heavy Attack DMG",
-        "type": "basic",
+        "type": "heavy",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -88790,7 +88790,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1504-7-0",
         "name": "Signal Light - Glare DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -88843,7 +88843,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1504-7-1",
         "name": "Signal Light - Red Spotlight: Basic Attack 1 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -88896,7 +88896,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1504-7-2",
         "name": "Signal Light - Red Spotlight: Basic Attack 2 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -89059,7 +89059,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1504-7-3",
         "name": "Signal Light - Red Spotlight: Basic Attack 3 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -89134,7 +89134,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1504-7-4",
         "name": "Signal Light - Red Spotlight: Heavy Attack DMG",
-        "type": "basic",
+        "type": "heavy",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -89337,7 +89337,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1504-7-7",
         "name": "Signal Light - Single Laser Beam DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -91488,7 +91488,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1207-1-10",
         "name": "Flaming Star - Mid-air Attack - Firestrike DMG",
-        "type": "heavy",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -92101,7 +92101,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1207-3-1",
         "name": "Fire-Kissed Glory - Foebreaker DMG",
-        "type": "skill",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -92295,7 +92295,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1207-6-1",
         "name": "Try Focusing, Eh? - Nowhere to Run! DMG",
-        "type": "liberation",
+        "type": "intro",
         "skillLevelIndex": 4,
         "scalesWith": "atk",
         "multipliers": [
@@ -92436,7 +92436,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1207-7-0",
         "name": "Ignis Lupa - Dance With the Wolf DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -92599,7 +92599,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1207-7-1",
         "name": "Ignis Lupa - Dance With the Wolf: Climax DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -95343,7 +95343,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1510-2-0",
         "name": "Reunion of All the Fallen - Golden Reflux DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -95396,7 +95396,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1510-2-1",
         "name": "Reunion of All the Fallen - Aureole of Execution: Ring DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -95559,7 +95559,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1510-2-2",
         "name": "Reunion of All the Fallen - Aureole of Execution: Breach DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -95656,7 +95656,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1510-2-3",
         "name": "Reunion of All the Fallen - Aureole of Execution: Glare DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -95709,7 +95709,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1510-2-4",
         "name": "Reunion of All the Fallen - Basic Attack - Golden Impale DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -95762,7 +95762,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1510-2-5",
         "name": "Reunion of All the Fallen - Ichor Deposit DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -96075,7 +96075,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1510-7-0",
         "name": "Spark from the Frost - Gavel of Earthshaker DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -98316,7 +98316,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1509-1-14",
         "name": "Chroma Drift - Kaleidoscopic Parade - Ground Heavy Attack DMG",
-        "type": "basic",
+        "type": "heavy",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -98629,7 +98629,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1509-1-17",
         "name": "Chroma Drift - Kaleidoscopic Parade - Mid-air Heavy Attack DMG",
-        "type": "basic",
+        "type": "heavy",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -99259,7 +99259,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1509-3-1",
         "name": "Prismatic Overblast - Basic Attack - To a Vivid Tomorrow! DMG",
-        "type": "basic",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -100025,7 +100025,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1509-7-0",
         "name": "Chromaticity Modeling - Basic Attack - Iridescent Splash DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -100078,7 +100078,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1509-7-1",
         "name": "Chromaticity Modeling - Basic Attack - Visual Impact DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -100131,7 +100131,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1509-7-2",
         "name": "Chromaticity Modeling - Basic Attack - Polychrome Leap 1",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -100228,7 +100228,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1509-7-3",
         "name": "Chromaticity Modeling - Basic Attack - Polychrome Leap 2",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -100391,7 +100391,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1509-7-4",
         "name": "Chromaticity Modeling - Basic Attack - Polychrome Leap 3",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -103305,7 +103305,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1209-7-1",
         "name": "Mass-Energy Equivalence - Syntony Field DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -107407,7 +107407,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1506-2-1",
         "name": "To Where Light Shines - Ring of Mirrors: Refracted Holy Light DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -107482,7 +107482,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1506-2-2",
         "name": "To Where Light Shines - Chamuel's Star: Stage 1 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -107535,7 +107535,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1506-2-3",
         "name": "To Where Light Shines - Chamuel's Star: Stage 2 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -107610,7 +107610,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1506-2-4",
         "name": "To Where Light Shines - Chamuel's Star: Stage 3 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -107879,7 +107879,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1506-7-0",
         "name": "Radiant Invocation - Absolution Litany DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -109444,7 +109444,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1608-1-4",
         "name": "Movement of Life and Death - Scarlet Coda DMG",
-        "type": "skill",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -110004,7 +110004,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1608-3-1",
         "name": "Waltz of Forsaken Depths - Basic Attack - Hecate Stage 2 DMG",
-        "type": "basic",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -110432,7 +110432,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1608-6-1",
         "name": "Suite of Quietus - Suite of Immortality DMG",
-        "type": "skill",
+        "type": "intro",
         "skillLevelIndex": 4,
         "scalesWith": "atk",
         "multipliers": [
@@ -115880,7 +115880,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1411-1-5",
         "name": "Inkwash - Dodge Counter DMG",
-        "type": "heavy",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -116810,7 +116810,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1411-7-3",
         "name": "Verdant Edge - Thus Spoke the Blade: Inkwash Stage 4 DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -116863,7 +116863,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1411-7-4",
         "name": "Verdant Edge - Thus Spoke the Blade: To Teach DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -117004,7 +117004,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1411-7-5",
         "name": "Verdant Edge - Thus Spoke the Blade: To Save DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -117167,7 +117167,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1411-7-6",
         "name": "Verdant Edge - Thus Spoke the Blade: To Sacrifice DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -118539,7 +118539,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1308-1-3",
         "name": "Mix-'n'-Match - Heavy Attack - Huntress DMG",
-        "type": "basic",
+        "type": "heavy",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -119871,7 +119871,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1308-3-0",
         "name": "Party 'til Dawn! - Mk. 31 HMG DMG",
-        "type": "basic",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -119924,7 +119924,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1308-3-1",
         "name": "Party 'til Dawn! - Mk. 31 HMG 1st Enhancement DMG",
-        "type": "basic",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -119977,7 +119977,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1308-3-2",
         "name": "Party 'til Dawn! - Mk. 31 HMG 2nd Enhancement DMG",
-        "type": "basic",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -120030,7 +120030,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1308-3-3",
         "name": "Party 'til Dawn! - BOOM! Fireworks! DMG",
-        "type": "basic",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -120528,7 +120528,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1308-7-1",
         "name": "Gloves Are Comin' Off! - Rat-tat-tat!: Huntress DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -120669,7 +120669,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1308-7-2",
         "name": "Gloves Are Comin' Off! - Bang-bang-bang!: Guts DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -122654,7 +122654,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1606-7-0",
         "name": "A Prop Master Prepares - Stage 1 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -122707,7 +122707,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1606-7-1",
         "name": "A Prop Master Prepares - Stage 2 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -122760,7 +122760,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1606-7-2",
         "name": "A Prop Master Prepares - Stage 3 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -124676,7 +124676,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1406-1-4",
         "name": "Wind Cutter - Razor Wind DMG",
-        "type": "heavy",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -127998,7 +127998,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1408-1-4",
         "name": "Wind Cutter - Razor Wind DMG",
-        "type": "heavy",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -131365,7 +131365,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1309-2-1",
         "name": "Thunderclap - Basic Attack - Repel DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -135059,7 +135059,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1310-2-1",
         "name": "Thunderclap - Basic Attack - Repel DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -138602,7 +138602,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1604-7-1",
         "name": "Umbra Eclipse - Umbra: Basic Attack Stage 1 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -138655,7 +138655,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1604-7-2",
         "name": "Umbra Eclipse - Umbra: Basic Attack Stage 2 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -138708,7 +138708,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1604-7-3",
         "name": "Umbra Eclipse - Umbra: Basic Attack Stage 3 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -138761,7 +138761,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1604-7-4",
         "name": "Umbra Eclipse - Umbra: Basic Attack Stage 4 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -138880,7 +138880,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1604-7-5",
         "name": "Umbra Eclipse - Umbra: Basic Attack Stage 5 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -139215,7 +139215,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1604-7-8",
         "name": "Umbra Eclipse - Umbra: Plunging Attack DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -139268,7 +139268,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1604-7-9",
         "name": "Umbra Eclipse - Umbra: Dodge Counter DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -141256,7 +141256,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1605-7-1",
         "name": "Umbra Eclipse - Umbra: Basic Attack Stage 1 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -141309,7 +141309,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1605-7-2",
         "name": "Umbra Eclipse - Umbra: Basic Attack Stage 2 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -141362,7 +141362,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1605-7-3",
         "name": "Umbra Eclipse - Umbra: Basic Attack Stage 3 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -141415,7 +141415,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1605-7-4",
         "name": "Umbra Eclipse - Umbra: Basic Attack Stage 4 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -141534,7 +141534,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1605-7-5",
         "name": "Umbra Eclipse - Umbra: Basic Attack Stage 5 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -141869,7 +141869,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1605-7-8",
         "name": "Umbra Eclipse - Umbra: Plunging Attack DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -141922,7 +141922,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1605-7-9",
         "name": "Umbra Eclipse - Umbra: Dodge Counter DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -150022,7 +150022,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1505-6-0",
         "name": "Proof of Existence - Enlightenment DMG",
-        "type": "skill",
+        "type": "intro",
         "skillLevelIndex": 4,
         "scalesWith": "hp",
         "multipliers": [
@@ -150163,7 +150163,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1505-6-1",
         "name": "Proof of Existence - Discernment DMG",
-        "type": "liberation",
+        "type": "intro",
         "skillLevelIndex": 4,
         "scalesWith": "atk",
         "multipliers": [
@@ -150366,7 +150366,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1505-7-0",
         "name": "Astral Chord - Flare Star Butterfly DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -150419,7 +150419,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1505-7-1",
         "name": "Astral Chord - Illation DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -150560,7 +150560,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1505-7-2",
         "name": "Astral Chord - Transmutation DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -151938,7 +151938,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1412-1-4",
         "name": "One, Two, Three - Basic Attack - Elucidated DMG",
-        "type": "heavy",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -152335,7 +152335,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1412-1-9",
         "name": "One, Two, Three - Dodge Counter - Decipher DMG",
-        "type": "skill",
+        "type": "basic",
         "skillLevelIndex": 0,
         "scalesWith": "atk",
         "multipliers": [
@@ -152992,7 +152992,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1412-7-1",
         "name": "Within Infinity's Embrace - Runic Outburst DMG",
-        "type": "intro",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -155580,7 +155580,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1110-7-0",
         "name": "Lambent Gold - Basic Attack - Drizzle Stance Stage 1 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -155699,7 +155699,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1110-7-1",
         "name": "Lambent Gold - Basic Attack - Drizzle Stance Stage 2 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -155884,7 +155884,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1110-7-2",
         "name": "Lambent Gold - Basic Attack - Drizzle Stance Stage 3 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -156179,7 +156179,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1110-7-3",
         "name": "Lambent Gold - Basic Attack - Drizzle Stance Stage 4 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -156505,7 +156505,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1110-7-5",
         "name": "Lambent Gold - Illuminating Dew DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -156558,7 +156558,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1110-7-6",
         "name": "Lambent Gold - Swallow's Cut DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -160642,7 +160642,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1503-7-1",
         "name": "Starflower Blooms - Mid-air Attack: Starflower Blooms Stage 1 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -160748,7 +160748,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1503-7-3",
         "name": "Starflower Blooms - Mid-air Attack: Starflower Blooms Stage 3 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -162676,7 +162676,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1305-3-1",
         "name": "Cogitation Model - Pivot - Impale Stage 1 DMG",
-        "type": "basic",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -162729,7 +162729,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1305-3-2",
         "name": "Cogitation Model - Pivot - Impale Stage 2 DMG",
-        "type": "basic",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -162848,7 +162848,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1305-3-3",
         "name": "Cogitation Model - Pivot - Impale Stage 3 DMG",
-        "type": "basic",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -162923,7 +162923,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1305-3-4",
         "name": "Cogitation Model - Divergence DMG",
-        "type": "skill",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -163236,7 +163236,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1305-7-0",
         "name": "Forever Seeking - Decipher DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -163289,7 +163289,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1305-7-1",
         "name": "Forever Seeking - Law of Reigns DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -163430,7 +163430,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1305-7-2",
         "name": "Forever Seeking - Revamp DMG",
-        "type": "liberation",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -167891,7 +167891,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1610-2-0",
         "name": "Feather's Edge - Sword Stance Switch: Azure DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -168010,7 +168010,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1610-2-1",
         "name": "Feather's Edge - Sword Stance Switch: Feather DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 1,
         "scalesWith": "atk",
         "multipliers": [
@@ -168107,7 +168107,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1610-3-0",
         "name": "Hush of a Thousand Voices - Hush of a Thousand Voices DMG",
-        "type": "heavy",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -168160,7 +168160,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1610-3-1",
         "name": "Hush of a Thousand Voices - Shadow of Xuanling DMG",
-        "type": "heavy",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -168266,7 +168266,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1610-7-0",
         "name": "The Way of Ten Thousand Voices - Resonance Skill - Sword Stance Flow: Azure DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -168385,7 +168385,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1610-7-1",
         "name": "The Way of Ten Thousand Voices - Resonance Skill - Sword Stance Flow: Feather DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -168654,7 +168654,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1610-7-4",
         "name": "The Way of Ten Thousand Voices - Mid-air Attack - Feather Sword Stance: Feather Fall DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -168773,7 +168773,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1610-7-5",
         "name": "The Way of Ten Thousand Voices - Basic Attack - Havoc in Bloom Stage 1 DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -168870,7 +168870,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1610-7-6",
         "name": "The Way of Ten Thousand Voices - Basic Attack - Havoc in Bloom Stage 2 DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -168967,7 +168967,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1610-7-7",
         "name": "The Way of Ten Thousand Voices - Basic Attack - Havoc in Bloom Stage 3 DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -169130,7 +169130,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1610-7-8",
         "name": "The Way of Ten Thousand Voices - Dodge Counter - Havoc in Bloom Stage 1 DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -169227,7 +169227,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1610-7-9",
         "name": "The Way of Ten Thousand Voices - Dodge Counter - Havoc in Bloom Stage 2 DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -169324,7 +169324,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1610-7-10",
         "name": "The Way of Ten Thousand Voices - Dodge Counter - Havoc in Bloom Stage 3 DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -176905,7 +176905,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1303-7-1",
         "name": "Unassuming Blade - Lightning Infused Basic Attack Stage 1 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "def",
         "multipliers": [
@@ -176958,7 +176958,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1303-7-2",
         "name": "Unassuming Blade - Lightning Infused Basic Attack Stage 2 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "def",
         "multipliers": [
@@ -177033,7 +177033,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1303-7-3",
         "name": "Unassuming Blade - Lightning Infused Basic Attack Stage 3 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "def",
         "multipliers": [
@@ -177152,7 +177152,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1303-7-4",
         "name": "Unassuming Blade - Lightning Infused Basic Attack Stage 4 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "def",
         "multipliers": [
@@ -177293,7 +177293,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1303-7-5",
         "name": "Unassuming Blade - Lightning Infused Basic Attack Stage 5 DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "def",
         "multipliers": [
@@ -177562,7 +177562,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1303-7-8",
         "name": "Unassuming Blade - Lightning Infused Dodge Counter DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "def",
         "multipliers": [
@@ -180239,7 +180239,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1507-7-0",
         "name": "There Will Be A Light - Heavy Slash - Daybreak DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -180292,7 +180292,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1507-7-1",
         "name": "There Will Be A Light - Heavy Slash - Dawning DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -180345,7 +180345,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1507-7-2",
         "name": "There Will Be A Light - Heavy Slash - Nightfall DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -180473,7 +180473,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1507-7-4",
         "name": "There Will Be A Light - Heavy Slash - Lightsmash DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -182482,7 +182482,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1105-3-0",
         "name": "Living Canvas - Inklit Spirit DMG",
-        "type": "basic",
+        "type": "liberation",
         "skillLevelIndex": 3,
         "scalesWith": "atk",
         "multipliers": [
@@ -182626,7 +182626,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1105-7-0",
         "name": "Ink and Wash - HA - Conjuration DMG",
-        "type": "heavy",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -182719,7 +182719,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1105-7-1",
         "name": "Ink and Wash - Stroke of Genius DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [
@@ -182770,7 +182770,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
       {
         "id": "1105-7-2",
         "name": "Ink and Wash - Creation's Zenith DMG",
-        "type": "basic",
+        "type": "skill",
         "skillLevelIndex": 2,
         "scalesWith": "atk",
         "multipliers": [

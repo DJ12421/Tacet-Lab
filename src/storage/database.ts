@@ -135,16 +135,10 @@ class TacetDatabase extends Dexie {
           selectedTargetByBuild: remapRecord(team.scenario.selectedTargetByBuild, memberIds) ?? {},
           compareBuildId: team.scenario.compareBuildId ? remapId(team.scenario.compareBuildId) : undefined
         } : undefined
-        const calculationV2 = team.calculationV2 ? {
-          ...team.calculationV2,
-          memberEffects: remapRecord(team.calculationV2.memberEffects, memberIds) ?? {},
-          partyEffects: Object.fromEntries(Object.entries(team.calculationV2.partyEffects ?? {}).map(([sourceId, effects]) => [remapId(sourceId), Object.fromEntries(Object.entries(effects).map(([effectId, selection]) => [effectId, { ...selection, recipientBuildId: selection.recipientBuildId ? remapId(selection.recipientBuildId) : undefined }]))])),
-          selectedAttackByBuild: remapRecord(team.calculationV2.selectedAttackByBuild, memberIds) ?? {}
-        } : undefined
         await transaction.table<Team, string>('teams').put({
           ...team, members, buildIds: members.map((entry) => entry.memberId),
           actions: team.actions.map((entry) => ({ ...entry, buildId: remapId(entry.buildId) })),
-          buffs: team.buffs?.map((entry) => ({ ...entry, sourceBuildId: remapId(entry.sourceBuildId) })), scenario, calculationV2
+          buffs: team.buffs?.map((entry) => ({ ...entry, sourceBuildId: remapId(entry.sourceBuildId) })), scenario
         })
       }
       for (const profile of optimizerProfiles) await transaction.table<OptimizerProfile, string>('optimizerProfiles').put({ ...profile,
@@ -554,28 +548,18 @@ function remapOptionalId(map: Map<string, string>, id?: string) {
 
 function remapTeam(team: Team, buildIds: Map<string, string>): Team {
   const remapBuildId = (id: string) => buildIds.get(id) ?? id
-  const remapEffectSelections = (selections: Record<string, import('../domain/calculation-v2/types').CalculationEffectSelection>) => Object.fromEntries(
-    Object.entries(selections).map(([id, selection]) => [id, { ...selection, recipientBuildId: remapOptionalId(buildIds, selection.recipientBuildId) }])
-  )
   const scenario = team.scenario ? {
     ...team.scenario,
     memberConditions: Object.fromEntries(Object.entries(team.scenario.memberConditions).map(([id, value]) => [remapBuildId(id), value])),
     selectedTargetByBuild: Object.fromEntries(Object.entries(team.scenario.selectedTargetByBuild).map(([id, value]) => [remapBuildId(id), value])),
     compareBuildId: remapOptionalId(buildIds, team.scenario.compareBuildId)
   } : undefined
-  const calculationV2 = team.calculationV2 ? {
-    ...team.calculationV2,
-    memberEffects: Object.fromEntries(Object.entries(team.calculationV2.memberEffects).map(([id, value]) => [remapBuildId(id), remapEffectSelections(value)])),
-    partyEffects: Object.fromEntries(Object.entries(team.calculationV2.partyEffects).map(([id, value]) => [remapBuildId(id), remapEffectSelections(value)])),
-    selectedAttackByBuild: Object.fromEntries(Object.entries(team.calculationV2.selectedAttackByBuild).map(([id, value]) => [remapBuildId(id), value]))
-  } : undefined
   return {
     ...team,
     buildIds: team.buildIds.map(remapBuildId),
     actions: team.actions.map((action) => ({ ...action, buildId: remapBuildId(action.buildId) })),
     buffs: team.buffs?.map((buff) => ({ ...buff, sourceBuildId: remapBuildId(buff.sourceBuildId) })),
-    scenario,
-    calculationV2
+    scenario
   }
 }
 
@@ -735,11 +719,9 @@ async function ensureSchemaSevenRelations() {
       })
       const remapId = (id?: string) => id ? ids.get(id) ?? id : id
       const remapRecord = <T,>(record: Record<string, T> = {}) => Object.fromEntries(Object.entries(record).map(([id, value]) => [remapId(id)!, value]))
-      const partyEffects = team.calculationV2 ? Object.fromEntries(Object.entries(remapRecord(team.calculationV2.partyEffects)).map(([sourceId, effects]) => [sourceId, Object.fromEntries(Object.entries(effects).map(([effectId, selection]) => [effectId, { ...selection, recipientBuildId: remapId(selection.recipientBuildId) }]))])) : undefined
       await db.teams.put({ ...team, members, buildIds: members.map((entry) => entry.memberId),
         actions: team.actions.map((entry) => ({ ...entry, buildId: remapId(entry.buildId)! })), buffs: team.buffs?.map((entry) => ({ ...entry, sourceBuildId: remapId(entry.sourceBuildId)! })),
-        scenario: team.scenario ? { ...team.scenario, memberConditions: remapRecord(team.scenario.memberConditions), selectedTargetByBuild: remapRecord(team.scenario.selectedTargetByBuild), compareBuildId: remapId(team.scenario.compareBuildId) } : undefined,
-        calculationV2: team.calculationV2 ? { ...team.calculationV2, memberEffects: remapRecord(team.calculationV2.memberEffects), selectedAttackByBuild: remapRecord(team.calculationV2.selectedAttackByBuild), partyEffects: partyEffects! } : undefined })
+        scenario: team.scenario ? { ...team.scenario, memberConditions: remapRecord(team.scenario.memberConditions), selectedTargetByBuild: remapRecord(team.scenario.selectedTargetByBuild), compareBuildId: remapId(team.scenario.compareBuildId) } : undefined })
     }
     for (const profile of profiles) {
       const buildId = memberIdByBuild.get(profile.buildId)
@@ -879,7 +861,6 @@ function isTeam(value: unknown) {
       && typeof buff.stat === 'string' && (buff.stat === 'amplify' || buff.stat in statLabels)
       && typeof buff.stackingGroup === 'string' && isFiniteNumber(buff.duration) && buff.duration >= 0 && isFiniteNumber(buff.value))))
     && (value.scenario === undefined || isTeamScenario(value.scenario))
-    && (value.calculationV2 === undefined || isCalculationScenarioV2(value.calculationV2))
 }
 
 function isOptimizerProfile(value: unknown) {
@@ -948,22 +929,6 @@ function isTeamScenario(value: unknown) {
     && isRecord(value.enemyConditions) && Object.values(value.enemyConditions).every(validValue)
     && isRecord(value.selectedTargetByBuild) && Object.values(value.selectedTargetByBuild).every((target) => typeof target === 'string')
     && (value.compareBuildId === undefined || typeof value.compareBuildId === 'string')
-}
-
-function isCalculationScenarioV2(value: unknown) {
-  if (!isRecord(value) || value.version !== 2 || !['normal', 'expected', 'critical'].includes(String(value.resultMode))) return false
-  const validSelection = (selection: unknown) => isRecord(selection)
-    && typeof selection.enabled === 'boolean'
-    && (selection.value === undefined || isFiniteNumber(selection.value) || typeof selection.value === 'string' || typeof selection.value === 'boolean')
-    && (selection.stacks === undefined || isFiniteNumber(selection.stacks))
-    && (selection.refinement === undefined || isFiniteNumber(selection.refinement))
-    && (selection.recipientBuildId === undefined || typeof selection.recipientBuildId === 'string')
-  const validEffectMap = (entry: unknown) => isRecord(entry)
-    && Object.values(entry).every((selection) => validSelection(selection))
-  return isRecord(value.memberEffects) && Object.values(value.memberEffects).every(validEffectMap)
-    && isRecord(value.partyEffects) && Object.values(value.partyEffects).every(validEffectMap)
-    && isRecord(value.enemyStatuses) && Object.values(value.enemyStatuses).every(isFiniteNumber)
-    && isRecord(value.selectedAttackByBuild) && Object.values(value.selectedAttackByBuild).every((attackId) => typeof attackId === 'string')
 }
 
 function isSettings(value: unknown) {

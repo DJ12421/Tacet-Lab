@@ -326,40 +326,14 @@
   min-width: 65px;
 }
 
-.catalog-picker-grid {
-  grid-template-columns: repeat(auto-fill,minmax(285px,1fr));
-  gap: 12px;
-}
-
-.catalog-choice.weapon-choice {
-  grid-template-columns: 118px minmax(0,1fr);
-  min-height: 132px;
-  border-color: color-mix(in srgb,var(--weapon-accent) 48%,transparent);
-  background: linear-gradient(135deg,var(--weapon-glow),#0b1011 70%);
-}
-
 .catalog-choice.weapon-choice img {
   width: 118px;
-}
-
-.catalog-choice.weapon-choice strong {
-  font-size: var(--font-size-small);
-}
-
-.catalog-choice.weapon-choice small {
-  font-size: var(--font-size-caption);
 }
 
 .picker-weapon-stats {
   display: grid;
   gap: 5px;
   margin-top: 6px;
-}
-
-.catalog-choice .picker-weapon-stats b {
-  color: #dbe2e0;
-  font-size: var(--font-size-caption);
-  letter-spacing: 0;
 }
 
 .weapon-detail {
@@ -454,15 +428,6 @@
   }
   .catalog-picker-filters .owned-chip-filter:first-child {
     min-width: 100%;
-  }
-  .catalog-picker-grid {
-    grid-template-columns: 1fr;
-  }
-  .catalog-choice.weapon-choice {
-    grid-template-columns: 100px minmax(0,1fr);
-  }
-  .catalog-choice.weapon-choice img {
-    width: 100px;
   }
   .weapon-edit-row {
     grid-template-columns: minmax(0,1fr) 76px;

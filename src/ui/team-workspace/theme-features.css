@@ -1,0 +1,619 @@
+/* Overview and shared loadout cards rendered inside Teams. */
+
+.tw-member-page .tw-overview-art,
+.tw-member-page .tw-member-art,
+.tw-member-page .tw-overview-character,
+.tw-member-page .tw-overview-stats,
+.tw-member-page .tw-overview-equipment>aside,
+.tw-member-page .tw-overview-equipment-grid,
+.tw-member-page .tw-overview-top-echo-art,
+.tw-member-page .tw-overview-formulas {
+  background: var(--tw-surface);
+}
+
+.tw-member-page .tw-overview-art {
+  box-shadow: inset 2px 0 var(--tw-member-accent);
+}
+
+.tw-member-page .tw-member-art {
+  background: var(--tw-surface);
+  box-shadow: inset 2px 0 var(--tw-member-accent);
+}
+
+.tw-member-page .tw-weapon-passive,
+.tw-member-page .tw-weapon-detail,
+.tw-member-page .tw-loadout-echoes .tw-echo-thumbs>span {
+  border-color: var(--tw-line);
+  background: #090c0d;
+}
+
+.tw-member-page .tw-overview-top-echo-art {
+  border-right-color: var(--tw-line);
+}
+
+.tw-member-page .tw-overview-top-echo-art>b,
+.tw-member-page .tw-overview-top-echo-empty>strong {
+  border-color: var(--tw-line-strong);
+  background: #090c0d;
+  color: var(--tw-member-accent);
+}
+
+.tw-member-page .tw-overview-stats dl>div.bonus-start,
+.tw-member-page .tw-overview-formulas .tw-sheet-stats dl:nth-of-type(2) {
+  border-color: var(--tw-line);
+}
+
+.tw-member-page .tw-overview-formulas .tw-sheet-stats dl:nth-of-type(2)>div:nth-child(4) {
+  border-color: var(--tw-line);
+}
+
+.team-workspace .owned-card,
+.team-workspace .weapon-owned,
+.team-workspace .echo-card,
+.team-workspace .tw-echo-card {
+  border-color: var(--tw-line);
+  background: var(--tw-surface);
+  box-shadow: none;
+}
+
+.team-workspace .owned-art,
+.team-workspace .echo-portrait {
+  border-color: var(--tw-line);
+  background: #090c0d;
+}
+
+.team-workspace .echo-card::before {
+  background: var(--tw-member-accent,#c8d0ce);
+  box-shadow: none;
+  opacity: .55;
+}
+
+.team-workspace .tw-echo-card>header {
+  background: var(--tw-surface-raised);
+}
+
+.team-workspace .tw-echo-card>header>b,
+.team-workspace .tw-echo-card .tw-echo-main b,
+.team-workspace .tw-echo-card.empty>span {
+  color: var(--tw-member-accent,#c8d0ce);
+}
+
+.team-workspace .echo-card:hover,
+.team-workspace .owned-card:hover {
+  border-color: var(--tw-line-strong);
+}
+
+.team-workspace .echo-card.selected {
+  border-color: var(--tw-line-strong);
+  box-shadow: inset 2px 0 var(--tw-member-accent,#c8d0ce);
+}
+
+.team-workspace .echo-identity>span {
+  border-color: var(--tw-line);
+  color: #aeb8b5;
+}
+
+.team-workspace .substats b,
+.team-workspace .weapon-rarity,
+.team-workspace .weapon-card>span {
+  color: var(--tw-member-accent,#c8d0ce);
+}
+
+/* Formula sheets. */
+
+.tw-member-page .tw-sheet-column>header {
+  border-color: var(--tw-line);
+  background: var(--tw-surface-raised);
+}
+
+.tw-member-page .tw-sheet-column>button {
+  border-color: var(--tw-line);
+  background: #090c0d;
+  color: #dce3e1;
+}
+
+.tw-member-page .tw-sheet-column>button:hover,
+.tw-member-page .tw-sheet-column>button.selected {
+  border-color: var(--tw-line-strong);
+  background: var(--tw-surface-hover);
+  color: #fff;
+  box-shadow: inset 2px 0 var(--tw-member-accent);
+}
+
+.tw-member-page .tw-sheet-column>button b {
+  color: var(--tw-member-accent);
+}
+
+.tw-member-page .tw-sheet-buff,
+.tw-member-page .tw-sheet-column dl>div {
+  border-color: var(--tw-line);
+  background: #090c0d;
+}
+
+.tw-member-page .tw-trace li {
+  border-color: var(--tw-line);
+}
+
+.tw-member-page .tw-condition-chips label {
+  border-color: var(--tw-line);
+  background: #090c0d;
+  color: var(--tw-muted);
+}
+
+.tw-member-page .tw-condition-chips label.active {
+  border-color: var(--tw-line-strong);
+  background: var(--tw-surface-hover);
+  color: var(--tw-member-accent);
+}
+
+/* Forte, skills, passive nodes, and description controls. */
+
+.tw-member-page .tw-skill-card>header,
+.tw-member-page .tw-sequence-column>header {
+  border-color: var(--tw-line);
+  background: var(--tw-surface-raised);
+  box-shadow: inset 2px 0 var(--tw-member-accent);
+}
+
+.tw-member-page .tw-skill-card dl>div,
+.tw-member-page .tw-bonus-nodes article,
+.tw-member-page .tw-passive-card {
+  border-color: var(--tw-line);
+  background: #090c0d;
+}
+
+.tw-member-page .tw-skill-card dt small {
+  color: var(--tw-muted);
+}
+
+.tw-member-page .tw-passive>strong {
+  color: var(--tw-member-accent);
+}
+
+.tw-member-page .tw-bonus-nodes article.is-enabled,
+.tw-member-page .tw-passive-card.is-enabled,
+.tw-member-page .tw-sequence-column>article.unlocked {
+  border-color: var(--tw-line);
+  border-left: 2px solid var(--tw-member-accent);
+  background: #0f1415;
+  box-shadow: none;
+}
+
+.tw-member-page .tw-description-toggle,
+.tw-member-page .tw-description-trigger[aria-expanded=true] .tw-description-toggle {
+  border-color: var(--tw-line);
+  background: #090c0d;
+  color: var(--tw-muted);
+}
+
+.tw-member-page .tw-description-trigger:hover .tw-description-toggle {
+  background: var(--tw-surface-hover);
+  color: #fff;
+}
+
+.tw-member-page .tw-v2-stance,
+.tw-member-page .tw-v2-character-effects,
+.tw-member-page .tw-card-conditions {
+  border-color: var(--tw-line);
+  background: var(--tw-surface);
+}
+
+/* Conditional effects borrow the compact Sonata/passive card hierarchy. */
+
+.team-workspace .tw-v2-effect-list {
+  gap: 7px;
+}
+
+.team-workspace .tw-v2-effect-list>article,
+.team-workspace .tw-sheet-column>.tw-v2-effect-list>article,
+.tw-member-page .tw-v2-effect-list>article,
+.tw-member-page .tw-v2-effect-list>article.is-fixed,
+.tw-member-page .tw-v2-effect-list>article.is-active,
+.tw-member-page .tw-v2-effect-list>article.is-inactive {
+  display: block;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid var(--tw-line);
+  border-left: 2px solid color-mix(in srgb,var(--tw-member-accent,#c8d0ce) 56%,transparent);
+  border-radius: 4px;
+  background: #081019;
+  box-shadow: none;
+}
+
+.team-workspace .tw-v2-effect-list .tw-effect-copy {
+  position: relative;
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--tw-line);
+  background: #101822;
+}
+
+.team-workspace .tw-v2-effect-list .tw-effect-copy>span {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.team-workspace .tw-v2-effect-list .tw-effect-copy strong {
+  overflow: visible;
+  color: #edf3ef;
+  font-size: var(--font-size-small);
+  line-height: 1.3;
+  white-space: normal;
+  text-overflow: clip;
+}
+
+.team-workspace .tw-v2-effect-list .tw-effect-title-toggle {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  min-width: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 58px 9px 12px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.team-workspace .tw-v2-effect-list .tw-effect-title-toggle:disabled {
+  cursor: default;
+  opacity: .55;
+}
+
+.team-workspace .tw-v2-effect-list .tw-effect-title-toggle i {
+  position: relative;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #aab4b1;
+  border-radius: 2px;
+  background: #090d0e;
+}
+
+.team-workspace .tw-v2-effect-list .tw-effect-title-toggle[aria-pressed=true] i {
+  border-color: var(--tw-member-accent,#c8d0ce);
+  background: var(--tw-member-accent,#c8d0ce);
+}
+
+.team-workspace .tw-v2-effect-list .tw-effect-title-toggle[aria-pressed=true] i::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 1px;
+  width: 5px;
+  height: 10px;
+  border: solid #07100e;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.team-workspace .tw-v2-effect-list .tw-effect-title-toggle:hover:not(:disabled) strong {
+  color: var(--tw-member-accent,#fff);
+}
+
+.team-workspace .tw-v2-effect-list .tw-effect-copy>b {
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.team-workspace .tw-v2-effect-list .tw-effect-copy small {
+  display: block;
+  overflow: hidden;
+  color: #7f8b89;
+  font-size: var(--font-size-caption);
+  line-height: 1.35;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.team-workspace .tw-v2-effect-list .tw-effect-copy>b {
+  flex: none;
+  padding: 4px 7px;
+  border: 1px solid color-mix(in srgb,var(--tw-member-accent,#c8d0ce) 44%,transparent);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--tw-member-accent,#c8d0ce);
+  font-size: var(--font-size-caption);
+}
+
+.team-workspace .tw-v2-effect-list .tw-effect-condition,
+.team-workspace .tw-v2-effect-list>article.is-active .tw-effect-condition,
+.team-workspace .tw-v2-effect-list>article.is-fixed .tw-effect-condition,
+.team-workspace .tw-v2-effect-list>article.is-inactive .tw-effect-condition {
+  min-height: 38px;
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid var(--tw-line);
+  background: #111715;
+  box-shadow: inset 3px 0 color-mix(in srgb,var(--tw-member-accent,#c8d0ce) 62%,transparent);
+}
+
+.team-workspace .tw-v2-effect-list>article.is-inactive .tw-effect-condition {
+  background: #0c1112;
+  box-shadow: inset 3px 0 rgba(255,255,255,.12);
+}
+
+.team-workspace .tw-v2-effect-list .tw-condition-toggle,
+.team-workspace .tw-v2-effect-list .tw-condition-toggle[aria-pressed=true],
+.team-workspace .tw-v2-effect-list .tw-condition-toggle[aria-pressed=false] {
+  flex: 1;
+  width: auto;
+  min-width: 0;
+  height: auto;
+  justify-content: flex-start;
+  padding: 7px 10px;
+  border: 0;
+  background: transparent;
+  color: #dbe2df;
+  box-shadow: none;
+  text-align: left;
+}
+
+.team-workspace .tw-v2-effect-list .tw-condition-toggle i {
+  position: relative;
+  flex: none;
+  width: 13px;
+  height: 13px;
+  border: 1px solid #aab4b1;
+  border-radius: 1px;
+  background: #090d0e;
+  box-shadow: none;
+}
+
+.team-workspace .tw-v2-effect-list .tw-condition-toggle[aria-pressed=true] i {
+  border-color: var(--tw-member-accent,#c8d0ce);
+  background: var(--tw-member-accent,#c8d0ce);
+  box-shadow: none;
+}
+
+.team-workspace .tw-v2-effect-list .tw-condition-toggle[aria-pressed=true] i::after {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 0;
+  width: 4px;
+  height: 8px;
+  border: solid #07100e;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.team-workspace .tw-v2-effect-list .tw-condition-toggle strong {
+  overflow: hidden;
+  font-size: var(--font-size-caption);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.team-workspace .tw-v2-effect-list .tw-condition-toggle:hover:not(:disabled) {
+  background: rgba(255,255,255,.045);
+  filter: none;
+}
+
+.team-workspace .tw-v2-effect-list .tw-effect-condition>label {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 8px;
+  border-left: 1px solid var(--tw-line);
+  color: #899491;
+  font-size: var(--font-size-caption);
+}
+
+.team-workspace .tw-v2-effect-list .tw-effect-condition select {
+  height: 27px;
+  padding: 0 5px;
+  border-color: var(--tw-line);
+  background: #090c0d;
+  color: #fff;
+}
+
+.team-workspace .tw-v2-effect-list .tw-effect-results {
+  display: grid;
+  margin: 0;
+}
+
+.team-workspace .tw-v2-effect-list .tw-effect-results>div,
+.team-workspace .tw-v2-effect-list .tw-effect-results>div:nth-child(even) {
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--tw-line);
+  background: #08121e;
+  font-size: var(--font-size-small);
+}
+
+.team-workspace .tw-v2-effect-list .tw-effect-results>div:last-child {
+  border-bottom: 0;
+}
+
+.team-workspace .tw-v2-effect-list .tw-effect-results dt {
+  color: #e3e9e7;
+}
+
+.team-workspace .tw-v2-effect-list .tw-effect-results dt.is-character-element {
+  color: var(--tw-member-accent,#c8d0ce);
+}
+
+.team-workspace .tw-v2-effect-list .tw-effect-results dd {
+  flex: none;
+  margin: 0;
+  color: #fff;
+  font-weight: 800;
+  text-align: right;
+}
+
+/* Rotation. */
+
+.tw-member-page .tw-rotation-composer,
+.tw-member-page .tw-rotation-card,
+.tw-member-page .tw-action-breakdown,
+.tw-member-page .tw-rotation-card-details>.tw-action-tags,
+.tw-member-page .tw-rotation-card-details>.tw-buff-state,
+.tw-member-page .tw-rotation-card-details>.calculated-value {
+  border-color: var(--tw-line);
+  background: var(--tw-surface);
+}
+
+.tw-member-page .tw-rotation-timeline::before {
+  background: linear-gradient(transparent,var(--tw-member-accent),transparent);
+}
+
+.tw-member-page .tw-rotation-marker b,
+.tw-member-page .tw-rotation-result {
+  border-color: var(--tw-line-strong);
+  background: #090c0d;
+  color: var(--tw-member-accent);
+}
+
+.tw-member-page .tw-action-tags .forte,
+.tw-member-page .tw-action-tags .damage {
+  border-color: var(--tw-line-strong);
+  background: transparent;
+  color: var(--tw-member-accent);
+}
+
+.tw-member-page .tw-action>p,
+.tw-member-page .tw-action-warning {
+  color: #e79a9d;
+}
+
+/* Embedded Optimizer. */
+
+.tw-member-page .optimizer-command-bar,
+.tw-member-page .optimizer-constraints,
+.tw-member-page .optimizer-results-heading,
+.tw-member-page .optimizer-chart,
+.tw-member-page .optimizer-build-result,
+.tw-member-page .optimizer-result-details,
+.tw-member-page .optimizer-result-details>section,
+.tw-member-page .optimizer-build-result>header,
+.tw-member-page .optimizer-result-details h3,
+.tw-member-page .optimizer-score-modes i,
+.tw-member-page .optimizer-current-baseline {
+  border-color: var(--tw-line);
+  background: var(--tw-surface-raised);
+}
+
+.tw-member-page .optimizer-mode-chip,
+.tw-member-page .optimizer-rank {
+  border-color: var(--tw-line-strong);
+  background: #090c0d;
+  color: var(--tw-member-accent);
+}
+
+.tw-member-page .optimizer-result-details {
+  border-top-color: var(--tw-line);
+}
+
+.tw-member-page .optimizer-result-details h3 {
+  border-bottom-color: var(--tw-line);
+}
+
+.tw-member-page .optimizer-chart>header i,
+.tw-member-page .optimizer-chart circle {
+  background: var(--tw-member-accent);
+  fill: var(--tw-member-accent);
+  stroke: #080b0d;
+}
+
+.tw-member-page button.primary,
+.tw-member-page button.secondary {
+  border-color: var(--tw-line-strong);
+  background: #111718;
+  color: #edf3ef;
+}
+
+.tw-member-page button.primary:hover,
+.tw-member-page button.secondary:hover {
+  border-color: color-mix(in srgb,var(--tw-member-accent) 52%,transparent);
+  background: #1b2324;
+}
+
+/* Keep Teams on the same readable type hierarchy as the rest of the project. */
+
+.team-workspace {
+  font-size: var(--font-size-body);
+  line-height: 1.5;
+}
+
+.team-workspace input,
+.team-workspace select,
+.team-workspace textarea,
+.team-workspace button {
+  font-size: var(--font-size-small);
+}
+
+.team-workspace .eyebrow,
+.team-workspace .tw-toolbar label,
+.team-workspace .tw-workspace-header label>span,
+.team-workspace .tw-primary-tabs>button>small,
+.team-workspace .tw-workspace-status small,
+.team-workspace .tw-buff-row label>span,
+.team-workspace .tw-rotation-composer label>span,
+.team-workspace .tw-rotation-card-main label>span,
+.team-workspace .tw-rotation-result small {
+  font-size: var(--font-size-caption);
+}
+
+.team-workspace .tw-name-field input,
+.team-workspace .tw-workspace-name input {
+  font-size: var(--font-size-body);
+}
+
+.team-workspace .tw-primary-tabs>button>span,
+.team-workspace .tw-workspace-status b,
+.team-workspace .tw-coverage-list b,
+.team-workspace .tw-member-column h3,
+.team-workspace .tw-member-weapon b,
+.team-workspace .tw-mini-facts>div,
+.team-workspace .tw-warnings p,
+.team-workspace .tw-buff-row input,
+.team-workspace .tw-buff-row select,
+.team-workspace .tw-action input,
+.team-workspace .tw-action select,
+.team-workspace .tw-action>strong,
+.team-workspace .tw-buff-state,
+.team-workspace .tw-stat-block dl>div,
+.team-workspace .tw-damage-block dl>div,
+.team-workspace .tw-attack-catalog article strong,
+.team-workspace .tw-member-action,
+.team-workspace .tw-sonata-detail b,
+.team-workspace .tw-passive p,
+.team-workspace .tw-sheet-column>button,
+.team-workspace .tw-sheet-column dl>div,
+.team-workspace .tw-skill-card dl>div,
+.team-workspace .tw-passive-card,
+.team-workspace .tw-bonus-nodes article,
+.team-workspace .tw-rotation-card-main input,
+.team-workspace .tw-rotation-card-main select,
+.team-workspace .tw-rotation-card-details>.tw-buff-state>b,
+.team-workspace .tw-action-breakdown>summary,
+.team-workspace .tw-action-breakdown span,
+.team-workspace .tw-action-warning,
+.team-workspace .tw-v2-effect-list .tw-condition-toggle strong,
+.team-workspace .tw-v2-effect-list .tw-effect-condition>label {
+  font-size: var(--font-size-small);
+}
+
+.team-workspace .tw-settings-intro p,
+.team-workspace .tw-advanced-modifiers-body p,
+.team-workspace .tw-passive>strong,
+.team-workspace .tw-description-copy,
+.team-workspace .tw-trace {
+  font-size: var(--font-size-body);
+}

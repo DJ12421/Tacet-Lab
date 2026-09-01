@@ -576,33 +576,6 @@
 }
 
 @media (max-width: 650px) {
-  .catalog-picker-backdrop {
-    padding: 2vh 10px;
-  }
-  .catalog-picker {
-    max-height: 96vh;
-    padding: 13px;
-  }
-  .catalog-picker-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-  .catalog-choice {
-    grid-template-columns: 68px minmax(0,1fr);
-    min-height: 82px;
-  }
-  .catalog-choice img {
-    width: 68px;
-  }
-  .owned-add {
-    align-items: stretch;
-    flex-direction: column;
-  }
-  .echo-state-review {
-    grid-template-columns: 1fr 1fr;
-  }
-  .echo-state-review>span {
-    grid-column: 1/-1;
-  }
   .character-detail-backdrop {
     padding: 0;
   }

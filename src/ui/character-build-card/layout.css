@@ -1,0 +1,594 @@
+.cbc-footer {
+  grid-column: 1/-1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3px;
+  border-top: 1px solid var(--cbc-edge-soft);
+  color: #6f7c79;
+  font-size: 10px;
+  letter-spacing: .15em;
+}
+
+.cbc-footer>span {
+  color: color-mix(in srgb,var(--cbc-accent) 82%,#dce8e5);
+  font-weight: 900;
+}
+
+.cbc-footer small {
+  font-size: 9px;
+}
+
+.cbc-tooltip {
+  position: absolute;
+  z-index: 150;
+  left: 50%;
+  bottom: calc(100% + 9px);
+  width: 300px;
+  max-height: 230px;
+  display: none;
+  overflow: auto;
+  padding: 11px 12px;
+  border: 1px solid color-mix(in srgb,var(--cbc-accent) 36%,rgba(255,255,255,.2));
+  border-radius: 10px;
+  background: linear-gradient(145deg,rgba(27,44,52,.96),rgba(3,9,14,.98));
+  box-shadow: inset 0 1px rgba(255,255,255,.09),0 18px 50px rgba(0,0,0,.78);
+  backdrop-filter: blur(20px) saturate(1.25);
+  -webkit-backdrop-filter: blur(20px) saturate(1.25);
+  color: #b8c4c1;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: left;
+  white-space: pre-wrap;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.cbc-tooltip>strong {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--cbc-accent);
+  font-size: 12px;
+}
+
+.cbc-tooltip>span {
+  display: block;
+}
+
+.cbc-tooltip>span>span {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.cbc-stat-row>.cbc-tooltip {
+  left: auto;
+  right: 0;
+  bottom: calc(100% - 3px);
+  transform: none;
+}
+
+.cbc-weapon>.cbc-tooltip {
+  left: 18px;
+  bottom: calc(100% + 7px);
+  width: 440px;
+  transform: none;
+}
+
+.cbc-sequences>button>.cbc-tooltip {
+  top: calc(100% + 6px);
+}
+
+.cbc-roll-breakdown>.cbc-tooltip {
+  bottom: calc(100% + 5px);
+  width: 245px;
+}
+
+.cbc-sonatas button>.cbc-tooltip {
+  left: auto;
+  right: 0;
+  bottom: calc(100% + 7px);
+  width: 410px;
+  transform: none;
+}
+
+:where(.cbc-stat-row,.cbc-weapon,.cbc-sequences>button,.cbc-roll-breakdown,.cbc-sonatas button):hover>.cbc-tooltip,:where(.cbc-stat-row,.cbc-weapon,.cbc-sequences>button,.cbc-roll-breakdown,.cbc-sonatas button):focus-visible>.cbc-tooltip {
+  display: block;
+}
+
+.cbc-rich-title,.cbc-rich-highlight {
+  color: #f3d16e;
+}
+
+.cbc-rich-fire,.cbc-rich-fusion {
+  color: #ff7e69;
+}
+
+.cbc-rich-havoc,.cbc-rich-dark {
+  color: #e683ef;
+}
+
+.cbc-rich-wind,.cbc-rich-aero {
+  color: #71dfb8;
+}
+
+.cbc-rich-ice,.cbc-rich-glacio {
+  color: #82d9ff;
+}
+
+.cbc-rich-thunder,.cbc-rich-electro {
+  color: #c194ff;
+}
+
+.cbc-rich-spectro,.cbc-rich-light {
+  color: #f0d272;
+}
+
+.cbc-card-layout {
+  width: 100%;
+  min-width: 0;
+}
+
+.cbc-debug-controls {
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 12px;
+}
+
+.cbc-debug-layout-actions {
+  display: grid!important;
+  grid-template-columns: 1fr 1fr!important;
+  gap: 8px!important;
+  padding: 0 8px 8px!important;
+}
+
+.cbc-debug-layout-actions button {
+  justify-content: center;
+}
+
+.cbc-debug-layout-actions .is-primary {
+  border-color: color-mix(in srgb,var(--cbc-accent) 55%,white);
+  background: color-mix(in srgb,var(--cbc-accent) 18%,rgba(255,255,255,.05));
+  color: color-mix(in srgb,var(--cbc-accent) 72%,white);
+}
+
+.cbc-debug-layout-transfer {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  padding:0 8px 10px;
+}
+
+.cbc-debug-layout-transfer button {
+  min-height:34px;
+  justify-content:center;
+  gap:7px;
+}
+
+.cbc-debug-layout-transfer button svg {
+  width:15px;
+  height:15px;
+}
+
+.cbc-debug-layout-transfer input {
+  display:none;
+}
+
+.cbc-layout-transfer-status {
+  margin:0 8px 12px;
+  color:rgba(232,241,241,.78);
+  font-size:11px;
+  line-height:1.4;
+}
+
+.cbc-layout-calibration-box[data-layout-section="art"],.cbc-layout-calibration-box[data-layout-section="art"].is-selected {
+  z-index: 0;
+}
+
+.cbc-layout-calibration-box:not([data-layout-section="art"]) {
+  z-index: 1;
+}
+
+.cbc-layout-calibration-box:not([data-layout-section="art"]).is-selected {
+  z-index: 5;
+}
+
+.cbc-build-score {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 18px;
+}
+
+.cbc-build-score>span {
+  color: color-mix(in srgb,var(--cbc-accent) 84%,#eef8f7);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+}
+
+.cbc-build-score>div {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.cbc-build-score strong {
+  color: var(--cbc-accent);
+  font-size: 30px;
+  line-height: 1;
+  text-shadow: 0 0 16px color-mix(in srgb,var(--cbc-accent) 30%,transparent);
+}
+
+.cbc-build-score b {
+  font-size: 17px;
+}
+
+.cbc-skill-bonuses {
+  height: 160px;
+}
+
+.cbc-skill-bonus-nodes {
+  box-sizing: border-box;
+  height: 158px;
+  gap: 10px;
+  padding-bottom: 18px;
+}
+
+.cbc-skill-bonus-nodes button {
+  width: 60px;
+  height: 60px;
+}
+
+.cbc-skill-bonus-nodes button>span:first-child {
+  width: 42px;
+  height: 42px;
+  border-radius: 0px;
+}
+
+.cbc-skill-bonus-nodes img {
+  width: 32px;
+  height: 32px;
+}
+
+.cbc-skill-bonuses::after {
+  bottom: 14px;
+  height: 52px;
+}
+
+.cbc-skills:hover .cbc-skill-bonuses::after,.cbc-skills:focus-within .cbc-skill-bonuses::after {
+  top: 8px;
+  bottom: 14px;
+  height: auto;
+}
+
+.cbc-sonatas {
+  padding: 10px 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.cbc-sonatas>div {
+  margin-top: 0;
+}
+
+.cbc-echo-layout-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin: 0 8px 8px;
+  padding: 8px;
+  border: 1px solid color-mix(in srgb,var(--cbc-accent) 28%,rgba(255,255,255,.12));
+  border-radius: 7px;
+  background: color-mix(in srgb,var(--cbc-accent) 4%,transparent);
+}
+
+.cbc-echo-layout-options legend {
+  padding: 0 5px;
+  color: color-mix(in srgb,var(--cbc-accent) 72%,white);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.cbc-echo-layout-options button {
+  justify-content: center;
+}
+
+.cbc-echo-layout-options button.is-active {
+  border-color: color-mix(in srgb,var(--cbc-accent) 66%,white);
+  background: color-mix(in srgb,var(--cbc-accent) 18%,transparent);
+  color: #fff;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb,var(--cbc-accent) 18%,transparent);
+}
+
+.cbc-build-score>div {
+  align-items: center;
+}
+
+.cbc-build-score-info {
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb,var(--cbc-accent) 42%,rgba(255,255,255,.18));
+  border-radius: 50%;
+  background: rgba(3,10,16,.55);
+  color: var(--cbc-accent);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.cbc-build-score-info:hover,.cbc-build-score-info:focus-visible {
+  border-color: var(--cbc-accent);
+  background: color-mix(in srgb,var(--cbc-accent) 14%,rgba(3,10,16,.7));
+}
+
+.cbc-skill-bonuses {
+  height: 220px;
+}
+
+.cbc-skill-bonus-nodes {
+  height: 218px;
+  justify-content: space-between;
+  padding: 8px 0 40px;
+}
+
+.cbc-skill-bonus-nodes button {
+  position: relative;
+  bottom: auto;
+  flex: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(24px) scale(.72);
+  pointer-events: none;
+  will-change: opacity,transform;
+  transition: opacity .18s ease,transform .28s cubic-bezier(.22,1,.36,1),visibility 0s linear .28s;
+}
+
+.cbc-skills:hover .cbc-skill-bonus-nodes button,.cbc-skills:focus-within .cbc-skill-bonus-nodes button {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+.cbc-skill-bonus-nodes button>span:first-child {
+  background: #07121a;
+  box-shadow: 0 0 0 7px rgba(3,10,16,.92),inset 0 1px rgba(255,255,255,.08),0 6px 14px rgba(0,0,0,.35);
+}
+
+.cbc-sequences>button:hover,.cbc-sequences>button:focus-visible,.cbc-sequences>button:focus-within {
+  z-index: 10;
+}
+
+.cbc-sequences>button>.cbc-tooltip {
+  position: absolute;
+  z-index: 20;
+  left: calc(100% + 24px);
+  top: 8px;
+  bottom: auto;
+  box-sizing: border-box;
+  width: 500px;
+  height: auto;
+  max-height: none;
+  overflow: visible;
+  padding: 20px 22px;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  transform: none;
+}
+
+.cbc-sequences>button>.cbc-tooltip>strong {
+  margin-bottom: 12px;
+  font-size: 18px;
+}
+
+.cbc-sequences>button>.cbc-tooltip>span>span {
+  display: inline;
+  margin: 0;
+}
+
+.cbc-skill-column {
+  justify-content: flex-end;
+}
+
+.cbc-main-skill {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  flex: none;
+  transform: translateX(-50%);
+}
+
+.cbc-skill-bonuses {
+  position: absolute;
+  right: 0;
+  bottom: 138px;
+  left: 0;
+  flex: none;
+}
+
+.cbc-skill-bonuses::after {
+  display: none;
+}
+
+.cbc-skill-bonus-nodes button {
+  z-index: 1;
+}
+
+.cbc-skill-bonus-nodes button::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  top: 60px;
+  width: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(var(--cbc-accent),color-mix(in srgb,var(--cbc-accent) 52%,transparent));
+  box-shadow: 0 0 6px color-mix(in srgb,var(--cbc-accent) 28%,transparent);
+  pointer-events: none;
+}
+
+.cbc-skill-bonus-nodes button>span:first-child,.cbc-main-skill>span:first-child,.cbc-extra-skills button>span:first-child {
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(145deg,rgba(226,244,247,.13),rgba(4,13,20,.72));
+  box-shadow: inset 0 1px rgba(255,255,255,.15),inset 0 -1px rgba(255,255,255,.04),0 10px 24px rgba(0,0,0,.42);
+  backdrop-filter: blur(12px) saturate(1.35);
+  -webkit-backdrop-filter: blur(12px) saturate(1.35);
+}
+
+.cbc-skills:not(:hover):focus-within:not(:has(:focus-visible)) .cbc-skill-bonus-nodes button {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(24px) scale(.72);
+  pointer-events: none;
+  transition: opacity .18s ease,transform .28s cubic-bezier(.22,1,.36,1),visibility 0s linear .28s;
+}
+
+.cbc-debug-controls {
+  position: relative;
+  top: auto;
+  right: auto;
+  width: 190px;
+  max-height: none;
+  margin: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.cbc-debug-controls>summary {
+  box-sizing: border-box;
+  height: 39px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  border: 1px solid color-mix(in srgb,var(--cbc-accent) 48%,transparent);
+  border-radius: 7px;
+  background: linear-gradient(135deg,color-mix(in srgb,var(--cbc-accent) 16%,transparent),color-mix(in srgb,var(--cbc-accent) 4%,transparent) 52%),#0a1113;
+  color: #edf3f1;
+  font-size: var(--font-size-small);
+  letter-spacing: 0;
+  text-transform: none;
+  list-style: none;
+  cursor: pointer;
+}
+
+.cbc-debug-controls>summary::-webkit-details-marker {
+  display: none;
+}
+
+.cbc-debug-controls>summary::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid var(--cbc-accent);
+  border-bottom: 2px solid var(--cbc-accent);
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform .16s ease;
+}
+
+.cbc-debug-controls[open]>summary::after {
+  transform: translateY(2px) rotate(225deg);
+}
+
+.cbc-debug-menu {
+  position: absolute;
+  z-index: 600;
+  top: calc(100% + 7px);
+  right: 0;
+  box-sizing: border-box;
+  width: 330px;
+  max-height: calc(100vh - 100px);
+  display: block!important;
+  overflow: auto;
+  padding: 8px!important;
+  border: 1px solid color-mix(in srgb,var(--cbc-accent) 36%,rgba(255,255,255,.18));
+  border-radius: 9px;
+  background: rgba(3,9,15,.97);
+  box-shadow: 0 18px 45px rgba(0,0,0,.62);
+  backdrop-filter: blur(16px);
+}
+
+.cbc-debug-section-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.cbc-debug-menu>footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.25fr;
+  gap: 4px;
+}
+
+.cbc-debug-menu>footer button {
+  justify-content: center;
+  padding: 0 4px;
+  font-size: 10px;
+}
+
+.cs-export-frame.cbc-card.is-exporting {
+  position: relative;
+  width: 1920px;
+  height: 1080px;
+  max-width: none;
+  padding: 14px 18px;
+  overflow: hidden;
+  transform: none!important;
+}
+
+.cbc-card.is-exporting .cbc-debug-section {
+  outline: 0!important;
+}
+
+.cbc-card.is-exporting .cbc-layout-calibration-layer,.cbc-card.is-exporting .cbc-edit-popover,.cbc-card.is-exporting .cbc-tooltip,.cbc-card.is-exporting .cbc-stat-actions,.cbc-card.is-exporting .cbc-build-score-info {
+  display: none!important;
+}
+
+.cbc-card.is-exporting .calculated-value {
+  border-bottom: 0;
+  pointer-events: none;
+}
+
+.cbc-card.is-exporting .calculated-value::after {
+  display: none;
+}
+
+.cbc-card.is-exporting .cs-live-portrait {
+  display: none!important;
+}
+
+.cbc-card.is-exporting .cbc-character-art,.cbc-card.is-exporting .cbc-character-art.is-live-hidden {
+  opacity: 1!important;
+}
+
+.cbc-card.is-exporting.has-live-portrait-snapshot .cbc-character-art {
+  opacity: 0!important;
+}
+
+.cbc-card.is-exporting.has-live-portrait-snapshot .cbc-live-portrait-snapshot {
+  display: block;
+  opacity: 1!important;
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .cbc-character-art,.cbc-art-stage .cs-live-portrait,.cbc-echo-row,.cbc-skill-bonus-nodes button {
+    transition: none;
+  }
+}

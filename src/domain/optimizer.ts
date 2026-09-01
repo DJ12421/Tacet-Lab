@@ -96,7 +96,7 @@ function aggregateCompiledStats(
   request: OptimizerRequest,
   echoes: Echo[],
   data: CompiledOptimizerData,
-  includeLegacySonatas = !request.calculationV2,
+  includeLegacySonatas = true,
   accumulated?: EchoStatVector
 ) {
   const stats = emptyStats()
@@ -294,7 +294,7 @@ function sonataBranchCanQualify(selected: Echo[], candidates: Echo[], start: num
 
 function mainCandidates(echoes: Echo[], request: OptimizerRequest) {
   const profile = request.profile
-  const currentMainId = request.currentMainEchoId ?? request.calculationV2?.build.echoIds[0]
+  const currentMainId = request.currentMainEchoId
   const policy = profile?.mainEchoPolicy ?? 'any'
   const selectedId = policy === 'current' ? currentMainId : policy === 'selected' ? profile?.selectedMainEchoId : undefined
   const candidates = selectedId ? echoes.filter((echo) => echo.id === selectedId) : echoes
@@ -473,13 +473,6 @@ function scoreEnvelope(
   evaluateDamage?: DamageEvaluator,
   branch?: { selected: Echo[]; candidates: Echo[]; start: number; amount: number }
 ): FormulaRange {
-  if (request.calculationV2) {
-    if (request.objective !== 'expected' && request.objective !== 'normal' && request.objective !== 'critical') {
-      return { min: envelope.min[request.objective], max: envelope.max[request.objective], monotonic: true }
-    }
-    const damage = branch && evaluateDamage?.upperBound?.(branch.selected, branch.candidates, branch.start, branch.amount, envelope.max)
-    return { min: Number.NEGATIVE_INFINITY, max: damage?.[request.objective] ?? Number.POSITIVE_INFINITY, monotonic: false }
-  }
   if (request.formula) {
     const statRanges = Object.fromEntries(Object.keys(envelope.min).map((key) => [key, {
       min: envelope.min[key as keyof typeof envelope.min],
@@ -552,7 +545,7 @@ export function createOptimizerWorkPlan(request: OptimizerRequest, maximumWorkCo
   const unpartitioned = { ...request, partition: undefined }
   let usable = eligibleEchoes(unpartitioned)
   const data = compileOptimizerData(unpartitioned, usable)
-  const protectedIds = new Set([request.currentMainEchoId, request.calculationV2?.build.echoIds[0], request.profile?.selectedMainEchoId].filter((id): id is string => Boolean(id)))
+  const protectedIds = new Set([request.currentMainEchoId, request.profile?.selectedMainEchoId].filter((id): id is string => Boolean(id)))
   usable = pruneDominatedEchoes(usable, unpartitioned, protectedIds, data)
   const created = createTasks(unpartitioned, usable, data)
   const work: SearchTask[] = []
@@ -614,7 +607,7 @@ function runOptimizerTasks(
     const ordered = [main, ...secondary]
     if (!request.profile?.allowPartial && ordered.length !== 5) { reject(); return }
     if (ordered.reduce((sum, echo) => sum + echo.cost, 0) > 12 || !matchesSonataRules(ordered, request)) { reject(); return }
-    const stats = aggregateCompiledStats(request, ordered, data, !request.calculationV2, accumulated)
+    const stats = aggregateCompiledStats(request, ordered, data, true, accumulated)
     if (!meetsMinimums(stats, request.minimumStats) || !meetsMaximums(stats, request.maximumStats)) { reject(); return }
     const damage = evaluateDamage?.(ordered, stats) ?? calculateDamage(stats, request.attack, request.enemy)
     const partial = { requestId: request.requestId, echoIds: ordered.map((echo) => echo.id), mainEchoId: main.id, stats, damage }

@@ -1,0 +1,240 @@
+.cs-echo-section {
+  grid-area: echoes;
+  min-width: 0;
+  padding: 13px 0 0;
+}
+
+.cs-echo-section>header {
+  padding: 0 7px 10px;
+}
+
+.cs-substat-preferences {
+  display: grid;
+  grid-template-columns: auto minmax(0,1fr);
+  align-items: center;
+  gap: 6px 12px;
+  margin: 0 7px 9px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.025);
+}
+
+.cs-substat-preferences>span {
+  color: #aab6b3;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.cs-substat-preferences>div:not(.cs-substat-actions) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.cs-substat-preferences b {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 6px;
+  border: 1px solid rgba(255,255,255,.1);
+  color: #c5cfcc;
+  font-weight: 500;
+}
+
+.cs-substat-preferences b.weight-4 {
+  border-color: rgba(228,187,94,.48);
+  color: var(--gold);
+}
+
+.cs-substat-preferences b.weight-3 {
+  border-color: rgba(141,228,212,.38);
+  color: var(--mint);
+}
+
+.cs-substat-preferences b.weight-2 {
+  color: #aab7d6;
+}
+
+.cs-substat-preferences b.weight-1 {
+  color: #798582;
+}
+
+.cs-substat-preferences i {
+  display: grid;
+  place-items: center;
+  min-width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.08);
+  font-style: normal;
+}
+
+.cs-substat-preferences em {
+  color: #d89a69;
+  font-size: var(--font-size-caption);
+  font-style: normal;
+}
+
+.cs-substat-preferences>small {
+  color: #74817e;
+}
+
+.cs-echo-row {
+  display: grid;
+  grid-template-columns: repeat(5,minmax(0,1fr));
+  gap: 7px;
+}
+
+.cs-echo-card {
+  --cs-accent: #67d8c6;
+  position: relative;
+  min-width: 0;
+  min-height: 295px;
+  overflow: hidden;
+  padding: 10px 10px 30px;
+  border: 1px solid color-mix(in srgb,var(--cs-accent) 42%,rgba(255,255,255,.08));
+  border-radius: 5px;
+  background: linear-gradient(150deg,color-mix(in srgb,var(--cs-accent) 9%,#0b1214),#050809 70%);
+  color: #edf3f1;
+}
+
+.cs-echo-card>header {
+  display: grid;
+  grid-template-columns: 62px minmax(0,1fr);
+  gap: 8px;
+  align-items: center;
+  min-height: 65px;
+}
+
+.cs-echo-card>header>div:last-child {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.cs-echo-card>header strong,.cs-echo-card>header span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.cs-echo-card>header strong {
+  font-size: var(--font-size-caption);
+}
+
+.cs-echo-card>header span {
+  color: #aab7b4;
+  font-size: var(--font-size-caption);
+}
+
+.cs-echo-card>header small {
+  font-size: var(--font-size-caption);
+}
+
+.cs-echo-art {
+  position: relative;
+  width: 62px;
+  height: 62px;
+  border: 1px solid color-mix(in srgb,var(--cs-accent) 35%,transparent);
+  border-radius: 4px;
+  background: radial-gradient(circle,color-mix(in srgb,var(--cs-accent) 16%,transparent),transparent 68%);
+}
+
+.cs-echo-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.cs-echo-art>b {
+  position: absolute;
+  right: 1px;
+  bottom: 1px;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #040809;
+  color: var(--cs-accent);
+}
+
+.cs-echo-primary,.cs-echo-secondary,.cs-echo-substats>div {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.cs-echo-primary {
+  align-items: end;
+  margin-top: 8px;
+  padding: 7px 1px;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+}
+
+.cs-echo-primary span {
+  color: #b5c0bd;
+  font-size: var(--font-size-caption);
+}
+
+.cs-echo-primary b {
+  color: var(--cs-accent);
+  font-size: var(--font-size-body);
+}
+
+.cs-echo-secondary {
+  padding: 6px 1px;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  font-size: var(--font-size-caption);
+}
+
+.cs-echo-secondary span,.cs-echo-substats span {
+  color: #929f9c;
+}
+
+.cs-echo-substats {
+  display: grid;
+}
+
+.cs-echo-substats>div {
+  padding: 4px 1px;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  font-size: var(--font-size-caption);
+}
+
+.cs-echo-substats span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.cs-echo-empty {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 5px;
+  color: #8d9996;
+  text-align: center;
+}
+
+.cs-empty-mark {
+  font-size: var(--font-size-heading-large);
+  color: var(--cs-accent);
+}
+
+.cs-picker-backdrop {
+  z-index: 100;
+}
+
+.cs-picker {
+  color: #edf3f1;
+}
+
+.cs-picker>header>div:last-child {
+  display: flex;
+  gap: 6px;
+}
+
+.cs-echo-picker .echo-picker-list {
+  padding: 12px;
+}

@@ -1,0 +1,382 @@
+/* Roll-grade explainer and grade language. */
+
+.roll-quality-help {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 7px;
+  padding: 3px 0;
+  border: 0;
+  background: transparent;
+  color: #d7c68e;
+  font-size: var(--font-size-small);
+  font-weight: 700;
+  letter-spacing: .02em;
+  cursor: pointer;
+}
+
+.roll-quality-help span {
+  color: var(--gold);
+  font-size: var(--font-size-body);
+}
+
+.roll-quality-help:hover {
+  color: #fff1bd;
+}
+
+.echo-card footer>span {
+  flex: none;
+  font-size: var(--font-size-caption);
+  font-weight: 700;
+  letter-spacing: .09em;
+  white-space: nowrap;
+}
+
+.echo-card footer>.echo-score-action {
+  margin-left: auto;
+}
+
+.echo-score {
+  flex: none;
+  font-size: var(--font-size-heading-small);
+  white-space: nowrap;
+}
+
+.grade-e {
+  color: #fff!important;
+}
+
+.grade-d {
+  color: #69cf7c!important;
+}
+
+.grade-c {
+  color: #65b9ff!important;
+}
+
+.grade-b,.grade-a {
+  color: #c374ff!important;
+}
+
+.grade-s,.grade-ss {
+  color: #ffbf25!important;
+}
+
+.grade-sss {
+  color: #ff554f!important;
+  text-shadow: 0 0 12px rgba(255,64,55,.42);
+}
+
+.echo-card.has-grade-wave::before {
+  display: none;
+}
+
+.echo-wave-grade-e {
+  --wave-accent: #f1f4f3;
+}
+
+.echo-wave-grade-d {
+  --wave-accent: #69cf7c;
+}
+
+.echo-wave-grade-c {
+  --wave-accent: #65b9ff;
+}
+
+.echo-wave-grade-b,.echo-wave-grade-a {
+  --wave-accent: #c374ff;
+}
+
+.echo-wave-grade-s,.echo-wave-grade-ss {
+  --wave-accent: #ffbf25;
+}
+
+.echo-wave-grade-sss {
+  --wave-accent: #ff554f;
+}
+
+.echo-card.has-grade-wave>.cs-echo-waveform {
+  position: relative;
+  z-index: 2;
+  left: calc(0px - var(--echo-card-gutter));
+  right: auto;
+  bottom: auto;
+  width: calc(100% + var(--echo-card-gutter) + var(--echo-card-gutter));
+  max-width: none;
+  height: 24px;
+  flex: 0 0 24px;
+  margin-top: -5px;
+  margin-bottom: -3px;
+  overflow: hidden;
+}
+
+.echo-card.has-grade-wave footer {
+  position: relative;
+  z-index: 3;
+  margin-top: 0;
+  padding-top: 2px;
+  border-top: 0;
+  background: #050708;
+  box-shadow: none;
+  white-space: nowrap;
+}
+
+.echo-card.has-grade-wave .echo-equipment {
+  position: relative;
+  z-index: 3;
+}
+
+.equipped-row .echo-card,.result-echoes .echo-card {
+  --echo-card-gutter: 8px;
+}
+
+.optimizer-echo-strip .echo-card,.detail-echo-grid .echo-card {
+  --echo-card-gutter: 7px;
+}
+
+.echo-editor-previews .echo-card {
+  --echo-card-gutter: 10px;
+}
+
+.roll-quality-backdrop {
+  z-index: 170;
+  padding: clamp(10px,3vw,32px);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+}
+
+.roll-quality-modal {
+  width: min(720px,94vw);
+  height: auto;
+  min-height: 0;
+  max-height: min(860px,calc(100dvh - clamp(20px,6vw,64px)));
+  display: grid;
+  grid-template-rows: auto minmax(0,1fr);
+  overflow: hidden;
+  padding: 0;
+  border-color: rgba(228,187,94,.55);
+  border-radius: 12px;
+  box-shadow: 0 32px 100px #000;
+}
+
+.roll-quality-modal>header {
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  border-bottom: 1px solid rgba(228,187,94,.25);
+  background: linear-gradient(90deg,rgba(228,187,94,.13),rgba(10,15,16,.96));
+}
+
+.roll-quality-modal>header .close {
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  flex: none;
+  font-size: var(--font-size-display);
+  line-height: 1;
+}
+
+.roll-quality-modal h2 {
+  margin: 4px 0 0;
+}
+
+.roll-quality-scroll {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.roll-quality-scroll>p {
+  margin: 0;
+  padding: 18px 20px;
+  color: #c4cecb;
+  font-size: var(--font-size-small);
+  line-height: 1.55;
+}
+
+.roll-quality-scroll>section {
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+
+.roll-quality-modal h3 {
+  margin: 0 0 7px;
+  color: #f3e3ad;
+  font-size: var(--font-size-body);
+}
+
+.roll-quality-modal section p {
+  margin: 5px 0 12px;
+  color: #99a5a2;
+  font-size: var(--font-size-caption);
+  line-height: 1.5;
+}
+
+.roll-tier-legend {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 6px;
+  margin: 12px 0;
+}
+
+.roll-tier-legend span {
+  padding: 9px 7px;
+  border: 1px solid currentColor;
+  background: rgba(255,255,255,.02);
+  font-size: var(--font-size-caption);
+  font-weight: 800;
+  text-align: center;
+}
+
+.tier-low {
+  color: #9aa5a8;
+}
+
+.tier-mid {
+  color: #69cf7c;
+}
+
+.tier-high {
+  color: #c374ff;
+}
+
+.tier-perfect {
+  color: #ffb000;
+}
+
+.quality-formula {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+  margin: 13px 0;
+  padding: 11px;
+  border: 1px solid rgba(141,228,212,.22);
+  background: rgba(141,228,212,.045);
+  font-size: var(--font-size-caption);
+  text-align: center;
+}
+
+.quality-formula span {
+  color: var(--gold);
+  font-size: var(--font-size-small);
+}
+
+.grade-legend {
+  display: grid;
+  grid-template-columns: repeat(8,1fr);
+  gap: 5px;
+}
+
+.grade-legend>span {
+  min-height: 57px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 4px;
+  border: 1px solid currentColor;
+  background: rgba(255,255,255,.025);
+  font-size: var(--font-size-body-large);
+  font-weight: 900;
+}
+
+.grade-legend small {
+  font-weight: 500;
+  color: #899491;
+  white-space: nowrap;
+}
+
+@media (max-width:650px) {
+  .roll-quality-modal>header .close {
+    width: 56px;
+    height: 56px;
+  }
+
+  .grade-legend {
+    grid-template-columns: repeat(4,1fr);
+  }
+  .quality-formula {
+    grid-template-columns: 1fr;
+  }
+  .quality-formula span {
+    font-size: var(--font-size-caption);
+  }
+  .roll-tier-legend {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Larger Roll Grade explainer typography. */
+
+.roll-quality-modal h2 {
+  font-size: var(--font-size-heading);
+}
+
+.roll-quality-scroll>p {
+  font-size: var(--font-size-body);
+  line-height: 1.65;
+}
+
+.roll-quality-modal h3 {
+  font-size: var(--font-size-body-large);
+}
+
+.roll-quality-modal section p {
+  font-size: var(--font-size-body);
+  line-height: 1.6;
+}
+
+.roll-tier-legend span {
+  font-size: var(--font-size-small);
+}
+
+.quality-formula {
+  font-size: var(--font-size-small);
+}
+
+.quality-formula span {
+  font-size: var(--font-size-body-large);
+}
+
+.grade-legend>span {
+  font-size: var(--font-size-heading-small);
+}
+
+.grade-legend small {
+  font-size: var(--font-size-caption);
+}
+
+/* Weapon level is an independent full-width control on mobile. */
+
+.weapon-level-control {
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+}
+
+.weapon-level-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: var(--font-size-caption);
+}
+
+.weapon-level-heading strong {
+  color: var(--weapon-accent);
+  font-size: var(--font-size-caption);
+}
+
+.weapon-level-control input[type=range] {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}

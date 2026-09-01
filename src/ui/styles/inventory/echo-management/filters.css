@@ -1,0 +1,226 @@
+/* Multi-value Echo inventory filters. */
+
+.multi-filter {
+  position: relative;
+  min-width: 0;
+}
+
+.multi-select {
+  position: relative;
+}
+
+.multi-select-trigger {
+  width: 100%;
+  min-height: 38px;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid rgba(255,255,255,.1);
+  background: #090c0d;
+  color: #e8efec;
+  text-align: left;
+  cursor: pointer;
+}
+
+.multi-select-values {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  gap: 5px;
+  overflow: hidden;
+}
+
+.multi-select-values>em {
+  padding: 6px 1px;
+  color: #e8efec;
+  font-style: normal;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.multi-select-trigger>strong {
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  flex: none;
+  transform: translateY(3px);
+  color: var(--mint);
+  font-size: 0;
+}
+
+.multi-select-trigger>strong::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform .16s ease;
+}
+
+.multi-select-trigger[aria-expanded="true"]>strong::before {
+  transform: translateY(2px) rotate(225deg);
+}
+
+.multi-select-chip {
+  min-width: 0;
+  max-width: 150px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 6px;
+  border-radius: 15px;
+  background: #273143;
+  color: #f2f5f4;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.multi-select-chip img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.multi-select-chip b {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.multi-select-chip i {
+  font-style: normal;
+  color: #9ba7b5;
+  font-size: var(--font-size-caption);
+  cursor: pointer;
+}
+
+.multi-select-menu {
+  position: absolute;
+  z-index: 35;
+  left: 0;
+  right: 0;
+  top: calc(100% + 4px);
+  min-width: 230px;
+  max-height: 330px;
+  display: grid;
+  grid-template-rows: minmax(0,1fr) auto;
+  border: 1px solid var(--gold-soft);
+  background: #080b0c;
+  box-shadow: 0 18px 45px #000;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.multi-select-options {
+  overflow: auto;
+  padding: 5px;
+}
+
+.multi-select-options button {
+  width: 100%;
+  min-height: 36px;
+  padding: 4px 7px;
+  display: grid;
+  grid-template-columns: 26px minmax(0,1fr) 18px;
+  align-items: center;
+  gap: 7px;
+  border: 0;
+  background: transparent;
+  color: #aeb8b5;
+  text-align: left;
+  cursor: pointer;
+}
+
+.multi-select-options button:hover,.multi-select-options button.active {
+  background: rgba(141,228,212,.12);
+  color: #fff;
+}
+
+.multi-select-options img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.multi-select-options button:not(:has(img)) {
+  grid-template-columns: minmax(0,1fr) 18px;
+}
+
+.multi-select-options i {
+  color: var(--mint);
+  font-style: normal;
+}
+
+.multi-select-menu footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 7px;
+  padding: 7px;
+  border-top: 1px solid var(--line);
+}
+
+.multi-select-menu footer button {
+  min-height: 31px;
+  padding: 0 10px;
+}
+
+.multi-select-summary {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.multi-select-summary img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.multi-select-summary b {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--gold);
+  font-size: var(--font-size-caption);
+}
+
+.multi-select-summary i {
+  flex: none;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: rgba(228,187,94,.16);
+  color: #f2d688;
+  font-size: var(--font-size-caption);
+  font-style: normal;
+}
+
+/* Substat value colors use the same 1-8 roll points as Echo scoring. */
+
+.substats b.roll-tier-0,.substats b.roll-tier-1,.substats b.roll-tier-2 {
+  color: #f1f4f3;
+}
+
+.substats b.roll-tier-3 {
+  color: #69cf7c;
+}
+
+.substats b.roll-tier-4 {
+  color: #65b9ff;
+}
+
+.substats b.roll-tier-5,.substats b.roll-tier-6 {
+  color: #c374ff;
+}
+
+.substats b.roll-tier-7,.substats b.roll-tier-8 {
+  color: #ffb000;
+  text-shadow: 0 0 10px rgba(255,176,0,.22);
+}

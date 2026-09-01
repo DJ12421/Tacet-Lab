@@ -1,0 +1,465 @@
+/* Shared damage mode control lives at the right edge of the member navigation. */
+
+.tw-nav-result-modes {
+  margin-left: auto;
+  display: flex;
+  flex: none;
+  gap: 3px;
+  padding-left: 8px;
+  border-left: 1px solid var(--tw-line);
+}
+
+.tw-nav-result-modes button {
+  min-width: 118px;
+  padding: 0 12px;
+  white-space: nowrap;
+}
+
+.tw-nav-result-modes button.active {
+  border-color: var(--gold);
+  background: rgba(228,187,94,.12);
+  color: #f4d684;
+}
+
+.tw-formula-toolbar {
+  grid-template-columns: minmax(260px,1fr) 170px auto;
+}
+
+@media (max-width:760px) {
+  .tw-nav-result-modes {
+    margin-left: auto;
+  }
+  .tw-nav-result-modes button {
+    min-width: 112px;
+  }
+  .tw-formula-toolbar {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Readable Teams typography. */
+
+.team-workspace {
+  font-size: var(--font-size-body-large);
+}
+
+.team-workspace .eyebrow {
+  font-size: var(--font-size-small);
+}
+
+.tw-toolbar label {
+  font-size: var(--font-size-small);
+}
+
+.tw-name-field input {
+  font-size: var(--font-size-body-large);
+}
+
+.tw-primary-tabs>button>span {
+  font-size: var(--font-size-body);
+}
+
+.tw-primary-tabs>button>small {
+  font-size: var(--font-size-small);
+}
+
+.tw-avatar>span,.tw-avatar>b {
+  font-size: var(--font-size-caption);
+}
+
+.tw-subnav button {
+  font-size: var(--font-size-body);
+}
+
+.tw-member-art>div:nth-of-type(2)>span {
+  font-size: var(--font-size-small);
+}
+
+.tw-member-art p {
+  font-size: var(--font-size-body);
+}
+
+.tw-member-art>div:nth-of-type(2)>strong {
+  font-size: var(--font-size-small);
+}
+
+.tw-member-summary article header h2,.tw-passive h2 {
+  font-size: var(--font-size-heading-small);
+}
+
+.tw-stat-block dl>div,.tw-damage-block dl>div {
+  padding: 9px 2px;
+  font-size: var(--font-size-body);
+}
+
+.tw-forte-block b {
+  font-size: var(--font-size-small);
+}
+
+.tw-forte-block small {
+  font-size: var(--font-size-caption);
+}
+
+.tw-weapon-detail>span>strong {
+  font-size: var(--font-size-body-large);
+}
+
+.tw-weapon-detail>span>b {
+  font-size: var(--font-size-body);
+}
+
+.tw-weapon-detail small,.tw-weapon-detail em {
+  font-size: var(--font-size-small);
+}
+
+.tw-chip {
+  font-size: var(--font-size-small);
+}
+
+.tw-buff-summary h3 {
+  font-size: var(--font-size-small);
+}
+
+.tw-passive p {
+  font-size: var(--font-size-body);
+}
+
+.tw-passive>strong {
+  font-size: var(--font-size-small);
+}
+
+.tw-warnings p,.tw-warnings.compact p {
+  font-size: var(--font-size-small);
+}
+
+.tw-member-column h3 {
+  font-size: var(--font-size-heading-small);
+}
+
+.tw-member-column header p {
+  font-size: var(--font-size-small);
+}
+
+.tw-member-weapon small,.tw-member-weapon em {
+  font-size: var(--font-size-caption);
+}
+
+.tw-member-weapon b {
+  font-size: var(--font-size-small);
+}
+
+.tw-mini-facts>div {
+  font-size: var(--font-size-small);
+}
+
+/* Keep the dense settings and calculation surfaces legible at full width. */
+
+.tw-metrics>div span,.tw-metrics>label>span,.tw-metrics small,.tw-coverage-list small,.tw-limitation,.tw-chain span,.tw-slot-selectors>header>small,.tw-slot-selectors label>span {
+  font-size: var(--font-size-caption);
+}
+
+.tw-coverage-list b,.tw-role-list span,.tw-echo-thumbs b,.tw-empty-copy p,.tw-buff-row label>span,.tw-empty-state {
+  font-size: var(--font-size-small);
+}
+
+.tw-coverage header h2,.tw-slot-selectors h2,.tw-buff-workspace h2,.tw-rotation h2,.tw-member-echoes h2 {
+  font-size: var(--font-size-heading-small);
+}
+
+.tw-buff-row input,.tw-buff-row select,.tw-action input,.tw-action select {
+  font-size: var(--font-size-small);
+}
+
+.tw-sheet-column>header,.tw-sheet-column dl>div,.tw-sheet-buff,.tw-sheet-column>button>span,.tw-sheet-side label {
+  font-size: var(--font-size-small);
+}
+
+.tw-sheet-column>header small,.tw-sheet-column>button small,.tw-sheet-side p,.tw-provenance {
+  font-size: var(--font-size-caption);
+}
+
+/* Larger type for the dense Forte and Rotation workspaces. */
+
+.tw-forte-workspace .tw-sequence-column>header,.tw-forte-workspace .tw-skill-card>header {
+  font-size: var(--font-size-body);
+}
+
+.tw-forte-workspace .tw-node-header strong,.tw-forte-workspace .tw-skill-title strong,.tw-forte-workspace .tw-skill-title>span strong {
+  font-size: var(--font-size-body-large);
+}
+
+.tw-forte-workspace .tw-node-header small,.tw-forte-workspace .tw-skill-title small,.tw-forte-workspace .tw-skill-title>span small {
+  font-size: var(--font-size-small);
+}
+
+.tw-forte-workspace .tw-game-description,.tw-forte-workspace .tw-skill-sections .tw-game-description {
+  font-size: var(--font-size-small);
+  line-height: 1.6;
+}
+
+.tw-forte-workspace .tw-game-description-title,.tw-forte-workspace .tw-skill-sections h3 {
+  font-size: var(--font-size-body);
+}
+
+.tw-forte-workspace .tw-skill-card dl>div {
+  min-height: 42px;
+  font-size: var(--font-size-small);
+}
+
+.tw-forte-workspace .tw-skill-card dt small {
+  font-size: var(--font-size-caption);
+}
+
+.tw-forte-workspace .tw-skill-card dl dd>.calculated-value {
+  font-size: var(--font-size-body);
+}
+
+.tw-forte-workspace .tw-skill-card dl dd>small {
+  font-size: var(--font-size-caption);
+}
+
+.tw-forte-workspace .tw-bonus-nodes>header h3 {
+  font-size: var(--font-size-heading-small);
+}
+
+.tw-forte-workspace .tw-bonus-node-header strong {
+  font-size: var(--font-size-small);
+}
+
+.tw-forte-workspace .tw-bonus-nodes article>.tw-game-description {
+  font-size: var(--font-size-small);
+}
+
+.tw-member-page.section-rotation .tw-rotation h2 {
+  font-size: var(--font-size-heading-small);
+}
+
+.tw-member-page.section-rotation .tw-rotation>header p {
+  font-size: var(--font-size-small);
+  line-height: 1.5;
+}
+
+.tw-member-page.section-rotation .tw-rotation-head {
+  font-size: var(--font-size-caption);
+}
+
+.tw-member-page.section-rotation .tw-action input,.tw-member-page.section-rotation .tw-action select {
+  font-size: var(--font-size-small);
+}
+
+.tw-member-page.section-rotation .tw-action>strong {
+  font-size: var(--font-size-small);
+}
+
+.tw-member-page.section-rotation .tw-multiplier {
+  font-size: var(--font-size-small);
+}
+
+.tw-member-page.section-rotation .tw-action-tags em {
+  font-size: var(--font-size-caption);
+}
+
+.tw-member-page.section-rotation .tw-multiplier small,.tw-member-page.section-rotation .tw-buff-state small {
+  font-size: var(--font-size-caption);
+}
+
+.tw-member-page.section-rotation .tw-buff-state {
+  font-size: var(--font-size-caption);
+  line-height: 1.5;
+}
+
+.tw-member-page.section-rotation .tw-action>p {
+  font-size: var(--font-size-caption);
+}
+
+.tw-member-page.section-rotation .tw-rotation>footer span {
+  font-size: var(--font-size-caption);
+}
+
+.tw-member-page.section-rotation .tw-rotation>footer strong {
+  font-size: var(--font-size-body-large);
+}
+
+.tw-member-page.section-rotation .tw-empty-state {
+  font-size: var(--font-size-small);
+}
+
+/* Keep character art high and make the combined loadout a page-wide section. */
+
+.tw-member-art>img {
+  object-position: center top;
+}
+
+.tw-member-column.is-empty {
+  position: relative;
+  cursor: pointer;
+}
+
+.tw-member-column>header.tw-member-open,.tw-empty-member-picker {
+  display: grid;
+  grid-template-columns: 64px minmax(0,1fr);
+  align-items: center;
+  gap: 9px;
+  padding: 9px;
+  border-bottom: 1px solid var(--tw-line);
+  background: linear-gradient(90deg,rgba(228,187,94,.09),transparent);
+}
+
+.tw-member-open {
+  cursor: pointer;
+  transition: background .15s,border-color .15s;
+}
+
+.tw-member-open:hover,.tw-member-open:focus-visible,.tw-empty-member-picker:hover {
+  border-bottom-color: var(--tw-mint-line);
+  background: linear-gradient(90deg,rgba(141,228,212,.13),rgba(228,187,94,.04));
+}
+
+.tw-member-open:focus-visible {
+  outline: 2px solid var(--mint);
+  outline-offset: -2px;
+}
+
+.tw-empty-member-picker>div:nth-child(2) {
+  min-width: 0;
+}
+
+.tw-empty-member-picker p {
+  overflow: hidden;
+  margin: 0;
+  color: #7f8c89;
+  font-size: var(--font-size-caption);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.tw-empty-member-picker select {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.tw-empty-member-picker select:disabled {
+  cursor: not-allowed;
+}
+
+.tw-loadout-block {
+  width: 100%;
+  padding: 13px;
+}
+
+.tw-loadout-block>header h2 {
+  margin: 3px 0 0;
+  font-size: var(--font-size-heading-small);
+}
+
+.tw-loadout-weapon-row {
+  display: grid;
+  grid-template-columns: minmax(260px,.8fr) minmax(0,1.7fr);
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.tw-loadout-block .tw-weapon-detail {
+  margin: 0;
+  padding: 10px;
+  border: 1px solid rgba(255,255,255,.07);
+  background: #080d0e;
+}
+
+.tw-weapon-passive {
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(228,187,94,.18);
+  background: rgba(228,187,94,.035);
+}
+
+.tw-weapon-passive h3 {
+  margin: 3px 0 0;
+  font-size: var(--font-size-body);
+}
+
+.tw-weapon-passive p {
+  margin: 8px 0;
+  color: #b3bfbc;
+  font-size: var(--font-size-caption);
+  line-height: 1.55;
+}
+
+.tw-weapon-passive>strong {
+  display: block;
+  color: #d8a276;
+  font-size: var(--font-size-caption);
+}
+
+.tw-weapon-passive .tw-card-conditions {
+  margin: 9px 0;
+}
+
+.tw-loadout-echoes {
+  display: grid;
+  grid-template-columns: minmax(300px,1fr) minmax(260px,1fr);
+  gap: 14px;
+  align-items: start;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--tw-line);
+}
+
+.tw-loadout-echoes .tw-echo-thumbs {
+  margin: 0;
+}
+
+.tw-loadout-echoes>.tw-chip-list {
+  align-content: start;
+}
+
+.tw-warnings {
+  display: grid;
+  grid-template-columns: minmax(190px,.28fr) minmax(0,1fr);
+  gap: 12px;
+  padding: 12px;
+  border-color: rgba(228,187,94,.32);
+  background: linear-gradient(120deg,rgba(111,72,23,.18),rgba(18,15,10,.72));
+}
+
+.tw-warnings>header {
+  display: grid;
+  grid-template-columns: 34px minmax(0,1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 2px;
+}
+
+.tw-warnings>header>span {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(228,187,94,.55);
+  border-radius: 50%;
+  background: rgba(228,187,94,.09);
+  color: var(--gold);
+  font-size: var(--font-size-body);
+  font-weight: 800;
+}
+
+.tw-warnings>header>div {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.tw-warnings>header strong {
+  font-size: var(--font-size-small);
+}
+
+.tw-warnings>header small {
+  color: #927f69;
+  font-size: var(--font-size-caption);
+  line-height: 1.35;
+}

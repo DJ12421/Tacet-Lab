@@ -1,6 +1,6 @@
 import type { Echo, StatKey, StatLine } from '../domain/types'
 
-// Source ranges checked against Wuthering Tools and https://wutheringwaves.fandom.com/wiki/Echo/Stats (2026-07-14).
+// Source ranges checked against https://wutheringwaves.fandom.com/wiki/Echo/Stats (2026-07-14).
 // Primary and secondary main stats scale deterministically with level and are not user-entered rolls.
 export const mainStatKeysByCost: Record<Echo['cost'], readonly StatKey[]> = {
   1: ['hpPercent', 'atkPercent', 'defPercent'],

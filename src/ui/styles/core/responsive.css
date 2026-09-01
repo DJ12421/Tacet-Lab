@@ -81,7 +81,6 @@
   }
   .topbar button {
     min-width: 44px;
-    min-height: 44px;
     padding: 0 9px;
   }
   .sidebar { touch-action: manipulation; }

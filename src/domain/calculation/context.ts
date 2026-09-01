@@ -1,10 +1,7 @@
 import { aggregateStats, applyBuffEffects, defenseMultiplier, floorGameValue, resistanceMultiplier } from '../damage'
 import type { AttackDefinition, BuffEffect, Build, Echo, EnemyConfig, OwnedCharacter, OwnedWeapon, Resonator, TeamScenario, Weapon } from '../types'
-import {
-  baseTuneBreakBoost, characterConditionId, characterConditionInherentSkillIndex, characterConditionModes, characterConditionRequiresToggle, characterConditions, characterCatalog,
-  isFixedSkillValueName, weaponCatalog, weaponPassiveConditions, type CharacterConditionModifier
-} from '../../game-data'
-import { defaultEnabledSkillTreeBonusIds, inherentSkillBonusId, resolveCharacterShowcaseModel, weaponSecondaryStat } from '../../ui/character-showcase-model'
+import { baseTuneBreakBoost, characterCatalog, isFixedSkillValueName, weaponCatalog, weaponPassiveConditions } from '../../game-data'
+import { resolveCharacterShowcaseModel, weaponSecondaryStat } from '../../ui/character-showcase-model'
 import type { CalculationContext, FormulaEntry, FormulaScalar } from './engine'
 
 export interface BuildCalculationInput {
@@ -20,27 +17,6 @@ export interface BuildCalculationInput {
 }
 
 const numericInput = (value: FormulaScalar | undefined) => typeof value === 'number' && Number.isFinite(value) ? value : 0
-const normalizedTarget = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, '')
-
-function modifierTargetsAttack(modifier: CharacterConditionModifier, attackName: string) {
-  if (!modifier.modifySpecificTalents?.length) return true
-  const attack = normalizedTarget(attackName)
-  return modifier.modifySpecificTalents.some((target) => {
-    const candidate = normalizedTarget(target)
-    return candidate.length > 2 && (attack.includes(candidate) || candidate.includes(attack))
-  })
-}
-
-function numericModifierValue(modifier: CharacterConditionModifier, character: OwnedCharacter) {
-  if (typeof modifier.modifierValue === 'number') return modifier.modifierValue
-  if (!modifier.modifierValue || Array.isArray(modifier.modifierValue) || typeof modifier.modifierValue !== 'object') return 0
-  const levelIndex = modifier.modifierValueTalentRef === 'basic' ? 0
-    : modifier.modifierValueTalentRef === 'skill' ? 1
-      : modifier.modifierValueTalentRef === 'forte' ? 2
-        : modifier.modifierValueTalentRef === 'liberation' ? 3 : 4
-  const level = character.skillLevels?.[levelIndex] ?? 1
-  return Number(modifier.modifierValue[String(level)] ?? 0)
-}
 
 export function resolveRuntimeBuild(build: Build, characters: OwnedCharacter[], weapons: OwnedWeapon[]): { character: OwnedCharacter; weapon: OwnedWeapon; resonator: Resonator; runtimeWeapon: Weapon } | undefined {
   const ownedCharacter = characters.find((entry) => entry.catalogId === build.resonatorId)
@@ -79,11 +55,7 @@ export function createBuildCalculationContext(input: BuildCalculationInput): Cal
     catalog: character,
     weapons: [input.weapon],
     echoes: input.echoes,
-    builds: [input.build],
-    // Sequence modifiers are applied below from the generated condition data.
-    // Excluding the showcase's parsed sequence stats prevents every always-on
-    // Sequence stat from being counted once here and a second time below.
-    includeSequenceBonuses: false
+    builds: [input.build]
   })
   const baseStats = showcase?.finalStats ?? aggregateStats(runtimeCharacter, runtimeWeapon, input.echoes)
   const buffed = applyBuffEffects(baseStats, input.buffs ?? [])
@@ -107,73 +79,6 @@ export function createBuildCalculationContext(input: BuildCalculationInput): Cal
   let conditionTuneBreakBoost = 0
   const targetAttackId = input.targetId?.startsWith(`${character.id}:`) ? input.targetId.slice(character.id.length + 1) : undefined
   const targetAttack = character.attacks.find((attack) => attack.id === targetAttackId)
-  const targetAttackReference = targetAttack ? `${targetAttack.id} ${targetAttack.name}` : ''
-  const enabledSkillTreeNodes = new Set(input.character.enabledSkillTreeBonusIds ?? defaultEnabledSkillTreeBonusIds(character))
-  const selectedMode = String(memberConditions['wt:mode'] ?? characterConditionModes(character)[0] ?? '')
-  if (targetAttack) for (const condition of characterConditions(character)) {
-    if (condition.sequence && input.character.sequence < condition.sequence) continue
-    if (condition.stance && condition.stance !== selectedMode) continue
-    const inherentSkillIndex = characterConditionInherentSkillIndex(condition, character)
-    if (inherentSkillIndex !== undefined && !enabledSkillTreeNodes.has(inherentSkillBonusId(inherentSkillIndex))) continue
-    const raw = memberConditions[characterConditionId(condition)]
-    const sequenceAlwaysOn = condition.sequence > 0 && !characterConditionRequiresToggle(condition)
-    let factor = sequenceAlwaysOn ? 1 : condition.hasStacks ? numericInput(raw) : raw === true ? 1 : 0
-    if (condition.appliesOnEveryStep) factor = Math.floor(factor / condition.appliesOnEveryStep)
-    if (!(factor > 0)) continue
-    for (const modifier of condition.modifiers) {
-      if (!modifierTargetsAttack(modifier, targetAttackReference)) continue
-      let value = numericModifierValue(modifier, input.character) * factor
-      if (modifier.maximumValue !== undefined) value = Math.min(value, modifier.maximumValue)
-      const key = modifier.modifier ?? ''
-      if (key === 'ATK') stats.atk += stats.baseAtk * value
-      else if (key === 'HP') stats.hp += stats.baseHp * value
-      else if (key === 'DEF') stats.def += stats.baseDef * value
-      else if (key.startsWith('ATK_FLAT')) stats.atk += value
-      else if (key === 'CritRate' || key === 'CritRate:AdditionalBase') stats.critRate += value * 100
-      else if (key === 'CritDMG' || key === 'CritDMG:AdditionalBase') stats.critDamage += value * 100
-      else if (key === 'EnergyRegen') stats.energyRegen += value * 100
-      else if (key === 'HealingBonus') stats.healingBonus += value * 100
-      else if (key === character.element) {
-        const elementDamage = `${character.element.toLowerCase()}Damage` as 'spectroDamage' | 'fusionDamage' | 'glacioDamage' | 'electroDamage' | 'aeroDamage' | 'havocDamage'
-        stats[elementDamage] += value * 100
-      }
-      else if (key === 'BasicAttackDMGBonus' && targetAttack.type === 'basic') conditionBonusDamage += value * 100
-      else if (key === 'HeavyAttackDMGBonus' && targetAttack.type === 'heavy') conditionBonusDamage += value * 100
-      else if (key === 'ResonanceSkillDMGBonus' && targetAttack.type === 'skill') conditionBonusDamage += value * 100
-      else if (key === 'ResonanceLiberationDMGBonus' && targetAttack.type === 'liberation') conditionBonusDamage += value * 100
-      else if (key === 'IntroSkillDMGBonus' && targetAttack.type === 'intro') conditionBonusDamage += value * 100
-      else if (key === 'OutroSkillDMGBonus' && targetAttack.type === 'outro') conditionBonusDamage += value * 100
-      else if (key === 'DMGBonus') conditionBonusDamage += value * 100
-      else if (key === 'DMGDeepen') conditionAmplification += value * 100
-      else if (key === 'specialMultiplier') conditionSpecialMultiplier += value * 100
-      else if (key === 'talentModifierMultiply') conditionMotionValueMultiplier += value * 100
-      else if (!key && modifier.modifySpecificTalents?.length) {
-        // Wuthering Tools leaves targeted DMG/healing increases untyped, while
-        // actual motion-value changes are explicitly talentModifierMultiply.
-        if (targetAttack.type === 'healing') conditionMotionValueMultiplier += value * 100
-        else conditionBonusDamage += value * 100
-      }
-      else if (key === 'Talent' && modifier.modifierTalentKey && modifierTargetsAttack({ ...modifier, modifySpecificTalents: [modifier.modifierTalentKey] }, targetAttackReference)) conditionAdditionalMotionValue += value * 100
-      else if (key === 'DEFIgnore' || key === `DEFIgnore:${character.element}`) conditionDefenseIgnore += value * 100
-      else if (key === 'DefReduction') conditionDefenseReduction += value * 100
-      else if (key === `ResistIgnore:${character.element}`) conditionResistanceIgnore += value * 100
-      else if (key === `ResistShred:${character.element}`) conditionResistanceReduction += value * 100
-    }
-  }
-  for (const condition of characterConditions(character)) {
-    if (condition.sequence && input.character.sequence < condition.sequence) continue
-    if (condition.stance && condition.stance !== selectedMode) continue
-    const inherentSkillIndex = characterConditionInherentSkillIndex(condition, character)
-    if (inherentSkillIndex !== undefined && !enabledSkillTreeNodes.has(inherentSkillBonusId(inherentSkillIndex))) continue
-    const raw = memberConditions[characterConditionId(condition)]
-    const sequenceAlwaysOn = condition.sequence > 0 && !characterConditionRequiresToggle(condition)
-    let factor = sequenceAlwaysOn ? 1 : condition.hasStacks ? numericInput(raw) : raw === true ? 1 : 0
-    if (condition.appliesOnEveryStep) factor = Math.floor(factor / condition.appliesOnEveryStep)
-    if (!(factor > 0)) continue
-    for (const modifier of condition.modifiers) {
-      if (modifier.modifier === 'tuneBreakBoost') conditionTuneBreakBoost += numericModifierValue(modifier, input.character) * factor * 100
-    }
-  }
   if (targetAttack) for (const condition of weaponPassiveConditions(weapon, input.weapon.rank)) {
     const raw = memberConditions[condition.id]
     const factor = condition.alwaysOn ? 1 : condition.type === 'stack' ? numericInput(raw) : raw === true ? 1 : 0

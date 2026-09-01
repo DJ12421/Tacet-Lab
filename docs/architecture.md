@@ -43,13 +43,13 @@ Every scan carries a session ID, frame sequence, frame ID, region ID, and job ID
 
 ## Formula engine
 
-`src/domain/calculation/` retains the original clean-room declarative engine for backward compatibility. The active Team damage path lives in `src/domain/calculation-v2/`: a GPL-compatible, source-attributed mechanics engine whose generated character, weapon, Sonata, Echo, sequence, and party effects feed member result sheets, rotation actions, and optimizer objectives through one calculation context.
+`src/domain/calculation/` contains the deterministic declarative damage engine used by Teams, rotations, result sheets, and optimizer objectives.
 
 Formula data is labeled `nanoka-3.6-formula-v2`. This is reproducible from the pinned dataset; it is not a claim of independent verification against the live game.
 
 ## Optimizer
 
-The optimizer compiles each Echo into a reusable stat vector, prunes the filtered candidate frontier, and splits deterministic main-Echo and secondary-Echo tasks into bounded work units. A dynamic background-worker pool pulls those units as workers become idle, reuses compiled suffix bounds and Calculation V2 contexts, and shares the live global top-N cutoff between units. Filters cover Echo level, rarity, cost-specific main stats, manual exclusions, assignment sources, main-Echo policy, generated Sonata thresholds, partial-loadout policy, min/max calculated stats, and min/max target score. Cost-impossible, Sonata-impossible, stat-impossible, and objective-bounded subtrees are counted and skipped without leaf evaluation; the Calculation V2 evaluator receives the selected main Echo in slot one.
+The optimizer compiles each Echo into a reusable stat vector, prunes the filtered candidate frontier, and splits deterministic main-Echo and secondary-Echo tasks into bounded work units. A dynamic background-worker pool pulls those units as workers become idle, reuses compiled suffix bounds, and shares the live global top-N cutoff between units. Filters cover Echo level, rarity, cost-specific main stats, manual exclusions, assignment sources, main-Echo policy, generated Sonata thresholds, partial-loadout policy, min/max calculated stats, and min/max target score. Cost-impossible, Sonata-impossible, stat-impossible, and objective-bounded subtrees are counted and skipped without leaf evaluation.
 
 Exact mode explores the complete filtered search space. Fast mode reserves one coordinator-owned evaluation budget across bounded work units and is labeled `best found`, never as a global optimum. The coordinator merges and de-duplicates worker results, broadcasts stronger score cutoffs, samples the build distribution for interactive analysis, persists the five newest runs per build, fingerprints inventory state before equipping, discloses borrowed Echoes, and applies cross-build assignment changes in one IndexedDB transaction.
 

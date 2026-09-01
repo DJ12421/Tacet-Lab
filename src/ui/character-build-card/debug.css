@@ -1,0 +1,280 @@
+@font-face {
+  font-family: mc-gamefont;
+  src: url(https://hw-media-cdn-mingchao.kurogame.com/font/LaguSansBold.otf) format("opentype");
+  font-style: normal;
+  font-display: swap;
+}
+
+.cbc-viewport {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.cbc-debug-enabled .cbc-debug-section {
+  translate: var(--cbc-debug-x,0) var(--cbc-debug-y,0);
+}
+
+.cbc-debug-enabled .cbc-debug-section.is-debug-hidden {
+  visibility: hidden;
+}
+
+.cbc-layout-calibration-layer {
+  position: absolute;
+  z-index: 350;
+  inset: 0;
+  pointer-events: none;
+  touch-action: none;
+  user-select: none;
+}
+
+.cbc-layout-calibration-box {
+  position: absolute;
+  box-sizing: border-box;
+  border: 1px solid rgba(255,73,170,.86);
+  background: rgba(255,73,170,.025);
+  cursor: move;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.cbc-layout-calibration-box>span {
+  position: absolute;
+  left: -1px;
+  top: -17px;
+  padding: 2px 5px;
+  border: 1px solid rgba(255,73,170,.75);
+  background: #070b10;
+  color: #ff8bc7;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.cbc-layout-calibration-box>button {
+  position: absolute;
+  z-index: 2;
+  right: -6px;
+  bottom: -6px;
+  width: 13px;
+  height: 13px;
+  padding: 0;
+  border: 2px solid #070b10;
+  background: #ff49aa;
+  box-shadow: 0 0 0 1px #ff9dce;
+  cursor: nwse-resize;
+}
+
+.cbc-layout-calibration-box.is-selected {
+  z-index: 5;
+  border-width: 2px;
+  background: rgba(255,73,170,.08);
+  box-shadow: 0 0 0 2px rgba(255,255,255,.75),0 0 18px rgba(255,73,170,.4);
+}
+
+.cbc-layout-calibration-box.is-hidden {
+  border-color: rgba(155,165,163,.5);
+  background: repeating-linear-gradient(135deg,rgba(155,165,163,.05) 0 5px,transparent 5px 10px);
+}
+
+.cbc-debug-controls {
+  position: absolute;
+  z-index: 400;
+  top: 10px;
+  right: 10px;
+  width: 256px;
+  max-height: calc(100% - 20px);
+  overflow: auto;
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 10px;
+  background: rgba(3,9,15,.94);
+  box-shadow: 0 12px 34px rgba(0,0,0,.55);
+  backdrop-filter: blur(14px);
+  color: #edf4f2;
+  font-size: 11px;
+}
+
+.cbc-debug-controls summary {
+  padding: 8px 10px;
+  cursor: pointer;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.cbc-debug-controls>.cbc-debug-mode-toggle {
+  width: calc(100% - 16px);
+  justify-content: center;
+  margin: 0 8px 8px;
+  border-color: rgba(255,73,170,.42);
+  color: #ff9dce;
+}
+
+.cbc-debug-controls>div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 0 8px 8px;
+}
+
+.cbc-debug-controls button {
+  min-width: 0;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 7px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 5px;
+  background: rgba(255,255,255,.05);
+  color: #dce5e2;
+  font: inherit;
+  cursor: pointer;
+}
+
+.cbc-debug-controls button>span {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #5de2a3;
+  box-shadow: 0 0 7px rgba(93,226,163,.6);
+}
+
+.cbc-debug-controls button.is-hidden {
+  color: #7e8987;
+}
+
+.cbc-debug-controls button.is-hidden>span {
+  background: #e5576b;
+  box-shadow: none;
+}
+
+.cbc-debug-inspector {
+  display: grid;
+  gap: 7px;
+  margin: 0 8px 8px;
+  padding: 8px;
+  border: 1px solid rgba(255,73,170,.3);
+  border-radius: 7px;
+  background: rgba(255,73,170,.045);
+}
+
+.cbc-debug-inspector>strong {
+  color: #ff8bc7;
+}
+
+.cbc-debug-inspector>div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+
+.cbc-debug-inspector label {
+  display: grid;
+  gap: 2px;
+  color: #84918e;
+  font-size: 9px;
+  text-transform: uppercase;
+}
+
+.cbc-debug-inspector input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 25px;
+  padding: 0 5px;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 4px;
+  background: #070c11;
+  color: #edf4f2;
+  font: inherit;
+}
+
+.cbc-debug-inspector input.cbc-coordinate-slider {
+  height: 18px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  accent-color: var(--cbc-accent);
+  cursor: ew-resize;
+}
+
+.cbc-debug-inspector .cbc-art-zoom {
+  gap: 5px;
+  margin-top: 2px;
+}
+
+.cbc-art-zoom>span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cbc-art-zoom output {
+  color: color-mix(in srgb,var(--cbc-accent) 78%,white);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.cbc-debug-inspector .cbc-art-zoom input[type="range"] {
+  height: 18px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  accent-color: var(--cbc-accent);
+  cursor: ew-resize;
+}
+
+.cbc-debug-inspector>button {
+  justify-content: center;
+}
+
+.cbc-debug-controls>footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.25fr;
+  gap: 4px;
+  padding: 0 8px 8px;
+}
+
+.cbc-debug-controls>footer button {
+  justify-content: center;
+  padding: 0 4px;
+  font-size: 10px;
+}
+
+.cbc-layout-calibration-box {
+  border-color: color-mix(in srgb,var(--cbc-accent) 88%,white);
+  background: color-mix(in srgb,var(--cbc-accent) 3%,transparent);
+}
+
+.cbc-layout-calibration-box>span {
+  border-color: color-mix(in srgb,var(--cbc-accent) 76%,white);
+  color: color-mix(in srgb,var(--cbc-accent) 78%,white);
+}
+
+.cbc-layout-calibration-box>button {
+  background: var(--cbc-accent);
+  box-shadow: 0 0 0 1px color-mix(in srgb,var(--cbc-accent) 58%,white);
+}
+
+.cbc-layout-calibration-box.is-selected {
+  background: color-mix(in srgb,var(--cbc-accent) 9%,transparent);
+  box-shadow: 0 0 0 2px rgba(255,255,255,.75),0 0 18px color-mix(in srgb,var(--cbc-accent) 42%,transparent);
+}
+
+.cbc-debug-controls>.cbc-debug-mode-toggle {
+  border-color: color-mix(in srgb,var(--cbc-accent) 45%,transparent);
+  color: color-mix(in srgb,var(--cbc-accent) 72%,white);
+}
+
+.cbc-debug-inspector {
+  border-color: color-mix(in srgb,var(--cbc-accent) 32%,transparent);
+  background: color-mix(in srgb,var(--cbc-accent) 5%,transparent);
+}
+
+.cbc-debug-inspector>strong {
+  color: color-mix(in srgb,var(--cbc-accent) 76%,white);
+}

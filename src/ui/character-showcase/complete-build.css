@@ -1,0 +1,160 @@
+/* Complete build view: character, stats, skills, weapon, and Echoes stay together. */
+
+.cs-layout.cs-view-all {
+  grid-template-columns: minmax(350px,1.02fr) minmax(270px,.72fr) minmax(390px,1.08fr);
+  grid-template-rows: 220px minmax(390px,auto) auto;
+  grid-template-areas: "character stats weapon"
+    "character stats skills"
+    "echoes echoes echoes";
+}
+
+.cs-view-all .cs-character-panel {
+  min-height: 618px;
+}
+
+.cs-view-all .cs-stats-panel {
+  min-height: 618px;
+  padding-bottom: 14px;
+}
+
+.cs-view-all .cs-weapon-panel {
+  min-height: 220px;
+}
+
+.cs-view-all .cs-skills-panel {
+  min-height: 390px;
+}
+
+.cs-view-all .cs-echo-section {
+  display: block;
+}
+
+.cs-view-all .cs-warning {
+  margin: 9px 0 0;
+}
+
+@media (max-width:1200px) {
+  .cs-layout.cs-view-all {
+    grid-template-columns: minmax(330px,.9fr) minmax(480px,1.1fr);
+    grid-template-rows: 220px minmax(390px,auto) auto auto;
+    grid-template-areas: "character weapon"
+      "character stats"
+      "skills skills"
+      "echoes echoes";
+  }
+  .cs-view-all .cs-skills-panel {
+    min-height: 430px;
+  }
+}
+
+@media (max-width:900px) {
+  .cs-layout.cs-view-all {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: "character" "weapon" "stats" "skills" "echoes";
+  }
+  .cs-view-all .cs-character-panel {
+    min-height: 540px;
+  }
+  .cs-view-all .cs-stats-panel {
+    min-height: 0;
+  }
+}
+
+@media (max-width:650px) {
+  .cs-view-all .cs-character-panel {
+    min-height: 480px;
+  }
+}
+
+.cs-toolbar {
+  grid-template-columns: auto minmax(0,1fr) auto auto auto;
+}
+
+.cs-layout-controls-host {
+  --cbc-accent: var(--cs-accent);
+  position: relative;
+  align-self: end;
+  min-width: 190px;
+}
+
+.cs-card-workspace {
+  display: grid;
+  grid-template-columns: minmax(0,1fr);
+  align-items: start;
+  gap: 12px;
+}
+
+.cs-card-workspace:has(>.cs-layout-panel-host:not(:empty)) {
+  grid-template-columns: minmax(0,1fr) 330px;
+  align-items: stretch;
+}
+
+.cs-card-workspace>.cbc-card-layout {
+  min-width: 0;
+}
+
+.cs-layout-panel-host {
+  --cbc-accent: var(--cs-accent);
+  position: sticky;
+  top: 76px;
+  min-width: 0;
+  min-height: 0;
+  align-self: stretch;
+}
+
+.cs-layout-panel-host:empty {
+  display: none;
+}
+
+.cs-layout-panel-host .cbc-debug-controls {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.cs-layout-panel-host .cbc-debug-menu {
+  position: static;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+}
+
+@media (max-width:900px) {
+  .cs-toolbar {
+    grid-template-columns: auto minmax(0,1fr) auto;
+    grid-template-areas: "back title actions" "build build layout";
+  }
+  .cs-layout-controls-host {
+    grid-area: layout;
+    min-width: 150px;
+  }
+  .cs-layout-controls-host .cbc-debug-controls {
+    width: 100%;
+  }
+  .cs-layout-panel-host {
+    position: relative;
+    top: auto;
+    height: auto!important;
+    align-self: start;
+  }
+  .cs-layout-panel-host .cbc-debug-controls,
+  .cs-layout-panel-host .cbc-debug-menu {
+    height: auto;
+    max-height: none;
+  }
+  .cs-layout-panel-host .cbc-debug-controls {
+    overflow: visible;
+  }
+}
+
+.cs-weapon-picker-card .wv-card-footer {
+  grid-template-columns: minmax(0,1fr);
+}
+
+.cs-weapon-picker-owner i {
+  font-size: var(--font-size-caption);
+  font-weight: 700;
+}

@@ -82,9 +82,9 @@ export function PrivacyLegalView() {
         </Panel>
 
         <Panel>
-          <header><span>07</span><div><p>Open-source license</p><h2>Calculation-engine attribution</h2></div></header>
+          <header><span>07</span><div><p>Open-source license</p><h2>Project license</h2></div></header>
           <div className="legal-copy">
-            <p>Tacet Lab is distributed under the GNU General Public License version 3. Its Calculation V2 mechanics catalog and calculator adapt work from <a href="https://github.com/ryanbenson/wuthering-waves-optimizer" target="_blank" rel="noreferrer">WutheringTools</a>, also licensed under GPL-3.0. The exact pinned revision and modification notice are recorded in this project&apos;s NOTICE and licensing documentation.</p>
+            <p>Tacet Lab is distributed under the GNU General Public License version 3. The complete license and corresponding source are included with the project.</p>
             <p>The GPL license, corresponding source, and attribution apply to the distributed application code. Wuthering Waves names, artwork, and other game materials remain the property of their respective owners.</p>
           </div>
         </Panel>

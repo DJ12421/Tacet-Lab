@@ -1,8 +1,4 @@
-import {
-  characterConditionCard, characterConditionId, characterConditionInherentSkillIndex, characterConditionModeId, characterConditionModes, characterConditionRequiresToggle, characterConditions,
-  baseTuneBreakBoost, characterCatalog, echoCatalog, isFixedSkillValueName, sonataCatalog, weaponCatalog,
-  type CharacterConditionModifier, type CharacterSkillCardKey
-} from '../../game-data'
+import { baseTuneBreakBoost, characterCatalog, echoCatalog, isFixedSkillValueName, sonataCatalog, weaponCatalog } from '../../game-data'
 import type { DamageType, Element } from '../types'
 import { formula, type FormulaEntry, type FormulaNode } from './engine'
 
@@ -17,12 +13,10 @@ export interface ConditionDefinition {
   options?: string[]
   scope: 'self' | 'team' | 'enemy' | 'action'
   description?: string
-  card?: CharacterSkillCardKey
+  card?: keyof typeof characterCatalog[number]['skillIcons'] | 'outroSkill'
   inherentSkillIndex?: number
   stance?: string
   sequence?: number
-  source?: 'wutheringtools'
-  modifiers?: CharacterConditionModifier[]
   disabled?: boolean
 }
 
@@ -166,34 +160,10 @@ function damageTarget(characterId: string, element: string, attack: typeof chara
 }
 
 function characterSheet(character: typeof characterCatalog[number]): FormulaSheet {
-  const modes = characterConditionModes(character)
-  const sourcedConditions: ConditionDefinition[] = characterConditions(character).map((condition) => {
-    const sequenceAlwaysOn = condition.sequence > 0 && !characterConditionRequiresToggle(condition)
-    return {
-      id: characterConditionId(condition),
-      label: condition.name,
-      type: condition.hasStacks ? 'stack' : 'boolean',
-      defaultValue: sequenceAlwaysOn ? true : condition.hasStacks ? condition.minStacks : false,
-      min: condition.minStacks,
-      max: condition.maxStacks,
-      scope: 'self',
-      description: condition.description,
-      card: characterConditionCard(condition, character),
-      inherentSkillIndex: characterConditionInherentSkillIndex(condition, character),
-      stance: condition.stance,
-      sequence: condition.sequence || undefined,
-      source: 'wutheringtools',
-      modifiers: condition.modifiers,
-      disabled: sequenceAlwaysOn
-    }
-  })
   return {
     id: character.id, kind: 'character', version: FORMULA_SHEET_VERSION, status: 'modeled', name: character.name,
     source: character.articleUrl, referenceText: [character.skillIcons.normalAttack.description, character.skillIcons.resonanceSkill.description, character.skillIcons.forteCircuit.description, character.skillIcons.resonanceLiberation.description].join('\n'),
-    conditions: [
-      ...(modes.length ? [{ id: characterConditionModeId, label: 'Resonance Mode', type: 'enum' as const, defaultValue: modes[0], options: modes, scope: 'self' as const, source: 'wutheringtools' as const }] : []),
-      ...sourcedConditions
-    ],
+    conditions: [],
     entries: [],
     targets: [
       ...character.attacks.filter((attack) => !isFixedSkillValueName(attack.name)).map((attack) => damageTarget(character.id, character.element, attack)),

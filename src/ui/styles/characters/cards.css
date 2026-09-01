@@ -26,7 +26,6 @@
 .candy-character-art img {
   width: calc(103%);
   height: auto;
-  aspect-ratio: 1;
   box-sizing: border-box;
   border: 1px solid var(--gold);
   border-radius: 8px;

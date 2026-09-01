@@ -117,7 +117,6 @@
 
 .wv-card-art img {
   width: 100%;
-  height: 100%;
   transition: transform .18s;
   border-radius: 0px;
 }
@@ -151,7 +150,6 @@
   margin: 3px 0 12px;
   overflow: hidden;
   color: #eff4f2;
-  font-size: var(--font-size-body);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -705,7 +703,6 @@
   padding: 3px 5px;
   border-radius: 4px;
   background: rgba(5,8,9,.72);
-  text-shadow: 0 1px 8px #000;
 }
 
 .wv-card-art img {

@@ -1,0 +1,248 @@
+/* Character-card polish: direct stats, contribution tracing and denser glass. */
+.cbc-identity h1 {
+  min-width: 0;
+  flex: 0 1 auto;
+  white-space: nowrap;
+}
+.cbc-stat-row {
+  grid-template-columns: 22px minmax(0,1fr) auto;
+  padding: 0 7px;
+  border-radius: 6px;
+  transition: background .16s ease,box-shadow .16s ease;
+}
+.cbc-stat-row>span {
+  min-width: 0;
+}
+.cbc-stat-row>b {
+  color: #f2f5f4;
+  font-size: 15px;
+  text-shadow: 0 1px 6px rgba(0,0,0,.65);
+}
+.cbc-stat-row:hover,.cbc-stat-row.is-active,.cbc-stat-row:focus-visible {
+  background: color-mix(in srgb,var(--cbc-accent) 13%,rgba(4,13,20,.78));
+  box-shadow: inset 3px 0 var(--cbc-accent),0 0 18px color-mix(in srgb,var(--cbc-accent) 12%,transparent);
+}
+.cbc-stat-source {
+  transition: opacity .17s ease,filter .17s ease,border-color .17s ease,background .17s ease,box-shadow .17s ease;
+}
+.cbc-card.is-stat-highlighting .cbc-stat-source {
+  opacity: .26;
+  filter: saturate(.35);
+}
+.cbc-card.is-stat-highlighting .cbc-stat-source.is-contributing {
+  opacity: 1;
+  filter: none;
+  border-color: color-mix(in srgb,var(--cbc-accent) 68%,white)!important;
+  background-color: color-mix(in srgb,var(--cbc-accent) 13%,rgba(3,10,16,.76));
+  box-shadow: 0 0 18px color-mix(in srgb,var(--cbc-accent) 24%,transparent),inset 0 0 0 1px color-mix(in srgb,var(--cbc-accent) 18%,transparent);
+}
+.cbc-weapon>.cbc-tooltip {
+  width: 500px;
+  max-height: none;
+  padding: 20px 22px;
+  overflow: visible;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.cbc-weapon>.cbc-tooltip>strong {
+  margin-bottom: 12px;
+  font-size: 18px;
+}
+.cbc-skill-bonus-nodes button>span:first-child,.cbc-main-skill>span:first-child,.cbc-extra-skills button>span:first-child {
+  background: linear-gradient(145deg,rgba(198,225,231,.24),rgba(4,13,20,.9));
+  box-shadow: inset 0 1px rgba(255,255,255,.21),inset 0 -1px rgba(255,255,255,.08),0 10px 24px rgba(0,0,0,.48);
+}
+.cbc-main-skill>small {
+  margin-top: 9px;
+  font-size: 16px;
+  font-weight: 800;
+  text-shadow: 0 1px 7px rgba(0,0,0,.9);
+}
+.cbc-skill-level-popover {
+  width: 190px;
+  grid-template-columns: 1fr;
+  gap: 9px;
+  padding: 12px;
+}
+.cbc-skill-level-title {
+  color: #f3f6f5;
+  font-size: 14px!important;
+  line-height: 1.25;
+  text-align: center;
+}
+.cbc-skill-level-popover>div {
+  display: grid;
+  grid-template-columns: 38px 1fr 38px;
+  align-items: center;
+}
+.cbc-skill-level-popover>div>strong {
+  font-size: 15px;
+}
+.cbc-artwork-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.cbc-artwork-actions button {
+  min-height: 34px;
+  justify-content: center;
+  gap: 6px;
+}
+.cbc-artwork-actions button svg {
+  width: 15px;
+  height: 15px;
+}
+.cbc-artwork-actions input {
+  display: none;
+}
+.cbc-artwork-status {
+  margin: 0;
+  color: rgba(232,241,241,.78);
+  font-size: 11px;
+  line-height: 1.4;
+  text-transform: none;
+}
+.cbc-skill-level-popover input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 38px;
+  border: 1px solid var(--cbc-edge);
+  border-right: 0;
+  border-left: 0;
+  background: rgba(7,16,22,.96);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  text-align: center;
+  -moz-appearance: textfield;
+}
+.cbc-skill-level-popover input::-webkit-inner-spin-button,.cbc-skill-level-popover input::-webkit-outer-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+.cbc-extra-skills {
+  height: 88px;
+}
+.cbc-extra-skills button>span:first-child {
+  width: 62px;
+  height: 62px;
+}
+.cbc-extra-skills img {
+  width: 49px;
+  height: 49px;
+}
+.cbc-sonatas button {
+  background: linear-gradient(145deg,color-mix(in srgb,var(--cbc-accent) 10%,rgba(17,29,40,.9)),rgba(3,10,16,.88));
+  box-shadow: inset 0 1px rgba(255,255,255,.12),0 8px 20px rgba(0,0,0,.28);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+}
+.cbc-echo-main-stats small {
+  font-size: 13px;
+  font-weight: 700;
+}
+.cbc-echo-main-stats b {
+  font-size: 19px;
+}
+.cbc-build-score>span {
+  font-size: 14px;
+}
+.cbc-build-score strong {
+  font-size: 54px;
+  letter-spacing: -.05em;
+}
+.cbc-build-score b {
+  font-size: 23px;
+}
+.cbc-build-score-info {
+  width: 31px;
+  height: 31px;
+  font-size: 14px;
+}
+.cbc-edit-popover {
+  z-index: 1000;
+}
+.cbc-identity:has(.cbc-edit-popover),.cbc-skill-column:has(.cbc-edit-popover),.cbc-echo-row:has(.cbc-edit-popover) {
+  z-index: 500!important;
+}
+.cbc-card button:hover,.cbc-card button:focus-visible {
+  z-index: 12;
+}
+.cbc-debug-menu {
+  width: 390px;
+  padding: 13px!important;
+  border-radius: 12px;
+  font-size: 13px;
+}
+.cbc-debug-section-list {
+  gap: 7px;
+  margin-bottom: 12px;
+}
+.cbc-debug-section-list button,.cbc-debug-menu>footer button,.cbc-debug-layout-actions button,.cbc-debug-layout-transfer button,.cbc-echo-layout-options button {
+  min-height: 34px;
+  font-size: 12px;
+}
+.cbc-accent-picker {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto;
+  align-items: end;
+  gap: 8px;
+  margin: 0 8px 12px;
+  padding: 10px;
+  border: 1px solid color-mix(in srgb,var(--cbc-accent) 34%,rgba(255,255,255,.14));
+  border-radius: 8px;
+  background: color-mix(in srgb,var(--cbc-accent) 5%,transparent);
+}
+.cbc-accent-picker legend {
+  padding: 0 5px;
+  color: color-mix(in srgb,var(--cbc-accent) 78%,white);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.cbc-accent-picker label {
+  min-width: 0;
+  height: 36px;
+  display: grid;
+  grid-template-columns: 25px 1fr;
+  grid-template-rows: 1fr 1fr;
+  column-gap: 8px;
+  align-items: center;
+  padding: 0 9px;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 7px;
+  background: rgba(255,255,255,.045);
+  cursor: pointer;
+}
+.cbc-accent-swatch {
+  grid-row: 1/-1;
+  width: 25px;
+  height: 25px;
+  border: 1px solid rgba(255,255,255,.55);
+  border-radius: 50%;
+  box-shadow: 0 0 12px color-mix(in srgb,var(--cbc-accent) 42%,transparent);
+}
+.cbc-accent-picker input[type="color"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+.cbc-accent-picker output {
+  grid-column: 2;
+  color: #eef5f3;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .06em;
+}
+.cbc-accent-picker label::after {
+  content:"Choose custom color";
+  grid-column: 2;
+  color: #899896;
+  font-size: 9px;
+}
+.cbc-accent-picker>button {
+  min-height: 36px;
+  padding: 0 10px;
+}

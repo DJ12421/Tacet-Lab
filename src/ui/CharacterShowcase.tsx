@@ -415,7 +415,6 @@ export function CharacterShowcase({ character, characters, catalog, weapons, ech
         team.buffs = (team.buffs ?? []).filter((buff) => !removed.has(buff.sourceBuildId))
         const keep = <T,>(record: Record<string, T> = {}) => Object.fromEntries(Object.entries(record).filter(([id]) => !removed.has(id)))
         if (team.scenario) team.scenario = { ...team.scenario, memberConditions: keep(team.scenario.memberConditions), selectedTargetByBuild: keep(team.scenario.selectedTargetByBuild), compareBuildId: team.scenario.compareBuildId && !removed.has(team.scenario.compareBuildId) ? team.scenario.compareBuildId : undefined }
-        if (team.calculationV2) team.calculationV2 = { ...team.calculationV2, memberEffects: keep(team.calculationV2.memberEffects), partyEffects: Object.fromEntries(Object.entries(keep(team.calculationV2.partyEffects)).map(([sourceId, effects]) => [sourceId, Object.fromEntries(Object.entries(effects).map(([effectId, selection]) => [effectId, { ...selection, recipientBuildId: selection.recipientBuildId && !removed.has(selection.recipientBuildId) ? selection.recipientBuildId : undefined }]))])), selectedAttackByBuild: keep(team.calculationV2.selectedAttackByBuild) }
       })
     })
     await deleteCharacterArtwork(character.id).catch(() => undefined)
