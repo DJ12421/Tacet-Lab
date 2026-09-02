@@ -17,6 +17,33 @@
   color: var(--tw-text);
 }
 
+.tw-wip-banner {
+  margin-bottom: 10px;
+  padding: 18px 22px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  border: 3px solid #f0c75e;
+  background: repeating-linear-gradient(-45deg, #241d0b 0 12px, #151207 12px 24px);
+  color: #fff3c4;
+  text-align: center;
+  box-shadow: inset 0 0 28px rgba(240,199,94,.15), 0 8px 24px rgba(0,0,0,.35);
+}
+
+.tw-wip-banner strong {
+  color: #ffd96f;
+  font-size: clamp(1.6rem, 3vw, 3rem);
+  line-height: .9;
+  letter-spacing: .08em;
+}
+
+.tw-wip-banner span {
+  max-width: 520px;
+  font-weight: 700;
+}
+
 .team-workspace .tw-panel,
 .team-workspace .panel {
   border-color: var(--tw-line);

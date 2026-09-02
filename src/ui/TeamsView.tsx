@@ -408,6 +408,10 @@ function TeamGallery({ teams, builds, characters, weapons, echoes, equippedLoado
   </div>
 }
 
+function TeamsWipBanner() {
+  return <aside className="tw-wip-banner" role="status"><strong>WORK IN PROGRESS</strong><span>Teams is still under active development. Results and workflows may change.</span></aside>
+}
+
 function TeamWorkspaceHeader({ team, teams, model, onBack, onSelect, onRename, onDelete }: {
   team: Team
   teams: Team[]
@@ -1570,9 +1574,10 @@ export function TeamsView({ echoes, builds, equippedLoadouts, theorycraftBuilds,
     openMemberRoute(tab, section)
   }
 
-  if (showGallery) return <main className="team-workspace"><TeamGallery teams={teams} builds={builds} characters={characters} weapons={weapons} echoes={echoes} equippedLoadouts={equippedLoadouts} theorycraftBuilds={theorycraftBuilds} onCreate={createTeam} onOpen={openTeam} onRename={(teamId, name) => updateTeamById(teamId, { name })} onDelete={deleteGalleryTeam}/></main>
+  if (showGallery) return <main className="team-workspace"><TeamsWipBanner/><TeamGallery teams={teams} builds={builds} characters={characters} weapons={weapons} echoes={echoes} equippedLoadouts={equippedLoadouts} theorycraftBuilds={theorycraftBuilds} onCreate={createTeam} onOpen={openTeam} onRename={(teamId, name) => updateTeamById(teamId, { name })} onDelete={deleteGalleryTeam}/></main>
 
   return <main className="team-workspace">
+    <TeamsWipBanner/>
     {model && team && <TeamWorkspaceHeader team={team} teams={teams} model={model} onBack={backToGallery} onSelect={openTeam} onRename={(name) => updateTeam({ name })} onDelete={deleteCurrentTeam}/>}
     <nav className="tw-primary-tabs" aria-label="Team workspace pages" role="tablist">
       <button role="tab" className={tab === 'settings' ? 'active' : ''} aria-selected={tab === 'settings'} onClick={() => { setTab('settings'); onRouteChange?.({ team: teamRouteId }) }}><span>Overview</span><small>Composition, builds and enemy</small></button>

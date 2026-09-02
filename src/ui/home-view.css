@@ -73,6 +73,10 @@
   width: 60%;
 }
 
+.home-hero-art-zone:has(.home-hero-character-control.is-open) {
+  z-index: 5;
+}
+
 .home-hero-character-control {
   position: absolute;
   z-index: 5;

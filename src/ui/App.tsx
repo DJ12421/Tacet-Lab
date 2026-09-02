@@ -189,8 +189,9 @@ export default function App() {
   }, [route, scannerSessionAtRisk, view])
   useEffect(() => {
     const label = nav.find((item) => item.view === view)?.label ?? (view === 'legal' ? 'Privacy & Legal' : 'Tacet Lab')
-    document.title = view === 'dashboard' ? 'Tacet Lab | Wuthering Waves Build Optimizer' : `${label} | Tacet Lab`
+    document.title = view === 'dashboard' ? 'Tacet Lab | The Ultimate WWO' : `${label} | Tacet Lab`
   }, [view])
+  useEffect(() => { window.scrollTo(0, 0) }, [navigationVersion])
   useEffect(() => {
     try { window.localStorage.setItem(sidebarPinStorageKey, String(sidebarPinned)) } catch { /* Keep the preference session-only when storage is unavailable. */ }
   }, [sidebarPinned])
