@@ -15,7 +15,7 @@ describe('application shell', () => {
 
   it('opens the local archive and navigates core workflows', async () => {
     render(<App/>)
-    expect(await screen.findByText('Tacet Lab Optimizer')).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { level: 1 })).toHaveTextContent(/WUTHERING WAVES.*OPTIMIZER/)
     const navigation = within(screen.getByRole('complementary', { name: 'Primary navigation' }).querySelector('.desktop-nav') as HTMLElement)
     fireEvent.click(navigation.getByRole('button', { name: /^Echoes$/ }))
     expect(await screen.findByText('Your Echoes', {}, { timeout: 5_000 })).toBeInTheDocument()
@@ -25,7 +25,7 @@ describe('application shell', () => {
 
   it('warns before leaving a scanner session with unsaved Echo data', async () => {
     render(<App/>)
-    await screen.findByText('Tacet Lab Optimizer')
+    await screen.findByRole('heading', { level: 1 })
     const navigation = within(screen.getByRole('complementary', { name: 'Primary navigation' }).querySelector('.desktop-nav') as HTMLElement)
     fireEvent.click(navigation.getByRole('button', { name: /Scanner/ }))
     fireEvent.click(await screen.findByRole('button', { name: /Enter manually/i }, { timeout: 5_000 }))
