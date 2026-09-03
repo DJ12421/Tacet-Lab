@@ -153,9 +153,9 @@ export function HomeView({ echoes, characters, builds, teams, navigate }: HomeVi
         </div>
       </div>
       <div className="home-hero-copy">
-        <span className="home-kicker">Tacet Lab Optimizer</span>
-        <h1><span className="home-hero-title-desktop">THE ULTIMATE<br/><em>One for All SITE</em></span><span className="home-hero-title-mobile">THE ULTIMATE<br/><em>One for All SITE</em></span></h1>
-        <p><span className="home-hero-summary-desktop">Pick a character, add your Echoes, and see what improves your damage.</span><span className="home-hero-summary-mobile">Pick a character. See what hits harder.</span></p>
+        <span className="home-kicker">Tacet Lab</span>
+        <h1><span className="home-hero-title-desktop">WUTHERING WAVES<br/><em>OPTIMIZER</em></span><span className="home-hero-title-mobile">WUTHERING WAVES<br/><em>OPTIMIZER</em></span></h1>
+        <p><span className="home-hero-summary-desktop">A free, local-first WuWa optimizer for scanning Echoes, comparing builds, calculating damage, and planning teams.</span><span className="home-hero-summary-mobile">A free, local-first WuWa optimizer.</span></p>
         <div className="home-hero-actions">
           <button className="primary" onClick={() => navigate(primaryView)}>{hasStarted ? 'Continue your build' : 'Start scanning'}<span aria-hidden="true">→</span></button>
           <button className="secondary" onClick={() => navigate(hasStarted ? 'scanner' : 'archive')}><HomeNavIcon view={hasStarted ? 'scanner' : 'archive'}/>{hasStarted ? 'Add my Echoes' : 'Browse characters'}</button>

@@ -189,7 +189,7 @@ export default function App() {
   }, [route, scannerSessionAtRisk, view])
   useEffect(() => {
     const label = nav.find((item) => item.view === view)?.label ?? (view === 'legal' ? 'Privacy & Legal' : 'Tacet Lab')
-    document.title = view === 'dashboard' ? 'Tacet Lab | The Ultimate WWO' : `${label} | Tacet Lab`
+    document.title = view === 'dashboard' ? 'Tacet Lab | Wuthering Waves Optimizer & Echo Scanner' : `${label} | Tacet Lab`
   }, [view])
   useEffect(() => { window.scrollTo(0, 0) }, [navigationVersion])
   useEffect(() => {

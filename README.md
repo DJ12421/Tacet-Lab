@@ -1,8 +1,8 @@
 # Tacet Lab
 
-Tacet Lab is a local-first Wuthering Waves collection manager, Echo scanner, and team damage calculator. It runs in the browser, keeps account data on the device, and never interacts with the game process or automates game input.
+Tacet Lab is a local-first Wuthering Waves optimizer, Echo scanner, and team damage calculator. It runs in the browser, keeps account data on the device, and never interacts with the game process or automates game input.
 
-**[Open Tacet Lab](https://dj12421.github.io/Tacet-Lab/)**
+**[Open Tacet Lab — Wuthering Waves Optimizer](https://dj12421.github.io/Tacet-Lab/)**
 
 Tacet Lab is a fan-made project and is not affiliated with Kuro Games.
 
