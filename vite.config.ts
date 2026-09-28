@@ -32,7 +32,7 @@ export default defineConfig(({ command }) => ({
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,wasm,traineddata}'],
         navigateFallbackDenylist: [/\/[^/?]+\.[^/?]+(?:\?.*)?$/],
-        maximumFileSizeToCacheInBytes: 8 * 1024 * 1024,
+        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
         cleanupOutdatedCaches: true,
         runtimeCaching: [
           {
