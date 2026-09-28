@@ -1,0 +1,190 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21020034",
+  "entityName": "Sword#18",
+  "sourceFingerprint": "8e60784faa85275dffee7b2c0cae236a0ce77b4e5ccc19e11105276536f19a69",
+  "reviewedAt": "2026-09-16T09:17:09.963Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "08909437b740c5d871d23132464686a7bc3372eac8cdd5174dc7a35b8d7f9aae",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020034:effect:0",
+            "sourceName": "Daybreak",
+            "text": "When the Resonator's HP drops below 40%, increases Heavy Attack DMG Bonus by 18% and gives 5% healing when dealing Heavy Attack DMG. This effect can be triggered 1 time(s) every 8s.",
+            "refinementTexts": [
+              "When the Resonator's HP drops below 40%, increases Heavy Attack DMG Bonus by 18% and gives 5% healing when dealing Heavy Attack DMG. This effect can be triggered 1 time(s) every 8s.",
+              "When the Resonator's HP drops below 50%, increases Heavy Attack DMG Bonus by 22.5% and gives 6.25% healing when dealing Heavy Attack DMG. This effect can be triggered 1 time(s) every 8s.",
+              "When the Resonator's HP drops below 60%, increases Heavy Attack DMG Bonus by 27% and gives 7.5% healing when dealing Heavy Attack DMG. This effect can be triggered 1 time(s) every 8s.",
+              "When the Resonator's HP drops below 70%, increases Heavy Attack DMG Bonus by 31.5% and gives 8.75% healing when dealing Heavy Attack DMG. This effect can be triggered 1 time(s) every 8s.",
+              "When the Resonator's HP drops below 80%, increases Heavy Attack DMG Bonus by 36% and gives 10% healing when dealing Heavy Attack DMG. This effect can be triggered 1 time(s) every 8s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "HP<40%",
+              "modifiers": [
+                {
+                  "stat": "heavyDamage",
+                  "operation": "addPercent",
+                  "value": 18,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "triggeredAttacks": [],
+              "durationSeconds": 8
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "the Resonator's HP drops below 40%",
+                "modifiers": [
+                  {
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "triggeredAttacks": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "the Resonator's HP drops below 50%",
+                "modifiers": [
+                  {
+                    "value": 22.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "triggeredAttacks": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "the Resonator's HP drops below 60%",
+                "modifiers": [
+                  {
+                    "value": 27
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "triggeredAttacks": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "the Resonator's HP drops below 70%",
+                "modifiers": [
+                  {
+                    "value": 31.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "triggeredAttacks": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "the Resonator's HP drops below 80%",
+                "modifiers": [
+                  {
+                    "value": 36
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "triggeredAttacks": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "manual:4deb5b0e-b88f-48c1-9352-bb8fb3e250e7",
+            "sourceName": "Daybreak",
+            "sourceType": "manual",
+            "text": "When the Resonator's HP drops below 40%, increases Heavy Attack DMG Bonus by 18% and gives 5% healing when dealing Heavy Attack DMG. This effect can be triggered 1 time(s) every 8s.",
+            "manual": true,
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Heavy Atk. DMG dealt",
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [],
+              "triggeredAttacks": [
+                {
+                  "id": "triggered-1",
+                  "name": "Heavy Atk. DMG",
+                  "scaling": "hp",
+                  "expression": "5%",
+                  "count": 1,
+                  "damageType": "healing"
+                }
+              ]
+            },
+            "parsedByRefinement": [
+              {
+                "modifiers": [],
+                "triggeredAttacks": [
+                  {
+                    "expression": "5%"
+                  }
+                ]
+              },
+              {
+                "modifiers": [],
+                "triggeredAttacks": [
+                  {
+                    "expression": "6.25%"
+                  }
+                ]
+              },
+              {
+                "modifiers": [],
+                "triggeredAttacks": [
+                  {
+                    "expression": "7.5%"
+                  }
+                ]
+              },
+              {
+                "modifiers": [],
+                "triggeredAttacks": [
+                  {
+                    "expression": "8.75%"
+                  }
+                ]
+              },
+              {
+                "modifiers": [],
+                "triggeredAttacks": [
+                  {
+                    "expression": "10%"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

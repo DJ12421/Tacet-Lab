@@ -32,7 +32,6 @@ self.onmessage = (event: MessageEvent<OptimizerWorkerCommand>) => {
         scoreThreshold: Number.isFinite(scoreThreshold) ? scoreThreshold : undefined,
         maxEvaluations: command.maxEvaluations
       },
-      undefined,
       (progress) => self.postMessage({ type: 'progress', requestId: command.requestId, workIndex: command.workIndex, progress })
     )
     self.postMessage({ type: 'complete', requestId: command.requestId, workIndex: command.workIndex, ...output })

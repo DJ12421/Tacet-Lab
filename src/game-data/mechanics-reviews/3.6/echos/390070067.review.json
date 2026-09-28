@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390070067",
+  "entityName": "Zig Zag",
+  "sourceFingerprint": "2b5cfa717b32e49845c4b236886d927944e7719fbc2d61f9f3731613e6931771",
+  "reviewedAt": "2026-09-26T18:27:59.286Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "a9d62197033d6a38a1020beba37cf3ad8502ea4328884e4b2ab05a87d5ca681f",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390070067:skill",
+            "name": "Zig Zag - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Spectro",
+            "expressions": [
+              "30.00%+60",
+              "34.50%+69",
+              "39.00%+78",
+              "43.50%+87",
+              "48.00%+96"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.3
+              ],
+              [
+                0.345
+              ],
+              [
+                0.39
+              ],
+              [
+                0.435
+              ],
+              [
+                0.48
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 15,
+            "sourceText": "Summon a Zig Zag that detonates Spectro energy, dealing 30.00%+60 Spectro DMG and creating a Stagnation Zone that lasts 1.8s.\nCD: 15s · Summon a Zig Zag that detonates Spectro energy, dealing 34.50%+69 Spectro DMG and creating a Stagnation Zone that lasts 1.8s.\nCD: 15s · Summon a Zig Zag that detonates Spectro energy, dealing 39.00%+78 Spectro DMG and creating a Stagnation Zone that lasts 1.8s.\nCD: 15s · Summon a Zig Zag that detonates Spectro energy, dealing 43.50%+87 Spectro DMG and creating a Stagnation Zone that lasts 1.8s.\nCD: 15s · Summon a Zig Zag that detonates Spectro energy, dealing 48.00%+96 Spectro DMG and creating a Stagnation Zone that lasts 1.8s.\nCD: 15s"
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  }
+}

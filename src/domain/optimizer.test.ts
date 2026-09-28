@@ -29,17 +29,6 @@ describe('optimizer', () => {
     expect(results[0].complete).toBe(true)
   })
 
-  it('evaluates declarative formula targets and labels capped searches', () => {
-    const echoes = [1, 2, 3, 4, 5, 6].map((value) => makeEcho(String(value), value))
-    const formulaRequest: OptimizerRequest = {
-      ...request(echoes), objective: 'expected', maxEvaluations: 10,
-      formula: { target: { id: 'atk-target', label: 'ATK target', kind: 'stat', mode: 'expected' }, node: { op: 'stat', key: 'critRate' }, inputs: {}, entries: [] }
-    }
-    const results = optimizeBuilds(formulaRequest)
-    expect(results[0].targetId).toBe('atk-target')
-    expect(results[0].complete).toBe(false)
-  })
-
   it('keeps locked Echoes optimizer-eligible while honoring exclusions and constraints', () => {
     const echoes = [makeEcho('locked', 1, true), ...[2, 3, 4, 5].map((value) => makeEcho(String(value), value)), { ...makeEcho('excluded', 100), excluded: true }]
     const results = optimizeBuilds({ ...request(echoes), minimumStats: { critRate: 40 } })

@@ -75,7 +75,7 @@ export function PrivacyLegalView() {
         <Panel>
           <header><span>06</span><div><p>Use and reliability</p><h2>Accuracy, availability, and acceptable use</h2></div></header>
           <div className="legal-copy">
-            <p>Tacet Lab is provided for personal, informational use. Calculations, OCR results, optimization suggestions, and catalog records may be incomplete, outdated, or incorrect. Game-data values are reproducible from pinned sources but are not represented as independently verified against the current English in-game UI.</p>
+            <p>Tacet Lab is provided for personal, informational use. Calculations, OCR results, optimization suggestions, and catalog records may be incomplete, outdated, or incorrect.</p>
             <p>Always review scan results and important calculations yourself. To the extent permitted by applicable law, the project is provided as-is and without warranties; you are responsible for your use of it and for maintaining backups of data you want to keep.</p>
             <p>Do not use Tacet Lab to violate applicable law, the rights of others, or the Wuthering Waves terms and policies. The tool is not designed for game automation, cheating, account access, or circumvention of technical protections.</p>
           </div>

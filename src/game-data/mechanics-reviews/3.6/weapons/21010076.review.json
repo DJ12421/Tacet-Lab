@@ -1,0 +1,509 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21010076",
+  "entityName": "Thousandfold Deliverance",
+  "sourceFingerprint": "5e0a08d6ee69d30a3bff7f98f14c4e4f4ccf926bd5161499fbbdfb99ca04270d",
+  "reviewedAt": "2026-09-15T12:43:48.021Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "5e1ead1410b76d2dcf00030e5da30d4443b9ff45531fa1763bbb114d2af05c78",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21010076:effect:0",
+            "sourceName": "Hark, Spirits and Stars",
+            "text": "Grants 12% All-Attribute DMG Bonus.",
+            "refinementTexts": [
+              "Grants 12% All-Attribute DMG Bonus.",
+              "Grants 15% All-Attribute DMG Bonus.",
+              "Grants 18% All-Attribute DMG Bonus.",
+              "Grants 21% All-Attribute DMG Bonus.",
+              "Grants 24% All-Attribute DMG Bonus."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "AllElementAttributeBonus",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21010076:effect:1",
+            "sourceName": "Hark, Spirits and Stars",
+            "text": "Casting Intro Skill or gaining a Shield as the active Resonator grants 1 stack of Nature's Order and 1 stack of Cradle of Life. This effect can be triggered via gaining a Shield once every 0.5s, stacking up to 6, lasting for 7s.",
+            "refinementTexts": [
+              "Casting Intro Skill or gaining a Shield as the active Resonator grants 1 stack of Nature's Order and 1 stack of Cradle of Life. This effect can be triggered via gaining a Shield once every 0.5s, stacking up to 6, lasting for 7s.",
+              "Casting Intro Skill or gaining a Shield as the active Resonator grants 1 stack of Nature's Order and 1 stack of Cradle of Life. This effect can be triggered via gaining a Shield once every 0.5s, stacking up to 6, lasting for 7s.",
+              "Casting Intro Skill or gaining a Shield as the active Resonator grants 1 stack of Nature's Order and 1 stack of Cradle of Life. This effect can be triggered via gaining a Shield once every 0.5s, stacking up to 6, lasting for 7s.",
+              "Casting Intro Skill or gaining a Shield as the active Resonator grants 1 stack of Nature's Order and 1 stack of Cradle of Life. This effect can be triggered via gaining a Shield once every 0.5s, stacking up to 6, lasting for 7s.",
+              "Casting Intro Skill or gaining a Shield as the active Resonator grants 1 stack of Nature's Order and 1 stack of Cradle of Life. This effect can be triggered via gaining a Shield once every 0.5s, stacking up to 6, lasting for 7s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 6,
+                "key": "1"
+              },
+              "trigger": "Intro Skill/Shield gained",
+              "durationSeconds": 7,
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21010076:effect:2",
+            "sourceName": "Hark, Spirits and Stars",
+            "text": "Switching to another Resonator ends both Nature's Order and Cradle of Life immediately.",
+            "refinementTexts": [
+              "Switching to another Resonator ends both Nature's Order and Cradle of Life immediately.",
+              "Switching to another Resonator ends both Nature's Order and Cradle of Life immediately.",
+              "Switching to another Resonator ends both Nature's Order and Cradle of Life immediately.",
+              "Switching to another Resonator ends both Nature's Order and Cradle of Life immediately.",
+              "Switching to another Resonator ends both Nature's Order and Cradle of Life immediately."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ],
+              "trigger": "While equipped"
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21010076:effect:3",
+            "sourceName": "Hark, Spirits and Stars",
+            "text": "Nature's Order: Crit. DMG is increased by 4%, up to 24%.",
+            "refinementTexts": [
+              "Nature's Order: Crit. DMG is increased by 4%, up to 24%.",
+              "Nature's Order: Crit. DMG is increased by 5%, up to 30%.",
+              "Nature's Order: Crit. DMG is increased by 6%, up to 36%.",
+              "Nature's Order: Crit. DMG is increased by 7%, up to 42%.",
+              "Nature's Order: Crit. DMG is increased by 8%, up to 48%."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "stacks",
+                "key": "1"
+              },
+              "modifiers": [
+                {
+                  "stat": "critDamage",
+                  "operation": "addPercent",
+                  "value": 4,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "While equipped"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 4
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 6
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 7
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21010076:effect:4",
+            "sourceName": "Hark, Spirits and Stars",
+            "text": "When Nature's Order reaches 6, the Crit. Rate of Heavy Attack DMG is increased by 12%.",
+            "refinementTexts": [
+              "When Nature's Order reaches 6, the Crit. Rate of Heavy Attack DMG is increased by 12%.",
+              "When Nature's Order reaches 6, the Crit. Rate of Heavy Attack DMG is increased by 15%.",
+              "When Nature's Order reaches 6, the Crit. Rate of Heavy Attack DMG is increased by 18%.",
+              "When Nature's Order reaches 6, the Crit. Rate of Heavy Attack DMG is increased by 21%.",
+              "When Nature's Order reaches 6, the Crit. Rate of Heavy Attack DMG is increased by 24%."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "stacks",
+                "key": "1",
+                "maximum": 6,
+                "minimum": 0
+              },
+              "modifiers": [
+                {
+                  "stat": "critRate",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self",
+                  "appliesTo": "heavy",
+                  "scaling": "threshold",
+                  "minimumActivation": 6
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Nature's Order reaches 6"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Nature's Order reaches 6"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Nature's Order reaches 6"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Nature's Order reaches 6"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Nature's Order reaches 6"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Nature's Order reaches 6"
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21010076:effect:5",
+            "sourceName": "Hark, Spirits and Stars",
+            "text": "Cradle of Life: Casting Heavy Attack consumes up to 2 stacks of Cradle of Life.",
+            "refinementTexts": [
+              "Cradle of Life: Casting Heavy Attack consumes up to 2 stacks of Cradle of Life.",
+              "Cradle of Life: Casting Heavy Attack consumes up to 2 stacks of Cradle of Life.",
+              "Cradle of Life: Casting Heavy Attack consumes up to 2 stacks of Cradle of Life.",
+              "Cradle of Life: Casting Heavy Attack consumes up to 2 stacks of Cradle of Life.",
+              "Cradle of Life: Casting Heavy Attack consumes up to 2 stacks of Cradle of Life."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "key": "2",
+                "maximum": 2,
+                "labels": [
+                  "0",
+                  "1",
+                  "2"
+                ]
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ],
+              "trigger": "Heavy Atk. used",
+              "durationSeconds": 7
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21010076:effect:6",
+            "sourceName": "Hark, Spirits and Stars",
+            "text": "Cradle of Life: Casting Heavy Attack consumes up to 2 stacks of Cradle of Life. For every 1 of Cradle of Life consumed, Heavy Attack DMG ignores 15% of the target's DEF, up to 30%. The effect lasts for 2s.",
+            "refinementTexts": [
+              "For every 1 of Cradle of Life consumed, Heavy Attack DMG ignores 15% of the target's DEF, up to 30%. The effect lasts for 2s.",
+              "For every 1 of Cradle of Life consumed, Heavy Attack DMG ignores 17.5% of the target's DEF, up to 35%. The effect lasts for 2s.",
+              "For every 1 of Cradle of Life consumed, Heavy Attack DMG ignores 20% of the target's DEF, up to 40%. The effect lasts for 2s.",
+              "For every 1 of Cradle of Life consumed, Heavy Attack DMG ignores 22.5% of the target's DEF, up to 45%. The effect lasts for 2s.",
+              "For every 1 of Cradle of Life consumed, Heavy Attack DMG ignores 25% of the target's DEF, up to 50%. The effect lasts for 2s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 2,
+                "key": "2"
+              },
+              "durationSeconds": 2,
+              "modifiers": [
+                {
+                  "stat": "DEFIgnore",
+                  "operation": "addPercent",
+                  "value": 15,
+                  "scope": "self",
+                  "appliesTo": "heavy",
+                  "scaling": "per-unit",
+                  "maximumValue": 30
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Heavy Atk. used"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 2,
+                "modifiers": [
+                  {
+                    "value": 15,
+                    "maximumValue": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 2,
+                "modifiers": [
+                  {
+                    "value": 17.5,
+                    "maximumValue": 35
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 2,
+                "modifiers": [
+                  {
+                    "value": 20,
+                    "maximumValue": 40
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 2,
+                "modifiers": [
+                  {
+                    "value": 22.5,
+                    "maximumValue": 45
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 2,
+                "modifiers": [
+                  {
+                    "value": 25,
+                    "maximumValue": 50
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  }
+}

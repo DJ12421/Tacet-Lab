@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000085",
+  "entityName": "Hecate",
+  "sourceFingerprint": "e2f071c116a9d6beb159c5dad2519f24387c17cbf8a5e38518873e1e2249544f",
+  "reviewedAt": "2026-09-26T18:47:52.429Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "bbb0712b0da3bdf8b5913d25879fffd20ba0536cc982df8554b10d163d9ee577",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000085:skill",
+            "name": "Hecate - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Havoc",
+            "expressions": [
+              "25.33%",
+              "30.40%",
+              "35.46%",
+              "40.53%",
+              "45.59%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.25329999999999997
+              ],
+              [
+                0.304
+              ],
+              [
+                0.3546
+              ],
+              [
+                0.4053
+              ],
+              [
+                0.4559
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 20,
+            "sourceText": "Summon 3 twirling Crescent Servants around you. Crescent Servants attack enemies with their spinning blades, dealing 25.33% Havoc DMG. Triggering a Counterattack with the Echo attacks resets the Crescent Servants' duration.\nThe Resonator with this Echo equipped in the main slot has their Coordinated Attack DMG increased by 40.00%.\nCD: 20s. · Summon 3 twirling Crescent Servants around you. Crescent Servants attack enemies with their spinning blades, dealing 30.40% Havoc DMG. Triggering a Counterattack with the Echo attacks resets the Crescent Servants' duration.\nThe Resonator with this Echo equipped in the main slot has their Coordinated Attack DMG increased by 40.00%.\nCD: 20s. · Summon 3 twirling Crescent Servants around you. Crescent Servants attack enemies with their spinning blades, dealing 35.46% Havoc DMG. Triggering a Counterattack with the Echo attacks resets the Crescent Servants' duration.\nThe Resonator with this Echo equipped in the main slot has their Coordinated Attack DMG increased by 40.00%.\nCD: 20s. · Summon 3 twirling Crescent Servants around you. Crescent Servants attack enemies with their spinning blades, dealing 40.53% Havoc DMG. Triggering a Counterattack with the Echo attacks resets the Crescent Servants' duration.\nThe Resonator with this Echo equipped in the main slot has their Coordinated Attack DMG increased by 40.00%.\nCD: 20s. · Summon 3 twirling Crescent Servants around you. Crescent Servants attack enemies with their spinning blades, dealing 45.59% Havoc DMG. Triggering a Counterattack with the Echo attacks resets the Crescent Servants' duration.\nThe Resonator with this Echo equipped in the main slot has their Coordinated Attack DMG increased by 40.00%.\nCD: 20s."
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "ba2e389e5277cab403227ce0514b19943d08050ae5b17336428f4665b01779ab",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000085:effect:0",
+            "sourceName": "Hecate",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in the main slot has their Coordinated Attack DMG increased by 40.00%.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "coordinatedDamage",
+                  "operation": "addPercent",
+                  "value": 40,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

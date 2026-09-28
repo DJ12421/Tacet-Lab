@@ -1,5 +1,5 @@
 export type StatKey = 'hp' | 'hpPercent' | 'atk' | 'atkPercent' | 'def' | 'defPercent' | 'critRate' | 'critDamage' | 'energyRegen' | 'basicDamage' | 'heavyDamage' | 'skillDamage' | 'liberationDamage' | 'spectroDamage' | 'fusionDamage' | 'glacioDamage' | 'electroDamage' | 'aeroDamage' | 'havocDamage' | 'healingBonus'
-export type DamageType = 'basic' | 'heavy' | 'skill' | 'liberation' | 'intro' | 'outro' | 'echo' | 'healing'
+export type DamageType = 'basic' | 'heavy' | 'skill' | 'liberation' | 'intro' | 'outro' | 'echo' | 'status' | 'healing'
 export type Element = 'spectro' | 'fusion' | 'glacio' | 'electro' | 'aero' | 'havoc'
 export interface StatLine { key: StatKey; value: number }
 export interface Echo { id: string; name: string; cost: 1 | 3 | 4; rarity: 1 | 2 | 3 | 4 | 5; level: number; sonata: string; mainStat: StatLine; subStats: StatLine[]; locked: boolean; excluded: boolean; /** Owned-character ID for actual equipment. Legacy backups may contain a build ID and are migrated on open/import. */ equippedBy?: string; equippedByName?: string; createdAt: number; source: 'scan' | 'screenshot' | 'manual' | 'import' }
@@ -67,11 +67,13 @@ export interface ScanCandidate { id: string; createdAt: number; imageDataUrl: st
 export type OptimizerStatKey = Exclude<keyof AggregatedStats, 'baseHp' | 'baseAtk' | 'baseDef'>
 export type OptimizerObjective = 'expected' | 'normal' | 'critical' | OptimizerStatKey
 export interface OptimizationTarget { id: string; label: string; kind: 'damage' | 'healing' | 'shield' | 'stat' | 'rotation'; mode: FormulaResultMode }
-export interface OptimizerFormulaConfig {
+export interface OptimizerCombatConfig {
   target: OptimizationTarget
-  node: import('./calculation/engine').FormulaNode
-  inputs: Record<string, ScenarioValue>
-  entries: import('./calculation/engine').FormulaEntry[]
+  build: Build
+  character: OwnedCharacter
+  weapon: OwnedWeapon
+  scenario?: TeamScenario
+  bonusStatLines?: StatLine[]
 }
 export type OptimizerEquippedPolicy = 'current' | 'team' | 'all'
 export type OptimizerMainEchoPolicy = 'current' | 'any' | 'selected'
@@ -136,8 +138,7 @@ export interface OptimizerRequest {
   maxEvaluations?: number
   includeEquippedBy?: string
   currentMainEchoId?: string
-  bonusStatLines?: StatLine[]
-  formula?: OptimizerFormulaConfig
+  combat?: OptimizerCombatConfig
   profile?: OptimizerProfile
   partition?: { index: number; count: number }
   /** Global top-N cutoff supplied by the coordinator. Branches must beat it. */

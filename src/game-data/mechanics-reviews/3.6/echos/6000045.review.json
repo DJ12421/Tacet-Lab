@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000045",
+  "entityName": "Mourning Aix",
+  "sourceFingerprint": "54849bc75e88c38d70c2a3a6fc0fc59264d82ca06620f9e3c68b60dc79ad9b30",
+  "reviewedAt": "2026-09-26T18:34:34.967Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "5ca9335594b04cfe81639db6407800e1a2be2c3a037c18c8866e37e07e9b0ccd",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000045:skill",
+            "name": "Mourning Aix - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Spectro",
+            "expressions": [
+              "98.40%+147.60%",
+              "113.16%+169.74%",
+              "127.92%+191.88%",
+              "142.68%+214.02%",
+              "157.44%+236.16%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.9840000000000001,
+                1.476
+              ],
+              [
+                1.1316,
+                1.6974
+              ],
+              [
+                1.2792000000000001,
+                1.9188
+              ],
+              [
+                1.4268,
+                2.1402
+              ],
+              [
+                1.5744,
+                2.3616
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              1
+            ],
+            "count": 2,
+            "cooldownSeconds": 20,
+            "sourceText": "Transform into Mourning Aix and perform 2 consecutive claw attacks, each attack dealing 98.40% and 147.60% Spectro DMG respectively.\nAfter the transformation, increase current character's Spectro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s\nCD: 20s · Transform into Mourning Aix and perform 2 consecutive claw attacks, each attack dealing 113.16% and 169.74% Spectro DMG respectively.\nAfter the transformation, increase current character's Spectro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s\nCD: 20s · Transform into Mourning Aix and perform 2 consecutive claw attacks, each attack dealing 127.92% and 191.88% Spectro DMG respectively.\nAfter the transformation, increase current character's Spectro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s\nCD: 20s · Transform into Mourning Aix and perform 2 consecutive claw attacks, each attack dealing 142.68% and 214.02% Spectro DMG respectively.\nAfter the transformation, increase current character's Spectro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s\nCD: 20s · Transform into Mourning Aix and perform 2 consecutive claw attacks, each attack dealing 157.44% and 236.16% Spectro DMG respectively.\nAfter the transformation, increase current character's Spectro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s\nCD: 20s"
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "6030ae4778d128f080b64ab670ee25f89d712d3f7d3e47c96fb67334d431ef00",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000045:effect:0",
+            "sourceName": "Mourning Aix",
+            "sourceType": "echo",
+            "text": "After the transformation, increase current character's Spectro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "After the transformation",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "liberationDamage",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                },
+                {
+                  "stat": "Spectro",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            }
+          }
+        ]
+      }
+    }
+  }
+}

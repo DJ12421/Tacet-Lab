@@ -29,8 +29,7 @@ import type {
   OwnedWeapon,
   TeamScenario
 } from '../domain/types'
-import { characterFormulaSheets, createBuildCalculationContext, FormulaCalculator, resolveRuntimeBuild } from '../domain/calculation'
-import { aggregateStats, formatDamage } from '../domain/damage'
+import { calculateBuildModes, combatTargets, formatDamage, resolveRuntimeBuild } from '../domain/combat/runtime'
 import { createLocalId } from '../domain/id'
 import { EchoMiniCard, EquippedCharacterLabel, formatStat, Icon, Panel } from './components'
 import { CalculatedValue, traceCalculationDetail } from './CalculationDetails'
@@ -135,14 +134,11 @@ export function OptimizerView({
   const build = builds.find((item) => item.id === buildId) ?? builds[0]
   const runtime = useMemo(() => build ? resolveRuntimeBuild(build, characters, ownedWeapons) : undefined, [build, characters, ownedWeapons])
   const showcase = useMemo(() => build && runtime ? resolveCharacterShowcaseModel({ character: runtime.character, weapons: ownedWeapons, echoes, builds: [build] }) : undefined, [build, runtime, ownedWeapons, echoes])
-  const bonusStatLines = showcase?.statBonusSources.filter((source) => !source.id.startsWith('sonata-')).flatMap((source) => source.lines) ?? []
   const resonator = runtime?.resonator
   const weapon = runtime?.runtimeWeapon
-  const formulaSheet = characterFormulaSheets.find((sheet) => sheet.id === resonator?.id)
   const attack = resonator?.attacks.find((item) => item.id === attackId) ?? resonator?.attacks[0]
-  const formulaTarget = formulaSheet?.targets.find((target) => target.id === `${resonator?.id}:${attack?.id}`) ?? formulaSheet?.targets[0]
+  const formulaTarget = combatTargets(resonator?.id ?? '').find((target) => target.id === attack?.id) ?? combatTargets(resonator?.id ?? '')[0]
   const currentEchoes = useMemo(() => build?.echoIds.map((id) => echoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)) ?? [], [build, echoes])
-  const currentStats = resonator && weapon ? aggregateStats(resonator, weapon, currentEchoes, bonusStatLines) : undefined
   const targets = resonator?.attacks.map((item) => ({ id: item.id, label: item.name })) ?? []
   const optimizerEnemy = (): EnemyConfig => ({
     ...(initialEnemy ?? {}),
@@ -150,13 +146,12 @@ export function OptimizerView({
     resistance: Math.min(100, Math.max(-100, initialEnemy?.resistance ?? 10)),
     damageReduction: initialEnemy?.damageReduction ?? 0
   })
-  const currentDamage = useMemo(() => {
-    if (!build || !runtime || !attack) return undefined
-    if (!formulaTarget) return undefined
-    const context = createBuildCalculationContext({ build, character: runtime.character, weapon: runtime.weapon, echoes: currentEchoes, enemy: optimizerEnemy(), scenario, targetId: formulaTarget.id })
-    const calculator = new FormulaCalculator(context)
-    return { normal: Number(calculator.evaluate(formulaTarget.normal).value), critical: Number(calculator.evaluate(formulaTarget.critical).value), expected: Number(calculator.evaluate(formulaTarget.expected).value) }
-  }, [attack, build, currentEchoes, formulaTarget, runtime])
+  const currentCalculation = useMemo(() => {
+    if (!build || !runtime || !formulaTarget) return undefined
+    return calculateBuildModes({ build, character:runtime.character, weapon:runtime.weapon, echoes:currentEchoes, enemy:optimizerEnemy(), scenario, targetId:formulaTarget.id })
+  }, [build, currentEchoes, formulaTarget, initialEnemy, runtime, scenario])
+  const currentDamage = currentCalculation?.values
+  const currentStats = currentCalculation?.stats
   const currentScore = currentDamage && (objective === 'normal' || objective === 'critical' || objective === 'expected') ? currentDamage[objective] : currentStats?.[objective as OptimizerStatKey]
   const scalesWith = useMemo(() => {
     const labels = new Set<string>()
@@ -240,6 +235,7 @@ export function OptimizerView({
 
   const run = () => {
     if (!profileReady || !build || !resonator || !weapon || !attack || !runtime || !showcase) return
+    if (!currentCalculation?.stats) { setError(currentCalculation?.warnings.join(' ') || 'The reviewed combat target cannot be calculated.'); return }
     if (profile.mainEchoPolicy === 'selected' && !profile.selectedMainEchoId) { setError('Choose the required main Echo before generating builds.'); return }
     terminateWorkers()
     clearResults()
@@ -267,13 +263,12 @@ export function OptimizerView({
     let broadcastThreshold: number | undefined
     const startedAt = performance.now()
     const enemy = optimizerEnemy()
-    const baseContext = createBuildCalculationContext({ build, character: runtime.character, weapon: runtime.weapon, echoes: currentEchoes, enemy, scenario, targetId: formulaTarget?.id })
     const mode = objective === 'normal' || objective === 'critical' || objective === 'expected' ? objective : undefined
     const baseRequest: Omit<OptimizerRequest, 'partition'> = {
       requestId, echoes: inventoryEchoes, resonator, weapon, attack, enemy, objective, minimumStats: profile.minimumStats,
       maximumStats: profile.maximumStats, limit: profile.resultLimit, maxEvaluations: profile.maxEvaluations,
-      includeEquippedBy: runtime.character.id, currentMainEchoId: build.echoIds[0], bonusStatLines, profile: { ...profile, teamBuildIds: [...new Set(teamBuildIds)] },
-      formula: mode && formulaTarget ? { target: { id: formulaTarget.id, label: formulaTarget.label, kind: formulaTarget.kind, mode }, node: formulaTarget[mode], inputs: baseContext.inputs, entries: baseContext.entries } : undefined
+      includeEquippedBy: runtime.character.id, currentMainEchoId: build.echoIds[0], profile: { ...profile, teamBuildIds: [...new Set(teamBuildIds)] },
+      combat: formulaTarget ? { target: { id: formulaTarget.id, label: formulaTarget.label, kind: formulaTarget.kind, mode:mode ?? 'expected' }, build, character:runtime.character, weapon:runtime.weapon, scenario } : undefined
     }
     const mergedProgress = () => {
       const combined = mergeProgress(requestId, [...outputs.map((output) => output.progress), ...workerProgress])
@@ -453,8 +448,9 @@ export function OptimizerView({
       ? runtimeStatDetail(resonator, weapon, resultEchoes, objective, result.score)
       : { title: String(objective), value: String(result.score), rows: [{ label: 'Optimizer result', value: String(result.score) }] }
     if (!build || !runtime || !formulaTarget) return { title: `${attack?.name ?? 'Formula target'} · ${objective}`, value: String(result.score), rows: [{ label: 'Optimizer result', value: String(result.score) }] }
-    const snapshot = new FormulaCalculator(createBuildCalculationContext({ build, character: runtime.character, weapon: runtime.weapon, echoes: resultEchoes, enemy: optimizerEnemy(), scenario, targetId: formulaTarget.id })).evaluate(formulaTarget[objective])
-    return traceCalculationDetail(snapshot.trace, `${formulaTarget.label} · ${objective}`)
+    const calculated = calculateBuildModes({ build, character:runtime.character, weapon:runtime.weapon, echoes:resultEchoes, enemy:optimizerEnemy(), scenario, targetId:formulaTarget.id, trace:true })
+    const trace = calculated.traces[objective]
+    return trace ? traceCalculationDetail(trace, `${formulaTarget.label} · ${objective}`) : { title:formulaTarget.label, value:String(result.score), rows:[{ label:'Optimizer result', value:String(result.score) }] }
   }
 
   const progressPercent = progress.total > 0 ? Math.min(100, progress.processed / progress.total * 100) : 0

@@ -82,6 +82,7 @@
 
 .sidebar nav {
   display: grid;
+  border-radius: 0px;
   gap: 5px;
 }
 
@@ -137,7 +138,7 @@
 
 .local-status>i, .pulse, .live-dot {
   width: 7px;
-  height: 7px;
+  height: 6px;
   background: var(--mint);
   border-radius: 50%;
   box-shadow: 0 0 12px var(--mint);

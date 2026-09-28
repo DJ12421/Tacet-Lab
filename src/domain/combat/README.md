@@ -1,7 +1,8 @@
 # Clean-room combat calculation module
 
-Status: implementation contract. No production calculation code belongs here
-until the first hand-calculated fixtures are agreed.
+Status: reviewed 3.6 mechanics are integrated into Teams, rotations, build
+previews, the optimizer worker, and the Theorizer. The former damage module and
+general-purpose formula engine have been removed.
 
 ## Decision
 
@@ -82,6 +83,7 @@ export interface CombatMember {
 export interface EchoInput {
   instanceId: string
   catalogId: string
+  rarity: number
   level: number
   sonataId: string
   mainStat: StatValue
@@ -161,10 +163,13 @@ export interface DamageValues {
 export interface ActionResult {
   actionId: string
   actorId: string
-  kind: 'damage' | 'healing' | 'shield'
+  kind: 'damage' | 'healing' | 'shield' | 'utility'
+  damageType?: DamageType
+  stats: AggregatedStats
   hits: readonly number[]
   totals: DamageValues
   selected: number
+  appliedEffects: readonly string[]
   trace?: CalculationTrace
 }
 
@@ -192,37 +197,54 @@ export interface MechanicsRegistry {
   dataVersion: string
   characters: Readonly<Record<string, CharacterMechanics>>
   weapons: Readonly<Record<string, WeaponMechanics>>
-  echoes: Readonly<Record<string, EchoMechanics>>
-  sonatas: Readonly<Record<string, SonataMechanics>>
+  echoes?: Readonly<Record<string, EchoMechanics>>
+  sonatas?: Readonly<Record<string, SonataMechanics>>
 }
 ```
 
-Each definition carries its source ID, source text or source reference, data
-version, and review fingerprint. Descriptions are evidence for reviewers, not
-executable runtime instructions.
+The registry contains reviewed character actions, character/weapon/Sonata/Echo
+effects, ranked main-Echo actions, triggered actions, and action-use adjustments.
+Effects may be always active, toggled, or stack-counted and may filter individual
+operations by action, damage type, or element.
+
+Each definition carries its source ID and review fingerprint; the registry
+carries the data version. Descriptions are reviewer material, not executable
+runtime instructions.
 
 The initial executable effect vocabulary is deliberately narrow:
 
 ```ts
 export type EffectOperation =
   | { kind: 'add-flat-stat'; stat: Stat; value: number }
-  | { kind: 'add-percent-stat'; stat: Stat; value: number }
-  | { kind: 'add-damage-bonus'; damageType?: DamageType; element?: Element; value: number }
-  | { kind: 'amplify-damage'; damageType?: DamageType; value: number }
+  | { kind: 'add-percent-stat'; stat: 'hp' | 'atk' | 'def'; value: number }
+  | { kind: 'add-damage-bonus'; value: number }
+  | { kind: 'amplify-damage'; value: number }
+  | { kind: 'add-vulnerability'; value: number }
+  | { kind: 'add-final-damage'; value: number }
+  | { kind: 'reduce-damage-taken'; value: number }
   | { kind: 'reduce-defense'; value: number }
   | { kind: 'ignore-defense'; value: number }
-  | { kind: 'reduce-resistance'; element?: Element; value: number }
-  | { kind: 'ignore-resistance'; element?: Element; value: number }
+  | { kind: 'reduce-resistance'; value: number }
+  | { kind: 'ignore-resistance'; value: number }
   | { kind: 'override-crit'; mode: 'never' | 'always' }
-  | { kind: 'extra-damage'; actionId: string }
 ```
 
-An effect also declares its recipient, activation input, trigger, duration,
-stacking rule, and optional action filter. New operations are added only when a
-reviewed mechanic cannot be represented correctly by the existing vocabulary.
+Each operation may carry an action, damage-type, or element filter and may be
+marked once-only inside an otherwise per-stack effect. An effect
+also declares its recipient, activation input, stack bounds, review fingerprint,
+equipment threshold, and optional exclusivity group. New operations are added
+only when a reviewed mechanic cannot be represented correctly by this vocabulary.
+
+Conditional numeric effects use `conditional-value`: one boolean input records
+whether the trigger occurred, while the operation scales from a bounded stat on
+the effect provider or affected recipient. This keeps trigger state distinct
+and resolves Tune Break Boost, Off-Tune Buildup Rate, and Energy Regen from the
+correct party member.
 
 Healing and shields use their own action formulas; they are not represented as
-negative or specially tagged damage.
+negative or specially tagged damage. Source-backed utility actions and support
+actions without numeric source values remain visible with unsupported formulas
+and fail closed if calculation is requested.
 
 ## Internal calculation pipeline
 
@@ -230,18 +252,18 @@ For an action:
 
 1. Validate the request and registry version.
 2. Materialize an immutable combat snapshot from the party and equipment.
-3. Resolve selected, always-active, triggered, and recipient-scoped effects.
+3. Resolve selected, always-active, stack-counted, and recipient-scoped effects.
 4. Aggregate final stats in a documented order.
 5. Evaluate every hit with the numeric kernel.
-6. Apply the explicit game-rounding policy at named stages.
+6. Preserve full damage precision and apply only the documented base-stat rounding.
 7. Return all three crit outcomes and select the requested result mode.
 8. Build an optional trace from the same named stages.
 
 For a rotation:
 
 1. Validate and stably order commands by timestamp and original position.
-2. Reduce commands over immutable combat state: active actor, buffs, stacks,
-   durations, cooldown-relevant state, and queued extra damage.
+2. Enforce source-backed action cooldowns; no charge or recharge model exists
+   until Encore or Nanoka exposes reliable structured values for one.
 3. Resolve each damaging, healing, or shielding command through the action
    implementation above.
 4. Accumulate per-action, per-actor, per-type, total, and DPS results.
@@ -254,18 +276,17 @@ change numeric output.
 - Percentages are stored internally as decimal ratios: `20%` is `0.20`.
 - Times are seconds and may contain fractions.
 - IDs are opaque strings and are never interpreted numerically.
-- Member identity uses stable `memberId`, never array position or build ID.
+- Member identity uses the caller's stable `memberId`, never array position.
 - Inputs and registries are treated as immutable.
 - No random values, current time, locale, DOM, storage, or network access.
 - Invalid numbers, unknown IDs, and contradictory inputs fail closed.
 - UI number formatting never occurs inside the module.
-- Rounding occurs only through one named internal rounding policy.
-- Timers, percentages, probabilities, and source values are not rounded merely
-  because final displayed gameplay values are floored.
+- Base-stat rounding occurs only through the named internal policy.
+- Damage, timers, percentages, probabilities, and source values retain precision;
+  the UI owns display rounding.
 
-The exact flooring stages require hand-calculated fixtures before the kernel is
-implemented. The policy must be visible in traces and tested at the public
-interface.
+The exact precision boundaries require hand-calculated fixtures. The policy is
+visible in traces and tested at the public interface.
 
 ## Parser and compiler contract
 
@@ -289,7 +310,7 @@ with current fingerprints enter the compiler. The replacement compiler emits
 the new `MechanicsRegistry`; it must not import old calculation types or emit
 old formula nodes.
 
-## Planned directory ownership
+## Directory ownership
 
 Create files only as their behaviour is implemented; do not add empty
 scaffolding.
@@ -298,18 +319,17 @@ scaffolding.
 src/domain/combat/
   index.ts             public interface exports only
   contract.ts          requests, outcomes, diagnostics, registry types
-  model.ts             private normalized mechanics and combat state
-  snapshot.ts          loadout and party materialization
-  effects.ts           activation, recipients, stacks, durations, routing
-  kernel.ts            stats, damage, healing, shields, defense, resistance
-  rounding.ts          the single explicit gameplay rounding policy
-  engine.ts            calculator creation and action orchestration
-  rotation.ts          timeline state reducer; added with rotation support
+  engine.ts            snapshot, rounding, numeric kernel, and orchestration
   engine.test.ts       hand-calculated tests through the public interface
+
+Added only when their milestones begin:
+
+  effects.ts           snapshot activation, recipients, stacks, routing
   rotation.test.ts     timeline fixtures; added with rotation support
 
 src/game-data/combat/
-  registry.generated.ts
+  reviewed-mechanics.generated.ts
+  registry.ts
 
 .local-tools/nanoka-review/
   parser.mjs           retained extraction and candidate generation
@@ -320,39 +340,65 @@ If the action implementation remains readable without all of the proposed
 internal files, keep fewer files. The external seam does not change when the
 implementation is reorganized.
 
-## Delivery sequence
+## Completed delivery sequence
 
-### 1. Evidence and fixtures
+### 1. Rules baseline
+
+Define the accepted formula and fail-closed policy in [`RULES.md`](./RULES.md).
+
+### 2. Independent fixtures
 
 Agree on small hand-calculated fixtures covering ATK, HP, and DEF scaling;
 multi-hit actions; normal, critical, and expected damage; defense; resistance;
-damage bonus; amplification; and every flooring stage. Record evidence status
-for bundled game values.
+damage bonus; amplification; and every precision boundary. Their independent
+arithmetic examples live in [`FIXTURES.md`](./FIXTURES.md).
 
-### 2. First vertical slice
+### 2.5. Static comparison baseline
+
+Resolve supported formulas, explicit product rules, and deferred mechanics in
+[`BASELINE.md`](./BASELINE.md) without adding a runtime integration.
+
+### 3. First vertical slice — complete
 
 Implement the public contract, snapshot materialization, rounding, and damage
 kernel for one simple character/action and a tiny fixture registry. Tests cross
 only the public seam.
 
-### 3. Reviewed equipment effects
+### 4. Reviewed equipment effects - complete
 
 Retarget the local compiler, then add weapon, Sonata, Echo, and team-effect
 operations one reviewed mechanic category at a time. Unsupported reviewed
 mechanics remain blocking diagnostics.
 
-### 4. Rotations
+### 5. Rotations - complete for deterministic action timelines
 
 Add the timeline reducer after individual actions are correct. A rotation action
 must call the same internal action implementation used by `calculateAction`.
+Commands are stably ordered, may repeat actions without cooldown metadata, and
+aggregate damage totals, DPS, actors, and damage types. Command duration is
+scheduling metadata only; stateful buff expiry, delayed hits, charges, and
+queued damage remain deferred.
 
-### 5. Optimizer and Theorizer
+### 5.5. Reviewed production catalog
+
+Process every local 3.6 candidate through the loopback review dashboard. Correct
+the parser draft where needed, decide every section, and save versioned review
+manifests. The compiler must then emit a complete reviewed catalog without
+missing, rejected, stale, or undecided mechanics. A source entry whose text
+contains no numeric value may emit an explicit unsupported formula that fails
+closed when selected. Raw ignored candidates are never production inputs and
+must not be auto-approved.
+
+### 6. Optimizer and Theorizer - complete
 
 Create one calculator per worker and reuse immutable prepared mechanics. Add a
 trace-free fast path only after profiling, and prove it produces identical
 results through shared fixtures.
 
-### 6. Atomic product cutover
+The optimizer worker and Theorizer use the reviewed runtime seam. Missing review
+manifests remain a blocking compiler error.
+
+### 7. Atomic product cutover - complete
 
 Adapt every UI and worker caller to the new interface. In the same cutover,
 delete old calculators, formula nodes, generated catalogs, trace types, tests,

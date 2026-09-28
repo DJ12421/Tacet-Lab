@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000115",
+  "entityName": "Nightmare: Hecate",
+  "sourceFingerprint": "dfdfc32633f30bedd84238bc336e1466b232b2f99f074532a6b881c590377b15",
+  "reviewedAt": "2026-09-26T18:47:52.509Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "bb7fa175e26fa2405d0e0da64139947f8c0b3d9783484aa7af7b64b90c50f7b8",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000115:skill",
+            "name": "Nightmare: Hecate - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Havoc",
+            "expressions": [
+              "84.66%",
+              "101.59%",
+              "118.52%",
+              "135.46%",
+              "152.39%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.8466,
+                0.8466,
+                0.8466
+              ],
+              [
+                1.0159,
+                1.0159,
+                1.0159
+              ],
+              [
+                1.1852,
+                1.1852,
+                1.1852
+              ],
+              [
+                1.3546,
+                1.3546,
+                1.3546
+              ],
+              [
+                1.5238999999999998,
+                1.5238999999999998,
+                1.5238999999999998
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0,
+              0
+            ],
+            "count": 3,
+            "cooldownSeconds": 25,
+            "sourceText": "Transform into Nightmare: Hecate. Leap up and smash down, dealing 3 stages of damage, each dealing Havoc DMG equal to 84.66% of her ATK.\nThe Resonator with the Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 25s · Transform into Nightmare: Hecate. Leap up and smash down, dealing 3 stages of damage, each dealing Havoc DMG equal to 101.59% of her ATK.\nThe Resonator with the Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 25s · Transform into Nightmare: Hecate. Leap up and smash down, dealing 3 stages of damage, each dealing Havoc DMG equal to 118.52% of her ATK.\nThe Resonator with the Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 25s · Transform into Nightmare: Hecate. Leap up and smash down, dealing 3 stages of damage, each dealing Havoc DMG equal to 135.46% of her ATK.\nThe Resonator with the Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 25s · Transform into Nightmare: Hecate. Leap up and smash down, dealing 3 stages of damage, each dealing Havoc DMG equal to 152.39% of her ATK.\nThe Resonator with the Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 25s"
+          }
+        ],
+        "cooldownSeconds": 25
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "e6aacb418eb0e6b749c9d2d7faa8de54498be84158e013f1d3aa9d72336dea3c",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000115:effect:0",
+            "sourceName": "Nightmare: Hecate",
+            "sourceType": "echo",
+            "text": "The Resonator with the Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 20.00% Echo Skill DMG Bonus.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "echoDamage",
+                  "operation": "addPercent",
+                  "value": 20,
+                  "scope": "self"
+                },
+                {
+                  "stat": "Havoc",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

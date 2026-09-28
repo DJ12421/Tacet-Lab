@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000181",
+  "entityName": "Flora Reindeer",
+  "sourceFingerprint": "ca74460d6a148daefba25af8e6310eb9b5558fba0fa42b552397bad999bde9b4",
+  "reviewedAt": "2026-09-26T18:47:52.569Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "93d9cbf18eb7860ab8273dd62f23f599351a487c6f06f0f3806f13cb1275d950",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000181:skill",
+            "name": "Flora Reindeer - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Aero",
+            "expressions": [
+              "107.00%",
+              "128.40%",
+              "149.80%",
+              "171.20%",
+              "192.60%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.07
+              ],
+              [
+                1.284
+              ],
+              [
+                1.4980000000000002
+              ],
+              [
+                1.712
+              ],
+              [
+                1.926
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 15,
+            "sourceText": "Summon a Flora Reindeer to attack enemies within a large range, dealing 107.00% Aero DMG.\nCD: 15s. · Summon a Flora Reindeer to attack enemies within a large range, dealing 128.40% Aero DMG.\nCD: 15s. · Summon a Flora Reindeer to attack enemies within a large range, dealing 149.80% Aero DMG.\nCD: 15s. · Summon a Flora Reindeer to attack enemies within a large range, dealing 171.20% Aero DMG.\nCD: 15s. · Summon a Flora Reindeer to attack enemies within a large range, dealing 192.60% Aero DMG.\nCD: 15s."
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

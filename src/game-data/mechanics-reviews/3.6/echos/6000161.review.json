@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000161",
+  "entityName": "Nightmare: Violet-Feathered Heron",
+  "sourceFingerprint": "f7a4ab359026a38dd545ef77b973683f09dcea277e5e88b6ff45d18a7215ff20",
+  "reviewedAt": "2026-09-26T18:47:52.526Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "a1b3df3b486296449a28fbe943b790ead4a4480cdda774c188e3de458574c35f",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000161:skill",
+            "name": "Nightmare: Violet-Feathered Heron - Counterattack",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Electro",
+            "expressions": [
+              "180.00%",
+              "207.00%",
+              "234.00%",
+              "261.00%",
+              "288.00%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.8
+              ],
+              [
+                2.07
+              ],
+              [
+                2.34
+              ],
+              [
+                2.61
+              ],
+              [
+                2.88
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 15,
+            "sourceText": "Transform into Violet-Feathered Heron and enter a Parry Stance. Counterattack when the Parry stance is over, dealing 180.00% Electro DMG. If attacked during Parry Stance, you can counterattack in advance and additionally recover 5 Concerto Energy.\nCD: 15s · Transform into Violet-Feathered Heron and enter a Parry Stance. Counterattack when the Parry stance is over, dealing 207.00% Electro DMG. If attacked during Parry Stance, you can counterattack in advance and additionally recover 5 Concerto Energy.\nCD: 15s · Transform into Violet-Feathered Heron and enter a Parry Stance. Counterattack when the Parry stance is over, dealing 234.00% Electro DMG. If attacked during Parry Stance, you can counterattack in advance and additionally recover 5 Concerto Energy.\nCD: 15s · Transform into Violet-Feathered Heron and enter a Parry Stance. Counterattack when the Parry stance is over, dealing 261.00% Electro DMG. If attacked during Parry Stance, you can counterattack in advance and additionally recover 5 Concerto Energy.\nCD: 15s · Transform into Violet-Feathered Heron and enter a Parry Stance. Counterattack when the Parry stance is over, dealing 288.00% Electro DMG. If attacked during Parry Stance, you can counterattack in advance and additionally recover 5 Concerto Energy.\nCD: 15s"
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

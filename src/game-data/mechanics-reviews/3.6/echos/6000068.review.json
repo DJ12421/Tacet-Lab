@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000068",
+  "entityName": "Nimbus Wraith",
+  "sourceFingerprint": "43c7561a7c2092704386fdb13837eefe79200b082ebc77100a7d043b08c1e62a",
+  "reviewedAt": "2026-09-26T18:47:52.387Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "8766f3a337ba7f80340aca4c035f76b92724387ad879a7e22eeec9698f8e02f8",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000068:healing",
+            "name": "Nimbus Wraith - Echo Skill Healing",
+            "damageType": "healing",
+            "skillSource": "echo",
+            "recipient": "self",
+            "scaling": "hp",
+            "expressions": [
+              "1.5%",
+              "1.8%",
+              "2.1%",
+              "2.4%",
+              "2.7%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.015,
+                0.015,
+                0.015,
+                0.015
+              ],
+              [
+                0.018000000000000002,
+                0.018000000000000002,
+                0.018000000000000002,
+                0.018000000000000002
+              ],
+              [
+                0.021,
+                0.021,
+                0.021,
+                0.021
+              ],
+              [
+                0.024,
+                0.024,
+                0.024,
+                0.024
+              ],
+              [
+                0.027000000000000003,
+                0.027000000000000003,
+                0.027000000000000003,
+                0.027000000000000003
+              ]
+            ],
+            "count": 4,
+            "cooldownSeconds": 15,
+            "sourceText": "Summon a Nimbus Wraith that restores the active Resonator's HP by 1.50% of their Max HP, up to 4 times.\nCD: 15s. · Summon a Nimbus Wraith that restores the active Resonator's HP by 1.80% of their Max HP, up to 4 times.\nCD: 15s. · Summon a Nimbus Wraith that restores the active Resonator's HP by 2.10% of their Max HP, up to 4 times.\nCD: 15s. · Summon a Nimbus Wraith that restores the active Resonator's HP by 2.40% of their Max HP, up to 4 times.\nCD: 15s. · Summon a Nimbus Wraith that restores the active Resonator's HP by 2.70% of their Max HP, up to 4 times.\nCD: 15s."
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

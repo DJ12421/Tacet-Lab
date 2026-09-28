@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390070105",
+  "entityName": "Hoartoise",
+  "sourceFingerprint": "f570eecbe83571b3fa7ef8209d383aade349d457b2bea3d2a81e58746f23b10d",
+  "reviewedAt": "2026-09-22T19:20:35.723Z",
+  "sections": {
+    "skill": {
+      "status": "approved-empty",
+      "sourceFingerprint": "02bf5f8dc3e495731f90043d84aff757658380092294268dd96a5c80391f0520",
+      "approvedData": {
+        "attacks": [],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  }
+}

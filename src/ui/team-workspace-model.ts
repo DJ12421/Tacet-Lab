@@ -1,8 +1,8 @@
-import { calculateRotation } from '../domain/damage'
-import { createBuildCalculationContext, FormulaCalculator, characterFormulaSheets, resolveFormulaTarget, type CalculationTrace, type FormulaTarget } from '../domain/calculation'
+import { calculateBuildModes, calculateBuildStats, combatTargets, resolveCombatTarget, type CombatTarget } from '../domain/combat/runtime'
+import type { CalculationTrace, ResultKind } from '../domain/combat'
 import type {
-  AggregatedStats, AttackDefinition, BuffEffect, Build, DamageType, Echo, Element, EquippedLoadout, LoadoutSourceRef, OwnedCharacter,
-  OwnedWeapon, Resonator, RotationAction, StatKey, StatLine, Team, TheorycraftBuild, Weapon
+  AggregatedStats, BuffEffect, Build, DamageType, Echo, EquippedLoadout, LoadoutSourceRef, OwnedCharacter,
+  OwnedWeapon, RotationAction, StatKey, Team, TheorycraftBuild
 } from '../domain/types'
 import { resolveLoadout } from '../domain/loadouts'
 import {
@@ -10,14 +10,7 @@ import {
   type CharacterCatalogEntry
 } from '../game-data'
 import { generatedSonataIconSources } from '../game-data/sonatas.generated'
-import {
-  resolveCharacterShowcaseModel, weaponSecondaryStat,
-  type CharacterShowcaseModel
-} from './character-showcase-model'
-
-const ELEMENTS: Record<string, Element> = {
-  aero: 'aero', electro: 'electro', fusion: 'fusion', glacio: 'glacio', havoc: 'havoc', spectro: 'spectro'
-}
+import { resolveCharacterShowcaseModel, type CharacterShowcaseModel } from './character-showcase-model'
 
 const SKILL_KEYS = ['normalAttack', 'resonanceSkill', 'forteCircuit', 'resonanceLiberation', 'introSkill'] as const
 export type TeamAttackGroup = 'basic' | 'skill' | 'forte' | 'liberation' | 'intro' | 'outro' | 'echo' | 'tuneBreak'
@@ -71,7 +64,7 @@ export interface TeamMemberModel {
 }
 
 export interface TeamFormulaRow {
-  target: FormulaTarget
+  target: CombatTarget
   normal: number
   critical: number
   expected: number
@@ -91,6 +84,7 @@ export interface TeamActionModel {
   trace?: CalculationTrace
   traces?: Record<'normal' | 'critical' | 'expected', CalculationTrace>
   formulaTargetId?: string
+  resultKind?: ResultKind
 }
 
 export interface SonataCoverageModel {
@@ -115,27 +109,10 @@ export interface TeamWorkspaceModel {
   warnings: string[]
 }
 
-function elementFor(catalog: CharacterCatalogEntry): Element {
-  return ELEMENTS[catalog.element.toLowerCase()] ?? 'spectro'
-}
-
-function runtimeAttack(catalog: CharacterCatalogEntry, character: OwnedCharacter, index: number): AttackDefinition {
-  const attack = catalog.attacks[index]
-  const skillLevel = Math.max(1, Math.min(attack.multipliers.length, character.skillLevels?.[attack.skillLevelIndex] ?? 1))
-  return {
-    id: attack.id,
-    name: attack.name,
-    type: attack.type,
-    element: elementFor(catalog),
-    multiplier: attack.multipliers[skillLevel - 1] ?? 0,
-    hits: 1,
-    scalesWith: attack.scalesWith
-  }
-}
-
-function attackModels(catalog: CharacterCatalogEntry, character: OwnedCharacter): TeamAttackModel[] {
-  return catalog.attacks.flatMap((attack, index) => {
+function attackModels(catalog: CharacterCatalogEntry, character: OwnedCharacter, echoes: readonly Echo[] = []): TeamAttackModel[] {
+  const characterAttacks = catalog.attacks.flatMap((attack) => {
     if (isFixedSkillValueName(attack.name)) return []
+    const target = resolveCombatTarget(catalog.id, attack.id, echoes)
     const level = Math.max(1, Math.min(attack.multipliers.length, character.skillLevels?.[attack.skillLevelIndex] ?? 1))
     const isTuneBreak = Boolean(catalog.skillTreeExtras.tuneBreakSkill.name)
       && attack.name.toLowerCase().startsWith(catalog.skillTreeExtras.tuneBreakSkill.name.toLowerCase())
@@ -151,7 +128,7 @@ function attackModels(catalog: CharacterCatalogEntry, character: OwnedCharacter)
     return [{
       id: attack.id,
       name: attack.name,
-      type: attack.type,
+      type:target?.kind === 'healing' ? 'healing' : target?.damageType === 'tune-break' ? 'skill' : target?.damageType ?? attack.type,
       multiplier: attack.multipliers[level - 1] ?? 0,
       multiplierLabel: `${((attack.multipliers[level - 1] ?? 0) * 100).toFixed(2)}%`,
       hitMultipliers: attack.hitMultipliers?.map((hit) => hit[level - 1] ?? 0) ?? [attack.multipliers[level - 1] ?? 0],
@@ -162,43 +139,20 @@ function attackModels(catalog: CharacterCatalogEntry, character: OwnedCharacter)
       group
     }]
   })
-}
-
-function runtimeWeapon(build: Build, weapons: OwnedWeapon[]): Weapon | undefined {
-  const owned = weapons.find((weapon) => weapon.id === build.weaponId)
-  const catalog = weaponCatalog.find((weapon) => weapon.id === owned?.catalogId)
-  if (!owned || !catalog || !catalog.levelStats.length) return undefined
-  const levelStats = catalog.levelStats.reduce((nearest, row) =>
-    Math.abs(row.level - owned.level) < Math.abs(nearest.level - owned.level) ? row : nearest
-  )
-  return {
-    id: owned.id,
-    name: catalog.name,
-    type: catalog.type.toLowerCase() as Weapon['type'],
-    baseAtk: levelStats.baseAtk,
-    stat: weaponSecondaryStat(catalog, levelStats.secondaryStatValue)
-  }
-}
-
-function runtimeResonator(catalog: CharacterCatalogEntry, character: OwnedCharacter): Resonator {
-  const levelStats = catalog.levelStats.reduce((nearest, row) =>
-    Math.abs(row.level - character.level) < Math.abs(nearest.level - character.level) ? row : nearest
-  )
-  return {
-    id: catalog.id,
-    name: catalog.name,
-    element: elementFor(catalog),
-    role: catalog.role,
-    accent: '',
-    baseStats: {
-      hp: levelStats.hp,
-      atk: levelStats.atk,
-      def: levelStats.def,
-      critRate: catalog.baseStats.critRate,
-      critDamage: catalog.baseStats.critDamage
-    },
-    attacks: catalog.attacks.flatMap((attack, index) => isFixedSkillValueName(attack.name) ? [] : [runtimeAttack(catalog, character, index)])
-  }
+  const matchedTargetIds = new Set(catalog.attacks.flatMap((attack) => {
+    const target = resolveCombatTarget(catalog.id, attack.id, echoes)
+    return target ? [target.id] : []
+  }))
+  const reviewedExtras = combatTargets(catalog.id, echoes).filter((target) => !matchedTargetIds.has(target.id) && target.kind !== 'utility').map((target): TeamAttackModel => {
+    const group: TeamAttackGroup = target.group === 'Echo Skill' ? 'echo' : target.damageType === 'outro' ? 'outro' : target.damageType === 'tune-break' ? 'tuneBreak' : 'forte'
+    const type: DamageType = target.kind === 'damage' ? (target.damageType === 'tune-break' ? 'skill' : target.damageType ?? 'skill') : 'healing'
+    return {
+      id:target.id, name:target.label, type,
+      multiplier:0, multiplierLabel:'Reviewed formula', hitMultipliers:[], scalesWith:'atk', skillLevel:group === 'echo' ? echoes[0]?.rarity ?? 1 : character.skillLevels?.[4] ?? 1,
+      skillName:target.group, iconSourceUrl:group === 'echo' ? echoCatalog.find((entry) => entry.name === echoes[0]?.name)?.iconSourceUrl ?? '' : '', group
+    }
+  })
+  return [...characterAttacks, ...reviewedExtras]
 }
 
 function inferRoles(catalog: CharacterCatalogEntry | undefined, attacks: TeamAttackModel[]) {
@@ -266,7 +220,6 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
   const allResolved = [...resolvedMembers, ...resolvedComparisons]
   const runtimeOwnedWeapons = [...input.weapons, ...allResolved.flatMap((entry) => entry?.weapon && !input.weapons.some((weapon) => weapon.id === entry.weapon?.id) ? [entry.weapon] : [])]
   const runtimeEchoes = [...input.echoes, ...allResolved.flatMap((entry) => entry?.echoes.filter((echo) => !input.echoes.some((owned) => owned.id === echo.id)) ?? [])]
-  const runtimeBuilds = resolvedMembers.flatMap((entry) => entry?.build ? [entry.build] : [])
   const baseMembers = Array.from({ length: 3 }, (_, slot): TeamMemberModel => {
     const resolved = resolvedMembers[slot]
     const build = resolved?.build
@@ -278,7 +231,7 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
     const comparison = resolvedComparisons[slot]
     const comparisonShowcase = comparison?.build && character && catalog
       ? resolveCharacterShowcaseModel({ character, catalog, weapons: runtimeOwnedWeapons, echoes: runtimeEchoes, builds: [comparison.build] }) : undefined
-    const attacks = catalog && character ? attackModels(catalog, character) : []
+    const attacks = catalog && character ? attackModels(catalog, character, resolved?.echoes ?? []) : []
     const warnings: string[] = [...(resolved?.warnings ?? [])]
     if (!build) warnings.push('No build assigned to this slot.')
     else {
@@ -293,39 +246,38 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
     }
   }) as [TeamMemberModel, TeamMemberModel, TeamMemberModel]
 
-  const resonators = baseMembers.flatMap((member) => member.catalog && member.character
-    ? [runtimeResonator(member.catalog, member.character)] : [])
-  const runtimeWeapons = baseMembers.flatMap((member) => member.build
-    ? [runtimeWeapon(member.build, runtimeOwnedWeapons)].filter((entry): entry is Weapon => Boolean(entry)) : [])
-  const runtimeTeam = { ...input.team, buildIds: runtimeBuilds.map((entry) => entry.id) }
-  const rotation = calculateRotation(runtimeTeam, runtimeBuilds, resonators, runtimeWeapons, runtimeEchoes)
+  const combatTeamMembers = baseMembers.flatMap((member) => member.build && member.character && member.showcase?.weapon
+    ? [{ build:member.build, character:member.character, weapon:member.showcase.weapon.owned, echoes:member.build.echoIds.map((id) => runtimeEchoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)) }]
+    : [])
 
   for (const member of baseMembers) {
     if (!member.build) continue
-    member.contribution = rotation.byBuild[member.build.id] ?? 0
-    member.contributionPercent = rotation.total > 0 ? member.contribution / rotation.total * 100 : 0
     member.appliedBuffs = (input.team.buffs ?? []).filter((effect) => effect.sourceBuildId === member.build?.id)
     member.receivedBuffs = (input.team.buffs ?? []).filter((effect) => buffAppliesTo(effect, member))
     const ownedWeapon = member.showcase?.weapon?.owned
     if (member.character && member.build && ownedWeapon) {
-      const sheet = characterFormulaSheets.find((entry) => entry.id === member.character?.catalogId)
-      const selectedTargetId = input.team.scenario?.selectedTargetByBuild[member.build.id]
-      member.formulaRows = (sheet?.targets ?? []).map((target) => {
-        const context = createBuildCalculationContext({
+      const statResult = calculateBuildStats({
+        build:member.build, character:member.character, weapon:ownedWeapon,
+        echoes:member.build.echoIds.map((id) => runtimeEchoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)),
+        enemy:input.team.enemy, scenario:input.team.scenario, buffs:member.receivedBuffs, teamMembers:combatTeamMembers
+      })
+      if (statResult.ok) member.conditionedStats = statResult.stats
+      else member.warnings.push(...statResult.errors.map((error) => error.message))
+      member.warnings.push(...statResult.warnings.map((warning) => warning.message))
+      member.formulaRows = combatTargets(member.character.catalogId, member.resolvedEchoes).map((target) => {
+        const result = calculateBuildModes({
           build: member.build!, character: member.character!, weapon: ownedWeapon,
           echoes: member.build!.echoIds.map((id) => runtimeEchoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)),
-          enemy: input.team.enemy, scenario: input.team.scenario, buffs: member.receivedBuffs, targetId: target.id
+          enemy: input.team.enemy, scenario: input.team.scenario, buffs: member.receivedBuffs, targetId: target.id, trace:true, teamMembers:combatTeamMembers
         })
-        if (!member.conditionedStats || target.id === selectedTargetId) member.conditionedStats = context.stats
-        const calculator = new FormulaCalculator(context)
-        const normal = calculator.evaluate(target.normal), critical = calculator.evaluate(target.critical), expected = calculator.evaluate(target.expected)
-        return { target, normal: Number(normal.value), critical: Number(critical.value), expected: Number(expected.value), traces: { normal: normal.trace, critical: critical.trace, expected: expected.trace } }
+        member.warnings.push(...result.warnings)
+        const fallback: CalculationTrace = { stage:'unavailable', value:0, children:[] }
+        return { target, ...result.values, traces:{ normal:result.traces.normal ?? fallback, critical:result.traces.critical ?? fallback, expected:result.traces.expected ?? fallback } }
       })
     }
   }
 
   const sortedActions = [...input.team.actions].sort((left, right) => left.timestamp - right.timestamp)
-  let resultIndex = 0
   const actions = sortedActions.map((action, index): TeamActionModel => {
     const member = baseMembers.find((entry) => entry.build?.id === action.buildId)
     const attack = member?.attacks.find((entry) => entry.id === action.attackId)
@@ -335,34 +287,33 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
     if (!member?.showcase?.weapon) warnings.push('Damage skipped because no weapon is equipped.')
     if (action.timestamp < 0 || action.timestamp > input.team.rotationDuration) warnings.push('Timestamp is outside the rotation duration.')
     if (action.duration !== undefined && action.timestamp + action.duration > input.team.rotationDuration) warnings.push('Clip extends past the rotation duration.')
-    const valid = Boolean(member?.build && member.showcase?.weapon && attack)
-    const result = valid ? rotation.actions[resultIndex++] : undefined
     const activeBuffs = activeBuffsAt(input.team, sortedActions, index).filter((effect) => member ? buffAppliesTo(effect, member) : false)
     const activates = (input.team.buffs ?? []).filter((effect) => effect.sourceBuildId === action.buildId && effect.triggerAttackId === action.attackId)
     const formulaTargetId = action.formulaTargetId ?? (member?.catalog && attack ? `${member.catalog.id}:${attack.id}` : undefined)
-    const target = formulaTargetId && member?.catalog ? resolveFormulaTarget(member.catalog.id, formulaTargetId) : undefined
+    const target = formulaTargetId && member?.catalog ? resolveCombatTarget(member.catalog.id, formulaTargetId, member.resolvedEchoes) : undefined
     let formulaResult: { normal: number; critical: number; expected: number; trace?: CalculationTrace; traces?: Record<'normal' | 'critical' | 'expected', CalculationTrace> } | undefined
     const ownedWeapon = member?.showcase?.weapon?.owned
     if (target && member?.build && member.character && ownedWeapon) {
-      const calculator = new FormulaCalculator(createBuildCalculationContext({
+      const calculated = calculateBuildModes({
         build: member.build, character: member.character, weapon: ownedWeapon,
         echoes: member.build.echoIds.map((id) => runtimeEchoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)),
-        enemy: input.team.enemy, scenario: input.team.scenario, buffs: activeBuffs, actionInputs: action.inputs, targetId: target.id
-      }))
-      const normal = calculator.evaluate(target.normal), critical = calculator.evaluate(target.critical), expected = calculator.evaluate(target.expected)
+        enemy: input.team.enemy, scenario: input.team.scenario, buffs: activeBuffs, actionInputs: action.inputs, targetId: target.id, trace:true, teamMembers:combatTeamMembers
+      })
+      warnings.push(...calculated.warnings)
       const mode = input.team.scenario?.resultMode ?? 'expected'
-      const traces = { normal: normal.trace, critical: critical.trace, expected: expected.trace }
-      formulaResult = { normal: Number(normal.value), critical: Number(critical.value), expected: Number(expected.value), trace: traces[mode], traces }
+      const fallback: CalculationTrace = { stage:'unavailable', value:0, children:[] }
+      const traces = { normal:calculated.traces.normal ?? fallback, critical:calculated.traces.critical ?? fallback, expected:calculated.traces.expected ?? fallback }
+      formulaResult = { ...calculated.values, trace:traces[mode], traces }
     }
     const multiplier = Math.max(1, Math.min(99, Math.floor(action.multiplier ?? 1)))
-    const repeatedValue = (formula: number | undefined, legacy: number | undefined) => formula !== undefined ? formula * multiplier : legacy ?? 0
+    const repeatedValue = (formula: number | undefined) => (formula ?? 0) * multiplier
     return {
-      action, member, attack, normal: repeatedValue(formulaResult?.normal, result?.normal),
-      critical: repeatedValue(formulaResult?.critical, result?.critical),
-      expected: repeatedValue(formulaResult?.expected, result?.expected),
+      action, member, attack, normal: repeatedValue(formulaResult?.normal),
+      critical: repeatedValue(formulaResult?.critical),
+      expected: repeatedValue(formulaResult?.expected),
       activeBuffs, activates, warnings,
       trace: formulaResult?.trace, traces: formulaResult?.traces,
-      formulaTargetId
+      formulaTargetId, resultKind:target?.kind
     }
   })
 
@@ -371,7 +322,7 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
   const resultMode = input.team.scenario?.resultMode ?? 'expected'
   for (const member of baseMembers) { member.byType = {}; member.contribution = 0 }
   for (const row of actions) {
-    if (!row.member || !row.attack) continue
+    if (!row.member || !row.attack || row.resultKind !== 'damage') continue
     const value = row[resultMode]
     row.member.byType[row.attack.type] = (row.member.byType[row.attack.type] ?? 0) + value
     formulaByType[row.attack.type] = (formulaByType[row.attack.type] ?? 0) + value

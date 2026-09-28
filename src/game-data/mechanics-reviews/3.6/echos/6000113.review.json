@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000113",
+  "entityName": "Nightmare: Kelpie",
+  "sourceFingerprint": "22fc1b9867382548988a35b26c9ed27e9be6cc5ad6b0c79a3b263e23063c023a",
+  "reviewedAt": "2026-09-26T18:47:52.503Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "2a239f83eec08b343b88212164d67dc02522a134ce9d5689503cbf4cf15ba92c",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000113:skill:1",
+            "name": "Nightmare: Kelpie - Echo Skill 1",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Glacio",
+            "expressions": [
+              "225.00%",
+              "270.00%",
+              "315.00%",
+              "360.00%",
+              "405.00%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                2.25
+              ],
+              [
+                2.7
+              ],
+              [
+                3.15
+              ],
+              [
+                3.6
+              ],
+              [
+                4.05
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 25,
+            "sourceText": "Transform into Nightmare: Kelpie to attack nearby targets, dealing 225.00% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Aero DMG Bonus. Switching out the Resonator with Outro Skill summons Nightmare: Kelpie to deal 225.00% Aero DMG.\nCD: 25s · Transform into Nightmare: Kelpie to attack nearby targets, dealing 270.00% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Aero DMG Bonus. Switching out the Resonator with Outro Skill summons Nightmare: Kelpie to deal 270.00% Aero DMG.\nCD: 25s · Transform into Nightmare: Kelpie to attack nearby targets, dealing 315.00% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Aero DMG Bonus. Switching out the Resonator with Outro Skill summons Nightmare: Kelpie to deal 315.00% Aero DMG.\nCD: 25s · Transform into Nightmare: Kelpie to attack nearby targets, dealing 360.00% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Aero DMG Bonus. Switching out the Resonator with Outro Skill summons Nightmare: Kelpie to deal 360.00% Aero DMG.\nCD: 25s · Transform into Nightmare: Kelpie to attack nearby targets, dealing 405.00% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Aero DMG Bonus. Switching out the Resonator with Outro Skill summons Nightmare: Kelpie to deal 405.00% Aero DMG.\nCD: 25s"
+          },
+          {
+            "id": "echo:6000113:skill:2",
+            "name": "Nightmare: Kelpie - Outro follow-up",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Aero",
+            "expressions": [
+              "225.00%",
+              "270.00%",
+              "315.00%",
+              "360.00%",
+              "405.00%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                2.25
+              ],
+              [
+                2.7
+              ],
+              [
+                3.15
+              ],
+              [
+                3.6
+              ],
+              [
+                4.05
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 25,
+            "sourceText": "Transform into Nightmare: Kelpie to attack nearby targets, dealing 225.00% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Aero DMG Bonus. Switching out the Resonator with Outro Skill summons Nightmare: Kelpie to deal 225.00% Aero DMG.\nCD: 25s · Transform into Nightmare: Kelpie to attack nearby targets, dealing 270.00% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Aero DMG Bonus. Switching out the Resonator with Outro Skill summons Nightmare: Kelpie to deal 270.00% Aero DMG.\nCD: 25s · Transform into Nightmare: Kelpie to attack nearby targets, dealing 315.00% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Aero DMG Bonus. Switching out the Resonator with Outro Skill summons Nightmare: Kelpie to deal 315.00% Aero DMG.\nCD: 25s · Transform into Nightmare: Kelpie to attack nearby targets, dealing 360.00% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Aero DMG Bonus. Switching out the Resonator with Outro Skill summons Nightmare: Kelpie to deal 360.00% Aero DMG.\nCD: 25s · Transform into Nightmare: Kelpie to attack nearby targets, dealing 405.00% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Aero DMG Bonus. Switching out the Resonator with Outro Skill summons Nightmare: Kelpie to deal 405.00% Aero DMG.\nCD: 25s"
+          }
+        ],
+        "cooldownSeconds": 25
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "d0a7c89225f5bc3ad8ea4db063860a059533b60d35d5bc2b27d1ea04a47eaec9",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000113:effect:0",
+            "sourceName": "Nightmare: Kelpie",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Aero DMG Bonus.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Glacio",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

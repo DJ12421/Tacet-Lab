@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000206",
+  "entityName": "Kernel Puppet: Joy",
+  "sourceFingerprint": "c5affedec0a57c991eeafb3313b2755a91c2fd2c4a6e9f2a5ba4c6d963b9c67e",
+  "reviewedAt": "2026-09-26T18:47:52.623Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "c720cca227672daa6e4b52d559f8b603ee7548403fb35f016160b59be7c81a4d",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000206:skill",
+            "name": "Kernel Puppet: Joy - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Physical",
+            "expressions": [
+              "72.00%",
+              "86.40%",
+              "100.80%",
+              "115.20%",
+              "129.60%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.72
+              ],
+              [
+                0.8640000000000001
+              ],
+              [
+                1.008
+              ],
+              [
+                1.1520000000000001
+              ],
+              [
+                1.296
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 8,
+            "sourceText": "Use Echo Skill to summon Kernel Puppet: Joy to attack enemies, dealing 72.00% Physical DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Joy to attack enemies, dealing 86.40% Physical DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Joy to attack enemies, dealing 100.80% Physical DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Joy to attack enemies, dealing 115.20% Physical DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Joy to attack enemies, dealing 129.60% Physical DMG.\nCD: 8s"
+          }
+        ],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

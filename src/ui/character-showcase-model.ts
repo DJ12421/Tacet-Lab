@@ -1,11 +1,9 @@
 import type { AggregatedStats, Build, Echo, OwnedCharacter, OwnedWeapon, StatKey, StatLine } from '../domain/types'
-import { emptyStats, floorGameValue } from '../domain/damage'
+import { calculateShowcaseStats, emptyLegacyStats, floorGameValue } from '../domain/combat/runtime'
 import { echoStatLines } from '../game-data/echo-main-stats'
 import { characterCatalog, sonataCatalog, weaponCatalog, type CharacterCatalogEntry, type WeaponCatalogEntry } from '../game-data'
 import { generatedSonataIconSources } from '../game-data/sonatas.generated'
-import { alwaysOnPassiveStatLines, alwaysOnSequenceStatLines, hasConditionalStatLines, skillTreeStatLine } from '../game-data/passive-stats'
-
-export const SHOWCASE_DATA_WARNING = 'Game data is generated from Nanoka 3.6 and has not yet been authoritatively verified against the current English in-game UI.'
+import { hasConditionalStatLines, skillTreeStatLine } from '../game-data/passive-stats'
 
 export interface CharacterShowcaseInput {
   character: OwnedCharacter
@@ -52,7 +50,6 @@ export interface CharacterShowcaseModel {
   statBonusSources: CharacterStatBonusSource[]
   skillLevels: [number, number, number, number, number]
   totalEchoCost: number
-  warning: string
 }
 
 const nearestLevel = <T extends { level: number }>(rows: T[], level: number) => rows.reduce((nearest, row) =>
@@ -91,39 +88,13 @@ function totalLines(lines: StatLine[]) {
   }, {})
 }
 
-function calculateFinalStats(
-  character: CharacterCatalogEntry,
-  base: CharacterCatalogEntry['levelStats'][number],
-  weapon: EquippedWeaponModel | undefined,
-  echoLines: StatLine[]
-) {
-  const stats = emptyStats()
-  const baseHp = base.hp
-  const baseAtk = base.atk + (weapon?.levelStats.baseAtk ?? 0)
-  const baseDef = base.def
-  const lines = weapon?.secondaryStat ? [...echoLines, weapon.secondaryStat] : echoLines
-  const totals = totalLines(lines)
-
-  stats.baseHp = baseHp
-  stats.baseAtk = baseAtk
-  stats.baseDef = baseDef
-  stats.hp = floorGameValue(baseHp * (1 + (totals.hpPercent ?? 0) / 100) + (totals.hp ?? 0))
-  stats.atk = floorGameValue(baseAtk * (1 + (totals.atkPercent ?? 0) / 100) + (totals.atk ?? 0))
-  stats.def = floorGameValue(baseDef * (1 + (totals.defPercent ?? 0) / 100) + (totals.def ?? 0))
-  stats.critRate = character.baseStats.critRate + (totals.critRate ?? 0)
-  stats.critDamage = character.baseStats.critDamage + (totals.critDamage ?? 0)
-  stats.energyRegen += totals.energyRegen ?? 0
-  stats.basicDamage = totals.basicDamage ?? 0
-  stats.heavyDamage = totals.heavyDamage ?? 0
-  stats.skillDamage = totals.skillDamage ?? 0
-  stats.liberationDamage = totals.liberationDamage ?? 0
-  stats.spectroDamage = totals.spectroDamage ?? 0
-  stats.fusionDamage = totals.fusionDamage ?? 0
-  stats.glacioDamage = totals.glacioDamage ?? 0
-  stats.electroDamage = totals.electroDamage ?? 0
-  stats.aeroDamage = totals.aeroDamage ?? 0
-  stats.havocDamage = totals.havocDamage ?? 0
-  stats.healingBonus = totals.healingBonus ?? 0
+function baseShowcaseStats(character: CharacterCatalogEntry, base: CharacterCatalogEntry['levelStats'][number]) {
+  const stats = emptyLegacyStats()
+  stats.baseHp = stats.hp = floorGameValue(base.hp)
+  stats.baseAtk = stats.atk = floorGameValue(base.atk)
+  stats.baseDef = stats.def = floorGameValue(base.def)
+  stats.critRate = character.baseStats.critRate
+  stats.critDamage = character.baseStats.critDamage
   return stats
 }
 
@@ -159,7 +130,7 @@ function enabledSkillTreeStats(catalog: CharacterCatalogEntry, enabledIds: strin
     }))
   const inherentSkills = catalog.skillTreeExtras.inherentSkills.filter((_, sourceIndex) => enabled.has(inherentSkillBonusId(sourceIndex)))
   return {
-    lines: [...bonusNodeLines, ...inherentSkills.flatMap((skill) => alwaysOnPassiveStatLines(skill.description))],
+    lines: bonusNodeLines,
     hasConditionalStats: inherentSkills.some((skill) => hasConditionalStatLines(skill.description))
   }
 }
@@ -194,34 +165,34 @@ export function resolveCharacterShowcaseModel(input: CharacterShowcaseInput): Ch
   const characterBaseStats = characterStatsAtLevel(catalog, input.character.level)
   const skillTreeStats = enabledSkillTreeStats(catalog, input.character.enabledSkillTreeBonusIds ?? defaultEnabledSkillTreeBonusIds(catalog))
   const weaponPassiveDescription = weapon?.catalog.passiveEffects[Math.max(0, Math.min(4, weapon.owned.rank - 1))] ?? ''
-  const weaponPassiveLines = alwaysOnPassiveStatLines(weaponPassiveDescription)
   const sonataSources = Object.entries(sonataCounts).flatMap(([name, count]) => {
     const sonata = sonataCatalog.find((entry) => entry.name === name)
     return sonata?.effects.filter((effect) => count >= effect.pieces).map((effect) => ({
       id: `sonata-${sonata.id}-${effect.pieces}`,
       label: `${name} · ${effect.pieces}-piece`,
       description: effect.description,
-      lines: alwaysOnPassiveStatLines(effect.description),
+      lines: [],
       hasConditionalStats: hasConditionalStatLines(effect.description)
     })) ?? []
   })
   const statBonusSources: CharacterStatBonusSource[] = [
     ...(skillTreeStats.lines.length || skillTreeStats.hasConditionalStats ? [{ id: 'skill-tree', label: 'Skill tree nodes', description: 'Selected stat bonus and inherent-skill nodes on this character card.', ...skillTreeStats }] : []),
     ...catalog.sequenceIcons.filter((sequence) => input.includeSequenceBonuses !== false && sequence.sequence <= input.character.sequence).flatMap((sequence) => {
-      const lines = alwaysOnSequenceStatLines(sequence.description)
       const hasConditionalStats = hasConditionalStatLines(sequence.description)
-      return lines.length || hasConditionalStats ? [{
+      return hasConditionalStats ? [{
         id: `sequence-${sequence.sequence}`,
         label: `S${sequence.sequence} · ${sequence.name}`,
         description: sequence.description,
-        lines,
+        lines: [],
         hasConditionalStats
       }] : []
     }),
-    ...(weapon && weaponPassiveDescription ? [{ id: `weapon-${weapon.owned.id}`, label: weapon.catalog.passiveName || 'Weapon passive', description: weaponPassiveDescription, lines: weaponPassiveLines, hasConditionalStats: hasConditionalStatLines(weaponPassiveDescription) }] : []),
+    ...(weapon && weaponPassiveDescription ? [{ id: `weapon-${weapon.owned.id}`, label: weapon.catalog.passiveName || 'Weapon passive', description: weaponPassiveDescription, lines: [], hasConditionalStats: hasConditionalStatLines(weaponPassiveDescription) }] : []),
     ...sonataSources
   ]
-  const passiveLines = statBonusSources.flatMap((source) => source.lines)
+  const equipmentOutcome = calculateShowcaseStats({ character:input.character, weapon:weapon?.owned, echoes:equippedEchoes, build }, false)
+  const finalOutcome = calculateShowcaseStats({ character:input.character, weapon:weapon?.owned, echoes:equippedEchoes, build }, true)
+  const fallbackStats = baseShowcaseStats(catalog, characterBaseStats)
 
   return {
     character: input.character,
@@ -232,12 +203,11 @@ export function resolveCharacterShowcaseModel(input: CharacterShowcaseInput): Ch
     echoSlots,
     equippedEchoes,
     echoStatContributions: totalLines(echoLines),
-    equipmentStats: calculateFinalStats(catalog, characterBaseStats, weapon, echoLines),
-    finalStats: calculateFinalStats(catalog, characterBaseStats, weapon, [...echoLines, ...passiveLines]),
+    equipmentStats: equipmentOutcome.ok ? equipmentOutcome.stats : fallbackStats,
+    finalStats: finalOutcome.ok ? finalOutcome.stats : equipmentOutcome.ok ? equipmentOutcome.stats : fallbackStats,
     sonatas,
     statBonusSources,
     skillLevels: normalizedSkillLevels(input.character),
-    totalEchoCost: equippedEchoes.reduce((total, echo) => total + echo.cost, 0),
-    warning: SHOWCASE_DATA_WARNING
+    totalEchoCost: equippedEchoes.reduce((total, echo) => total + echo.cost, 0)
   }
 }

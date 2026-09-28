@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000184",
+  "entityName": "Spacetrek Explorer",
+  "sourceFingerprint": "26810fe935b06a8ce536837ef0461c91d3ddb32be10969592dd13de406b0b342",
+  "reviewedAt": "2026-09-26T18:47:52.575Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "ec40f86c520ac1b1ba962650518f0ec5066a389eef4d4cbb6a4603ba33e27216",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000184:shield",
+            "name": "Spacetrek Explorer - Echo Skill Shield",
+            "damageType": "shield",
+            "skillSource": "echo",
+            "recipient": "team",
+            "scaling": "hp",
+            "expressions": [
+              "10%",
+              "10%",
+              "10%",
+              "10%",
+              "10%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.1
+              ],
+              [
+                0.1
+              ],
+              [
+                0.1
+              ],
+              [
+                0.1
+              ],
+              [
+                0.1
+              ]
+            ],
+            "count": 1,
+            "cooldownSeconds": 20,
+            "sourceText": "Summon a Spacetrek Explorer to grant nearby active Resonators in the team a Shield equal to 10% of the summoner's Max HP for 4s.\nCD: 20s · Summon a Spacetrek Explorer to grant nearby active Resonators in the team a Shield equal to 10% of the summoner's Max HP for 4s.\nCD: 20s · Summon a Spacetrek Explorer to grant nearby active Resonators in the team a Shield equal to 10% of the summoner's Max HP for 4s.\nCD: 20s · Summon a Spacetrek Explorer to grant nearby active Resonators in the team a Shield equal to 10% of the summoner's Max HP for 4s.\nCD: 20s · Summon a Spacetrek Explorer to grant nearby active Resonators in the team a Shield equal to 10% of the summoner's Max HP for 4s.\nCD: 20s"
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

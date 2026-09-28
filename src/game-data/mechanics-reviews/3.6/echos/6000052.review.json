@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000052",
+  "entityName": "Impermanence Heron",
+  "sourceFingerprint": "499c0de3fad9794640db4521ebeb182ceddc08a54ca80d679851d1c6202727c9",
+  "reviewedAt": "2026-09-26T18:39:03.134Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "ab639f0b9438c5cdd89850701bc5024fbabb0ad4e9b586e37c243da5f8910cf4",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000052:skill:1",
+            "name": "Impermanence Heron - Echo Skill 1",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Havoc",
+            "expressions": [
+              "194.10%",
+              "223.22%",
+              "252.33%",
+              "281.45%",
+              "310.56%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.9409999999999998
+              ],
+              [
+                2.2322
+              ],
+              [
+                2.5233000000000003
+              ],
+              [
+                2.8145
+              ],
+              [
+                3.1056
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 20,
+            "sourceText": "Transform into Impermanence Heron to fly up and smack down, dealing 194.10% Havoc DMG.\nLong press to stay as Impermanence Heron and continuously spit flames, each attack dealing 34.83% Havoc DMG.\nOnce the initial attack lands on any enemy, the current character regains 10 Resonance Energy. If the current character uses their Outro Skill within the next 15s, the next character's damage dealt will be boosted by 12% for 15s.\nCD: 20s · Transform into Impermanence Heron to fly up and smack down, dealing 223.22% Havoc DMG.\nLong press to stay as Impermanence Heron and continuously spit flames, each attack dealing 40.05% Havoc DMG.\nOnce the initial attack lands on any enemy, the current character regains 10 Resonance Energy. If the current character uses their Outro Skill within the next 15s, the next character's damage dealt will be boosted by 12% for 15s.\nCD: 20s · Transform into Impermanence Heron to fly up and smack down, dealing 252.33% Havoc DMG.\nLong press to stay as Impermanence Heron and continuously spit flames, each attack dealing 45.28% Havoc DMG.\nOnce the initial attack lands on any enemy, the current character regains 10 Resonance Energy. If the current character uses their Outro Skill within the next 15s, the next character's damage dealt will be boosted by 12% for 15s.\nCD: 20s · Transform into Impermanence Heron to fly up and smack down, dealing 281.45% Havoc DMG.\nLong press to stay as Impermanence Heron and continuously spit flames, each attack dealing 50.50% Havoc DMG.\nOnce the initial attack lands on any enemy, the current character regains 10 Resonance Energy. If the current character uses their Outro Skill within the next 15s, the next character's damage dealt will be boosted by 12% for 15s.\nCD: 20s · Transform into Impermanence Heron to fly up and smack down, dealing 310.56% Havoc DMG.\nLong press to stay as Impermanence Heron and continuously spit flames, each attack dealing 55.73% Havoc DMG.\nOnce the initial attack lands on any enemy, the current character regains 10 Resonance Energy. If the current character uses their Outro Skill within the next 15s, the next character's damage dealt will be boosted by 12% for 15s.\nCD: 20s"
+          },
+          {
+            "id": "echo:6000052:skill:2",
+            "name": "Impermanence Heron - Held Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Havoc",
+            "expressions": [
+              "34.83%",
+              "40.05%",
+              "45.28%",
+              "50.50%",
+              "55.73%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.3483
+              ],
+              [
+                0.40049999999999997
+              ],
+              [
+                0.45280000000000004
+              ],
+              [
+                0.505
+              ],
+              [
+                0.5573
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 20,
+            "sourceText": "Transform into Impermanence Heron to fly up and smack down, dealing 194.10% Havoc DMG.\nLong press to stay as Impermanence Heron and continuously spit flames, each attack dealing 34.83% Havoc DMG.\nOnce the initial attack lands on any enemy, the current character regains 10 Resonance Energy. If the current character uses their Outro Skill within the next 15s, the next character's damage dealt will be boosted by 12% for 15s.\nCD: 20s · Transform into Impermanence Heron to fly up and smack down, dealing 223.22% Havoc DMG.\nLong press to stay as Impermanence Heron and continuously spit flames, each attack dealing 40.05% Havoc DMG.\nOnce the initial attack lands on any enemy, the current character regains 10 Resonance Energy. If the current character uses their Outro Skill within the next 15s, the next character's damage dealt will be boosted by 12% for 15s.\nCD: 20s · Transform into Impermanence Heron to fly up and smack down, dealing 252.33% Havoc DMG.\nLong press to stay as Impermanence Heron and continuously spit flames, each attack dealing 45.28% Havoc DMG.\nOnce the initial attack lands on any enemy, the current character regains 10 Resonance Energy. If the current character uses their Outro Skill within the next 15s, the next character's damage dealt will be boosted by 12% for 15s.\nCD: 20s · Transform into Impermanence Heron to fly up and smack down, dealing 281.45% Havoc DMG.\nLong press to stay as Impermanence Heron and continuously spit flames, each attack dealing 50.50% Havoc DMG.\nOnce the initial attack lands on any enemy, the current character regains 10 Resonance Energy. If the current character uses their Outro Skill within the next 15s, the next character's damage dealt will be boosted by 12% for 15s.\nCD: 20s · Transform into Impermanence Heron to fly up and smack down, dealing 310.56% Havoc DMG.\nLong press to stay as Impermanence Heron and continuously spit flames, each attack dealing 55.73% Havoc DMG.\nOnce the initial attack lands on any enemy, the current character regains 10 Resonance Energy. If the current character uses their Outro Skill within the next 15s, the next character's damage dealt will be boosted by 12% for 15s.\nCD: 20s"
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "a72e67a9a183f08f5b94c5fb30c72febcea463aded006a93c1efba37d5e9563b",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000052:effect:0",
+            "sourceName": "Impermanence Heron",
+            "sourceType": "echo",
+            "text": "If the current character uses their Outro Skill within the next 15s, the next character's damage dealt will be boosted by 12% for 15s.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Outro Skill cast",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "next"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            }
+          }
+        ]
+      }
+    }
+  }
+}

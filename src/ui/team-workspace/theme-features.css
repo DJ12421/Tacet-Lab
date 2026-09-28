@@ -47,6 +47,25 @@
   border-color: var(--tw-line);
 }
 
+.tw-member-page .tw-overview-formulas .tw-sheet-stats dl>div.is-modified {
+  background: color-mix(in srgb, var(--tw-member-accent) 9%, transparent);
+  box-shadow: inset 2px 0 var(--tw-member-accent);
+}
+
+.tw-member-page .tw-overview-formulas .tw-sheet-stats dl>div.is-modified dd,
+.tw-member-page .tw-overview-formulas .tw-sheet-stats dl>div.is-modified .calculated-value {
+  color: var(--tw-member-accent);
+}
+
+.team-workspace .tw-member-showcase dl>div.is-modified {
+  background: color-mix(in srgb, var(--tw-member-accent) 16%, rgba(4,9,10,.75));
+  box-shadow: inset 2px 0 var(--tw-member-accent);
+}
+
+.team-workspace .tw-member-showcase dl>div.is-modified dd {
+  color: var(--tw-member-accent);
+}
+
 .team-workspace .owned-card,
 .team-workspace .weapon-owned,
 .team-workspace .echo-card,
@@ -247,6 +266,22 @@
   text-overflow: clip;
 }
 
+.team-workspace .tw-v2-effect-list .tw-effect-info {
+  display: inline-grid;
+  width: 14px;
+  height: 14px;
+  place-items: center;
+  margin-left: 3px;
+  border-radius: 50%;
+  background: #d8dfdc;
+  color: #101822;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 900;
+  vertical-align: 1px;
+  cursor: help;
+}
+
 .team-workspace .tw-v2-effect-list .tw-effect-title-toggle {
   position: absolute;
   z-index: 1;
@@ -412,11 +447,22 @@
 }
 
 .team-workspace .tw-v2-effect-list .tw-effect-condition select {
+  min-width: 54px;
   height: 27px;
   padding: 0 5px;
   border-color: var(--tw-line);
   background: #090c0d;
   color: #fff;
+}
+
+.team-workspace .tw-v2-effect-list .tw-effect-condition input[type=number] {
+  width: 46px;
+  min-width: 46px;
+  padding: 3px 2px;
+  border: 1px solid var(--tw-line);
+  background: #090c0d;
+  color: #fff;
+  text-align: center;
 }
 
 .team-workspace .tw-v2-effect-list .tw-effect-results {

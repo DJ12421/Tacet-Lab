@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000203",
+  "entityName": "Porcelain Picket",
+  "sourceFingerprint": "915fada6aad14e949494deba7dbb950d7ffaf364d91b826c2b2d4767ac04896d",
+  "reviewedAt": "2026-09-26T18:47:52.617Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "6523612c50e11d8c3323af316055566f7c04bece6d8e73ef9db3ad76302bcb49",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000203:skill",
+            "name": "Porcelain Picket - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Aero",
+            "expressions": [
+              "10.80%+7.20%",
+              "12.96%+8.64%",
+              "15.12%+10.08%",
+              "17.28%+11.52%",
+              "19.44%+12.96%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.10800000000000001,
+                0.10800000000000001,
+                0.07200000000000001,
+                0.07200000000000001,
+                0.07200000000000001,
+                0.07200000000000001,
+                0.07200000000000001,
+                0.07200000000000001,
+                0.07200000000000001
+              ],
+              [
+                0.12960000000000002,
+                0.12960000000000002,
+                0.0864,
+                0.0864,
+                0.0864,
+                0.0864,
+                0.0864,
+                0.0864,
+                0.0864
+              ],
+              [
+                0.1512,
+                0.1512,
+                0.1008,
+                0.1008,
+                0.1008,
+                0.1008,
+                0.1008,
+                0.1008,
+                0.1008
+              ],
+              [
+                0.1728,
+                0.1728,
+                0.1152,
+                0.1152,
+                0.1152,
+                0.1152,
+                0.1152,
+                0.1152,
+                0.1152
+              ],
+              [
+                0.19440000000000002,
+                0.19440000000000002,
+                0.12960000000000002,
+                0.12960000000000002,
+                0.12960000000000002,
+                0.12960000000000002,
+                0.12960000000000002,
+                0.12960000000000002,
+                0.12960000000000002
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "count": 9,
+            "cooldownSeconds": 8,
+            "sourceText": "Use Echo Skill to summon a Porcelain Picket to slash forward, dealing 2 instances of 10.80% Aero DMG and 7 instances of 7.20% Aero DMG to enemies along the path.\nCD: 8s · Use Echo Skill to summon a Porcelain Picket to slash forward, dealing 2 instances of 12.96% Aero DMG and 7 instances of 8.64% Aero DMG to enemies along the path.\nCD: 8s · Use Echo Skill to summon a Porcelain Picket to slash forward, dealing 2 instances of 15.12% Aero DMG and 7 instances of 10.08% Aero DMG to enemies along the path.\nCD: 8s · Use Echo Skill to summon a Porcelain Picket to slash forward, dealing 2 instances of 17.28% Aero DMG and 7 instances of 11.52% Aero DMG to enemies along the path.\nCD: 8s · Use Echo Skill to summon a Porcelain Picket to slash forward, dealing 2 instances of 19.44% Aero DMG and 7 instances of 12.96% Aero DMG to enemies along the path.\nCD: 8s"
+          }
+        ],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

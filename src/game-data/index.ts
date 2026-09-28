@@ -1,7 +1,7 @@
 export { echoCatalog, type EchoCatalogEntry } from './echoes'
 export { characterCatalog, characterSummaries, weaponCatalog, weaponSummaries, sonataCatalog, catalogProvenance } from './catalog'
 export type { CharacterCatalogEntry, CharacterSummary, WeaponCatalogEntry, WeaponSummary, SonataCatalogEntry } from './catalog'
-export { GAME_DATA_VERSION, defaultSettings, resonators, statAliases, statLabels, weapons } from './core'
+export { GAME_DATA_VERSION, defaultSettings, statAliases, statLabels } from './core'
 export { isFixedSkillValueName } from './attack-values'
 export { baseTuneBreakBoost } from './tune-break'
 export {

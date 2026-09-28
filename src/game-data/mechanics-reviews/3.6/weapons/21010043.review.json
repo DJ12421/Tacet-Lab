@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21010043",
+  "entityName": "Broadblade of Voyager",
+  "sourceFingerprint": "3bd7cde96cf42d247de82f1941d030d93ce1e50b274ee66a1a57af130798318d",
+  "reviewedAt": "2026-09-09T04:47:44.054Z",
+  "sections": {
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "bf5c398ec0456a70f4e7d9dcf80986112bfc0a4a0eb8c7827d681cf999e53263",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  }
+}

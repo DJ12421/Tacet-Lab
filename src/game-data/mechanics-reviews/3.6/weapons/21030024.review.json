@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21030024",
+  "entityName": "Cadenza",
+  "sourceFingerprint": "029368b4259c0cd69d67b49acb246226c127753c9f8695fe3c728fa7b4044df6",
+  "reviewedAt": "2026-09-09T06:13:14.833Z",
+  "sections": {
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d202eb11db90c50bd85bc7a7ee4a7cfece772b64898de39987938b1325a388e0",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  }
+}

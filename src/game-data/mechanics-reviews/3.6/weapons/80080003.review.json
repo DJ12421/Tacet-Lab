@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "80080003",
+  "entityName": "Projection: Formless Sword",
+  "sourceFingerprint": "420c3e36ca7537d39d5f87be3cb9136ce49f1a0293a52e0448a45d2218ecbdb9",
+  "reviewedAt": "2026-09-05T10:15:03.045Z",
+  "sections": {
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  }
+}

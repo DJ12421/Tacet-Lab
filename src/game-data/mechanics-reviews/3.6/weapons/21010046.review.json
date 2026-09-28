@@ -1,0 +1,326 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21010046",
+  "entityName": "Thunderflare Dominion",
+  "sourceFingerprint": "3adb2544dd721042d05b73f60a67da309bc15115fc1738888d4c10fb94877586",
+  "reviewedAt": "2026-09-15T12:21:30.220Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "12008b8d1a8fb34c7753387e8b6f6a6014a0f19b66dfc34956247185d4eb728b",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21010046:effect:0",
+            "sourceName": "Thunderblaze Eminence",
+            "text": "Increases ATK by 12%.",
+            "refinementTexts": [
+              "Increases ATK by 12%.",
+              "Increases ATK by 15%.",
+              "Increases ATK by 18%.",
+              "Increases ATK by 21%.",
+              "Increases ATK by 24%."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21010046:effect:1",
+            "sourceName": "Thunderblaze Eminence",
+            "text": "Casting Intro Skill or Resonance Skill increases Heavy Attack DMG by 20% for 15s.",
+            "refinementTexts": [
+              "Casting Intro Skill or Resonance Skill increases Heavy Attack DMG by 20% for 15s.",
+              "Casting Intro Skill or Resonance Skill increases Heavy Attack DMG by 25% for 15s.",
+              "Casting Intro Skill or Resonance Skill increases Heavy Attack DMG by 30% for 15s.",
+              "Casting Intro Skill or Resonance Skill increases Heavy Attack DMG by 35% for 15s.",
+              "Casting Intro Skill or Resonance Skill increases Heavy Attack DMG by 40% for 15s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Intro Skill/Res. Skill cast",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "heavyDamage",
+                  "operation": "addPercent",
+                  "value": 20,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill/Resonance Skill cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill/Resonance Skill cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "value": 25
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill/Resonance Skill cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill/Resonance Skill cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "value": 35
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill/Resonance Skill cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "value": 40
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21010046:effect:2",
+            "sourceName": "Thunderblaze Eminence",
+            "text": "Obtaining Shield allows Heavy Attack DMG to ignore 7.2% of the target's DEF for 7s, stacking up to 5 times. This effect is triggered once every 0.5s",
+            "refinementTexts": [
+              "Obtaining Shield allows Heavy Attack DMG to ignore 7.2% of the target's DEF for 7s, stacking up to 5 times. This effect is triggered once every 0.5s",
+              "Obtaining Shield allows Heavy Attack DMG to ignore 8.4% of the target's DEF for 7s, stacking up to 5 times. This effect is triggered once every 0.5s",
+              "Obtaining Shield allows Heavy Attack DMG to ignore 9.6% of the target's DEF for 7s, stacking up to 5 times. This effect is triggered once every 0.5s",
+              "Obtaining Shield allows Heavy Attack DMG to ignore 10.8% of the target's DEF for 7s, stacking up to 5 times. This effect is triggered once every 0.5s",
+              "Obtaining Shield allows Heavy Attack DMG to ignore 12% of the target's DEF for 7s, stacking up to 5 times. This effect is triggered once every 0.5s"
+            ],
+            "parsed": {
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 5
+              },
+              "durationSeconds": 7,
+              "modifiers": [
+                {
+                  "stat": "DEFIgnore",
+                  "operation": "addPercent",
+                  "value": 7.2,
+                  "scope": "self",
+                  "appliesTo": "heavy"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Shield gained"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "durationSeconds": 7,
+                "modifiers": [
+                  {
+                    "value": 7.2
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Shield gained"
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "durationSeconds": 7,
+                "modifiers": [
+                  {
+                    "value": 8.4
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Shield gained"
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "durationSeconds": 7,
+                "modifiers": [
+                  {
+                    "value": 9.6
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Shield gained"
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "durationSeconds": 7,
+                "modifiers": [
+                  {
+                    "value": 10.8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Shield gained"
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "durationSeconds": 7,
+                "modifiers": [
+                  {
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Shield gained"
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  }
+}

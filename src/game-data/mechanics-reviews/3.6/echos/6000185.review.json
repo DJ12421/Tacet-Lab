@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000185",
+  "entityName": "Sabercat Reaver",
+  "sourceFingerprint": "2fde022886853c15e94f89de25ed9e7017c38fed6a6d3f35dff2c264db893a60",
+  "reviewedAt": "2026-09-26T18:47:52.577Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "b13bc4a843306517ad25859e301ae48302d35acb600774c07dc5caa21b0e993e",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000185:skill",
+            "name": "Sabercat Reaver - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Fusion",
+            "expressions": [
+              "107.00%",
+              "128.40%",
+              "149.80%",
+              "171.20%",
+              "192.60%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.07
+              ],
+              [
+                1.284
+              ],
+              [
+                1.4980000000000002
+              ],
+              [
+                1.712
+              ],
+              [
+                1.926
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 15,
+            "sourceText": "Summon a Sabercat Reaver to attack enemies, dealing 107.00% Fusion DMG.\nCD: 15s. · Summon a Sabercat Reaver to attack enemies, dealing 128.40% Fusion DMG.\nCD: 15s. · Summon a Sabercat Reaver to attack enemies, dealing 149.80% Fusion DMG.\nCD: 15s. · Summon a Sabercat Reaver to attack enemies, dealing 171.20% Fusion DMG.\nCD: 15s. · Summon a Sabercat Reaver to attack enemies, dealing 192.60% Fusion DMG.\nCD: 15s."
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

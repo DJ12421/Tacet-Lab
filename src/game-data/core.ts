@@ -1,4 +1,4 @@
-import type { AppSettings, Resonator, StatKey, Weapon } from '../domain/types'
+import type { AppSettings, StatKey } from '../domain/types'
 
 export const GAME_DATA_VERSION = 'nanoka-3.6-catalog'
 
@@ -20,11 +20,6 @@ export const statAliases: Array<[RegExp, StatKey]> = [
   [/electro\s*dmg/i, 'electroDamage'], [/aero\s*dmg/i, 'aeroDamage'], [/havoc\s*dmg/i, 'havocDamage'],
   [/healing\s*bonus/i, 'healingBonus']
 ]
-
-// Combat definitions stay empty until a complete, verifiable formula source is
-// imported. Catalog pages never invent stats or multipliers.
-export const resonators: Resonator[] = []
-export const weapons: Weapon[] = []
 
 export const defaultSettings: AppSettings = {
   displayName: 'Resonator', uid: '', privacyMode: false, background: 'signal', scanIntervalMs: 900,

@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000199",
+  "entityName": "Reminiscence: Threnodian - Voidborne Construct",
+  "sourceFingerprint": "6461aaf1b04c9c2eb06e34466899477de9630c97b053c1859646bde9d9090009",
+  "reviewedAt": "2026-09-26T18:47:52.609Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "9d9e9143773643c1910c50f0665599b52a2d265e856a2eb51fc718a05d56d777",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000199:skill",
+            "name": "Reminiscence: Threnodian - Voidborne Construct - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Glacio",
+            "expressions": [
+              "12.16%+91.20%",
+              "14.59%+109.44%",
+              "17.02%+127.68%",
+              "19.45%+145.92%",
+              "21.88%+164.16%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.1216,
+                0.1216,
+                0.1216,
+                0.1216,
+                0.1216,
+                0.912
+              ],
+              [
+                0.1459,
+                0.1459,
+                0.1459,
+                0.1459,
+                0.1459,
+                1.0944
+              ],
+              [
+                0.1702,
+                0.1702,
+                0.1702,
+                0.1702,
+                0.1702,
+                1.2768000000000002
+              ],
+              [
+                0.1945,
+                0.1945,
+                0.1945,
+                0.1945,
+                0.1945,
+                1.4591999999999998
+              ],
+              [
+                0.2188,
+                0.2188,
+                0.2188,
+                0.2188,
+                0.2188,
+                1.6416
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ],
+            "count": 6,
+            "cooldownSeconds": 20,
+            "sourceText": "Summon Aleph-1's Creation to deal 12.16% Glacio DMG 5 times and 91.20% Glacio DMG 1 time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon Aleph-1's Creation to deal 14.59% Glacio DMG 5 times and 109.44% Glacio DMG 1 time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon Aleph-1's Creation to deal 17.02% Glacio DMG 5 times and 127.68% Glacio DMG 1 time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon Aleph-1's Creation to deal 19.45% Glacio DMG 5 times and 145.92% Glacio DMG 1 time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon Aleph-1's Creation to deal 21.88% Glacio DMG 5 times and 164.16% Glacio DMG 1 time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s"
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "f9d81ad7bac19166a1833241451414485561f59b4b20df48fc8ba8035a66f1ba",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000199:effect:0",
+            "sourceName": "Reminiscence: Threnodian - Voidborne Construct",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Liberation DMG Bonus.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Glacio",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

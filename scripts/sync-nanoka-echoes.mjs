@@ -3,7 +3,10 @@ const version='3.6',base=`https://static.nanoka.cc/ww/${version}`
 const encoreBase='https://api-v2.encore.moe/api/en'
 const sources={characters:`${base}/character.json`,weapons:`${base}/weapon.json`,echoes:`${base}/echo.json`,titles:`${encoreBase}/title`}
 const names=['','Freezing Frost','Molten Rift','Void Thunder','Sierra Gale','Celestial Light','Havoc Eclipse','Rejuvenating Glow','Moonlit Clouds','Lingering Tunes','Frosty Resolve','Eternal Radiance','Midnight Veil','Empyrean Anthem','Tidebreaking Courage',,'Gusts of Welkin','Windward Pilgrimage','Flaming Clawprint','Dream of the Lost','Crown of Valor','Law of Harmony',"Flamewing's Shadow",'Thread of Severed Fate','Pact of Neonlight Leap','Halo of Starry Radiance','Rite of Gilded Revelation','Trailblazing Star','Chromatic Foam','Sound of True Name','Wishes of Quiet Snowfall','Reel of Spliced Memories','Shadow of Shattered Dreams','Song of Feathered Trace',"Heart of Evil's Purge",'Lamp of Nether Road']
-const load=async source=>{const response=await fetch(source);if(!response.ok)throw Error(`Nanoka ${response.status}: ${source}`);return response.json()}
+const load=async(source,attempt=0)=>{
+  try{const response=await fetch(source);if(!response.ok)throw Error(`Nanoka ${response.status}: ${source}`);return response.json()}
+  catch(error){if(attempt>=2)throw error;await new Promise(resolve=>setTimeout(resolve,400*(attempt+1)));return load(source,attempt+1)}
+}
 const mapLimit=async(items,limit,mapper)=>{
   const output=new Array(items.length)
   let cursor=0
@@ -15,6 +18,10 @@ const mapLimit=async(items,limit,mapper)=>{
 const [rawCharacters,rawWeapons,rawEchoes,rawTitles]=await Promise.all([sources.characters,sources.weapons,sources.echoes,sources.titles].map(load))
 const formatEffect=(desc='',param=[])=>desc.replace(/\{(\d+)\}/g,(_,index)=>param[Number(index)]??`{${index}}`)
 const asset=p=>`https://static.nanoka.cc/assets/ww/${p.replace(/^\/Game\/Aki\/UI\//,'').split('.')[0]}.webp`
+const skillInputLabels={攻击:'Basic Attack',技能1:'Resonance Skill',闪避:'Dodge',大招:'Resonance Liberation'}
+const skillInputDescription=(description='',inputs=[])=>description
+  .replace(/\{Cus:[^}]*\}\s*/g,'')
+  .replace(/\{(\d+)\}/g,(_,index)=>skillInputLabels[inputs[Number(index)]]??inputs[Number(index)]??`{${index}}`)
 const spineAsset=path=>{
   const match=String(path??'').match(/\/Portraits\/([^/]+)\/([^/.]+)/i)
   return match?`https://static.nanoka.cc/assets/ww/portraits/${match[1]}/${match[2]}`:''
@@ -34,15 +41,17 @@ const characterDetails=await mapLimit(Object.keys(rawCharacters),8,async id=>[id
 const characterDetailById=new Map(characterDetails)
 const titleDetails=await mapLimit(rawTitles.titleList??[],8,title=>load(`${encoreBase}/title/${title.Id}`))
 const rawTitleAssetBase='https://raw.githubusercontent.com/alt3ri/WW_Asset/Global/UIResources/Common/Image/Com/Image'
-const titleCardAsset=image=>{
+const titleCardAsset=(image,fallback)=>{
   if(!image)return ''
   const filename=image.split('/').at(-1)?.replace(/\.webp$/i,'.png')??''
   const roleNumber=Number(filename.match(/EpithetName_Role_(\d+)/i)?.[1]??0)
-  return roleNumber>0&&roleNumber<=46?`${rawTitleAssetBase}/${filename}`:image.replace(/\.png$/i,'.webp')
+  // Encore lists role 58+ composite images before publishing them; use their available character backgrounds.
+  const source=roleNumber>=58&&fallback?fallback:image
+  return roleNumber>0&&roleNumber<=46?`${rawTitleAssetBase}/${filename}`:source.replace('://api.encore.moe/', '://api-v2.encore.moe/').replace(/\.png$/i,'.webp')
 }
 const titleCardByCharacter=new Map(titleDetails.flatMap(title=>{
   const owner=title.HonorDescription?.match(/^Fully activate (.+?)(?:'s|’s) Resonance Chain$/i)?.[1]
-  return owner&&title.Image?[[owner,titleCardAsset(title.Image)]]:[]
+  return owner&&title.Image?[[owner,titleCardAsset(title.Image,title.TitleBgIcon)]]:[]
 }))
 const combatType=(skillType,name='')=>{
   if(/Outro Skill DMG/i.test(name))return 'outro'
@@ -55,16 +64,14 @@ const combatType=(skillType,name='')=>{
 }
 const skillLevelIndex=skillType=>skillType==='Normal Attack'?0:skillType==='Resonance Skill'?1:skillType==='Forte Circuit'?2:skillType==='Resonance Liberation'?3:skillType==='Intro Skill'?4:1
 const fixedSkillValuePattern=/\b(?:sta(?:mina)?\s+cost|concerto\s+(?:regen|regeneration|recovery)|cooldown|duration|resonance(?:\s+energy)?\s+cost)\b/i
-const fixedSkillValues=(skill,nodeId)=>Object.entries(skill.level??{}).flatMap(([lineId,line])=>{
-  const name=line?.name?`${skill.name} - ${line.name}`:skill.name
-  if(!fixedSkillValuePattern.test(name))return []
+const skillInputValues=(skill,nodeId)=>Object.entries(skill.level??{}).map(([lineId,line])=>{
   const parameters=Array.isArray(line.param)?line.param:[]
   const levelCount=Math.max(1,...parameters.map(values=>Array.isArray(values)?values.length:0))
   const values=Array.from({length:levelCount},(_,levelIndex)=>{
     const levelParams=parameters.map(values=>Array.isArray(values)?values[levelIndex]??values[0]??'':values)
     return line.format?formatEffect(line.format,levelParams):String(levelParams[0]??'')
   })
-  return [{id:`${nodeId}-${lineId}`,name,skillLevelIndex:skillLevelIndex(skill.type),values}]
+  return {id:`${nodeId}-${lineId}`,skillName:skill.name??'',name:line?.name??skill.name??'',skillLevelIndex:skillLevelIndex(skill.type),values}
 })
 const percentageComponents=value=>[...String(value??'').matchAll(/(-?\d+(?:\.\d+)?)%\s*(?:[*×x]\s*(\d+))?/gi)].map(match=>({
   value:Number(match[1]),
@@ -111,6 +118,16 @@ const outroDescriptionAttack=(id,nodeId,skill)=>{
 // Nanoka formats this as 6.11% × 6 + 24.44%, but the two damage
 // components and the English in-game damage breakdown both show two hits.
 const verifiedComponentHitAttacks=new Set(['1511:1:Basic Attack Stage 1 DMG'])
+// Nanoka's related_property is stale for these rows; the displayed English
+// formulas explicitly name the actual scaling stat.
+const verifiedCharacterAttackScaling=new Map([
+  ['1110:2:Enrichment Healing','hp'],
+  ['1209:2:Distributed Array Healing','def'],
+  ['1209:7:Syntony Field Healing','def'],
+  ['1505:6:Discernment DMG','hp'],
+  ['1601:1:Strategic Parry Damage','def'],
+  ['1601:7:Timed Counters Stage 2 DMG','def']
+])
 const characterLevels=Array.from({length:90},(_,index)=>index+1)
 const characterStatsAtLevel=(detail,level)=>{
   const candidates=Object.entries(detail?.stats??{}).flatMap(([ascension,levels])=>levels[String(level)]?[{ascension:Number(ascension),stats:levels[String(level)]}]:[]).sort((a,b)=>b.ascension-a.ascension)
@@ -155,7 +172,13 @@ const characters=Object.entries(rawCharacters).map(([id,c])=>{
     tuneBreakSkill:skillAsset(skills.find(candidate=>candidate.type==='Tune Break'))
   }
   const sequenceIcons=Object.entries(detail?.chains??{}).sort(([left],[right])=>Number(left)-Number(right)).map(([sequence,chain])=>({sequence:Number(sequence),name:chain.name??`Sequence ${sequence}`,description:formatEffect(chain.desc,chain.param),iconSourceUrl:chain.icon?asset(chain.icon):''}))
-  const flatSkillValues=Object.entries(detail?.skill_trees??{}).flatMap(([nodeId,node])=>fixedSkillValues(node.skill??node,nodeId))
+  const allSkillInputs=Object.entries(detail?.skill_trees??{}).flatMap(([nodeId,node])=>skillInputValues(node.skill??node,nodeId))
+  const modernGuide=detail?.forte_new??{}
+  const modernGuideSections=Object.entries(modernGuide.instructions??{}).map(([sectionId,section])=>({id:sectionId,name:section.name??'Instructions',entries:Object.entries(section.desc??{}).map(([entryId,entry])=>({id:entryId,description:skillInputDescription(entry.desc,entry.input_list),imageSourceUrls:(entry.image_list??[]).map(asset)}))}))
+  const legacyGuide=detail?.forte??{}
+  const legacyGuideEntries=Object.entries(legacyGuide.skill_input_list??{}).map(([entryId,entry])=>({id:entryId,description:skillInputDescription(entry.desc,entry.input_list),imageSourceUrls:[]}))
+  const skillInputGuide={features:(modernGuide.features?.length?modernGuide.features:legacyGuide.desc_list??[]).map(feature=>skillInputDescription(feature)),overviewImageSourceUrl:legacyGuide.icon?asset(legacyGuide.icon):'',sections:modernGuideSections.length?modernGuideSections:legacyGuideEntries.length?[{id:'instructions',name:'Instructions',entries:legacyGuideEntries}]:[]}
+  const flatSkillValues=allSkillInputs.filter(value=>fixedSkillValuePattern.test(`${value.skillName} - ${value.name}`)).map(({skillName,...value})=>({...value,name:`${skillName} - ${value.name}`}))
   const attacks=Object.entries(detail?.skill_trees??{}).flatMap(([nodeId,node])=>{
     const skill=node.skill??node
     const damageEntries=Object.values(skill.damage??{})
@@ -174,7 +197,7 @@ const characters=Object.entries(rawCharacters).map(([id,c])=>{
       if(fixedSkillValuePattern.test(name))return []
       const isHealing=components.length>0&&components.every(component=>Number(component.element)===0)
       const type=isHealing?'healing':combatType(skill.type,name)
-      return [{id:`${id}-${nodeId}-${attackIndex++}`,name,type,skillLevelIndex:skillLevelIndex(skill.type),scalesWith:damage.related_property.toLowerCase(),multipliers,hitMultipliers}]
+      return [{id:`${id}-${nodeId}-${attackIndex++}`,name,type,skillLevelIndex:skillLevelIndex(skill.type),scalesWith:verifiedCharacterAttackScaling.get(attackKey)??damage.related_property.toLowerCase(),multipliers,hitMultipliers}]
     })
   })
   const outroEntry=skillEntries.find(([,node])=>(node.skill??node).type==='Outro Skill')
@@ -188,7 +211,8 @@ const characters=Object.entries(rawCharacters).map(([id,c])=>{
   const luckdrawId=String(detail?.audio??'').trim().toLowerCase()
   const formationSpineBaseUrl=spineAsset(animatedSkin?.formation_spine_skel)
   const spineBaseUrl=luckdrawId?`https://static.nanoka.cc/assets/ww/luckdraw/${luckdrawId}/${luckdrawId}`:formationSpineBaseUrl
-  return {id,name:c.en,title:detail?.chara_info?.talent_name??c.nickname??c.en,nickname:c.nickname,description:c.desc.replace(/<[^>]+>/g,''),rarity:c.rank,element:elements[c.element]??'Unknown',weaponType:weaponTypes[c.weapon]??'Unknown',role:Object.values(detail?.tag??{})[0]?.name??'Resonator',gender,baseStats:{hp:maxStats.hp,atk:maxStats.atk,def:maxStats.def,critRate:5,critDamage:150},levelStats,skillIcons,skillTreeExtras,sequenceIcons,flatSkillValues,attacks,articleUrl:`https://ww.nanoka.cc/character/${id}`,iconSourceUrl:asset(c.icon),portraitSourceUrl:asset(detail?.background??detail?.background_stand??c.icon),titleCardSourceUrl:titleCardByCharacter.get(c.en)??'',spineSkeletonSourceUrl:spineBaseUrl?`${spineBaseUrl}.skel`:'',spineAtlasSourceUrl:spineBaseUrl?`${spineBaseUrl}.atlas`:''}
+  const roles=Object.values(detail?.tag??{}).map(tag=>tag.name).filter(Boolean)
+  return {id,name:c.en,title:detail?.chara_info?.talent_name??c.nickname??c.en,nickname:c.nickname,description:c.desc.replace(/<[^>]+>/g,''),rarity:c.rank,element:elements[c.element]??'Unknown',weaponType:weaponTypes[c.weapon]??'Unknown',role:roles[0]??'Resonator',roles,gender,baseStats:{hp:maxStats.hp,atk:maxStats.atk,def:maxStats.def,critRate:5,critDamage:150},levelStats,skillIcons,skillTreeExtras,sequenceIcons,skillInputGuide,flatSkillValues,attacks,articleUrl:`https://ww.nanoka.cc/character/${id}`,iconSourceUrl:asset(c.icon),portraitSourceUrl:asset(detail?.background??detail?.background_stand??c.icon),titleCardSourceUrl:titleCardByCharacter.get(c.en)??'',spineSkeletonSourceUrl:spineBaseUrl?`${spineBaseUrl}.skel`:'',spineAtlasSourceUrl:spineBaseUrl?`${spineBaseUrl}.atlas`:''}
 }).sort((a,b)=>a.name.localeCompare(b.name))
 const weaponEntries=Object.entries(rawWeapons).filter(([,weapon])=>!/^Projection(?:\s*[-:]|\b)/i.test(weapon.en))
 const weaponDetails=await mapLimit(weaponEntries.map(([id])=>id),8,async id=>[id,await load(`${base}/en/weapon/${id}.json`)])
@@ -214,11 +238,17 @@ const weapons=weaponEntries.map(([id,w])=>{
 }).sort((a,b)=>a.name.localeCompare(b.name))
 // Corrections verified from user-provided in-game catalog evidence but not yet reflected in Nanoka.
 const additionalEchoSonataGroups={6000085:[1,2,3,4,5,6]}
-const echoes=Object.entries(rawEchoes).map(([id,e])=>({id,name:e.en,cost:e.intensity===0?1:e.intensity===1?3:4,sonatas:[...new Set([...e.group,...(additionalEchoSonataGroups[id]??[])])].map(g=>names[g]),rarities:e.rank,intensity:e.intensity,articleUrl:`https://ww.nanoka.cc/echo/${id}`,iconPath:e.icon,iconSourceUrl:asset(e.icon)})).sort((a,b)=>a.name.localeCompare(b.name))
+const echoDetails=await mapLimit(Object.keys(rawEchoes),8,async id=>[id,await load(`${base}/en/echo/${id}.json`)])
+const echoDetailById=new Map(echoDetails)
+const echoes=Object.entries(rawEchoes).map(([id,e])=>{
+  const skill=echoDetailById.get(id)?.skill
+  const maxSkillParams=skill?.param?.at(-1)??[]
+  return {id,name:e.en,cost:e.intensity===0?1:e.intensity===1?3:4,sonatas:[...new Set([...e.group,...(additionalEchoSonataGroups[id]??[])])].map(g=>names[g]),rarities:e.rank,intensity:e.intensity,skillDescription:formatEffect(skill?.desc,maxSkillParams),articleUrl:`https://ww.nanoka.cc/echo/${id}`,iconPath:e.icon,iconSourceUrl:asset(e.icon)}
+}).sort((a,b)=>a.name.localeCompare(b.name))
 if(echoes.length<170||echoes.some(e=>e.sonatas.includes(undefined)))throw Error('Incomplete Nanoka data')
 const representativeEchoByGroup=new Map()
 for(const [echoId,echo] of Object.entries(rawEchoes))for(const groupId of echo.group)if(!representativeEchoByGroup.has(groupId))representativeEchoByGroup.set(groupId,echoId)
-const groupDetails=await Promise.all([...representativeEchoByGroup.entries()].map(async([groupId,echoId])=>{const detail=await load(`${base}/en/echo/${echoId}.json`);return [groupId,detail.group?.[groupId]]}))
+const groupDetails=[...representativeEchoByGroup.entries()].map(([groupId,echoId])=>[groupId,echoDetailById.get(echoId)?.group?.[groupId]])
 const groupById=new Map(groupDetails)
 const sonatas=names.flatMap((name,id)=>name?[{id:String(id),name,echoCount:echoes.filter(e=>e.sonatas.includes(name)).length,effects:Object.entries(groupById.get(id)?.set??{}).map(([pieces,effect])=>({pieces:Number(pieces),description:formatEffect(effect.desc,effect.param)})).sort((a,b)=>a.pieces-b.pieces)}]:[])
 const sonataIconSources=Object.fromEntries(await mapLimit(sonatas,8,async sonata=>{
@@ -229,17 +259,20 @@ if(characters.length<50||weapons.length<100||sonatas.length<30)throw Error('Inco
 const generatedAt=new Date().toISOString()
 const header='// Generated by scripts/sync-nanoka-echoes.mjs. Do not edit.\n'
 const types=`${header}export interface GeneratedCharacterAttackEntry {id:string;name:string;type:'basic'|'heavy'|'skill'|'liberation'|'intro'|'outro'|'healing';skillLevelIndex:number;scalesWith:'atk'|'hp'|'def';multipliers:number[];hitMultipliers:number[][]}
+export interface GeneratedCharacterSkillInputGuideEntry {id:string;description:string;imageSourceUrls:string[]}
+export interface GeneratedCharacterSkillInputGuideSection {id:string;name:string;entries:GeneratedCharacterSkillInputGuideEntry[]}
+export interface GeneratedCharacterSkillInputGuide {features:string[];overviewImageSourceUrl:string;sections:GeneratedCharacterSkillInputGuideSection[]}
 export interface GeneratedCharacterFlatSkillValueEntry {id:string;name:string;skillLevelIndex:number;values:string[]}
 export interface GeneratedCharacterLevelStats {level:number;hp:number;atk:number;def:number}
 export interface GeneratedCharacterSkillAsset {name:string;description:string;iconSourceUrl:string}
 export interface GeneratedCharacterSequenceAsset {sequence:number;name:string;description:string;iconSourceUrl:string}
-export interface GeneratedCharacterCatalogEntry {id:string;name:string;title:string;nickname:string;description:string;rarity:number;element:string;weaponType:string;role:string;gender:'male'|'female'|null;baseStats:{hp:number;atk:number;def:number;critRate:number;critDamage:number};levelStats:GeneratedCharacterLevelStats[];skillIcons:{normalAttack:GeneratedCharacterSkillAsset;resonanceSkill:GeneratedCharacterSkillAsset;forteCircuit:GeneratedCharacterSkillAsset;resonanceLiberation:GeneratedCharacterSkillAsset;introSkill:GeneratedCharacterSkillAsset};skillTreeExtras:{outroSkill:GeneratedCharacterSkillAsset;inherentSkills:GeneratedCharacterSkillAsset[];bonusStatBranches:{normalAttack:GeneratedCharacterSkillAsset[];resonanceSkill:GeneratedCharacterSkillAsset[];forteCircuit:GeneratedCharacterSkillAsset[];resonanceLiberation:GeneratedCharacterSkillAsset[];introSkill:GeneratedCharacterSkillAsset[]};tuneBreakSkill:GeneratedCharacterSkillAsset};sequenceIcons:GeneratedCharacterSequenceAsset[];flatSkillValues:GeneratedCharacterFlatSkillValueEntry[];attacks:GeneratedCharacterAttackEntry[];articleUrl:string;iconSourceUrl:string;portraitSourceUrl:string;titleCardSourceUrl:string;spineSkeletonSourceUrl:string;spineAtlasSourceUrl:string}
+export interface GeneratedCharacterCatalogEntry {id:string;name:string;title:string;nickname:string;description:string;rarity:number;element:string;weaponType:string;role:string;roles:string[];gender:'male'|'female'|null;baseStats:{hp:number;atk:number;def:number;critRate:number;critDamage:number};levelStats:GeneratedCharacterLevelStats[];skillIcons:{normalAttack:GeneratedCharacterSkillAsset;resonanceSkill:GeneratedCharacterSkillAsset;forteCircuit:GeneratedCharacterSkillAsset;resonanceLiberation:GeneratedCharacterSkillAsset;introSkill:GeneratedCharacterSkillAsset};skillTreeExtras:{outroSkill:GeneratedCharacterSkillAsset;inherentSkills:GeneratedCharacterSkillAsset[];bonusStatBranches:{normalAttack:GeneratedCharacterSkillAsset[];resonanceSkill:GeneratedCharacterSkillAsset[];forteCircuit:GeneratedCharacterSkillAsset[];resonanceLiberation:GeneratedCharacterSkillAsset[];introSkill:GeneratedCharacterSkillAsset[]};tuneBreakSkill:GeneratedCharacterSkillAsset};sequenceIcons:GeneratedCharacterSequenceAsset[];skillInputGuide:GeneratedCharacterSkillInputGuide;flatSkillValues:GeneratedCharacterFlatSkillValueEntry[];attacks:GeneratedCharacterAttackEntry[];articleUrl:string;iconSourceUrl:string;portraitSourceUrl:string;titleCardSourceUrl:string;spineSkeletonSourceUrl:string;spineAtlasSourceUrl:string}
 export interface GeneratedCharacterSummary {id:string;name:string;title:string;nickname:string;rarity:number;element:string;weaponType:string;role:string;gender:'male'|'female'|null;articleUrl:string;iconSourceUrl:string;portraitSourceUrl:string}
 export interface GeneratedWeaponLevelStats {level:number;baseAtk:number;secondaryStatValue:string}
 export interface GeneratedWeaponCatalogEntry {id:string;name:string;description:string;rarity:number;type:string;baseAtk:number;secondaryStat:string;secondaryStatValue:string;levelStats:GeneratedWeaponLevelStats[];passiveName:string;passiveEffects:string[];articleUrl:string;iconSourceUrl:string}
 export interface GeneratedWeaponSummary {id:string;name:string;rarity:number;type:string;baseAtk:number;secondaryStat:string;secondaryStatValue:string;articleUrl:string;iconSourceUrl:string}
 export interface GeneratedSonataCatalogEntry {id:string;name:string;echoCount:number;effects:Array<{pieces:number;description:string}>}
-export interface GeneratedEchoCatalogEntry {id:string;name:string;cost:1|3|4;sonatas:string[];rarities:number[];intensity:number;articleUrl:string;iconPath:string;iconSourceUrl:string}
+export interface GeneratedEchoCatalogEntry {id:string;name:string;cost:1|3|4;sonatas:string[];rarities:number[];intensity:number;skillDescription:string;articleUrl:string;iconPath:string;iconSourceUrl:string}
 `
 const characterSummaries=characters.map(({id,name,title,nickname,rarity,element,weaponType,role,gender,articleUrl,iconSourceUrl,portraitSourceUrl})=>({id,name,title,nickname,rarity,element,weaponType,role,gender,articleUrl,iconSourceUrl,portraitSourceUrl}))
 const weaponSummaries=weapons.map(({id,name,rarity,type,baseAtk,secondaryStat,secondaryStatValue,articleUrl,iconSourceUrl})=>({id,name,rarity,type,baseAtk,secondaryStat,secondaryStatValue,articleUrl,iconSourceUrl}))

@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000179",
+  "entityName": "Twin Nova: Nebulous Cannon",
+  "sourceFingerprint": "cf44549dfd259cc3ae90046380380b43164e9bc0ce801b911f5a1304bf5e2fd7",
+  "reviewedAt": "2026-09-26T18:47:52.565Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "f126bbefb8dbdba41dd44d30d024c68d3e5510e557585b1eaf74f1d7c82fc157",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000179:skill",
+            "name": "Twin Nova: Nebulous Cannon - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Spectro",
+            "expressions": [
+              "44.73%",
+              "53.67%",
+              "62.62%",
+              "71.56%",
+              "80.51%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.4473,
+                0.4473
+              ],
+              [
+                0.5367000000000001,
+                0.5367000000000001
+              ],
+              [
+                0.6262,
+                0.6262
+              ],
+              [
+                0.7156,
+                0.7156
+              ],
+              [
+                0.8051,
+                0.8051
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0
+            ],
+            "count": 2,
+            "cooldownSeconds": 8,
+            "charges": 2,
+            "rechargeSeconds": 8,
+            "chargeCondition": "Twin Nova: Collapsar Blade equipped in another slot",
+            "sourceText": "Transform into a Twin Nova: Nebulous Cannon to slash enemies twice, with each attack dealing 44.73% Spectro DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Spectro DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 8s.\nIf Twin Nova: Collapsar Blade is equipped in another slot on the Resonator:\n- Casting Echo Skill in succession transforms you into Nebulous Cannon and Collapsar Blade alternately and is considered casting Echo skills of the same name. The DMG Bonus from the Echo in the main slot remains unchanged.\n- DMG dealt by Twin Nova: Collapsar Blade becomes Spectro DMG.\n- Casting Basic Attacks grants 1 of Dyad Origins. Casting Resonance Skill grants 3 of Dyad Origins. Dyad Origins can stack up to 6 times and lasts for 8s. Each stack increases Echo Skill DMG by 10%, and all stacks are cleared after this Echo Skill ends.\n-This skill is capped at 2 uses. Initially, this skill can be used 2 times, with 1 use added every 8s. · Transform into a Twin Nova: Nebulous Cannon to slash enemies twice, with each attack dealing 53.67% Spectro DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Spectro DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 8s.\nIf Twin Nova: Collapsar Blade is equipped in another slot on the Resonator:\n- Casting Echo Skill in succession transforms you into Nebulous Cannon and Collapsar Blade alternately and is considered casting Echo skills of the same name. The DMG Bonus from the Echo in the main slot remains unchanged.\n- DMG dealt by Twin Nova: Collapsar Blade becomes Spectro DMG.\n- Casting Basic Attacks grants 1 of Dyad Origins. Casting Resonance Skill grants 3 of Dyad Origins. Dyad Origins can stack up to 6 times and lasts for 8s. Each stack increases Echo Skill DMG by 10%, and all stacks are cleared after this Echo Skill ends.\n-This skill is capped at 2 uses. Initially, this skill can be used 2 times, with 1 use added every 8s. · Transform into a Twin Nova: Nebulous Cannon to slash enemies twice, with each attack dealing 62.62% Spectro DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Spectro DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 8s.\nIf Twin Nova: Collapsar Blade is equipped in another slot on the Resonator:\n- Casting Echo Skill in succession transforms you into Nebulous Cannon and Collapsar Blade alternately and is considered casting Echo skills of the same name. The DMG Bonus from the Echo in the main slot remains unchanged.\n- DMG dealt by Twin Nova: Collapsar Blade becomes Spectro DMG.\n- Casting Basic Attacks grants 1 of Dyad Origins. Casting Resonance Skill grants 3 of Dyad Origins. Dyad Origins can stack up to 6 times and lasts for 8s. Each stack increases Echo Skill DMG by 10%, and all stacks are cleared after this Echo Skill ends.\n-This skill is capped at 2 uses. Initially, this skill can be used 2 times, with 1 use added every 8s. · Transform into a Twin Nova: Nebulous Cannon to slash enemies twice, with each attack dealing 71.56% Spectro DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Spectro DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 8s.\nIf Twin Nova: Collapsar Blade is equipped in another slot on the Resonator:\n- Casting Echo Skill in succession transforms you into Nebulous Cannon and Collapsar Blade alternately and is considered casting Echo skills of the same name. The DMG Bonus from the Echo in the main slot remains unchanged.\n- DMG dealt by Twin Nova: Collapsar Blade becomes Spectro DMG.\n- Casting Basic Attacks grants 1 of Dyad Origins. Casting Resonance Skill grants 3 of Dyad Origins. Dyad Origins can stack up to 6 times and lasts for 8s. Each stack increases Echo Skill DMG by 10%, and all stacks are cleared after this Echo Skill ends.\n-This skill is capped at 2 uses. Initially, this skill can be used 2 times, with 1 use added every 8s. · Transform into a Twin Nova: Nebulous Cannon to slash enemies twice, with each attack dealing 80.51% Spectro DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Spectro DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 8s.\nIf Twin Nova: Collapsar Blade is equipped in another slot on the Resonator:\n- Casting Echo Skill in succession transforms you into Nebulous Cannon and Collapsar Blade alternately and is considered casting Echo skills of the same name. The DMG Bonus from the Echo in the main slot remains unchanged.\n- DMG dealt by Twin Nova: Collapsar Blade becomes Spectro DMG.\n- Casting Basic Attacks grants 1 of Dyad Origins. Casting Resonance Skill grants 3 of Dyad Origins. Dyad Origins can stack up to 6 times and lasts for 8s. Each stack increases Echo Skill DMG by 10%, and all stacks are cleared after this Echo Skill ends.\n-This skill is capped at 2 uses. Initially, this skill can be used 2 times, with 1 use added every 8s."
+          }
+        ],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "1903e043051304c1742960759882451ec1996971bb521fc9d580d969736c748f",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000179:effect:0",
+            "sourceName": "Twin Nova: Nebulous Cannon",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in the main slot gains 12.00% Spectro DMG Bonus and 12.00% Basic Attack DMG Bonus.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Spectro",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          },
+          {
+            "id": "echo:6000179:effect:1",
+            "sourceName": "Twin Nova: Nebulous Cannon",
+            "sourceType": "echo",
+            "text": "Each stack increases Echo Skill DMG by 10%, and all stacks are cleared after this Echo Skill ends.",
+            "parsed": {
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 6
+              },
+              "modifiers": [
+                {
+                  "stat": "echoDamage",
+                  "operation": "addPercent",
+                  "value": 10,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Twin Nova: Collapsar Blade equipped in another slot",
+              "durationSeconds": 8
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

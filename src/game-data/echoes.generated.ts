@@ -19,6 +19,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into Abyssal Gladius and attack enemies in front of you with the sword, dealing 268.20% Glacio DMG.\nHold the Echo Skill to maintain the Echo form for a while to slash enemies and cast a ranged attack forward, dealing 268.20% and 670.50% Glacio DMG respectively.\nCD: 15s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000077",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32026_UI.T_IconMonsterHead_32026_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32026_UI.webp"
@@ -38,6 +39,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into Abyssal Mercator and summon 3 Ice Spikes to attack enemies, each dealing 89.39% Glacio DMG.\nCD: 15s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000078",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32027_UI.T_IconMonsterHead_32027_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32027_UI.webp"
@@ -57,6 +59,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into Abyssal Patricius and charge forward to attack enemies, dealing 268.20% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus.\nCD: 15s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000076",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32025_UI.T_IconMonsterHead_32025_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32025_UI.webp"
@@ -77,6 +80,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon an Aero Drake to attack enemies, dealing 129.60% Aero DMG.\nCD: 8s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000101",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31055_UI.T_IconMonsterHead_31055_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31055_UI.webp"
@@ -96,6 +100,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon an Aero Predator that throws a dart forward. The dart will bounce between enemies up to three times, dealing 28.80% Aero DMG each time it hits.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/390070071",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_231_UI.T_IconMonsterGoods_231_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_231_UI.webp"
@@ -115,6 +120,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon an Aero Prism to attack enemies, dealing 19.26% Aero DMG.\nCD: 15s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000095",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31051_UI.T_IconMonsterHead_31051_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31051_UI.webp"
@@ -133,6 +139,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Use Echo Skill to transform into an Aureate Picket, immediately recover 0.55% HP times plus an additional instance of 24 points of HP, then bash into enemies and deal 153.90% Aero DMG.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000205",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31093_UI.T_IconMonsterHead_31093_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31093_UI.webp"
@@ -152,6 +159,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into Autopuppet Scout, dealing 272.00% Glacio DMG to the surroundings, and generate up to 3 Ice Walls to block off the enemies.\n\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000049",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_1003_UI.T_IconMonsterHead_1003_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_1003_UI.webp"
@@ -171,6 +179,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Baby Roseshroom that fires a laser, dealing 32.00%+64 Havoc DMG.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/390070079",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_301_UI.T_IconMonsterGoods_301_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_301_UI.webp"
@@ -191,6 +200,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Transform into Baby Viridblaze Saurian to rest in place, and slowly restore HP.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/390070078",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_281_UI.T_IconMonsterGoods_281_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_281_UI.webp"
@@ -210,6 +220,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 3,
+    "skillDescription": "Activate the protection of Bell-Borne Geochelone. Deal Glacio DMG based on 145.92% of the current character's DEF to nearby enemies, and obtain a Bell-Borne Shield that lasts for 15s\n\nThe Bell-Borne Shield provides 50.00% DMG Reduction and 10.00% DMG Boost for the current team members, and disappears after the current character is hit for 3 times.\n\nCD: 20s",
     "articleUrl": "https://ww.nanoka.cc/echo/390080005",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_992_UI.T_IconMonsterGoods_992_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_992_UI.webp"
@@ -229,6 +240,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Transform into Calamity Effigy to deal 405.00% Aero DMG.\nThe Resonator with this Echo equipped in the main slot gains 10.00% Aero DMG Bonus, and additionally gains 10.00% Aero DMG Bonus for 15s when inflicting Tune Strain - Shifting on the target.\nCD: 25s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000221",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34032_UI.T_IconMonsterHead_34032_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34032_UI.webp"
@@ -249,6 +261,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Calcified Junrock that restores HP for nearby Resonators in the team by 2.52% of their Max HP, up to 5 times.\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000094",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31050_UI.T_IconMonsterHead_31050_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31050_UI.webp"
@@ -269,6 +282,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Summon a Capitaneus to jump up and smash enemies, dealing 118.80% Spectro DMG. This attack generates 4 extra Merciless Judgements, each dealing 59.40% Spectro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Spectro DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000104",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32033_UI.T_IconMonsterHead_32033_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32033_UI.webp"
@@ -288,6 +302,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into Carapace to perform a spinning attack that deals 112.00% Aero DMG, followed by a slash that deals 168.00% Aero DMG.\n\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000046",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_970_UI.T_IconMonsterGoods_970_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_970_UI.webp"
@@ -307,6 +322,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into Chasm Guardian to perform a Leap Strike that deals 273.60% Havoc DMG on hit. Current character loses 10.00% HP after the hit lands. Periodically restore current character's HP after 5s for up to 10.00% of their Max HP.\n\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/390077025",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_211_UI.T_IconMonsterGoods_211_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_211_UI.webp"
@@ -327,6 +343,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Chest Mimic to attack enemies with 3 consecutive strikes, each dealing 64.19% Spectro DMG.\nCD: 15s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000072",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31048_UI.T_IconMonsterHead_31048_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31048_UI.webp"
@@ -346,6 +363,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Chirpuff that self-inflates and blasts a powerful gust of wind forward 3 times. Each blast inflicts 38.40% Aero DMG and pushes enemies backwards.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000047",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_971_UI.T_IconMonsterGoods_971_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_971_UI.webp"
@@ -366,6 +384,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Summon a Chop Chop to perform a series of consecutive attacks. The first 6 strikes each deal 19.26% Fusion DMG and finishing strike deals 77.04% Fusion DMG.\nCD: 15s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000079",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32028_UI.T_IconMonsterHead_32028_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32028_UI.webp"
@@ -385,6 +404,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Chop Chop: Headless to attack enemies, dealing 129.60% Fusion DMG.\nCD: 8s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000064",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31040_UI.T_IconMonsterHead_31040_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31040_UI.webp"
@@ -404,6 +424,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Chop Chop: Leftless to attack enemies, dealing 129.60% Spectro DMG.\nCD: 8s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000065",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31041_UI.T_IconMonsterHead_31041_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31041_UI.webp"
@@ -423,6 +444,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Chop Chop: Rightless to attack enemies, dealing 129.60% Havoc DMG.\nCD: 8s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000066",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31042_UI.T_IconMonsterHead_31042_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31042_UI.webp"
@@ -442,6 +464,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Clang Bang that follows the enemy and eventually self-combusts, dealing 32.00%+64 Glacio DMG.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000051",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_1001_UI.T_IconMonsterHead_1001_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_1001_UI.webp"
@@ -461,6 +484,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Summon a Corrosaurus to attack enemies, dealing 273.60% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000120",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32044_UI.T_IconMonsterHead_32044_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32044_UI.webp"
@@ -479,6 +503,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Transform into Crownless and perform up to 4 consecutive attacks. The first 2 attacks deal 134.08% Havoc DMG each, the 3rd attack deals 100.56% Havoc DMG 2 times, and the 4th attack deals 67.04% Havoc DMG 3 times.\n\nAfter the transformation, increase current character's Havoc DMG by 12.00% and Resonance Skill DMG by 12.00% for 15s.\n\nCD: 20s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000042",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_9991_UI.T_IconMonsterGoods_9991_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_9991_UI.webp"
@@ -499,6 +524,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Cruisewing that restores HP for all current team characters by 1.80% of their Max HPs plus an additional 80 points of HP, up to 4 times.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/390070074",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_251_UI.T_IconMonsterGoods_251_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_251_UI.webp"
@@ -518,6 +544,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into Cuddle Wuddle and attack enemies with 4 strikes dealing 46.98% Physical DMG and 1 strike dealing 125.28% Physical DMG.\nCD: 20s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000081",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32030_UI.T_IconMonsterHead_32030_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32030_UI.webp"
@@ -537,6 +564,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into Cyan-Feathered Heron and charge at the enemies, dealing 236.80% Aero DMG; This Echo Skill interrupts enemy <color=Highlight>Special Skills</color> upon dealing damage.\n \nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/390077005",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_131_UI.T_IconMonsterGoods_131_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_131_UI.webp"
@@ -557,6 +585,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Devotee's Flesh to attack enemies, dealing 43.20% Aero DMG 3 times.\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000110",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31061_UI.T_IconMonsterHead_31061_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31061_UI.webp"
@@ -576,6 +605,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Transform into Crystal Scorpion and enter a Parry State. Counterattack when the Parry State is over, dealing 48.00%+96 Physical DMG.\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000041",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_987_UI.T_IconMonsterGoods_987_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_987_UI.webp"
@@ -595,6 +625,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Transform into Diggy Duggy and jump up into the air to smash onto enemies, dealing 268.20% Physical DMG.\nCD: 15s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000071",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31047_UI.T_IconMonsterHead_31047_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31047_UI.webp"
@@ -614,6 +645,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into Diurnus Knight and charge forward to attack enemies with the sword, dealing 268.20% Spectro DMG. DMG dealt to enemies inflicted by Spectro Frazzle is increased by 100.00%.\nCD: 15s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000074",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32023_UI.T_IconMonsterHead_32023_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32023_UI.webp"
@@ -632,6 +664,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Transform into Dragon of Dirge and summon a Grief Rift lasting for 5s. Periodically deal 36.81% Fusion DMG to enemies within the area of effect.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 25s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000084",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_33013_UI.T_IconMonsterHead_33013_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_33013_UI.webp"
@@ -650,6 +683,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 3,
+    "skillDescription": "Transform into Dreamless and perform 6 consecutive strikes. The first 5 strikes deal 54.08% Havoc DMG each, and the last strike deal 270.40% Havoc DMG.\nThe DMG of this Echo Skill is increased by 50.00% during the first 5s after Rover: Havoc casts Resonance Liberation: Deadening Abyss.\n\nCD: 20s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000053",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_998_UI.T_IconMonsterHead_998_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_998_UI.webp"
@@ -669,6 +703,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Dwarf Cassowary that tracks and attacks the enemy, dealing 38.40% Physical DMG 3 time(s).\n\nCooldown: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000055",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_330_UI.T_IconMonsterHead_330_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_330_UI.webp"
@@ -689,6 +724,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon an Electro Drake to attack enemies, dealing 43.20% Electro DMG 3 times.\nCD: 8s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000102",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31056_UI.T_IconMonsterHead_31056_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31056_UI.webp"
@@ -708,6 +744,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon an Electro Predator to shoot the enemy 5 times. The first 4 shots deals 17.28% Electro DMG, and the last deals 46.08% Electro DMG.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/390070053",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_031_UI.T_IconMonsterGoods_031_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_031_UI.webp"
@@ -727,6 +764,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Transform into an Excarat and tunnel underground to advance. In this state, you have the ability to change your direction and are immune to damage.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/390070077",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_271_UI.T_IconMonsterGoods_271_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_271_UI.webp"
@@ -747,6 +785,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Fae Ignis to attack enemies, dealing 129.60% Havoc DMG.\nCD: 8s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000067",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31043_UI.T_IconMonsterHead_31043_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31043_UI.webp"
@@ -765,6 +804,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Activate the Echo Skill to summon a fraction of the Fallacy of No Return's power and deal a blast to the surrounding area, inflicting Spectro DMG equal to 15.86% of max HP, after which the Resonator gains 10% bonus Energy Regen and all team members 10% bonus ATK for 20s.\nHold Echo Skill to unleash a series of flurry assaults at the cost of STA, each dealing Spectro DMG equal to 1.58% of max HP; Release to end the assail in a powerful blow, dealing Spectro DMG equal to 19.82% of max HP.\nCD: 20s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000060",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_350_UI.T_IconMonsterHead_350_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_350_UI.webp"
@@ -783,6 +823,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Transform into Feilian Beringal to perform a powerful kick. If the kick lands on an enemy, immediately perform a follow-up strike. The kick deals 231.84% Aero DMG, and the follow-up strike deals 283.36% Aero DMG.\n\nAfter the follow-up strike hits, the current character's Aero DMG increases by 12.00%, and the Heavy Attack DMG increases by 12.00% for 15s\n\nCD: 20s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000043",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_996_UI.T_IconMonsterGoods_996_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_996_UI.webp"
@@ -803,6 +844,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Fission Junrock. Generate a Resonance Effect that restores 2% HP for friendly units each time. If not in combat, you can pick up minerals or plants nearby.\n\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/390070052",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_021_UI.T_IconMonsterGoods_021_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_021_UI.webp"
@@ -822,6 +864,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into Flautist, continuously emitting Electro lasers, dealing 53.28% Electro DMG for a total of 10 times. Gain 1 Concerto Energy every time a hit lands.\n\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/390077022",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_191_UI.T_IconMonsterGoods_191_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_191_UI.webp"
@@ -843,6 +886,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Flora Drone, dealing 64.80% Aero DMG to enemies and healing Resonators within range by 3.60% of their Max HP plus an additional 160 HP.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000175",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31077_UI.T_IconMonsterHead_31077_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31077_UI.webp"
@@ -862,6 +906,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Summon a Flora Reindeer to attack enemies within a large range, dealing 192.60% Aero DMG.\n\nCD: 15s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000181",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32051_UI.T_IconMonsterHead_32051_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32051_UI.webp"
@@ -882,6 +927,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Use Echo Skill to summon Fog Lionarch to spit fire toward enemies, dealing 7 stages of 33.93% Fusion DMG.\n\nCD: 20s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000215",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32067_UI.T_IconMonsterHead_32067_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32067_UI.webp"
@@ -900,6 +946,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Use Echo Skill to summon Fog Lionarch: Body to ram into enemies, dealing 192.60% Fusion DMG.\n\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000212",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31100_UI.T_IconMonsterHead_31100_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31100_UI.webp"
@@ -918,6 +965,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Use Echo Skill to summon Fog Lionarch: Head to dart toward enemies, dealing 129.60% Fusion DMG.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000213",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31101_UI.T_IconMonsterHead_31101_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31101_UI.webp"
@@ -938,6 +986,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Use Echo Skill to summon Forbidden Bastion to bash over enemies, dealing 237.60% Glacio DMG.\n\nResonators with this Echo equipped in the main slot gain 10.00% Healing Bonus.\n\nCD: 20s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000216",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32068_UI.T_IconMonsterHead_32068_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32068_UI.webp"
@@ -957,6 +1006,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Summon a Frostbite Coleoid to punch enemies, dealing 192.60% Glacio DMG.\n\nCD: 15s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000187",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32057_UI.T_IconMonsterHead_32057_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32057_UI.webp"
@@ -976,6 +1026,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Frostscourge Stalker to attack enemies, dealing 129.60% Glacio DMG.\nCD: 8s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000063",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31039_UI.T_IconMonsterHead_31039_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31039_UI.webp"
@@ -995,6 +1046,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Fusion Drake to attack enemies, dealing 25.92% Fusion DMG 3 times.\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000107",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31058_UI.T_IconMonsterHead_31058_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31058_UI.webp"
@@ -1014,6 +1066,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Fusion Dreadmane that fiercely strikes the enemy, dealing 32.00%+64 Fusion DMG.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/390070100",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_980_UI.T_IconMonsterGoods_980_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_980_UI.webp"
@@ -1034,6 +1087,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Fusion Prism to fire a crystal shard, dealing 32.00%+64 Fusion DMG.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/390077012",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_151_UI.T_IconMonsterGoods_151_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_151_UI.webp"
@@ -1054,6 +1108,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Transform into Fusion Warrior to perform a Counterattack. If the Counterattack is successful, the cooldown time of this skill will be reduced by 70.00%, and 288.00% Fusion DMG will be dealt.\n\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/390070064",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_041_UI.T_IconMonsterGoods_041_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_041_UI.webp"
@@ -1073,6 +1128,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Galescourge Stalker that restores nearby party members' HP by 2.70% of their Max HP, up to 3 times.\nCD: 8s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000061",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31037_UI.T_IconMonsterHead_31037_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31037_UI.webp"
@@ -1093,6 +1149,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Geospider S4 to attack enemies, dealing 51.84% Spectro DMG once and 77.76% Spectro DMG once.\n \n CD: 8s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000177",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31079_UI.T_IconMonsterHead_31079_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31079_UI.webp"
@@ -1112,6 +1169,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Glacio Drake to attack enemies, dealing 25.92% Glacio DMG 5 times.\nCD: 8s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000103",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31057_UI.T_IconMonsterHead_31057_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31057_UI.webp"
@@ -1131,6 +1189,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Lacerate enemies as a Glacio Dreadmane, dealing 214.40% Glacio DMG on each hit. Equipped with 2 charges and can be cast mid-air. Glacio Dreadmane deals 20.00% more DMG while in mid-air and generates 6 Icicles upon landing, each dealing 32.00% Glacio DMG.\n\nCD: 20s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000056",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_985_UI.T_IconMonsterHead_985_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_985_UI.webp"
@@ -1150,6 +1209,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Glacio Predator that throws an ice spear, dealing 46.08% Glacio DMG on hit. Deal 4.61% Glacio DMG up to 10 times during the charging time, and 23.04% Glacio DMG when the spear explodes.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/390070070",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_101_UI.T_IconMonsterGoods_101_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_101_UI.webp"
@@ -1170,6 +1230,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Glacio Prism that continuously fires three crystal shards, each dealing 38.40% Glacio DMG.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/390077013",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_141_UI.T_IconMonsterGoods_141_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_141_UI.webp"
@@ -1189,6 +1250,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Summon a Glommoth to stomp enemies, dealing 273.60% Glacio DMG.\nCasting Outro Skill within 15s after summoning Glommoth grants 12.00% Glacio DMG Bonus to the incoming Resonator for 15s.\nCD: 20s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000195",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32061_UI.T_IconMonsterHead_32061_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32061_UI.webp"
@@ -1209,6 +1271,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Golden Junrock that charges forward, dealing 129.60% Spectro DMG to enemies in its path.\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000093",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31049_UI.T_IconMonsterHead_31049_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31049_UI.webp"
@@ -1228,6 +1291,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Gulpuff that blows bubbles 5 times, each time dealing 23.04% Glacio DMG.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/390070076",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_111_UI.T_IconMonsterGoods_111_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_111_UI.webp"
@@ -1248,6 +1312,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Havoc Drake to attack enemies, dealing 129.60% Havoc DMG 3 times.\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000109",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31060_UI.T_IconMonsterHead_31060_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31060_UI.webp"
@@ -1267,6 +1332,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into a Havoc Dreadmane to perform up to 2 tail strikes. Each strike deals 116.64% Havoc DMG and inflicts an additional instance of 77.76% Havoc DMG upon hitting the target.\n\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/390077033",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_984_UI.T_IconMonsterGoods_984_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_984_UI.webp"
@@ -1287,6 +1353,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Havoc Prism to fire five crystal shards, each dealing 23.04% Havoc DMG.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/390077017",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_171_UI.T_IconMonsterGoods_171_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_171_UI.webp"
@@ -1306,6 +1373,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Transform into Havoc Warrior to attack up to 3 times, dealing 171.73% Havoc DMG each time.\n \nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/390070065",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_051_UI.T_IconMonsterGoods_051_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_051_UI.webp"
@@ -1330,6 +1398,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 3,
+    "skillDescription": "Summon 3 twirling Crescent Servants around you. Crescent Servants attack enemies with their spinning blades, dealing 45.59% Havoc DMG. Triggering a Counterattack with the Echo attacks resets the Crescent Servants' duration.\nThe Resonator with this Echo equipped in the main slot has their Coordinated Attack DMG increased by 40.00%.\nCD: 20s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000085",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34010_1_UI.T_IconMonsterHead_34010_1_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34010_1_UI.webp"
@@ -1349,6 +1418,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Transform into Hoartoise and slowly restore HP. Use the Echo skill again to exit the transformation state.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/390070105",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_969_UI.T_IconMonsterGoods_969_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_969_UI.webp"
@@ -1368,6 +1438,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Hocus Pocus to attack enemies with 3 consecutive strikes, each dealing 43.20% Havoc DMG.\nCD: 8s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000069",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31045_UI.T_IconMonsterHead_31045_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31045_UI.webp"
@@ -1387,6 +1458,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into Hoochief and smack the enemies, dealing 268.20% Aero DMG.\n\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000040",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_989_UI.T_IconMonsterGoods_989_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_989_UI.webp"
@@ -1406,6 +1478,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Transform into Hooscamp Flinger and pounce at the enemies, dealing 48.00%+96 Aero DMG.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000038",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_988_UI.T_IconMonsterGoods_988_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_988_UI.webp"
@@ -1426,6 +1499,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into Hurriclaw and charge forward, dealing 156.60% Aero DMG upon hit plus 156.60% Aero DMG with a sweep attack. Hold the Echo Skill to continue charging forward. Use Echo Skill again while charging to perform a sweep attack.\nCD: 20s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000097",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32032_UI.T_IconMonsterHead_32032_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32032_UI.webp"
@@ -1445,6 +1519,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Summon Hyvatia to fire lasers at enemies from mid-air, dealing 27.36% Spectro DMG 10 times.\n\nCasting Outro Skill within 15s after summoning Hyvatia grants 10.00% All-Attribute DMG Bonus to the next Resonator using Intro Skill for 15s.\n\nCD: 20s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000189",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34021_UI.T_IconMonsterHead_34021_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34021_UI.webp"
@@ -1465,6 +1540,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Transform into an Iceglint Dancer to attack enemies, dealing 205.20% Glacio DMG.\nCD: 8s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000196",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31083_UI.T_IconMonsterHead_31083_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31083_UI.webp"
@@ -1483,6 +1559,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Transform into Impermanence Heron to fly up and smack down, dealing 310.56% Havoc DMG.\n\nLong press to stay as Impermanence Heron and continuously spit flames, each attack dealing 55.73% Havoc DMG.\n\nOnce the initial attack lands on any enemy, the current character regains 10 Resonance Energy. If the current character uses their Outro Skill within the next 15s, the next character's damage dealt will be boosted by 12% for 15s.\n\nCD: 20s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000052",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_995_UI.T_IconMonsterHead_995_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_995_UI.webp"
@@ -1501,6 +1578,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Transform into the Inferno Rider to launch up to 3 consecutive slashes in a row, each slash dealing 242.40%, 282.80%, and 282.80% Fusion DMG respectively.\n\nAfter the final hit, increase the current Resonator's Fusion DMG by 12.00% and Basic Attack DMG by 12.00% for 15s.\n\nLong press the Echo Skill to transform into the Inferno Rider and enter Riding Mode. When exiting Riding Mode, deal 282.80% Fusion DMG to enemies in front.\n\nCD: 20s",
     "articleUrl": "https://ww.nanoka.cc/echo/390080007",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_321_UI.T_IconMonsterGoods_321_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_321_UI.webp"
@@ -1521,6 +1599,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into an Ironhoof to charge at enemies, dealing 53.64% Fusion DMG. At the end of the charge, unleash a goring attack that deals 13.41% Fusion DMG 3 times and 174.33% Fusion DMG once.\n\nCD: 15s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000183",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32053_UI.T_IconMonsterHead_32053_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32053_UI.webp"
@@ -1539,6 +1618,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 3,
+    "skillDescription": "Summon Jué to the aid. Jué soars through the air, dealing 48.64% Spectro DMG, and summons thunderbolts that strike nearby enemies up to 5 times, each hit dealing 19.46% Spectro DMG. Jué then spirals downward, attacking surrounding enemies twice, each hit dealing 48.64% Spectro DMG.\nCasting this Echo Skill grants the Resonator a Blessing of Time effect that lasts 15s, during when:\n- The Resonator gains 16.00% Resonance Skill DMG Bonus.\n- When the Resonator's Resonance Skill hits the target, inflict 16.00% Spectro DMG 1 time per second for 15s, considered as the Resonator's Resonance Skill DMG.\nCD: 20s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000059",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_327_UI.T_IconMonsterHead_327_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_327_UI.webp"
@@ -1559,6 +1639,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into Kerasaur to leap into the air and slam down, dealing 268.20% Aero DMG. Shortly after hitting the target, cast Echo Skill again to charge at the target, dealing 268.20% Aero DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000112",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31062_UI.T_IconMonsterHead_31062_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31062_UI.webp"
@@ -1577,6 +1658,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Use Echo Skill to summon Kernel Puppet: Worry to attack enemies, dealing 129.60% Fusion DMG.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000207",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31095_UI.T_IconMonsterHead_31095_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31095_UI.webp"
@@ -1595,6 +1677,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Use Echo Skill to summon Kernel Puppet: Fright to attack enemies, dealing an instance of 51.84% Havoc DMG and an instance of 77.76% Havoc DMG.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000211",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31099_UI.T_IconMonsterHead_31099_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31099_UI.webp"
@@ -1613,6 +1696,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Use Echo Skill to summon Kernel Puppet: Grief to attack enemies, dealing 129.60% Spectro DMG.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000210",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31098_UI.T_IconMonsterHead_31098_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31098_UI.webp"
@@ -1631,6 +1715,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Use Echo Skill to summon Kernel Puppet: Joy to attack enemies, dealing 129.60% Physical DMG.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000206",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31094_UI.T_IconMonsterHead_31094_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31094_UI.webp"
@@ -1649,6 +1734,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Use Echo Skill to summon Kernel Puppet: Reflection to attack enemies, dealing 64.80% Electro DMG.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000209",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31097_UI.T_IconMonsterHead_31097_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31097_UI.webp"
@@ -1667,6 +1753,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Use Echo Skill to summon Kernel Puppet: Worry to attack enemies, dealing 64.80% Glacio DMG.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000208",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31096_UI.T_IconMonsterHead_31096_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31096_UI.webp"
@@ -1686,6 +1773,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into a Kronablight, soar into the air, and dive to deal 268.20% Electro DMG to the enemies.\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000193",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32059_UI.T_IconMonsterHead_32059_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32059_UI.webp"
@@ -1706,6 +1794,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Transform into La Guardia and attack nearby targets, dealing 268.20% Physical DMG.\nHold the Echo Skill to maintain the Echo form for a while to slash enemies and cast a ranged attack forward. The slash deals 268.20% Physical DMG, and the ranged attack deals 17.87% Physical DMG up to 15 times.\nCD: 15s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000098",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31052_UI.T_IconMonsterHead_31052_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31052_UI.webp"
@@ -1724,6 +1813,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Summon a Tidestorm to deal 13.68% Aero DMG ten times and 164.16% Aero DMG one time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000160",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34018_UI.T_IconMonsterHead_34018_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34018_UI.webp"
@@ -1742,6 +1832,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Transform into Lampylumen Myriad. Perform up to 3 consecutive attacks.\n\nUnleash a freezing shock by performing consecutive forward strikes, with the initial two strikes inflicting 200.16% and 200.16% Glacio DMG respectively, and the final strike dealing 266.88% Glacio DMG. Enemies will be frozen on hit.\n\nEach shock increases the current character's Glacio DMG by 4.00% and Resonance Skill DMG dealt by 4.00% for 15s, stacking up to 3 times\n\nCD: 20s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000044",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_994_UI.T_IconMonsterGoods_994_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_994_UI.webp"
@@ -1761,6 +1852,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Lava Larva that continuously attacks enemies, dealing 38.40% Fusion DMG with each hit. The Lava Larva disappears when the summoner is switched out or moves too far away.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000054",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_326_UI.T_IconMonsterHead_326_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_326_UI.webp"
@@ -1779,6 +1871,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Lunge forward as a Lightcrusher, dealing 135.36% Spectro DMG. Generate 6 Ablucence on hit. Each Ablucence explosion deals 15.04% Spectro DMG.\nHold the Echo Skill to stay in the Lightcrusher form, which allows you to leap up and pounce forward in the air for a short distance.\n\nCooldown: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000058",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_328_UI.T_IconMonsterHead_328_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_328_UI.webp"
@@ -1797,6 +1890,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Summon the Halberd of Glory to crush an area, dealing 82.08% Fusion DMG to nearby targets, and then blast off after a short delay, dealing 191.52% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000114",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_33022_UI.T_IconMonsterHead_33022_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_33022_UI.webp"
@@ -1815,6 +1909,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Transform into Lorelei and attack surrounding enemies, dealing 405.00% Havoc DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Havoc DMG Bonus and 12.00% Basic Attack DMG Bonus.\nCD: 25s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000082",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_33011_UI.T_IconMonsterHead_33011_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_33011_UI.webp"
@@ -1834,6 +1929,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Lottie Lost to attack enemies, dealing 129.60% Spectro DMG.\nCD: 8s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000070",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31046_UI.T_IconMonsterHead_31046_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31046_UI.webp"
@@ -1853,6 +1949,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into a Lumiscale Construct and enter a Parry Stance. If you are not attacked during the Parry Stance, slash to deal 553.60% Glacio DMG when the stance finishes. If attacked, counterattack instantly, dealing 553.60%+276.80% Glacio DMG. When hit with a <color=Highlight>Special Skill</color> attack while in the Parry Stance, break the <color=Highlight>Special Skill</color> and counterattack, dealing 553.60%+276.80% Glacio DMG.\n\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000057",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_329_UI.T_IconMonsterHead_329_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_329_UI.webp"
@@ -1871,6 +1968,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Strike enemies in front, dealing 48.64% Electro DMG, and summon Mech Waste to attack. Mech Waste deals 320.00% Electro DMG on hit and explodes after a while, dealing 160.00% Electro DMG.\n\nAfter casting this Echo Skill, increase the current character's ATK by 12.00% for 15s. \nDamage dealt by Mech Waste equals to the Resonator's Outro Skill DMG. \n\nCD: 20s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000048",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_993_UI.T_IconMonsterHead_993_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_993_UI.webp"
@@ -1892,6 +1990,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Transform into a Mining Drone to attack enemies, dealing 102.60% Havoc DMG twice.\nCD: 8s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000176",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31078_UI.T_IconMonsterHead_31078_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31078_UI.webp"
@@ -1911,6 +2010,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Summon a Mining Reindeer to launch a charged attack at enemies, dealing 237.60% Electro DMG.\n\n CD: 20s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000182",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32052_UI.T_IconMonsterHead_32052_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32052_UI.webp"
@@ -1929,6 +2029,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Transform into Mourning Aix and perform 2 consecutive claw attacks, each attack dealing 157.44% and 236.16% Spectro DMG respectively.\n\nAfter the transformation, increase current character's Spectro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s\n\nCD: 20s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000045",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_997_UI.T_IconMonsterGoods_997_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_997_UI.webp"
@@ -1948,6 +2049,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Summon Myriad Snare: Rustfire Chassis, dealing Fusion DMG equal to 10.20% of the Max HP on initial impact. During its duration, it repeatedly crushes enemies along its path up to 19 times, dealing Fusion DMG equal to 0.37% of the Max HP each time.\n\nResonators with this Echo equipped in the main slot gain 12.00% Fusion DMG Bonus and 12.00% Heavy Attack DMG Bonus.\n\nCD: 20s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000217",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34030_UI.T_IconMonsterHead_34030_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34030_UI.webp"
@@ -1967,6 +2069,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Summon Nameless Explorer to attack enemies along its path, dealing 273.60% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000192",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34026_UI.T_IconMonsterHead_34026_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34026_UI.webp"
@@ -1985,6 +2088,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon an Aero Predator that throws a dart forward. The dart will bounce between enemies up to three times, dealing 28.80% Aero DMG each time it hits.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000164",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31066_UI.T_IconMonsterHead_31066_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31066_UI.webp"
@@ -2003,6 +2107,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Baby Roseshroom that fires a laser, dealing 32.00%+64 Havoc DMG.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000170",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31073_UI.T_IconMonsterHead_31073_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31073_UI.webp"
@@ -2021,6 +2126,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Transform into Baby Viridblaze Saurian to rest in place, and slowly restore HP.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000169",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31072_UI.T_IconMonsterHead_31072_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31072_UI.webp"
@@ -2039,6 +2145,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Chirpuff that self-inflates and blasts a powerful gust of wind forward 3 times. Each blast inflicts 38.40% Aero DMG and pushes enemies backwards.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000166",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31068_UI.T_IconMonsterHead_31068_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31068_UI.webp"
@@ -2057,6 +2164,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Transform into Nightmare: Crownless and attack enemies in front, dealing 264.60% Havoc DMG. The Resonator with this Echo equipped in their main slot gains 12.00% Havoc DMG Bonus and 12.00% Basic Attack DMG Bonus.\nThis skill has 3 initial charges, replenished once every 12s, max 3 charges. When Nightmare: Crownless hits a target, DMG dealt by this skill is increased by 20.00%. This effect lasts for 2s and does not stack.\nCD: 12s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000090",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_YZ_33018_UI.T_IconMonsterHead_YZ_33018_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_YZ_33018_UI.webp"
@@ -2075,6 +2183,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into Cyan-Feathered Heron and charge at the enemies, dealing 236.80% Aero DMG; This Echo Skill interrupts enemy <color=Highlight>Special Skills</color> upon dealing damage.\n \nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000162",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32046_UI.T_IconMonsterHead_32046_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32046_UI.webp"
@@ -2093,6 +2202,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Dwarf Cassowary that tracks and attacks the enemy, dealing 38.40% Physical DMG 3 time(s).\n\nCooldown: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000172",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31076_UI.T_IconMonsterHead_31076_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31076_UI.webp"
@@ -2111,6 +2221,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon an Electro Predator to shoot the enemy 5 times. The first 4 shots deals 17.28% Electro DMG, and the last deals 46.08% Electro DMG.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000163",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31065_UI.T_IconMonsterHead_31065_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31065_UI.webp"
@@ -2129,6 +2240,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Summon a Nightmare: Feilian Beringal to attack enemies, dealing 164.16% Aero DMG. The remaining Whirlwind Beam will continuously attack surrounding enemies up to 5 times, each dealing 21.89% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000086",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_YZ_33014_UI.T_IconMonsterHead_YZ_33014_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_YZ_33014_UI.webp"
@@ -2147,6 +2259,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Glacio Predator that throws an ice spear, dealing 46.08% Glacio DMG on hit. Deal 4.61% Glacio DMG up to 10 times during the charging time, and 23.04% Glacio DMG when the spear explodes.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000118",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31064_UI.T_IconMonsterHead_31064_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31064_UI.webp"
@@ -2165,6 +2278,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Gulpuff that blows bubbles 5 times, each time dealing 23.04% Glacio DMG.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000165",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31067_UI.T_IconMonsterHead_31067_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31067_UI.webp"
@@ -2183,6 +2297,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Transform into Havoc Warrior to attack up to 3 times, dealing 171.73% Havoc DMG each time.\n \nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000117",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31063_UI.T_IconMonsterHead_31063_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31063_UI.webp"
@@ -2201,6 +2316,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 3,
+    "skillDescription": "Transform into Nightmare: Hecate. Leap up and smash down, dealing 3 stages of damage, each dealing Havoc DMG equal to 152.39% of her ATK.\nThe Resonator with the Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 25s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000115",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34016_UI.T_IconMonsterHead_34016_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34016_UI.webp"
@@ -2219,6 +2335,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Transform into Nightmare: Impermanence Heron and deliver up to 10 consecutive strikes to surrounding enemies, each dealing 40.50% Havoc DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Havoc DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 25s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000087",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_YZ_33015_UI.T_IconMonsterHead_YZ_33015_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_YZ_33015_UI.webp"
@@ -2237,6 +2354,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Transform into Nightmare: Inferno Rider and jump to attack enemies in front, dealing 405.00% Fusion DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Fusion DMG Bonus and 12.00% Resonance Skill DMG Bonus.\nHold Echo Skill to transform into Nightmare: Inferno Rider and enter Riding Mode. When exiting Riding Mode, deal 283.50% Fusion DMG to enemies in front.\nCD: 25s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000091",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_YZ_33019_UI.T_IconMonsterHead_YZ_33019_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_YZ_33019_UI.webp"
@@ -2256,6 +2374,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Transform into Nightmare: Kelpie to attack nearby targets, dealing 405.00% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Aero DMG Bonus. Switching out the Resonator with Outro Skill summons Nightmare: Kelpie to deal 405.00% Aero DMG.\nCD: 25s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000113",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_33021_UI.T_IconMonsterHead_33021_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_33021_UI.webp"
@@ -2275,6 +2394,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Summon Nightmare: Lampylumen Myriad and attack surrounding enemies, dealing 273.60% Glacio DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and deals 30.00% more Coordinated Attack DMG.\nCD: 20s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000105",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34013_UI.T_IconMonsterHead_34013_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34013_UI.webp"
@@ -2293,6 +2413,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Summon a Nightmare: Mourning Aix to attack surrounding enemies, dealing 273.60% Spectro DMG. DMG dealt to enemies inflicted by Spectro Frazzle is increased by 100.00%.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Spectro DMG Bonus.\nCD: 20s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000092",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_YZ_33020_UI.T_IconMonsterHead_YZ_33020_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_YZ_33020_UI.webp"
@@ -2311,6 +2432,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Summon a Roseshroom that fires a laser, dealing 57.07% Havoc DMG up to 3 times.\n \nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000173",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32048_UI.T_IconMonsterHead_32048_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32048_UI.webp"
@@ -2329,6 +2451,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Summon a Tambourinist that plays out Melodies of Annihilation. Any Resonator on the team gains the following effect for 10s upon obtaining a Melody of Annihilation: When the Resonator hits a target, the Tambourinist deals 14.40% Havoc DMG to the target, up to 10 times.\n\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000119",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32043_UI.T_IconMonsterHead_32043_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32043_UI.webp"
@@ -2348,6 +2471,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Transform into Nightmare: Tempest Mephis and attack surrounding enemies, dealing 405.00% Electro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Electro DMG Bonus and 12.00% Resonance Skill DMG Bonus.\nCD: 25s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000089",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_YZ_33017_UI.T_IconMonsterHead_YZ_33017_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_YZ_33017_UI.webp"
@@ -2366,6 +2490,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Transform into Nightmare: Thundering Mephis and attack enemies in front, dealing 405.00% Electro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Electro DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 25s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000088",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_YZ_33016_UI.T_IconMonsterHead_YZ_33016_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_YZ_33016_UI.webp"
@@ -2384,6 +2509,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Tick Tack that charges and bites the enemy. The charge from Tick Tack will deal 68.48% Havoc DMG to the enemy, and the bite will deal 102.72% Havoc DMG to the enemy. Reduces enemy Vibration Strength by up to 5.00% during 5s.\n\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000171",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31075_UI.T_IconMonsterHead_31075_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31075_UI.webp"
@@ -2402,6 +2528,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into Violet-Feathered Heron and enter a Parry Stance. Counterattack when the Parry stance is over, dealing 288.00% Electro DMG. If attacked during Parry Stance, you can counterattack in advance and additionally recover 5 Concerto Energy.\n\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000161",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32045_UI.T_IconMonsterHead_32045_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32045_UI.webp"
@@ -2420,6 +2547,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Summon a Viridblaze Saurian to continuously spit fire, dealing 17.12% Fusion DMG 10 times.\n\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000168",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32047_UI.T_IconMonsterHead_32047_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32047_UI.webp"
@@ -2440,6 +2568,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Nimbus Wraith that restores the active Resonator's HP by 2.70% of their Max HP, up to 4 times.\nCD: 15s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000068",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31044_UI.T_IconMonsterHead_31044_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31044_UI.webp"
@@ -2459,6 +2588,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into Nocturnus Knight and strike enemies in front of you from the air, dealing 268.20% Havoc DMG.\nCD: 15s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000075",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32024_UI.T_IconMonsterHead_32024_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32024_UI.webp"
@@ -2478,6 +2608,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into a Pilgrim's Shell to attack nearby enemies, dealing 268.20% Aero DMG.\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000111",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32034_UI.T_IconMonsterHead_32034_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32034_UI.webp"
@@ -2496,6 +2627,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Use Echo Skill to summon a Porcelain Picket to slash forward, dealing 2 instances of 19.44% Aero DMG and 7 instances of 12.96% Aero DMG to enemies along the path.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000203",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31091_UI.T_IconMonsterHead_31091_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31091_UI.webp"
@@ -2515,6 +2647,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into Questless Knight and smash the surrounding enemies, dealing 313.20% Electro DMG.\nCD: 20s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000073",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32022_UI.T_IconMonsterHead_32022_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32022_UI.webp"
@@ -2535,6 +2668,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into Rage Against the Statue to attack enemies, dealing 313.20% Spectro DMG. Hold the Echo Skill to maintain the Echo form and charge towards enemies, dealing 469.80% Spectro DMG.\nCD: 20s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000096",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32031_UI.T_IconMonsterHead_32031_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32031_UI.webp"
@@ -2554,6 +2688,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Transform into a Reactor Husk, jumping into the air and unleashing a heavy slash that deals 351.00% Fusion DMG to enemies.\n \nThe Resonator with this Echo equipped in their main slot gain 10.00% Energy Regen.\n \n CD: 20s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000190",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34022_UI.T_IconMonsterHead_34022_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34022_UI.webp"
@@ -2572,6 +2707,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Cast Echo Skill to deal 16 instances of Physical DMG equal to 10.26% of ATK to enemies within range.\nWhen Lucy or Rebecca has this Echo equipped in the main slot, their Crit. Rate is increased by 15% and they unlock special Echo Skills.\n\nIf equipped by Lucy:\n- {Cus:Ipt,Touch=Tap PC=Press Gamepad=Press} the Echo Skill button to deal Spectro DMG equal to 273.60% of ATK to nearby enemies.\n- Hold the Echo Skill button to deal Spectro DMG equal to 273.60% of ATK to nearby enemies and enter a special moving state, increasing Lucy's movement speed while slowing nearby enemies.\n\nIf equipped by Rebecca:\n- Cast Echo Skill to fire missiles, dealing 16 instances of Electro DMG equal to 17.10% of ATK to enemies.\nCD: 20s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000201",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34029_1_UI.T_IconMonsterHead_34029_1_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34029_1_UI.webp"
@@ -2590,6 +2726,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 3,
+    "skillDescription": "Summon \"Trickster\" to deal 273.60% Fusion DMG to enemies. Within the next 15s, casting Outro Skill grants the incoming Resonator 12.00% Fusion DMG Bonus for 15s.\nCD: 20s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000200",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34028_1_UI.T_IconMonsterHead_34028_1_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34028_1_UI.webp"
@@ -2609,6 +2746,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Summon the Talons of Decree to attack nearby enemies, dealing 273.60% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000116",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34015_2_UI.T_IconMonsterHead_34015_2_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34015_2_UI.webp"
@@ -2628,6 +2766,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 3,
+    "skillDescription": "Summon Windcleaver and attack the target, dealing 27.36% Aero DMG 8 times and 136.80% Aero DMG once.\nThe Resonator with this Echo equipped in the main slot gains 10.00% Aero DMG Bonus. When Resonator: Aero or Cartethyia equips this Echo, they gain 10.00% more Aero DMG Bonus.\nCD: 20s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000106",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34012_1_UI.T_IconMonsterHead_34012_1_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34012_1_UI.webp"
@@ -2647,6 +2786,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into a Kronaclaw and soar into the air to deal 8.04% Aero DMG up to 8 times and 24.13% Aero DMG 2 times, then dive to deal 155.55% Aero DMG 1 time.\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000194",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32060_UI.T_IconMonsterHead_32060_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32060_UI.webp"
@@ -2666,6 +2806,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 3,
+    "skillDescription": "Summon a Collapsing Horizon, dealing two instances of 131.04% Havoc DMG to the nearby enemies and obtaining the Core of Collapse for 15s.\n\nWhile it lasts, Core of Collapse deals 24.57% Havoc DMG when the active Resonator in the team deals damage. This effect can be triggered once every 0.5s, up to <SapTag=3>8</SapTag> {Cus:Sap,S=time P=times SapTag=3}. Enemies with Havoc Bane take 100% more DMG from this effect.\n\nThe Resonator with this Echo equipped in the main slot gains 12.00% Havoc DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\n\nCD: 25s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000167",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34020_1_UI.T_IconMonsterHead_34020_1_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34020_1_UI.webp"
@@ -2684,6 +2825,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 3,
+    "skillDescription": "Summon Aleph-1's Creation to deal 21.88% Glacio DMG 5 times and 164.16% Glacio DMG 1 time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000199",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34027_UI.T_IconMonsterHead_34027_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34027_UI.webp"
@@ -2703,6 +2845,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into Rocksteady Guardian and enter a Parry State. Upon being attacked, deal Spectro DMG equal to 8.29% of the Resonator's Max HP, and perform a follow-up attack that deals Spectro DMG equal to 8.29% of the Resonator's Max HP.\n \nUse the Echo Skill again to exit the transformation.\n \nIf the attack received is a <color=Highlight>Special Skill</color> attack, interrupt the enemy's <color=Highlight>Special Skill</color>, gain a Shield equal to 30% Max HP, and perform a two-stage follow-up attack, each dealing Spectro DMG equal to 5.52% of the Resonator's Max HP. These follow-up attacks simultaneously launch three ground-breaking waves, each dealing Spectro DMG equal to 4.59% of the Resonator's Max HP.\n \nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/390077024",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_241_UI.T_IconMonsterGoods_241_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_241_UI.webp"
@@ -2722,6 +2865,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Summon a Roseshroom that fires a laser, dealing 57.07% Havoc DMG up to 3 times.\n \nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/390077029",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_311_UI.T_IconMonsterGoods_311_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_311_UI.webp"
@@ -2742,6 +2886,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Summon a Sabercat Prowler to fire beams at enemies, dealing 192.60% Havoc DMG.\n\nCD: 15s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000186",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32056_UI.T_IconMonsterHead_32056_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32056_UI.webp"
@@ -2762,6 +2907,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Summon a Sabercat Reaver to attack enemies, dealing 192.60% Fusion DMG.\n\nCD: 15s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000185",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32055_UI.T_IconMonsterHead_32055_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32055_UI.webp"
@@ -2782,6 +2928,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Sabyr Boar to headbutt the enemy into the air, dealing 32.00%+64 Physical DMG.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/390070075",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_261_UI.T_IconMonsterGoods_261_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_261_UI.webp"
@@ -2801,6 +2948,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Sacerdos to attack enemies, dealing 64.80% Aero DMG 2 times.\nCD: 8s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000100",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31054_UI.T_IconMonsterHead_31054_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31054_UI.webp"
@@ -2821,6 +2969,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Transform into Sagittario to move a certain distance and perform a ranged attack, dealing 268.20% Spectro DMG.\nGetting attacked while moving in the Sagittario form triggers form triggers a damage avoiding enhanced Dodge Counter, dealing 268.20% Spectro DMG once and 53.64% Spectro DMG 5 times.\nCD: 15s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000099",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31053_UI.T_IconMonsterHead_31053_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31053_UI.webp"
@@ -2839,6 +2988,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Transform into Sentry Construct and attack enemies in front, dealing 405.00% Glacio DMG. Each time the Resonator with this Echo casts Resonance Liberation, it charges the Strike Capacitor.\nOnce Strike Capacitor is at max level, the Echo Skill cooldown will be reset. Use Echo Skill to transform into Sentry Construct and dive into enemies from the air, dealing 405.00% Glacio DMG and freezing the target.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and 12.00% Resonance Skill DMG Bonus.\nCD: 25s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000083",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_33012_UI.T_IconMonsterHead_33012_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_33012_UI.webp"
@@ -2859,6 +3009,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Shadow Stepper to attack enemies, dealing 129.60% Havoc DMG.\nCD: 8s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000197",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31084_UI.T_IconMonsterHead_31084_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31084_UI.webp"
@@ -2877,6 +3028,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 3,
+    "skillDescription": "Summon Sigillum to unleash two attacks, dealing 68.40% and 205.20% Fusion DMG respectively.\nWhen equipped in the main slot by Aemeath, it grants 25.00% Resonance Liberation DMG Bonus.\nCD: 20s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000191",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34025_0_UI.T_IconMonsterHead_34025_0_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34025_0_UI.webp"
@@ -2895,6 +3047,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Use Echo Skill to summon a Smiter to jab at enemies, dealing 7 instances of 19.26% Spectro DMG, and finish with an uppercut, dealing 57.78% Spectro DMG.\n\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000202",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31090_UI.T_IconMonsterHead_31090_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31090_UI.webp"
@@ -2913,6 +3066,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Use Echo Skill to summon Smolder to hurl fireballs toward enemies, dealing 192.60% Fusion DMG. If the fireball hits the ground, it explodes to deal 192.60% Fusion DMG to all enemies within the range.\n\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000214",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31102_UI.T_IconMonsterHead_31102_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31102_UI.webp"
@@ -2933,6 +3087,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Snip Snap that throws fireballs at the enemy, dealing 32.00%+64 Fusion DMG on-hit.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/390070066",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_061_UI.T_IconMonsterGoods_061_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_061_UI.webp"
@@ -2953,6 +3108,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Summon a Spacetrek Explorer to grant nearby active Resonators in the team a Shield equal to 10% of the summoner's Max HP for 4s.\n\nCD: 20s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000184",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32054_UI.T_IconMonsterHead_32054_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32054_UI.webp"
@@ -2972,6 +3128,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Summon a Spearback to perform 5 consecutive attacks. The first 4 attacks deal 29.96% Physical DMG, and the last deals 51.36% Physical DMG.\n\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/390077038",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_986_UI.T_IconMonsterGoods_986_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_986_UI.webp"
@@ -2991,6 +3148,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Spectro Drake to attack enemies, dealing 43.20% Spectro DMG 3 times.\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000108",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31059_UI.T_IconMonsterHead_31059_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31059_UI.webp"
@@ -3011,6 +3169,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Spectro Prism to emit a laser that hits the enemy up to 8 times, dealing 14.40% Spectro DMG each time.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/390077016",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_161_UI.T_IconMonsterGoods_161_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_161_UI.webp"
@@ -3029,6 +3188,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Use Echo Skill to summon a Stone Picket, dealing 129.60% Aero DMG.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000204",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31092_UI.T_IconMonsterHead_31092_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31092_UI.webp"
@@ -3048,6 +3208,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into Stonewall Bracer and charge forward, dealing 112.64% Physical DMG on-hit, then smash to deal 168.96% Physical DMG, and gain a shield of 10.00% of current character's Max HP that lasts 7s. Use the Echo skill again to exit the transformation state.\n\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/390077021",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_181_UI.T_IconMonsterGoods_181_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_181_UI.webp"
@@ -3067,6 +3228,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Summon a Tambourinist that plays out Melodies of Annihilation. Any Resonator on the team gains the following effect for 10s upon obtaining a Melody of Annihilation: When the Resonator hits a target, the Tambourinist deals 14.40% Havoc DMG to the target, up to 10 times.\n\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/390077023",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_201_UI.T_IconMonsterGoods_201_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_201_UI.webp"
@@ -3085,6 +3247,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Transform into Tempest Mephis to perform tail swing attacks followed by a claw attack. The lightning strike summoned by the tail swing deals 102.48% Electro DMG each time, while the claw attack deals 175.68% Electro DMG.\n\nAfter the claw hit, increase the current character's Electro DMG by 12.00% and Heavy Attack DMG by 12.00% for 15s.\n\nCD: 20s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000039",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_221_UI.T_IconMonsterGoods_221_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_221_UI.webp"
@@ -3103,6 +3266,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Transform into the False Sovereign and dash forward in a spinning strike, dealing 55.35% Electro DMG 4 times.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Electro DMG Bonus and 12.00% Heavy Attack DMG Bonus. Upon casting Intro Skill, the False Sovereign is also summoned to deal 405.00% Electro DMG.\nStart with 2 charges. Gain 1 charge every 8s, up to 2 charges.\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000121",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34017_UI.T_IconMonsterHead_34017_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34017_UI.webp"
@@ -3121,6 +3285,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 3,
+    "skillDescription": "Use Echo Skill to attack nearby enemies, dealing 109.44% Havoc DMG and summoning 4 Blades of Thousand Memories that last 15s.\n\nWhile Blades of Thousand Memories last, when the Resonator inflicts Havoc Bane, consume 1 Blade of Thousand Memories to deal 41.04% Havoc DMG once to the target. This effect can be triggered once every 1s.\n\nResonators with this Echo equipped in the main slot gain 12.00% Havoc DMG and 12.00% Heavy Attack DMG bonuses.\n\nCD: 20s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000218",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34031_UI.T_IconMonsterHead_34031_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34031_UI.webp"
@@ -3139,6 +3304,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 2,
+    "skillDescription": "Transform into Thundering Mephis, engaging in a rapid assault of up to 6 strikes. The first 5 strikes deal 132.61% Electro DMG each, while the final strike inflicts 189.44% Electro DMG, with an additional 31.57% Electro DMG from the thunder.\n\nAfter the final hit, increase the current character's Electro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s.\n\nCD: 20s",
     "articleUrl": "https://ww.nanoka.cc/echo/390080003",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_222_UI.T_IconMonsterGoods_222_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_222_UI.webp"
@@ -3159,6 +3325,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Tick Tack that charges and bites the enemy. The charge from Tick Tack will deal 68.48% Havoc DMG to the enemy, and the bite will deal 102.72% Havoc DMG to the enemy. Reduces enemy Vibration Strength by up to 5.00% during 5s.\n\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/390070069",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_091_UI.T_IconMonsterGoods_091_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_091_UI.webp"
@@ -3179,6 +3346,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Traffic Illuminator, immobilizing enemies for up to 1s. The immobilization will be lifted once the enemy is hit.\n\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000050",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_1000_UI.T_IconMonsterHead_1000_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_1000_UI.webp"
@@ -3199,6 +3367,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Transform into a Tremor Warrior and viciously attack enemies in the front, dealing 205.20% Electro DMG.\n\nCD: 8s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000174",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31074_UI.T_IconMonsterHead_31074_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31074_UI.webp"
@@ -3219,6 +3388,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into a Twin Nova: Collapsar Blade to rapidly fire at enemies for 5s, with each attack dealing 2.01% Electro DMG.\n\nThe Resonator with this Echo equipped in the main slot gains 12.00% Electro DMG Bonus and 12.00% Basic Attack DMG Bonus.\n\nCD: 8s.\n\nIf Twin Nova: Nebulous Cannon is equipped in another slot on the Resonator:\n- Casting Echo Skill in succession transforms you into Collapsar Blade and Nebulous Cannon alternately and is considered casting Echo skills of the same name.\n- DMG dealt by Twin Nova: Collapsar Blade becomes Spectro DMG. The Electro DMG Bonus gained from equipping it in the main slot is turned into Spectro DMG Bonus.\n- Casting Basic Attacks grants <SapTag=1>1</SapTag> {Cus:Sap,S=stack P=stacks SapTag=1} of Dyad Origins. Casting Resonance Skill grants <SapTag=2>3</SapTag> {Cus:Sap,S=stack P=stacks SapTag=2} of Dyad Origins. Dyad Origins can stack up to 6 times and lasts for 8s. Each stack increases Echo Skill DMG by 10%, and all stacks are cleared after this Echo Skill ends.\n- This skill is capped at 2 uses. Initially, this skill can be used 2 times, with 1 use added every 8s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000180",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32050_UI.T_IconMonsterHead_32050_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32050_UI.webp"
@@ -3238,6 +3408,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into a Twin Nova: Nebulous Cannon to slash enemies twice, with each attack dealing 80.51% Spectro DMG.\n\nThe Resonator with this Echo equipped in the main slot gains 12.00% Spectro DMG Bonus and 12.00% Basic Attack DMG Bonus.\n\nCD: 8s.\n\nIf Twin Nova: Collapsar Blade is equipped in another slot on the Resonator:\n- Casting Echo Skill in succession transforms you into Nebulous Cannon and Collapsar Blade alternately and is considered casting Echo skills of the same name. The DMG Bonus from the Echo in the main slot remains unchanged.\n- DMG dealt by Twin Nova: Collapsar Blade becomes Spectro DMG.\n- Casting Basic Attacks grants <SapTag=1>1</SapTag> {Cus:Sap,S=stack P=stacks SapTag=1} of Dyad Origins. Casting Resonance Skill grants <SapTag=2>3</SapTag> {Cus:Sap,S=stack P=stacks SapTag=2} of Dyad Origins. Dyad Origins can stack up to 6 times and lasts for 8s. Each stack increases Echo Skill DMG by 10%, and all stacks are cleared after this Echo Skill ends.\n-This skill is capped at 2 uses. Initially, this skill can be used 2 times, with 1 use added every 8s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000179",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32049_UI.T_IconMonsterHead_32049_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32049_UI.webp"
@@ -3258,6 +3429,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Vanguard Junrock that charges forward, dealing 32.00%+64 Physical DMG to enemies in its path.\n\nCD: 8s",
     "articleUrl": "https://ww.nanoka.cc/echo/390070051",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_011_UI.T_IconMonsterGoods_011_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_011_UI.webp"
@@ -3277,6 +3449,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into Violet-Feathered Heron and enter a Parry Stance. Counterattack when the Parry stance is over, dealing 288.00% Electro DMG. If attacked during Parry Stance, you can counterattack in advance and additionally recover 5 Concerto Energy.\n\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/390077004",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_121_UI.T_IconMonsterGoods_121_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_121_UI.webp"
@@ -3296,6 +3469,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Summon a Viridblaze Saurian to continuously spit fire, dealing 17.12% Fusion DMG 10 times.\n\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/390077028",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_291_UI.T_IconMonsterGoods_291_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_291_UI.webp"
@@ -3315,6 +3489,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into Vitreum Dancer and attack surrounding enemies, dealing 313.20% Electro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Electro DMG Bonus.\nCD: 20s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000080",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32029_UI.T_IconMonsterHead_32029_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32029_UI.webp"
@@ -3333,6 +3508,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "{Cus:Ipt,Touch=Tap PC=Press Gamepad=Press} Echo Skill to transform into Voidwing Moth, dealing 405.00% Spectro DMG to nearby enemies.\nHold Echo Skill to continuously attack, dealing up to 12 instances of 49.33% Spectro DMG.\nWithin 15s after using this Echo skill, casting Outro Skill increases the incoming Resonator's ATK by 12.00% for 15s.\nCD: 25s",
     "articleUrl": "https://ww.nanoka.cc/echo/6000198",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32066_UI.T_IconMonsterHead_32066_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32066_UI.webp"
@@ -3352,6 +3528,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Voltscourge Stalker to perform 3 stages of attacks on enemies, each dealing 43.20% Electro DMG.\nCD: 8s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000062",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31038_UI.T_IconMonsterHead_31038_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31038_UI.webp"
@@ -3372,6 +3549,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Whiff Whaff that triggers an air explosion, dealing 51.36% Aero DMG and produce a Low-pressure Zone. The Low-pressure Zone continuously pulls enemies nearby towards the center for 2s, dealing 19.97% Aero DMG up to 6 times.\n\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/390070068",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_081_UI.T_IconMonsterGoods_081_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_081_UI.webp"
@@ -3391,6 +3569,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 1,
+    "skillDescription": "Transform into a Windlash Coleoid to kick enemies, dealing 268.20% Aero DMG.\n\nCD: 15s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000188",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32058_UI.T_IconMonsterHead_32058_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32058_UI.webp"
@@ -3411,6 +3590,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Zig Zag that detonates Spectro energy, dealing 48.00%+96 Spectro DMG and creating a Stagnation Zone that lasts 1.8s.\nCD: 15s",
     "articleUrl": "https://ww.nanoka.cc/echo/390070067",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_071_UI.T_IconMonsterGoods_071_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_071_UI.webp"
@@ -3432,6 +3612,7 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
       5
     ],
     "intensity": 0,
+    "skillDescription": "Summon a Zip Zap to launch spinning attacks at enemies, dealing 25.92% Electro DMG 5 times.\n\nCD: 8s.",
     "articleUrl": "https://ww.nanoka.cc/echo/6000178",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31082_UI.T_IconMonsterHead_31082_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31082_UI.webp"

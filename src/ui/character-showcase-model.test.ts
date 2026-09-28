@@ -34,34 +34,34 @@ describe('character showcase passive stats', () => {
     expect(model.finalStats.critRate).toBeCloseTo(13)
   })
 
-  it('includes only unconditional character-wide stats from unlocked Sequences', () => {
+  it('does not execute unreviewed Sequence prose as a stat formula', () => {
     const baseCatalog = characterCatalog.find((entry) => entry.id === ownedCharacter.catalogId)!
     const catalog = { ...baseCatalog, sequenceIcons: [
       { sequence: 1, name: 'Static bonus', description: 'ATK is increased by 20%.', iconSourceUrl: '' },
       { sequence: 2, name: 'Triggered bonus', description: 'After casting Intro Skill, Crit. Rate is increased by 15% for 10s.', iconSourceUrl: '' }
     ] }
     const model = resolveCharacterShowcaseModel({ character: { ...ownedCharacter, sequence: 2, enabledSkillTreeBonusIds: [] }, catalog, weapons: [], echoes: [], builds: [] })!
-    expect(model.finalStats.atk).toBe(Math.floor(model.characterBaseStats.atk * 1.2))
+    expect(model.finalStats.atk).toBeCloseTo(model.characterBaseStats.atk)
     expect(model.finalStats.critRate).toBeCloseTo(catalog.baseStats.critRate)
   })
 
-  it('includes unconditional stats from enabled inherent-skill nodes', () => {
+  it('does not execute unreviewed inherent-skill prose as a stat formula', () => {
     const baseCatalog = characterCatalog.find((entry) => entry.id === ownedCharacter.catalogId)!
     const catalog = { ...baseCatalog, skillTreeExtras: { ...baseCatalog.skillTreeExtras, inherentSkills: [
       { name: 'Permanent training', description: 'ATK is increased by 10%.', iconSourceUrl: '' },
       { name: 'Triggered training', description: 'After casting Intro Skill, Crit. Rate is increased by 15% for 10s.', iconSourceUrl: '' }
     ] } }
     const model = resolveCharacterShowcaseModel({ character: { ...ownedCharacter, enabledSkillTreeBonusIds: ['inherent:0', 'inherent:1'] }, catalog, weapons: [], echoes: [], builds: [] })!
-    expect(model.finalStats.atk).toBe(Math.floor(model.characterBaseStats.atk * 1.1))
+    expect(model.finalStats.atk).toBeCloseTo(model.characterBaseStats.atk)
     expect(model.finalStats.critRate).toBeCloseTo(catalog.baseStats.critRate)
   })
 
-  it('includes unlocked always-on Sonata effects but excludes conditional ones', () => {
+  it('leaves Sonata damage effects to action-context calculation', () => {
     const catalog = characterCatalog.find((entry) => entry.id === ownedCharacter.catalogId)!
     const echoes = Array.from({ length: 5 }, (_, index) => echo(`echo-${index}`))
     const build = { id: 'build', name: 'build', resonatorId: ownedCharacter.catalogId, weaponId: '', echoIds: echoes.map((entry) => entry.id), level: 90, skillLevel: 1 }
     const model = resolveCharacterShowcaseModel({ character: ownedCharacter, catalog, weapons: [], echoes, builds: [build] })!
-    expect(model.finalStats.fusionDamage).toBeCloseTo(10)
+    expect(model.finalStats.fusionDamage).toBeCloseTo(0)
     expect(model.statBonusSources.find((source) => source.label === 'Molten Rift · 5-piece')?.hasConditionalStats).toBe(true)
   })
 })

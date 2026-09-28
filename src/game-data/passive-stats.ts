@@ -71,33 +71,14 @@ function statLinesFromSentence(sentence: string) {
   return lines
 }
 
-export function passiveStatLines(description: string) {
-  return effectSentences(description).flatMap(statLinesFromSentence)
-}
-
-export function alwaysOnPassiveStatLines(description: string) {
-  return effectSentences(description)
-    .filter((sentence) => !conditionalLanguage.test(sentence))
-    .flatMap(statLinesFromSentence)
-}
-
 export function hasConditionalStatLines(description: string) {
   return effectSentences(description).some((sentence) => conditionalLanguage.test(sentence) && statLinesFromSentence(sentence).length > 0)
-}
-
-const sequenceStatSubject = String.raw`(?:Max HP|HP|ATK|DEF|Crit\. Rate|Crit\. DMG|Energy Regen|Healing Bonus|Basic Attack(?: DMG)? Bonus|Heavy Attack(?: DMG)? Bonus|Resonance Skill DMG Bonus|Resonance Liberation DMG Bonus|Spectro DMG(?: Bonus)?|Fusion DMG(?: Bonus)?|Glacio DMG(?: Bonus)?|Electro DMG(?: Bonus)?|Aero DMG(?: Bonus)?|Havoc DMG(?: Bonus)?|(?:All-)?Attribute DMG Bonus)`
-const directSequenceStat = new RegExp(String.raw`^(?:(?:the\s+)?(?:wielder|resonator)(?:'s)?\s+|[A-Z][\w'-]*(?:'s)?\s+)?${sequenceStatSubject}\s+(?:is\s+)?(?:increased|\+)`, 'i')
-const gainedSequenceStat = new RegExp(String.raw`^(?:all\s+(?:resonators|team members)(?:\s+in\s+the\s+team)?|(?:the\s+)?(?:wielder|resonator)|[A-Z][\w'-]*)?\s*(?:gain|gains|grant|grants)\s+[\d.]+%\s+${sequenceStatSubject}`, 'i')
-
-export function alwaysOnSequenceStatLines(description: string) {
-  return effectSentences(description)
-    .filter((sentence) => !conditionalLanguage.test(sentence) && (directSequenceStat.test(sentence) || gainedSequenceStat.test(sentence)))
-    .flatMap(statLinesFromSentence)
 }
 
 const skillTreeStatKeys: Array<[RegExp, StatKey]> = [
   [/crit\. rate/i, 'critRate'],
   [/crit\. dmg/i, 'critDamage'],
+  [/energy regen/i, 'energyRegen'],
   [/healing bonus/i, 'healingBonus'],
   [/spectro dmg/i, 'spectroDamage'],
   [/fusion dmg/i, 'fusionDamage'],

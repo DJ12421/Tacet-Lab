@@ -8,3 +8,5 @@ coverage/
 
 # Local Codex project memory; intentionally not committed.
 AGENTS.md
+graphify-out
+.codex-work

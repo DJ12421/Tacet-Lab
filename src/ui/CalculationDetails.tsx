@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
-import type { CalculationTrace } from '../domain/calculation'
+import type { CalculationTrace } from '../domain/combat'
 import './calculation-details.css'
 
 export interface CalculationDetailRow {
@@ -31,27 +31,26 @@ function compactDetailRows(rows: CalculationDetailRow[]) {
     .slice(0, 12)
 }
 
-export function traceCalculationDetail(trace: CalculationTrace, title = trace.label): CalculationDetail {
+export function traceCalculationDetail(trace: CalculationTrace, title = trace.stage): CalculationDetail {
   const traceValue = (node: CalculationTrace) => {
-    if (typeof node.value !== 'number') return String(node.value)
+    if (typeof node.value !== 'number') return String(node.value ?? '')
     const value = node.value.toLocaleString('en-US', { maximumFractionDigits: 3 })
-    if (/\bbonus\b/i.test(node.label) && !/\bmultiplier\b/i.test(node.label)) return `(100% + ${value}%)`
-    if (/\b(?:multiplier|factor|motion value)\b/i.test(node.label) && Math.abs(node.value) <= 10) {
+    if (/\bbonus\b/i.test(node.stage) && !/\bmultiplier\b/i.test(node.stage)) return `(100% + ${value}%)`
+    if (/\b(?:multiplier|factor|motion value)\b/i.test(node.stage) && Math.abs(node.value) <= 10) {
       return `${(node.value * 100).toLocaleString('en-US', { maximumFractionDigits: 3 })}%`
     }
-    if (/\b(?:rate|regen|ignore|reduction)\b/i.test(node.label) && !/%$/.test(value)) return `${value}%`
+    if (/\b(?:rate|regen|ignore|reduction)\b/i.test(node.stage) && !/%$/.test(value)) return `${value}%`
     return value
   }
   const row = (node: CalculationTrace): CalculationDetailRow => ({
-    label: node.label,
+    label: node.stage,
     value: traceValue(node),
     children: node.children.map(row)
   })
-  const equationOperator = trace.operation === 'sum' ? '+' : trace.operation === 'prod' ? '×' : undefined
   const resultValue = typeof trace.value === 'number'
     ? Math.floor(trace.value + 1e-9).toLocaleString('en-US')
-    : String(trace.value)
-  return { title, value: resultValue, formula: 'Declarative formula trace', equationOperator, rows: [row(trace)] }
+    : String(trace.value ?? '')
+  return { title, value: resultValue, formula: 'Reviewed combat calculation', rows: [row(trace)] }
 }
 
 function CalculationEquation({ detail }: { detail: CalculationDetail }) {

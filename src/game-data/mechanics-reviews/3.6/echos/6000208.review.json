@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000208",
+  "entityName": "Kernel Puppet: Worry",
+  "sourceFingerprint": "aa68c9472030785d21c51c689f997fcbec0e0edce00fcac9bf247dfcee15d6ac",
+  "reviewedAt": "2026-09-26T18:47:52.627Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "484b886769df75a1fa1179cb82bd209cf8ce43d22daa0ec510a847ec4d915bde",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000208:skill",
+            "name": "Kernel Puppet: Worry - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Glacio",
+            "expressions": [
+              "36.00%",
+              "43.20%",
+              "50.40%",
+              "57.60%",
+              "64.80%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.36
+              ],
+              [
+                0.43200000000000005
+              ],
+              [
+                0.504
+              ],
+              [
+                0.5760000000000001
+              ],
+              [
+                0.648
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 8,
+            "sourceText": "Use Echo Skill to summon Kernel Puppet: Worry to attack enemies, dealing 36.00% Glacio DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Worry to attack enemies, dealing 43.20% Glacio DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Worry to attack enemies, dealing 50.40% Glacio DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Worry to attack enemies, dealing 57.60% Glacio DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Worry to attack enemies, dealing 64.80% Glacio DMG.\nCD: 8s"
+          }
+        ],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

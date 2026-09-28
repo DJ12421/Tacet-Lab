@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000064",
+  "entityName": "Chop Chop: Headless",
+  "sourceFingerprint": "ad0079ba081b63e7db61b54d25ee0f0be76c7b560fa2d267e7090383d2a7295a",
+  "reviewedAt": "2026-09-26T18:47:52.379Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "5bc50772bc95baabd7aa13bd3dfbaa9bd44cd014cc7f4c37578b286a82a58e4a",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000064:skill",
+            "name": "Chop Chop: Headless - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Fusion",
+            "expressions": [
+              "72.00%",
+              "86.40%",
+              "100.80%",
+              "115.20%",
+              "129.60%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.72
+              ],
+              [
+                0.8640000000000001
+              ],
+              [
+                1.008
+              ],
+              [
+                1.1520000000000001
+              ],
+              [
+                1.296
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 8,
+            "sourceText": "Summon a Chop Chop: Headless to attack enemies, dealing 72.00% Fusion DMG.\nCD: 8s. · Summon a Chop Chop: Headless to attack enemies, dealing 86.40% Fusion DMG.\nCD: 8s. · Summon a Chop Chop: Headless to attack enemies, dealing 100.80% Fusion DMG.\nCD: 8s. · Summon a Chop Chop: Headless to attack enemies, dealing 115.20% Fusion DMG.\nCD: 8s. · Summon a Chop Chop: Headless to attack enemies, dealing 129.60% Fusion DMG.\nCD: 8s."
+          }
+        ],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000110",
+  "entityName": "Devotee's Flesh",
+  "sourceFingerprint": "57c1d47ed181fa5e9fa3150952e5fe7eceb68d83195ea9ffbca20038baab2a8e",
+  "reviewedAt": "2026-09-26T18:47:52.496Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "799a199bda23ecd987f463d0f5789cdda4cbdc5491de640c1d97ca52841e406e",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000110:skill",
+            "name": "Devotee's Flesh - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Aero",
+            "expressions": [
+              "24.00%",
+              "28.80%",
+              "33.60%",
+              "38.40%",
+              "43.20%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.24,
+                0.24,
+                0.24
+              ],
+              [
+                0.28800000000000003,
+                0.28800000000000003,
+                0.28800000000000003
+              ],
+              [
+                0.336,
+                0.336,
+                0.336
+              ],
+              [
+                0.384,
+                0.384,
+                0.384
+              ],
+              [
+                0.43200000000000005,
+                0.43200000000000005,
+                0.43200000000000005
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0,
+              0
+            ],
+            "count": 3,
+            "cooldownSeconds": 8,
+            "sourceText": "Summon a Devotee's Flesh to attack enemies, dealing 24.00% Aero DMG 3 times.\nCD: 8s · Summon a Devotee's Flesh to attack enemies, dealing 28.80% Aero DMG 3 times.\nCD: 8s · Summon a Devotee's Flesh to attack enemies, dealing 33.60% Aero DMG 3 times.\nCD: 8s · Summon a Devotee's Flesh to attack enemies, dealing 38.40% Aero DMG 3 times.\nCD: 8s · Summon a Devotee's Flesh to attack enemies, dealing 43.20% Aero DMG 3 times.\nCD: 8s"
+          }
+        ],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

@@ -240,7 +240,7 @@
 }
 
 .tw-member-page.section-overview .tw-formula-grid {
-  grid-template-columns: 245px minmax(0,1fr) 245px;
+  grid-template-columns: 245px minmax(0,1fr);
 }
 
 .tw-member-page.section-overview .tw-sheet-column>header {

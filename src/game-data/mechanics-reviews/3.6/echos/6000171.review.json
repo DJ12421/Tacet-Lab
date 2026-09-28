@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000171",
+  "entityName": "Nightmare: Tick Tack",
+  "sourceFingerprint": "219746ac009bb0ddcc891d891ea3011137ffaa4b39098a034b977a204757297f",
+  "reviewedAt": "2026-09-26T18:47:52.548Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "028ba9a151f217f2be18827f337b15a7f6983db20d03e706f8b3f2b7d48dc75f",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000171:skill",
+            "name": "Nightmare: Tick Tack - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Havoc",
+            "expressions": [
+              "42.80%+64.20%",
+              "49.22%+73.83%",
+              "55.64%+83.46%",
+              "62.06%+93.09%",
+              "68.48%+102.72%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.428,
+                0.642
+              ],
+              [
+                0.49219999999999997,
+                0.7383
+              ],
+              [
+                0.5564,
+                0.8345999999999999
+              ],
+              [
+                0.6206,
+                0.9309000000000001
+              ],
+              [
+                0.6848000000000001,
+                1.0272
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              1
+            ],
+            "count": 2,
+            "cooldownSeconds": 15,
+            "sourceText": "Summon a Tick Tack that charges and bites the enemy. The charge from Tick Tack will deal 42.80% Havoc DMG to the enemy, and the bite will deal 64.20% Havoc DMG to the enemy. Reduces enemy Vibration Strength by up to 5.00% during 5s.\nCD: 15s · Summon a Tick Tack that charges and bites the enemy. The charge from Tick Tack will deal 49.22% Havoc DMG to the enemy, and the bite will deal 73.83% Havoc DMG to the enemy. Reduces enemy Vibration Strength by up to 5.00% during 5s.\nCD: 15s · Summon a Tick Tack that charges and bites the enemy. The charge from Tick Tack will deal 55.64% Havoc DMG to the enemy, and the bite will deal 83.46% Havoc DMG to the enemy. Reduces enemy Vibration Strength by up to 5.00% during 5s.\nCD: 15s · Summon a Tick Tack that charges and bites the enemy. The charge from Tick Tack will deal 62.06% Havoc DMG to the enemy, and the bite will deal 93.09% Havoc DMG to the enemy. Reduces enemy Vibration Strength by up to 5.00% during 5s.\nCD: 15s · Summon a Tick Tack that charges and bites the enemy. The charge from Tick Tack will deal 68.48% Havoc DMG to the enemy, and the bite will deal 102.72% Havoc DMG to the enemy. Reduces enemy Vibration Strength by up to 5.00% during 5s.\nCD: 15s"
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

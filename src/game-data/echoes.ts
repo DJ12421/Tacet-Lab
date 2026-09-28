@@ -11,6 +11,7 @@ export interface EchoCatalogEntry {
   /** Provenance only; do not hotlink or bundle without checking the file's reuse rights. */
   rarities?: number[]
   intensity?: number
+  skillDescription?: string
   iconPath?: string
   /** Provenance only; do not hotlink or bundle without checking the file's reuse rights. */
   iconSourceUrl?: string

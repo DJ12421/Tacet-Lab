@@ -1,5 +1,4 @@
-import { estimateFormulaRange, evaluateFormulaValue, type FormulaRange } from './calculation/engine'
-import { calculateDamage, emptyStats, floorGameValue } from './damage'
+import { calculateBuildModes } from './combat/runtime'
 import { echoStatLines } from '../game-data/echo-main-stats'
 import { sonataCatalog } from '../game-data'
 import type {
@@ -12,17 +11,14 @@ import type {
   StatKey
 } from './types'
 
-interface DamageEvaluator {
-  (echoes: Echo[], stats: OptimizerResult['stats']): OptimizerResult['damage'] | undefined
-  upperBound?: (
-    selected: Echo[],
-    candidates: Echo[],
-    start: number,
-    amount: number,
-    stats: OptimizerResult['stats']
-  ) => OptimizerResult['damage'] | undefined
-}
 type ProgressListener = (progress: OptimizerProgress) => void
+
+const floorGameValue = (value: number) => Math.floor(value + 1e-9)
+const emptyStats = (): OptimizerResult['stats'] => ({
+  baseHp:0, baseAtk:0, baseDef:0, hp:0, atk:0, def:0, critRate:0, critDamage:0, energyRegen:100,
+  basicDamage:0, heavyDamage:0, skillDamage:0, liberationDamage:0, spectroDamage:0, fusionDamage:0,
+  glacioDamage:0, electroDamage:0, aeroDamage:0, havocDamage:0, healingBonus:0
+})
 
 type EchoStatVector = Partial<Record<StatKey, number>>
 
@@ -77,7 +73,6 @@ function compileOptimizerData(request: OptimizerRequest, echoes: Echo[]): Compil
     orderScores.set(echo.id, lineScore(echo, request.objective))
   }
   const bonus: EchoStatVector = {}
-  for (const line of request.bonusStatLines ?? []) bonus[line.key] = (bonus[line.key] ?? 0) + line.value
   if (request.weapon.stat) bonus[request.weapon.stat.key] = (bonus[request.weapon.stat.key] ?? 0) + request.weapon.stat.value
   return {
     vectors,
@@ -96,7 +91,6 @@ function aggregateCompiledStats(
   request: OptimizerRequest,
   echoes: Echo[],
   data: CompiledOptimizerData,
-  includeLegacySonatas = true,
   accumulated?: EchoStatVector
 ) {
   const stats = emptyStats()
@@ -122,15 +116,6 @@ function aggregateCompiledStats(
   if (accumulated) addVector(accumulated)
   else for (const echo of echoes) addVector(data.vectors.get(echo.id))
 
-  if (includeLegacySonatas) {
-    const sonatas = new Map<string, number>()
-    for (const echo of echoes) sonatas.set(echo.sonata, (sonatas.get(echo.sonata) ?? 0) + 1)
-    if ((sonatas.get('Celestial Light') ?? 0) >= 5) stats.spectroDamage += 30
-    if ((sonatas.get('Molten Rift') ?? 0) >= 5) stats.fusionDamage += 30
-    if ((sonatas.get('Freezing Frost') ?? 0) >= 5) stats.glacioDamage += 30
-    if ((sonatas.get('Lingering Tunes') ?? 0) >= 5) percent.atk += 20
-    if ((sonatas.get('Rejuvenating Glow') ?? 0) >= 5) stats.healingBonus += 10
-  }
   stats.hp = floorGameValue(data.base.hp * (1 + percent.hp / 100) + flat.hp)
   stats.atk = floorGameValue(data.base.atk * (1 + percent.atk / 100) + flat.atk)
   stats.def = floorGameValue(data.base.def * (1 + percent.def / 100) + flat.def)
@@ -211,8 +196,9 @@ function pruneDominatedEchoes(echoes: Echo[], request: OptimizerRequest, protect
   // With a fixed main Echo, secondary Echoes in the same cost/Sonata group
   // contribute only non-negative equipment stats. Retaining topN + four
   // dominators keeps enough distinct pieces for every five-slot result.
-  // Arbitrary-main, declarative formula and upper-bound searches stay unpruned.
-  if (!request.profile || request.profile.mainEchoPolicy === 'any' || request.formula
+  // Reviewed effects can depend on exact pieces and activation state, so
+  // combat searches keep every candidate unless a reviewed bound proves safe.
+  if (!request.profile || request.profile.mainEchoPolicy === 'any' || request.combat
     || Object.keys(request.maximumStats ?? {}).length || request.profile.maximumScore !== undefined) return echoes
   const threshold = request.limit + 4
   const groups = new Map<string, Echo[]>()
@@ -435,7 +421,7 @@ function extremeContribution(candidates: Echo[], start: number, amount: number, 
  * real build but can never discard one that might satisfy the request.
  */
 function statEnvelope(request: OptimizerRequest, selected: Echo[], candidates: Echo[], start: number, amount: number, data: CompiledOptimizerData): StatEnvelope {
-  const base = aggregateCompiledStats(request, selected, data, false)
+  const base = aggregateCompiledStats(request, selected, data)
   const min = { ...base }
   const max = { ...base }
   const keys = Object.keys(base).filter((key) => !key.startsWith('base')) as OptimizerStatKey[]
@@ -457,42 +443,12 @@ function statEnvelope(request: OptimizerRequest, selected: Echo[], candidates: E
     min[key] = base[key] + extremeContribution(candidates, start, amount, key, false, data)
     max[key] = base[key] + extremeContribution(candidates, start, amount, key, true, data)
   }
-  // Legacy Sonata bonuses are non-negative. Include every possible bonus in
-  // the upper envelope; the intentionally loose bound remains exactness-safe.
-  max.atk += Math.ceil(max.baseAtk * 0.2)
-  max.spectroDamage += 30
-  max.fusionDamage += 30
-  max.glacioDamage += 30
-  max.healingBonus += 10
   return { min, max }
 }
 
-function scoreEnvelope(
-  request: OptimizerRequest,
-  envelope: StatEnvelope,
-  evaluateDamage?: DamageEvaluator,
-  branch?: { selected: Echo[]; candidates: Echo[]; start: number; amount: number }
-): FormulaRange {
-  if (request.formula) {
-    const statRanges = Object.fromEntries(Object.keys(envelope.min).map((key) => [key, {
-      min: envelope.min[key as keyof typeof envelope.min],
-      max: envelope.max[key as keyof typeof envelope.max],
-      monotonic: true
-    }]))
-    return estimateFormulaRange(request.formula.node, {
-      stats: { ...envelope.min },
-      inputs: request.formula.inputs,
-      entries: request.formula.entries
-    }, {}, statRanges)
-  }
-  if (request.objective === 'normal' || request.objective === 'critical' || request.objective === 'expected') {
-    return {
-      min: calculateDamage(envelope.min, request.attack, request.enemy)[request.objective],
-      max: calculateDamage(envelope.max, request.attack, request.enemy)[request.objective],
-      monotonic: true
-    }
-  }
-  return { min: envelope.min[request.objective], max: envelope.max[request.objective], monotonic: true }
+function scoreEnvelope(request: OptimizerRequest, envelope: StatEnvelope) {
+  if (request.objective === 'normal' || request.objective === 'critical' || request.objective === 'expected') return { min:0, max:Number.POSITIVE_INFINITY }
+  return { min:envelope.min[request.objective], max:envelope.max[request.objective] }
 }
 
 function branchCannotQualify(
@@ -503,8 +459,8 @@ function branchCannotQualify(
   amount: number,
   localResults: OptimizerResult[],
   data: CompiledOptimizerData,
-  evaluateDamage?: DamageEvaluator
 ) {
+  if (request.combat) return false
   const profile = request.profile
   const localThreshold = localResults.length >= request.limit ? localResults[localResults.length - 1].score : Number.NEGATIVE_INFINITY
   const globalThreshold = request.scoreThreshold ?? Number.NEGATIVE_INFINITY
@@ -516,7 +472,7 @@ function branchCannotQualify(
   if (Object.entries(request.minimumStats).some(([key, value]) => envelope.max[key as OptimizerStatKey] < (value ?? Number.NEGATIVE_INFINITY))) return true
   if (Object.entries(request.maximumStats ?? {}).some(([key, value]) => envelope.min[key as OptimizerStatKey] > (value ?? Number.POSITIVE_INFINITY))) return true
   if (!hasScoreBounds) return false
-  const score = scoreEnvelope(request, envelope, evaluateDamage, { selected, candidates, start, amount })
+  const score = scoreEnvelope(request, envelope)
   if (profile?.minimumScore !== undefined && score.max < profile.minimumScore) return true
   if (profile?.maximumScore !== undefined && score.min > profile.maximumScore) return true
   return Number.isFinite(score.max) && score.max < Math.max(localThreshold, globalThreshold)
@@ -561,7 +517,6 @@ function runOptimizerTasks(
   request: OptimizerRequest,
   data: CompiledOptimizerData,
   tasks: SearchTask[],
-  evaluateDamage?: DamageEvaluator,
   onProgress?: ProgressListener
 ): OptimizerPartitionOutput {
   const startedAt = performance.now()
@@ -607,18 +562,28 @@ function runOptimizerTasks(
     const ordered = [main, ...secondary]
     if (!request.profile?.allowPartial && ordered.length !== 5) { reject(); return }
     if (ordered.reduce((sum, echo) => sum + echo.cost, 0) > 12 || !matchesSonataRules(ordered, request)) { reject(); return }
-    const stats = aggregateCompiledStats(request, ordered, data, true, accumulated)
+    let stats = aggregateCompiledStats(request, ordered, data, accumulated)
+    const combat = request.combat ? calculateBuildModes({
+      build:request.combat.build,
+      character:request.combat.character,
+      weapon:request.combat.weapon,
+      echoes:ordered,
+      enemy:request.enemy,
+      scenario:request.combat.scenario,
+      bonusStatLines:request.combat.bonusStatLines,
+      targetId:request.combat.target.id
+    }) : undefined
+    if (request.combat && !combat?.stats) { reject(); return }
+    if (combat?.stats) stats = combat.stats
     if (!meetsMinimums(stats, request.minimumStats) || !meetsMaximums(stats, request.maximumStats)) { reject(); return }
-    const damage = evaluateDamage?.(ordered, stats) ?? calculateDamage(stats, request.attack, request.enemy)
+    const damage = combat ? { ...combat.values, hits:1, attackId:request.attack.id } : { normal:0, critical:0, expected:0, hits:1, attackId:request.attack.id }
     const partial = { requestId: request.requestId, echoIds: ordered.map((echo) => echo.id), mainEchoId: main.id, stats, damage }
-    const score = request.formula && !evaluateDamage
-      ? Number(evaluateFormulaValue(request.formula.node, { stats: { ...stats }, inputs: request.formula.inputs, entries: request.formula.entries }))
-      : resultScore(partial, request.objective)
+    const score = resultScore(partial, request.objective)
     if (!Number.isFinite(score) || (profile?.minimumScore !== undefined && score < profile.minimumScore) || (profile?.maximumScore !== undefined && score > profile.maximumScore)) { reject(); return }
     progress.tested += 1
     progress.processed += 1
     const plotValue = stats[profile?.plotStat ?? 'atk']
-    const result: OptimizerResult = { ...partial, score, plot: plotValue, targetId: request.formula?.target.id }
+    const result: OptimizerResult = { ...partial, score, plot: plotValue, targetId:request.combat?.target.id }
     insertResult(results, result, request.limit)
     if (progress.tested % sampleEvery === 0 && plot.length < 48) plot.push({ x: plotValue, y: score, echoIds: result.echoIds, mainEchoId: main.id, stats })
   }
@@ -648,7 +613,7 @@ function runOptimizerTasks(
     }
     // Candidate suffix envelopes are compiled once and reused across work
     // units, so even shallow branches are cheap to reject.
-    if (branchCannotQualify(request, selected, task.candidates, start, amount, results, data, evaluateDamage)) {
+    if (branchCannotQualify(request, selected, task.candidates, start, amount, results, data)) {
       const skipped = choose(remaining, amount)
       progress.skipped = safeAdd(progress.skipped, skipped)
       progress.skippedBounds = safeAdd(progress.skippedBounds ?? 0, skipped)
@@ -693,7 +658,6 @@ export function optimizeOptimizerWorkUnit(
   plan: OptimizerWorkPlan,
   workIndex: number,
   options: { scoreThreshold?: number; maxEvaluations?: number } = {},
-  evaluateDamage?: DamageEvaluator,
   onProgress?: ProgressListener
 ): OptimizerPartitionOutput {
   const task = plan.work[workIndex]
@@ -707,12 +671,11 @@ export function optimizeOptimizerWorkUnit(
     scoreThreshold: options.scoreThreshold ?? plan.request.scoreThreshold,
     profile: profile && options.maxEvaluations !== undefined ? { ...profile, maxEvaluations: options.maxEvaluations } : profile
   }
-  return runOptimizerTasks(request, plan.data, [task], evaluateDamage, onProgress)
+  return runOptimizerTasks(request, plan.data, [task], onProgress)
 }
 
 export function optimizeBuildPartition(
   request: OptimizerRequest,
-  evaluateDamage?: DamageEvaluator,
   onProgress?: ProgressListener
 ): OptimizerPartitionOutput {
   const plan = createOptimizerWorkPlan(request)
@@ -722,13 +685,12 @@ export function optimizeBuildPartition(
   const partitionedRequest = profile?.searchMode === 'fast'
     ? { ...plan.request, profile: { ...profile, maxEvaluations: Math.max(1, Math.ceil(profile.maxEvaluations / partition.count)) } }
     : plan.request
-  return runOptimizerTasks(partitionedRequest, plan.data, tasks, evaluateDamage, onProgress)
+  return runOptimizerTasks(partitionedRequest, plan.data, tasks, onProgress)
 }
 
 export function optimizeBuilds(
   request: OptimizerRequest,
   maxEvaluations = request.maxEvaluations ?? 300_000,
-  evaluateDamage?: DamageEvaluator
 ): OptimizerResult[] {
-  return optimizeBuildPartition({ ...request, maxEvaluations }, evaluateDamage).results
+  return optimizeBuildPartition({ ...request, maxEvaluations }).results
 }

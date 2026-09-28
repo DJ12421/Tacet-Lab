@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000043",
+  "entityName": "Feilian Beringal",
+  "sourceFingerprint": "401ba12ef1dc1516b4c96ad83b462c7b0b6e03840f3db4897495d8451c44942a",
+  "reviewedAt": "2026-09-26T18:34:06.456Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "56c65e299681f977db2e5ce8a266c8630d5a0ad4f65d26a71759c52c0a6c8d3c",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000043:skill",
+            "name": "Feilian Beringal - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Aero",
+            "expressions": [
+              "144.90%+177.10%",
+              "166.64%+203.67%",
+              "188.37%+230.23%",
+              "210.11%+256.80%",
+              "231.84%+283.36%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.449,
+                1.771
+              ],
+              [
+                1.6663999999999999,
+                2.0366999999999997
+              ],
+              [
+                1.8837000000000002,
+                2.3023
+              ],
+              [
+                2.1011,
+                2.568
+              ],
+              [
+                2.3184,
+                2.8336
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              1
+            ],
+            "count": 2,
+            "cooldownSeconds": 20,
+            "sourceText": "Transform into Feilian Beringal to perform a powerful kick. If the kick lands on an enemy, immediately perform a follow-up strike. The kick deals 144.90% Aero DMG, and the follow-up strike deals 177.10% Aero DMG.\nAfter the follow-up strike hits, the current character's Aero DMG increases by 12.00%, and the Heavy Attack DMG increases by 12.00% for 15s\nCD: 20s · Transform into Feilian Beringal to perform a powerful kick. If the kick lands on an enemy, immediately perform a follow-up strike. The kick deals 166.64% Aero DMG, and the follow-up strike deals 203.67% Aero DMG.\nAfter the follow-up strike hits, the current character's Aero DMG increases by 12.00%, and the Heavy Attack DMG increases by 12.00% for 15s\nCD: 20s · Transform into Feilian Beringal to perform a powerful kick. If the kick lands on an enemy, immediately perform a follow-up strike. The kick deals 188.37% Aero DMG, and the follow-up strike deals 230.23% Aero DMG.\nAfter the follow-up strike hits, the current character's Aero DMG increases by 12.00%, and the Heavy Attack DMG increases by 12.00% for 15s\nCD: 20s · Transform into Feilian Beringal to perform a powerful kick. If the kick lands on an enemy, immediately perform a follow-up strike. The kick deals 210.11% Aero DMG, and the follow-up strike deals 256.80% Aero DMG.\nAfter the follow-up strike hits, the current character's Aero DMG increases by 12.00%, and the Heavy Attack DMG increases by 12.00% for 15s\nCD: 20s · Transform into Feilian Beringal to perform a powerful kick. If the kick lands on an enemy, immediately perform a follow-up strike. The kick deals 231.84% Aero DMG, and the follow-up strike deals 283.36% Aero DMG.\nAfter the follow-up strike hits, the current character's Aero DMG increases by 12.00%, and the Heavy Attack DMG increases by 12.00% for 15s\nCD: 20s"
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "3762b5232aa2f330b1f60b4e5a390b600d2092954aa4425d536f5b2683778eb7",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000043:effect:0",
+            "sourceName": "Feilian Beringal",
+            "sourceType": "echo",
+            "text": "After the follow-up strike hits, the current character's Aero DMG increases by 12.00%, and the Heavy Attack DMG increases by 12.00% for 15s",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "After the follow-up strike hits",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "heavyDamage",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                },
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            }
+          }
+        ]
+      }
+    }
+  }
+}

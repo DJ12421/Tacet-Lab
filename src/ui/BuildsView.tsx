@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react'
-import { aggregateStats, calculateDamage, formatDamage } from '../domain/damage'
+import { calculateBuildModes, combatTargets, floorGameValue, formatDamage } from '../domain/combat/runtime'
 import { availableSubstatKeys } from '../domain/echo-substats'
 import { createLocalId } from '../domain/id'
 import { createTheorycraftBuild, loadoutCharacterId, resolveLoadout, theorycraftWarnings, type LoadoutCollections } from '../domain/loadouts'
 import type { AggregatedStats, Build, Echo, EquippedLoadout, LoadoutSourceRef, OwnedCharacter, OwnedWeapon, StatKey, TheorycraftBuild, TheorycraftEchoSlot } from '../domain/types'
-import { characterCatalog, echoCatalog, resonators, sonataCatalog, statLabels, weaponCatalog, weapons as damageWeapons } from '../game-data'
+import { characterCatalog, echoCatalog, sonataCatalog, statLabels, weaponCatalog } from '../game-data'
 import { mainStatKeysByCost, maxLevelByRarity, maxSubStatsForLevel } from '../game-data/echo-main-stats'
 import { tunableRolls } from '../game-data/tunable-rolls'
 import { db } from '../storage/database'
@@ -59,10 +59,12 @@ function TheorycraftEditor({ value, ownedCharacter, onClose, onSaved }: { value:
   const compatibleMainEchoes = echoCatalog.filter((entry) => entry.rarities?.includes(draft.slots[0]?.rarity ?? 5))
   const warnings = theorycraftWarnings(draft)
   const liveResolved = ownedCharacter ? resolveLoadout({ type: 'theorycraft', theorycraftBuildId: draft.id }, { characters: [ownedCharacter], weapons: [], echoes: [], builds: [], equippedLoadouts: [], theorycraftBuilds: [draft] }) : undefined
-  const liveResonator = resonators.find((entry) => entry.id === ownedCharacter?.catalogId)
-  const liveWeapon = damageWeapons.find((entry) => entry.id === liveResolved?.weapon?.catalogId)
-  const liveStats = liveResonator && liveWeapon ? aggregateStats(liveResonator, liveWeapon, liveResolved?.echoes ?? []) : undefined
-  const liveDamage = liveStats && liveResonator?.attacks[0] ? calculateDamage(liveStats, liveResonator.attacks[0], { level: 100, resistance: 10, damageReduction: 0 }) : undefined
+  const liveTarget = combatTargets(ownedCharacter?.catalogId ?? '')[0]
+  const liveCalculation = liveResolved?.build && liveResolved.weapon && ownedCharacter && liveTarget
+    ? calculateBuildModes({ build:liveResolved.build, character:ownedCharacter, weapon:liveResolved.weapon, echoes:liveResolved.echoes, enemy:{ level:100, resistance:10, damageReduction:0 }, targetId:liveTarget.id })
+    : undefined
+  const liveStats = liveCalculation?.stats
+  const liveDamage = liveCalculation?.values
   const updateSlot = (index: number, patch: Partial<TheorycraftEchoSlot>) => setDraft((current) => ({ ...current, slots: current.slots.map((slot, slotIndex) => slotIndex === index ? { ...slot, ...patch } : slot), updatedAt: Date.now() }))
   const updateSubstatSlot = (index: number, lines: Array<{ key: StatKey; value: number }>) => setDraft((current) => current.substats.mode === 'slots' ? ({ ...current, substats: { mode: 'slots', slots: current.substats.slots.map((slot, slotIndex) => slotIndex === index ? lines : slot) }, updatedAt: Date.now() }) : current)
   const save = async () => { if (warnings.length) return; await db.theorycraftBuilds.put({ ...draft, name: draft.name.trim() || 'Theorycraft build', updatedAt: Date.now() }); await onSaved(); onClose() }
@@ -98,8 +100,7 @@ function TheorycraftEditor({ value, ownedCharacter, onClose, onSaved }: { value:
       </>}
     </section>
     {warnings.length > 0 && <div className="notice warning"><strong>Feasibility warnings</strong>{warnings.map((warning) => <p key={warning}>{warning}</p>)}</div>}
-    {liveStats && <section><div className="section-heading"><div><span className="eyebrow">Live calculation</span><h3>Final stats and formula preview</h3></div>{liveDamage && <b>{liveResonator?.attacks[0]?.name}: {formatDamage(liveDamage.expected)} average DMG</b>}</div><div className="loadout-final-stats">{summaryStatKeys.map((key) => <span key={key}><small>{statLabels[key]}</small><b>{formatDamage(liveStats[key] ?? 0)}</b></span>)}</div></section>}
-    <div className="notice warning">Damage values remain based on unverified bundled game data. Verify important results against the current English in-game UI.</div>
+    {liveStats && <section><div className="section-heading"><div><span className="eyebrow">Live calculation</span><h3>Final stats and reviewed preview</h3></div>{liveDamage && <b>{liveTarget?.label}: {formatDamage(liveDamage.expected)} average DMG</b>}</div><div className="loadout-final-stats">{summaryStatKeys.map((key) => <span key={key}><small>{statLabels[key]}</small><b>{floorGameValue(liveStats[key] ?? 0).toLocaleString('en-US')}</b></span>)}</div></section>}
     <div className="modal-actions"><button className="secondary" onClick={onClose}>Cancel</button><button className="primary" disabled={warnings.length > 0} onClick={() => void save()}>Save theorycraft</button></div>
   </Panel></div>
 }
@@ -190,9 +191,17 @@ export function BuildsView({ echoes, builds, characters, weapons, equippedLoadou
   if (!sources.length) return <>{!embedded && <PageHeader eyebrow="Loadout studio" title="Builds" description="Add an owned character before creating loadouts."/>}<Panel><p>No owned characters are available.</p></Panel></>
   const grouped = (type: LoadoutSourceRef['type']) => sources.filter((source) => source.type === type)
   const selectedResolved = selected ? resolveLoadout(selected, collections) : undefined
-  const selectedCatalog = resonators.find((entry) => entry.id === selectedResolved?.character?.catalogId)
-  const selectedWeapon = damageWeapons.find((entry) => entry.id === selectedResolved?.weapon?.catalogId)
-  const selectedStats = selectedCatalog && selectedWeapon ? aggregateStats(selectedCatalog, selectedWeapon, selectedResolved?.echoes ?? []) : undefined
+  const selectedTarget = combatTargets(selectedResolved?.character?.catalogId ?? '', selectedResolved?.echoes)[0]
+  const selectedStats = selectedResolved?.build && selectedResolved.character && selectedResolved.weapon && selectedTarget
+    ? calculateBuildModes({
+      build:selectedResolved.build,
+      character:selectedResolved.character,
+      weapon:selectedResolved.weapon,
+      echoes:selectedResolved.echoes,
+      enemy:{ level:100, resistance:10, damageReduction:0 },
+      targetId:selectedTarget.id
+    }).stats
+    : undefined
   if (management) {
     const equipped = grouped('equipped')[0]
     const saved = grouped('saved')
@@ -227,7 +236,7 @@ export function BuildsView({ echoes, builds, characters, weapons, equippedLoadou
         {selected?.type === 'theorycraft' && <><button className="primary" onClick={() => setEditing(theorycraftBuilds.find((entry) => entry.id === selected.theorycraftBuildId))}>Edit</button><button className="secondary" onClick={() => void duplicate(selected)}>Duplicate</button></>}
         {selected?.type !== 'equipped' && <><button className="text" onClick={() => void rename(selected!)}>Rename</button><button className="text" onClick={() => void describe(selected!)}>Describe</button><button className="danger text" onClick={() => void deleteSource(selected!)}>Delete</button></>}
       </div></div>{selected && <LoadoutSummary source={selected} collections={collections}/>} 
-      {selectedStats && <div className="loadout-final-stats">{summaryStatKeys.map((key) => <span key={key}><small>{statLabels[key]}</small><b>{formatDamage(selectedStats[key] ?? 0)}</b></span>)}</div>}
+      {selectedStats && <div className="loadout-final-stats">{summaryStatKeys.map((key) => <span key={key}><small>{statLabels[key]}</small><b>{floorGameValue(selectedStats[key] ?? 0).toLocaleString('en-US')}</b></span>)}</div>}
       <label className="loadout-compare">Compare with<select value={compareKey} onChange={(event) => setCompareKey(event.target.value)}><option value="">None</option>{compareOptions.map((source) => <option value={sourceKey(source)} key={sourceKey(source)}>{sourceLabel(source, collections)}</option>)}</select></label>
       {compareKey && <div className="loadout-comparison"><article><h3>{sourceLabel(selected!, collections)}</h3><LoadoutSummary source={selected!} collections={collections}/></article><article><h3>{sourceLabel(compareOptions.find((source) => sourceKey(source) === compareKey)!, collections)}</h3><LoadoutSummary source={compareOptions.find((source) => sourceKey(source) === compareKey)!} collections={collections}/></article></div>}
       </Panel></section>

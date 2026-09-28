@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000095",
+  "entityName": "Aero Prism",
+  "sourceFingerprint": "e71aa0daec3f520003c11a48ac514ed9d067d61fc6667f4a00e8328fe71eaef5",
+  "reviewedAt": "2026-09-26T18:47:52.458Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "e67d30de65db73e41be37312a591c7c4814a242c35317a5aefe097ad57626842",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000095:skill",
+            "name": "Aero Prism - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Aero",
+            "expressions": [
+              "10.70%",
+              "12.84%",
+              "14.98%",
+              "17.12%",
+              "19.26%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.107
+              ],
+              [
+                0.1284
+              ],
+              [
+                0.14980000000000002
+              ],
+              [
+                0.17120000000000002
+              ],
+              [
+                0.19260000000000002
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 15,
+            "sourceText": "Summon an Aero Prism to attack enemies, dealing 10.70% Aero DMG.\nCD: 15s. · Summon an Aero Prism to attack enemies, dealing 12.84% Aero DMG.\nCD: 15s. · Summon an Aero Prism to attack enemies, dealing 14.98% Aero DMG.\nCD: 15s. · Summon an Aero Prism to attack enemies, dealing 17.12% Aero DMG.\nCD: 15s. · Summon an Aero Prism to attack enemies, dealing 19.26% Aero DMG.\nCD: 15s."
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

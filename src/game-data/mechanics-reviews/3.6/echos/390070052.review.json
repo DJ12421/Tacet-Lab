@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390070052",
+  "entityName": "Fission Junrock",
+  "sourceFingerprint": "740bd72cb71a242662841ef0a1d41022409544a8f28043d0892a37cd3fd87826",
+  "reviewedAt": "2026-09-22T17:51:47.939Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "0791e88566548c65834dd789de2e3946e9b8a279e817578ef0b1a314d63dab6c",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390070052:healing",
+            "name": "Fission Junrock - Echo Skill Healing",
+            "damageType": "healing",
+            "skillSource": "echo",
+            "recipient": "team",
+            "scaling": "hp",
+            "expressions": [
+              "2%",
+              "2%",
+              "2%",
+              "2%",
+              "2%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.02
+              ],
+              [
+                0.02
+              ],
+              [
+                0.02
+              ],
+              [
+                0.02
+              ],
+              [
+                0.02
+              ]
+            ],
+            "count": 1,
+            "cooldownSeconds": 15,
+            "sourceText": "Summon a Fission Junrock. Generate a Resonance Effect that restores 2% HP for friendly units each time. If not in combat, you can pick up minerals or plants nearby.\nCD: 15s · Summon a Fission Junrock. Generate a Resonance Effect that restores 2% HP for friendly units each time. If not in combat, you can pick up minerals or plants nearby.\nCD: 15s · Summon a Fission Junrock. Generate a Resonance Effect that restores 2% HP for friendly units each time. If not in combat, you can pick up minerals or plants nearby.\nCD: 15s · Summon a Fission Junrock. Generate a Resonance Effect that restores 2% HP for friendly units each time. If not in combat, you can pick up minerals or plants nearby.\nCD: 15s · Summon a Fission Junrock. Generate a Resonance Effect that restores 2% HP for friendly units each time. If not in combat, you can pick up minerals or plants nearby.\nCD: 15s"
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  }
+}

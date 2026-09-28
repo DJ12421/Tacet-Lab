@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000088",
+  "entityName": "Nightmare: Thundering Mephis",
+  "sourceFingerprint": "4e96680d3f1a86af5eee9a9caf8a822ceeb7404ca89f4eebb9db130d5ec6c2ba",
+  "reviewedAt": "2026-09-26T18:47:52.438Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "3697376e4f12d370eda0e79aa3ea3eddf69278988e3e040e76db3df72aaf4a60",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000088:skill",
+            "name": "Nightmare: Thundering Mephis - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Electro",
+            "expressions": [
+              "225.00%",
+              "270.00%",
+              "315.00%",
+              "360.00%",
+              "405.00%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                2.25
+              ],
+              [
+                2.7
+              ],
+              [
+                3.15
+              ],
+              [
+                3.6
+              ],
+              [
+                4.05
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 25,
+            "sourceText": "Transform into Nightmare: Thundering Mephis and attack enemies in front, dealing 225.00% Electro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Electro DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 25s. · Transform into Nightmare: Thundering Mephis and attack enemies in front, dealing 270.00% Electro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Electro DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 25s. · Transform into Nightmare: Thundering Mephis and attack enemies in front, dealing 315.00% Electro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Electro DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 25s. · Transform into Nightmare: Thundering Mephis and attack enemies in front, dealing 360.00% Electro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Electro DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 25s. · Transform into Nightmare: Thundering Mephis and attack enemies in front, dealing 405.00% Electro DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Electro DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 25s."
+          }
+        ],
+        "cooldownSeconds": 25
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "b173c369f052a50a46f2da8cacf77e5e8a46c781a5455f74bd27720dcd11b248",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000088:effect:0",
+            "sourceName": "Nightmare: Thundering Mephis",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in their main slot gains 12.00% Electro DMG Bonus and 12.00% Resonance Liberation DMG Bonus.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Electro",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

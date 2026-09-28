@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390080005",
+  "entityName": "Bell-Borne Geochelone",
+  "sourceFingerprint": "25fec627421f6e79e8042fb4542d3229eece7ae26929083f335a3301f9f8e769",
+  "reviewedAt": "2026-09-26T18:30:09.893Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "2969e49b74b5e0164d2139d4b703a51ab5811cf009d64c69b441bc8b7065fd60",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390080005:skill",
+            "name": "Bell-Borne Geochelone - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "def",
+            "element": "Glacio",
+            "expressions": [
+              "91.20%",
+              "104.88%",
+              "118.56%",
+              "132.24%",
+              "145.92%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.912
+              ],
+              [
+                1.0488
+              ],
+              [
+                1.1856
+              ],
+              [
+                1.3224
+              ],
+              [
+                1.4591999999999998
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 20,
+            "sourceText": "Activate the protection of Bell-Borne Geochelone. Deal Glacio DMG based on 91.20% of the current character's DEF to nearby enemies, and obtain a Bell-Borne Shield that lasts for 15s\nThe Bell-Borne Shield provides 50.00% DMG Reduction and 10.00% DMG Boost for the current team members, and disappears after the current character is hit for 3 times.\nCD: 20s · Activate the protection of Bell-Borne Geochelone. Deal Glacio DMG based on 104.88% of the current character's DEF to nearby enemies, and obtain a Bell-Borne Shield that lasts for 15s\nThe Bell-Borne Shield provides 50.00% DMG Reduction and 10.00% DMG Boost for the current team members, and disappears after the current character is hit for 3 times.\nCD: 20s · Activate the protection of Bell-Borne Geochelone. Deal Glacio DMG based on 118.56% of the current character's DEF to nearby enemies, and obtain a Bell-Borne Shield that lasts for 15s\nThe Bell-Borne Shield provides 50.00% DMG Reduction and 10.00% DMG Boost for the current team members, and disappears after the current character is hit for 3 times.\nCD: 20s · Activate the protection of Bell-Borne Geochelone. Deal Glacio DMG based on 132.24% of the current character's DEF to nearby enemies, and obtain a Bell-Borne Shield that lasts for 15s\nThe Bell-Borne Shield provides 50.00% DMG Reduction and 10.00% DMG Boost for the current team members, and disappears after the current character is hit for 3 times.\nCD: 20s · Activate the protection of Bell-Borne Geochelone. Deal Glacio DMG based on 145.92% of the current character's DEF to nearby enemies, and obtain a Bell-Borne Shield that lasts for 15s\nThe Bell-Borne Shield provides 50.00% DMG Reduction and 10.00% DMG Boost for the current team members, and disappears after the current character is hit for 3 times.\nCD: 20s"
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "36b20833c4096f32a4d88310238025fa32d4d5a3c082f19f206a0d5ce8c54ef8",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:390080005:effect:0",
+            "sourceName": "Bell-Borne Geochelone",
+            "sourceType": "echo",
+            "text": "The Bell-Borne Shield provides 50.00% DMG Reduction and 10.00% DMG Boost for the current team members, and disappears after the current character is hit for 3 times.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "damageReduction",
+                  "operation": "addPercent",
+                  "value": 50,
+                  "scope": "team"
+                },
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 10,
+                  "scope": "team"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Bell-Borne Shield active",
+              "durationSeconds": 15
+            }
+          }
+        ]
+      }
+    }
+  }
+}

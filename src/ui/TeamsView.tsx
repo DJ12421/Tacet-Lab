@@ -1,13 +1,14 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import type { CSSProperties, DragEvent as ReactDragEvent, MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent } from 'react'
-import { formatDamage } from '../domain/damage'
+import type { CSSProperties, DragEvent as ReactDragEvent, MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent, ReactNode } from 'react'
+import { createPortal } from 'react-dom'
+import { combatEffectDefinitions, formatDamage, resolveCombatTarget, type CombatEffectDefinition } from '../domain/combat/runtime'
 import { resolveCharacterSubstatProfile } from '../domain/character-substat-score'
 import { echoRollRating } from '../domain/echo-grade'
 import { createLocalId } from '../domain/id'
-import type { BuffEffect, Build, DamageType, Echo, EquippedLoadout, FormulaResultMode, LoadoutSourceRef, OwnedCharacter, OwnedWeapon, RotationAction, StatKey, Team, TheorycraftBuild } from '../domain/types'
+import type { BuffEffect, Build, DamageType, Echo, EquippedLoadout, FormulaResultMode, LoadoutSourceRef, OwnedCharacter, OwnedWeapon, RotationAction, ScenarioValue, StatKey, Team, TheorycraftBuild } from '../domain/types'
 import { characterCatalog, statLabels, weaponCatalog } from '../game-data'
 import { generatedSonataIconSources } from '../game-data/sonatas.generated'
-import type { CalculationTrace } from '../domain/calculation'
+import type { CalculationTrace } from '../domain/combat'
 import { db } from '../storage/database'
 import { EchoWaveform } from './EchoWaveform'
 import { richSkillDescription } from './CharacterShowcase'
@@ -43,8 +44,6 @@ const DAMAGE_RESULT_MODES: Array<{ id: FormulaResultMode; label: string }> = [
   { id: 'critical', label: 'Crit hit DMG' }
 ]
 
-const TEAM_TBA_CHARACTER_IDS = new Set(['1212', '1413'])
-
 const ROTATION_ATTACK_GROUPS: Array<{ id: TeamAttackGroup; label: string }> = [
   { id: 'basic', label: 'Basic' },
   { id: 'skill', label: 'Skill' },
@@ -61,6 +60,10 @@ const CORE_STATS: Array<[StatKey, string]> = [
   ['critDamage', 'Crit. DMG'], ['energyRegen', 'Energy Regen']
 ]
 
+const ELEMENT_DAMAGE_STATS: Record<string, StatKey> = {
+  Spectro:'spectroDamage', Fusion:'fusionDamage', Glacio:'glacioDamage', Electro:'electroDamage', Aero:'aeroDamage', Havoc:'havocDamage'
+}
+
 const DAMAGE_STATS: Array<[StatKey, string]> = [
   ['basicDamage', 'Basic Attack'], ['heavyDamage', 'Heavy Attack'], ['skillDamage', 'Resonance Skill'],
   ['liberationDamage', 'Resonance Liberation'], ['healingBonus', 'Healing Bonus']
@@ -71,10 +74,24 @@ function resolvedMemberStat(member: TeamMemberModel, key: StatKey) {
     ?? (member.showcase ? member.showcase.finalStats[key as keyof typeof member.showcase.finalStats] : 0)
 }
 
+function resolvedMemberStatDelta(member: TeamMemberModel, key: StatKey) {
+  if (!member.showcase) return 0
+  const baseValue = Number(member.showcase.finalStats[key as keyof typeof member.showcase.finalStats] ?? 0)
+  return Number(resolvedMemberStat(member, key) ?? 0) - baseValue
+}
+
 function resolvedMemberStatDetail(member: TeamMemberModel, key: StatKey, label: string) {
   if (!member.showcase) return sumDetail(label, 0, [])
   const baseDetail = showcaseStatDetail(member.showcase, key, label)
-  return baseDetail
+  const value = Number(resolvedMemberStat(member, key) ?? 0)
+  const delta = resolvedMemberStatDelta(member, key)
+  if (Math.abs(delta) < 1e-9) return baseDetail
+  return {
+    ...baseDetail,
+    value:formatWorkspaceStat(key, value),
+    rows:[...baseDetail.rows, { label:'Active reviewed effects', value:`${delta > 0 ? '+' : ''}${formatWorkspaceStat(key, delta)}` }],
+    note:'Includes the currently selected reviewed buffs and effects.'
+  }
 }
 
 const ELEMENT_COLORS: Record<string, string> = {
@@ -82,10 +99,10 @@ const ELEMENT_COLORS: Record<string, string> = {
 }
 
 const ROTATION_CHART_COLORS = ['#8de4d4', '#e4bb5e', '#e78674', '#9d87de', '#69b9d7', '#c7d0cd', '#72b98c', '#d28db3']
-const DAMAGE_TYPE_ORDER: DamageType[] = ['basic', 'heavy', 'skill', 'liberation', 'intro', 'outro', 'echo', 'healing']
+const DAMAGE_TYPE_ORDER: DamageType[] = ['basic', 'heavy', 'skill', 'liberation', 'intro', 'outro', 'echo', 'status', 'healing']
 const DAMAGE_TYPE_LABELS: Record<DamageType, string> = {
   basic: 'Basic', heavy: 'Heavy', skill: 'Skill', liberation: 'Liberation',
-  intro: 'Intro', outro: 'Outro', echo: 'Echo', healing: 'Healing'
+  intro: 'Intro', outro: 'Outro', echo: 'Echo', status: 'Status DMG', healing: 'Healing'
 }
 
 const STAT_ICON_NAMES: Partial<Record<StatKey, string>> = {
@@ -227,11 +244,13 @@ function TeamMemberColumn({ member, model, loadoutOptions, onOpen, onChooseChara
         </div>
         <dl>
           {([
+            ['hp', 'HP'],
             ['atk', 'ATK'],
+            ['def', 'DEF'],
             ['critRate', 'Crit. Rate'],
             ['critDamage', 'Crit. DMG'],
             ['energyRegen', 'Energy Regen']
-          ] as const).map(([key, label]) => <div key={key}><dt>{label}</dt><dd>{formatWorkspaceStat(key, member.showcase?.finalStats[key] ?? 0)}</dd></div>)}
+          ] as const).map(([key, label]) => <div className={Math.abs(resolvedMemberStatDelta(member, key)) > 1e-9 ? 'is-modified' : undefined} key={key}><dt>{label}</dt><dd>{formatWorkspaceStat(key, resolvedMemberStat(member, key))}</dd></div>)}
         </dl>
       </section>
       <div className="tw-member-loadout-row">
@@ -1208,7 +1227,10 @@ function flatValueLabel(valueName: string, skillName: string, sectionTitle: stri
 function ForteDamageRows({ attacks, member, resultMode, skillName }: { attacks: ForteAttackGroup[]; member: TeamMemberModel; resultMode: 'normal' | 'expected' | 'critical'; skillName: string }) {
   if (!attacks.length) return null
   return <dl className="tw-skill-damage-rows">{attacks.map((attack) => {
-    const calculationRows = attack.attackIds.flatMap((attackId) => member.formulaRows.filter((row) => row.target.id.endsWith(`:${attackId}`)))
+    const calculationRows = attack.attackIds.flatMap((attackId) => {
+      const target = member.character ? resolveCombatTarget(member.character.catalogId, attackId, member.resolvedEchoes) : undefined
+      return target ? member.formulaRows.filter((row) => row.target.id === target.id) : []
+    })
     const damage = calculationRows.reduce((total, row) => total + row[resultMode], 0)
     const detail = calculationRows.length === 1
       ? traceCalculationDetail(calculationRows[0].traces[resultMode], attack.name)
@@ -1219,7 +1241,7 @@ function ForteDamageRows({ attacks, member, resultMode, skillName }: { attacks: 
   })}</dl>
 }
 
-function ForteWorkspace({ member, model, refresh }: { member: TeamMemberModel; model: TeamWorkspaceModel; refresh: () => Promise<void> }) {
+function ForteWorkspace({ member, model, refresh, effects, values, updateInputs }: { member: TeamMemberModel; model: TeamWorkspaceModel; refresh: () => Promise<void> } & ReviewedEffectListProps) {
   if (!member.catalog || !member.character || !member.showcase) return null
   const skillEntries = [
     ...Object.entries(member.catalog.skillIcons).map(([key, skill], index) => ({ key, skill, level: member.showcase!.skillLevels[index] ?? 1, skillLevelIndex: index })),
@@ -1232,6 +1254,11 @@ function ForteWorkspace({ member, model, refresh }: { member: TeamMemberModel; m
     ...member.catalog.skillTreeExtras.inherentSkills.map((skill, index) => ({ ...skill, eyebrow: `Inherent Skill ${index + 1}`, id: inherentSkillBonusId(index), inherentSkillIndex: index })),
     { ...member.catalog.skillTreeExtras.tuneBreakSkill, eyebrow: 'Tune Break', id: undefined, inherentSkillIndex: undefined }
   ].filter((skill) => skill.name || skill.description || skill.iconSourceUrl)
+  const characterEffects = effects.filter((effect) => effect.sourceKind === 'character')
+  const effectName = (value: string) => value.toLocaleLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
+  const effectsForName = (name: string) => characterEffects.filter((effect) => effect.minimumSequence === undefined && effectName(effect.label) === effectName(name))
+  const namedEffectSources = new Set([...skillEntries.map(({ skill }) => effectName(skill.name)), ...passiveCards.map((skill) => effectName(skill.name))])
+  const otherCharacterEffects = characterEffects.filter((effect) => effect.minimumSequence === undefined && !namedEffectSources.has(effectName(effect.label)))
   const resultMode = model.team.scenario?.resultMode ?? 'expected'
   const updateCharacter = async (patch: Partial<OwnedCharacter>) => {
     await db.characters.update(member.character!.id, patch)
@@ -1250,6 +1277,7 @@ function ForteWorkspace({ member, model, refresh }: { member: TeamMemberModel; m
       {member.catalog.sequenceIcons.slice(0, 6).map((sequence) => { const active = member.character!.sequence >= sequence.sequence; return <article className={active ? 'unlocked' : ''} key={sequence.sequence}>
         <button type="button" className="tw-node-header" aria-pressed={active} onClick={() => void updateCharacter({ sequence: active ? sequence.sequence - 1 : sequence.sequence })}><img src={sequence.iconSourceUrl} alt=""/><span><strong>{sequence.name}</strong><small>Sequence Node {sequence.sequence}</small></span></button>
         <GameDescription value={sequence.description}/>
+        <ReviewedEffectList effects={characterEffects.filter((effect) => effect.minimumSequence === sequence.sequence)} values={values} updateInputs={updateInputs}/>
       </article>})}
     </aside>
     <div className="tw-skill-board">
@@ -1301,12 +1329,15 @@ function ForteWorkspace({ member, model, refresh }: { member: TeamMemberModel; m
             })}</dl>}
             <ForteDamageRows attacks={section.attacks} member={member} resultMode={resultMode} skillName={skill.name}/>
           </section>)}</div>
+          <ReviewedEffectList effects={effectsForName(skill.name)} values={values} updateInputs={updateInputs}/>
         </article>
       })}</div>
       <div className="tw-passive-grid">{passiveCards.map((skill) => { const active = skill.id ? enabledNodeIds.includes(skill.id) : undefined; return <article className={`tw-passive-card ${active === true ? 'is-enabled' : active === false ? 'is-disabled' : ''}`} key={`${skill.eyebrow}-${skill.name}`}>
         {skill.id ? <button type="button" className="tw-skill-title tw-node-toggle" aria-pressed={active} onClick={() => void toggleNode(skill.id!)}><img src={skill.iconSourceUrl} alt=""/><span><strong>{skill.name}</strong><small>{skill.eyebrow}</small></span></button> : <div className="tw-skill-title"><img src={skill.iconSourceUrl} alt=""/><div><strong>{skill.name}</strong><small>{skill.eyebrow}</small></div></div>}
         <GameDescription value={skill.description}/>
+        <ReviewedEffectList effects={effectsForName(skill.name)} values={values} updateInputs={updateInputs}/>
       </article>})}</div>
+      {otherCharacterEffects.length > 0 && <section className="tw-v2-character-effects"><header><span className="eyebrow">Character effects</span><h3>Other reviewed effects</h3></header><ReviewedEffectList effects={otherCharacterEffects} values={values} updateInputs={updateInputs}/></section>}
       {bonusNodes.length > 0 && <section className="tw-bonus-nodes"><header><span className="eyebrow">Skill tree</span><h3>Bonus stat nodes</h3></header><div>{bonusNodes.map((node) => { const active = enabledNodeIds.includes(node.id); return <article className={active ? 'is-enabled' : 'is-disabled'} key={node.id}><button type="button" className="tw-bonus-node-header" aria-pressed={active} onClick={() => void toggleNode(node.id)}><img src={node.iconSourceUrl} alt=""/><strong>{node.name}</strong></button><GameDescription value={node.description}/></article> })}</div></section>}
     </div>
   </section>
@@ -1324,15 +1355,215 @@ function TeamEchoCard({ echo, ownerName }: { echo: Echo; ownerName: string }) {
   </CharacterSubstatProfileContext.Provider>
 }
 
-function TraceBranch({ trace, depth = 0 }: { trace: CalculationTrace; depth?: number }) {
-  return <li style={{ '--trace-depth': depth } as CSSProperties}><span>{trace.label}</span><b>{typeof trace.value === 'number' ? (depth === 0 ? Math.floor(trace.value + 1e-9).toLocaleString('en-US') : Number(trace.value).toLocaleString('en-US', { maximumFractionDigits: 3 })) : String(trace.value)}</b>{trace.children.length > 0 && <ul>{trace.children.map((child, index) => <TraceBranch trace={child} depth={depth + 1} key={`${'id' in child ? child.id : child.entryId ?? child.label}-${index}`}/>)}</ul>}</li>
+const TRACE_LABELS: Record<string, string> = {
+  'applied-effects': 'Active reviewed effects',
+  'scaling-power': 'Scaling Power',
+  'motion-value': 'Skill Multiplier',
+  'motion-value-factor': 'Skill Multiplier Bonus',
+  'flat-damage': 'Flat DMG',
+  'flat-value': 'Flat Value',
+  'bonus-factor': 'Total DMG Bonus',
+  'support-bonus-factor': 'Total Bonus',
+  'amplification-factor': 'Amplification Multiplier',
+  'vulnerability-factor': 'Vulnerability Multiplier',
+  'final-damage-factor': 'Final DMG Multiplier',
+  'special-multiplier': 'Special Multiplier',
+  'damage-reduction-factor': 'DMG Reduction Multiplier',
+  'defence-multiplier': 'Enemy DEF Multiplier',
+  'resistance-multiplier': 'Enemy RES Multiplier',
+  'pre-crit': 'Before CRIT',
+  'result-normal': 'Non-crit DMG',
+  'result-critical': 'Critical DMG',
+  'result-expected': 'Average DMG',
+  result: 'Final Value',
+  'crit-rate': 'Effective Crit. Rate',
+  'crit-damage': 'Crit. DMG',
+  'triggered-actions': 'Triggered Actions',
+  'basicDamage': 'Basic Attack DMG Bonus',
+  'heavyDamage': 'Heavy Attack DMG Bonus',
+  'skillDamage': 'Resonance Skill DMG Bonus',
+  'liberationDamage': 'Resonance Liberation DMG Bonus',
+  'introDamage': 'Intro Skill DMG Bonus',
+  'outroDamage': 'Outro Skill DMG Bonus',
+  'echoDamage': 'Echo Skill DMG Bonus',
+  'tuneBreakDamage': 'Tune Break DMG Bonus',
+  'spectroDamage': 'Spectro DMG Bonus',
+  'fusionDamage': 'Fusion DMG Bonus',
+  'glacioDamage': 'Glacio DMG Bonus',
+  'electroDamage': 'Electro DMG Bonus',
+  'aeroDamage': 'Aero DMG Bonus',
+  'havocDamage': 'Havoc DMG Bonus',
+  'physicalDamage': 'Physical DMG Bonus'
+}
+
+type TraceSelection = { trace: CalculationTrace; title: string; value: number; mode: 'normal' | 'critical' | 'expected' }
+
+const traceLabel = (stage: string) => {
+  const encoded = stage.includes(':') ? stage.slice(stage.indexOf(':') + 1) : stage
+  const raw = TRACE_LABELS[encoded] ?? TRACE_LABELS[stage] ?? encoded.replace(/^hit-(\d+)$/, 'Hit $1')
+  return raw.replace(/([a-z])([A-Z])/g, '$1 $2').split('-').map((part) => `${part.charAt(0).toUpperCase()}${part.slice(1)}`).join(' ')
+}
+const traceValue = (trace: CalculationTrace) => {
+  if (typeof trace.value !== 'number') return String(trace.value ?? '')
+  if (trace.stage === 'motion-value' || trace.stage.startsWith('percent:')) return `${(trace.value * 100).toLocaleString('en-US', { maximumFractionDigits: 3 })}%`
+  if (/(?:factor|multiplier)$/.test(trace.stage)) return `${(trace.value * 100).toLocaleString('en-US', { maximumFractionDigits: 3 })}%`
+  return trace.value.toLocaleString('en-US', { maximumFractionDigits: 3 })
+}
+
+const traceNumber = (value: number | string | undefined, digits = 8) => typeof value === 'number' ? value.toLocaleString('en-US', { maximumFractionDigits:digits }) : '0'
+const tracePercent = (value: number | string | undefined) => `${traceNumber(typeof value === 'number' ? value * 100 : 0)}%`
+const traceChild = (trace: CalculationTrace, stage: string) => trace.children.find((entry) => entry.stage === stage)
+
+function TraceSources({ trace, empty = 'No additional contribution.' }: { trace: CalculationTrace; empty?: string }) {
+  if (!trace.children.length) return <small className="tw-trace-empty">{empty}</small>
+  return <dl className="tw-trace-sources">{trace.children.map((entry, index) => <div key={`${entry.stage}-${index}`}><dt>{traceLabel(entry.stage)}</dt><dd>{traceValue(entry)}</dd>{entry.children.length > 0 && <TraceSources trace={entry}/>}</div>)}</dl>
+}
+
+function TraceSection({ title, value, children, source }: { title: string; value: string; children: ReactNode; source?: CalculationTrace }) {
+  return <section className="tw-trace-section"><h3>{title}</h3><code><b>{value}</b><span>=</span>{children}</code>{source && <TraceSources trace={source}/>}</section>
+}
+
+function CalculationTraceDialog({ selection, onClose }: { selection: TraceSelection; onClose: () => void }) {
+  const { trace, title, value, mode } = selection
+  const effects = trace.children.find((entry) => entry.stage === 'applied-effects')
+  const triggeredActions = traceChild(trace, 'triggered-actions')
+  const hits = trace.children.filter((entry) => /^hit-\d+$/.test(entry.stage))
+  const scaling = traceChild(trace, 'scaling-power')
+  const bonus = traceChild(trace, 'bonus-factor')
+  const amplify = traceChild(trace, 'amplification-factor')
+  const vulnerability = traceChild(trace, 'vulnerability-factor')
+  const finalDamage = traceChild(trace, 'final-damage-factor')
+  const special = traceChild(trace, 'special-multiplier')
+  const reduction = traceChild(trace, 'damage-reduction-factor')
+  const defense = traceChild(trace, 'defence-multiplier')
+  const resistance = traceChild(trace, 'resistance-multiplier')
+  const critRate = traceChild(trace, 'crit-rate')
+  const critDamage = traceChild(trace, 'crit-damage')
+  const modeStage = `result-${mode}`
+  const modeLabel = mode === 'normal' ? 'Non-crit' : mode === 'critical' ? 'Critical' : 'Average'
+  const factor = (entry: CalculationTrace | undefined) => typeof entry?.value === 'number' ? entry.value : 1
+  const bonusValue = (entry: CalculationTrace | undefined) => factor(entry) - 1
+  const selectedHits = hits.map((hit) => (traceChild(hit, modeStage) ?? traceChild(hit, 'result'))?.value).filter((entry): entry is number => typeof entry === 'number')
+  const scalingStat = scaling?.children[0]?.children.find((entry) => entry.stage.startsWith('stat-total:'))
+  const scalingRatio = scaling?.children[0]?.children.find((entry) => entry.stage === 'percent:Scaling ratio')
+  const baseStat = scalingStat?.children.find((entry) => entry.stage.startsWith('number:Base '))
+  const percentStat = scalingStat?.children.find((entry) => entry.stage.startsWith('percent:Total '))
+  const flatStat = scalingStat?.children.find((entry) => entry.stage.startsWith('number:Flat '))
+  const characterLevel = traceChild(defense ?? { stage:'', children:[] }, 'number:Character level')?.value
+  const enemyLevel = traceChild(defense ?? { stage:'', children:[] }, 'number:Enemy level')?.value
+  const defenseReduction = traceChild(defense ?? { stage:'', children:[] }, 'percent:DEF reduction')
+  const defenseIgnore = traceChild(defense ?? { stage:'', children:[] }, 'percent:DEF ignore')
+  const baseResistance = resistance?.children.find((entry) => entry.stage.startsWith('percent:Base '))
+  const resistanceReduction = traceChild(resistance ?? { stage:'', children:[] }, 'percent:RES reduction')
+  const resistanceIgnore = traceChild(resistance ?? { stage:'', children:[] }, 'percent:RES ignore')
+  const totalResistanceReduction = Number(resistanceReduction?.value ?? 0) + Number(resistanceIgnore?.value ?? 0)
+  const effectiveResistance = Number(baseResistance?.value ?? 0) - totalResistanceReduction
+  const firstHit = hits[0]
+  const firstHitExpression = firstHit && scaling
+    ? `(${traceNumber(scaling?.value)} × ${tracePercent(Number(traceChild(firstHit, 'motion-value')?.value ?? 0) * Number(traceChild(firstHit, 'motion-value-factor')?.value ?? 1))} + ${traceNumber(traceChild(firstHit, 'flat-damage')?.value)}) × (1 + ${tracePercent(bonusValue(bonus))}) × (1 + ${tracePercent(bonusValue(amplify))}) × (1 + ${tracePercent(bonusValue(vulnerability))}) × (1 + ${tracePercent(bonusValue(finalDamage))}) × (1 + ${tracePercent(bonusValue(special))}) × ${tracePercent(defense?.value)} × ${tracePercent(resistance?.value)} × ${tracePercent(reduction?.value)}`
+    : traceNumber(value)
+  const baseExpression = !scaling ? selectedHits.map(formatDamage).join(' + ') || traceNumber(value) : mode === 'critical' ? `${firstHitExpression} × ${tracePercent(critDamage?.value)}` : mode === 'expected' ? `${firstHitExpression} × (1 + ${tracePercent(critRate?.value)} × (${tracePercent(critDamage?.value)} - 100%))` : firstHitExpression
+  const ownExpression = selectedHits.length > 1 ? selectedHits.map((hit) => traceNumber(hit)).join(' + ') : baseExpression
+  const selectedExpression = triggeredActions ? `${ownExpression} + ${traceNumber(triggeredActions.value)}` : ownExpression
+  useEffect(() => {
+    const closeOnEscape = (event: KeyboardEvent) => { if (event.key === 'Escape') onClose() }
+    window.addEventListener('keydown', closeOnEscape)
+    return () => window.removeEventListener('keydown', closeOnEscape)
+  }, [onClose])
+  return createPortal(<div className="tw-trace-backdrop" role="presentation" onMouseDown={onClose}>
+    <article className="tw-trace tw-panel" role="dialog" aria-modal="true" aria-label={`${title} calculation trace`} onMouseDown={(event) => event.stopPropagation()}>
+      <header><div><span className="eyebrow">Calculation trace</span><h2>{title}</h2></div><strong>{modeLabel} {formatDamage(value)}</strong><button type="button" className="close" aria-label="Close calculation trace" onClick={onClose}>×</button></header>
+      <div className="tw-trace-body">
+        <TraceSection title={`${title} · ${modeLabel} DMG`} value={formatDamage(value)}>{selectedExpression}</TraceSection>
+        {hits.filter((hit) => traceChild(hit, 'motion-value')).map((hit, index) => {
+          const motion = traceChild(hit, 'motion-value')
+          const motionFactor = traceChild(hit, 'motion-value-factor')
+          const totalMotion = Number(motion?.value ?? 0) * Number(motionFactor?.value ?? 1)
+          return <TraceSection title={hits.length === 1 ? 'Total Skill Multiplier' : `${traceLabel(hit.stage)} Skill Multiplier`} value={tracePercent(totalMotion)} source={motionFactor}>{tracePercent(motion?.value)} × (1 + {tracePercent(Number(motionFactor?.value ?? 1) - 1)})</TraceSection>
+        })}
+        {scaling && <TraceSection title="Scaling Power" value={traceNumber(scaling.value)} source={scaling}>{scaling.children.map((entry) => traceNumber(entry.value)).join(' + ')}</TraceSection>}
+        {scalingStat && <TraceSection title={traceLabel(scalingStat.stage)} value={traceNumber(scalingStat.value)}>{traceNumber(baseStat?.value)} × (1 + {tracePercent(percentStat?.value)}) + {traceNumber(flatStat?.value)}</TraceSection>}
+        {baseStat && <TraceSection title={traceLabel(baseStat.stage)} value={traceNumber(baseStat.value)} source={baseStat}>{baseStat.children.map((entry) => traceNumber(entry.value)).join(' + ')}</TraceSection>}
+        {percentStat && <TraceSection title={traceLabel(percentStat.stage)} value={tracePercent(percentStat.value)} source={percentStat}>{percentStat.children.length ? percentStat.children.map((entry) => tracePercent(entry.value)).join(' + ') : '0%'}</TraceSection>}
+        {flatStat && Number(flatStat.value) !== 0 && <TraceSection title={traceLabel(flatStat.stage)} value={traceNumber(flatStat.value)} source={flatStat}>{flatStat.children.map((entry) => traceNumber(entry.value)).join(' + ')}</TraceSection>}
+        {scalingRatio && Number(scalingRatio.value) !== 1 && <TraceSection title="Scaling Ratio" value={tracePercent(scalingRatio.value)}>{tracePercent(scalingRatio.value)}</TraceSection>}
+        {bonus && <TraceSection title="Total DMG Bonus" value={tracePercent(bonusValue(bonus))} source={bonus}>{bonus.children.length ? bonus.children.map((entry) => tracePercent(entry.value)).join(' + ') : '0%'}</TraceSection>}
+        {amplify && <TraceSection title="Total Amplify" value={tracePercent(bonusValue(amplify))} source={amplify}>{amplify.children.length ? amplify.children.map((entry) => tracePercent(entry.value)).join(' + ') : '0%'}</TraceSection>}
+        {vulnerability && <TraceSection title="Total Vulnerability" value={tracePercent(bonusValue(vulnerability))} source={vulnerability}>{vulnerability.children.length ? vulnerability.children.map((entry) => tracePercent(entry.value)).join(' + ') : '0%'}</TraceSection>}
+        {finalDamage && <TraceSection title="Total Final DMG" value={tracePercent(bonusValue(finalDamage))} source={finalDamage}>{finalDamage.children.length ? finalDamage.children.map((entry) => tracePercent(entry.value)).join(' + ') : '0%'}</TraceSection>}
+        {special && <TraceSection title="Total Special Multiplier" value={tracePercent(bonusValue(special))} source={special}>{special.children.length ? `${special.children.map((entry) => `(1 + ${tracePercent(entry.value)})`).join(' × ')} - 100%` : '0%'}</TraceSection>}
+        {defense && <TraceSection title="Enemy DEF Multiplier" value={tracePercent(defense.value)} source={defense}>{`(800 + 8 × ${traceNumber(characterLevel)}) / ((800 + 8 × ${traceNumber(characterLevel)}) + (792 + 8 × ${traceNumber(enemyLevel)}) × (1 - ${tracePercent(defenseReduction?.value)}) × (1 - ${tracePercent(defenseIgnore?.value)}))`}</TraceSection>}
+        {resistance && <TraceSection title="Enemy RES Multiplier" value={tracePercent(resistance.value)} source={resistance}>{totalResistanceReduction === 0 ? `1 - ${tracePercent(baseResistance?.value)}` : Number(baseResistance?.value ?? 0) <= 0 ? `1 - (${tracePercent(baseResistance?.value)} - ${tracePercent(totalResistanceReduction)} / 2)` : effectiveResistance >= 0 ? `1 - ${tracePercent(baseResistance?.value)} + ${tracePercent(totalResistanceReduction)}` : `1 + (${tracePercent(-effectiveResistance)} / 2)`}</TraceSection>}
+        {reduction && <TraceSection title="DMG Reduction Multiplier" value={tracePercent(reduction.value)} source={reduction}>1 - {tracePercent(1 - Number(reduction.value ?? 1))}</TraceSection>}
+        {triggeredActions && <TraceSection title="Triggered Actions" value={traceNumber(triggeredActions.value)} source={triggeredActions}>{triggeredActions.children.map((entry) => traceNumber(entry.value)).join(' + ')}</TraceSection>}
+        {hits.map((hit, index) => {
+          const preCrit = traceChild(hit, 'pre-crit')
+          const result = hit.children.find((entry) => entry.stage === modeStage)?.value
+          const normal = traceChild(hit, 'result-normal') ?? traceChild(hit, 'result')
+          return <TraceSection title={hits.length === 1 ? 'Non-crit Damage' : `${traceLabel(hit.stage)} Non-crit`} value={formatDamage(Number(normal?.value ?? 0))} key={`${hit.stage}-${index}`}>{traceNumber(preCrit?.value ?? normal?.value)}{typeof result === 'number' && mode !== 'normal' ? ` · selected ${formatDamage(result)}` : ''}</TraceSection>
+        })}
+        {critDamage && hits.length > 0 && <TraceSection title="Critical Damage" value={formatDamage(hits.reduce((total, hit) => total + Number(traceChild(hit, 'result-critical')?.value ?? 0), 0))} source={critDamage}>{hits.map((hit) => `${traceNumber(traceChild(hit, 'pre-crit')?.value)} × ${tracePercent(critDamage.value)}`).join(' + ')}</TraceSection>}
+        {critRate && critDamage && hits.length > 0 && <TraceSection title="Average Damage" value={formatDamage(hits.reduce((total, hit) => total + Number(traceChild(hit, 'result-expected')?.value ?? 0), 0))} source={critRate}>{hits.map((hit) => `${traceNumber(traceChild(hit, 'pre-crit')?.value)} × (1 + ${tracePercent(critRate.value)} × (${tracePercent(critDamage.value)} - 100%))`).join(' + ')}</TraceSection>}
+        {effects && typeof effects.value === 'number' && effects.value > 0 && <p className="tw-trace-effects">Includes {effects.value} active reviewed {effects.value === 1 ? 'effect' : 'effects'}.</p>}
+      </div>
+    </article>
+  </div>, document.body)
+}
+
+function ReviewedEffectCard({ effect, values, updateInputs }: {
+  effect: CombatEffectDefinition
+  values: Record<string, ScenarioValue>
+  updateInputs: (patch: Record<string, ScenarioValue>) => void
+}) {
+  const numericInput = effect.inputs.find((input) => input.kind === 'number')
+  const numericValue = numericInput && typeof values[numericInput.id] === 'number' ? Number(values[numericInput.id]) : 0
+  const stackOptions = effect.activationKind === 'stacks' && numericInput
+    ? Array.from({ length:Math.floor(numericInput.maximum ?? 0) + 1 }, (_, value) => value).filter((value) => value === 0 || value >= (numericInput.minimum ?? 0))
+    : []
+  const active = effect.inputs.length === 0 || effect.inputs.every((input) => input.kind === 'number' ? Number(values[input.id] ?? 0) > 0 : values[input.id] === true)
+  const toggle = () => updateInputs(Object.fromEntries(effect.inputs.map((input) => [input.id, !active])))
+  const formatResult = (result: CombatEffectDefinition['results'][number]) => {
+    if (typeof result.value === 'string') return result.value
+    const activation = result.perActivation && numericValue > 0 ? numericValue : 1
+    const value = result.value * activation
+    const formatted = result.percent ? `${Number((value * 100).toFixed(3))}%` : Number(value.toFixed(3)).toLocaleString()
+    const unit = effect.activationKind === 'stacks' ? 'stack' : 'point'
+    return result.perActivation && numericValue <= 1 ? `${formatted} / ${unit}` : formatted
+  }
+  return <article className={active ? effect.inputs.length ? 'is-active' : 'is-fixed' : 'is-inactive'}>
+    <header className="tw-effect-copy">
+      <span><strong>{effect.label} {effect.description && <span className="tw-effect-info" title={effect.description} aria-label={effect.description}>i</span>}</strong><small>{effect.sourceLabel}</small></span>
+      <b>{effect.badge}</b>
+    </header>
+    {effect.inputs.length > 0 && <div className="tw-effect-condition">
+      {numericInput
+          ? <><span className="tw-condition-toggle" aria-pressed={active}><i/><strong title={effect.description}>{effect.description ?? 'Set the active amount'}</strong></span><label>{effect.activationKind === 'stacks' ? 'Stacks' : 'Value'}{effect.activationKind === 'stacks'
+            ? <select value={numericValue} onChange={(event) => updateInputs({ [numericInput.id]:Number(event.target.value) })}>{stackOptions.map((value) => <option value={value} key={value}>{value === 0 ? 'Off' : value}</option>)}</select>
+            : <input type="number" min={numericInput.minimum} max={numericInput.maximum} value={numericValue} onChange={(event) => updateInputs({ [numericInput.id]:Number(event.target.value) })}/>}</label></>
+          : <button type="button" className="tw-condition-toggle" aria-pressed={active} title={effect.description} onClick={toggle}><i/><strong>{effect.description ?? (active ? 'Effect active' : 'Activate effect')}</strong></button>}
+    </div>}
+    {effect.results.length > 0 && <dl className="tw-effect-results">{effect.results.map((result, index) => <div key={`${result.label}-${index}`}><dt>{result.label}</dt><dd>{formatResult(result)}</dd></div>)}</dl>}
+  </article>
+}
+
+type ReviewedEffectListProps = {
+  effects: CombatEffectDefinition[]
+  values: Record<string, ScenarioValue>
+  updateInputs: (patch: Record<string, ScenarioValue>) => void
+}
+
+function ReviewedEffectList({ effects, values, updateInputs }: ReviewedEffectListProps) {
+  if (!effects.length) return null
+  return <div className="tw-v2-effect-list">{effects.map((effect) => <ReviewedEffectCard effect={effect} values={values} updateInputs={updateInputs} key={effect.id}/>)}</div>
 }
 
 function FormulaResultSheet({ member, model, updateTeam }: { member: TeamMemberModel; model: TeamWorkspaceModel; updateTeam: (patch: Partial<Team>) => Promise<void> }) {
-  const [trace, setTrace] = useState<CalculationTrace | null>(null)
+  const [trace, setTrace] = useState<TraceSelection | null>(null)
   const scenario = model.team.scenario ?? { resultMode: 'expected' as const, memberConditions: {}, enemyConditions: {}, selectedTargetByBuild: {} }
   const mode = scenario.resultMode
   const buildId = member.build?.id ?? ''
+  const elementStat = member.catalog ? ELEMENT_DAMAGE_STATS[member.catalog.element] : undefined
+  const coreStats: Array<[StatKey, string]> = elementStat && member.catalog ? [...CORE_STATS, [elementStat, `${member.catalog.element} DMG Bonus`]] : CORE_STATS
   const groups = [...new Set(member.formulaRows.map((row) => row.target.group))]
   const rowsByGroup = new Map(groups.map((group) => [group, member.formulaRows.filter((row) => row.target.group === group)]))
   const leftGroups = ['Basic Attack', 'Resonance Skill', 'Intro Skill'].filter((group) => rowsByGroup.has(group))
@@ -1348,7 +1579,7 @@ function FormulaResultSheet({ member, model, updateTeam }: { member: TeamMemberM
   const updateScenario = (patch: Partial<typeof scenario>) => updateTeam({ scenario: { ...scenario, ...patch } })
   const selectRow = (row: TeamMemberModel['formulaRows'][number]) => {
     if (buildId) void updateScenario({ selectedTargetByBuild: { ...scenario.selectedTargetByBuild, [buildId]: row.target.id } })
-    setTrace(row.traces[mode])
+    setTrace({ trace: row.traces[mode], title: row.target.label, value: row[mode], mode })
   }
   const renderGroup = (group: string) => <article className="tw-sheet-column" key={group}>
     <header><span>{group}</span><small>{mode}</small></header>
@@ -1356,34 +1587,37 @@ function FormulaResultSheet({ member, model, updateTeam }: { member: TeamMemberM
   </article>
   return <>
     <section className="tw-formula-grid">
-      <article className="tw-sheet-column tw-sheet-stats"><header><span>Basic Stats</span></header><dl>{CORE_STATS.map(([key, label]) => <div key={key}><dt>{label}</dt><dd>{member.showcase ? <CalculatedValue detail={resolvedMemberStatDetail(member, key, label)}>{formatWorkspaceStat(key, resolvedMemberStat(member, key))}</CalculatedValue> : '—'}</dd></div>)}</dl><header><span>Bonus Stats</span></header><dl>{DAMAGE_STATS.map(([key, label]) => <div key={key}><dt>{label}</dt><dd>{member.showcase ? <CalculatedValue detail={resolvedMemberStatDetail(member, key, label)}>{formatWorkspaceStat(key, resolvedMemberStat(member, key))}</CalculatedValue> : '—'}</dd></div>)}</dl></article>
+      <article className="tw-sheet-column tw-sheet-stats"><header><span>Basic Stats</span></header><dl>{coreStats.map(([key, label]) => <div className={Math.abs(resolvedMemberStatDelta(member, key)) > 1e-9 ? 'is-modified' : undefined} key={key}><dt>{label}</dt><dd>{member.showcase ? <CalculatedValue detail={resolvedMemberStatDetail(member, key, label)}>{formatWorkspaceStat(key, resolvedMemberStat(member, key))}</CalculatedValue> : '—'}</dd></div>)}</dl><header><span>Bonus Stats</span></header><dl>{DAMAGE_STATS.map(([key, label]) => <div className={Math.abs(resolvedMemberStatDelta(member, key)) > 1e-9 ? 'is-modified' : undefined} key={key}><dt>{label}</dt><dd>{member.showcase ? <CalculatedValue detail={resolvedMemberStatDetail(member, key, label)}>{formatWorkspaceStat(key, resolvedMemberStat(member, key))}</CalculatedValue> : '—'}</dd></div>)}</dl></article>
       <div className="tw-sheet-results">
         <div className="tw-sheet-result-stack">{leftGroups.map(renderGroup)}</div>
         <div className="tw-sheet-result-stack">{rightGroups.map(renderGroup)}</div>
       </div>
-      <aside className="tw-sheet-side"><article className="tw-sheet-column"><header><span>Enemy</span><small>Damage settings</small></header><label>Level<input type="number" min="1" max="200" value={model.team.enemy.level} onChange={(event) => void updateTeam({ enemy: { ...model.team.enemy, level: Number(event.target.value) } })}/></label><label>Resistance %<input type="number" min="-100" max="100" value={model.team.enemy.resistance} onChange={(event) => void updateTeam({ enemy: { ...model.team.enemy, resistance: Number(event.target.value) } })}/></label><label>Reduction %<input type="number" min="0" max="100" value={model.team.enemy.damageReduction} onChange={(event) => void updateTeam({ enemy: { ...model.team.enemy, damageReduction: Number(event.target.value) } })}/></label></article></aside>
     </section>
-    {trace && <div className="tw-trace-backdrop" onMouseDown={() => setTrace(null)}><article className="tw-trace tw-panel" onMouseDown={(event) => event.stopPropagation()}><header><div><span className="eyebrow">Calculation trace</span><h2>{trace.label}</h2></div><button className="close" onClick={() => setTrace(null)}>×</button></header><ul><TraceBranch trace={trace}/></ul></article></div>}
+    {trace && <CalculationTraceDialog selection={trace} onClose={() => setTrace(null)}/>}
   </>
 }
 
-function MainEchoOverviewCard({ member }: { member: TeamMemberModel }) {
+function MainEchoOverviewCard({ member, effects, values, updateInputs }: { member: TeamMemberModel } & ReviewedEffectListProps) {
   const mainEcho = member.showcase?.echoSlots[0]
   if (!mainEcho) return <article className="tw-main-echo-overview is-empty"><header><span className="eyebrow">Main Echo</span><h2>No main Echo</h2></header><p>Equip an Echo in slot 1 to complete this loadout.</p></article>
   return <article className="tw-main-echo-overview">
     <header className="tw-main-echo-identity"><img src={echoArtwork(mainEcho)} alt=""/><span><span className="eyebrow">Main Echo</span><h2>{mainEcho.name}</h2><small>Rarity {mainEcho.rarity} · Cost {mainEcho.cost} · +{mainEcho.level}</small></span></header>
+    <ReviewedEffectList effects={effects} values={values} updateInputs={updateInputs}/>
   </article>
 }
 
-function CharacterOverviewWorkspace({ member, model, updateTeam, weaponPassive }: {
+function CharacterOverviewWorkspace({ member, model, updateTeam, weaponPassive, effects, values, updateInputs }: {
   member: TeamMemberModel
   model: TeamWorkspaceModel
   updateTeam: (patch: Partial<Team>) => Promise<void>
   weaponPassive?: string
-}) {
+} & ReviewedEffectListProps) {
   if (!member.build || !member.catalog || !member.character || !member.showcase) return null
   const catalog = member.catalog
   const showcase = member.showcase
+  const weaponEffects = effects.filter((effect) => effect.sourceKind === 'weapon')
+  const sonataEffects = effects.filter((effect) => effect.sourceKind === 'sonata')
+  const echoEffects = effects.filter((effect) => effect.sourceKind === 'echo')
 
   return <>
     <section className="tw-overview-sheet tw-panel">
@@ -1410,6 +1644,7 @@ function CharacterOverviewWorkspace({ member, model, updateTeam, weaponPassive }
         <article className="tw-overview-weapon-passive">
           <header><span className="eyebrow">Weapon passive</span><h2>{showcase.weapon?.catalog.passiveName ?? 'No weapon passive'}</h2></header>
           <p>{weaponPassive ?? 'Equip a supported weapon to display its generated passive text.'}</p>
+          <ReviewedEffectList effects={weaponEffects} values={values} updateInputs={updateInputs}/>
         </article>
       </aside>
 
@@ -1429,8 +1664,9 @@ function CharacterOverviewWorkspace({ member, model, updateTeam, weaponPassive }
         <article className="tw-overview-sonatas">
           <header><span className="eyebrow">Sonata effects</span><h2>Equipped sets</h2></header>
           <SonataChips member={member}/>
+          <ReviewedEffectList effects={sonataEffects} values={values} updateInputs={updateInputs}/>
         </article>
-        <MainEchoOverviewCard member={member}/>
+        <MainEchoOverviewCard member={member} effects={echoEffects} values={values} updateInputs={updateInputs}/>
       </aside>
       <div className="tw-overview-equipment-grid">
         {showcase.echoSlots.map((echo, index) => <div id={`tw-overview-equipped-echo-${index}`} className="cs-echo-tab-card" key={echo?.id ?? index}>{echo ? <TeamEchoCard echo={echo} ownerName={catalog.name}/> : <article className="detail-empty"><span>+</span><small>Empty Echo slot {index + 1}</small></article>}</div>)}
@@ -1441,30 +1677,31 @@ function CharacterOverviewWorkspace({ member, model, updateTeam, weaponPassive }
 
 function MemberWorkspace({ member, model, section, setSection, updateTeam, echoes, builds, equippedLoadouts, theorycraftBuilds, characters, weapons, openScanner, refresh, roverGender }: { member: TeamMemberModel; model: TeamWorkspaceModel; section: MemberSection; setSection: (section: MemberSection) => void; updateTeam: (patch: Partial<Team>) => Promise<void>; echoes: Echo[]; builds: Build[]; equippedLoadouts: EquippedLoadout[]; theorycraftBuilds: TheorycraftBuild[]; characters: OwnedCharacter[]; weapons: OwnedWeapon[]; openScanner: () => void; refresh: () => Promise<void>; roverGender: 'male' | 'female' }) {
   if (!member.build || !member.catalog || !member.character || !member.showcase) return <section className="tw-member-empty tw-panel"><MemberAvatar member={member}/><h2>Member {member.slot + 1} is empty</h2><p>Return to Team Settings and click the empty member card to add a saved build.</p></section>
-  const isTeamTba = TEAM_TBA_CHARACTER_IDS.has(member.catalog.id)
   const showcase = member.showcase
   const weaponPassive = showcase.weapon?.catalog.passiveEffects[Math.max(0, (showcase.weapon?.owned.rank ?? 1) - 1)] ?? showcase.weapon?.catalog.passiveEffects[0]
   const scenario = model.team.scenario ?? { resultMode: 'expected' as const, memberConditions: {}, enemyConditions: {}, selectedTargetByBuild: {} }
+  const reviewedEffects = combatEffectDefinitions(member.character.catalogId, showcase.weapon?.owned.catalogId ?? '', member.character.sequence, showcase.weapon?.owned.rank ?? 1, member.resolvedEchoes)
+  const effectValues = scenario.memberConditions[member.build.id] ?? {}
+  const updateEffectInputs = (patch: Record<string, ScenarioValue>) => void updateTeam({ scenario:{ ...scenario, memberConditions:{ ...scenario.memberConditions, [member.build!.id]:{ ...effectValues, ...patch } } } })
   const setResultMode = (resultMode: FormulaResultMode) => updateTeam({ scenario: { ...scenario, resultMode } })
   return <div className={`tw-member-page section-${section}`} style={{ '--tw-member-accent': ELEMENT_COLORS[member.catalog.element] ?? '#c8d0ce' } as CSSProperties}>
     <nav className="tw-subnav" aria-label={`${member.catalog.name} sections`} role="tablist">
       {MEMBER_SECTIONS.map((item) => <button key={item.id} role="tab" className={section === item.id ? 'active' : ''} aria-selected={section === item.id} onClick={() => setSection(item.id)}>{item.label}</button>)}
-      {!isTeamTba && <div className="tw-nav-result-modes" role="group" aria-label="Damage result mode">
+      <div className="tw-nav-result-modes" role="group" aria-label="Damage result mode">
         {DAMAGE_RESULT_MODES.map((mode) => <button type="button" aria-pressed={scenario.resultMode === mode.id} className={scenario.resultMode === mode.id ? 'active' : ''} key={mode.id} onClick={() => void setResultMode(mode.id)}>{mode.label}</button>)}
-      </div>}
+      </div>
     </nav>
-    {isTeamTba ? <section className="tw-member-empty tw-panel"><h2>TBA</h2></section>
-      : section === 'overview' ? <CharacterOverviewWorkspace member={member} model={model} updateTeam={updateTeam} weaponPassive={weaponPassive}/>
+    {section === 'overview' ? <CharacterOverviewWorkspace member={member} model={model} updateTeam={updateTeam} weaponPassive={weaponPassive} effects={reviewedEffects} values={effectValues} updateInputs={updateEffectInputs}/>
       : section === 'rotation' ? <RotationWorkspace model={model} updateTeam={updateTeam} focusBuildId={member.build.id}/>
       : section === 'optimizer' ? <OptimizerView echoes={[...echoes, ...member.resolvedEchoes.filter((echo) => !echoes.some((owned) => owned.id === echo.id))]} builds={[...builds.filter((build) => build.id !== member.build!.id), member.build]} characters={characters} ownedWeapons={member.resolvedWeapon && !weapons.some((weapon) => weapon.id === member.resolvedWeapon?.id) ? [...weapons, member.resolvedWeapon] : weapons} refresh={refresh} openScanner={openScanner} buildId={member.build.id} teamBuildIds={model.members.flatMap((entry) => entry.character ? [entry.character.id] : [])} initialEnemy={model.team.enemy} damageMode={scenario.resultMode} scenario={scenario}/>
       : section === 'theorizer' ? <TheorizerWorkspace member={member} model={model} echoes={echoes} builds={builds} characters={characters} weapons={weapons} equippedLoadouts={equippedLoadouts} theorycraftBuilds={theorycraftBuilds} roverGender={roverGender} refresh={refresh}/>
       : <section className="tw-member-hero tw-panel forte-mode" style={{ '--tw-element': member.catalog.element.toLowerCase() } as CSSProperties}>
       <div className="tw-member-art"><img src={member.catalog.portraitSourceUrl || member.catalog.iconSourceUrl} alt=""/><div className="tw-sequence-rail">{member.catalog.sequenceIcons.slice(0, 6).map((sequence) => <span className={member.character && member.character.sequence >= sequence.sequence ? 'unlocked' : ''} key={sequence.sequence} title={sequence.name}><img src={sequence.iconSourceUrl} alt=""/><b>S{sequence.sequence}</b></span>)}</div><div><span>{member.catalog.element} · {member.catalog.weaponType}</span><h1>{member.catalog.name}</h1><p>{member.catalog.title}</p><strong>Lv. {member.character.level} · Sequence {member.character.sequence}</strong></div><EchoWaveform element={member.catalog.element}/></div>
       <div className="tw-member-summary">
-        <ForteWorkspace member={member} model={model} refresh={refresh}/>
+        <ForteWorkspace member={member} model={model} refresh={refresh} effects={reviewedEffects} values={effectValues} updateInputs={updateEffectInputs}/>
       </div>
     </section>}
-    {!isTeamTba && <WarningList warnings={section === 'rotation' ? model.warnings : member.warnings}/>}
+    <WarningList warnings={section === 'rotation' ? model.warnings : member.warnings}/>
   </div>
 }
 

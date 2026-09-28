@@ -1,0 +1,350 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "weapon",
+  "entityId": "21030026",
+  "entityName": "Woodland Aria",
+  "sourceFingerprint": "ced0ce944eb5f77631867c5267ae02e95e88dfddcb297ec688a1cfe49ba86130",
+  "reviewedAt": "2026-09-16T11:20:22.744Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "61672bbd1a461ead6dce237443668b5e3cfae55c198653ef105adfa857217f75",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21030026:effect:0",
+            "sourceName": "Lingering Summer Tune",
+            "text": "ATK is increased by 12%.",
+            "refinementTexts": [
+              "ATK is increased by 12%.",
+              "ATK is increased by 15%.",
+              "ATK is increased by 18%.",
+              "ATK is increased by 21%.",
+              "ATK is increased by 24%."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21030026:effect:1",
+            "sourceName": "Lingering Summer Tune",
+            "text": "Inflicting Aero Erosion on the target gives 24% Aero DMG Bonus for 10s.",
+            "refinementTexts": [
+              "Inflicting Aero Erosion on the target gives 24% Aero DMG Bonus for 10s.",
+              "Inflicting Aero Erosion on the target gives 30% Aero DMG Bonus for 10s.",
+              "Inflicting Aero Erosion on the target gives 36% Aero DMG Bonus for 10s.",
+              "Inflicting Aero Erosion on the target gives 42% Aero DMG Bonus for 10s.",
+              "Inflicting Aero Erosion on the target gives 48% Aero DMG Bonus for 10s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 10,
+              "modifiers": [
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 24,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Aero Erosion inflicted"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Aero Erosion inflicted"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Aero Erosion inflicted"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "value": 36
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Aero Erosion inflicted"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "value": 42
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Aero Erosion inflicted"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "value": 48
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Aero Erosion inflicted"
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21030026:effect:2",
+            "sourceName": "Lingering Summer Tune",
+            "text": "Hitting targets with Aero Erosion reduces their Aero RES by 10% for 20s.",
+            "refinementTexts": [
+              "Hitting targets with Aero Erosion reduces their Aero RES by 10% for 20s.",
+              "Hitting targets with Aero Erosion reduces their Aero RES by 11.5% for 20s.",
+              "Hitting targets with Aero Erosion reduces their Aero RES by 13% for 20s.",
+              "Hitting targets with Aero Erosion reduces their Aero RES by 14.5% for 20s.",
+              "Hitting targets with Aero Erosion reduces their Aero RES by 16% for 20s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 20,
+              "modifiers": [
+                {
+                  "stat": "ResistShred:Aero",
+                  "operation": "addPercent",
+                  "scope": "team",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Dmg dealt to target inflicted with Aero Erosion"
+            },
+            "sourceType": "weapon",
+            "parsedByRefinement": [
+              {
+                "modifiers": [
+                  {
+                    "value": 10
+                  }
+                ],
+                "triggeredAttacks": [],
+                "warnings": [],
+                "confidence": "high",
+                "trigger": "While equipped"
+              },
+              {
+                "modifiers": [
+                  {
+                    "value": 11.5
+                  }
+                ],
+                "triggeredAttacks": [],
+                "warnings": [],
+                "confidence": "high",
+                "trigger": "While equipped"
+              },
+              {
+                "modifiers": [
+                  {
+                    "value": 13
+                  }
+                ],
+                "triggeredAttacks": [],
+                "warnings": [],
+                "confidence": "high",
+                "trigger": "While equipped"
+              },
+              {
+                "modifiers": [
+                  {
+                    "value": 14.5
+                  }
+                ],
+                "triggeredAttacks": [],
+                "warnings": [],
+                "confidence": "high",
+                "trigger": "While equipped"
+              },
+              {
+                "modifiers": [
+                  {
+                    "value": 16
+                  }
+                ],
+                "triggeredAttacks": [],
+                "warnings": [],
+                "confidence": "high",
+                "trigger": "While equipped"
+              }
+            ]
+          },
+          {
+            "id": "weapon:21030026:effect:3",
+            "sourceName": "Lingering Summer Tune",
+            "text": "Effects of the same name cannot be stacked.",
+            "refinementTexts": [
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ],
+              "trigger": "While equipped"
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic",
+            "parsedByRefinement": [
+              {
+                "modifiers": [],
+                "triggeredAttacks": [],
+                "trigger": "While equipped"
+              },
+              {
+                "modifiers": [],
+                "triggeredAttacks": [],
+                "trigger": "While equipped"
+              },
+              {
+                "modifiers": [],
+                "triggeredAttacks": [],
+                "trigger": "While equipped"
+              },
+              {
+                "modifiers": [],
+                "triggeredAttacks": [],
+                "trigger": "While equipped"
+              },
+              {
+                "modifiers": [],
+                "triggeredAttacks": [],
+                "trigger": "While equipped"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

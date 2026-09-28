@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000107",
+  "entityName": "Fusion Drake",
+  "sourceFingerprint": "0abeeb22d99816ba07a42afabd694376ccd8e2ad494e423f92e818648b991b8f",
+  "reviewedAt": "2026-09-26T18:47:52.490Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "c6e4d3d3f349626ca53a9ab4c09a0cee96c4b8da47e5d9d4ddc196578059c11f",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000107:skill",
+            "name": "Fusion Drake - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Fusion",
+            "expressions": [
+              "14.40%",
+              "17.28%",
+              "20.16%",
+              "23.04%",
+              "25.92%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.14400000000000002,
+                0.14400000000000002,
+                0.14400000000000002
+              ],
+              [
+                0.1728,
+                0.1728,
+                0.1728
+              ],
+              [
+                0.2016,
+                0.2016,
+                0.2016
+              ],
+              [
+                0.2304,
+                0.2304,
+                0.2304
+              ],
+              [
+                0.25920000000000004,
+                0.25920000000000004,
+                0.25920000000000004
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0,
+              0
+            ],
+            "count": 3,
+            "cooldownSeconds": 8,
+            "sourceText": "Summon a Fusion Drake to attack enemies, dealing 14.40% Fusion DMG 3 times.\nCD: 8s · Summon a Fusion Drake to attack enemies, dealing 17.28% Fusion DMG 3 times.\nCD: 8s · Summon a Fusion Drake to attack enemies, dealing 20.16% Fusion DMG 3 times.\nCD: 8s · Summon a Fusion Drake to attack enemies, dealing 23.04% Fusion DMG 3 times.\nCD: 8s · Summon a Fusion Drake to attack enemies, dealing 25.92% Fusion DMG 3 times.\nCD: 8s"
+          }
+        ],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

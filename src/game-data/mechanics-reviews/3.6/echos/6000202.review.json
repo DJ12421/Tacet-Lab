@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000202",
+  "entityName": "Smiter",
+  "sourceFingerprint": "c499355899fcbbc8859146bb8562c4bd193a38e189c52315d891125bc7d2940b",
+  "reviewedAt": "2026-09-26T18:47:52.615Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "a2297b9665d25c23e3e15920d0677ea6e2ea6110e24879cc729faa5972dd7642",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000202:skill",
+            "name": "Smiter - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Spectro",
+            "expressions": [
+              "10.70%+32.10%",
+              "12.84%+38.52%",
+              "14.98%+44.94%",
+              "17.12%+51.36%",
+              "19.26%+57.78%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.107,
+                0.107,
+                0.107,
+                0.107,
+                0.107,
+                0.107,
+                0.107,
+                0.321
+              ],
+              [
+                0.1284,
+                0.1284,
+                0.1284,
+                0.1284,
+                0.1284,
+                0.1284,
+                0.1284,
+                0.38520000000000004
+              ],
+              [
+                0.14980000000000002,
+                0.14980000000000002,
+                0.14980000000000002,
+                0.14980000000000002,
+                0.14980000000000002,
+                0.14980000000000002,
+                0.14980000000000002,
+                0.44939999999999997
+              ],
+              [
+                0.17120000000000002,
+                0.17120000000000002,
+                0.17120000000000002,
+                0.17120000000000002,
+                0.17120000000000002,
+                0.17120000000000002,
+                0.17120000000000002,
+                0.5136
+              ],
+              [
+                0.19260000000000002,
+                0.19260000000000002,
+                0.19260000000000002,
+                0.19260000000000002,
+                0.19260000000000002,
+                0.19260000000000002,
+                0.19260000000000002,
+                0.5778
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ],
+            "count": 8,
+            "cooldownSeconds": 15,
+            "sourceText": "Use Echo Skill to summon a Smiter to jab at enemies, dealing 7 instances of 10.70% Spectro DMG, and finish with an uppercut, dealing 32.10% Spectro DMG.\nCD: 15s · Use Echo Skill to summon a Smiter to jab at enemies, dealing 7 instances of 12.84% Spectro DMG, and finish with an uppercut, dealing 38.52% Spectro DMG.\nCD: 15s · Use Echo Skill to summon a Smiter to jab at enemies, dealing 7 instances of 14.98% Spectro DMG, and finish with an uppercut, dealing 44.94% Spectro DMG.\nCD: 15s · Use Echo Skill to summon a Smiter to jab at enemies, dealing 7 instances of 17.12% Spectro DMG, and finish with an uppercut, dealing 51.36% Spectro DMG.\nCD: 15s · Use Echo Skill to summon a Smiter to jab at enemies, dealing 7 instances of 19.26% Spectro DMG, and finish with an uppercut, dealing 57.78% Spectro DMG.\nCD: 15s"
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

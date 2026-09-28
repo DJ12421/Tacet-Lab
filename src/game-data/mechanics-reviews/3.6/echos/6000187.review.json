@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000187",
+  "entityName": "Frostbite Coleoid",
+  "sourceFingerprint": "0177998041687fc4726aded7bfe72db8af9bd8930b638bbc1cfeb8cad321b5ac",
+  "reviewedAt": "2026-09-26T18:47:52.581Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "e91b414b411d840ab4d2c72926173de43401145139b0a6cc48052c31c0f64713",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000187:skill",
+            "name": "Frostbite Coleoid - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Glacio",
+            "expressions": [
+              "107.00%",
+              "128.40%",
+              "149.80%",
+              "171.20%",
+              "192.60%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.07
+              ],
+              [
+                1.284
+              ],
+              [
+                1.4980000000000002
+              ],
+              [
+                1.712
+              ],
+              [
+                1.926
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 15,
+            "sourceText": "Summon a Frostbite Coleoid to punch enemies, dealing 107.00% Glacio DMG.\nCD: 15s. · Summon a Frostbite Coleoid to punch enemies, dealing 128.40% Glacio DMG.\nCD: 15s. · Summon a Frostbite Coleoid to punch enemies, dealing 149.80% Glacio DMG.\nCD: 15s. · Summon a Frostbite Coleoid to punch enemies, dealing 171.20% Glacio DMG.\nCD: 15s. · Summon a Frostbite Coleoid to punch enemies, dealing 192.60% Glacio DMG.\nCD: 15s."
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

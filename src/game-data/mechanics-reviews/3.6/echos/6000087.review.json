@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000087",
+  "entityName": "Nightmare: Impermanence Heron",
+  "sourceFingerprint": "804b47be9693760ad1518666fa5bee7b03310a0771593d63249b29e63a7aedb3",
+  "reviewedAt": "2026-09-26T18:47:52.435Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "4c15fcf0677b267e2bbf5259dde3fcca0b8388a028f0f239cfa7528336b9e1c2",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000087:skill",
+            "name": "Nightmare: Impermanence Heron - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Havoc",
+            "expressions": [
+              "22.50%",
+              "27.00%",
+              "31.50%",
+              "36.00%",
+              "40.50%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.225,
+                0.225,
+                0.225,
+                0.225,
+                0.225,
+                0.225,
+                0.225,
+                0.225,
+                0.225,
+                0.225
+              ],
+              [
+                0.27,
+                0.27,
+                0.27,
+                0.27,
+                0.27,
+                0.27,
+                0.27,
+                0.27,
+                0.27,
+                0.27
+              ],
+              [
+                0.315,
+                0.315,
+                0.315,
+                0.315,
+                0.315,
+                0.315,
+                0.315,
+                0.315,
+                0.315,
+                0.315
+              ],
+              [
+                0.36,
+                0.36,
+                0.36,
+                0.36,
+                0.36,
+                0.36,
+                0.36,
+                0.36,
+                0.36,
+                0.36
+              ],
+              [
+                0.405,
+                0.405,
+                0.405,
+                0.405,
+                0.405,
+                0.405,
+                0.405,
+                0.405,
+                0.405,
+                0.405
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "count": 10,
+            "cooldownSeconds": 25,
+            "sourceText": "Transform into Nightmare: Impermanence Heron and deliver up to 10 consecutive strikes to surrounding enemies, each dealing 22.50% Havoc DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Havoc DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 25s. · Transform into Nightmare: Impermanence Heron and deliver up to 10 consecutive strikes to surrounding enemies, each dealing 27.00% Havoc DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Havoc DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 25s. · Transform into Nightmare: Impermanence Heron and deliver up to 10 consecutive strikes to surrounding enemies, each dealing 31.50% Havoc DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Havoc DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 25s. · Transform into Nightmare: Impermanence Heron and deliver up to 10 consecutive strikes to surrounding enemies, each dealing 36.00% Havoc DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Havoc DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 25s. · Transform into Nightmare: Impermanence Heron and deliver up to 10 consecutive strikes to surrounding enemies, each dealing 40.50% Havoc DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Havoc DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 25s."
+          }
+        ],
+        "cooldownSeconds": 25
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "90df359a82e49fb3d2820770db94c535a4eb024add9b7ca1ad16e1fd6de29990",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000087:effect:0",
+            "sourceName": "Nightmare: Impermanence Heron",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in their main slot gains 12.00% Havoc DMG Bonus and 12.00% Heavy Attack DMG Bonus.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Havoc",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

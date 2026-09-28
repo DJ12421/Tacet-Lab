@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000094",
+  "entityName": "Calcified Junrock",
+  "sourceFingerprint": "e9a58536575771ff3e33d63bd92493fe1a49f71acce1da4b09ebc9930564bfb9",
+  "reviewedAt": "2026-09-26T18:47:52.456Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "3363280aac2f3a90b8aece59f3cd719a1db96b759c416b7d6fd3fd3c386a35dd",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000094:healing",
+            "name": "Calcified Junrock - Echo Skill Healing",
+            "damageType": "healing",
+            "skillSource": "echo",
+            "recipient": "team",
+            "scaling": "hp",
+            "expressions": [
+              "1.4%",
+              "1.68%",
+              "1.96%",
+              "2.24%",
+              "2.52%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.013999999999999999,
+                0.013999999999999999,
+                0.013999999999999999,
+                0.013999999999999999,
+                0.013999999999999999
+              ],
+              [
+                0.0168,
+                0.0168,
+                0.0168,
+                0.0168,
+                0.0168
+              ],
+              [
+                0.0196,
+                0.0196,
+                0.0196,
+                0.0196,
+                0.0196
+              ],
+              [
+                0.022400000000000003,
+                0.022400000000000003,
+                0.022400000000000003,
+                0.022400000000000003,
+                0.022400000000000003
+              ],
+              [
+                0.0252,
+                0.0252,
+                0.0252,
+                0.0252,
+                0.0252
+              ]
+            ],
+            "count": 5,
+            "cooldownSeconds": 15,
+            "sourceText": "Summon a Calcified Junrock that restores HP for nearby Resonators in the team by 1.40% of their Max HP, up to 5 times.\nCD: 15s · Summon a Calcified Junrock that restores HP for nearby Resonators in the team by 1.68% of their Max HP, up to 5 times.\nCD: 15s · Summon a Calcified Junrock that restores HP for nearby Resonators in the team by 1.96% of their Max HP, up to 5 times.\nCD: 15s · Summon a Calcified Junrock that restores HP for nearby Resonators in the team by 2.24% of their Max HP, up to 5 times.\nCD: 15s · Summon a Calcified Junrock that restores HP for nearby Resonators in the team by 2.52% of their Max HP, up to 5 times.\nCD: 15s"
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

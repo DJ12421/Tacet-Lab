@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000053",
+  "entityName": "Dreamless",
+  "sourceFingerprint": "8c1f6b0610c66fad56d9762f8de6a632c4c9b30dc44ea0264fbd376edbdf170b",
+  "reviewedAt": "2026-09-26T18:40:34.741Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "0ab65cf07f565577c4ebc1fe3975b32d082b16ee7cf329245205d819f6aa940d",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000053:skill",
+            "name": "Dreamless - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Havoc",
+            "expressions": [
+              "33.80%+169.00%",
+              "38.87%+194.35%",
+              "43.94%+219.70%",
+              "49.01%+245.05%",
+              "54.08%+270.40%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.33799999999999997,
+                0.33799999999999997,
+                0.33799999999999997,
+                0.33799999999999997,
+                0.33799999999999997,
+                1.69
+              ],
+              [
+                0.3887,
+                0.3887,
+                0.3887,
+                0.3887,
+                0.3887,
+                1.9435
+              ],
+              [
+                0.43939999999999996,
+                0.43939999999999996,
+                0.43939999999999996,
+                0.43939999999999996,
+                0.43939999999999996,
+                2.197
+              ],
+              [
+                0.4901,
+                0.4901,
+                0.4901,
+                0.4901,
+                0.4901,
+                2.4505
+              ],
+              [
+                0.5408,
+                0.5408,
+                0.5408,
+                0.5408,
+                0.5408,
+                2.7039999999999997
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ],
+            "count": 6,
+            "cooldownSeconds": 20,
+            "sourceText": "Transform into Dreamless and perform 6 consecutive strikes. The first 5 strikes deal 33.80% Havoc DMG each, and the last strike deal 169.00% Havoc DMG.\nThe DMG of this Echo Skill is increased by 50.00% during the first 5s after Rover: Havoc casts Resonance Liberation: Deadening Abyss.\nCD: 20s · Transform into Dreamless and perform 6 consecutive strikes. The first 5 strikes deal 38.87% Havoc DMG each, and the last strike deal 194.35% Havoc DMG.\nThe DMG of this Echo Skill is increased by 50.00% during the first 5s after Rover: Havoc casts Resonance Liberation: Deadening Abyss.\nCD: 20s · Transform into Dreamless and perform 6 consecutive strikes. The first 5 strikes deal 43.94% Havoc DMG each, and the last strike deal 219.70% Havoc DMG.\nThe DMG of this Echo Skill is increased by 50.00% during the first 5s after Rover: Havoc casts Resonance Liberation: Deadening Abyss.\nCD: 20s · Transform into Dreamless and perform 6 consecutive strikes. The first 5 strikes deal 49.01% Havoc DMG each, and the last strike deal 245.05% Havoc DMG.\nThe DMG of this Echo Skill is increased by 50.00% during the first 5s after Rover: Havoc casts Resonance Liberation: Deadening Abyss.\nCD: 20s · Transform into Dreamless and perform 6 consecutive strikes. The first 5 strikes deal 54.08% Havoc DMG each, and the last strike deal 270.40% Havoc DMG.\nThe DMG of this Echo Skill is increased by 50.00% during the first 5s after Rover: Havoc casts Resonance Liberation: Deadening Abyss.\nCD: 20s"
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "000120090c718ca78cd2f2630359e6ce2fb99b411ad5b4fb4475c7c8245c4d45",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000053:effect:0",
+            "sourceName": "Dreamless",
+            "sourceType": "echo",
+            "text": "The DMG of this Echo Skill is increased by 50.00% during the first 5s after Rover: Havoc casts Resonance Liberation: Deadening Abyss.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Rover: Havoc casts Resonance Liberation: Deadening Abyss",
+              "durationSeconds": 5,
+              "modifiers": [
+                {
+                  "stat": "echoDamage",
+                  "operation": "addPercent",
+                  "value": 50,
+                  "scope": "self",
+                  "appliesTo": "echo"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            }
+          }
+        ]
+      }
+    }
+  }
+}

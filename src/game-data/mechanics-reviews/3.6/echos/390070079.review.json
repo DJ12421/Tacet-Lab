@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390070079",
+  "entityName": "Baby Roseshroom",
+  "sourceFingerprint": "9202f8467c2c527f1531f34b99f7db4793394551f5e0efdb9470a97729959bc7",
+  "reviewedAt": "2026-09-26T18:28:14.357Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "bb85129171a3802e2c0dbddb1d41348558d28c59c6c9f8a8784e3cdba48a60a2",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390070079:skill",
+            "name": "Baby Roseshroom - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Havoc",
+            "expressions": [
+              "20.00%+40",
+              "23.00%+46",
+              "26.00%+52",
+              "29.00%+58",
+              "32.00%+64"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.2
+              ],
+              [
+                0.23
+              ],
+              [
+                0.26
+              ],
+              [
+                0.29
+              ],
+              [
+                0.32
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 8,
+            "sourceText": "Summon a Baby Roseshroom that fires a laser, dealing 20.00%+40 Havoc DMG.\nCD: 8s · Summon a Baby Roseshroom that fires a laser, dealing 23.00%+46 Havoc DMG.\nCD: 8s · Summon a Baby Roseshroom that fires a laser, dealing 26.00%+52 Havoc DMG.\nCD: 8s · Summon a Baby Roseshroom that fires a laser, dealing 29.00%+58 Havoc DMG.\nCD: 8s · Summon a Baby Roseshroom that fires a laser, dealing 32.00%+64 Havoc DMG.\nCD: 8s"
+          }
+        ],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  }
+}

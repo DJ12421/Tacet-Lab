@@ -498,10 +498,6 @@
   grid-template-columns: minmax(235px,.72fr) minmax(0,2.28fr);
 }
 
-.tw-overview-formulas .tw-sheet-side {
-  display: none;
-}
-
 .tw-overview-formulas .tw-sheet-results {
   grid-template-columns: repeat(2,minmax(0,1fr));
 }
@@ -754,8 +750,14 @@
   }
 }
 
-/* Fill the Overview calculation width after removing the former side column. */
+/* Keep stats and damage results visible together. */
 
 .tw-member-page.section-overview .tw-overview-formulas .tw-formula-grid {
   grid-template-columns: minmax(250px,.7fr) minmax(0,2.3fr);
+}
+
+@media (max-width:1250px) {
+  .tw-member-page.section-overview .tw-overview-formulas .tw-formula-grid {
+    grid-template-columns: 210px minmax(0,1fr);
+  }
 }

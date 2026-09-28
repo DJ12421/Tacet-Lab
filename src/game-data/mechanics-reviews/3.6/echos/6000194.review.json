@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000194",
+  "entityName": "Reminiscence: Kronaclaw",
+  "sourceFingerprint": "cb89517bc051c9f65def3763200bdea10e4a806f2317b7110e8ef4ad79614f35",
+  "reviewedAt": "2026-09-26T18:47:52.596Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "bf6b3586ad63ae2c2f48fb79e2d886b93271e2b064ebd0e51ad80d39d0593510",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000194:skill",
+            "name": "Reminiscence: Kronaclaw - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Aero",
+            "expressions": [
+              "4.47%+13.41%+86.42%",
+              "5.36%+16.09%+103.70%",
+              "6.25%+18.77%+120.98%",
+              "7.15%+21.45%+138.27%",
+              "8.04%+24.13%+155.55%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.0447,
+                0.0447,
+                0.0447,
+                0.0447,
+                0.0447,
+                0.0447,
+                0.0447,
+                0.0447,
+                0.1341,
+                0.1341,
+                0.8642
+              ],
+              [
+                0.0536,
+                0.0536,
+                0.0536,
+                0.0536,
+                0.0536,
+                0.0536,
+                0.0536,
+                0.0536,
+                0.1609,
+                0.1609,
+                1.037
+              ],
+              [
+                0.0625,
+                0.0625,
+                0.0625,
+                0.0625,
+                0.0625,
+                0.0625,
+                0.0625,
+                0.0625,
+                0.1877,
+                0.1877,
+                1.2098
+              ],
+              [
+                0.07150000000000001,
+                0.07150000000000001,
+                0.07150000000000001,
+                0.07150000000000001,
+                0.07150000000000001,
+                0.07150000000000001,
+                0.07150000000000001,
+                0.07150000000000001,
+                0.2145,
+                0.2145,
+                1.3827
+              ],
+              [
+                0.08039999999999999,
+                0.08039999999999999,
+                0.08039999999999999,
+                0.08039999999999999,
+                0.08039999999999999,
+                0.08039999999999999,
+                0.08039999999999999,
+                0.08039999999999999,
+                0.2413,
+                0.2413,
+                1.5555
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              2
+            ],
+            "count": 11,
+            "cooldownSeconds": 15,
+            "sourceText": "Transform into a Kronaclaw and soar into the air to deal 4.47% Aero DMG up to 8 times and 13.41% Aero DMG 2 times, then dive to deal 86.42% Aero DMG 1 time.\nCD: 15s · Transform into a Kronaclaw and soar into the air to deal 5.36% Aero DMG up to 8 times and 16.09% Aero DMG 2 times, then dive to deal 103.70% Aero DMG 1 time.\nCD: 15s · Transform into a Kronaclaw and soar into the air to deal 6.25% Aero DMG up to 8 times and 18.77% Aero DMG 2 times, then dive to deal 120.98% Aero DMG 1 time.\nCD: 15s · Transform into a Kronaclaw and soar into the air to deal 7.15% Aero DMG up to 8 times and 21.45% Aero DMG 2 times, then dive to deal 138.27% Aero DMG 1 time.\nCD: 15s · Transform into a Kronaclaw and soar into the air to deal 8.04% Aero DMG up to 8 times and 24.13% Aero DMG 2 times, then dive to deal 155.55% Aero DMG 1 time.\nCD: 15s"
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

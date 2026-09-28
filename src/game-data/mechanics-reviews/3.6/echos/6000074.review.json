@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000074",
+  "entityName": "Diurnus Knight",
+  "sourceFingerprint": "3df0f3cd306251364aa8aa2a38c969356f2a2ec3ebdc6ccf3efb9c650e453a4f",
+  "reviewedAt": "2026-09-26T18:47:52.400Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "3a1ec0f155d8234f09b01d9ca6266e1b50d1fb8f21b75ca58a12f6b92516c73e",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000074:skill",
+            "name": "Diurnus Knight - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Spectro",
+            "expressions": [
+              "149.00%",
+              "178.80%",
+              "208.60%",
+              "238.40%",
+              "268.20%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.49
+              ],
+              [
+                1.788
+              ],
+              [
+                2.086
+              ],
+              [
+                2.384
+              ],
+              [
+                2.682
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 15,
+            "sourceText": "Transform into Diurnus Knight and charge forward to attack enemies with the sword, dealing 149.00% Spectro DMG. DMG dealt to enemies inflicted by Spectro Frazzle is increased by 100.00%.\nCD: 15s. · Transform into Diurnus Knight and charge forward to attack enemies with the sword, dealing 178.80% Spectro DMG. DMG dealt to enemies inflicted by Spectro Frazzle is increased by 100.00%.\nCD: 15s. · Transform into Diurnus Knight and charge forward to attack enemies with the sword, dealing 208.60% Spectro DMG. DMG dealt to enemies inflicted by Spectro Frazzle is increased by 100.00%.\nCD: 15s. · Transform into Diurnus Knight and charge forward to attack enemies with the sword, dealing 238.40% Spectro DMG. DMG dealt to enemies inflicted by Spectro Frazzle is increased by 100.00%.\nCD: 15s. · Transform into Diurnus Knight and charge forward to attack enemies with the sword, dealing 268.20% Spectro DMG. DMG dealt to enemies inflicted by Spectro Frazzle is increased by 100.00%.\nCD: 15s."
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "885a8000870204889d28c1456ed003840dbaaed3b5274f52505a9566c866e19a",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000074:effect:0",
+            "sourceName": "Diurnus Knight",
+            "sourceType": "echo",
+            "text": "DMG dealt to enemies inflicted by Spectro Frazzle is increased by 100.00%.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "echoDamage",
+                  "operation": "addPercent",
+                  "value": 100,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Target has Spectro Frazzle"
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

@@ -11,6 +11,10 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Aero",
     "weaponType": "Pistols",
     "role": "Concerto Efficiency",
+    "roles": [
+      "Concerto Efficiency",
+      "Aero DMG Amplification"
+    ],
     "gender": "male",
     "baseStats": {
       "hp": 9850,
@@ -701,6 +705,26 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_QiushuiM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Recover Forte Gauge for Basic Attack or Mid-air Attack on hit through \"Mist\"",
+        "Generate Mist Bullets to attack the target when passing through \"Mist\""
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeQiushui.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "140301",
+              "description": "Mistform: Enter the Mistform after passing through \"Mist\"",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-30",
@@ -1715,6 +1739,13 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Fusion",
     "weaponType": "Sword",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer",
+      "Resonance Liberation Damage",
+      "DMG Amplification",
+      "Fusion Burst",
+      "Tune Rupture Response"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 11025,
@@ -2405,6 +2436,74 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_AimisiM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Deal substantial Resonance Liberation DMG.",
+        "While in <color=Highlight>Resonance Mode - Tune Rupture</color>, deal additional Tune Rupture DMG. This mode favors single-target damage output. The more Resonators in the team with the ability to respond to <color=Highlight>Tune Rupture - Interfered</color>, the more DMG Aemeath deals.",
+        "While in <color=Highlight>Resonance Mode - Fusion Burst</color>, Aemeath inflicts <color=Highlight>Fusion Burst</color>. This mode unleashes Aemeath's area damage potential, which allows her to deal more DMG by frequently inflicting <color=Highlight>Fusion Burst</color>."
+      ],
+      "overviewImageSourceUrl": "",
+      "sections": [
+        {
+          "id": "121001",
+          "name": "Forte Gauge",
+          "entries": [
+            {
+              "id": "121007",
+              "description": "Restore <color=Highlight>Synchronization Rate</color> through attacks.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeAiMiSi1.webp"
+              ]
+            },
+            {
+              "id": "121008",
+              "description": "When <color=Highlight>Synchronization Rate</color> reaches 50%, after casting <color=Highlight>Basic Attack Stage 4</color>, consume <color=Highlight>Synchronization Rate</color> to cast <color=Highlight>Enhanced Sync Attack</color> and restore <color=Highlight>Resonance Rate</color>.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeAiMiSi2.webp"
+              ]
+            },
+            {
+              "id": "121009",
+              "description": "When <color=Highlight>Resonance Rate</color> is full, casting <color=Highlight>Enhanced Heavy Attack</color> restores <color=Highlight>Synchronization Rate</color>. When both <color=Highlight>Synchronization Rate</color> and <color=Highlight>Resonance Rate</color> are full, <color=Highlight>Resonance Liberation Finisher</color> becomes available.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeAiMiSi3.webp"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "121002",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "121001",
+              "description": "Form Switch: Resonance Skill",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "121002",
+              "description": "Sync Attack: Basic Attack+Basic Attack+Resonance Skill; Basic Attack+Basic Attack+Basic Attack+Resonance Skill; Basic Attack+Basic Attack+Basic Attack+Basic Attack+Resonance Skill",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "121003",
+              "description": "Seraphic Duet: when <color=Highlight>Synchronization Rate</color> reaches 50%, Basic Attack+Basic Attack+Basic Attack+Basic Attack+Resonance Skill.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "121004",
+              "description": "Heavenfall Edict: Finale: when <color=Highlight>Synchronization Rate</color> and <color=Highlight>Resonance Rate</color> are full, Resonance Liberation or Resonance Skill.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "121005",
+              "description": "Starflux Thrust: in Mech form, use Utility.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-9",
@@ -5676,7 +5775,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "articleUrl": "https://ww.nanoka.cc/character/1210",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_53_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Aimisi_UI.webp",
-    "titleCardSourceUrl": "https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_47.webp",
+    "titleCardSourceUrl": "https://api-v2.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_47.webp",
     "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/aimisi/aimisi.skel",
     "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/aimisi/aimisi.atlas"
   },
@@ -5690,6 +5789,11 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Electro",
     "weaponType": "Broadblade",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer",
+      "Heavy Attack DMG",
+      "DMG Amplification"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 10300,
@@ -6380,6 +6484,37 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_AogusitaM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Augusta accumulates Prowess to cast <color=Highlight>Chained Heavy Attacks</color> and Ascendancy to cast <color=Highlight>Chained Resonance Skills</color>.",
+        "<color=Highlight>Inherent Skill - Blazing Valor</color>, <color=Highlight>Outro Skill - Battlesong of the Unyielding</color>, and <color=Highlight>Resonance Skill - Undying Sunlight: Plunge</color> grant Majesty.",
+        "When Majesty reaches 2 stacks, Augusta can cast <color=Highlight>Resonance Liberation - Sublime is the Sun</color> and enter the <color=Highlight>Sworn Allegiance</color> state for 7s, which can be finished by casting <color=Highlight>Resonance Liberation: Sublime is the Sun - Everbright Protector</color>."
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeAogusita.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "130601",
+              "description": "With full Prowess:\n- Hold Basic Attack to perform <color=Highlight>Heavy Attack - Thunderoar: Backstep</color>, then release Basic Attack within a certain period, or Basic Attack again to perform <color=Highlight>Heavy Attack - Thunderoar: Spinslash</color>.\n- Jump to cast <color=Highlight>Heavy Attack - Thunderoar: Uppercut</color>.\n- When performing <color=Highlight>Heavy Attack - Steelclash</color>, release Basic Attack within a certain period, or Basic Attack again, or Jump to perform <color=Highlight>Heavy Attack - Thunderoar: Uppercut</color>.\n- When casting <color=Highlight>Resonance Skill - Warrior's Blade</color>, Resonance Skill or Jump to perform <color=Highlight>Heavy Attack - Thunderoar: Uppercut</color>.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "130602",
+              "description": "With full Ascendancy:\nResonance Skill + Resonance Skill/Basic Attack + Resonance Skill/Basic Attack to perform the following skills in sequence:\n- <color=Highlight>Resonance Skill - Undying Sunlight: Strike</color> , <color=Highlight>Resonance Skill - Undying Sunlight: Leap</color>, and <color=Highlight>Resonance Skill - Undying Sunlight: Plunge</color>.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "130603",
+              "description": "With full Majesty:\n- Hold Resonance Liberation to cast <color=Highlight>Resonance Liberation - Sublime is the Sun</color>.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-9",
@@ -8901,6 +9036,11 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Glacio",
     "weaponType": "Rectifier",
     "role": "Support and Healer",
+    "roles": [
+      "Support and Healer",
+      "Coordinated Attack",
+      "DMG Amplification"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 12812.5,
@@ -9591,6 +9731,31 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_BailianM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Recover 1 Forte Gauge for Basic Attacks on hit",
+        "Resonance Skill or Heavy Attack consumes Forte Gauge to restore HP"
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeBaizhi.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "110301",
+              "description": "Use Heavy Attack to consume Forte Gauge: When Forte Gauge is not empty, hold Basic Attack",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "110302",
+              "description": "Use Resonance Skill to consume Forte Gauge: When Forte Gauge is not empty, tap Resonance Skill",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-8",
@@ -10799,6 +10964,12 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Fusion",
     "weaponType": "Sword",
     "role": "Support and Healer",
+    "roles": [
+      "Support and Healer",
+      "Basic Attack DMG",
+      "Fusion DMG Amplification",
+      "Resonance Skill DMG Amplification"
+    ],
     "gender": "male",
     "baseStats": {
       "hp": 11675,
@@ -11489,6 +11660,31 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_BulanteM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Normal Attacks, Resonance Skill, and Intro Skill recover Forte Gauge on hit.",
+        "For a certain amount of Forte Gauge gained, restore HP once to all Resonators in the team. When Forte Gauge is fully restored, press the Resonance Skill button to perform enhanced Resonance Skill."
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeBulante.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "120601",
+              "description": "Mid-air Attack: Basic Attack in mid-air to attack. Flip backwards after each stage and Basic Attack to perform the next stage. Hold Basic Attack during Mid-air Attack Stage 1 or 2 to attack continuously.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "120602",
+              "description": "Heavy Attack - Rhapsodic Riff: Hold Basic Attack following Basic Attack Stage 2 or 4 or Basic Attack while landed following Mid-air Attack Stage 4 to cast.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-18",
@@ -14035,6 +14231,11 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Electro",
     "weaponType": "Rectifier",
     "role": "Support and Healer",
+    "roles": [
+      "Support and Healer",
+      "DMG Amplification",
+      "Electro Flare"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 10625,
@@ -14725,6 +14926,55 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_BulingM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Heal and grant DMG Bonus to Resonators in the team.",
+        "Resonance Liberation continuously stacks Electro Flare on the target.",
+        "When Resonance Liberation is active, any Resonator in the team casting Intro Skill grants DMG Buffs to Resonators in the team."
+      ],
+      "overviewImageSourceUrl": "",
+      "sections": [
+        {
+          "id": "130701",
+          "name": "Forte Gauge",
+          "entries": [
+            {
+              "id": "130710",
+              "description": "Trigram - Mountain is obtained when <color=Highlight>Basic Attack Stage 2</color> deals damage. Trigram - Thunder is obtained when <color=Highlight>Basic Attack Stage 4</color> or <color=Highlight>Mid-air Attack</color> deals damage or <color=Highlight>Resonance Skill</color> is cast.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeBuling.webp"
+              ]
+            },
+            {
+              "id": "130711",
+              "description": "Special Heavy Attacks can be cast at the cost of Trigram - Mountain and Trigram - Thunder. Different Trigram sequences and combinations trigger different types of Heavy Attacks that grant either Minor Yin or Minor Yang.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "130712",
+              "description": "When Buling has both Minor Yin and Minor Yang, her <color=Highlight>Resonance Liberation - Flashing Thunder Spell</color> is replaced with <color=Highlight>Resonance Liberation - Flashing Thunder Spell: Harmony</color>. Casting the skill generates a <color=Highlight>Five Thunders Spell Array</color> that continuously inflicts <color=Highlight>Electro Flare</color> on the targets.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "130713",
+              "description": "While <color=Highlight>Five Thunders Spell Array</color> is active, when any Resonator in the team casts <color=Highlight>Intro Skill</color>, the active Resonator in the team gains a DMG Buff.",
+              "imageSourceUrls": []
+            }
+          ]
+        },
+        {
+          "id": "130702",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "130701",
+              "description": "<color=Highlight></color> Basic Attack shortly after casting <color=Highlight>Resonance Skill</color> to perform Basic Attack Stage 4 and obtain Trigram - Thunder.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-11",
@@ -16365,6 +16615,10 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Electro",
     "weaponType": "Broadblade",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer",
+      "Resonance Liberation Damage"
+    ],
     "gender": "male",
     "baseStats": {
       "hp": 10500,
@@ -17055,6 +17309,31 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_KakaluoM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Recover Forte Gauge under normal state for Resonance Skill hit. Cast Enhanced Heavy Attack when Forte Gauge is full",
+        "Recover Forte Gauge under for Basic Attack hit. Cast Resonance Liberation Attack when Forte Gauge is full"
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeKakaluo.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "130101",
+              "description": "\"Mercy\": When Forte Gauge reaches 3, hold Basic Attack",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "130102",
+              "description": "\"Death Messenger\": Under Resonance Liberation state, tap Basic Attack when Forte Gauge reaches 5",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-8",
@@ -19792,6 +20071,11 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Havoc",
     "weaponType": "Sword",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer",
+      "Concerto Efficiency",
+      "Basic Attack DMG"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 10325,
@@ -20482,6 +20766,36 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_ChunM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Casting Intro Skill recovers Forte Gauge.\nHitting a target with Normal Attacks and Vining Waltz consumes Forte Gauge.",
+        "When Concerto Energy is full, activate Forte Circuit's Ephemeral and enter the Budding Mode. Gain bonus DMG Multipliers while in Budding Mode."
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeChun.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "160301",
+              "description": "Chain Basic Attack: After performing Basic Attack 3, hold Basic Attack to continuously attack the target.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "160302",
+              "description": "Chain Attack - Vining Waltz: When performing Basic Attack 3, hold Basic Attack to continuously attack the target.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "160304",
+              "description": "Ephemeral: When Concerto Energy is full, tap Resonance Skill to enter Budding Mode.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-9",
@@ -23472,6 +23786,14 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Havoc",
     "weaponType": "Rectifier",
     "role": "Support and Healer",
+    "roles": [
+      "Support and Healer",
+      "Concerto Efficiency",
+      "Basic Attack DMG",
+      "Coordinated Attack",
+      "Havoc DMG Amplification",
+      "Resonance Skill DMG Amplification"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 11600,
@@ -24162,6 +24484,36 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_KanteleilaM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Casting Intro Skill, Resonance Skill, and Resonance Liberation recovers Trance. When Trance is not depleted, performing Heavy Attack sends Cantarella into an enhanced status.",
+        "In Cantarella's enhanced status, hitting the target with Basic Attack recovers Shiver. When Shiver reaches 3 points, the enhanced Resonance Skill becomes available."
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeKanteleila.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "160701",
+              "description": "Resonance Skill Flickering Reverie and Perception Drain send the target into Hazy Dream.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "160702",
+              "description": "When Trance is not depleted, Cantarella can cast Heavy Attack Delusive Dive. This skill can also be cast in water.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "160703",
+              "description": "Use Jump when in Mirage to cast Mid-air Attack.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-8",
@@ -26815,6 +27167,10 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Glacio",
     "weaponType": "Pistols",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer",
+      "Resonance Skill DMG"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 12450,
@@ -27505,6 +27861,36 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_KelaitaM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Restore Modable Crystals upon casting various skills, including Intro Skill, Resonance Skill, and Heavy Attack.\nUse Intro Skill or Dodge Counter, or consume Moldable Crystals to restore Forte Gauge.",
+        "Consume Substance to increase the DMG Multiplier of Resonance Liberation or cast Heavy Attack - Imminent Oblivion, which reduces Resonance Skill cooldown.\nResonance Liberation attacks restore Meta Vector on hit. Resonance Liberation - Fatal Finale is available with full Meta Vectors."
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeKelaita.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "110701",
+              "description": "Art of Violence: Resonance Skill to attack and control the target, restoring Moldable Crystals. Resonance Skill again in a limited time to consume all Moldable Crystals to attack the target. Restore Forte Gauge based on the number of Moldable Crystals consumed.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "110702",
+              "description": "Heavy Attack - Imminent Oblivion: When Tinted Crystal is not on cooldown and when Forte Gauge is full, hold Basic Attack to attack the target, reducing Resonance Skill cooldown.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "110703",
+              "description": "Era of New Wave: Resonance Liberation to attack the target and enter a special state. In this state, chain together up to 4 strikes by Resonance Liberation or Basic Attack repeatedly within a limited time. Follow up with a powerful final blow by Resonance Liberation or Basic Attack.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-11",
@@ -29583,6 +29969,12 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Aero",
     "weaponType": "Sword",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer",
+      "Traction",
+      "Aero DMG Amplification",
+      "Aero Erosion"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 14800,
@@ -30273,6 +30665,46 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_KatixiyaM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "As <color=Highlight>Cartethyia</color>: The last Stage of Basic Attack, Heavy Attack, Intro Skill, and Resonance Skill of <color=Highlight>Cartethyia</color> will summon different <color=Highlight>Sword Shadows</color>. When there are <color=Highlight>Sword Shadows</color> on the field, <color=Highlight>Cartethyia's</color> Plunging Attack will recall the <color=Highlight>Sword Shadows</color> and cause additional DMG based on the Sword Shadows recalled.",
+        "When <color=Highlight>Cartethyia's</color> Resonance Energy is full, Resonance Liberation to transform into <color=Highlight>Fleurdelys</color> and obtain different bonus effects for a certain period of time based on the <color=Highlight>Sword Shadows</color> recalled.\n\nAs <color=Highlight>Fleurdelys</color>: Attacks restore <color=Highlight>Conviction</color>. When <color=Highlight>Conviction</color> reaches 120 points, <color=Highlight>Resonance Liberation - Blade of Howling Squall</color> becomes available."
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeKatixiya.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "140901",
+              "description": "Enhanced <color=Highlight>Plunging Attack</color>: As <color=Highlight>Cartethyia</color>, when there is at least 1 <color=Highlight>Sword Shadow</color> on the field, Basic Attack while airborne.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "140902",
+              "description": "<color=Highlight>Fleurdelys</color> Resonance Skill Stage 2: Resonance Skill following <color=Highlight>Fleurdelys</color> Resonance Skill Stage 1.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "140903",
+              "description": "<color=Highlight>Fleurdelys</color> Enhanced Heavy Attack Stage 2: Hold Basic Attack and then Basic Attack again.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "140904",
+              "description": "Temporarily transform back to <color=Highlight>Cartethyia</color>: As <color=Highlight>Fleurdelys</color>, Resonance Liberation when <color=Highlight>Conviction</color> is below 120 points.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "140905",
+              "description": "<color=Highlight>Resonance Liberation - Blade of Howling Squall</color>: As <color=Highlight>Fleurdelys</color>, Resonance Liberation when <color=Highlight>Conviction</color> reaches 120 points.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-33",
@@ -33660,6 +34092,12 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Fusion",
     "weaponType": "Sword",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer",
+      "Resonance Skill DMG",
+      "Fusion DMG Amplification",
+      "Resonance Liberation DMG Amplification"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 10387.5,
@@ -34350,6 +34788,36 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_ChangliM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Changli restores Forte Gauge when she jumps or hits a target with Basic Attacks while in True Sight, or casts the Resonance Liberation.",
+        "When Forte Gauge is full, hold Basic Attack to cast enhanced Heavy Attack."
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeChangli.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "120501",
+              "description": "Heavy Attack - Flaming Sacrifice: Hold Basic Attack while on the ground when Forte Gauge is at 4 stacks.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "120502",
+              "description": "Basic Attack: True Sight - Conquest: When in True Sight, use Basic Attack while on the ground.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "120503",
+              "description": "Basic Attack: True Sight - Charge: While in True Sight, use Basic Attack after using Jump or while in mid-air.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-12",
@@ -36291,6 +36759,11 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Havoc",
     "weaponType": "Broadblade",
     "role": "Support and Healer",
+    "roles": [
+      "Support and Healer",
+      "Resonance Liberation Damage",
+      "Havoc Bane"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 10775,
@@ -36981,6 +37454,81 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_QianxiaoM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Deal heavy Resonance Liberation DMG. Heal and grant Shields to Resonators in the team.",
+        "Inflict Havoc Bane and reduce the target's DEF. Outro Skill increases the maximum Negative Status stacks the targets can receive and allows Resonators in the team to ignore DEF.",
+        "Resonance Skill marks the target. Some of Chisa's skills can pull in the marked targets."
+      ],
+      "overviewImageSourceUrl": "",
+      "sections": [
+        {
+          "id": "150801",
+          "name": "Forte Gauge",
+          "entries": [
+            {
+              "id": "150805",
+              "description": "While in <color=Highlight>Scissors Mode</color>, attack to gain Forte Gauge <color=Highlight>Ring of Chainsaw</color>. When <color=Highlight>Ring of Chainsaw</color> is full, Chisa can cast an <color=Highlight>enhanced Resonance Skill</color> and enter <color=Highlight>Chainsaw Mode</color>.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeQianxiao1.webp"
+              ]
+            },
+            {
+              "id": "150806",
+              "description": "While in <color=Highlight>Chainsaw Mode</color>, attacks consume Forte Gauge <color=Highlight>Ring of Chainsaw</color> to significantly increase <color=Highlight>Sawring - Eradication</color>'s DMG Multiplier.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeQianxiao3.webp"
+              ]
+            },
+            {
+              "id": "150807",
+              "description": "After casting <color=Highlight>Resonance Liberation</color>, the DMG Multiplier of <color=Highlight>Chainsaw Mode</color> Skills is significantly increased.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150808",
+              "description": "While in <color=Highlight>Scissors Mode</color>, Chisa can consume Forte Gauge <color=Highlight>Lifethread - Jetstream</color> to perform mid-air Special Dodge when casing specific skills.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeQianxiao2.webp"
+              ]
+            },
+            {
+              "id": "150809",
+              "description": "While in <color=Highlight>Chainsaw Mode</color>, Forte Gauge <color=Highlight>Lifethread - Jetstream</color> is replaced with Forte Gauge <color=Highlight>Chainsaw Fever</color>.\nWhen Chisa stops attacking for a while, <color=Highlight>Chainsaw Fever</color> gradually depletes, but hitting enemies during this time resets it.\nWhen <color=Highlight>Chainsaw Fever</color> drops to 0, Chisa exits <color=Highlight>Chainsaw Mode</color> and enters the <color=Highlight>Burnout State</color>, during which Forte Gauge <color=Highlight>Ring of Chainsaw</color> continues to deplete.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeQianxiao4.webp"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "150802",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "150801",
+              "description": "Death Snip can be cast in the following ways:\nBasic Attack+Basic Attack+Basic Attack+Basic Attack.\nHold Basic Attack until landing, then Basic Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150802",
+              "description": "Lifethread - Glide can be cast in the following ways:\nHold Basic Attack to jump, then Dodge before landing.\nWhile in mid-air, Resonance Skill, then Dodge before landing.\nWhen launched into mid-air, Dodge before landing.\nDodge forward after casting Thread Withdrawn.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150803",
+              "description": "Sawring - Eradication: In Chainsaw Mode, hold Basic Attack or Basic Attack+Basic Attack+Basic Attack+Basic Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150804",
+              "description": "Eye of Unraveling - Retraction: Keep holding Dodge after a successful Dodge.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-14",
@@ -40983,6 +41531,9 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Fusion",
     "weaponType": "Pistols",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 9087.5,
@@ -41673,6 +42224,26 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_MaxiaofangM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Normal Attack, Resonance Skill and Intro Skill recover Forte Gauge on hit",
+        "Hold Resonance Skill to consume Forte Gauge and attack continuously"
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeZhixia.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "120201",
+              "description": "DAKA DAKA!: Hold Resonance Skill and then tap Basic Attack when 30 Forte Gauge is consumed",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-9",
@@ -43217,6 +43788,11 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Aero",
     "weaponType": "Pistols",
     "role": "Concerto Efficiency",
+    "roles": [
+      "Concerto Efficiency",
+      "Traction",
+      "Aero Erosion"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 12237.5,
@@ -43907,6 +44483,46 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_XiakongM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "After Basic Attack Stage 4, Ciaccona starts a <color=Highlight>Solo Concert</color> with different instruments based on the attack combo she has performed. When Basic Attack Stage 4 and <color=Highlight>Solo Concert</color> are ended proactively or are interrupted, an <color=Highlight>Ensemble Sylph</color> is generated to continue the action.",
+        "Casting Basic Attack Stage 4 or Intro Skill recovers 1 segment of Forte Gauge.\nFull Forte Gauge enables Enhanced Heavy Attack."
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreexiakong.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "140701",
+              "description": "Use <color=Highlight>Blessed Voice</color> to perform <color=Highlight>Solo Concert</color>: Basic Attack+Basic Attack+Basic Attack+Basic Attack or Intro Skill+Basic Attack+Basic Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "140702",
+              "description": "Use <color=Highlight>Cosmic Beat</color> to perform <color=Highlight>Solo Concert</color>: While in mid-air, Basic Attack+Basic Attack+Basic Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "140703",
+              "description": "Use <color=Highlight>Vibrating Strings</color> to perform <color=Highlight>Solo Concert</color>: Resonance Skill+Basic Attack+Basic Attack+Basic Attack or Dodge Counter+Basic Attack+Basic Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "140704",
+              "description": "Heavy Attack - Quadruple Downbeat: When Forte Gauge is full, hold Basic Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "140705",
+              "description": "After casting Resonance Liberation, the interactive button at the right time as prompted.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-11",
@@ -46076,6 +46692,10 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Havoc",
     "weaponType": "Sword",
     "role": "Concerto Efficiency",
+    "roles": [
+      "Concerto Efficiency",
+      "Havoc DMG Amplification"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 9437.5,
@@ -46766,6 +47386,41 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_micaiM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Recover Forte Gauge for Resonance Skill on hit.",
+        "Hold Basic Attack to cast enhanced Heavy Attack and recover HP if Forte Gauge is no less than half."
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeDanjin.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "160201",
+              "description": "Chaoscleave: When Forte Gauge is above 50%, hold Basic Attack and Basic Attack",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "160202",
+              "description": "Ruby Shades: Dodge Counter + Resonance Skill + Resonance Skill",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "160203",
+              "description": "Crimson Erosion: Basic Attack + Basic Attack + Resonance Skill + Resonance Skill",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "160204",
+              "description": "Sanguine Pulse: Basic Attack + Basic Attack + Basic Attack + Resonance Skill + Resonance Skill + Resonance Skill",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-7",
@@ -48818,6 +49473,14 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Fusion",
     "weaponType": "Rectifier",
     "role": "Concerto Efficiency",
+    "roles": [
+      "Concerto Efficiency",
+      "Resonance Liberation Damage",
+      "Traction",
+      "Fusion Burst",
+      "Tune Break Boost",
+      "Tune Strain Response"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 11025,
@@ -49508,6 +50171,66 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_DaniyaM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Provides DMG Bonus for all Resonators in the team.",
+        "When in <color=Highlight>Resonance Mode - Fusion Burst</color>, Denia can inflict <color=Highlight>Fusion Burst</color> more frequently and boost the DMG dealt by a Fusion Burst team.",
+        "When in <color=Highlight>Resonance Mode - Tune Strain</color>, Denia can inflict <color=Highlight>Tune Strain - Shifting</color>, reset <color=Highlight>Tune Strain - Interfered</color> duration, rapidly increase the target's <color=Highlight>Off-Tune Level</color>, and overall boost the DMG output by a Tune Strain Response team."
+      ],
+      "overviewImageSourceUrl": "",
+      "sections": [
+        {
+          "id": "121101",
+          "name": "Forte Gauge",
+          "entries": [
+            {
+              "id": "121104",
+              "description": "When in <color=Highlight>Stagecraft Form</color>, attacking the target grants <color=Highlight>Void Particle</color>.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeDaniya1.webp"
+              ]
+            },
+            {
+              "id": "121105",
+              "description": "When in <color=Highlight>Breakdown Form</color>, consume <color=Highlight>Void Particle</color> and convert it into <color=Highlight>Conformal Charge</color> that charges up <color=Highlight>Final Act - Breakdown Form</color>.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeDaniya2.webp"
+              ]
+            },
+            {
+              "id": "121106",
+              "description": "When in <color=Highlight>Entropy Shift</color> states, gain <color=Highlight>Dark Cores</color> over time, which unlock the <color=Highlight>Enhanced Resonance Skill</color>.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeDaniya3.webp"
+              ]
+            },
+            {
+              "id": "121107",
+              "description": "Casting <color=Highlight>Resonance Liberation - Stagecraft Form</color> grants Denia <color=Highlight>Entropy Shift: Breakdown Form</color>, which increases her ATK.\nCasting <color=Highlight>Resonance Liberation - Breakdown Form</color> grants Denia <color=Highlight>Entropy Shift: Stagecraft Form</color>, which continuously restores <color=Highlight>Void Particle</color>.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeDaniya4.webp"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "121102",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "121102",
+              "description": "Banish - Breakdown Form: The <color=Highlight>Enhanced Resonance Skill</color> in <color=Highlight>Breakdown Form</color>. When holding <color=Highlight>Dark Cores</color>, Resonance Skill + Resonance Skill or Resonance Skill + Basic Attack",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "121103",
+              "description": "Final Act - Breakdown Form: <color=Highlight>Resonance Liberation</color> in <color=Highlight>Breakdown Form</color>. When <color=Highlight>Conformal Charge</color> is full, Resonance Liberation",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-19",
@@ -52077,7 +52800,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "articleUrl": "https://ww.nanoka.cc/character/1211",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_64_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_daniya_UI.webp",
-    "titleCardSourceUrl": "https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_51.webp",
+    "titleCardSourceUrl": "https://api-v2.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_51.webp",
     "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/daniya/daniya.skel",
     "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/daniya/daniya.atlas"
   },
@@ -52091,6 +52814,10 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Fusion",
     "weaponType": "Rectifier",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer",
+      "Basic Attack DMG"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 10512.5,
@@ -52781,6 +53508,41 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_AnkeM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Hold Basic Attack in normal state when Forte Gauge is full to cast Enhanced Heavy Attack",
+        "Hold Basic Attack during Resonance Liberation state if Forte Gauge is full to cast Enhanced Resonance Liberation attack"
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeAnke.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "120301",
+              "description": "Cloudy Frenzy: When Forte Gauge reaches 100, hold Basic Attack",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "120302",
+              "description": "Basic Attack - Wooly Strike: After Basic Attack 4, tap Basic Attack at the right time",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "120303",
+              "description": "Energetic Welcome: After performing Flaming Woolies, tap Resonance Skill at the right time",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "120304",
+              "description": "Cosmos Rupture: Under Resonance Liberation state, hold Basic Attack when Forte Gauge reaches 100",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-10",
@@ -54959,6 +55721,10 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Fusion",
     "weaponType": "Pistols",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer",
+      "Heavy Attack DMG"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 10300,
@@ -55649,6 +56415,36 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconJiaBeiLiNaM6.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "While in <color=Highlight>Threshold State</color>, Galbrena accumulates <color=Highlight>Sinflame</color> when her attacks hit a target. When <color=Highlight>Sinflame</color> reaches 100 points, Resonance Skill to enter <color=Highlight>Demon Hypostasis</color>.",
+        "In <color=Highlight>Demon Hypostasis</color>, 100 points of <color=Highlight>Purging Flame</color> are obtained by consuming all available <color=Highlight>Sinflame</color>. While in <color=Highlight>Demon Hypostasis</color>, the more <color=Highlight>Afterflame</color> Galbrena has, the more DMG enemies take from <color=Highlight>various enhanced moves</color>."
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeJiabeilina.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "120801",
+              "description": "<color=Highlight>Heavy Attack - Volley of Death</color>: Hold Basic Attack to fire 3 consecutive shots.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "120802",
+              "description": "<color=Highlight>Mid-air Attack - Ashfall Barrage</color>: While in the air, hold Basic Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "120803",
+              "description": "<color=Highlight>Hellstride</color>: Dodge during combat actions.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-28",
@@ -58648,6 +59444,11 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Glacio",
     "weaponType": "Sword",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer",
+      "Resonance Liberation Damage",
+      "Glacio Chafe"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 10300,
@@ -59338,6 +60139,79 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_FeixueM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Deal substantial Resonance Liberation DMG.",
+        "When certain attacks hit the target, consume <color=Highlight>Glacio Bite</color> on the target to inflict <color=Highlight>Frostbind</color>.",
+        "Accumulate and consume <color=Highlight>Snowforged Blade</color> to cast <color=Highlight>Foreclaiming: Blade Liberation</color>. The more you consumed, the higher the DMG."
+      ],
+      "overviewImageSourceUrl": "",
+      "sections": [
+        {
+          "id": "110801",
+          "name": "Forte Gauge",
+          "entries": [
+            {
+              "id": "110807",
+              "description": "While in <color=Highlight>Present Self</color>, casting <color=Highlight>Basic Attack - Present Self Stage 3</color> and <color=Highlight>Intro Skill</color> restores Forte Gauge <color=Highlight>Dedication</color>. When <color=Highlight>Dedication</color> is full, Enhanced Heavy Attack <color=Highlight>Heavy Attack - Frost Splinter: Present Self</color> and Resonance Liberation <color=Highlight>Foreclaiming: Inward Vision</color> become available. Casting <color=Highlight>Foreclaiming: Inward Vision</color> sends Hiyuki into <color=Highlight>Foreclaimed Self</color>.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeFeixue1.webp"
+              ]
+            },
+            {
+              "id": "110808",
+              "description": "While in <color=Highlight>Foreclaimed Self</color>, Hiyuki restores Forte Gauge <color=Highlight>Frostheart</color> when <color=Highlight>Normal Attack - Foreclaimed Self</color> hits the target or casting Resonance Skill. With sufficient <color=Highlight>Frostheart</color>, Dodge to enter <color=Highlight>Iai Stance</color> after Hiyuki performs certain attacks, during which <color=Highlight>Basic Attack - Iai</color> may be cast by <color=Highlight>Normal Attack</color>.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeFeixue2.webp"
+              ]
+            },
+            {
+              "id": "110809",
+              "description": "Every time <color=Highlight>Basic Attack - Iai</color> is cast, gain a stack of <color=Highlight>Whiteout Bitterfrost</color>, with 3 stacks of <color=Highlight>Whiteout Bitterfrost</color>, Hiyuki may cast <color=Highlight>Heavy Attack - Bitterfrost: Foreclaimed Self</color>, which grants 1 stack of <color=Highlight>Snowforged Blade</color>. Hiyuki may choose to consume any stack of <color=Highlight>Snowforged Blade</color> by charging to increase the DMG of Resonance Liberation <color=Highlight>Foreclaiming: Blade Liberation</color>. Unspent <color=Highlight>Snowforged Blade</color> points will be reserved.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeFeixue3.webp"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "110802",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "110801",
+              "description": "Heavy Attack - Frost Splinter: Present Self: While in <color=Highlight>Present Self</color>, when <color=Highlight>Dedication</color> reaches 300 points, hold Basic Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "110802",
+              "description": "Foreclaiming: Inward Vision: While in <color=Highlight>Present Self</color>, unlocks after casting <color=Highlight>Heavy Attack - Frost Splinter: Present Self</color>. When unlocked, Resonance Liberation.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "110803",
+              "description": "Iai Stance: While in <color=Highlight>Foreclaimed Self</color>, with no less than 100 points of <color=Highlight>Frostheart</color>, <color=Highlight>Dodge</color> or hold down Resonance Skill after performing attacks.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "110804",
+              "description": "Basic Attack - Iai: While in <color=Highlight>Foreclaimed Self</color> and in <color=Highlight>Iai Stance</color>, Basic Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "110805",
+              "description": "Heavy Attack - Bitterfrost: Foreclaimed Self: While in <color=Highlight>Foreclaimed Self</color>, with 3 stacks of <color=Highlight>Whiteout Bitterfrost</color>, hold Basic Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "110806",
+              "description": "Foreclaiming: Blade Liberation: While in <color=Highlight>Foreclaimed Self</color>, with full Resonance Energy, hold Resonance Liberation to enter a charging state, release Resonance Liberation to cast.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-119",
@@ -62212,7 +63086,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "articleUrl": "https://ww.nanoka.cc/character/1108",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_67_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Feixue_UI.webp",
-    "titleCardSourceUrl": "https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_50.webp",
+    "titleCardSourceUrl": "https://api-v2.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_50.webp",
     "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/feixue/feixue.skel",
     "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/feixue/feixue.atlas"
   },
@@ -62226,6 +63100,12 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Aero",
     "weaponType": "Gauntlets",
     "role": "Support and Healer",
+    "roles": [
+      "Support and Healer",
+      "Concerto Efficiency",
+      "Resonance Liberation Damage",
+      "Heavy Attack DMG Amplification"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 10525,
@@ -62916,6 +63796,37 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_YounuoM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "When Iuno is in <color=Highlight>Lunar Cycle - Half Moon</color>, attacks recover Forte Gauge on hit.",
+        "When Iuno is in <color=Highlight>Lunar Cycle - New Moon</color>, casting <color=Highlight>Moonbow - Basic Attack</color>, <color=Highlight>Resonance Skill - Arc Beyond the Edge</color> and <color=Highlight>Moonbow - Dodge Counter</color> consumes Forte Gauge.",
+        "When Concerto Energy is full, Iuno can cast <color=Highlight>Heavy Attack - Absolute Fullness</color>."
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeYounuo.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "141001",
+              "description": "Activate <color=Highlight>Lunar Cycle</color>: Resonance Skill after casting Basic Attack Stage 3, Intro Skill or Resonance Skill - Pulse of Origins.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "141002",
+              "description": "Switch between <color=Highlight>Half Moon</color> and <color=Highlight>New Moon</color>: While in <color=Highlight>Lunar Cycle</color>, Jump.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "141003",
+              "description": "Summon <color=Highlight>Full Moon</color> domain: When Concerto Energy is full, hold Basic Attack.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-10",
@@ -65711,6 +66622,12 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Aero",
     "weaponType": "Gauntlets",
     "role": "Support and Healer",
+    "roles": [
+      "Support and Healer",
+      "Heavy Attack DMG",
+      "Traction",
+      "Resonance Liberation DMG Amplification"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 14112.5,
@@ -66401,6 +67318,51 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_JianxinM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Normal Attack, Resonance Skill and Intro Skill recover Forte Gauge on hit",
+        "Hold Basic Attack to start charging and gain shield continuously when Forte Gauge is full"
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeJianxin.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "140501",
+              "description": "Primordial Chi Spiral: When Forte Gauge is full, hold Basic Attack to continuously consume Forte Gauge and obtain a Shield",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "140502",
+              "description": "Pushing Punch: Under Primordial Chi Spiral, release Basic Attack before Zhoutian Progress reaches stage 1",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "140503",
+              "description": "Yielding Pull: Under Primorial Chi Spiral, release Basic Attack after Zhoutian Progress reaches stage 1 but not the final stage",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "140504",
+              "description": "Calming Air: Triggered by holding Resonance Skill for 2.5s or being attacked",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "140505",
+              "description": "Chi Counter: Triggered when attacked during Calming Air",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "140506",
+              "description": "Chi Parry: Triggered when Calming Air lasts for 2.5s or Resonance Skill is released in advance",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-8",
@@ -68043,6 +69005,10 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Fusion",
     "weaponType": "Broadblade",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer",
+      "Heavy Attack DMG"
+    ],
     "gender": "male",
     "baseStats": {
       "hp": 15375,
@@ -68733,6 +69699,65 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_JingranM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Deal significant Heavy Attack DMG.",
+        "Continuously convert <color=Highlight>Shield</color> to buff effects.",
+        "Obtain additional ATK, Fusion DMG Bonus, Healing, and DMG Multipliers of skills based on Max HP."
+      ],
+      "overviewImageSourceUrl": "",
+      "sections": [
+        {
+          "id": "121201",
+          "name": "Forte Gauge",
+          "entries": [
+            {
+              "id": "121207",
+              "description": "Restore <color=Highlight>Qi</color> by casting <color=Highlight>Basic Attack Stage 3</color>, <color=Highlight>Basic Attack Stage 4</color>, <color=Highlight>Dodge Counter - Nether Dive</color>, <color=Highlight>Dodge Counter - Light Watch</color>, <color=Highlight>Resonance Skill - Netherworld Traverse</color>, <color=Highlight>Resonance Skill - Afterlife's Guide</color>, <color=Highlight>Intro Skill</color>, <color=Highlight>Resonance Liberation</color>, or <color=Highlight>Heavy Attack - Soul Raid</color> or <color=Highlight>Heavy Attack - Stardome Meander</color> while in the Resonance Liberation state.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeJingran.webp"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "121202",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "121201",
+              "description": "Basic Attack - Drink Soul: Basic Attack+Basic Attack+Basic Attack+Basic Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "121202",
+              "description": "Basic Attack - Devil's Bane: Basic Attack+Basic Attack+Basic Attack+Basic Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "121203",
+              "description": "Resonance Skill - Netherworld Traverse: Resonance Skill+Basic Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "121204",
+              "description": "Resonance Skill - Afterlife's Guide: Resonance Skill+Basic Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "121205",
+              "description": "Heavy Attack - Soul Raid: When <color=Highlight>Qi</color> is full, hold Basic Attack to cast.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "121206",
+              "description": "Heavy Attack - Stardome Meander: When <color=Highlight>Qi</color> is full, hold Basic Attack to cast.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-12",
@@ -71347,7 +72372,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "articleUrl": "https://ww.nanoka.cc/character/1212",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_74_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Jingran_UI.webp",
-    "titleCardSourceUrl": "https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_59.webp",
+    "titleCardSourceUrl": "https://api-v2.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/TitleDesc/CardBg/T_TitleCardBg_jingran.webp",
     "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/jingran/jingran.skel",
     "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/jingran/jingran.atlas"
   },
@@ -71361,6 +72386,10 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Spectro",
     "weaponType": "Broadblade",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer",
+      "Resonance Skill DMG"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 10825,
@@ -72051,6 +73080,36 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_JinxiM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Jinhsi's Forte Gauge is restored when Resonators inflict Attribute DMG or Coordinated Attack DMG.",
+        "Jinhsi may consume Forte Gauge to provide additional DMG Multipliers for certain skills."
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeJinxi.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "130401",
+              "description": "Incarnation: After Basic Attack 4 or Intro Skill is cast, use Resonance Skill within 5s while Resonance Skill is not in Cooldown.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "130402",
+              "description": "Crescent Divinity: While in Incarnation, use Resonance Skill.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "130403",
+              "description": "Illuminous Epiphany: Use Resonance Skill within 5s after casting Stage 4 of Incarnation - Basic Attack.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-8",
@@ -74828,6 +75887,11 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Aero",
     "weaponType": "Broadblade",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer",
+      "Heavy Attack DMG",
+      "Traction"
+    ],
     "gender": "male",
     "baseStats": {
       "hp": 10487.5,
@@ -75518,6 +76582,46 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_JiyanM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Normal Attack and Intro Skill recover Forte Gauge on hit",
+        "Cast enhanced Resonance Skill or enhanced Resonance Liberation when Forte Gauge is above 50%"
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeJiyan.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "140401",
+              "description": "Emerald Storm: Finale: When Forte Gauge is above 30, tap Resonance Liberation",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "140402",
+              "description": "Heavy Attack: Hold Basic Attack",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "140403",
+              "description": "Windborne Strike: During a Heavy Attack, hold Basic Attack",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "140404",
+              "description": "Abyssal Slash: During a Heavy Attack, release Basic Attack",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "140405",
+              "description": "Emerald Storm: Prelude: When Forte Gauge is below 30, tap Resonance Liberation",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-13",
@@ -77739,6 +78843,9 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Glacio",
     "weaponType": "Gauntlets",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer"
+    ],
     "gender": "male",
     "baseStats": {
       "hp": 10387.5,
@@ -78429,6 +79536,36 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_LingyangM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Recover Forte Gauge for Enhanced Resonance Skill, Intro Skill or Resonance Liberation cast",
+        "Hold or tap Basic Attack under conditions when Forte Gauge is full to enter enhanced state"
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeLingyang.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "110401",
+              "description": "Striding Lion: When Forte Gauge is full, hold Basic Attack",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "110402",
+              "description": "Striding Lion: After performing Intro Skill or Resonance Liberation, tap Basic Attack if Forte Gauge is full",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "110403",
+              "description": "Basic Attack: Stormy Kicks: Under Striding Lion state, tap Basic Attack when no more than 10 Forte Gauge is consumed",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-10",
@@ -80303,6 +81440,13 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Glacio",
     "weaponType": "Rectifier",
     "role": "Concerto Efficiency",
+    "roles": [
+      "Concerto Efficiency",
+      "Basic Attack DMG",
+      "Glacio Chafe",
+      "Echo Skill DMG Amplification",
+      "Echo Skill DMG"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 12237.5,
@@ -80993,6 +82137,64 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_LuoselaM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Grant DMG Bonus to Resonators in the team.",
+        "When in <color=Highlight>Resonance Mode - Glacio Chafe</color>, inflict <color=Highlight>Glacio Chafe</color> and boost the DMG output of Glacio Chafe Effect teams.",
+        "When in <color=Highlight>Resonance Mode - Echo</color>, gain the ability to cast Echo Skill more frequently and boost the DMG output of Echo Skill teams."
+      ],
+      "overviewImageSourceUrl": "",
+      "sections": [
+        {
+          "id": "110901",
+          "name": "Forte Gauge",
+          "entries": [
+            {
+              "id": "110904",
+              "description": "While casting <color=Highlight>Resonance Skill</color> or <color=Highlight>Basic Attack Stage 3</color>, hold <color=Highlight>Resonance Skill</color> or <color=Highlight>Normal Attack</color> to deploy <color=Highlight>Focus Ring</color>.\nReleasing <color=Highlight>Resonance Skill</color> or <color=Highlight>Normal Attack</color> when the cursor is within <color=Highlight>Perfect Focus</color> allows Lucilla to deal increased DMG and restore additional <color=Highlight>Trace</color>.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeLuosela3.webp"
+              ]
+            },
+            {
+              "id": "110905",
+              "description": "Casting <color=Highlight>Intro Skill</color>, <color=Highlight>Resonance Skill</color>, and <color=Highlight>Basic Attack Stage 3</color> restores <color=Highlight>Trace</color>. Every 50 points of <color=Highlight>Trace</color> restored generates 1 <color=Highlight>Photo</color>.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeLuosela1.webp"
+              ]
+            },
+            {
+              "id": "110906",
+              "description": "While casting <color=Highlight>Resonance Liberation</color> and entering <color=Highlight>Reminiscence</color>,  or hold <color=Highlight>Normal Attack</color> while casting <color=Highlight>Basic Attack - Tracing Forms Stage 3</color> to continuously consume <color=Highlight>Photos</color> and perform additional attacks.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeLuosela2.webp"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "110902",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "110901",
+              "description": "Resonance Skill - Spotlight: While casting <color=Highlight>Resonance Skill</color>, hold Resonance Skill to deploy <color=Highlight>Focus Ring</color>, and release Resonance Skill when the cursor is within <color=Highlight>Perfect Focus</color>.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "110902",
+              "description": "Basic Attack Stage 3 - Commendable: While casting <color=Highlight>Basic Attack Stage 3</color>, hold Basic Attack to deploy <color=Highlight>Focus Ring</color>, and release Basic Attack when the cursor is within <color=Highlight>Perfect Focus</color>.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "110903",
+              "description": "Basic Attack - Tracing Forms: or hold Basic Attack while in <color=Highlight>Reminiscence</color>.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-7",
@@ -82636,7 +83838,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "articleUrl": "https://ww.nanoka.cc/character/1109",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_66_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Luosela_UI.webp",
-    "titleCardSourceUrl": "https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_54.webp",
+    "titleCardSourceUrl": "https://api-v2.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_54.webp",
     "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/luosela/luosela.skel",
     "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/luosela/luosela.atlas"
   },
@@ -82650,6 +83852,12 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Spectro",
     "weaponType": "Pistols",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer",
+      "Heavy Attack DMG",
+      "Basic Attack DMG Amplification",
+      "Hack Response"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 11025,
@@ -83340,6 +84548,64 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_LucyM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Deal powerful Heavy Attack DMG and Hack DMG.",
+        "Casting Resonance Liberation enables Lucy to hack into the target, inflicting various <color=Highlight>Spoofing Program</color> effects.",
+        "Outro Skill grants other Resonators in the team DMG Reduction and the next incoming Resonator <color=Highlight>Basic Attack DMG Amplification</color>."
+      ],
+      "overviewImageSourceUrl": "",
+      "sections": [
+        {
+          "id": "151101",
+          "name": "Forte Gauge",
+          "entries": [
+            {
+              "id": "151104",
+              "description": "Hitting a target recovers <color=Highlight>TCP</color>.\nCasting <color=Highlight>Resonance Skill - Pulse Interference</color> grants buffs and recovers <color=Highlight>TCP</color> per second.\nAt max <color=Highlight>TCP</color>, <color=Highlight>Resonance Skill - Payload</color> and <color=Highlight>Resonance Skill - Pulse Interference</color> are replaced with <color=Highlight>Resonance Skill - Deadlock</color>. After casting this skill, Lucy enters <color=Highlight>Algorithm Compaction</color>.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeLuXi.webp"
+              ]
+            },
+            {
+              "id": "151105",
+              "description": "Entering <color=Highlight>Algorithm Compaction</color> enhances Lucy's Normal Attacks, and grants <color=Highlight>Spectro DMG Bonus</color> and a stack of <color=Highlight>SQL</color>.\nHitting a target recovers <color=Highlight>Root Access</color>. At max <color=Highlight>Root Access</color>, <color=Highlight>Heavy Attack - Single Threading</color> is replaced with <color=Highlight>Heavy Attack - Dual Threading</color>. After casting <color=Highlight>Heavy Attack - Dual Threading</color>, or hold the Normal Attack button within a short period of time to cast <color=Highlight>Heavy Attack - Multi-threading</color>.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeLuXi1.webp"
+              ]
+            },
+            {
+              "id": "151106",
+              "description": "Casting <color=Highlight>Heavy Attack - Multi-threading</color> with <color=Highlight>SQL</color> greatly increases the DMG dealt. After casting this skill, <color=Highlight>Resonance Liberation - Netrunner</color> is replaced with <color=Highlight>Resonance Liberation - Old Net Deep Dive</color>, which deals DMG with a higher DMG Multiplier.\nCasting <color=Highlight>Heavy Attack - Multi-threading</color> without <color=Highlight>SQL</color> reduces a certain portion of HP.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeLuXi2.webp"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "151102",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "151101",
+              "description": "Resonance Skill to cast <color=Highlight>Resonance Skill - Payload</color>, which automatically triggers a follow-up attack on hit and activates <color=Highlight>Resonance Skill - Pulse Interference</color>.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "151102",
+              "description": "At max <color=Highlight>TCP</color>, Resonance Skill to cast <color=Highlight>Resonance Skill - Deadlock</color>.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "151103",
+              "description": "At max <color=Highlight>Root Access</color>, hold Basic Attack to cast <color=Highlight>Heavy Attack - Dual Threading</color>. At the end of the attack, or hold Basic Attack to follow up with <color=Highlight>Heavy Attack - Multi-threading</color>.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-18",
@@ -86742,7 +88008,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "articleUrl": "https://ww.nanoka.cc/character/1511",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_68_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Luxi_UI.webp",
-    "titleCardSourceUrl": "https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_52.webp",
+    "titleCardSourceUrl": "https://api-v2.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_52.webp",
     "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/luxi/luxi.skel",
     "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/luxi/luxi.atlas"
   },
@@ -86756,6 +88022,11 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Electro",
     "weaponType": "Broadblade",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer",
+      "Basic Attack DMG",
+      "Resonance Skill DMG Amplification"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 8500,
@@ -87446,6 +88717,36 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_DengdengM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Lumi can switch between Yellow Light Mode and Red Light Mode by using Resonance Skill.\nHitting a target with Normal Attacks restores the Forte Gauge of the active mode while casting Intro Skill restores Yellow Light Spark.",
+        "When Forte Gauge is full, use Resonance Skill to cast the Energized attack and enter Spotlight Mode."
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeDengdeng.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "150401",
+              "description": "Zoom: Use Dodge to enter the mode when in Yellow Light Mode.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150402",
+              "description": "Energized Pounce: Tap Resonance Skill to cast it when Yellow Light Spark is full.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150403",
+              "description": "Energized Rebound: Tap Resonance Skill to cast it when Red Light Spark is full.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-10",
@@ -89405,6 +90706,12 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Fusion",
     "weaponType": "Broadblade",
     "role": "Concerto Efficiency",
+    "roles": [
+      "Concerto Efficiency",
+      "Resonance Liberation Damage",
+      "Fusion DMG Amplification",
+      "Basic Attack DMG Amplification"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 11912.5,
@@ -90095,6 +91402,51 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_LupaM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Hitting a target restores Forte Gauge - Wolflame. With at least 50 points of Wolflame, Heavy Attack and Mid-air Attack Stage 3 restore Wolfaith at the cost of Wolflame.",
+        "Enhanced Resonance Skill is available when Wolfaith is full."
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeLupa.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "120701",
+              "description": "Heavy Attack - Wolf's Gnawing: With at least 50 points of Wolflame, hold Basic Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "120702",
+              "description": "Heavy Attack - Wolf's Claw: With at least 50 points of Wolflame and 1 point of Wolfaith, hold Basic Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "120703",
+              "description": "Basic Attack - Starfall: Hold Basic Attack when in mid-air and Basic Attack when landed.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "120704",
+              "description": "Set the Arena Ablaze: When Wolfaith is full, Resonance Skill and switch to another Resonator, then Resonance Liberation.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "120705",
+              "description": "Pack Hunt: Lupa's Resonance Liberation grants Pack Hunt to other Resonators in the team, providing DMG Bonus increases. Intro Skills performed by all Resonators in the team enhance Pack Hunt's effect.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "120706",
+              "description": "Intro Skill - Nowhere to Run!: Available when Pack Hunt is fully enhanced.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-15",
@@ -92852,6 +94204,11 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Spectro",
     "weaponType": "Gauntlets",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer",
+      "Basic Attack DMG",
+      "Tune Strain Response"
+    ],
     "gender": "male",
     "baseStats": {
       "hp": 10300,
@@ -93542,6 +94899,60 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_LuhesiM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Luuk Herssen may switch between 3 forms of Enhanced Resonance Skill to deal substantial Basic Attack DMG.",
+        "By inflicting and responding to <color=Highlight>Tune Strain - Interfered</color>, Luuk Herssen deals more Total DMG.",
+        "By utilizing the Tune Break Boost provided by other Resonators in the team, Luuk Herssen gains substantial DMG Amplification."
+      ],
+      "overviewImageSourceUrl": "",
+      "sections": [
+        {
+          "id": "151001",
+          "name": "Forte Gauge",
+          "entries": [
+            {
+              "id": "151006",
+              "description": "Recover Ichor Flow when Normal Attack and Resonance Skill hit the target or upon casting Intro Skill.\nWhen Ichor Flow is full, enter the <color=Highlight>Aureate Judge</color> state.\nIn the <color=Highlight>Aureate Judge</color> state, Resonance Skill <color=Highlight>Aureole of Execution</color> gains DMG Multiplier increase. Each time it's cast, 100 points of Ichor Flow are consumed.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeLuhes1.webp"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "151002",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "151001",
+              "description": "Aureole of Execution: Basic Attack+Basic Attack+Basic Attack+Basic Attack on the ground or Basic Attack+Basic Attack/Jump+Basic Attack/Jump in the air to activate Resonance Skill <color=Highlight>Aureole of Execution</color>. After the activation, Resonance Skill to cast Resonance Skill <color=Highlight>Aureole of Execution</color>.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "151002",
+              "description": "Golden Reflux: When Resonance Skill <color=Highlight>Aureole of Execution</color> is not activated, Resonance Skill to jump to the air and flash toward the target.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "151003",
+              "description": "Heavy Attack: Hold Basic Attack on the ground and consume STA to jump to the air.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "151004",
+              "description": "Mid-air Plunging Attack: Hold Basic Attack or Basic Attack+Basic Attack+Basic Attack+Basic Attack in the air to perform a Plunging Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "151005",
+              "description": "Radiant Reave: Dodge in the air to perform a dodge. Hover in the air briefly while hurling a whirling blade to attack the target.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-34",
@@ -96144,7 +97555,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "articleUrl": "https://ww.nanoka.cc/character/1510",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_54_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Luhesi_UI.webp",
-    "titleCardSourceUrl": "https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_48.webp",
+    "titleCardSourceUrl": "https://api-v2.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_48.webp",
     "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/luhesi/luhesi.skel",
     "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/luhesi/luhesi.atlas"
   },
@@ -96158,6 +97569,15 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Spectro",
     "weaponType": "Pistols",
     "role": "Concerto Efficiency",
+    "roles": [
+      "Concerto Efficiency",
+      "Basic Attack DMG",
+      "DMG Amplification",
+      "Resonance Liberation DMG Amplification",
+      "Tune Rupture Response",
+      "Tune Break Boost",
+      "Tune Strain Response"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 12237.5,
@@ -96848,6 +98268,79 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_LinNaiM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Lynae can switch between <color=Highlight>Resonance Mode - Tune Rupture</color> and <color=Highlight>Resonance Mode - Tune Strain</color>, which allows her to inflict <color=Highlight>Tune Rupture - Shifting</color> or <color=Highlight>Tune Strain - Shifting</color> on targets respectively.",
+        "Casting <color=Highlight>Prismatic Overblast</color> and <color=Highlight>Visual Impact</color> grants bonus to all Resonators in the team.",
+        "Outro Skill grants the incoming Resonator <color=Highlight>All DMG Amplification</color> and <color=Highlight>Resonance Liberation DMG Amplification</color>."
+      ],
+      "overviewImageSourceUrl": "",
+      "sections": [
+        {
+          "id": "150901",
+          "name": "Forte Gauge",
+          "entries": [
+            {
+              "id": "150907",
+              "description": "While in <color=Highlight>Optical Sampling Stage</color>, Normal Attack, Resonance Skill, Lynae-Style Palettes, and Dodge Counter recover <color=Highlight>Overflow</color>.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeLinNai3.webp"
+              ]
+            },
+            {
+              "id": "150908",
+              "description": "With full <color=Highlight>Overflow</color>, can cast <color=Highlight>Spark Collision</color> and enter <color=Highlight>Kaleidoscopic Parade</color>, during which <color=Highlight>Overflow</color> is continuously converted into <color=Highlight>Lumiflow</color>.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeLinNai1.webp"
+              ]
+            },
+            {
+              "id": "150909",
+              "description": "While in <color=Highlight>Kaleidoscopic Parade</color> and skating on the ground, continuously recover <color=Highlight>Lumiflow</color>. Casting <color=Highlight>Polychrome Leap</color> consumes <color=Highlight>Lumiflow</color> and recovers <color=Highlight>True Color</color>.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeLinNai2.webp"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "150902",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "150901",
+              "description": "While in <color=Highlight>Optical Sampling Stage</color>, Basic Attack+Basic Attack+Basic Attack or Resonance Skill to gain <color=Highlight>Overflow</color>.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150902",
+              "description": "Spark Collision: When <color=Highlight>Overflow</color> is full, hold Basic Attack to continuously convert <color=Highlight>Overflow</color> into <color=Highlight>Lumiglow</color>. Release Basic Attack to enter <color=Highlight>Kaleidoscopic Parade</color>.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150903",
+              "description": "Kaleidoscopic Parade - Basic Attack: While in <color=Highlight>Kaleidoscopic Parade</color>, Basic Attack to gain <color=Highlight>Lumiflow</color>.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150904",
+              "description": "Polychrome Leap: With enough <color=Highlight>Lumiflow</color>, Jump to cast <color=Highlight>Polychrome Leap</color>, gaining 1 point of <color=Highlight>True Color</color> and inflicting <color=Highlight>Photochromic Flux</color> on targets upon hit.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150905",
+              "description": "Visual Impact: With 3 points of <color=Highlight>True Color</color>, cast <color=Highlight>Polychrome Leap</color> and then Basic Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150906",
+              "description": "Prismatic Overblast: Resonance Liberation.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-34",
@@ -100681,6 +102174,13 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Fusion",
     "weaponType": "Broadblade",
     "role": "Support and Healer",
+    "roles": [
+      "Support and Healer",
+      "DMG Amplification",
+      "Tune Rupture Response",
+      "Off-Tune Buildup Efficiency",
+      "Tune Strain Response"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 15375,
@@ -101371,6 +102871,65 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_MoNingM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Generate a <color=Highlight>Syntony Field</color> that restores HP and increases <color=Highlight>Off-Tune Buildup Rate</color>.",
+        "Inflict <color=Highlight>Interfered Marker</color> that increases the DMG the target takes.",
+        "Outro Skill grants <color=Highlight>All DMG Amplification</color> to Resonators in the team."
+      ],
+      "overviewImageSourceUrl": "",
+      "sections": [
+        {
+          "id": "120901",
+          "name": "Forte Gauge",
+          "entries": [
+            {
+              "id": "120906",
+              "description": "Basic Attack restores <color=Highlight>Relative Momentum</color> on hit.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeMoning.webp"
+              ]
+            },
+            {
+              "id": "120907",
+              "description": "While in <color=Highlight>Wide Field Observation Mode</color>, Basic Attack and Resonance Skill restores <color=Highlight>Relative Momentum</color> on hit.",
+              "imageSourceUrls": []
+            }
+          ]
+        },
+        {
+          "id": "120902",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "120901",
+              "description": "While in Baseline Mode, Basic Attack + Basic Attack + Basic Attack to gain Rest Mass Energy.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "120902",
+              "description": "Heavy Attack - Geopotential Shift: When Rest Mass Energy is full, hold Basic Attack to enter Wide Field Observation Mode to provide buffs to Resonators in the team.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "120903",
+              "description": "Basic Attack - Wide Field Observation Mode: While in Wide Field Observation Mode, Basic Attack + Basic Attack + Basic Attack to gain Relative Momentum.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "120904",
+              "description": "Heavy Attack - Inversion: When Relative Momentum is full, hold Basic Attack to increase the DMG dealt to the target.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "120905",
+              "description": "Resonance Liberation - Critical Protocol: Resonance Liberation to cast this skill.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-12",
@@ -102870,7 +104429,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "name": "Resolution - Distributed Array Healing",
         "type": "healing",
         "skillLevelIndex": 1,
-        "scalesWith": "atk",
+        "scalesWith": "def",
         "multipliers": [
           0.54,
           0.5616,
@@ -103254,7 +104813,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "name": "Mass-Energy Equivalence - Syntony Field Healing",
         "type": "healing",
         "skillLevelIndex": 2,
-        "scalesWith": "atk",
+        "scalesWith": "def",
         "multipliers": [
           0.09630000000000001,
           0.1002,
@@ -103642,6 +105201,12 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Fusion",
     "weaponType": "Pistols",
     "role": "Concerto Efficiency",
+    "roles": [
+      "Concerto Efficiency",
+      "Resonance Liberation Damage",
+      "Coordinated Attack",
+      "Heavy Attack DMG Amplification"
+    ],
     "gender": "male",
     "baseStats": {
       "hp": 10025,
@@ -104332,6 +105897,26 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_MotefeiM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Normal Attack, Resonance Skill and Intro Skill recover Forte Gauge on hit",
+        "Cast Enhanced Resonance Skill when Forte Gauge is full"
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeMotefei.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "120401",
+              "description": "Fury Fugue: When Forte Gauge reaches 100, press Resonance Skill",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-10",
@@ -105440,6 +107025,11 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Spectro",
     "weaponType": "Rectifier",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer",
+      "Concerto Efficiency",
+      "Spectro Frazzle"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 10825,
@@ -106130,6 +107720,31 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_FeibiM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "When Prayer is full, choose to enter either Absolution or Confession.",
+        "Hold Normal Attack to enter the Absolution status, dealing greater damage.\nHold Resonance Skill to enter the Confession status, applying Spectro Frazzle to targets hit."
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeFeibi.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "150601",
+              "description": "Heavy Attack - Starflash: When Phoebe is in Absolution or Confession status, hold Basic Attack after performing Basic Attack 3 to attack the target at the cost of Divine Voice. When in Absolution, Phoebe deals greater damage while consuming less Divine Voice. When in Confession, Phoebe applies Spectro Frazzle to the targets hit.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150602",
+              "description": "Resonance Skill: Resonance Skill to summon a Ring of Mirrors to pull in targets and stagnate them. Resonance Skill within limited-time to teleport to the Ring of Mirrors. Phoebe has different Basic Attack movesets in and out of the Ring of Mirrors.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-8",
@@ -108112,6 +109727,12 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Havoc",
     "weaponType": "Rectifier",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer",
+      "Resonance Skill DMG",
+      "Havoc DMG Amplification",
+      "Heavy Attack DMG Amplification"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 10775,
@@ -108802,6 +110423,43 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_FuluoluoM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Casting Basic Attack Stage 3 or Resonance Skill enables a follow-up with Enhanced Basic Attack or Enhanced Resonance Skill and gains different types of Forte Gauge.",
+        "Obtain 6 pieces of Forte Gauge to cast Enhanced Heavy Attack, dealing massive damage and unlocking Resonance Liberation.",
+        "After casting Resonance Liberation, Phrolova plays her Forte Gauge in turn and grants different movesets to Hecate.",
+        "In the Enhanced State, when the active Resonator casts Echo skill, Hecate unleashes a powerful attack."
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeFuluoluo.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "160801",
+              "description": "Movement of Fate and Finality: Basic Attack+Basic Attack+Basic Attack+Basic Attack or Resonance Skill+Basic Attack",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "160802",
+              "description": "Murmurs in a Haunting Dream: Basic Attack+Basic Attack+Basic Attack+Resonance Skill or Resonance Skill+Resonance Skill",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "160803",
+              "description": "Scarlet Coda: With 6 Volatile Notes, out of the Resolving Chord state, hold Basic Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "160804",
+              "description": "Enhanced Attack - Hecate: When in Maestro state, Basic Attack+Basic Attack+Basic Attack, or triggered when other Resonators in the team cast Echo Skill.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-9",
@@ -110848,6 +112506,10 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Aero",
     "weaponType": "Sword",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer",
+      "Tune Strain Response"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 10300,
@@ -111538,6 +113200,62 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_QingxiaoM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Deal powerful Aero DMG by inflicting <color=Highlight>Tune Strain - Interfered</color> through the team and responding to it.",
+        "Strong mid-air combat capabilities.",
+        "Can move quickly in mid-air."
+      ],
+      "overviewImageSourceUrl": "",
+      "sections": [
+        {
+          "id": "141301",
+          "name": "Forte Gauge",
+          "entries": [
+            {
+              "id": "141305",
+              "description": "Cast various skills to build up <color=Highlight>Qin Heart</color> and <color=Highlight>Sword Cadence</color>. When both Forte Gauges are full, casting <color=Highlight>Heavy Attack - Stringblade</color> sends Qingxiao into the <color=Highlight>Ephemeral Transcendence</color> state.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeQingxiao1.webp"
+              ]
+            },
+            {
+              "id": "141306",
+              "description": "While in the <color=Highlight>Ephemeral Transcendence</color> state, attacks build up <color=Highlight>Heart Sword Intent</color>. When full, cast <color=Highlight>Enhanced Heavy Attack - Heaven's Reckoning</color>.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeQingxiao2.webp"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "141302",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "141301",
+              "description": "Heavy Attack - Stringblade: When <color=Highlight>Qin Heart</color> and <color=Highlight>Sword Cadence</color> are full, hold Basic Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "141302",
+              "description": "Heavy Attack - Ephemeral Transcendence: While in the <color=Highlight>Ephemeral Transcendence</color> state and <color=Highlight>Heart Sword Intent</color> is full, hold Basic Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "141303",
+              "description": "Severing Note - Ascendant: Basic Attack+Basic Attack+Resonance Skill; Basic Attack+Basic Attack+Basic Attack+Resonance Skill",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "141304",
+              "description": "Sword Step: While in the <color=Highlight>Sword Flight</color> state, hold Jump.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-12",
@@ -114562,7 +116280,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "articleUrl": "https://ww.nanoka.cc/character/1413",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_73_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Qingxiao_UI.webp",
-    "titleCardSourceUrl": "https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_58.webp",
+    "titleCardSourceUrl": "https://api-v2.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/TitleDesc/CardBg/T_TitleCardBg_qingxiao.webp",
     "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/qingxiao/qingxiao.skel",
     "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/qingxiao/qingxiao.atlas"
   },
@@ -114576,6 +116294,11 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Aero",
     "weaponType": "Sword",
     "role": "Concerto Efficiency",
+    "roles": [
+      "Concerto Efficiency",
+      "Heavy Attack DMG",
+      "Echo Skill DMG Amplification"
+    ],
     "gender": "male",
     "baseStats": {
       "hp": 12237.5,
@@ -115266,6 +116989,46 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_QiuyuanM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Qiuyuan restores <color=Highlight>Swordster's Soliloquy</color> through Basic Attack Stage 3 and Dodge Counter. When <color=Highlight>Swordster's Soliloquy</color> reaches 200/400/600 points, Qiuyuan unlocks <color=Highlight>Thus Spoke the Blade: Inkwash</color>, <color=Highlight>Bamboo's Shade</color>, and <color=Highlight>Inksplash of Mind</color> respectively.",
+        "In the <color=Highlight>Inksplash of Mind</color> state, Qiuyuan cannot restore <color=Highlight>Swordster's Soliloquy</color>, but he can consume <color=Highlight>Swordster's Soliloquy</color> to increase his skills' DMG."
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeQiuyuan.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "141101",
+              "description": "Undaunted Wayfarer - Hold Resonance Skill to leap into the air and dash towards enemies in the distance, release Resonance Skill to attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "141102",
+              "description": "Thus Spoke the Blade: Inkwash - When Swordster's Soliloquy reaches 200 points, Basic Attack to perform this skill. Qiuyuan drinks from his bamboo flask after each stage of the skill to obtain more Swordster's Soliloquy.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "141103",
+              "description": "Thus Spoke the Blade: To Teach - In the Inksplash of Mind state, hold Basic Attack to cast this skill at the cost of Swordster's Soliloquy.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "141104",
+              "description": "Thus Spoke the Blade: To Save - In the Inksplash of Mind state, following Thus Spoke the Blade: To Teach, Basic Attack to cast this skill at the cost of Swordster's Soliloquy.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "141105",
+              "description": "Thus Spoke the Blade: To Sacrifice - In the Inksplash of Mind state, following Thus Spoke the Blade: To Save, Basic Attack to cast this skill at the cost of Swordster's Soliloquy.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-10",
@@ -117250,6 +119013,13 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Electro",
     "weaponType": "Pistols",
     "role": "Concerto Efficiency",
+    "roles": [
+      "Concerto Efficiency",
+      "Basic Attack DMG",
+      "Heavy Attack DMG Amplification",
+      "Tune Break Boost",
+      "Hack Response"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 11600,
@@ -117940,6 +119710,75 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_LibeikaM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Grant DMG Bonus to all Resonators in the team.",
+        "Can wield multiple weapons and fight flexibly using <color=Highlight>Tactical Dodge</color>. Casting <color=Highlight>Resonance Liberation</color> enters a special shooting mode.",
+        "Outro Skill grants the next incoming Resonator <color=Highlight>All DMG Amplification</color> and <color=Highlight>Heavy Attack DMG Amplification</color>."
+      ],
+      "overviewImageSourceUrl": "",
+      "sections": [
+        {
+          "id": "130801",
+          "name": "Forte Gauge",
+          "entries": [
+            {
+              "id": "130805",
+              "description": "When Rebecca is in <color=Highlight>Huntress</color> or <color=Highlight>Guts</color> mode, attacks grant <color=Highlight>Fervor</color>.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeLibeika3.webp",
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeLibeika1.webp"
+              ]
+            },
+            {
+              "id": "130806",
+              "description": "When Rebecca is in <color=Highlight>Huntress</color> or <color=Highlight>Guts</color> mode, she gradually recovers <color=Highlight>Hot Hand</color>. Casting enhanced Heavy Attack <color=Highlight>Rat-tat-tat!: Huntress</color> or enhanced Heavy Attack <color=Highlight>Bang-bang-bang!: Guts</color> additionally recovers <color=Highlight>Hot Hand</color>.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeLibeika4.webp",
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeLibeika2.webp"
+              ]
+            },
+            {
+              "id": "130807",
+              "description": "At max Forte Gauge <color=Highlight>Fervor</color>, Rebecca can cast enhanced Heavy Attack.\nAt max Forte Gauge <color=Highlight>Hot Hand</color>, casting Intro Skill or Resonance Skill grants <color=Highlight>A Girl Gets What She Wants!</color>, providing Stat Bonuses.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeLibeika5.webp",
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeLibeika6.webp"
+              ]
+            },
+            {
+              "id": "130808",
+              "description": "After casting Resonance Liberation, Rebecca enters <color=Highlight>Mk. 31 HMG</color> mode. Shooting with the gun recovers <color=Highlight>Overload</color>. During this state, or hold Normal Attack or Resonance Liberation to increase <color=Highlight>Mk. 31 HMG</color>'s DMG. The higher the <color=Highlight>Overload</color>, the greater the DMG dealt.\nAt max <color=Highlight>Overload</color>, <color=Highlight>Resonance Liberation - BOOM! Fireworks!</color> becomes available.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeLibeika7.webp",
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeLibeika8.webp"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "130802",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "130801",
+              "description": "Enhanced Heavy Attack <color=Highlight>Rat-tat-tat!: Huntress</color> or enhanced Heavy Attack <color=Highlight>Bang-bang-bang!: Guts</color>: At max <color=Highlight>Fervor</color>, hold Basic Attack.\n<color=Highlight>A Girl Gets What She Wants!</color> Stat Bonus: At max <color=Highlight>Hot Hand</color>, Resonance Skill to cast Resonance Skill or cast Intro Skill.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "130802",
+              "description": "<color=Highlight>Tactical Dodge</color>: When in <color=Highlight>Huntress</color> or <color=Highlight>Guts</color> mode, Dodge while attacking.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "130803",
+              "description": "<color=Highlight>Mk. 31 HMG</color> mode: Basic Attack or Resonance Liberation to increase firepower.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-18",
@@ -120738,7 +122577,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "articleUrl": "https://ww.nanoka.cc/character/1308",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_69_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Libeika_UI.webp",
-    "titleCardSourceUrl": "https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_53.webp",
+    "titleCardSourceUrl": "https://api-v2.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_53.webp",
     "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/libeika/libeika.skel",
     "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/libeika/libeika.atlas"
   },
@@ -120752,6 +122591,13 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Havoc",
     "weaponType": "Gauntlets",
     "role": "Concerto Efficiency",
+    "roles": [
+      "Concerto Efficiency",
+      "Heavy Attack DMG",
+      "Traction",
+      "Havoc DMG Amplification",
+      "Basic Attack DMG Amplification"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 12250,
@@ -121442,6 +123288,31 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_LuokekeM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "When Roccia's in Beyond Imagination with enough Forte Gauge, she can cast Chain Plunging Attack.",
+        "Casting Outro Skill grants the incoming Resonator a Utility that pulls in targets together."
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeLuokeke.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "160601",
+              "description": "Resonance Skill to pull in nearby targets together and send Roccia into mid-air, activating Beyond Imagination.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "160602",
+              "description": "When in Beyond Imagination with sufficient Forte Gauge, Basic Attack to cast Chain Plunging Attack. Can be cast up to 3 times in a row.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-8",
@@ -122828,6 +124699,11 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Aero",
     "weaponType": "Sword",
     "role": "Support and Healer",
+    "roles": [
+      "Support and Healer",
+      "Resonance Skill DMG",
+      "Aero Erosion"
+    ],
     "gender": "male",
     "baseStats": {
       "hp": 10775,
@@ -123518,6 +125394,36 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_FengzhuM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Enhanced Mid-air Attack, Intro Skill, and Normal Attack recover Forte Gauge.",
+        "When Forte Gauge is full, Rover can cast enhanced Resonance Skill."
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreePiaobozhefeng.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "140601",
+              "description": "Mid-air Attack - Cloudburst Dance: Resonance Skill when on the ground to leap into the air and then Basic Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "140602",
+              "description": "Unbound Flow: When Forte Gauge is full, Resonance Skill.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "140603",
+              "description": "Skyfall Severance: While in mid-air, Resonance Skill to remove all stacks of Spectro Frazzle, Havoc Bane, Fusion Burst, Glacio Chafe, and Electro Flare from the target hit and inflict 1 stack of Aero Erosion for each stack removed.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-8",
@@ -126150,6 +128056,11 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Aero",
     "weaponType": "Sword",
     "role": "Support and Healer",
+    "roles": [
+      "Support and Healer",
+      "Resonance Skill DMG",
+      "Aero Erosion"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 10775,
@@ -126840,6 +128751,36 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_FengzhuM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Enhanced Mid-air Attack, Intro Skill, and Normal Attack recover Forte Gauge.",
+        "When Forte Gauge is full, Rover can cast enhanced Resonance Skill."
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreePiaobozhefeng.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "140601",
+              "description": "Mid-air Attack - Cloudburst Dance: Resonance Skill when on the ground to leap into the air and then Basic Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "140602",
+              "description": "Unbound Flow: When Forte Gauge is full, Resonance Skill.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "140603",
+              "description": "Skyfall Severance: While in mid-air, Resonance Skill to remove all stacks of Spectro Frazzle, Havoc Bane, Fusion Burst, Glacio Chafe, and Electro Flare from the target hit and inflict 1 stack of Aero Erosion for each stack removed.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-8",
@@ -129472,6 +131413,11 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Electro",
     "weaponType": "Sword",
     "role": "Concerto Efficiency",
+    "roles": [
+      "Concerto Efficiency",
+      "Resonance Skill DMG",
+      "Electro Flare"
+    ],
     "gender": "male",
     "baseStats": {
       "hp": 10775,
@@ -130162,6 +132108,64 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_ThunderzhuM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "If Resonance Skill <color=Highlight>Overshock</color> is cast by holding down the button, enter <color=Highlight>Apex Resonance</color> and unlock <color=Highlight>Thrum of All Sounds</color>.\nIf Resonance Skill <color=Highlight>Overshock</color> is cast by the button, grant Resonators in the team ATK Bonus.",
+        "Resonance Skill <color=Highlight>Overshock</color> inflicts <color=Highlight>Electro Flare</color> on the target.",
+        "Outro Skill grants <color=Highlight>Electro Core</color> to the incoming Resonator. Triggering <color=Highlight>Electro Core</color> grants <color=Highlight>All DMG Amplification</color>."
+      ],
+      "overviewImageSourceUrl": "",
+      "sections": [
+        {
+          "id": "130901",
+          "name": "Forte Gauge",
+          "entries": [
+            {
+              "id": "130901",
+              "description": "When Rover: Electro is not in <color=Highlight>Apex Resonance</color>, Intro Skill, Normal Attacks, and Resonance Skill grant <color=Highlight>Electric Surge</color> upon dealing damage.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeThunderzhu1.webp"
+              ]
+            },
+            {
+              "id": "130902",
+              "description": "At full <color=Highlight>Electric Surge</color>, Resonance Skill to clear all <color=Highlight>Electric Surge</color> and grant all Resonators in the team ATK Bonus.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeThunderzhu2.webp"
+              ]
+            },
+            {
+              "id": "130903",
+              "description": "At full <color=Highlight>Electric Surge</color>, hold Resonance Skill to clear all <color=Highlight>Electric Surge</color> and enter <color=Highlight>Apex Resonance</color> and unlock <color=Highlight>Thrum of All Sounds</color>.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeThunderzhu3.webp"
+              ]
+            },
+            {
+              "id": "130904",
+              "description": "While in <color=Highlight>Apex Resonance</color>, <color=Highlight>Thunder Rage</color> is consumed each second during combat. <color=Highlight>Thrum of All Sounds</color> grants <color=Highlight>Thunder Rage</color> upon dealing damage.\nCasting Outro Skill to switch to another Resonator while in <color=Highlight>Apex Resonance</color> clears all the <color=Highlight>Thunder Rage</color>.",
+              "imageSourceUrls": []
+            }
+          ]
+        },
+        {
+          "id": "130902",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "130905",
+              "description": "Hold Basic Attack to enter a <color=Highlight>Parry Stance</color>, during which Rover gains immunity to interruption and DMG Reduction, and continuously consumes STA.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "130906",
+              "description": "Releasing Basic Attack or depleting STA during the <color=Highlight>Parry Stance</color> triggers <color=Highlight>Basic Attack - Riposte Strike</color>. If <color=Highlight>Basic Attack - Riposte Strike</color> is cast upon receiving an incoming attack, Stagnate the target briefly and perform <color=Highlight>Basic Attack - Riposte Strike: Crumble</color>.\nWhile in the <color=Highlight>Parry Stance</color>, consume STA to perform <color=Highlight>Dodge: Flicker</color> in the input direction. Taking a hit shortly after casting <color=Highlight>Dodge: Flicker</color> triggers a successful Dodge.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-12",
@@ -133152,7 +135156,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "articleUrl": "https://ww.nanoka.cc/character/1309",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_4_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_zhujuenan_UI.webp",
-    "titleCardSourceUrl": "https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_57.webp",
+    "titleCardSourceUrl": "https://api-v2.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_57.webp",
     "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Male/Portraits_Male.skel",
     "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Male/Portraits_Male.atlas"
   },
@@ -133166,6 +135170,11 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Electro",
     "weaponType": "Sword",
     "role": "Concerto Efficiency",
+    "roles": [
+      "Concerto Efficiency",
+      "Resonance Skill DMG",
+      "Electro Flare"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 10775,
@@ -133856,6 +135865,64 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_ThunderzhuM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "If Resonance Skill <color=Highlight>Overshock</color> is cast by holding down the button, enter <color=Highlight>Apex Resonance</color> and unlock <color=Highlight>Thrum of All Sounds</color>.\nIf Resonance Skill <color=Highlight>Overshock</color> is cast by the button, grant Resonators in the team ATK Bonus.",
+        "Resonance Skill <color=Highlight>Overshock</color> inflicts <color=Highlight>Electro Flare</color> on the target.",
+        "Outro Skill grants <color=Highlight>Electro Core</color> to the incoming Resonator. Triggering <color=Highlight>Electro Core</color> grants <color=Highlight>All DMG Amplification</color>."
+      ],
+      "overviewImageSourceUrl": "",
+      "sections": [
+        {
+          "id": "131001",
+          "name": "Forte Gauge",
+          "entries": [
+            {
+              "id": "130901",
+              "description": "When Rover: Electro is not in <color=Highlight>Apex Resonance</color>, Intro Skill, Normal Attacks, and Resonance Skill grant <color=Highlight>Electric Surge</color> upon dealing damage.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeThunderzhu1.webp"
+              ]
+            },
+            {
+              "id": "130902",
+              "description": "At full <color=Highlight>Electric Surge</color>, Resonance Skill to clear all <color=Highlight>Electric Surge</color> and grant all Resonators in the team ATK Bonus.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeThunderzhu2.webp"
+              ]
+            },
+            {
+              "id": "130903",
+              "description": "At full <color=Highlight>Electric Surge</color>, hold Resonance Skill to clear all <color=Highlight>Electric Surge</color> and enter <color=Highlight>Apex Resonance</color> and unlock <color=Highlight>Thrum of All Sounds</color>.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeThunderzhu3.webp"
+              ]
+            },
+            {
+              "id": "130904",
+              "description": "While in <color=Highlight>Apex Resonance</color>, <color=Highlight>Thunder Rage</color> is consumed each second during combat. <color=Highlight>Thrum of All Sounds</color> grants <color=Highlight>Thunder Rage</color> upon dealing damage.\nCasting Outro Skill to switch to another Resonator while in <color=Highlight>Apex Resonance</color> clears all the <color=Highlight>Thunder Rage</color>.",
+              "imageSourceUrls": []
+            }
+          ]
+        },
+        {
+          "id": "131002",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "130905",
+              "description": "Hold Basic Attack to enter a <color=Highlight>Parry Stance</color>, during which Rover gains immunity to interruption and DMG Reduction, and continuously consumes STA.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "130906",
+              "description": "Releasing Basic Attack or depleting STA during the <color=Highlight>Parry Stance</color> triggers <color=Highlight>Basic Attack - Riposte Strike</color>. If <color=Highlight>Basic Attack - Riposte Strike</color> is cast upon receiving an incoming attack, Stagnate the target briefly and perform <color=Highlight>Basic Attack - Riposte Strike: Crumble</color>.\nWhile in the <color=Highlight>Parry Stance</color>, consume STA to perform <color=Highlight>Dodge: Flicker</color> in the input direction. Taking a hit shortly after casting <color=Highlight>Dodge: Flicker</color> triggers a successful Dodge.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-12",
@@ -136846,7 +138913,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "articleUrl": "https://ww.nanoka.cc/character/1310",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_5_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_zhujue_UI.webp",
-    "titleCardSourceUrl": "https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_57.webp",
+    "titleCardSourceUrl": "https://api-v2.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_57.webp",
     "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Female/Portraits_Female.skel",
     "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/portraits/Portraits_Female/Portraits_Female.atlas"
   },
@@ -136860,6 +138927,9 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Havoc",
     "weaponType": "Sword",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 10825,
@@ -137550,6 +139620,36 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_ZhujueDarkM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Recover Forte Gauge for Basic Attack on hit or Intro Skill, Resonance Skill cast",
+        "Hold Basic Attack to cast a Heavy Attack and enter enhanced state when Forte Gauge is full"
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreePiaobozhean.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "160501",
+              "description": "Heavy Attack: Devastation: When Forte Gauge is full, hold Basic Attack",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "160502",
+              "description": "Basic Attack 4: Hold Basic Attack + Tap Basic Attack",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "160503",
+              "description": "Heavy Attack: Thwackblade: Hold Basic Attack + Tap Basic Attack in enhanced state",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-9",
@@ -139514,6 +141614,9 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Havoc",
     "weaponType": "Sword",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer"
+    ],
     "gender": "male",
     "baseStats": {
       "hp": 10825,
@@ -140204,6 +142307,36 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_ZhujueDarkM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Recover Forte Gauge for Basic Attack on hit or Intro Skill, Resonance Skill cast",
+        "Hold Basic Attack to cast a Heavy Attack and enter enhanced state when Forte Gauge is full"
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreePiaobozhean.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "160501",
+              "description": "Heavy Attack: Devastation: When Forte Gauge is full, hold Basic Attack",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "160502",
+              "description": "Basic Attack 4: Hold Basic Attack + Tap Basic Attack",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "160503",
+              "description": "Heavy Attack: Thwackblade: Hold Basic Attack + Tap Basic Attack in enhanced state",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-9",
@@ -142168,6 +144301,10 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Spectro",
     "weaponType": "Sword",
     "role": "Concerto Efficiency",
+    "roles": [
+      "Concerto Efficiency",
+      "Stagnation"
+    ],
     "gender": "male",
     "baseStats": {
       "hp": 11400,
@@ -142858,6 +144995,41 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_nannvzhuM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Normal Attack, Resonance Skill and Intro Skill recover Forte Gauge on hit",
+        "Cast enhanced Resonance Skill when Forte Gauge is above 50%"
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreePiaobozhe.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "150101",
+              "description": "Resonating Spin: When Forte Gauge reaches 50, use Resonance Skill",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150102",
+              "description": "Resonating Echoes: Perform Resonating Spin and use Basic Attack",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150103",
+              "description": "Heavy Attack - Resonance: After Basic Attack Stage 3 or Heavy Attack, Basic Attack at the right time",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150104",
+              "description": "Heavy Attack: Aftertune: Tap Basic Attack after Heavy Attack: Resonance hits a target",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-10",
@@ -144222,6 +146394,10 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Spectro",
     "weaponType": "Sword",
     "role": "Concerto Efficiency",
+    "roles": [
+      "Concerto Efficiency",
+      "Stagnation"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 11400,
@@ -144912,6 +147088,41 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_nannvzhuM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Normal Attack, Resonance Skill and Intro Skill recover Forte Gauge on hit",
+        "Cast enhanced Resonance Skill when Forte Gauge is above 50%"
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreePiaobozhe.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "150101",
+              "description": "Resonating Spin: When Forte Gauge reaches 50, use Resonance Skill",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150102",
+              "description": "Resonating Echoes: Perform Resonating Spin and use Basic Attack",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150103",
+              "description": "Heavy Attack - Resonance: After Basic Attack Stage 3 or Heavy Attack, Basic Attack at the right time",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150104",
+              "description": "Heavy Attack: Aftertune: Tap Basic Attack after Heavy Attack: Resonance hits a target",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-10",
@@ -146276,6 +148487,10 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Glacio",
     "weaponType": "Sword",
     "role": "Concerto Efficiency",
+    "roles": [
+      "Concerto Efficiency",
+      "Basic Attack DMG Amplification"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 10062.5,
@@ -146966,6 +149181,35 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_SanhuaM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Hold Basic Attack and observe the moving cursor on the Forte Gauge"
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeSanhua.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "110201",
+              "description": "Heavy Attack: Detonate: Hold Basic Attack and release when the cursor is in the Frostbite area",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "110202",
+              "description": "Ice Burst: Use Heavy Attack: Detonate to pierce through Ice Thorn, Ice Prism, or Glacier",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "110203",
+              "description": "Heavy Attack: Hold and then release Basic Attack",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-9",
@@ -148330,6 +150574,11 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Spectro",
     "weaponType": "Rectifier",
     "role": "Support and Healer",
+    "roles": [
+      "Support and Healer",
+      "Traction",
+      "DMG Amplification"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 16712.5,
@@ -149020,6 +151269,46 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_ShouanrenM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Normal Attack hits restore Forte Gauge and generate Collapsed Cores.",
+        "When Forte Gauge is full, hold the Normal Attack Button or perform Plunging Attack to cast Enhanced Attack and convert all Collapsed Cores into Flare Star Butterflies."
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeShouanren.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "150501",
+              "description": "Unbound Form: When Forte Gauge is not full, hold Basic Attack to fly as a butterfly at the cost of STA and automatically collect nearby plant collectibles.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150502",
+              "description": "Illation: When Forte Gauge is full, hold Basic Attack to pull in nearby targets and convert all Collapsed Cores into Flare Star Butterflies.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150503",
+              "description": "Stellarealm: Use Resonance Liberation to generate a Stellarealm that grants buffs to all nearby party members who cast Intro Skills in the Stellarealm.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150504",
+              "description": "Discernment: When the Supernal Stellarealm exists, Shorekeeper can cast Intro Skill Discernment.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150505",
+              "description": "Binary Butterfly: When Shorekeeper's Outro Skill is effective, tapping Dodge allows the current Resonator to recover from interruption when they are hit or launched, considered as a successful Dodge. This effect can be triggered for a limited number of times.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-8",
@@ -150165,7 +152454,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "name": "Proof of Existence - Discernment DMG",
         "type": "intro",
         "skillLevelIndex": 4,
-        "scalesWith": "atk",
+        "scalesWith": "hp",
         "multipliers": [
           0.29640000000000005,
           0.3207,
@@ -150628,6 +152917,11 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Aero",
     "weaponType": "Gauntlets",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer",
+      "Traction",
+      "Echo Skill DMG"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 10775,
@@ -151318,6 +153612,67 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_XigelikaM3_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Deals substantial Echo Skill DMG.",
+        "<color=Highlight>Enhanced Heavy Attack</color> grants various effects such as Traction and Stagnation, allowing adaptation to different combat situations.",
+        "Resonators in the team restore Sigrika's Forte Gauge when they cast Echo Skills, which in turn grants her substantial DMG Amplification."
+      ],
+      "overviewImageSourceUrl": "",
+      "sections": [
+        {
+          "id": "141201",
+          "name": "Forte Gauge",
+          "entries": [
+            {
+              "id": "141205",
+              "description": "Obtain <color=Highlight>Rune: Trust</color> when <color=Highlight>Basic Attack - Elucidated</color> or <color=Highlight>Dodge Counter - Decipher</color> hits the target directly in the duration of the moves. Or obtain <color=Highlight>Rune: Answer</color> when <color=Highlight>Resonance Skill - BIG BOOMY BOOM!</color> or <color=Highlight>Resonance Skill - Soliskin to the Aid</color> hits the target directly in the duration of the moves.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeXiGeLiKa.webp"
+              ]
+            },
+            {
+              "id": "141206",
+              "description": "Restore 50 points of <color=Highlight>Full Stop</color> after casting <color=Highlight>Heavy Attack - Schemata of Runes</color>, up to 100 points. When <color=Highlight>Full Stop</color> reaches 100 points. Hold Resonance Skill to consume 100 points of <color=Highlight>Full Stop</color> to cast <color=Highlight>Forte Circuit - Learn My True Name</color>.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeXiGeLiKa1.webp"
+              ]
+            },
+            {
+              "id": "141207",
+              "description": "When any nearby Resonators in the team cast Echo Skill, Sigrika gains 10 points of <color=Highlight>Soliskin Vitality</color>, up to 60 points. If <color=Highlight>Soliskin Vitality</color> reaches 30 points when casting <color=Highlight>Heavy Attack - Schemata of Runes</color>, consume 30 points of <color=Highlight>Soliskin Vitality</color> to enhance the damage output.",
+              "imageSourceUrls": []
+            }
+          ]
+        },
+        {
+          "id": "141202",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "141201",
+              "description": "BIG BOOMY BOOM!: Basic Attack+Basic Attack+Basic Attack+Basic Attack+Resonance Skill",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "141202",
+              "description": "Soliskin to the Aid: Basic Attack+Basic Attack+Basic Attack+Resonance Skill",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "141203",
+              "description": "Schemata of Runes: With 2 <color=Highlight>Runes</color>, hold Basic Attack",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "141204",
+              "description": "Learn My True Name: At max <color=Highlight>Full Stop</color>, hold Resonance Skill",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-11",
@@ -153528,7 +155883,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "articleUrl": "https://ww.nanoka.cc/character/1412",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_65_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Xigelika_UI.webp",
-    "titleCardSourceUrl": "https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_49.webp",
+    "titleCardSourceUrl": "https://api-v2.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_49.webp",
     "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/xigelika/xigelika.skel",
     "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/xigelika/xigelika.atlas"
   },
@@ -153542,6 +155897,11 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Glacio",
     "weaponType": "Rectifier",
     "role": "Support and Healer",
+    "roles": [
+      "Support and Healer",
+      "DMG Amplification",
+      "Glacio Chafe"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 16712.5,
@@ -154232,6 +156592,52 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_SuisuiM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Fight in two stances: <color=Highlight>Water Fan Dance</color> and <color=Highlight>Water Sleeves Dance</color>.",
+        "Casting Resonance Liberation grants the team bonus effects related to <color=Highlight>Negative Status</color>.",
+        "Outro Skill grants <color=Highlight>All DMG Amplification</color> to all Resonators in the team."
+      ],
+      "overviewImageSourceUrl": "",
+      "sections": [
+        {
+          "id": "111001",
+          "name": "Forte Gauge",
+          "entries": [
+            {
+              "id": "111001",
+              "description": "When in <color=Highlight>Zephyr Stance</color>, Suisui can obtain <color=Highlight>Cloud Breath</color> through certain attacks. When at full <color=Highlight>Cloud Breath</color>, cast <color=Highlight>Resonance Skill- Awakening Spring</color> to enter <color=Highlight>Drizzle Stance</color>.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeSuisui1.webp"
+              ]
+            },
+            {
+              "id": "111002",
+              "description": "When in  <color=Highlight>Drizzle Stance</color>, Suisui can obtain <color=Highlight>Floral Epistle</color> through certain attacks. The amount of bonus effects granted by <color=Highlight>Outro Skill</color> is proportional to the amount of <color=Highlight>Floral Epistle</color> consumed while casting <color=Highlight>Outro Skill - Rippling Waters</color>.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeSuisui2.webp"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "111002",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "111003",
+              "description": "Resonance Skill - Awakening Spring: When in <color=Highlight>Zephyr Stance</color> and at full <color=Highlight>Cloud Breath</color>, Resonance Skill to cast this skill. Casting this skill consumes all <color=Highlight>Cloud Breath</color> and sends Suisui into <color=Highlight>Drizzle Stance</color>, continuously healing nearby Resonators in the team.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "111004",
+              "description": "Outro Skill - Rippling Waters: Casting this skill consumes all <color=Highlight>Floral Epistle</color>. If <color=Highlight>Ceaseless Landscape</color> is active, Suisui instead enters <color=Highlight>Roaming Transcendent</color> and unlocks bonus effects based on the amount of <color=Highlight>Floral Epistle</color> consumed. Every 200 points unlocks a new set of effects.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-7",
@@ -155476,7 +157882,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "name": "Vernal Screen - Enrichment Healing",
         "type": "healing",
         "skillLevelIndex": 1,
-        "scalesWith": "atk",
+        "scalesWith": "hp",
         "multipliers": [
           0.016200000000000003,
           0.0169,
@@ -156612,7 +159018,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "articleUrl": "https://ww.nanoka.cc/character/1110",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_71_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Suisui_UI.webp",
-    "titleCardSourceUrl": "https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_56.webp",
+    "titleCardSourceUrl": "https://api-v2.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_56.webp",
     "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/suisui/suisui.skel",
     "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/suisui/suisui.atlas"
   },
@@ -156626,6 +159032,11 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Havoc",
     "weaponType": "Broadblade",
     "role": "Support and Healer",
+    "roles": [
+      "Support and Healer",
+      "Resonance Liberation Damage",
+      "Resonance Skill DMG Amplification"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 8950,
@@ -157316,6 +159727,31 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_TaohuaM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "The shield generated by Resonance Skill is converted to Forte Gauge when under attack or when Basic Attack 4 hits an enemy",
+        "Tap Basic Attack multiple times when Strategic Parry is triggered to consume Forte Gauge and perform extra attacks"
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeTaoqi.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "160101",
+              "description": "Timed Counters: Strategic Parry + Basic Attack + Basic Attack + Basic Attack",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "160102",
+              "description": "Strategic Parry: Triggered when attacked during Rocksteady Defense state or when fully charged",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-30",
@@ -157847,7 +160283,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "name": "Concealed Edge - Strategic Parry Damage",
         "type": "basic",
         "skillLevelIndex": 0,
-        "scalesWith": "atk",
+        "scalesWith": "def",
         "multipliers": [
           0.39590000000000003,
           0.42840000000000006,
@@ -158271,7 +160707,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "name": "Power Shift - Timed Counters Stage 2 DMG",
         "type": "skill",
         "skillLevelIndex": 2,
-        "scalesWith": "atk",
+        "scalesWith": "def",
         "multipliers": [
           0.5579999999999999,
           0.6038,
@@ -158549,6 +160985,11 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Spectro",
     "weaponType": "Rectifier",
     "role": "Support and Healer",
+    "roles": [
+      "Support and Healer",
+      "Coordinated Attack",
+      "DMG Amplification"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 14237.5,
@@ -159239,6 +161680,31 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_weilinaiM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Rocover 1 Forte Gauge for Basic Attack V, Resonance Skill or Intro Skill on hit, up to 4",
+        "For every 1 Forte Gauge consumed, restore HP once to all team members nearby."
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeWeilinai.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "150301",
+              "description": "Heavy Attack: Starflower Blooms: When Forte Gauge is not empty, hold Basic Attack",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150302",
+              "description": "Mid-air Attack: Starflower Blooms: When Forte Gauge is not empty, tap Basic Attack while in mid-air",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-12",
@@ -160913,6 +163379,10 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Electro",
     "weaponType": "Gauntlets",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer",
+      "Resonance Liberation Damage"
+    ],
     "gender": "male",
     "baseStats": {
       "hp": 10625,
@@ -161603,6 +164073,31 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_XiangliyaoM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Casting Resonance Skill or hitting an enemy with Normal Attack restore Forte Gauge.",
+        "When Forte Gauge is full, enhanced Resonance Skill can be cast."
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeXiangliyao.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "130501",
+              "description": "Decipher: When Forte Gauge is full, press Resonance Skill+Basic Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "130502",
+              "description": "Law of Reigns: While in Intuition triggered by Resonance Liberation, use Resonance Skill when Forte Gauge is full.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-9",
@@ -163623,6 +166118,11 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Aero",
     "weaponType": "Sword",
     "role": "Concerto Efficiency",
+    "roles": [
+      "Concerto Efficiency",
+      "Traction",
+      "Resonance Liberation Regeneration"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 10200,
@@ -164313,6 +166813,36 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_YangyangM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Recover Forte Gauge for Basic Attack 4, derivative Heavy Attack, Resonance Skill, or Intro Skill on hit",
+        "Cast Enhanced Mid-air Attack when Forte Gauge is full"
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeYangyang.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "140201",
+              "description": "Stormy Strike: When Forte Gauge reaches 3, hold Basic Attack",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "140202",
+              "description": "Feather Fall: When Forte Gauge reaches 3, press Basic Attack while in mid-air",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "140203",
+              "description": "Heavy Attack: Zephyr Song: During a Heavy Attack, tap Basic Attack",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-9",
@@ -165920,6 +168450,12 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Havoc",
     "weaponType": "Sword",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer",
+      "Heavy Attack DMG",
+      "Traction",
+      "Havoc Bane"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 11025,
@@ -166610,6 +169146,79 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_XuanLingM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Deals powerful Heavy Attack DMG.",
+        "Can convert <color=Highlight>Havoc Bane</color> into buffs for herself.",
+        "With 2 points of <color=Highlight>Azure Plume</color>, the Heavy Attack of the corresponding Sword Stance is unlocked, pulling in nearby targets and dealing DMG."
+      ],
+      "overviewImageSourceUrl": "",
+      "sections": [
+        {
+          "id": "161001",
+          "name": "Forte Gauge",
+          "entries": [
+            {
+              "id": "161007",
+              "description": "Consume <color=Highlight>Melody</color> to cast Normal Attacks.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeXuanling1.webp"
+              ]
+            },
+            {
+              "id": "161008",
+              "description": "After <color=Highlight>Melody</color> is depleted, <color=Highlight>Sword Stance Flow</color> is unlocked.\nCasting <color=Highlight>Sword Stance Flow</color> switches to the other Sword Stance, restoring all <color=Highlight>Melody</color> and granting 1 point of <color=Highlight>Azure Plume</color>.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeXuanling2.webp"
+              ]
+            },
+            {
+              "id": "161009",
+              "description": "With 2 points of <color=Highlight>Azure Plume</color>, <color=Highlight>Heavy Attack</color> is unlocked. Different <color=Highlight>Heavy Attacks</color> can be cast depending on the current Sword Stance.",
+              "imageSourceUrls": [
+                "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeXuanling3.webp"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "161002",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "161001",
+              "description": "Sword Stance Switch: Resonance Skill",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "161002",
+              "description": "Basic Attack - Azure Sword Stance: While in Azure Sword Stance, Basic Attack+Basic Attack+Basic Attack+Basic Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "161003",
+              "description": "Basic Attack - Feather Sword Stance: While in Feather Sword Stance, Basic Attack+Basic Attack+Basic Attack+Basic Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "161004",
+              "description": "Sword Stance Flow: When <color=Highlight>Melody</color> is depleted, Resonance Skill.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "161005",
+              "description": "Heavy Attack - Azure Sword Stance: When <color=Highlight>Azure Plume</color> is restored to its maximum, hold Basic Attack.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "161006",
+              "description": "Heavy Attack - Feather Sword Stance: When <color=Highlight>Azure Plume</color> is restored to its maximum, hold Basic Attack.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-13",
@@ -169503,7 +172112,7 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "articleUrl": "https://ww.nanoka.cc/character/1610",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_70_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Xuanling_UI.webp",
-    "titleCardSourceUrl": "https://api.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_55.webp",
+    "titleCardSourceUrl": "https://api-v2.encore.moe/resource/Data/Game/Aki/UI/UIResources/Common/Image/Com/Image/EpithetName_Role_55.webp",
     "spineSkeletonSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/xuanling/xuanling.skel",
     "spineAtlasSourceUrl": "https://static.nanoka.cc/assets/ww/luckdraw/xuanling/xuanling.atlas"
   },
@@ -169517,6 +172126,13 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Electro",
     "weaponType": "Rectifier",
     "role": "Concerto Efficiency",
+    "roles": [
+      "Concerto Efficiency",
+      "Resonance Skill DMG",
+      "Coordinated Attack",
+      "Electro DMG Amplification",
+      "Resonance Liberation DMG Amplification"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 11000,
@@ -170207,6 +172823,26 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_YinlinM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Recover Forte Gauge for Basic Attack, Heavy Attack or Resonance Skill on hit",
+        "Hold Basic Attack to cast Enhanced Attack when Forte Gauge is full"
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeYingling.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "130201",
+              "description": "Chameleon Cipher: When Forte Gauge is full, hold Basic Attack",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-31",
@@ -171996,6 +174632,12 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Glacio",
     "weaponType": "Gauntlets",
     "role": "Support and Healer",
+    "roles": [
+      "Support and Healer",
+      "Resonance Skill DMG",
+      "Vibration Strength Reduction",
+      "Coordinated Attack DMG Amplification"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 9975,
@@ -172686,6 +175328,36 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_YouhuM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Hold the Normal Attack button to charge Forte Gauge. When Forte Gauge is full, release to cast Heavy Attack and obtain one random Antique.",
+        "With an Antique, tap to cast the corresponding Antique Appraisal and obtain the corresponding Auspices.\nAt four Auspices, hold Normal Attack to cast Poetic Essence. Additional effects are granted based on the combination of Auspices."
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeYouhu.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "110601",
+              "description": "Scroll Divination: Use Resonance Skill. Deals DMG and restores HP. Generates one random Antique.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "110602",
+              "description": "Fortune's Favor: When cast, press the corresponding button to select an Antique.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "110603",
+              "description": "Poetic Essence: Hold Basic Attack when there are 4 Auspices.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-8",
@@ -174909,6 +177581,12 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Electro",
     "weaponType": "Gauntlets",
     "role": "Concerto Efficiency",
+    "roles": [
+      "Concerto Efficiency",
+      "Coordinated Attack",
+      "Vibration Strength Reduction",
+      "Interruption Resistance Boost"
+    ],
     "gender": "male",
     "baseStats": {
       "hp": 8525,
@@ -175599,6 +178277,26 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_YuanwuM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Recover Forte Gauge for Coordinated Attacks on hit when Thunder Wedge in on the field",
+        "Hold Resonance Skill when Forte Gauge is full to cast Rumbling Spark and enter Lightning Infused state"
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeYuanwu.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "130301",
+              "description": "Rumbling Spark: When Forte Gauge is full, hold Resonance Skill",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-9",
@@ -177674,6 +180372,12 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Spectro",
     "weaponType": "Gauntlets",
     "role": "Main Damage Dealer",
+    "roles": [
+      "Main Damage Dealer",
+      "Heavy Attack DMG",
+      "Spectro DMG Amplification",
+      "Spectro Frazzle"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 10775,
@@ -178364,6 +181068,81 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_ZanniM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Hitting a target recovers Forte Gauge. Consume Forte Gauge to cast enhanced Resonance Skill.",
+        "Zani restores Forte Gauge when other Resonators in the team inflict Spectro Frazzle.\nZani enters an enhanced state upon casting Resonance Liberation. In the enhanced state, consume Forte Gauge to cast enhanced Basic Attacks."
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeZanni.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "150701",
+              "description": "Basic Attack - Breakthrough: Basic Attack+Basic Attack+Basic Attack+Basic Attack in the right time",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150702",
+              "description": "Standard Defense Protocol: Resonance Skill+Basic Attack",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150703",
+              "description": "Pinpoint Strike: Hold Resonance Skill. Cast automatically upon being hit.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150704",
+              "description": "Resonance Liberation - The Last Stance: In Infernal Mode, Resonance Liberation when Blaze is lower than 30 or 8s after entering Infernal Mode.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150705",
+              "description": "In Infernal Mode, with at least 30 Blazes, unlock the following moves:",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150706",
+              "description": "Basic Attack \"Heavy Slash - Daybreak\": Basic Attack or Resonance Skill",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150707",
+              "description": "Basic Attack \"Heavy Slash - Dawning\": Basic Attack+Basic Attack",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150708",
+              "description": "Basic Attack \"Heavy Slash - Nightfall\": Basic Attack+Basic Attack+Basic Attack or hold Resonance Skill",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150709",
+              "description": "Basic Attack \"Heavy Slash - Lightsmashl\": Hold Resonance Skill. Cast automatically upon being hit.",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150710",
+              "description": "When not in Infernal Mode, with max Redundant Energy, unlock the following moves:",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150711",
+              "description": "Resonance Skill - Targeted Action: Resonance Skill",
+              "imageSourceUrls": []
+            },
+            {
+              "id": "150712",
+              "description": "Resonance Skill - Forcible Riposte: Hold Resonance Skill. Cast automatically upon being hit.",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-9",
@@ -180556,6 +183335,14 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
     "element": "Glacio",
     "weaponType": "Rectifier",
     "role": "Concerto Efficiency",
+    "roles": [
+      "Concerto Efficiency",
+      "Basic Attack DMG",
+      "Coordinated Attack",
+      "Resonance Liberation Regeneration",
+      "Glacio DMG Amplification",
+      "Resonance Skill DMG Amplification"
+    ],
     "gender": "female",
     "baseStats": {
       "hp": 12250,
@@ -181246,6 +184033,26 @@ export const generatedCharacterCatalog:GeneratedCharacterCatalogEntry[]=[
         "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconDevice/T_IconDevice_ZhezhiM6_UI.webp"
       }
     ],
+    "skillInputGuide": {
+      "features": [
+        "Recover Forte Gauge when Normal Attack hits a target or Intro Skill is cast.",
+        "When Forte Gauge is full, press Resonance Skill and then Normal Attack to summon 3 Phantasmic Imprints, each allowing Zhezhi to cast 1 Chain Resonance Skill."
+      ],
+      "overviewImageSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/UiRole/Image/T_RoleSkillTreeZhezhi.webp",
+      "sections": [
+        {
+          "id": "instructions",
+          "name": "Instructions",
+          "entries": [
+            {
+              "id": "110501",
+              "description": "When Forte Gauge is full: press Resonance Skill+ press Basic Attack to summon 3 Phantasmic Imprints, then press Resonance Skill+ press Resonance Skill+ press Resonance Skill",
+              "imageSourceUrls": []
+            }
+          ]
+        }
+      ]
+    },
     "flatSkillValues": [
       {
         "id": "1-7",

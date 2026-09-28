@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "390077038",
+  "entityName": "Spearback",
+  "sourceFingerprint": "444e437097f96b96776a8db17f0c861d4c78d40912c68b63d1b32a57e6e41652",
+  "reviewedAt": "2026-09-26T18:28:57.396Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "72ed9744ad07a93a3b2eb6adadb96ec8569ab6ffdcb2ee3c4120728056549a90",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390077038:skill",
+            "name": "Spearback - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Physical",
+            "expressions": [
+              "18.73%+32.10%",
+              "21.53%+36.92%",
+              "24.34%+41.73%",
+              "27.15%+46.55%",
+              "29.96%+51.36%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.1873,
+                0.1873,
+                0.1873,
+                0.1873,
+                0.321
+              ],
+              [
+                0.21530000000000002,
+                0.21530000000000002,
+                0.21530000000000002,
+                0.21530000000000002,
+                0.36920000000000003
+              ],
+              [
+                0.2434,
+                0.2434,
+                0.2434,
+                0.2434,
+                0.41729999999999995
+              ],
+              [
+                0.27149999999999996,
+                0.27149999999999996,
+                0.27149999999999996,
+                0.27149999999999996,
+                0.46549999999999997
+              ],
+              [
+                0.29960000000000003,
+                0.29960000000000003,
+                0.29960000000000003,
+                0.29960000000000003,
+                0.5136
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0,
+              0,
+              0,
+              1
+            ],
+            "count": 5,
+            "cooldownSeconds": 15,
+            "sourceText": "Summon a Spearback to perform 5 consecutive attacks. The first 4 attacks deal 18.73% Physical DMG, and the last deals 32.10% Physical DMG.\nCD: 15s · Summon a Spearback to perform 5 consecutive attacks. The first 4 attacks deal 21.53% Physical DMG, and the last deals 36.92% Physical DMG.\nCD: 15s · Summon a Spearback to perform 5 consecutive attacks. The first 4 attacks deal 24.34% Physical DMG, and the last deals 41.73% Physical DMG.\nCD: 15s · Summon a Spearback to perform 5 consecutive attacks. The first 4 attacks deal 27.15% Physical DMG, and the last deals 46.55% Physical DMG.\nCD: 15s · Summon a Spearback to perform 5 consecutive attacks. The first 4 attacks deal 29.96% Physical DMG, and the last deals 51.36% Physical DMG.\nCD: 15s"
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  }
+}

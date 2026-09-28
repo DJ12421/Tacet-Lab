@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000195",
+  "entityName": "Glommoth",
+  "sourceFingerprint": "86f9c6d4b1c0df1fe711501020c1c3b3252a1f279a28eac72fd3f4617b08d17e",
+  "reviewedAt": "2026-09-26T18:47:52.598Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "019734ab8c123402ec2cfd644ea2f476f94a042f6565c79e3c26becd3e0512b6",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000195:skill",
+            "name": "Glommoth - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Glacio",
+            "expressions": [
+              "152.00%",
+              "182.40%",
+              "212.80%",
+              "243.20%",
+              "273.60%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.52
+              ],
+              [
+                1.824
+              ],
+              [
+                2.128
+              ],
+              [
+                2.432
+              ],
+              [
+                2.736
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 20,
+            "sourceText": "Summon a Glommoth to stomp enemies, dealing 152.00% Glacio DMG.\nCasting Outro Skill within 15s after summoning Glommoth grants 12.00% Glacio DMG Bonus to the incoming Resonator for 15s.\nCD: 20s. · Summon a Glommoth to stomp enemies, dealing 182.40% Glacio DMG.\nCasting Outro Skill within 15s after summoning Glommoth grants 12.00% Glacio DMG Bonus to the incoming Resonator for 15s.\nCD: 20s. · Summon a Glommoth to stomp enemies, dealing 212.80% Glacio DMG.\nCasting Outro Skill within 15s after summoning Glommoth grants 12.00% Glacio DMG Bonus to the incoming Resonator for 15s.\nCD: 20s. · Summon a Glommoth to stomp enemies, dealing 243.20% Glacio DMG.\nCasting Outro Skill within 15s after summoning Glommoth grants 12.00% Glacio DMG Bonus to the incoming Resonator for 15s.\nCD: 20s. · Summon a Glommoth to stomp enemies, dealing 273.60% Glacio DMG.\nCasting Outro Skill within 15s after summoning Glommoth grants 12.00% Glacio DMG Bonus to the incoming Resonator for 15s.\nCD: 20s."
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "a0ea666808fcf59cf9bb33e77f22136f5284125e15148a18f73752dd25850dd0",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000195:effect:0",
+            "sourceName": "Glommoth",
+            "sourceType": "echo",
+            "text": "Casting Outro Skill within 15s after summoning Glommoth grants 12.00% Glacio DMG Bonus to the incoming Resonator for 15s.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Outro Skill",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "Glacio",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "next"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}

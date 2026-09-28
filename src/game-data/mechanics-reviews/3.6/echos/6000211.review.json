@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.6",
+  "entityKind": "echo",
+  "entityId": "6000211",
+  "entityName": "Kernel Puppet: Fright",
+  "sourceFingerprint": "f52b22d8925f1997d8e8303fc912492d4b99497e4d743874d685b758dc5e1bab",
+  "reviewedAt": "2026-09-26T18:47:52.633Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "ef91d7dc7ce10ea1f6b6212839968264f03feec7712fdbee7545ec6433b43d53",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000211:skill",
+            "name": "Kernel Puppet: Fright - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Havoc",
+            "expressions": [
+              "28.80%+43.20%",
+              "34.56%+51.84%",
+              "40.32%+60.48%",
+              "46.08%+69.12%",
+              "51.84%+77.76%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.28800000000000003,
+                0.43200000000000005
+              ],
+              [
+                0.3456,
+                0.5184000000000001
+              ],
+              [
+                0.4032,
+                0.6048
+              ],
+              [
+                0.4608,
+                0.6912
+              ],
+              [
+                0.5184000000000001,
+                0.7776000000000001
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              1
+            ],
+            "count": 2,
+            "cooldownSeconds": 8,
+            "sourceText": "Use Echo Skill to summon Kernel Puppet: Fright to attack enemies, dealing an instance of 28.80% Havoc DMG and an instance of 43.20% Havoc DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Fright to attack enemies, dealing an instance of 34.56% Havoc DMG and an instance of 51.84% Havoc DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Fright to attack enemies, dealing an instance of 40.32% Havoc DMG and an instance of 60.48% Havoc DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Fright to attack enemies, dealing an instance of 46.08% Havoc DMG and an instance of 69.12% Havoc DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Fright to attack enemies, dealing an instance of 51.84% Havoc DMG and an instance of 77.76% Havoc DMG.\nCD: 8s"
+          }
+        ],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required."
+}
