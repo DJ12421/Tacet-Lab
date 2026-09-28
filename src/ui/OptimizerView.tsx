@@ -29,7 +29,7 @@ import type {
   OwnedWeapon,
   TeamScenario
 } from '../domain/types'
-import { calculateBuildModes, combatTargets, formatDamage, resolveRuntimeBuild } from '../domain/combat/runtime'
+import { calculateBuildModes, combatTargets, formatDamage, resolveRuntimeBuild, type CombatTarget } from '../domain/combat/runtime'
 import { createLocalId } from '../domain/id'
 import { EchoMiniCard, EquippedCharacterLabel, formatStat, Icon, Panel } from './components'
 import { CalculatedValue, traceCalculationDetail } from './CalculationDetails'
@@ -49,6 +49,7 @@ type WorkerOutput = Extract<WorkerMessage, { type: 'complete' }>
 const emptyProgress = (requestId = ''): OptimizerProgress => ({ requestId, total: 0, processed: 0, tested: 0, rejected: 0, skipped: 0, skippedCost: 0, skippedSonata: 0, skippedBounds: 0, elapsedMs: 0, testedPerSecond: 0 })
 const buildKey = (echoIds: string[]) => echoIds.join(':')
 const objectiveLabel = (objective: OptimizerObjective) => objective === 'expected' ? 'Average DMG' : objective === 'normal' ? 'Non-CRIT DMG' : objective === 'critical' ? 'CRIT DMG' : statLabels[objective]
+const isOptimizerCombatTarget = (target: CombatTarget): target is CombatTarget & { kind: 'damage' | 'healing' | 'shield' } => target.kind !== 'utility'
 
 function mergeProgress(requestId: string, states: OptimizerProgress[]) {
   return states.reduce<OptimizerProgress>((total, progress) => ({
@@ -137,7 +138,8 @@ export function OptimizerView({
   const resonator = runtime?.resonator
   const weapon = runtime?.runtimeWeapon
   const attack = resonator?.attacks.find((item) => item.id === attackId) ?? resonator?.attacks[0]
-  const formulaTarget = combatTargets(resonator?.id ?? '').find((target) => target.id === attack?.id) ?? combatTargets(resonator?.id ?? '')[0]
+  const formulaTargets = combatTargets(resonator?.id ?? '').filter(isOptimizerCombatTarget)
+  const formulaTarget = formulaTargets.find((target) => target.id === attack?.id) ?? formulaTargets[0]
   const currentEchoes = useMemo(() => build?.echoIds.map((id) => echoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)) ?? [], [build, echoes])
   const targets = resonator?.attacks.map((item) => ({ id: item.id, label: item.name })) ?? []
   const optimizerEnemy = (): EnemyConfig => ({

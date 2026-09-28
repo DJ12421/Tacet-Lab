@@ -251,7 +251,7 @@ const operationLabel = (operation: EffectOperation, effect: EffectMechanics) => 
 }
 
 const effectResults = (effect: EffectMechanics): CombatEffectResult[] => [
-  ...effect.operations.map((operation) => operation.kind === 'override-crit'
+  ...effect.operations.map((operation): CombatEffectResult => operation.kind === 'override-crit'
   ? { label:operationLabel(operation, effect), value:operation.mode === 'always' ? 'Always' : 'Never', percent:false }
   : {
       label:operationLabel(operation, effect),

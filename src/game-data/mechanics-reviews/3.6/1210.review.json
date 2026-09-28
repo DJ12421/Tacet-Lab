@@ -3025,7 +3025,7 @@
             "skillType": "Forte Circuit",
             "skillName": "To Sculpt the Silence",
             "name": "To Sculpt the Silence - Tune Rupture Response - Starburst DMG",
-            "damageType": "tuneBreak",
+            "damageType": "tune-break",
             "tags": [
               "forte"
             ],
@@ -3086,7 +3086,7 @@
             "skillType": "Forte Circuit",
             "skillName": "To Sculpt the Silence",
             "name": "To Sculpt the Silence - Seraphic Duet Bonus DMG (Per Instance)",
-            "damageType": "tuneBreak",
+            "damageType": "tune-break",
             "tags": [
               "forte"
             ],

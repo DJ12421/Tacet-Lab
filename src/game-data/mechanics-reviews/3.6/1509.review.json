@@ -3643,7 +3643,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Chromaticity Modeling",
             "name": "Chromaticity Modeling - Tune Rupture Response - Spectral Analysis DMG",
-            "damageType": "tuneBreak",
+            "damageType": "tune-break",
             "tags": [
               "forte"
             ],

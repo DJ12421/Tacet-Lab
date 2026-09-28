@@ -3938,7 +3938,7 @@
                   {
                     "id": "forced-aero-erosion",
                     "name": "Forced Aero Erosion DMG",
-                    "damageType": "aero-erosion",
+                    "damageType": "status",
                     "element": "aero",
                     "referenceActionId": "status:aero-erosion",
                     "referenceMultiplier": 1,

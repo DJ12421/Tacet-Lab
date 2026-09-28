@@ -2394,7 +2394,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Gloves Are Comin' Off!",
             "name": "Gloves Are Comin' Off! - Hack Response - Meltdown DMG",
-            "damageType": "tuneBreak",
+            "damageType": "tune-break",
             "tags": [
               "forte"
             ],

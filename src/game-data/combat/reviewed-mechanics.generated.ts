@@ -83312,7 +83312,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1209:1209:7:4",
           "reviewFingerprint": "b4705d798e5d7a7bcfe29f4ba17a31891aaf8d3e908605d6f84e264a7aa885ee",
           "kind": "damage",
-          "damageType": "tuneBreak",
+          "damageType": "tune-break",
           "element": "fusion",
           "tags": [
             "forte"
@@ -90448,7 +90448,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1210:1210:7:2",
           "reviewFingerprint": "a5925cb559ad35f4e22293f47bd3d3d58f48129f0f663ba3ce2c75017d6cb670",
           "kind": "damage",
-          "damageType": "tuneBreak",
+          "damageType": "tune-break",
           "element": "fusion",
           "tags": [
             "forte"
@@ -90664,7 +90664,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1210:1210:7:3",
           "reviewFingerprint": "a5925cb559ad35f4e22293f47bd3d3d58f48129f0f663ba3ce2c75017d6cb670",
           "kind": "damage",
-          "damageType": "tuneBreak",
+          "damageType": "tune-break",
           "element": "fusion",
           "tags": [
             "forte"
@@ -147298,7 +147298,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1308:1308:7:0",
           "reviewFingerprint": "e9225a57f3de7cfbb2e3275e749dd46fa6c81018b3c6e9dbf86f1ee0fffeb177",
           "kind": "damage",
-          "damageType": "tuneBreak",
+          "damageType": "tune-break",
           "element": "electro",
           "tags": [
             "forte"
@@ -203182,7 +203182,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
               "id": "1409:sequence:6:0:forced-aero-erosion",
               "name": "Forced Aero Erosion DMG",
               "kind": "damage",
-              "damageType": "aero-erosion",
+              "damageType": "status",
               "element": "aero",
               "referenceActionId": "status:aero-erosion",
               "referenceMultiplier": 1,
@@ -275303,7 +275303,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1509:1509:7:5",
           "reviewFingerprint": "2e5a3c796c1a1dbbad54dae7faecfcbeca1d2af05ee009279fcf029ab9115ef8",
           "kind": "damage",
-          "damageType": "tuneBreak",
+          "damageType": "tune-break",
           "element": "spectro",
           "tags": [
             "forte"
@@ -288683,7 +288683,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1511:1511:3:3",
           "reviewFingerprint": "959b50baeeca55e493e2831efc60d5c74bc8e1fb9c71bb4c1e9bd787099c8ec1",
           "kind": "damage",
-          "damageType": "tuneBreak",
+          "damageType": "tune-break",
           "element": "spectro",
           "skillLevelIndex": 3,
           "formulas": {
@@ -289342,7 +289342,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1511:1511:7:0",
           "reviewFingerprint": "959b50baeeca55e493e2831efc60d5c74bc8e1fb9c71bb4c1e9bd787099c8ec1",
           "kind": "damage",
-          "damageType": "tuneBreak",
+          "damageType": "tune-break",
           "element": "spectro",
           "tags": [
             "forte"

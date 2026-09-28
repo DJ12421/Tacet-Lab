@@ -2911,7 +2911,7 @@
             "skillType": "Resonance Liberation",
             "skillName": "Netrunner",
             "name": "Netrunner - Spoofing Program: Cripple Movement DMG",
-            "damageType": "tuneBreak",
+            "damageType": "tune-break",
             "skillSource": "liberation",
             "scaling": "atk",
             "expressions": [
@@ -3110,7 +3110,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Depths of Blackwall",
             "name": "Depths of Blackwall - Hack Response - Data Crash DMG",
-            "damageType": "tuneBreak",
+            "damageType": "tune-break",
             "tags": [
               "forte"
             ],

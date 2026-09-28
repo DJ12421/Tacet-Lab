@@ -77,8 +77,8 @@ describe('combat Step 5 rotations', () => {
     expectClose(result.value.total, 2500 * D90)
     expectClose(result.value.dps, 250 * D90)
     expectClose(result.value.byActor.actor, 2500 * D90)
-    expectClose(result.value.byDamageType.skill, 1000 * D90)
-    expectClose(result.value.byDamageType.basic, 1500 * D90)
+    expectClose(result.value.byDamageType.skill ?? 0, 1000 * D90)
+    expectClose(result.value.byDamageType.basic ?? 0, 1500 * D90)
   })
 
   it('passes command inputs through reviewed effect resolution', () => {

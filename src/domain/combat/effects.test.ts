@@ -239,7 +239,8 @@ describe('combat Step 4 reviewed effects', () => {
     expect(mechanicsRegistry.characters['1105']?.actions['1105:3:0']?.tags).toContain('coordinated')
     expect(mechanicsRegistry.characters['1302']?.actions['1302:7:1']?.tags).toContain('coordinated')
     const correctedScaling = mechanicsRegistry.characters['1110']?.actions['1110:2:0']
-    expect(correctedScaling && 'formulas' in correctedScaling ? Object.values(correctedScaling.formulas)[0]?.scaling : undefined).toHaveProperty('atk')
+    const correctedFormula = correctedScaling && 'formulas' in correctedScaling ? Object.values(correctedScaling.formulas)[0] : undefined
+    expect(correctedFormula && 'scaling' in correctedFormula ? correctedFormula.scaling : undefined).toHaveProperty('atk')
     const correctedHits = mechanicsRegistry.characters['1109']?.actions['1109:1:0']
     const levelTwoFormula = correctedHits && 'formulas' in correctedHits ? correctedHits.formulas[2] : undefined
     expect(levelTwoFormula && 'hits' in levelTwoFormula ? levelTwoFormula.hits : undefined).toEqual([0.2982])

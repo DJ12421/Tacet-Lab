@@ -2103,7 +2103,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Mass-Energy Equivalence",
             "name": "Mass-Energy Equivalence - Tune Rupture Response - Particle Jet DMG",
-            "damageType": "tuneBreak",
+            "damageType": "tune-break",
             "tags": [
               "forte"
             ],

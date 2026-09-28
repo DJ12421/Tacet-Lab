@@ -47,14 +47,14 @@ const normalizeDamageBonusStats = (operation: EffectOperation): EffectOperation[
 
 const normalizeReviewedEffect = (effect: EffectMechanics): EffectMechanics => {
   const scopeCorrection = wutheringToolsEffectScopes[effect.id] ?? wutheringToolsEffectScopes[effect.sourceId]
-  const reviewedEffect = scopeCorrection ? {
+  const reviewedEffect: EffectMechanics = scopeCorrection ? {
     ...effect,
     ...(effect.filter && scopeCorrection.all ? { filter:{ ...effect.filter, actionIds:scopeCorrection.all } } : {}),
-    operations:effect.operations.map((operation, index) => {
+    operations:effect.operations.map((operation, index): EffectOperation => {
       const actionIds = scopeCorrection.byOperation?.[index] ?? scopeCorrection.all
       const upstreamFilter = scopeCorrection.filtersByOperation?.[index]
-      const corrected = upstreamFilter === null
-        ? (({ filter: _filter, ...unfiltered }) => unfiltered)(operation)
+      const corrected: EffectOperation = upstreamFilter === null
+        ? { ...operation, filter:undefined }
         : upstreamFilter ? { ...operation, filter:upstreamFilter } : operation
       return actionIds ? { ...corrected, filter:{ ...corrected.filter, actionIds } } : corrected
     }).filter((operation) => !scopeCorrection.blockUnscoped || effect.filter?.actionIds?.length || operation.filter?.actionIds?.length)
@@ -62,7 +62,7 @@ const normalizeReviewedEffect = (effect: EffectMechanics): EffectMechanics => {
   const description = reviewedEffect.description ?? ''
   const tuneBreakScaledDamage = /(?:each|every) point of [\s\S]*Tune Break Boost increases [\s\S]*total DMG/i.test(description)
   const reductions = new Set(reviewedEffect.operations.filter((operation) => operation.kind === 'reduce-damage-taken').map((operation) => operation.value))
-  const teamBonuses = new Set(reviewedEffect.operations.filter((operation) => operation.kind === 'add-damage-bonus' && operation.recipient === 'team').map((operation) => operation.value))
+  const teamBonuses = new Set(reviewedEffect.operations.flatMap((operation) => operation.kind === 'add-damage-bonus' && operation.recipient === 'team' ? [operation.value] : []))
   const operations = reviewedEffect.operations.flatMap((operation): EffectOperation[] => {
     if (tuneBreakScaledDamage && operation.kind === 'add-damage-bonus') {
       if (operation.filter?.damageTypes?.includes('tune-break')) return []
@@ -106,7 +106,7 @@ export const mechanicsRegistry: MechanicsRegistry = {
       })),
       actions:Object.fromEntries(Object.entries({ ...reviewed.actions, ...(supplementalCharacterActions[character.id] ?? {}) }).map(([id, action]) => {
         const correction = wutheringToolsActionClassification[id]
-        const damageType = action.damageType === 'tuneBreak' ? 'tune-break' : correction?.damageType ?? action.damageType
+        const damageType = correction?.damageType ?? action.damageType
         const tags = [...new Set([...(action.tags ?? []), ...(correction?.addTags ?? [])])]
         const formulas = 'formulas' in action && correction && (correction.scalingStat || correction.hitsByLevel) ? Object.fromEntries(Object.entries(action.formulas).map(([level, formula]) => [level, {
           ...formula,
