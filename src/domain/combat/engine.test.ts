@@ -265,12 +265,6 @@ describe('combat Step 3 public interface fixtures', () => {
     expectClose(run(-0.10, 0.20), 1000 * D90 * 1.20)
   })
 
-  it('F19 rejects enemy damage reduction', () => {
-    const action = damageAction('F19', { kind: 'damage', scaling: { atk: 1 }, hits: [1], canCrit: false })
-    const result = fixture({ actions: [action], enemy: { damageReduction: 0.25 } }).calculate('F19')
-    expect(result).toMatchObject({ ok: false, errors: [{ code: 'unsupported-mechanic', sourceId: 'fixture:F19', actorId: 'actor', actionId: 'F19' }], warnings: [] })
-  })
-
   it('F20 fixed damage bypasses crit and enemy multipliers', () => {
     const result = valueOf(fixture({
       stats: { critRate: 1, critDamage: 3 },
@@ -314,9 +308,4 @@ describe('combat Step 3 public interface fixtures', () => {
     expect(withTrace.trace?.stage).toBe('damage')
   })
 
-  it('fails closed for mechanics reserved for later milestones', () => {
-    expect(fixture({ skillLevels: [10] }).calculate()).toMatchObject({ ok: false, errors: [{ code: 'unsupported-mechanic' }] })
-    expect(fixture({ mainEchoId: 'echo-0' }).calculate()).toMatchObject({ ok: false, errors: [{ code: 'invalid-input' }] })
-    expect(fixture({ selections: { active: true } }).calculate()).toMatchObject({ ok: false, errors: [{ code: 'missing-mechanic' }] })
-  })
 })

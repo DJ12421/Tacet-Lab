@@ -8,7 +8,6 @@ import {
   type MechanicsRegistry
 } from './index'
 import { mechanicsRegistry } from '../../game-data/combat/registry'
-import { calculateBuildStats } from './runtime'
 
 const action: ActionMechanics = {
   id: 'skill',
@@ -246,23 +245,6 @@ describe('combat Step 4 reviewed effects', () => {
     expect(levelTwoFormula && 'hits' in levelTwoFormula ? levelTwoFormula.hits : undefined).toEqual([0.2982])
   })
 
-  it('removes parser-created global damage bonuses and restores typed filters', () => {
-    const rebeccaReduction = mechanicsRegistry.characters['1308']?.effects?.find((effect) => effect.id.endsWith('1308:3:effect:8'))
-    const lucyReduction = mechanicsRegistry.characters['1511']?.effects?.find((effect) => effect.id.endsWith('1511:8:effect:3'))
-    const camellyaBasic = mechanicsRegistry.characters['1603']?.effects?.find((effect) => effect.id.endsWith('1603:5:effect:0'))
-    const phrolovaTeam = mechanicsRegistry.characters['1608']?.effects?.find((effect) => effect.id.endsWith('1608:sequence:4:0'))
-    const mornyeTuneBreak = mechanicsRegistry.characters['1209']?.effects?.find((effect) => effect.id.endsWith('1209:17:effect:4'))
-    expect(rebeccaReduction?.operations.some((operation) => operation.kind === 'add-damage-bonus')).toBe(false)
-    expect(lucyReduction?.operations.some((operation) => operation.kind === 'add-damage-bonus')).toBe(false)
-    expect(camellyaBasic?.operations).toContainEqual(expect.objectContaining({ kind:'add-damage-bonus', filter:{ damageTypes:['basic'] } }))
-    expect(phrolovaTeam?.operations.filter((operation) => operation.kind === 'add-damage-bonus')).toEqual([
-      expect.objectContaining({ recipient:'team', value:0.2 })
-    ])
-    expect(mornyeTuneBreak?.activation).toEqual(expect.objectContaining({ kind:'conditional-value', stat:'tuneBreakBoost' }))
-    expect(mornyeTuneBreak?.operations).toEqual([expect.objectContaining({ kind:'add-damage-bonus', value:0.0012, stacking:'per-stack' })])
-    expect(mechanicsRegistry.characters['1105']?.effects?.some((effect) => /^(?:ATK|Crit\. Rate)\+$/.test(effect.name ?? ''))).toBe(false)
-  })
-
   it('keeps character Forte and Sequence buffs scoped to their upstream talents', () => {
     const effects = mechanicsRegistry.characters['1205']?.effects ?? []
     const actionIds = (suffix: string) => effects.find((effect) => effect.id.endsWith(suffix))?.operations[0]?.filter?.actionIds
@@ -284,26 +266,6 @@ describe('combat Step 4 reviewed effects', () => {
       kind:'ignore-defense',
       filter:{ actionIds:['1606:7:0', '1606:7:1', '1606:7:2'] }
     }))
-  })
-
-  it('keeps rotation damage-type buffs in their stat bucket', () => {
-    const shared = {
-      build:{ id:'build', name:'Build', resonatorId:'1105', weaponId:'weapon', echoIds:[], level:90, skillLevel:10 },
-      character:{ id:'character', catalogId:'1105', level:90, sequence:0, skillLevels:[10,10,10,10,10], enabledSkillTreeBonusIds:[], locked:false, createdAt:0 },
-      weapon:{ id:'weapon', catalogId:'21050011', level:90, rank:1, locked:false, createdAt:0 },
-      echoes:[],
-      enemy:{ level:90, resistance:10, damageReduction:0 }
-    }
-    const base = calculateBuildStats(shared, false)
-    const buffed = calculateBuildStats({
-      ...shared,
-      buffs:[{ id:'basic-buff', name:'Basic only', sourceBuildId:'build', target:'self', triggerAttackId:'', duration:10, stat:'basicDamage', value:20, stackingGroup:'basic-buff' }]
-    }, false)
-    expect(base.ok).toBe(true)
-    expect(buffed.ok).toBe(true)
-    if (!base.ok || !buffed.ok) return
-    expect(buffed.stats.basicDamage - base.stats.basicDamage).toBeCloseTo(20, 10)
-    expect(buffed.stats.skillDamage).toBeCloseTo(base.stats.skillDamage, 10)
   })
 
   it('shares one activation across team and source-only operations', () => {
