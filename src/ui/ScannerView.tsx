@@ -18,6 +18,7 @@ import { ScanSessionController } from '../scanner/session'
 import { copyDiagnosticReport } from '../scanner/debug'
 import type { CalibrationProfile, DiagnosticScanCandidate, OcrWorkerPreference, ScanSession, ScanSource } from '../scanner/types'
 import { EchoMiniCard, EquippedCharacterLabel, Icon, PageHeader, Panel } from './components'
+import { weaponStatIconSource } from './stat-icons'
 import { ScanReviewCard } from './ScanReviewCard'
 import { ScannerDebugOverlay } from './ScannerDebugOverlay'
 import { ScannerCalibration } from './ScannerCalibration'
@@ -52,7 +53,7 @@ function ScannedLoadoutCards({ details, onReview }: { details: BuildCardDetails;
       <div className="scanned-loadout-copy">
         <span className="eyebrow">Scanned weapon</span>
         <h3>{weapon?.name ?? (details.weapon.value || 'Unknown weapon')}</h3>
-        <p>{weapon ? `${weapon.type} · ${weapon.secondaryStat} ${weapon.secondaryStatValue}` : 'Choose a weapon during review'}</p>
+        <p>{weapon ? <>{weapon.type}<span>·</span><img className="weapon-stat-icon" src={weaponStatIconSource(weapon.secondaryStat)} alt="" aria-hidden="true"/>{weapon.secondaryStat} {weapon.secondaryStatValue}</> : 'Choose a weapon during review'}</p>
         <dl><div><dt>Level</dt><dd>{details.weaponLevel.value}/90</dd></div><div><dt>Rank</dt><dd>R{details.weaponRank.value}</dd></div></dl>
         <small>Review weapon details</small>
       </div>

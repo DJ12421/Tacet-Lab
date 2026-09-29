@@ -183,6 +183,9 @@
 }
 
 .cbc-echo-main-stats small {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   overflow: hidden;
   color: #a3afac;
   font-size: 11px;
@@ -225,6 +228,9 @@
 
 .cbc-echo-substats small {
   align-self: center;
+  display: flex;
+  align-items: center;
+  gap: 4px;
   overflow: hidden;
   color: #b5c0bd;
   font-size: 14px;
@@ -418,4 +424,12 @@
   color: #788682;
   font-size: 12px;
   font-style: normal;
+}
+
+.cbc-echo-main-stats small img,
+.cbc-echo-substats small img {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+  object-fit: contain;
 }

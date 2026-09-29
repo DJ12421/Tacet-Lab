@@ -13,7 +13,7 @@
     grid-template-columns: 68px minmax(0,1fr);
     min-height: 82px;
   }
-  .catalog-choice img {
+  .catalog-choice>img {
     width: 68px;
   }
   .owned-add {

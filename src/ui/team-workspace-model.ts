@@ -15,6 +15,11 @@ import { resolveCharacterShowcaseModel, type CharacterShowcaseModel } from './ch
 const SKILL_KEYS = ['normalAttack', 'resonanceSkill', 'forteCircuit', 'resonanceLiberation', 'introSkill'] as const
 export type TeamAttackGroup = 'basic' | 'skill' | 'forte' | 'liberation' | 'intro' | 'outro' | 'echo' | 'tuneBreak'
 
+export function compactAttackLabel(label: string) {
+  const separator = label.indexOf(' - ')
+  return separator < 0 ? label : label.slice(separator + 3)
+}
+
 export interface TeamWorkspaceInput {
   team: Team
   builds: Build[]

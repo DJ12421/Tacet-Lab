@@ -84,7 +84,7 @@
   transform: translateY(-2px);
 }
 
-.catalog-choice img {
+.catalog-choice>img {
   width: 92px;
   height: 100%;
   object-fit: contain;

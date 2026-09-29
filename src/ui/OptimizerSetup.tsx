@@ -5,27 +5,12 @@ import { echoCatalog, sonataCatalog, statLabels } from '../game-data'
 import { generatedSonataIconSources } from '../game-data/sonatas.generated'
 import { mainStatKeysByCost } from '../game-data/echo-main-stats'
 import { EchoMiniCard, formatStat, Icon, Panel } from './components'
+import { statIconSource } from './stat-icons'
+import { compactAttackLabel } from './team-workspace-model'
 
 const CORE_STATS: OptimizerStatKey[] = ['hp', 'atk', 'def', 'critRate', 'critDamage', 'energyRegen', 'basicDamage', 'heavyDamage', 'skillDamage', 'liberationDamage']
 const RESULT_LIMITS = [5, 10, 20, 50, 100]
 const WORKER_COUNTS: Array<number | 'auto'> = ['auto', 1, 2, 4, 8, 12, 16]
-const STAT_ICON_NAMES: Partial<Record<StatKey, string>> = {
-  hp: 'Icon_Attribute_Health.webp', hpPercent: 'Icon_Attribute_Health.webp',
-  atk: 'Icon_Attribute_Attack.webp', atkPercent: 'Icon_Attribute_Attack.webp',
-  def: 'Icon_Attribute_Defense.webp', defPercent: 'Icon_Attribute_Defense.webp',
-  critRate: 'Icon_Attribute_Crit_Rate.webp', critDamage: 'Icon_Attribute_Crit_DMG.webp',
-  energyRegen: 'Icon_Attribute_Energy_Regen.webp', healingBonus: 'Icon_Attribute_Healing.webp',
-  basicDamage: 'Icon_Basic_Attack_DMG_Amplification.webp', heavyDamage: 'Icon_Heavy_Attack_DMG_Amplification.webp',
-  skillDamage: 'Icon_Resonance_Skill_DMG_Amplification.webp', liberationDamage: 'Icon_Resonance_Liberation_DMG_Amplification.webp',
-  glacioDamage: 'Icon_Glacio_DMG_Bonus.webp', fusionDamage: 'Icon_Fusion_DMG_Bonus.webp',
-  electroDamage: 'Icon_Electro_DMG_Bonus.webp', aeroDamage: 'Icon_Aero_DMG_Bonus.webp',
-  spectroDamage: 'Icon_Spectro_DMG_Bonus.webp', havocDamage: 'Icon_Havoc_DMG_Bonus.webp'
-}
-
-export function optimizerStatIconSource(stat: StatKey) {
-  return `https://wuwa-optimizer.com/images/icons/${STAT_ICON_NAMES[stat] ?? 'Icon_Attribute_Attack.webp'}`
-}
-
 function OptimizerEchoThumb({ echo, main }: { echo?: Echo; main?: boolean }) {
   if (!echo) return <span className="optimizer-echo-thumb is-empty" aria-label="Empty Echo slot"><b>+</b></span>
   const artwork = echoCatalog.find((entry) => entry.name === echo.name)?.iconSourceUrl
@@ -33,7 +18,7 @@ function OptimizerEchoThumb({ echo, main }: { echo?: Echo; main?: boolean }) {
   return <span className={`optimizer-echo-thumb${main ? ' is-main' : ''}`} title={`${echo.name} · +${echo.level} · ${echo.cost} cost`}>
     {artwork ? <img className="optimizer-echo-thumb-art" src={artwork} alt={echo.name}/> : <b className="optimizer-echo-thumb-fallback">◇</b>}
     <strong>+{echo.level}</strong><b className={`cost-${echo.cost}`}>{echo.cost}</b>
-    <img className="optimizer-echo-stat-icon" src={optimizerStatIconSource(echo.mainStat.key)} alt="" title={statLabels[echo.mainStat.key]} aria-hidden="true"/>
+    <img className="optimizer-echo-stat-icon" src={statIconSource(echo.mainStat.key)} alt="" title={statLabels[echo.mainStat.key]} aria-hidden="true"/>
     {sonataIcon && <img className="optimizer-echo-sonata-icon" src={sonataIcon} alt="" title={echo.sonata}/>}
   </span>
 }
@@ -130,7 +115,7 @@ export function OptimizerSetup(props: OptimizerSetupProps) {
             <div><input aria-label="Minimum Echo level" type="range" min="0" max="25" value={profile.levelLow} onChange={(event) => update({ levelLow: Math.min(profile.levelHigh, Number(event.target.value)) })}/><input aria-label="Maximum Echo level" type="range" min="0" max="25" value={profile.levelHigh} onChange={(event) => update({ levelHigh: Math.max(profile.levelLow, Number(event.target.value)) })}/></div>
             <label><span>Maximum level</span><input type="number" min="0" max="25" value={profile.levelHigh} onChange={(event) => update({ levelHigh: Math.max(profile.levelLow, Math.min(25, Number(event.target.value))) })}/></label>
           </div>
-          <div className="optimizer-toggle-row"><span>Rarity <small>Dimmed means included</small></span><div>{([1, 2, 3, 4, 5] as Echo['rarity'][]).map((rarity) => { const active = profile.rarities.includes(rarity); return <button type="button" className={active ? 'active' : ''} aria-pressed={active} data-filter-state={active ? 'included' : 'excluded'} onClick={() => toggleRarity(rarity)} key={rarity}>{rarity}★ <small>{echoes.filter((echo) => echo.rarity === rarity).length}</small></button> })}</div></div>
+          <div className="optimizer-toggle-row"><span>Rarity</span><div>{([1, 2, 3, 4, 5] as Echo['rarity'][]).map((rarity) => { const active = profile.rarities.includes(rarity); return <button type="button" className={active ? 'active' : ''} aria-pressed={active} data-filter-state={active ? 'included' : 'excluded'} onClick={() => toggleRarity(rarity)} key={rarity}>{rarity}★ <small>{echoes.filter((echo) => echo.rarity === rarity).length}</small></button> })}</div></div>
         </Panel>
 
         <Panel className="optimizer-filter-card optimizer-main-stat-card">
@@ -175,7 +160,7 @@ export function OptimizerSetup(props: OptimizerSetupProps) {
 
     <div className="optimizer-scales-with"><span>Selected target scales with</span>{scalesWith.map((label) => <b key={label}>{label}</b>)}<small>Team effects, enemy state, sequences, weapon effects, and enabled conditions are frozen when generation starts.</small></div>
     <Panel className="optimizer-run-bar">
-      <label><span>Optimization target</span><select value={targetId} onChange={(event) => onTargetChange(event.target.value)}>{targets.map((target) => <option value={target.id} key={target.id}>{target.label}</option>)}</select></label>
+      <label><span>Optimization target</span><select value={targetId} onChange={(event) => onTargetChange(event.target.value)}>{targets.map((target) => <option value={target.id} key={target.id}>{compactAttackLabel(target.label)}</option>)}</select></label>
       <label><span>Results</span><select value={profile.resultLimit} onChange={(event) => update({ resultLimit: Number(event.target.value) })}>{RESULT_LIMITS.map((limit) => <option value={limit} key={limit}>{limit} builds</option>)}</select></label>
       <label><span>Workers</span><select value={profile.workerCount} onChange={(event) => update({ workerCount: event.target.value === 'auto' ? 'auto' : Number(event.target.value) })}>{WORKER_COUNTS.map((count) => <option value={count} key={count}>{count === 'auto' ? 'Auto' : count}</option>)}</select></label>
       <label><span>Search</span><select value={profile.searchMode} onChange={(event) => update({ searchMode: event.target.value as OptimizerProfile['searchMode'] })}><option value="exact">Exact</option><option value="fast">Fast · capped</option></select></label>

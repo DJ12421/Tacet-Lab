@@ -165,6 +165,13 @@
   font-size: var(--font-size-small);
 }
 
+.echo-stat-icon {
+  width: 19px;
+  height: 19px;
+  flex: 0 0 19px;
+  object-fit: contain;
+}
+
 .main-stat strong {
   font-size: var(--font-size-heading-small);
 }

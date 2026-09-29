@@ -12,7 +12,7 @@
   background: linear-gradient(135deg,var(--weapon-glow),#0b1011 70%);
 }
 
-.catalog-choice.weapon-choice img {
+.catalog-choice.weapon-choice>img {
   width: 118px;
   background: radial-gradient(circle,var(--weapon-glow),transparent 68%);
 }
@@ -38,7 +38,7 @@
   .catalog-choice.weapon-choice {
     grid-template-columns: 100px minmax(0,1fr);
   }
-  .catalog-choice.weapon-choice img {
+  .catalog-choice.weapon-choice>img {
     width: 100px;
   }
 }

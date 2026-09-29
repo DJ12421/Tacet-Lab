@@ -413,7 +413,7 @@
   .catalog-choice {
     grid-template-columns: 82px minmax(0,1fr);
   }
-  .catalog-choice img {
+  .catalog-choice>img {
     width: 82px;
   }
   .echo-edit-modal {
@@ -607,7 +607,7 @@ img,video,canvas,svg {
   .catalog-choice {
     grid-template-columns: 68px minmax(0,1fr);
   }
-  .catalog-choice img {
+  .catalog-choice>img {
     width: 68px;
   }
 }

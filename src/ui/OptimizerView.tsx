@@ -464,7 +464,7 @@ export function OptimizerView({
     return [{ key, echoIds: point.echoIds, score: 'score' in point ? point.score : point.y, stats: point.stats, rank: resultIndex >= 0 ? resultIndex + 1 : undefined }]
   })
   return <section className="tw-optimizer-workspace optimizer-v2-workspace">
-    <header className="tw-optimizer-heading tw-panel"><div><span className="eyebrow">Build laboratory</span><h2>Echo optimizer</h2><p>Search every legal loadout against the active team state, compare trade-offs, and equip the exact main-Echo ordering you choose.</p></div></header>
+    <header className="tw-optimizer-heading tw-panel"><h2>Optimize Echoes</h2></header>
     {profileReady && build && runtime && showcase && <OptimizerSetup
       profile={profile} setProfile={updateProfile} echoes={inventoryEchoes} currentEchoes={currentEchoes} buildId={build.id} buildName={build.name}
       characterName={showcase.catalog.name} portraitUrl={showcase.catalog.portraitSourceUrl || showcase.catalog.iconSourceUrl}

@@ -58,3 +58,36 @@ body:has(.modal-backdrop,.catalog-picker-backdrop,.weapon-detail-backdrop,.chara
   max-height: none;
   overflow: visible;
 }
+
+.weapon-stat-icon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  object-fit: contain;
+}
+
+.weapon-stat-label,
+.weapon-card-stats span,
+.cbc-weapon dt,
+.archive-weapon-card dt,
+.archive-detail-facts dt,
+.wv-stats-card small,
+.picker-weapon-stats b,
+.detail-weapon-body span,
+.detail-weapon-body small {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.tw-overview-strip-weapon b,
+.scanned-weapon-card .scanned-loadout-copy>p {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.detail-weapon-body .weapon-stat-icon {
+  width: 16px;
+  height: 16px;
+}

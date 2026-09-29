@@ -326,7 +326,7 @@
   min-width: 65px;
 }
 
-.catalog-choice.weapon-choice img {
+.catalog-choice.weapon-choice>img {
   width: 118px;
 }
 

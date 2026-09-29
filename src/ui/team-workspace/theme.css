@@ -183,9 +183,6 @@
   color: #fff;
 }
 
-.tw-gallery-delete {
-  color: #bc6b76;
-}
 
 .tw-gallery-delete:hover {
   background: #171214;
@@ -243,6 +240,279 @@
 
 .tw-gallery-card:hover .tw-gallery-footer b {
   color: #fff;
+}
+
+/* Keep the gallery visually aligned with the Archive without changing its layout. */
+
+.team-workspace.team-gallery-original {
+  --mint: #8de4d4;
+  --gold: #e4bb5e;
+  --gold-soft: #9d8754;
+  --tw-surface: #0c1213;
+  --tw-surface-raised: #0a0f10;
+  --tw-surface-hover: #101718;
+  --tw-line: rgba(228,187,94,.25);
+  --tw-line-strong: rgba(228,187,94,.72);
+  --tw-mint-line: rgba(141,228,212,.22);
+  --tw-text: #edf2f0;
+  --tw-muted: #899693;
+  --tw-subtle: #75827f;
+}
+
+.team-gallery-original .tw-gallery-controls.tw-panel {
+  position: relative;
+  z-index: 12;
+  overflow: visible;
+  border-color: var(--line);
+  border-radius: 9px;
+  background: rgba(8,13,14,.96);
+  box-shadow: 0 12px 35px rgba(0,0,0,.28);
+  backdrop-filter: blur(16px);
+}
+
+.team-gallery-original .tw-gallery-controls .eyebrow {
+  color: var(--gold);
+}
+
+.team-gallery-original .tw-gallery-controls>div h1 {
+  color: #eef3f1;
+}
+
+.team-gallery-original .tw-gallery-controls>div p,
+.team-gallery-original .tw-gallery-controls label {
+  color: #899693;
+}
+
+.team-gallery-original .tw-gallery-controls input,
+.team-gallery-original .tw-character-filter summary {
+  border-color: rgba(141,228,212,.22);
+  border-radius: 6px;
+  background: #070b0c;
+  color: #edf3ef;
+}
+
+.team-gallery-original .tw-gallery-controls input:hover,
+.team-gallery-original .tw-gallery-controls input:focus,
+.team-gallery-original .tw-character-filter summary:hover,
+.team-gallery-original .tw-character-filter[open] summary {
+  border-color: rgba(141,228,212,.75);
+  background: #070b0c;
+  box-shadow: 0 0 0 2px rgba(141,228,212,.12),inset 0 0 0 1px rgba(141,228,212,.18);
+}
+
+.team-gallery-original .tw-character-filter summary i {
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  transform: translateY(3px);
+  color: var(--mint);
+  font-size: 0;
+}
+
+.team-gallery-original .tw-character-filter summary i::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform .16s ease;
+}
+
+.team-gallery-original .tw-character-filter[open] summary i {
+  transform: translateY(3px);
+}
+
+.team-gallery-original .tw-character-filter[open] summary i::before {
+  transform: translateY(2px) rotate(225deg);
+}
+
+.team-gallery-original .tw-character-filter summary img,
+.team-gallery-original .tw-character-filter-menu img,
+.team-gallery-original .tw-character-filter-all {
+  border-color: rgba(228,187,94,.34);
+  background: rgba(228,187,94,.08);
+}
+
+.team-gallery-original .tw-character-filter-all {
+  color: var(--gold);
+}
+
+.team-gallery-original .tw-character-filter-menu {
+  border-color: rgba(228,187,94,.48);
+  border-radius: 8px;
+  background: #070b0c;
+  box-shadow: 0 20px 48px rgba(0,0,0,.72);
+}
+
+.team-gallery-original .tw-character-filter-menu button {
+  border-radius: 6px;
+  color: #adb8b5;
+}
+
+.team-gallery-original .tw-character-filter-menu button:hover {
+  background: rgba(141,228,212,.1);
+  color: #fff;
+  box-shadow: none;
+}
+
+.team-gallery-original .tw-character-filter-menu button.active {
+  background: rgba(228,187,94,.14);
+  color: #fff1c7;
+  box-shadow: none;
+}
+
+.team-gallery-original .tw-gallery-create.primary {
+  border-color: #f0cd78;
+  background: linear-gradient(135deg,#f0ce7c,#ba8e39);
+  color: #16140d;
+}
+
+.team-gallery-original .tw-gallery-create.primary:hover {
+  border-color: #f0cd78;
+  background: linear-gradient(135deg,#f0ce7c,#ba8e39);
+  box-shadow: 0 0 25px rgba(228,187,94,.18);
+  filter: brightness(1.08);
+}
+
+.team-gallery-original .tw-gallery-create.primary>.icon {
+  stroke: #000;
+}
+
+.team-gallery-original .tw-gallery-card {
+  border-color: rgba(255,255,255,.1);
+  border-radius: 9px;
+  background: var(--tw-surface);
+}
+
+.team-gallery-original .tw-gallery-empty.tw-panel {
+  border-color: rgba(228,187,94,.25);
+  border-radius: 9px;
+  background: var(--tw-surface);
+}
+
+.team-gallery-original .tw-gallery-card:hover {
+  border-color: rgba(255,255,255,.2);
+  box-shadow: 0 15px 34px rgba(0,0,0,.4);
+}
+
+.team-gallery-original .tw-gallery-card>header {
+  border-bottom-color: rgba(228,187,94,.18);
+  background: #0a0f10;
+}
+
+.team-gallery-original .tw-gallery-card>header input {
+  color: #edf2f0;
+}
+
+.team-gallery-original .tw-gallery-card>header input:hover,
+.team-gallery-original .tw-gallery-card>header input:focus {
+  background: rgba(228,187,94,.08);
+}
+
+.team-gallery-original .tw-gallery-delete {
+  border: 0;
+  border-left: 1px solid rgba(235,100,103,.32);
+  border-radius: 0;
+  background: rgba(122,28,35,.13);
+  color: #ed7478;
+}
+
+.team-gallery-original .tw-gallery-delete:hover {
+  background: rgba(174,43,52,.28);
+  color: #ff9aa2;
+}
+
+.team-gallery-original .tw-gallery-delete>.icon {
+  stroke: currentColor;
+}
+
+.team-gallery-original .tw-gallery-member {
+  border-bottom-color: rgba(228,187,94,.18);
+  border-left-color: color-mix(in srgb,var(--tw-card-element,#e4bb5e) 52%,transparent);
+  background: radial-gradient(circle at 16% 50%,color-mix(in srgb,var(--tw-card-element,#e4bb5e) 20%,transparent),transparent 48%),#080c0d;
+}
+
+.team-gallery-original .tw-gallery-member::after {
+  background: linear-gradient(90deg,transparent 12%,rgba(8,12,13,.1) 38%,rgba(8,12,13,.88) 72%);
+}
+
+.team-gallery-original .tw-gallery-character strong {
+  color: #edf2f0;
+}
+
+.team-gallery-original .tw-gallery-character small {
+  color: #adb8b5;
+}
+
+.team-gallery-original .tw-gallery-sonatas {
+  width: min(100%,295px);
+  display: flex;
+  padding:7px 0 92px 0;
+  transform: translateX(-2px);
+  gap: 3px;
+}
+
+.team-gallery-original .tw-gallery-character .tw-gallery-sonata {
+  width: auto;
+  min-width: 0;
+  max-width: 100%;
+  flex: 1 1 0;
+  display: grid;
+  grid-template-columns: 20px minmax(0,1fr) auto;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border: 1px solid rgba(255,255,255,.11);
+  border-radius: 4px;
+  background: #070b0c;
+}
+
+.team-gallery-original .tw-gallery-character .tw-gallery-sonata.empty {
+  flex-basis: 100%;
+  grid-template-columns: 1fr;
+}
+
+.team-gallery-original .tw-gallery-sonata img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.team-gallery-original .tw-gallery-sonata>span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.team-gallery-original .tw-gallery-sonata b {
+  color: #edf2f0;
+  font-size: var(--font-size-small);
+}
+
+.team-gallery-original .tw-gallery-character em {
+  color: var(--tw-card-element,var(--gold));
+}
+
+.team-gallery-original .tw-gallery-loadout>span {
+  border-color: rgba(228,187,94,.18);
+  background: #070b0c;
+}
+
+.team-gallery-original .tw-gallery-loadout>span:hover {
+  border-color: color-mix(in srgb,var(--tw-card-element,#e4bb5e) 52%,transparent);
+}
+
+.team-gallery-original .tw-gallery-count {
+  color: var(--gold);
+}
+
+.team-gallery-original .tw-gallery-loadout>span small {
+  color: var(--tw-card-element,var(--gold));
+}
+
+.team-gallery-original .tw-gallery-count {
+  border-top-color: rgba(228,187,94,.18);
 }
 
 /* Sticky workspace chrome and settings. */

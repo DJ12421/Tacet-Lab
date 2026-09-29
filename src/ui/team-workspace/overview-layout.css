@@ -372,6 +372,9 @@
 }
 
 .tw-overview-top-echo-main {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   overflow: hidden;
   color: #b8c4c0;
   font-size: var(--font-size-caption);
@@ -383,6 +386,14 @@
   color: #f1f5f4;
 }
 
+.tw-overview-top-echo-main>img,
+.tw-overview-top-echo-stats small>img {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+  object-fit: contain;
+}
+
 .tw-overview-top-echo-stats {
   min-width: 0;
   display: grid;
@@ -391,7 +402,7 @@
 
 .tw-overview-top-echo-stats small {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
   gap: 5px;
   overflow: hidden;
   color: #7f8d89;
@@ -400,6 +411,7 @@
 }
 
 .tw-overview-top-echo-stats small>b {
+  margin-left: auto;
   color: #aebbb7;
   font-weight: 600;
 }
@@ -496,6 +508,12 @@
 
 .tw-overview-formulas .tw-formula-grid {
   grid-template-columns: minmax(235px,.72fr) minmax(0,2.28fr);
+}
+
+.tw-overview-top-echo-stats small>span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .tw-overview-formulas .tw-sheet-results {

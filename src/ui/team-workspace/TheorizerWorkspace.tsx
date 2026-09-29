@@ -6,8 +6,8 @@ import { echoCatalog, sonataCatalog, statLabels } from '../../game-data'
 import { fixedSecondaryMainStat, maxLevelByRarity, primaryMainStatValue } from '../../game-data/echo-main-stats'
 import { generatedSonataIconSources } from '../../game-data/sonatas.generated'
 import type { TheorizerMode, TheorizerRankingRequest, TheorizerRankingResponse } from '../../workers/theorizer.worker'
-import { optimizerStatIconSource } from '../OptimizerSetup'
-import { formatWorkspaceStat, type TeamMemberModel, type TeamWorkspaceModel } from '../team-workspace-model'
+import { statIconSource } from '../stat-icons'
+import { compactAttackLabel, formatWorkspaceStat, type TeamMemberModel, type TeamWorkspaceModel } from '../team-workspace-model'
 
 type RankedSuggestion = TheorizerRankingResponse['results'][number]
 
@@ -127,7 +127,7 @@ function MainStatPlan({ draft }: { draft: TheorycraftBuild }) {
   return <span className="tw-theorizer-main-plan">{draft.slots.map((slot, index) => {
     const value = primaryMainStatValue(slot.cost, slot.rarity, slot.level, slot.mainStatKey) ?? 0
     const secondary = fixedSecondaryMainStat({ cost: slot.cost, rarity: slot.rarity, level: slot.level })
-    return <span className="tw-theorizer-stat-slot" key={index}><strong>{slot.cost}</strong><span><img src={optimizerStatIconSource(slot.mainStatKey)} alt={statLabels[slot.mainStatKey]}/><b>{formatWorkspaceStat(slot.mainStatKey, value)}</b></span><em><img src={optimizerStatIconSource(secondary.key)} alt={statLabels[secondary.key]}/>{formatWorkspaceStat(secondary.key, secondary.value)}</em></span>
+    return <span className="tw-theorizer-stat-slot" key={index}><strong>{slot.cost}</strong><span><img src={statIconSource(slot.mainStatKey)} alt={statLabels[slot.mainStatKey]}/><b>{formatWorkspaceStat(slot.mainStatKey, value)}</b></span><em><img src={statIconSource(secondary.key)} alt={statLabels[secondary.key]}/>{formatWorkspaceStat(secondary.key, secondary.value)}</em></span>
   })}</span>
 }
 
@@ -161,7 +161,7 @@ function ComparisonModal({ entry, baselineScore, baselineStats, resultModeLabel,
         })
         return rows.length ? <section key={group.label}><h3>{group.label}</h3><div>{rows.map(({ key, before, after }) => {
           const delta = after - before
-          return <span className={Math.abs(delta) >= .001 ? 'is-changed' : ''} key={key}><img src={optimizerStatIconSource(key)} alt=""/><b>{statLabels[key]}</b><small>{formatWorkspaceStat(key, before)}</small><i aria-hidden="true">→</i><strong>{formatWorkspaceStat(key, after)}</strong><em className={delta > 0 ? 'positive' : delta < 0 ? 'negative' : ''}>{Math.abs(delta) < .001 ? '—' : `${delta > 0 ? '+' : ''}${formatWorkspaceStat(key, delta)}`}</em></span>
+          return <span className={Math.abs(delta) >= .001 ? 'is-changed' : ''} key={key}><img src={statIconSource(key)} alt=""/><b>{statLabels[key]}</b><small>{formatWorkspaceStat(key, before)}</small><i aria-hidden="true">→</i><strong>{formatWorkspaceStat(key, after)}</strong><em className={delta > 0 ? 'positive' : delta < 0 ? 'negative' : ''}>{Math.abs(delta) < .001 ? '—' : `${delta > 0 ? '+' : ''}${formatWorkspaceStat(key, delta)}`}</em></span>
         })}</div></section> : null
       })}</div>
     </section>
@@ -291,7 +291,7 @@ export function TheorizerWorkspace({ member, model, echoes, builds, characters, 
   */
   const targetGroups = [...member.formulaRows.reduce((groups, row) => {
     const targets = groups.get(row.target.group) ?? []
-    targets.push({ id: row.target.id, label: row.target.label })
+    targets.push({ id: row.target.id, label: compactAttackLabel(row.target.label) })
     groups.set(row.target.group, targets)
     return groups
   }, new Map<string, Array<{ id: string; label: string }>>())]
@@ -345,7 +345,7 @@ export function TheorizerWorkspace({ member, model, echoes, builds, characters, 
   const modeLabel = MODES.find((entry) => entry.id === mode)?.label ?? 'options'
 
   return <section className="tw-theorizer tw-panel">
-    <header className="tw-theorizer-header"><div><span className="eyebrow">✦ Theorizer</span><h2>Build suggestions</h2><p>Pick an action and compare one gear axis at a time.</p></div><div className="tw-theorizer-modes" role="tablist" aria-label="Suggestion type">{MODES.map((entry) => <button type="button" role="tab" aria-selected={mode === entry.id} className={mode === entry.id ? 'active' : ''} onClick={() => { setMode(entry.id); setSelectedId('') }} key={entry.id}>{entry.label}</button>)}</div></header>
+    <header className="tw-theorizer-header"><h2>Theorizer</h2><div className="tw-theorizer-modes" role="tablist" aria-label="Suggestion type">{MODES.map((entry) => <button type="button" role="tab" aria-selected={mode === entry.id} className={mode === entry.id ? 'active' : ''} onClick={() => { setMode(entry.id); setSelectedId('') }} key={entry.id}>{entry.label}</button>)}</div></header>
     <div className="tw-theorizer-toolbar"><label><span>Rank for</span><select value={activeTargetId} onChange={(event) => { setTargetId(event.target.value); setSelectedId('') }}>{targetGroups.map(([group, entries]) => <optgroup label={group} key={group}>{entries.map((target) => <option value={target.id} key={target.id}>{target.label}</option>)}</optgroup>)}</select></label></div>
     {mode === 'substats' ? <>{error ? <p className="tw-empty-state">{error}</p> : <SubstatStepTable entries={ranked} baselineScore={ranking.baselineScore} resultModeLabel={resultModeLabel} loading={loading}/>}</> : <>
     <div className="tw-theorizer-list-heading"><span>{mode === 'sonatas' ? 'Set plans' : modeLabel} ({ranked.length})</span><b>Ranked by {resultModeLabel}</b></div>

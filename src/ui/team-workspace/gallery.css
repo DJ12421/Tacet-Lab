@@ -101,6 +101,7 @@
   display: grid;
   grid-template-columns: minmax(0,1fr) 42px;
   height: 42px;
+  border-radius: 0px;
   border-bottom: 1px solid rgba(141,228,212,.25);
   background: linear-gradient(90deg,rgba(24,43,47,.95),rgba(13,24,26,.96));
 }
@@ -127,10 +128,11 @@
   padding: 0;
   display: grid;
   place-items: center;
-  border: 0;
+  border-radius: 0px;
+  border-top-right-radius: 8px;
   border-left: 1px solid rgba(235,100,103,.32);
   background: rgba(122,28,35,.13);
-  color: #ed7478;
+  color: #ff0008;
   cursor: pointer;
 }
 
@@ -150,6 +152,7 @@
   grid-template-columns: 132px minmax(0,1fr);
   align-items: center;
   overflow: hidden;
+  border-radius: 2px;
   border-bottom: 1px solid rgba(255,255,255,.12);
   background: radial-gradient(circle at 16% 50%,color-mix(in srgb,var(--tw-card-element,#8de4d4) 20%,transparent),transparent 45%),linear-gradient(105deg,#10191a,#071011);
 }
@@ -233,6 +236,7 @@
   position: relative;
   min-width: 0;
   aspect-ratio: 1;
+  transform: translateY(2px);
   overflow: hidden;
   border: 1px solid rgba(255,255,255,.11);
   border-radius: 3px;
@@ -581,6 +585,12 @@
   right: 0;
   width: auto;
   height: 99px;
+}
+
+.tw-gallery-loadout>span img.tw-gallery-stat-icon {
+  width: 64%;
+  height: 64%;
+  margin: 18%;
 }
 
 @media (max-width:760px) {

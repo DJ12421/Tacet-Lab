@@ -9,6 +9,7 @@
   display: grid;
   padding: 0;
   border: 0;
+  border-radius: 0px;
   background: transparent;
   color: inherit;
   text-align: inherit;

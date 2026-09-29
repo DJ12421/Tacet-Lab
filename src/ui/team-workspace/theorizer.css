@@ -20,7 +20,7 @@
   padding-bottom: 11px;
   border-bottom: 1px solid color-mix(in srgb,var(--tw-member-accent,var(--mint)) 28%,var(--tw-line));
 }
-.tw-theorizer-header>div:first-child { flex: 1 1 280px; min-width: 0; }
+.tw-theorizer-header>h2 { flex: 0 0 auto; min-width: 0; }
 .tw-theorizer-header h2 { margin: 2px 0 0; }
 .tw-theorizer-header .eyebrow { color: var(--tw-member-accent,var(--mint)); }
 .tw-theorizer-header p { max-width: 540px; margin: 4px 0 0; color: var(--tw-muted); font-size: var(--font-size-caption); }
@@ -52,7 +52,7 @@
 }
 .tw-theorizer-modes button:last-child { border-right: 0; }
 .tw-theorizer-modes button.active { background: color-mix(in srgb,var(--tw-member-accent,var(--mint)) 11%,var(--tw-surface)); color: var(--tw-member-accent,var(--mint)); }
-.tw-theorizer-toolbar>label { display: grid; grid-template-columns: auto minmax(180px,660px); align-items: center; gap: 9px; flex: 1; color: var(--tw-muted); font-size: var(--font-size-caption); font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
+.tw-theorizer-toolbar>label { display: grid; grid-template-columns: auto minmax(180px,660px); align-items: center; justify-content: end; gap: 9px; flex: 1; color: var(--tw-muted); font-size: var(--font-size-caption); font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
 .tw-theorizer-toolbar select { width: min(100%,660px); min-height: 38px; border-color: color-mix(in srgb,var(--tw-member-accent,var(--mint)) 38%,var(--tw-line)); border-radius: 14px; font-weight: 700; }
 .tw-theorizer-toolbar>div { justify-content: flex-end; }
 .tw-theorizer-toolbar button { min-height: 38px; padding-inline: 14px; font-weight: 700; }
@@ -196,7 +196,7 @@
 .tw-theorizer-compare-modal .negative { color: #df7479; }
 @media (max-width:1100px) {
   .tw-theorizer-header { align-items: stretch; flex-direction: column; }
-  .tw-theorizer-header>div:first-child,.tw-theorizer-modes { flex: none; }
+  .tw-theorizer-header>h2,.tw-theorizer-modes { flex: none; }
   .tw-theorizer-modes { width: 100%; }
   .tw-theorizer-list>button { grid-template-columns: 34px minmax(0,1fr) auto; }
   .tw-theorizer-stat-slot { min-width: 106px; }
