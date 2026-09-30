@@ -456,10 +456,10 @@ export function OptimizerView({
 
   const detailForResult = (result: OptimizerResult) => {
     const resultEchoes = result.echoIds.map((id) => echoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo))
-    if (rotationTarget) return { title: selectedObjectiveLabel, value: String(result.score), rows: [
-      { label: 'Non-CRIT rotation', value: result.damage.normal },
-      { label: 'Average rotation', value: result.damage.expected },
-      { label: 'CRIT rotation', value: result.damage.critical }
+    if (rotationTarget) return { title: selectedObjectiveLabel, value: formatDamage(result.score), rows: [
+      { label: 'Non-CRIT rotation', value: formatDamage(result.damage.normal) },
+      { label: 'Average rotation', value: formatDamage(result.damage.expected) },
+      { label: 'CRIT rotation', value: formatDamage(result.damage.critical) }
     ] }
     if (objective !== 'normal' && objective !== 'critical' && objective !== 'expected') return resonator && weapon
       ? runtimeStatDetail(resonator, weapon, resultEchoes, objective, result.score)
