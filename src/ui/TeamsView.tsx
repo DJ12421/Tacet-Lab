@@ -22,7 +22,7 @@ import { TheorizerWorkspace } from './team-workspace/TheorizerWorkspace'
 import { statIconSource, weaponStatIconSource } from './stat-icons'
 import {
   compactAttackLabel, echoArtwork, formatWorkspaceStat, resolveTeamWorkspace, teamBuffLabel,
-  type TeamActionModel, type TeamAttackGroup, type TeamMemberModel, type TeamWorkspaceModel
+  type TeamActionModel, type TeamAttackGroup, type TeamMemberModel, type TeamWorkspaceInput, type TeamWorkspaceModel
 } from './team-workspace-model'
 import { defaultEnabledSkillTreeBonusIds, inherentSkillBonusId, skillTreeBonusId } from './character-showcase-model'
 import './team-workspace.css'
@@ -1663,6 +1663,10 @@ function MemberWorkspace({ member, model, section, setSection, updateTeam, echoe
   const effectValues = scenario.memberConditions[member.build.id] ?? {}
   const updateEffectInputs = (patch: Record<string, ScenarioValue>) => void updateTeam({ scenario:{ ...scenario, memberConditions:{ ...scenario.memberConditions, [member.build!.id]:{ ...effectValues, ...patch } } } })
   const setResultMode = (resultMode: FormulaResultMode) => updateTeam({ scenario: { ...scenario, resultMode } })
+  const optimizerEchoes = [...echoes, ...member.resolvedEchoes.filter((echo) => !echoes.some((owned) => owned.id === echo.id))]
+  const optimizerBuilds = [...builds.filter((build) => build.id !== member.build!.id), member.build]
+  const optimizerWeapons = member.resolvedWeapon && !weapons.some((weapon) => weapon.id === member.resolvedWeapon?.id) ? [...weapons, member.resolvedWeapon] : weapons
+  const optimizerRotationInput: TeamWorkspaceInput = { team: model.team, builds: optimizerBuilds, characters, weapons: optimizerWeapons, echoes: optimizerEchoes, equippedLoadouts, theorycraftBuilds, roverGender }
   return <div className={`tw-member-page section-${section}`} style={{ '--tw-member-accent': ELEMENT_COLORS[member.catalog.element] ?? '#c8d0ce' } as CSSProperties}>
     <nav className="tw-subnav" aria-label={`${member.catalog.name} sections`} role="tablist">
       {MEMBER_SECTIONS.map((item) => <button key={item.id} role="tab" className={section === item.id ? 'active' : ''} aria-selected={section === item.id} onClick={() => setSection(item.id)}>{item.label}</button>)}
@@ -1672,7 +1676,7 @@ function MemberWorkspace({ member, model, section, setSection, updateTeam, echoe
     </nav>
     {section === 'overview' ? <CharacterOverviewWorkspace member={member} model={model} updateTeam={updateTeam} weaponPassive={weaponPassive} effects={reviewedEffects} values={effectValues} updateInputs={updateEffectInputs}/>
       : section === 'rotation' ? <RotationWorkspace model={model} updateTeam={updateTeam} focusBuildId={member.build.id}/>
-      : section === 'optimizer' ? <OptimizerView echoes={[...echoes, ...member.resolvedEchoes.filter((echo) => !echoes.some((owned) => owned.id === echo.id))]} builds={[...builds.filter((build) => build.id !== member.build!.id), member.build]} characters={characters} ownedWeapons={member.resolvedWeapon && !weapons.some((weapon) => weapon.id === member.resolvedWeapon?.id) ? [...weapons, member.resolvedWeapon] : weapons} refresh={refresh} openScanner={openScanner} buildId={member.build.id} teamBuildIds={model.members.flatMap((entry) => entry.character ? [entry.character.id] : [])} initialEnemy={model.team.enemy} damageMode={scenario.resultMode} scenario={scenario}/>
+      : section === 'optimizer' ? <OptimizerView echoes={optimizerEchoes} builds={optimizerBuilds} characters={characters} ownedWeapons={optimizerWeapons} refresh={refresh} openScanner={openScanner} buildId={member.build.id} teamBuildIds={model.members.flatMap((entry) => entry.character ? [entry.character.id] : [])} initialEnemy={model.team.enemy} damageMode={scenario.resultMode} scenario={scenario} rotation={{ input: optimizerRotationInput, memberSlot: member.slot, model }}/>
       : section === 'theorizer' ? <TheorizerWorkspace member={member} model={model} echoes={echoes} builds={builds} characters={characters} weapons={weapons} equippedLoadouts={equippedLoadouts} theorycraftBuilds={theorycraftBuilds} roverGender={roverGender} refresh={refresh}/>
       : <section className="tw-member-hero tw-panel forte-mode" style={{ '--tw-element': member.catalog.element.toLowerCase() } as CSSProperties}>
       <div className="tw-member-art"><img src={member.catalog.portraitSourceUrl || member.catalog.iconSourceUrl} alt=""/><div className="tw-sequence-rail">{member.catalog.sequenceIcons.slice(0, 6).map((sequence) => <span className={member.character && member.character.sequence >= sequence.sequence ? 'unlocked' : ''} key={sequence.sequence} title={sequence.name}><img src={sequence.iconSourceUrl} alt=""/><b>S{sequence.sequence}</b></span>)}</div><div><span>{member.catalog.element} · {member.catalog.weaponType}</span><h1>{member.catalog.name}</h1><p>{member.catalog.title}</p><strong>Lv. {member.character.level} · Sequence {member.character.sequence}</strong></div><EchoWaveform element={member.catalog.element}/></div>

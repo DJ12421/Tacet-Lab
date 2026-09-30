@@ -7,7 +7,7 @@ import { fixedSecondaryMainStat, maxLevelByRarity, primaryMainStatValue } from '
 import { generatedSonataIconSources } from '../../game-data/sonatas.generated'
 import type { TheorizerMode, TheorizerRankingRequest, TheorizerRankingResponse } from '../../workers/theorizer.worker'
 import { statIconSource } from '../stat-icons'
-import { compactAttackLabel, formatWorkspaceStat, type TeamMemberModel, type TeamWorkspaceModel } from '../team-workspace-model'
+import { compactAttackLabel, formatWorkspaceStat, TEAM_ROTATION_TARGET_ID, type TeamMemberModel, type TeamWorkspaceModel } from '../team-workspace-model'
 
 type RankedSuggestion = TheorizerRankingResponse['results'][number]
 
@@ -250,7 +250,7 @@ export function TheorizerWorkspace({ member, model, echoes, builds, characters, 
   equippedLoadouts: EquippedLoadout[]; theorycraftBuilds: TheorycraftBuild[]; roverGender: 'male' | 'female'; refresh: () => Promise<void>
 }) {
   const [mode, setMode] = useState<TheorizerMode>('mainStats')
-  const [targetId, setTargetId] = useState(() => model.team.scenario?.selectedTargetByBuild[member.build!.id] ?? member.formulaRows[0]?.target.id ?? '')
+  const [targetId, setTargetId] = useState(TEAM_ROTATION_TARGET_ID)
   const [selectedId, setSelectedId] = useState('')
   const [ranking, setRanking] = useState<Pick<TheorizerRankingResponse, 'baselineScore' | 'baselineStats' | 'results'>>({ baselineScore: 0, results: [] })
   const [loading, setLoading] = useState(true)
@@ -289,12 +289,12 @@ export function TheorizerWorkspace({ member, model, echoes, builds, characters, 
     }
   }
   */
-  const targetGroups = [...member.formulaRows.reduce((groups, row) => {
+  const targetGroups = [['Team', [{ id: TEAM_ROTATION_TARGET_ID, label: 'Rotation' }]], ...member.formulaRows.reduce((groups, row) => {
     const targets = groups.get(row.target.group) ?? []
     targets.push({ id: row.target.id, label: compactAttackLabel(row.target.label) })
     groups.set(row.target.group, targets)
     return groups
-  }, new Map<string, Array<{ id: string; label: string }>>())]
+  }, new Map<string, Array<{ id: string; label: string }>>())] as Array<[string, Array<{ id: string; label: string }>]>
   const targets = targetGroups.flatMap(([, entries]) => entries)
   const activeTargetId = targets.some((target) => target.id === targetId) ? targetId : targets[0]?.id ?? ''
 
@@ -341,7 +341,7 @@ export function TheorizerWorkspace({ member, model, echoes, builds, characters, 
 
   const ranked: RankedSuggestion[] = ranking.results
   const selected = ranked.find((entry) => entry.id === selectedId)
-  const resultModeLabel = resultMode === 'expected' ? 'Avg DMG' : resultMode === 'normal' ? 'Non-crit DMG' : 'Crit DMG'
+  const resultModeLabel = `${resultMode === 'expected' ? 'Avg' : resultMode === 'normal' ? 'Non-crit' : 'Crit'} ${activeTargetId === TEAM_ROTATION_TARGET_ID ? 'rotation DMG' : 'DMG'}`
   const modeLabel = MODES.find((entry) => entry.id === mode)?.label ?? 'options'
 
   return <section className="tw-theorizer tw-panel">

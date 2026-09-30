@@ -46,6 +46,7 @@ type OptimizerSetupProps = {
   targets: Array<{ id: string; label: string }>
   onTargetChange: (id: string) => void
   scalesWith: string[]
+  scalesWithTitle?: string
   running: boolean
   onRun: () => void
   onCancel: () => void
@@ -54,7 +55,7 @@ type OptimizerSetupProps = {
 export function OptimizerSetup(props: OptimizerSetupProps) {
   const {
     profile, setProfile, echoes, currentEchoes, buildId, buildName, characterName, portraitUrl, weaponName,
-    currentStats, currentScore, objectiveLabel, targetId, targets, onTargetChange, scalesWith, running, onRun, onCancel
+    currentStats, currentScore, objectiveLabel, targetId, targets, onTargetChange, scalesWith, scalesWithTitle = 'Selected target scales with', running, onRun, onCancel
   } = props
   const [constraintStat, setConstraintStat] = useState<OptimizerStatKey>('energyRegen')
   const [requirementSonata, setRequirementSonata] = useState(sonataCatalog[0]?.name ?? '')
@@ -158,7 +159,7 @@ export function OptimizerSetup(props: OptimizerSetupProps) {
       </div>
     </section>
 
-    <div className="optimizer-scales-with"><span>Selected target scales with</span>{scalesWith.map((label) => <b key={label}>{label}</b>)}<small>Team effects, enemy state, sequences, weapon effects, and enabled conditions are frozen when generation starts.</small></div>
+    <div className="optimizer-scales-with"><span>{scalesWithTitle}</span>{scalesWith.map((label) => <b key={label}>{label}</b>)}<small>Team effects, enemy state, sequences, weapon effects, and enabled conditions are frozen when generation starts.</small></div>
     <Panel className="optimizer-run-bar">
       <label><span>Optimization target</span><select value={targetId} onChange={(event) => onTargetChange(event.target.value)}>{targets.map((target) => <option value={target.id} key={target.id}>{compactAttackLabel(target.label)}</option>)}</select></label>
       <label><span>Results</span><select value={profile.resultLimit} onChange={(event) => update({ resultLimit: Number(event.target.value) })}>{RESULT_LIMITS.map((limit) => <option value={limit} key={limit}>{limit} builds</option>)}</select></label>

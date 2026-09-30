@@ -2,6 +2,7 @@ import { calculateBuildModes } from './combat/runtime'
 import { echoStatLines } from '../game-data/echo-main-stats'
 import { sonataCatalog } from '../game-data'
 import type {
+  DamageResult,
   Echo,
   OptimizerPlotPoint,
   OptimizerProgress,
@@ -12,6 +13,7 @@ import type {
 } from './types'
 
 type ProgressListener = (progress: OptimizerProgress) => void
+export type OptimizerCandidateEvaluator = (echoes: Echo[]) => { score: number; damage?: DamageResult }
 
 const floorGameValue = (value: number) => Math.floor(value + 1e-9)
 const emptyStats = (): OptimizerResult['stats'] => ({
@@ -517,7 +519,8 @@ function runOptimizerTasks(
   request: OptimizerRequest,
   data: CompiledOptimizerData,
   tasks: SearchTask[],
-  onProgress?: ProgressListener
+  onProgress?: ProgressListener,
+  evaluateCandidate?: OptimizerCandidateEvaluator
 ): OptimizerPartitionOutput {
   const startedAt = performance.now()
   const emptyProgress = (): OptimizerProgress => ({
@@ -577,13 +580,14 @@ function runOptimizerTasks(
     if (combat?.stats) stats = combat.stats
     if (!meetsMinimums(stats, request.minimumStats) || !meetsMaximums(stats, request.maximumStats)) { reject(); return }
     const damage = combat ? { ...combat.values, hits:1, attackId:request.attack.id } : { normal:0, critical:0, expected:0, hits:1, attackId:request.attack.id }
-    const partial = { requestId: request.requestId, echoIds: ordered.map((echo) => echo.id), mainEchoId: main.id, stats, damage }
-    const score = resultScore(partial, request.objective)
+    const evaluated = evaluateCandidate?.(ordered)
+    const partial = { requestId: request.requestId, echoIds: ordered.map((echo) => echo.id), mainEchoId: main.id, stats, damage: evaluated?.damage ?? damage }
+    const score = evaluated?.score ?? resultScore(partial, request.objective)
     if (!Number.isFinite(score) || (profile?.minimumScore !== undefined && score < profile.minimumScore) || (profile?.maximumScore !== undefined && score > profile.maximumScore)) { reject(); return }
     progress.tested += 1
     progress.processed += 1
     const plotValue = stats[profile?.plotStat ?? 'atk']
-    const result: OptimizerResult = { ...partial, score, plot: plotValue, targetId:request.combat?.target.id }
+    const result: OptimizerResult = { ...partial, score, plot: plotValue, targetId:request.rotation?.targetId ?? request.combat?.target.id }
     insertResult(results, result, request.limit)
     if (progress.tested % sampleEvery === 0 && plot.length < 48) plot.push({ x: plotValue, y: score, echoIds: result.echoIds, mainEchoId: main.id, stats })
   }
@@ -657,7 +661,7 @@ function runOptimizerTasks(
 export function optimizeOptimizerWorkUnit(
   plan: OptimizerWorkPlan,
   workIndex: number,
-  options: { scoreThreshold?: number; maxEvaluations?: number } = {},
+  options: { scoreThreshold?: number; maxEvaluations?: number; evaluateCandidate?: OptimizerCandidateEvaluator } = {},
   onProgress?: ProgressListener
 ): OptimizerPartitionOutput {
   const task = plan.work[workIndex]
@@ -671,7 +675,7 @@ export function optimizeOptimizerWorkUnit(
     scoreThreshold: options.scoreThreshold ?? plan.request.scoreThreshold,
     profile: profile && options.maxEvaluations !== undefined ? { ...profile, maxEvaluations: options.maxEvaluations } : profile
   }
-  return runOptimizerTasks(request, plan.data, [task], onProgress)
+  return runOptimizerTasks(request, plan.data, [task], onProgress, options.evaluateCandidate)
 }
 
 export function optimizeBuildPartition(

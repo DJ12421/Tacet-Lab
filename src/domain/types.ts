@@ -75,6 +75,18 @@ export interface OptimizerCombatConfig {
   scenario?: TeamScenario
   bonusStatLines?: StatLine[]
 }
+export interface OptimizerRotationConfig {
+  targetId: string
+  memberSlot: number
+  team: Team
+  builds: Build[]
+  characters: OwnedCharacter[]
+  weapons: OwnedWeapon[]
+  echoes: Echo[]
+  equippedLoadouts?: EquippedLoadout[]
+  theorycraftBuilds?: TheorycraftBuild[]
+  roverGender?: 'male' | 'female'
+}
 export type OptimizerEquippedPolicy = 'current' | 'team' | 'all'
 export type OptimizerMainEchoPolicy = 'current' | 'any' | 'selected'
 export type OptimizerSearchMode = 'exact' | 'fast'
@@ -139,6 +151,7 @@ export interface OptimizerRequest {
   includeEquippedBy?: string
   currentMainEchoId?: string
   combat?: OptimizerCombatConfig
+  rotation?: OptimizerRotationConfig
   profile?: OptimizerProfile
   partition?: { index: number; count: number }
   /** Global top-N cutoff supplied by the coordinator. Branches must beat it. */

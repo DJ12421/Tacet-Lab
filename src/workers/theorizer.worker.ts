@@ -4,7 +4,7 @@ import type { AggregatedStats, Echo, StatKey, TheorycraftBuild } from '../domain
 import { echoCatalog, sonataCatalog, statLabels, weaponCatalog } from '../game-data'
 import { mainStatKeysByCost } from '../game-data/echo-main-stats'
 import { tunableRolls } from '../game-data/tunable-rolls'
-import { resolveTeamWorkspace, type TeamWorkspaceInput } from '../ui/team-workspace-model'
+import { resolveTeamWorkspace, rotationDamageByMode, TEAM_ROTATION_TARGET_ID, type TeamWorkspaceInput } from '../ui/team-workspace-model'
 
 export type TheorizerMode = 'mainStats' | 'substats' | 'sonatas' | 'weapons'
 export type TheorizerRankingRequest = TeamWorkspaceInput & { requestId: number; mode: TheorizerMode; baseline: TheorycraftBuild; memberSlot: number; targetId: string; resultMode: 'normal' | 'critical' | 'expected'; scalesWith: 'atk' | 'hp' | 'def'; element: string; weaponType?: string; substatDraft?: TheorycraftBuild }
@@ -84,7 +84,10 @@ function resolveCandidate(input: TheorizerRankingRequest, draft: TheorycraftBuil
   members[input.memberSlot] = { ...record, loadoutSource: { type: 'theorycraft', theorycraftBuildId: draft.id } }
   const model = resolveTeamWorkspace({ ...input, team: { ...input.team, members }, theorycraftBuilds: [...(input.theorycraftBuilds ?? []), draft] })
   const member = model.members[input.memberSlot]
-  return { score: member.formulaRows.find((row) => row.target.id === input.targetId)?.[input.resultMode] ?? 0, stats: comparisonStats(member.conditionedStats) }
+  const score = input.targetId === TEAM_ROTATION_TARGET_ID
+    ? rotationDamageByMode(model)[input.resultMode]
+    : member.formulaRows.find((row) => row.target.id === input.targetId)?.[input.resultMode] ?? 0
+  return { score, stats: comparisonStats(member.conditionedStats) }
 }
 
 function insertTopNine(results: TheorizerRankingEntry[], entry: TheorizerRankingEntry) { const index = results.findIndex((candidate) => entry.score > candidate.score); if (index >= 0) results.splice(index, 0, entry); else if (results.length < 9) results.push(entry); if (results.length > 9) results.length = 9 }

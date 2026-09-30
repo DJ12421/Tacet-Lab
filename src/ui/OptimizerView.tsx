@@ -37,6 +37,7 @@ import { runtimeStatDetail } from './calculation-detail-model'
 import { resolveCharacterShowcaseModel } from './character-showcase-model'
 import { OptimizerDistributionChart } from './OptimizerDistributionChart'
 import { OptimizerSetup } from './OptimizerSetup'
+import { rotationDamageByMode, TEAM_ROTATION_TARGET_ID, type TeamWorkspaceInput, type TeamWorkspaceModel } from './team-workspace-model'
 
 type WorkerMessage =
   | { type: 'ready'; requestId: string; total: number; workCount: number }
@@ -100,14 +101,15 @@ type OptimizerViewProps = {
   initialEnemy?: EnemyConfig
   damageMode?: FormulaResultMode
   scenario?: TeamScenario
+  rotation?: { input: TeamWorkspaceInput; memberSlot: number; model: TeamWorkspaceModel }
 }
 
 export function OptimizerView({
   echoes, builds, characters, ownedWeapons, refresh, openScanner, buildId, teamBuildIds = [], initialEnemy,
-  damageMode, scenario
+  damageMode, scenario, rotation
 }: OptimizerViewProps) {
   const objective: OptimizerObjective = damageMode ?? 'expected'
-  const [attackId, setAttackId] = useState('')
+  const [targetId, setTargetId] = useState(rotation ? TEAM_ROTATION_TARGET_ID : '')
   const [profile, setProfile] = useState<OptimizerProfile>(() => ({
     id: `optimizer-${buildId}`, buildId, levelLow: 0, levelHigh: 25, rarities: [1, 2, 3, 4, 5],
     mainStatsByCost: { '1': [], '3': [], '4': [] }, excludedEchoIds: [], equippedPolicy: 'current', teamBuildIds: [],
@@ -137,11 +139,12 @@ export function OptimizerView({
   const showcase = useMemo(() => build && runtime ? resolveCharacterShowcaseModel({ character: runtime.character, weapons: ownedWeapons, echoes, builds: [build] }) : undefined, [build, runtime, ownedWeapons, echoes])
   const resonator = runtime?.resonator
   const weapon = runtime?.runtimeWeapon
-  const attack = resonator?.attacks.find((item) => item.id === attackId) ?? resonator?.attacks[0]
+  const rotationTarget = Boolean(rotation && targetId === TEAM_ROTATION_TARGET_ID)
+  const attack = resonator?.attacks.find((item) => item.id === targetId) ?? resonator?.attacks[0]
   const formulaTargets = combatTargets(resonator?.id ?? '').filter(isOptimizerCombatTarget)
   const formulaTarget = formulaTargets.find((target) => target.id === attack?.id) ?? formulaTargets[0]
   const currentEchoes = useMemo(() => build?.echoIds.map((id) => echoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)) ?? [], [build, echoes])
-  const targets = resonator?.attacks.map((item) => ({ id: item.id, label: item.name })) ?? []
+  const targets = [...(rotation ? [{ id: TEAM_ROTATION_TARGET_ID, label: 'Rotation' }] : []), ...(resonator?.attacks.map((item) => ({ id: item.id, label: item.name })) ?? [])]
   const optimizerEnemy = (): EnemyConfig => ({
     ...(initialEnemy ?? {}),
     level: Math.min(200, Math.max(1, initialEnemy?.level ?? 100)),
@@ -152,24 +155,30 @@ export function OptimizerView({
     if (!build || !runtime || !formulaTarget) return undefined
     return calculateBuildModes({ build, character:runtime.character, weapon:runtime.weapon, echoes:currentEchoes, enemy:optimizerEnemy(), scenario, targetId:formulaTarget.id })
   }, [build, currentEchoes, formulaTarget, initialEnemy, runtime, scenario])
-  const currentDamage = currentCalculation?.values
+  const currentDamage = rotationTarget && rotation ? rotationDamageByMode(rotation.model) : currentCalculation?.values
   const currentStats = currentCalculation?.stats
   const currentScore = currentDamage && (objective === 'normal' || objective === 'critical' || objective === 'expected') ? currentDamage[objective] : currentStats?.[objective as OptimizerStatKey]
   const scalesWith = useMemo(() => {
+    if (rotationTarget) return ['All members', 'All rotation actions']
     const labels = new Set<string>()
     labels.add(attack?.scalesWith === 'hp' ? 'HP' : attack?.scalesWith === 'def' ? 'DEF' : 'ATK')
     if (objective === 'expected' || objective === 'critical') { labels.add('CRIT Rate'); labels.add('CRIT DMG') }
     if (attack?.element) labels.add(`${attack.element} DMG`)
     if (attack?.type) labels.add(`${attack.type} DMG`)
     return [...labels]
-  }, [attack, objective])
+  }, [attack, objective, rotationTarget])
+  const selectedTargetLabel = rotationTarget ? 'Rotation' : formulaTarget?.label ?? attack?.name ?? 'Target score'
+  const selectedObjectiveLabel = rotationTarget
+    ? `${objective === 'expected' ? 'Average' : objective === 'normal' ? 'Non-CRIT' : 'CRIT'} rotation DMG`
+    : objectiveLabel(objective)
   const activeContextFingerprint = useMemo(() => optimizerContextFingerprint({
     objective,
-    targetId: attack?.id ?? '',
+    targetId,
     initialEnemy,
     scenario,
+    rotation: rotationTarget ? rotation?.input : undefined,
     gameDataVersion: GAME_DATA_VERSION
-  }), [attack?.id, initialEnemy, objective, scenario])
+  }), [initialEnemy, objective, rotation?.input, rotationTarget, scenario, targetId])
 
   const terminateWorkers = () => { for (const worker of workersRef.current) worker.terminate(); workersRef.current = [] }
   const clearResults = () => { setResults([]); setPlotPoints([]); setSelectedKey(undefined); setHighlightedKeys([]); setActiveRunId(undefined); setExpandedResult(null); setGeneratedAt(undefined); setRunFingerprint('') }
@@ -180,11 +189,11 @@ export function OptimizerView({
 
   useEffect(() => () => terminateWorkers(), [])
   useEffect(() => {
-    const nextId = resonator?.attacks[0]?.id ?? ''
-    setAttackId(nextId)
+    const nextId = rotation ? TEAM_ROTATION_TARGET_ID : resonator?.attacks[0]?.id ?? ''
+    setTargetId(nextId)
     clearResults()
     setError('')
-  }, [resonator?.id])
+  }, [resonator?.id, rotation?.memberSlot])
   useEffect(() => {
     let live = true
     setProfileReady(false)
@@ -195,9 +204,9 @@ export function OptimizerView({
       const nextTarget = savedTarget ?? targets[0]?.id ?? ''
       const nextProfile = { ...storedProfile, targetId: nextTarget || undefined, teamBuildIds: [...new Set(teamBuildIds)] }
       setProfile(nextProfile)
-      const contextFingerprint = optimizerContextFingerprint({ objective, targetId: nextTarget, initialEnemy, scenario, gameDataVersion: GAME_DATA_VERSION })
+      const contextFingerprint = optimizerContextFingerprint({ objective, targetId: nextTarget, initialEnemy, scenario, rotation: nextTarget === TEAM_ROTATION_TARGET_ID ? rotation?.input : undefined, gameDataVersion: GAME_DATA_VERSION })
       contextFingerprintRef.current = contextFingerprint
-      setAttackId(nextTarget)
+      setTargetId(nextTarget)
       if (run && run.profileId === nextProfile.id && run.profileFingerprint === optimizerProfileFingerprint(nextProfile) && run.contextFingerprint === contextFingerprint && run.inventoryFingerprint === fingerprint && run.gameDataVersion === GAME_DATA_VERSION && run.results.every((result) => result.echoIds.every((id) => echoes.some((echo) => echo.id === id)))) {
         setResults(run.results)
         setPlotPoints(run.plot)
@@ -270,7 +279,8 @@ export function OptimizerView({
       requestId, echoes: inventoryEchoes, resonator, weapon, attack, enemy, objective, minimumStats: profile.minimumStats,
       maximumStats: profile.maximumStats, limit: profile.resultLimit, maxEvaluations: profile.maxEvaluations,
       includeEquippedBy: runtime.character.id, currentMainEchoId: build.echoIds[0], profile: { ...profile, teamBuildIds: [...new Set(teamBuildIds)] },
-      combat: formulaTarget ? { target: { id: formulaTarget.id, label: formulaTarget.label, kind: formulaTarget.kind, mode:mode ?? 'expected' }, build, character:runtime.character, weapon:runtime.weapon, scenario } : undefined
+      combat: formulaTarget ? { target: { id: formulaTarget.id, label: formulaTarget.label, kind: formulaTarget.kind, mode:mode ?? 'expected' }, build, character:runtime.character, weapon:runtime.weapon, scenario } : undefined,
+      rotation: rotationTarget && rotation ? { ...rotation.input, targetId: TEAM_ROTATION_TARGET_ID, memberSlot: rotation.memberSlot } : undefined
     }
     const mergedProgress = () => {
       const combined = mergeProgress(requestId, [...outputs.map((output) => output.progress), ...workerProgress])
@@ -416,7 +426,7 @@ export function OptimizerView({
     const now = Date.now()
     const weaponExists = Boolean(await db.weapons.get(build.weaponId))
     await db.builds.add({
-      id: createLocalId(), name: `Optimizer result ${new Date(now).toLocaleDateString()}`, description: `Saved from optimizer target ${formulaTarget?.label ?? attack?.name ?? objective}.`,
+      id: createLocalId(), name: `Optimizer result ${new Date(now).toLocaleDateString()}`, description: `Saved from optimizer target ${selectedTargetLabel}.`,
       characterId: runtime.character.id, resonatorId: runtime.character.catalogId, weaponId: weaponExists ? build.weaponId : '', echoIds: [...result.echoIds],
       level: runtime.character.level, skillLevel: runtime.character.skillLevels?.[1] ?? 1, createdAt: now, updatedAt: now, source: 'optimizer'
     })
@@ -446,6 +456,11 @@ export function OptimizerView({
 
   const detailForResult = (result: OptimizerResult) => {
     const resultEchoes = result.echoIds.map((id) => echoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo))
+    if (rotationTarget) return { title: selectedObjectiveLabel, value: String(result.score), rows: [
+      { label: 'Non-CRIT rotation', value: result.damage.normal },
+      { label: 'Average rotation', value: result.damage.expected },
+      { label: 'CRIT rotation', value: result.damage.critical }
+    ] }
     if (objective !== 'normal' && objective !== 'critical' && objective !== 'expected') return resonator && weapon
       ? runtimeStatDetail(resonator, weapon, resultEchoes, objective, result.score)
       : { title: String(objective), value: String(result.score), rows: [{ label: 'Optimizer result', value: String(result.score) }] }
@@ -469,8 +484,8 @@ export function OptimizerView({
       profile={profile} setProfile={updateProfile} echoes={inventoryEchoes} currentEchoes={currentEchoes} buildId={build.id} buildName={build.name}
       characterName={showcase.catalog.name} portraitUrl={showcase.catalog.portraitSourceUrl || showcase.catalog.iconSourceUrl}
       weaponName={showcase.weapon?.catalog.name ?? 'No weapon equipped'} currentStats={currentStats} currentScore={currentScore}
-      objectiveLabel={objectiveLabel(objective)} targetId={attack?.id ?? ''} targets={targets}
-      onTargetChange={(id) => { setAttackId(id); updateProfile((current) => ({ ...current, targetId: id, updatedAt: Date.now() })) }} scalesWith={scalesWith} running={running} onRun={run} onCancel={cancel}
+      objectiveLabel={selectedObjectiveLabel} targetId={targetId} targets={targets}
+      onTargetChange={(id) => { setTargetId(id); updateProfile((current) => ({ ...current, targetId: id, updatedAt: Date.now() })) }} scalesWith={scalesWith} scalesWithTitle={rotationTarget ? 'Rotation includes' : undefined} running={running} onRun={run} onCancel={cancel}
     />}
     {!profileReady && <Panel className="searching"><div className="orbit"><i/><i/><i/></div><h2>Loading optimizer profile</h2><p>Your saved filters and most recent compatible run stay on this device.</p></Panel>}
     {error && <div className="notice error">{error}</div>}
@@ -494,7 +509,7 @@ export function OptimizerView({
         const statKeys: OptimizerStatKey[] = ['hp', 'atk', 'def', 'critRate', 'critDamage', 'energyRegen', 'basicDamage', 'liberationDamage']
         const sonatas = [...resultEchoes.reduce((counts, echo) => counts.set(echo.sonata, (counts.get(echo.sonata) ?? 0) + 1), new Map<string, number>())].filter(([name, count]) => sonataCatalog.some((sonata) => sonata.name === name && sonata.effects.some((effect) => count >= effect.pieces)))
         return <Panel className={`optimizer-build-result ${expanded ? 'is-expanded' : ''} ${selectedKey === buildKey(result.echoIds) ? 'is-selected' : ''}`} key={buildKey(result.echoIds)}>
-          <header><button className="optimizer-result-toggle" onClick={() => { setExpandedResult(expanded ? null : index); setSelectedKey(expanded ? undefined : buildKey(result.echoIds)) }} aria-expanded={expanded}><span className="optimizer-rank">#{index + 1}</span><span><b>{result.complete ? 'OPTIMAL BUILD' : 'BEST FOUND'}</b><small>{result.mainEchoId === result.echoIds[0] ? 'Main Echo verified' : 'Main Echo reordered'}</small></span><span className="optimizer-score"><small>{formulaTarget?.label ?? attack?.name ?? 'Target score'}</small><strong>{Math.round(result.score).toLocaleString('en-US')}</strong>{improvement !== undefined && <em className={improvement > 0 ? 'positive' : improvement < 0 ? 'negative' : ''}>{improvement > 0 ? '+' : ''}{formatDamage(improvement)}{improvementPercent !== undefined ? ` (${improvementPercent > 0 ? '+' : ''}${improvementPercent.toFixed(1)}%)` : ''}</em>}</span><span className="optimizer-score-modes"><i>Non-CRIT <b>{formatDamage(result.damage.normal)}</b></i><i>Average <b>{formatDamage(result.damage.expected)}</b></i><i>CRIT <b>{formatDamage(result.damage.critical)}</b></i></span><span className="optimizer-chevron">⌄</span></button><div className="optimizer-result-actions"><button className="primary" onClick={() => void apply(result)}>Equip</button><button className="secondary" onClick={() => void saveResult(result)}>Save build</button><button className="secondary" onClick={() => void theorycraftResult(result)}>Theorycraft</button></div></header>
+          <header><button className="optimizer-result-toggle" onClick={() => { setExpandedResult(expanded ? null : index); setSelectedKey(expanded ? undefined : buildKey(result.echoIds)) }} aria-expanded={expanded}><span className="optimizer-rank">#{index + 1}</span><span><b>{result.complete ? 'OPTIMAL BUILD' : 'BEST FOUND'}</b><small>{result.mainEchoId === result.echoIds[0] ? 'Main Echo verified' : 'Main Echo reordered'}</small></span><span className="optimizer-score"><small>{selectedTargetLabel}</small><strong>{Math.round(result.score).toLocaleString('en-US')}</strong>{improvement !== undefined && <em className={improvement > 0 ? 'positive' : improvement < 0 ? 'negative' : ''}>{improvement > 0 ? '+' : ''}{formatDamage(improvement)}{improvementPercent !== undefined ? ` (${improvementPercent > 0 ? '+' : ''}${improvementPercent.toFixed(1)}%)` : ''}</em>}</span><span className="optimizer-score-modes"><i>Non-CRIT <b>{formatDamage(result.damage.normal)}</b></i><i>Average <b>{formatDamage(result.damage.expected)}</b></i><i>CRIT <b>{formatDamage(result.damage.critical)}</b></i></span><span className="optimizer-chevron">⌄</span></button><div className="optimizer-result-actions"><button className="primary" onClick={() => void apply(result)}>Equip</button><button className="secondary" onClick={() => void saveResult(result)}>Save build</button><button className="secondary" onClick={() => void theorycraftResult(result)}>Theorycraft</button></div></header>
           <div className="optimizer-result-tags"><b>Main: {resultEchoes[0]?.name ?? 'Unavailable'}</b>{sonatas.map(([name, count]) => <span key={name}>{name} · {count}-pc</span>)}{borrowedEchoes.length > 0 && <em>{borrowedEchoes.length} borrowed</em>}</div>
           <div className="optimizer-echo-strip">{resultEchoes.map((echo, echoIndex) => { const ownerBuild = builds.find((candidate) => candidate.echoIds.includes(echo.id)); const ownerCharacter = characterCatalog.find((candidate) => candidate.id === ownerBuild?.resonatorId); const ownerName = ownerCharacter?.name ?? echo.equippedByName ?? ownerBuild?.name ?? (echo.equippedBy ? 'Equipped' : 'Inventory'); return <div className={echoIndex === 0 ? 'optimizer-main-echo' : ''} key={echo.id}>{echoIndex === 0 && <span>Main Echo</span>}<EchoMiniCard echo={echo} equipment={<EquippedCharacterLabel name={ownerName}/>} /></div> })}</div>
           {expanded && <div className="optimizer-result-details"><section><h3>Build statistics</h3><div className="optimizer-stat-table">{statKeys.map((key) => { const previous = currentStats?.[key] ?? result.stats[key]; const delta = result.stats[key] - previous; return <div key={key}><span>{statLabels[key]}</span>{resonator && weapon ? <CalculatedValue detail={runtimeStatDetail(resonator, weapon, resultEchoes, key, result.stats[key])}><b>{formatStat(key, result.stats[key])}</b></CalculatedValue> : <b>{formatStat(key, result.stats[key])}</b>}<small className={delta > 0 ? 'positive' : delta < 0 ? 'negative' : ''}>{delta === 0 ? '—' : `${delta > 0 ? '+' : ''}${formatStat(key, delta)}`}</small></div> })}</div></section><section><h3>Target comparison</h3><div className="optimizer-damage-table"><div><span>Current score</span><b>{currentScore === undefined ? 'Unavailable' : formatDamage(currentScore)}</b></div><div><span>Optimized score</span><CalculatedValue detail={detailForResult(result)}><b>{Math.round(result.score).toLocaleString('en-US')}</b></CalculatedValue></div><div><span>Improvement</span><b className={improvement !== undefined && improvement > 0 ? 'positive' : improvement !== undefined && improvement < 0 ? 'negative' : ''}>{improvement === undefined ? 'Unavailable' : `${improvement > 0 ? '+' : ''}${formatDamage(improvement)}${improvementPercent !== undefined ? ` (${improvementPercent > 0 ? '+' : ''}${improvementPercent.toFixed(1)}%)` : ''}`}</b></div><div><span>Search guarantee</span><b>{result.complete ? 'Exact within active filters' : 'Capped search'}</b></div></div></section></div>}

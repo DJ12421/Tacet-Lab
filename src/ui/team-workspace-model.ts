@@ -14,6 +14,7 @@ import { resolveCharacterShowcaseModel, type CharacterShowcaseModel } from './ch
 
 const SKILL_KEYS = ['normalAttack', 'resonanceSkill', 'forteCircuit', 'resonanceLiberation', 'introSkill'] as const
 export type TeamAttackGroup = 'basic' | 'skill' | 'forte' | 'liberation' | 'intro' | 'outro' | 'echo' | 'tuneBreak'
+export const TEAM_ROTATION_TARGET_ID = 'team:rotation'
 
 export function compactAttackLabel(label: string) {
   const separator = label.indexOf(' - ')
@@ -112,6 +113,17 @@ export interface TeamWorkspaceModel {
   introCount: number
   outroCount: number
   warnings: string[]
+}
+
+export function rotationDamageByMode(model: Pick<TeamWorkspaceModel, 'actions'>) {
+  return model.actions.reduce((totals, row) => {
+    if (row.resultKind === 'damage') {
+      totals.normal += row.normal
+      totals.critical += row.critical
+      totals.expected += row.expected
+    }
+    return totals
+  }, { normal: 0, critical: 0, expected: 0 })
 }
 
 function attackModels(catalog: CharacterCatalogEntry, character: OwnedCharacter, echoes: readonly Echo[] = []): TeamAttackModel[] {
