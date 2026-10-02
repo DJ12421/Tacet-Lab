@@ -1,0 +1,272 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21050045",
+  "entityName": "Boson Astrolabe",
+  "sourceFingerprint": "9afbbb7fbed6dc3a3eaacf19d99633a3e5e8ad028d7fe6ff65abbe2acf35542a",
+  "reviewedAt": "2026-09-09T07:44:06.766Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "833b7728a2ab868f7284459235b093600eac16bdc919280f5f0088611569a097",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050045:effect:0",
+            "sourceName": "Path Observer",
+            "text": "Increases ATK by 12%.",
+            "refinementTexts": [
+              "Increases ATK by 12%.",
+              "Increases ATK by 15%.",
+              "Increases ATK by 18%.",
+              "Increases ATK by 21%.",
+              "Increases ATK by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21050045:effect:1",
+            "sourceName": "Path Observer",
+            "text": "After a Resonator in the team casts a , it grants a 12% ATK increase and 12% Basic Attack DMG Bonus to the wielder for 14s.",
+            "refinementTexts": [
+              "After a Resonator in the team casts a Tune Break skill, it grants a 12% ATK increase and 12% Basic Attack DMG Bonus to the wielder for 14s.",
+              "After a Resonator in the team casts a Tune Break skill, it grants a 13.5% ATK increase and 13.5% Basic Attack DMG Bonus to the wielder for 14s.",
+              "After a Resonator in the team casts a Tune Break skill, it grants a 15% ATK increase and 15% Basic Attack DMG Bonus to the wielder for 14s.",
+              "After a Resonator in the team casts a Tune Break skill, it grants a 16.5% ATK increase and 16.5% Basic Attack DMG Bonus to the wielder for 14s.",
+              "After a Resonator in the team casts a Tune Break skill, it grants a 18% ATK increase and 18% Basic Attack DMG Bonus to the wielder for 14s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 14,
+              "modifiers": [
+                {
+                  "stat": "basicDamage",
+                  "operation": "addPercent",
+                  "value": 12
+                },
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Ally casts Tune Break skill"
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 12
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "a Resonator in the team casts a Tune Break skill"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 13.5
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 13.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "a Resonator in the team casts a Tune Break skill"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 15
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "a Resonator in the team casts a Tune Break skill"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 16.5
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 16.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "a Resonator in the team casts a Tune Break skill"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 18
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "a Resonator in the team casts a Tune Break skill"
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

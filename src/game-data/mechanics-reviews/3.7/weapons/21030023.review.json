@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21030023",
+  "entityName": "Originite: Type III",
+  "sourceFingerprint": "55c0b0e593b1f1aea00e16a5c5d5253c48a65129cc5a08b84a8a13e02f07ac08",
+  "reviewedAt": "2026-09-16T11:15:29.122Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "1ed9fcb42987b6b6f2ce644eb3d803384b19dd383e980ad40a84dbb877a8f211",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21030023:effect:0",
+            "sourceName": "Alarcrity",
+            "text": "When Dodge Counter is cast, heals 1.6% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 6s.",
+            "refinementTexts": [
+              "When Dodge Counter is cast, heals 1.6% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 6s.",
+              "When Dodge Counter is cast, heals 2% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 6s.",
+              "When Dodge Counter is cast, heals 2.4% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 6s.",
+              "When Dodge Counter is cast, heals 2.8% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 6s.",
+              "When Dodge Counter is cast, heals 3.2% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 6s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Dodge Counter cast",
+              "triggeredAttacks": [
+                {
+                  "id": "triggered-1",
+                  "name": "Dodge Counter",
+                  "scaling": "hp",
+                  "expression": "1.6%",
+                  "count": 1,
+                  "damageType": "healing"
+                }
+              ]
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Dodge Counter cast",
+                "triggeredAttacks": [
+                  {
+                    "expression": "1.6%"
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Dodge Counter cast",
+                "triggeredAttacks": [
+                  {
+                    "expression": "2%"
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Dodge Counter cast",
+                "triggeredAttacks": [
+                  {
+                    "expression": "2.4%"
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Dodge Counter cast",
+                "triggeredAttacks": [
+                  {
+                    "expression": "2.8%"
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Dodge Counter cast",
+                "triggeredAttacks": [
+                  {
+                    "expression": "3.2%"
+                  }
+                ]
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

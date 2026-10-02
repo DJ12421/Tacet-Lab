@@ -282,6 +282,20 @@ export const generatedCharacterSummaries:GeneratedCharacterSummary[]=[
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Feixue_UI.webp"
   },
   {
+    "id": "1311",
+    "name": "Hsin",
+    "title": "Fractal Proliferation",
+    "nickname": "An error occurred. Please contact our Customer Service for assistance.",
+    "rarity": 5,
+    "element": "Electro",
+    "weaponType": "Rectifier",
+    "role": "Main Damage Dealer",
+    "gender": "female",
+    "articleUrl": "https://ww.nanoka.cc/character/1311",
+    "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_75_UI.webp",
+    "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Xin_UI.webp"
+  },
+  {
     "id": "1410",
     "name": "Iuno",
     "title": "Stasis, Cycle, Renewal",
@@ -728,6 +742,20 @@ export const generatedCharacterSummaries:GeneratedCharacterSummary[]=[
     "articleUrl": "https://ww.nanoka.cc/character/1110",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_71_UI.webp",
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Suisui_UI.webp"
+  },
+  {
+    "id": "1312",
+    "name": "Suoming",
+    "title": "Power of Ten",
+    "nickname": "",
+    "rarity": 5,
+    "element": "Electro",
+    "weaponType": "Sword",
+    "role": "Concerto Efficiency",
+    "gender": "female",
+    "articleUrl": "https://ww.nanoka.cc/character/1312",
+    "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_76_UI.webp",
+    "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Suoming_UI.webp"
   },
   {
     "id": "1601",

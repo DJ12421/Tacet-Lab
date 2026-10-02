@@ -1,0 +1,266 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21030034",
+  "entityName": "Pistols#26",
+  "sourceFingerprint": "d2de5b4531decb8dc6678136fc72f4e7f4affb9a3deee2cba4b4e92d084991ee",
+  "reviewedAt": "2026-09-16T11:24:10.500Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "077291555845795b743cd72612baf1f220c0c999ec3c8a9cc1f5bbd4a0496b29",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21030034:effect:0",
+            "sourceName": "Omniscient",
+            "text": "When the Resonator takes no damage, increases ATK by 6% every 5s, stacking up to 2 time(s). This effect lasts for 8s.",
+            "refinementTexts": [
+              "When the Resonator takes no damage, increases ATK by 6% every 5s, stacking up to 2 time(s). This effect lasts for 8s.",
+              "When the Resonator takes no damage, increases ATK by 7.5% every 5s, stacking up to 2 time(s). This effect lasts for 8s.",
+              "When the Resonator takes no damage, increases ATK by 9% every 5s, stacking up to 2 time(s). This effect lasts for 8s.",
+              "When the Resonator takes no damage, increases ATK by 10.5% every 5s, stacking up to 2 time(s). This effect lasts for 8s.",
+              "When the Resonator takes no damage, increases ATK by 12% every 5s, stacking up to 2 time(s). This effect lasts for 8s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 2,
+                "key": "1"
+              },
+              "durationSeconds": 8,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 6,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "wielder takes no damage"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "value": 6
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the Resonator takes no damage"
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "value": 7.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the Resonator takes no damage"
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "value": 9
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the Resonator takes no damage"
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "value": 10.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the Resonator takes no damage"
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the Resonator takes no damage"
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21030034:effect:1",
+            "sourceName": "Omniscient",
+            "text": "When the Resonator takes damage, loses 1 stacks and heals 5% of their Max HP.",
+            "refinementTexts": [
+              "When the Resonator takes damage, loses 1 stacks and heals 5% of their Max HP.",
+              "When the Resonator takes damage, loses 1 stacks and heals 6.25% of their Max HP.",
+              "When the Resonator takes damage, loses 1 stacks and heals 7.5% of their Max HP.",
+              "When the Resonator takes damage, loses 1 stacks and heals 8.75% of their Max HP.",
+              "When the Resonator takes damage, loses 1 stacks and heals 10% of their Max HP."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "all",
+                "minimum": 0,
+                "maximum": 1,
+                "keys": [
+                  "1"
+                ]
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Stack maximum was not explicit and requires review."
+              ],
+              "trigger": "wielder takes damage",
+              "triggeredAttacks": [
+                {
+                  "id": "triggered-1",
+                  "name": "Damage taken",
+                  "scaling": "hp",
+                  "expression": "5%",
+                  "count": 1,
+                  "damageType": "healing"
+                }
+              ]
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "modifiers": [],
+                "confidence": "review",
+                "warnings": [
+                  "Stack maximum was not explicit and requires review."
+                ],
+                "trigger": "the Resonator takes damage",
+                "triggeredAttacks": [
+                  {
+                    "expression": "5%"
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "modifiers": [],
+                "confidence": "review",
+                "warnings": [
+                  "Stack maximum was not explicit and requires review."
+                ],
+                "trigger": "the Resonator takes damage",
+                "triggeredAttacks": [
+                  {
+                    "expression": "6.25%"
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "modifiers": [],
+                "confidence": "review",
+                "warnings": [
+                  "Stack maximum was not explicit and requires review."
+                ],
+                "trigger": "the Resonator takes damage",
+                "triggeredAttacks": [
+                  {
+                    "expression": "7.5%"
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "modifiers": [],
+                "confidence": "review",
+                "warnings": [
+                  "Stack maximum was not explicit and requires review."
+                ],
+                "trigger": "the Resonator takes damage",
+                "triggeredAttacks": [
+                  {
+                    "expression": "8.75%"
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "modifiers": [],
+                "confidence": "review",
+                "warnings": [
+                  "Stack maximum was not explicit and requires review."
+                ],
+                "trigger": "the Resonator takes damage",
+                "triggeredAttacks": [
+                  {
+                    "expression": "10%"
+                  }
+                ]
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

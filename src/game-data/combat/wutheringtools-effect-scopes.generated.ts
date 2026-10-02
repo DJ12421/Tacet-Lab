@@ -122,11 +122,6 @@ export const wutheringToolsEffectScopes: Readonly<Record<string, { all?: readonl
       "1109:3:4"
     ]
   },
-  "character:1110:1110:4:effect:2": {
-    "all": [
-      "1110:6:0"
-    ]
-  },
   "character:1110:1110:sequence:5:0": {
     "all": [
       "1110:7:0",
@@ -324,9 +319,7 @@ export const wutheringToolsEffectScopes: Readonly<Record<string, { all?: readonl
     ]
   },
   "character:1209:1209:3:effect:1": {
-    "all": [
-      "1209:3:0"
-    ]
+    "blockUnscoped": true
   },
   "character:1209:1209:sequence:4:0": {
     "all": [
@@ -426,11 +419,6 @@ export const wutheringToolsEffectScopes: Readonly<Record<string, { all?: readonl
   "character:1211:1211:sequence:5:0": {
     "all": [
       "1211:3:0"
-    ]
-  },
-  "character:1302:1302:5:effect:0": {
-    "all": [
-      "1302:2:1"
     ]
   },
   "character:1302:1302:sequence:3:0": {
@@ -877,12 +865,6 @@ export const wutheringToolsEffectScopes: Readonly<Record<string, { all?: readonl
       "1510:2:3",
       "1510:7:0",
       "1510:2:5"
-    ]
-  },
-  "character:1511:1511:5:effect:4": {
-    "all": [
-      "1511:7:0",
-      "1511:3:3"
     ]
   },
   "character:1511:1511:7:effect:11": {

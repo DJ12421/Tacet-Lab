@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "390080007",
+  "entityName": "Inferno Rider",
+  "sourceFingerprint": "ed8b2edf8550d5c2893594427a5e5e5f3d7f645985c9bced209f276aa56fcce8",
+  "reviewedAt": "2026-09-26T18:30:44.435Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "e07e143a3e3a014b4cfa130a847c48f533ca2d6136471ba8bda1c166de5c6cba",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390080007:skill:1",
+            "name": "Inferno Rider - Echo Skill 1",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Fusion",
+            "expressions": [
+              "151.50%+176.75%+176.75%",
+              "174.23%+203.26%+203.26%",
+              "196.95%+229.78%+229.78%",
+              "219.68%+256.29%+256.29%",
+              "242.40%+282.80%+282.80%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.515,
+                1.7675,
+                1.7675
+              ],
+              [
+                1.7423,
+                2.0326,
+                2.0326
+              ],
+              [
+                1.9694999999999998,
+                2.2978,
+                2.2978
+              ],
+              [
+                2.1968,
+                2.5629000000000004,
+                2.5629000000000004
+              ],
+              [
+                2.424,
+                2.8280000000000003,
+                2.8280000000000003
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              1,
+              1
+            ],
+            "count": 3,
+            "cooldownSeconds": 20,
+            "sourceText": "Transform into the Inferno Rider to launch up to 3 consecutive slashes in a row, each slash dealing 151.50%, 176.75%, and 176.75% Fusion DMG respectively.\nAfter the final hit, increase the current Resonator's Fusion DMG by 12.00% and Basic Attack DMG by 12.00% for 15s.\nLong press the Echo Skill to transform into the Inferno Rider and enter Riding Mode. When exiting Riding Mode, deal 176.75% Fusion DMG to enemies in front.\nCD: 20s · Transform into the Inferno Rider to launch up to 3 consecutive slashes in a row, each slash dealing 174.23%, 203.26%, and 203.26% Fusion DMG respectively.\nAfter the final hit, increase the current Resonator's Fusion DMG by 12.00% and Basic Attack DMG by 12.00% for 15s.\nLong press the Echo Skill to transform into the Inferno Rider and enter Riding Mode. When exiting Riding Mode, deal 203.26% Fusion DMG to enemies in front.\nCD: 20s · Transform into the Inferno Rider to launch up to 3 consecutive slashes in a row, each slash dealing 196.95%, 229.78%, and 229.78% Fusion DMG respectively.\nAfter the final hit, increase the current Resonator's Fusion DMG by 12.00% and Basic Attack DMG by 12.00% for 15s.\nLong press the Echo Skill to transform into the Inferno Rider and enter Riding Mode. When exiting Riding Mode, deal 229.78% Fusion DMG to enemies in front.\nCD: 20s · Transform into the Inferno Rider to launch up to 3 consecutive slashes in a row, each slash dealing 219.68%, 256.29%, and 256.29% Fusion DMG respectively.\nAfter the final hit, increase the current Resonator's Fusion DMG by 12.00% and Basic Attack DMG by 12.00% for 15s.\nLong press the Echo Skill to transform into the Inferno Rider and enter Riding Mode. When exiting Riding Mode, deal 256.29% Fusion DMG to enemies in front.\nCD: 20s · Transform into the Inferno Rider to launch up to 3 consecutive slashes in a row, each slash dealing 242.40%, 282.80%, and 282.80% Fusion DMG respectively.\nAfter the final hit, increase the current Resonator's Fusion DMG by 12.00% and Basic Attack DMG by 12.00% for 15s.\nLong press the Echo Skill to transform into the Inferno Rider and enter Riding Mode. When exiting Riding Mode, deal 282.80% Fusion DMG to enemies in front.\nCD: 20s"
+          },
+          {
+            "id": "echo:390080007:skill:2",
+            "name": "Inferno Rider - Echo Skill 2",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Fusion",
+            "expressions": [
+              "176.75%",
+              "203.26%",
+              "229.78%",
+              "256.29%",
+              "282.80%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.7675
+              ],
+              [
+                2.0326
+              ],
+              [
+                2.2978
+              ],
+              [
+                2.5629000000000004
+              ],
+              [
+                2.8280000000000003
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 20,
+            "sourceText": "Transform into the Inferno Rider to launch up to 3 consecutive slashes in a row, each slash dealing 151.50%, 176.75%, and 176.75% Fusion DMG respectively.\nAfter the final hit, increase the current Resonator's Fusion DMG by 12.00% and Basic Attack DMG by 12.00% for 15s.\nLong press the Echo Skill to transform into the Inferno Rider and enter Riding Mode. When exiting Riding Mode, deal 176.75% Fusion DMG to enemies in front.\nCD: 20s · Transform into the Inferno Rider to launch up to 3 consecutive slashes in a row, each slash dealing 174.23%, 203.26%, and 203.26% Fusion DMG respectively.\nAfter the final hit, increase the current Resonator's Fusion DMG by 12.00% and Basic Attack DMG by 12.00% for 15s.\nLong press the Echo Skill to transform into the Inferno Rider and enter Riding Mode. When exiting Riding Mode, deal 203.26% Fusion DMG to enemies in front.\nCD: 20s · Transform into the Inferno Rider to launch up to 3 consecutive slashes in a row, each slash dealing 196.95%, 229.78%, and 229.78% Fusion DMG respectively.\nAfter the final hit, increase the current Resonator's Fusion DMG by 12.00% and Basic Attack DMG by 12.00% for 15s.\nLong press the Echo Skill to transform into the Inferno Rider and enter Riding Mode. When exiting Riding Mode, deal 229.78% Fusion DMG to enemies in front.\nCD: 20s · Transform into the Inferno Rider to launch up to 3 consecutive slashes in a row, each slash dealing 219.68%, 256.29%, and 256.29% Fusion DMG respectively.\nAfter the final hit, increase the current Resonator's Fusion DMG by 12.00% and Basic Attack DMG by 12.00% for 15s.\nLong press the Echo Skill to transform into the Inferno Rider and enter Riding Mode. When exiting Riding Mode, deal 256.29% Fusion DMG to enemies in front.\nCD: 20s · Transform into the Inferno Rider to launch up to 3 consecutive slashes in a row, each slash dealing 242.40%, 282.80%, and 282.80% Fusion DMG respectively.\nAfter the final hit, increase the current Resonator's Fusion DMG by 12.00% and Basic Attack DMG by 12.00% for 15s.\nLong press the Echo Skill to transform into the Inferno Rider and enter Riding Mode. When exiting Riding Mode, deal 282.80% Fusion DMG to enemies in front.\nCD: 20s"
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "d4db3e8bd2c13e5edb31fc55c6f4d7f177ff2ecc95193c72ef2bdd9918c0a478",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:390080007:effect:0",
+            "sourceName": "Inferno Rider",
+            "sourceType": "echo",
+            "text": "After the final hit, increase the current Resonator's Fusion DMG by 12.00% and Basic Attack DMG by 12.00% for 15s.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "After the final hit",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "basicDamage",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                },
+                {
+                  "stat": "Fusion",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

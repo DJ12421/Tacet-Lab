@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000044",
+  "entityName": "Lampylumen Myriad",
+  "sourceFingerprint": "07e7fffd4e82b45f9cef704f0af76cbad7692b8230f2cd16051ae1c3d51961b8",
+  "reviewedAt": "2026-09-26T18:34:26.393Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "2a0e79418975d8de48d51d0809535e2e528a3784c7bb4d93c565572391863fee",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000044:skill",
+            "name": "Lampylumen Myriad - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Glacio",
+            "expressions": [
+              "125.10%+125.10%+166.80%",
+              "143.87%+143.87%+191.82%",
+              "162.63%+162.63%+216.84%",
+              "181.40%+181.40%+241.86%",
+              "200.16%+200.16%+266.88%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.251,
+                1.251,
+                1.6680000000000001
+              ],
+              [
+                1.4387,
+                1.4387,
+                1.9182
+              ],
+              [
+                1.6262999999999999,
+                1.6262999999999999,
+                2.1684
+              ],
+              [
+                1.814,
+                1.814,
+                2.4186
+              ],
+              [
+                2.0016,
+                2.0016,
+                2.6688
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0,
+              2
+            ],
+            "count": 3,
+            "cooldownSeconds": 20,
+            "sourceText": "Transform into Lampylumen Myriad. Perform up to 3 consecutive attacks.\nUnleash a freezing shock by performing consecutive forward strikes, with the initial two strikes inflicting 125.10% and 125.10% Glacio DMG respectively, and the final strike dealing 166.80% Glacio DMG. Enemies will be frozen on hit.\nEach shock increases the current character's Glacio DMG by 4.00% and Resonance Skill DMG dealt by 4.00% for 15s, stacking up to 3 times\nCD: 20s · Transform into Lampylumen Myriad. Perform up to 3 consecutive attacks.\nUnleash a freezing shock by performing consecutive forward strikes, with the initial two strikes inflicting 143.87% and 143.87% Glacio DMG respectively, and the final strike dealing 191.82% Glacio DMG. Enemies will be frozen on hit.\nEach shock increases the current character's Glacio DMG by 4.00% and Resonance Skill DMG dealt by 4.00% for 15s, stacking up to 3 times\nCD: 20s · Transform into Lampylumen Myriad. Perform up to 3 consecutive attacks.\nUnleash a freezing shock by performing consecutive forward strikes, with the initial two strikes inflicting 162.63% and 162.63% Glacio DMG respectively, and the final strike dealing 216.84% Glacio DMG. Enemies will be frozen on hit.\nEach shock increases the current character's Glacio DMG by 4.00% and Resonance Skill DMG dealt by 4.00% for 15s, stacking up to 3 times\nCD: 20s · Transform into Lampylumen Myriad. Perform up to 3 consecutive attacks.\nUnleash a freezing shock by performing consecutive forward strikes, with the initial two strikes inflicting 181.40% and 181.40% Glacio DMG respectively, and the final strike dealing 241.86% Glacio DMG. Enemies will be frozen on hit.\nEach shock increases the current character's Glacio DMG by 4.00% and Resonance Skill DMG dealt by 4.00% for 15s, stacking up to 3 times\nCD: 20s · Transform into Lampylumen Myriad. Perform up to 3 consecutive attacks.\nUnleash a freezing shock by performing consecutive forward strikes, with the initial two strikes inflicting 200.16% and 200.16% Glacio DMG respectively, and the final strike dealing 266.88% Glacio DMG. Enemies will be frozen on hit.\nEach shock increases the current character's Glacio DMG by 4.00% and Resonance Skill DMG dealt by 4.00% for 15s, stacking up to 3 times\nCD: 20s"
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "2ac12bf885b2bd4577fec515bbf2721d64ab714c7118069f7000c058dfc64045",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000044:effect:0",
+            "sourceName": "Lampylumen Myriad",
+            "sourceType": "echo",
+            "text": "Each shock increases the current character's Glacio DMG by 4.00% and Resonance Skill DMG dealt by 4.00% for 15s, stacking up to 3 times",
+            "parsed": {
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "trigger": "Echo Skill shock landed",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "skillDamage",
+                  "operation": "addPercent",
+                  "value": 4,
+                  "scope": "self"
+                },
+                {
+                  "stat": "Glacio",
+                  "operation": "addPercent",
+                  "value": 4,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

@@ -130,7 +130,8 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
     "name": "Aureate Picket",
     "cost": 1,
     "sonatas": [
-      "Heart of Evil's Purge"
+      "Heart of Evil's Purge",
+      "Flash of Electric Reflection"
     ],
     "rarities": [
       2,
@@ -224,6 +225,25 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
     "articleUrl": "https://ww.nanoka.cc/echo/390080005",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_992_UI.T_IconMonsterGoods_992_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_992_UI.webp"
+  },
+  {
+    "id": "6000222",
+    "name": "Bloomburst Puppet",
+    "cost": 1,
+    "sonatas": [
+      "Heart of Sworn Vigil"
+    ],
+    "rarities": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "intensity": 0,
+    "skillDescription": "Summon a Bloomburst Puppet to startle the target, dealing 1 instance of 25.92% Glacio DMG, followed by 2 instances of 12.96% Glacio DMG and 1 instance of 77.76% Glacio DMG.\nCD: 8s",
+    "articleUrl": "https://ww.nanoka.cc/echo/6000222",
+    "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31104_UI.T_IconMonsterHead_31104_UI",
+    "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31104_UI.webp"
   },
   {
     "id": "6000221",
@@ -937,7 +957,8 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
     "name": "Fog Lionarch: Body",
     "cost": 1,
     "sonatas": [
-      "Song of Feathered Trace"
+      "Song of Feathered Trace",
+      "Heart of Sworn Vigil"
     ],
     "rarities": [
       2,
@@ -956,7 +977,8 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
     "name": "Fog Lionarch: Head",
     "cost": 1,
     "sonatas": [
-      "Song of Feathered Trace"
+      "Song of Feathered Trace",
+      "Heart of Sworn Vigil"
     ],
     "rarities": [
       2,
@@ -990,6 +1012,26 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
     "articleUrl": "https://ww.nanoka.cc/echo/6000216",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32068_UI.T_IconMonsterHead_32068_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32068_UI.webp"
+  },
+  {
+    "id": "6000223",
+    "name": "Formrender",
+    "cost": 3,
+    "sonatas": [
+      "Heart of Sworn Vigil",
+      "Flower of Tinged Yearning"
+    ],
+    "rarities": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "intensity": 1,
+    "skillDescription": "Use Echo Skill to summon a Formrender, dealing 273.60% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 10.00% Energy Regen.\nCD: 20s",
+    "articleUrl": "https://ww.nanoka.cc/echo/6000223",
+    "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32070_UI.T_IconMonsterHead_32070_UI",
+    "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32070_UI.webp"
   },
   {
     "id": "6000187",
@@ -1605,6 +1647,25 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32053_UI.webp"
   },
   {
+    "id": "6000219",
+    "name": "Jade Nether Serpent",
+    "cost": 1,
+    "sonatas": [
+      "Heart of Sworn Vigil"
+    ],
+    "rarities": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "intensity": 0,
+    "skillDescription": "Summon a Jade Nether Serpent that bombards the target with fireballs, dealing 12.96% Fusion DMG 5 times, then 64.80% Fusion DMG once.\nCD: 8s",
+    "articleUrl": "https://ww.nanoka.cc/echo/6000219",
+    "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31103_UI.T_IconMonsterHead_31103_UI",
+    "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_31103_UI.webp"
+  },
+  {
     "id": "6000059",
     "name": "Jué",
     "cost": 4,
@@ -1649,7 +1710,8 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
     "name": "Kernel Puppet: Anger",
     "cost": 1,
     "sonatas": [
-      "Heart of Evil's Purge"
+      "Heart of Evil's Purge",
+      "Flower of Tinged Yearning"
     ],
     "rarities": [
       2,
@@ -1668,7 +1730,8 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
     "name": "Kernel Puppet: Fright",
     "cost": 1,
     "sonatas": [
-      "Lamp of Nether Road"
+      "Lamp of Nether Road",
+      "Flower of Tinged Yearning"
     ],
     "rarities": [
       2,
@@ -1687,7 +1750,8 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
     "name": "Kernel Puppet: Grief",
     "cost": 1,
     "sonatas": [
-      "Lamp of Nether Road"
+      "Lamp of Nether Road",
+      "Flower of Tinged Yearning"
     ],
     "rarities": [
       2,
@@ -1706,7 +1770,8 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
     "name": "Kernel Puppet: Joy",
     "cost": 1,
     "sonatas": [
-      "Song of Feathered Trace"
+      "Song of Feathered Trace",
+      "Heart of Sworn Vigil"
     ],
     "rarities": [
       2,
@@ -1725,7 +1790,8 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
     "name": "Kernel Puppet: Reflection",
     "cost": 1,
     "sonatas": [
-      "Heart of Evil's Purge"
+      "Heart of Evil's Purge",
+      "Flower of Tinged Yearning"
     ],
     "rarities": [
       2,
@@ -1744,7 +1810,8 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
     "name": "Kernel Puppet: Worry",
     "cost": 1,
     "sonatas": [
-      "Heart of Evil's Purge"
+      "Heart of Evil's Purge",
+      "Flash of Electric Reflection"
     ],
     "rarities": [
       2,
@@ -2618,7 +2685,8 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
     "name": "Porcelain Picket",
     "cost": 1,
     "sonatas": [
-      "Lamp of Nether Road"
+      "Lamp of Nether Road",
+      "Flash of Electric Reflection"
     ],
     "rarities": [
       2,
@@ -2790,6 +2858,26 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
     "articleUrl": "https://ww.nanoka.cc/echo/6000194",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32060_UI.T_IconMonsterHead_32060_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32060_UI.webp"
+  },
+  {
+    "id": "6000225",
+    "name": "Reminiscence: Suhsin the Inevitable",
+    "cost": 4,
+    "sonatas": [
+      "Heart of Sworn Vigil",
+      "Flash of Electric Reflection"
+    ],
+    "rarities": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "intensity": 3,
+    "skillDescription": "Cast Echo Skill to deal 4 instances of 27.36% Electro DMG and 1 instance of 164.16% Electro DMG.\nWhen equipped by Hsin, the Echo Skill instead deals 5 instances of 8.20% Electro DMG and 1 instance of 232.56% Electro DMG to targets within a larger range.\nThe Resonator with this Echo equipped in their main slot gains 10.00% Electro DMG Bonus. Inflicting Electro Flare, gaining Unison, or triggering Unison Response grants the Resonator an extra 10.00% Electro DMG Bonus for 30s.\nCD: 20s",
+    "articleUrl": "https://ww.nanoka.cc/echo/6000225",
+    "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34033_2_UI.T_IconMonsterHead_34033_2_UI",
+    "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34033_2_UI.webp"
   },
   {
     "id": "6000167",
@@ -3034,6 +3122,26 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_34025_0_UI.webp"
   },
   {
+    "id": "6000220",
+    "name": "Skywatch Lancer",
+    "cost": 3,
+    "sonatas": [
+      "Flash of Electric Reflection",
+      "Flower of Tinged Yearning"
+    ],
+    "rarities": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "intensity": 1,
+    "skillDescription": "Summon a Skywatch Lancer to attack the target, dealing 32.09% Aero DMG 6 times.\nCD: 15s",
+    "articleUrl": "https://ww.nanoka.cc/echo/6000220",
+    "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32069_UI.T_IconMonsterHead_32069_UI",
+    "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32069_UI.webp"
+  },
+  {
     "id": "6000202",
     "name": "Smiter",
     "cost": 1,
@@ -3091,6 +3199,26 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
     "articleUrl": "https://ww.nanoka.cc/echo/390070066",
     "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_061_UI.T_IconMonsterGoods_061_UI",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterGoods/T_IconMonsterGoods_061_UI.webp"
+  },
+  {
+    "id": "6000224",
+    "name": "Soulfrayer",
+    "cost": 3,
+    "sonatas": [
+      "Heart of Sworn Vigil",
+      "Flash of Electric Reflection"
+    ],
+    "rarities": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "intensity": 1,
+    "skillDescription": "Use Echo Skill to summon a Soulfrayer, dealing 91.18% Electro DMG 3 times.\nCasting Outro Skill within 15s after summoning Soulfrayer grants 12.00% Electro DMG Bonus to the incoming Resonator for 15s.\nCD: 20s",
+    "articleUrl": "https://ww.nanoka.cc/echo/6000224",
+    "iconPath": "/Game/Aki/UI/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32071_UI.T_IconMonsterHead_32071_UI",
+    "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconMonsterHead/T_IconMonsterHead_32071_UI.webp"
   },
   {
     "id": "6000184",
@@ -3179,7 +3307,8 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
     "name": "Stone Picket",
     "cost": 1,
     "sonatas": [
-      "Lamp of Nether Road"
+      "Lamp of Nether Road",
+      "Flash of Electric Reflection"
     ],
     "rarities": [
       2,
@@ -3276,7 +3405,8 @@ export const generatedEchoCatalog:GeneratedEchoCatalogEntry[]=[
     "name": "Thousand-Puppet Pavilion",
     "cost": 4,
     "sonatas": [
-      "Song of Feathered Trace"
+      "Song of Feathered Trace",
+      "Flower of Tinged Yearning"
     ],
     "rarities": [
       2,

@@ -230,7 +230,7 @@
 
 .optimizer-build-result.is-selected {
   border-color: var(--optimizer-strong);
-  box-shadow: inset 3px 0 0 var(--tw-member-accent,#8de4d4);
+  box-shadow: none;
 }
 
 .optimizer-result-tags {

@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "390077025",
+  "entityName": "Chasm Guardian",
+  "sourceFingerprint": "057234e2eb60c15049b98a11c35c10af90d4c9bc9f09a7478daf1d6703542517",
+  "reviewedAt": "2026-09-26T18:28:40.629Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "16c368d157e0fd651bffd9df3eeb9579849bacac6cd9c07d8c4ad02c8091b48a",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390077025:skill",
+            "name": "Chasm Guardian - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Havoc",
+            "expressions": [
+              "171.00%",
+              "196.65%",
+              "222.30%",
+              "247.95%",
+              "273.60%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.71
+              ],
+              [
+                1.9665000000000001
+              ],
+              [
+                2.2230000000000003
+              ],
+              [
+                2.4795
+              ],
+              [
+                2.736
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 15,
+            "sourceText": "Transform into Chasm Guardian to perform a Leap Strike that deals 171.00% Havoc DMG on hit. Current character loses 10.00% HP after the hit lands. Periodically restore current character's HP after 5s for up to 10.00% of their Max HP.\nCD: 15s · Transform into Chasm Guardian to perform a Leap Strike that deals 196.65% Havoc DMG on hit. Current character loses 10.00% HP after the hit lands. Periodically restore current character's HP after 5s for up to 10.00% of their Max HP.\nCD: 15s · Transform into Chasm Guardian to perform a Leap Strike that deals 222.30% Havoc DMG on hit. Current character loses 10.00% HP after the hit lands. Periodically restore current character's HP after 5s for up to 10.00% of their Max HP.\nCD: 15s · Transform into Chasm Guardian to perform a Leap Strike that deals 247.95% Havoc DMG on hit. Current character loses 10.00% HP after the hit lands. Periodically restore current character's HP after 5s for up to 10.00% of their Max HP.\nCD: 15s · Transform into Chasm Guardian to perform a Leap Strike that deals 273.60% Havoc DMG on hit. Current character loses 10.00% HP after the hit lands. Periodically restore current character's HP after 5s for up to 10.00% of their Max HP.\nCD: 15s"
+          },
+          {
+            "id": "echo:390077025:healing",
+            "name": "Chasm Guardian - Echo Skill Healing",
+            "damageType": "healing",
+            "skillSource": "echo",
+            "recipient": "self",
+            "scaling": "hp",
+            "expressions": [
+              "10%",
+              "10%",
+              "10%",
+              "10%",
+              "10%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.1
+              ],
+              [
+                0.1
+              ],
+              [
+                0.1
+              ],
+              [
+                0.1
+              ],
+              [
+                0.1
+              ]
+            ],
+            "count": 1,
+            "cooldownSeconds": 15,
+            "sourceText": "Transform into Chasm Guardian to perform a Leap Strike that deals 171.00% Havoc DMG on hit. Current character loses 10.00% HP after the hit lands. Periodically restore current character's HP after 5s for up to 10.00% of their Max HP.\nCD: 15s · Transform into Chasm Guardian to perform a Leap Strike that deals 196.65% Havoc DMG on hit. Current character loses 10.00% HP after the hit lands. Periodically restore current character's HP after 5s for up to 10.00% of their Max HP.\nCD: 15s · Transform into Chasm Guardian to perform a Leap Strike that deals 222.30% Havoc DMG on hit. Current character loses 10.00% HP after the hit lands. Periodically restore current character's HP after 5s for up to 10.00% of their Max HP.\nCD: 15s · Transform into Chasm Guardian to perform a Leap Strike that deals 247.95% Havoc DMG on hit. Current character loses 10.00% HP after the hit lands. Periodically restore current character's HP after 5s for up to 10.00% of their Max HP.\nCD: 15s · Transform into Chasm Guardian to perform a Leap Strike that deals 273.60% Havoc DMG on hit. Current character loses 10.00% HP after the hit lands. Periodically restore current character's HP after 5s for up to 10.00% of their Max HP.\nCD: 15s"
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21050044",
+  "entityName": "Jinzhou Keeper",
+  "sourceFingerprint": "1f8f45c85612198ded8a4b228850f7469665216b4f61c404bfcecdcb6a9df8e6",
+  "reviewedAt": "2026-09-09T07:57:31.678Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "9675d531047dd367002ab8fec5621a32001450cb813e1ea1abdd10394cbff868",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050044:effect:0",
+            "sourceName": "Guardian",
+            "text": "Casting Intro Skill increases the wielder's ATK by 8% and HP by 10%, lasting for 15s.",
+            "refinementTexts": [
+              "Casting Intro Skill increases the wielder's ATK by 8% and HP by 10%, lasting for 15s.",
+              "Casting Intro Skill increases the wielder's ATK by 10% and HP by 12.5%, lasting for 15s.",
+              "Casting Intro Skill increases the wielder's ATK by 12% and HP by 15%, lasting for 15s.",
+              "Casting Intro Skill increases the wielder's ATK by 14% and HP by 17.5%, lasting for 15s.",
+              "Casting Intro Skill increases the wielder's ATK by 16% and HP by 20%, lasting for 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Intro Skill cast",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 8
+                },
+                {
+                  "stat": "hpPercent",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 8
+                  },
+                  {
+                    "stat": "hpPercent",
+                    "operation": "addPercent",
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 10
+                  },
+                  {
+                    "stat": "hpPercent",
+                    "operation": "addPercent",
+                    "value": 12.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  },
+                  {
+                    "stat": "hpPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 14
+                  },
+                  {
+                    "stat": "hpPercent",
+                    "operation": "addPercent",
+                    "value": 17.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 16
+                  },
+                  {
+                    "stat": "hpPercent",
+                    "operation": "addPercent",
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

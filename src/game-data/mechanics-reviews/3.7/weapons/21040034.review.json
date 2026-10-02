@@ -1,0 +1,340 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21040034",
+  "entityName": "Gauntlets#21D",
+  "sourceFingerprint": "387d95c97c8c06fb8060379095640dc9fce17742b440497006a65af4d33ddbe2",
+  "reviewedAt": "2026-09-16T12:25:17.418Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "771e45adb44cc9ba2a498e903460c4401b9657df12c187998bd5102fc79ad784",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21040034:effect:0",
+            "sourceName": "Mastermind",
+            "text": "When the Resonator dashes or dodges, increases ATK by 8%.",
+            "refinementTexts": [
+              "When the Resonator dashes or dodges, increases ATK by 8%.",
+              "When the Resonator dashes or dodges, increases ATK by 10%.",
+              "When the Resonator dashes or dodges, increases ATK by 12%.",
+              "When the Resonator dashes or dodges, increases ATK by 14%.",
+              "When the Resonator dashes or dodges, increases ATK by 16%."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle",
+                "key": "weapon:21040034:mastermind-dash-dodge"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 8,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Resonator dashes/dodges",
+              "durationSeconds": 8
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle",
+                  "key": "weapon:21040034:mastermind-dash-dodge"
+                },
+                "modifiers": [
+                  {
+                    "value": 8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Resonator dashes/dodges",
+                "durationSeconds": 8
+              },
+              {
+                "input": {
+                  "kind": "toggle",
+                  "key": "weapon:21040034:mastermind-dash-dodge"
+                },
+                "modifiers": [
+                  {
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Resonator dashes/dodges",
+                "durationSeconds": 8
+              },
+              {
+                "input": {
+                  "kind": "toggle",
+                  "key": "weapon:21040034:mastermind-dash-dodge"
+                },
+                "modifiers": [
+                  {
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Resonator dashes/dodges",
+                "durationSeconds": 8
+              },
+              {
+                "input": {
+                  "kind": "toggle",
+                  "key": "weapon:21040034:mastermind-dash-dodge"
+                },
+                "modifiers": [
+                  {
+                    "value": 14
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Resonator dashes/dodges",
+                "durationSeconds": 8
+              },
+              {
+                "input": {
+                  "kind": "toggle",
+                  "key": "weapon:21040034:mastermind-dash-dodge"
+                },
+                "modifiers": [
+                  {
+                    "value": 16
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Resonator dashes/dodges",
+                "durationSeconds": 8
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21040034:effect:1",
+            "sourceName": "Mastermind",
+            "text": "Increases Dodge Counter DMG by 50%, lasting for 8s.",
+            "refinementTexts": [
+              "Increases Dodge Counter DMG by 50%, lasting for 8s.",
+              "Increases Dodge Counter DMG by 62.5%, lasting for 8s.",
+              "Increases Dodge Counter DMG by 75%, lasting for 8s.",
+              "Increases Dodge Counter DMG by 87.5%, lasting for 8s.",
+              "Increases Dodge Counter DMG by 100%, lasting for 8s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle",
+                "key": "weapon:21040034:mastermind-dash-dodge"
+              },
+              "durationSeconds": 8,
+              "modifiers": [
+                {
+                  "stat": "dodgeCounterDamage",
+                  "operation": "addPercent",
+                  "value": 50,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Resonator dashes/dodges"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle",
+                  "key": "weapon:21040034:mastermind-dash-dodge"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "value": 50
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Resonator dashes/dodges"
+              },
+              {
+                "input": {
+                  "kind": "toggle",
+                  "key": "weapon:21040034:mastermind-dash-dodge"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "value": 62.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Resonator dashes/dodges"
+              },
+              {
+                "input": {
+                  "kind": "toggle",
+                  "key": "weapon:21040034:mastermind-dash-dodge"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "value": 75
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Resonator dashes/dodges"
+              },
+              {
+                "input": {
+                  "kind": "toggle",
+                  "key": "weapon:21040034:mastermind-dash-dodge"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "value": 87.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Resonator dashes/dodges"
+              },
+              {
+                "input": {
+                  "kind": "toggle",
+                  "key": "weapon:21040034:mastermind-dash-dodge"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "value": 100
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Resonator dashes/dodges"
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21040034:effect:2",
+            "sourceName": "Mastermind",
+            "text": "When Dodge Counter is performed, heals 5% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 6s.",
+            "refinementTexts": [
+              "When Dodge Counter is performed, heals 5% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 6s.",
+              "When Dodge Counter is performed, heals 6.25% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 6s.",
+              "When Dodge Counter is performed, heals 7.5% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 6s.",
+              "When Dodge Counter is performed, heals 8.75% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 6s.",
+              "When Dodge Counter is performed, heals 10% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 6s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Dodge Counter performed",
+              "triggeredAttacks": [
+                {
+                  "id": "triggered-1",
+                  "name": "Dodge Counter",
+                  "scaling": "hp",
+                  "expression": "5%",
+                  "count": 1,
+                  "damageType": "healing"
+                }
+              ]
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Dodge Counter is performed",
+                "triggeredAttacks": [
+                  {
+                    "expression": "5%"
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Dodge Counter is performed",
+                "triggeredAttacks": [
+                  {
+                    "expression": "6.25%"
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Dodge Counter is performed",
+                "triggeredAttacks": [
+                  {
+                    "expression": "7.5%"
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Dodge Counter is performed",
+                "triggeredAttacks": [
+                  {
+                    "expression": "8.75%"
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Dodge Counter is performed",
+                "triggeredAttacks": [
+                  {
+                    "expression": "10%"
+                  }
+                ]
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

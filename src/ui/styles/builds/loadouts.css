@@ -124,20 +124,161 @@
 }
 
 .theorycraft-editor {
-  width: min(1180px,96vw);
-  max-height: 94vh;
-  overflow: auto;
+  width: 100%;
+  max-height: none;
+  overflow: visible;
+  display: grid;
+  gap: 16px;
+  padding: 18px;
+  border: 1px solid rgba(200,208,206,.15);
+  background: #090d0f;
 }
 
 .theorycraft-editor>header {
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.theorycraft-editor>header h2,.theorycraft-overview-art h3 {
+  margin: 4px 0 0;
+}
+
+.theorycraft-overview {
+  display: grid;
+  grid-template-columns: minmax(230px,1fr) minmax(0,2fr);
+  gap: 12px;
+}
+
+.theorycraft-overview-art {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 240px;
+  overflow: hidden;
+  padding: 18px;
+  border: 1px solid var(--line);
+  background: #0b1214;
+}
+
+.theorycraft-overview-art>img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  opacity: .72;
+}
+
+.theorycraft-overview-art::after {
+  position: absolute;
+  inset: 35% 0 0;
+  content: '';
+  background: linear-gradient(transparent,#0b1214);
+}
+
+.theorycraft-overview-art>div {
+  position: relative;
+  z-index: 1;
+}
+
+.theorycraft-overview-art small {
+  color: var(--mint);
+}
+
+.theorycraft-overview-stats {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.025);
+}
+
+.theorycraft-overview-stats>header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.theorycraft-overview-stats>header strong {
+  color: var(--mint);
+}
+
+.theorycraft-overview-stats .loadout-final-stats {
+  grid-template-columns: repeat(3,minmax(0,1fr));
+}
+
+.theorycraft-overview-stats .loadout-final-stats small {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.theorycraft-overview-stats .loadout-final-stats img {
+  width: 16px;
+  height: 16px;
+}
+
+.theorycraft-editor>section {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  background: #101619;
+}
+
+.theorycraft-editor .section-heading {
+  margin-bottom: 12px;
+}
+
+.theorycraft-editor .section-heading h3 {
+  margin: 2px 0 0;
+}
+
+.theorycraft-editor label {
+  min-width: 0;
+  color: #b7c4c0;
+  font-size: var(--font-size-small);
+}
+
+.theorycraft-editor :is(input,select,textarea) {
+  width: 100%;
+  min-width: 0;
+  min-height: 36px;
+  border-color: rgba(200,208,206,.2);
+  background-color: #070b0c;
+  color: #edf3ef;
+}
+
+.theorycraft-editor .modal-actions {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  margin: 0 -18px -18px;
+  padding: 12px 18px;
+  border-top: 1px solid var(--line);
+  background: rgba(9,13,15,.97);
 }
 
 .theorycraft-grid {
   display: grid;
-  grid-template-columns: 2fr 3fr 2fr 1fr 1fr 2fr;
-  gap: 8px;
+  grid-template-columns: repeat(12,minmax(0,1fr));
+  gap: 12px;
+}
+
+.theorycraft-grid>label:nth-child(1) { grid-column: span 3; }
+.theorycraft-grid>label:nth-child(2) { grid-column: span 5; }
+.theorycraft-grid>label:nth-child(3) { grid-column: span 4; }
+.theorycraft-grid>label:nth-child(4),.theorycraft-grid>label:nth-child(5) { grid-column: span 2; }
+.theorycraft-grid>label:nth-child(6) { grid-column: span 8; }
+
+.theorycraft-slots article,
+.theorycraft-slot-substats>article {
+  background: #0b1112;
 }
 
 .theorycraft-grid label,.theorycraft-slots label,.theorycraft-substats label {
@@ -234,6 +375,8 @@
 }
 
 @media (max-width:900px) {
+  .theorycraft-overview { grid-template-columns: 1fr; }
+  .theorycraft-overview-art { min-height: 200px; }
   .theorycraft-slot-substats { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .loadout-library {
     grid-template-columns: 1fr;
@@ -247,6 +390,8 @@
   .theorycraft-grid {
     grid-template-columns: 1fr 1fr;
   }
+  .theorycraft-grid>label:nth-child(n) { grid-column: auto; }
+  .theorycraft-grid>label:nth-child(2),.theorycraft-grid>label:nth-child(6) { grid-column: 1 / -1; }
   .theorycraft-slots {
     display: flex;
     overflow-x: auto;
@@ -271,6 +416,10 @@
 }
 
 @media (max-width:600px) {
+  .theorycraft-editor { padding: 12px; }
+  .theorycraft-editor .modal-actions { margin: 0 -12px -12px; padding: 12px; }
+  .theorycraft-editor>header { align-items: flex-start; }
+  .theorycraft-overview-stats .loadout-final-stats { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .loadout-library>aside {
     grid-template-columns: 1fr;
   }
@@ -280,6 +429,7 @@
   .theorycraft-grid,.theorycraft-substats {
     grid-template-columns: 1fr;
   }
+  .theorycraft-grid>label:nth-child(n) { grid-column: 1; }
   .loadout-summary-facts,.loadout-final-stats {
     grid-template-columns: 1fr 1fr;
   }

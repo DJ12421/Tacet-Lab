@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000090",
+  "entityName": "Nightmare: Crownless",
+  "sourceFingerprint": "0a3b905a3042800fcb83edfaa24aadd0632f7621016b16fa8cfb13589539ea02",
+  "reviewedAt": "2026-09-26T18:47:52.444Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "2cd41114d61928c9b0cf7c7996b7681f65276f11aa69c1fe4cbf098a01b254df",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000090:skill",
+            "name": "Nightmare: Crownless - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Havoc",
+            "expressions": [
+              "147.00%",
+              "176.40%",
+              "205.80%",
+              "235.20%",
+              "264.60%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.47
+              ],
+              [
+                1.764
+              ],
+              [
+                2.0580000000000003
+              ],
+              [
+                2.352
+              ],
+              [
+                2.6460000000000004
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 12,
+            "charges": 3,
+            "rechargeSeconds": 12,
+            "sourceText": "Transform into Nightmare: Crownless and attack enemies in front, dealing 147.00% Havoc DMG. The Resonator with this Echo equipped in their main slot gains 12.00% Havoc DMG Bonus and 12.00% Basic Attack DMG Bonus.\nThis skill has 3 initial charges, replenished once every 12s, max 3 charges. When Nightmare: Crownless hits a target, DMG dealt by this skill is increased by 20.00%. This effect lasts for 2s and does not stack.\nCD: 12s. · Transform into Nightmare: Crownless and attack enemies in front, dealing 176.40% Havoc DMG. The Resonator with this Echo equipped in their main slot gains 12.00% Havoc DMG Bonus and 12.00% Basic Attack DMG Bonus.\nThis skill has 3 initial charges, replenished once every 12s, max 3 charges. When Nightmare: Crownless hits a target, DMG dealt by this skill is increased by 20.00%. This effect lasts for 2s and does not stack.\nCD: 12s. · Transform into Nightmare: Crownless and attack enemies in front, dealing 205.80% Havoc DMG. The Resonator with this Echo equipped in their main slot gains 12.00% Havoc DMG Bonus and 12.00% Basic Attack DMG Bonus.\nThis skill has 3 initial charges, replenished once every 12s, max 3 charges. When Nightmare: Crownless hits a target, DMG dealt by this skill is increased by 20.00%. This effect lasts for 2s and does not stack.\nCD: 12s. · Transform into Nightmare: Crownless and attack enemies in front, dealing 235.20% Havoc DMG. The Resonator with this Echo equipped in their main slot gains 12.00% Havoc DMG Bonus and 12.00% Basic Attack DMG Bonus.\nThis skill has 3 initial charges, replenished once every 12s, max 3 charges. When Nightmare: Crownless hits a target, DMG dealt by this skill is increased by 20.00%. This effect lasts for 2s and does not stack.\nCD: 12s. · Transform into Nightmare: Crownless and attack enemies in front, dealing 264.60% Havoc DMG. The Resonator with this Echo equipped in their main slot gains 12.00% Havoc DMG Bonus and 12.00% Basic Attack DMG Bonus.\nThis skill has 3 initial charges, replenished once every 12s, max 3 charges. When Nightmare: Crownless hits a target, DMG dealt by this skill is increased by 20.00%. This effect lasts for 2s and does not stack.\nCD: 12s."
+          }
+        ],
+        "cooldownSeconds": 12
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "e6718ba796bcb55024e991f8b3e88dca39fc0ceb53abdd8484b1df260888267f",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000090:effect:0",
+            "sourceName": "Nightmare: Crownless",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in their main slot gains 12.00% Havoc DMG Bonus and 12.00% Basic Attack DMG Bonus.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Havoc",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          },
+          {
+            "id": "echo:6000090:effect:1",
+            "sourceName": "Nightmare: Crownless",
+            "sourceType": "echo",
+            "text": "When Nightmare: Crownless hits a target, DMG dealt by this skill is increased by 20.00%.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "When Nightmare: Crownless hits a target",
+              "modifiers": [],
+              "confidence": "high",
+              "warnings": [],
+              "durationSeconds": 2
+            },
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

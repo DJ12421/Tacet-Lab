@@ -1,0 +1,390 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21050046",
+  "entityName": "Luminous Hymn",
+  "sourceFingerprint": "afc6b56517727ce1ad2e54c9f4b1815dd445f50a5b2fb0e8abd8de6041e3158e",
+  "reviewedAt": "2026-09-16T12:50:56.505Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "a70fdedac5e6496d463a9fd324a313f99d1b33e37a606afcc6e81a568f8adddb",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050046:effect:0",
+            "sourceName": "Homebuilder's Anthem",
+            "text": "Increase ATK by 12%.",
+            "refinementTexts": [
+              "Increase ATK by 12%.",
+              "Increase ATK by 15%.",
+              "Increase ATK by 18%.",
+              "Increase ATK by 21%.",
+              "Increase ATK by 24%."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21050046:effect:1",
+            "sourceName": "Homebuilder's Anthem",
+            "text": "Dealing DMG to targets with Spectro Frazzle grants the wielder 14% Basic Attack DMG Bonus and 14% Heavy Attack DMG Bonus, stacking up to 3 for 6s.",
+            "refinementTexts": [
+              "Dealing DMG to targets with Spectro Frazzle grants the wielder 14% Basic Attack DMG Bonus and 14% Heavy Attack DMG Bonus, stacking up to 3 for 6s.",
+              "Dealing DMG to targets with Spectro Frazzle grants the wielder 17.5% Basic Attack DMG Bonus and 17.5% Heavy Attack DMG Bonus, stacking up to 3 for 6s.",
+              "Dealing DMG to targets with Spectro Frazzle grants the wielder 21% Basic Attack DMG Bonus and 21% Heavy Attack DMG Bonus, stacking up to 3 for 6s.",
+              "Dealing DMG to targets with Spectro Frazzle grants the wielder 24.5% Basic Attack DMG Bonus and 24.5% Heavy Attack DMG Bonus, stacking up to 3 for 6s.",
+              "Dealing DMG to targets with Spectro Frazzle grants the wielder 28% Basic Attack DMG Bonus and 28% Heavy Attack DMG Bonus, stacking up to 3 for 6s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "mixed",
+                "maximum": 3
+              },
+              "durationSeconds": 6,
+              "modifiers": [
+                {
+                  "stat": "basicDamage",
+                  "operation": "addPercent",
+                  "value": 14,
+                  "scope": "self",
+                  "scaling": "per-unit"
+                },
+                {
+                  "stat": "heavyDamage",
+                  "operation": "addPercent",
+                  "value": 14,
+                  "scope": "self",
+                  "scaling": "per-unit"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Dmg dealt to enemies inflicted with Spectro Frazzle"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 14
+                  },
+                  {
+                    "value": 14
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Damage dealt to targets with Spectro Frazzle"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 17.5
+                  },
+                  {
+                    "value": 17.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Damage dealt to targets with Spectro Frazzle"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 21
+                  },
+                  {
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Damage dealt to targets with Spectro Frazzle"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 24.5
+                  },
+                  {
+                    "value": 24.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Damage dealt to targets with Spectro Frazzle"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 28
+                  },
+                  {
+                    "value": 28
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Damage dealt to targets with Spectro Frazzle"
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21050046:effect:2",
+            "sourceName": "Homebuilder's Anthem",
+            "text": "Casting Outro Skill Amplifies the Spectro Frazzle DMG on targets around the active Resonator by 30% for 30s.",
+            "refinementTexts": [
+              "Casting Outro Skill Amplifies the Spectro Frazzle DMG on targets around the active Resonator by 30% for 30s.",
+              "Casting Outro Skill Amplifies the Spectro Frazzle DMG on targets around the active Resonator by 37.5% for 30s.",
+              "Casting Outro Skill Amplifies the Spectro Frazzle DMG on targets around the active Resonator by 45% for 30s.",
+              "Casting Outro Skill Amplifies the Spectro Frazzle DMG on targets around the active Resonator by 52.5% for 30s.",
+              "Casting Outro Skill Amplifies the Spectro Frazzle DMG on targets around the active Resonator by 60% for 30s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Outro Skill cast",
+              "durationSeconds": 30,
+              "modifiers": [
+                {
+                  "stat": "spectroFrazzleDamage",
+                  "operation": "amplifyPercent",
+                  "value": 30,
+                  "scope": "team"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Outro Skill cast",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Outro Skill cast",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "value": 37.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Outro Skill cast",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "value": 45
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Outro Skill cast",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "value": 52.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Outro Skill cast",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "value": 60
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21050046:effect:3",
+            "sourceName": "Homebuilder's Anthem",
+            "text": "Effects of the same name cannot be stacked.",
+            "refinementTexts": [
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ],
+              "trigger": "While equipped"
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic",
+            "parsedByRefinement": [
+              {
+                "modifiers": [],
+                "triggeredAttacks": [],
+                "trigger": "While equipped"
+              },
+              {
+                "modifiers": [],
+                "triggeredAttacks": [],
+                "trigger": "While equipped"
+              },
+              {
+                "modifiers": [],
+                "triggeredAttacks": [],
+                "trigger": "While equipped"
+              },
+              {
+                "modifiers": [],
+                "triggeredAttacks": [],
+                "trigger": "While equipped"
+              },
+              {
+                "modifiers": [],
+                "triggeredAttacks": [],
+                "trigger": "While equipped"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000224",
+  "entityName": "Soulfrayer",
+  "sourceFingerprint": "9a8081f1aa055102b3bf90036d06ee20318f7881c93cd3f6b9e23fb3da517451",
+  "reviewedAt": "2026-10-01T09:06:58.591Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "63f9c7281624b720ab8d773dc2111e9c031481143bdaaf6c3ca13bce93ded861",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000224:skill",
+            "name": "Soulfrayer - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Electro",
+            "expressions": [
+              "50.66%",
+              "60.79%",
+              "70.92%",
+              "81.05%",
+              "91.18%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.5065999999999999,
+                0.5065999999999999,
+                0.5065999999999999
+              ],
+              [
+                0.6079,
+                0.6079,
+                0.6079
+              ],
+              [
+                0.7092,
+                0.7092,
+                0.7092
+              ],
+              [
+                0.8105,
+                0.8105,
+                0.8105
+              ],
+              [
+                0.9118,
+                0.9118,
+                0.9118
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0,
+              0
+            ],
+            "count": 3,
+            "cooldownSeconds": 20,
+            "sourceText": "Use Echo Skill to summon a Soulfrayer, dealing 50.66% Electro DMG 3 times.\nCasting Outro Skill within 15s after summoning Soulfrayer grants 12.00% Electro DMG Bonus to the incoming Resonator for 15s.\nCD: 20s · Use Echo Skill to summon a Soulfrayer, dealing 60.79% Electro DMG 3 times.\nCasting Outro Skill within 15s after summoning Soulfrayer grants 12.00% Electro DMG Bonus to the incoming Resonator for 15s.\nCD: 20s · Use Echo Skill to summon a Soulfrayer, dealing 70.92% Electro DMG 3 times.\nCasting Outro Skill within 15s after summoning Soulfrayer grants 12.00% Electro DMG Bonus to the incoming Resonator for 15s.\nCD: 20s · Use Echo Skill to summon a Soulfrayer, dealing 81.05% Electro DMG 3 times.\nCasting Outro Skill within 15s after summoning Soulfrayer grants 12.00% Electro DMG Bonus to the incoming Resonator for 15s.\nCD: 20s · Use Echo Skill to summon a Soulfrayer, dealing 91.18% Electro DMG 3 times.\nCasting Outro Skill within 15s after summoning Soulfrayer grants 12.00% Electro DMG Bonus to the incoming Resonator for 15s.\nCD: 20s"
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "14bdbb05ae094b9a74db2f6982196f585710fb99758b8c33856ed833404c4cd4",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000224:effect:0",
+            "sourceName": "Soulfrayer",
+            "sourceType": "echo",
+            "text": "Casting Outro Skill within 15s after summoning Soulfrayer grants 12.00% Electro DMG Bonus to the incoming Resonator for 15s.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Outro Skill",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "Electro",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "next"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21050027",
+  "entityName": "Ocean's Gift",
+  "sourceFingerprint": "916835da0f32a30bab0a302cad482a9fa0a2cd6b69cb1cea693450144e3343da",
+  "reviewedAt": "2026-09-09T07:56:42.790Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "0789ec21c6b49f2c4cd3a519fa41e727d41c43a48acf51e5193998bd6a370b42",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050027:effect:0",
+            "sourceName": "Fish Catch",
+            "text": "Dealing DMG to enemies with Spectro Frazzle increases the wielder's Spectro DMG by 6%, gaining 1 stack per second for 6s, stacking up to 4 times.",
+            "refinementTexts": [
+              "Dealing DMG to enemies with Spectro Frazzle increases the wielder's Spectro DMG by 6%, gaining 1 stack per second for 6s, stacking up to 4 times.",
+              "Dealing DMG to enemies with Spectro Frazzle increases the wielder's Spectro DMG by 7%, gaining 1 stack per second for 6s, stacking up to 4 times.",
+              "Dealing DMG to enemies with Spectro Frazzle increases the wielder's Spectro DMG by 8%, gaining 1 stack per second for 6s, stacking up to 4 times.",
+              "Dealing DMG to enemies with Spectro Frazzle increases the wielder's Spectro DMG by 9%, gaining 1 stack per second for 6s, stacking up to 4 times.",
+              "Dealing DMG to enemies with Spectro Frazzle increases the wielder's Spectro DMG by 10%, gaining 1 stack per second for 6s, stacking up to 4 times."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 4
+              },
+              "durationSeconds": 6,
+              "modifiers": [
+                {
+                  "stat": "Spectro",
+                  "operation": "addPercent",
+                  "value": 6
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Damage dealt to enemies inflicted with Spectro Frazzle "
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "Spectro",
+                    "operation": "addPercent",
+                    "value": 6
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "1 stack per second for 6s gained"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "Spectro",
+                    "operation": "addPercent",
+                    "value": 7
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "1 stack per second for 6s gained"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "Spectro",
+                    "operation": "addPercent",
+                    "value": 8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "1 stack per second for 6s gained"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "Spectro",
+                    "operation": "addPercent",
+                    "value": 9
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "1 stack per second for 6s gained"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "stat": "Spectro",
+                    "operation": "addPercent",
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "1 stack per second for 6s gained"
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

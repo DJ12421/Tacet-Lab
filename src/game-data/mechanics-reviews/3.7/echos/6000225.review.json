@@ -1,0 +1,216 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000225",
+  "entityName": "Reminiscence: Suhsin the Inevitable",
+  "sourceFingerprint": "b254cbcfa7d6be048efc9bcef6b51b3120ec4e9995bde19945950c451ce1bdf2",
+  "reviewedAt": "2026-10-01T09:06:58.596Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "d6fcfb178443dd6317f420fe7e5990b06f32b571284484ed1c6ddb422d8898eb",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000225:skill:1",
+            "name": "Reminiscence: Suhsin the Inevitable - Cast DMG",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Electro",
+            "expressions": [
+              "15.20%+91.20%",
+              "18.24%+109.44%",
+              "21.28%+127.68%",
+              "24.32%+145.92%",
+              "27.36%+164.16%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.152,
+                0.152,
+                0.152,
+                0.152,
+                0.912
+              ],
+              [
+                0.18239999999999998,
+                0.18239999999999998,
+                0.18239999999999998,
+                0.18239999999999998,
+                1.0944
+              ],
+              [
+                0.21280000000000002,
+                0.21280000000000002,
+                0.21280000000000002,
+                0.21280000000000002,
+                1.2768000000000002
+              ],
+              [
+                0.2432,
+                0.2432,
+                0.2432,
+                0.2432,
+                1.4591999999999998
+              ],
+              [
+                0.2736,
+                0.2736,
+                0.2736,
+                0.2736,
+                1.6416
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0,
+              0,
+              0,
+              1
+            ],
+            "count": 5,
+            "cooldownSeconds": 20,
+            "sourceText": "Cast Echo Skill to deal 4 Electro hits followed by a final Electro hit. Hsin uses the Hsin Cast DMG action instead. CD: 20s."
+          },
+          {
+            "id": "echo:6000225:skill:2",
+            "name": "Reminiscence: Suhsin the Inevitable - Hsin Cast DMG",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Electro",
+            "expressions": [
+              "4.56%+129.20%",
+              "9.12%+155.04%",
+              "10.64%+180.88%",
+              "12.16%+206.72%",
+              "13.68%+232.56%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.045599999999999995,
+                0.045599999999999995,
+                0.045599999999999995,
+                0.045599999999999995,
+                0.045599999999999995,
+                1.2919999999999998
+              ],
+              [
+                0.0912,
+                0.0912,
+                0.0912,
+                0.0912,
+                0.0912,
+                1.5504
+              ],
+              [
+                0.1064,
+                0.1064,
+                0.1064,
+                0.1064,
+                0.1064,
+                1.8088
+              ],
+              [
+                0.1216,
+                0.1216,
+                0.1216,
+                0.1216,
+                0.1216,
+                2.0672
+              ],
+              [
+                0.1368,
+                0.1368,
+                0.1368,
+                0.1368,
+                0.1368,
+                2.3256
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ],
+            "count": 6,
+            "cooldownSeconds": 20,
+            "sourceText": "When equipped by Hsin, the Echo Skill instead deals 5 Electro hits followed by a final Electro hit over a larger area. CD: 20s.",
+            "classificationEvidence": "Wuthering Tools Hsin Cast DMG for ranks 2-5; Nanoka rank 1. Wuthering Tools rank 3 final-hit talent conflicts with its description, so the reviewed final hit follows Nanoka and the description."
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "3a401e8661c5c81b8f4c9479c3377068ad604245c59e4c42064d8d1cfc3c6db6",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000225:effect:0",
+            "sourceName": "Reminiscence: Suhsin the Inevitable",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in their main slot gains 10.00% Electro DMG Bonus.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Electro",
+                  "operation": "addPercent",
+                  "value": 10,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            }
+          },
+          {
+            "id": "echo:6000225:effect:1",
+            "sourceName": "Reminiscence: Suhsin the Inevitable",
+            "sourceType": "echo",
+            "text": "Inflicting Electro Flare, gaining Unison, or triggering Unison Response grants the Resonator an extra 10.00% Electro DMG Bonus for 30s.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 30,
+              "modifiers": [
+                {
+                  "stat": "Electro",
+                  "operation": "addPercent",
+                  "value": 10,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            }
+          }
+        ]
+      }
+    }
+  }
+}

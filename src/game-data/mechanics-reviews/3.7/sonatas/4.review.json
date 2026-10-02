@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "sonata",
+  "entityId": "4",
+  "entityName": "Sierra Gale",
+  "sourceFingerprint": "d0b1b3cd50503601dbda336616d1c9bed0b0a8a38c188fc421136b84d63fc631",
+  "reviewedAt": "2026-09-05T10:07:07.887Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "47103551f319c42b357373ac29357dbea23989ebd18b8ed41b093b24687a698e",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:4:2:0",
+            "sourceName": "Sierra Gale",
+            "text": "Aero DMG + 10%.",
+            "refinementTexts": [
+              "Aero DMG + 10%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2
+          },
+          {
+            "id": "sonata:4:5:0",
+            "sourceName": "Sierra Gale",
+            "text": "Aero DMG + 30% for 15s after releasing Intro Skill.",
+            "refinementTexts": [
+              "Aero DMG + 30% for 15s after releasing Intro Skill."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Intro Skill casted",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 30
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

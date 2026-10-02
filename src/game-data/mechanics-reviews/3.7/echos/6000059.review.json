@@ -1,0 +1,309 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000059",
+  "entityName": "Jué",
+  "sourceFingerprint": "1d560530de9573d0850903b2d6b0d3a4228afb41ecffb50546b3917d62b6e58e",
+  "reviewedAt": "2026-09-26T18:47:52.362Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "0e86271cb7edc65ff6cfef5043d26b9f5e4dfedb86b0dc669d95239e7fc7eed5",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000059:skill:1",
+            "name": "Jué - Echo Skill 1",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Spectro",
+            "expressions": [
+              "30.40%+12.16%",
+              "34.96%+13.98%",
+              "39.52%+15.81%",
+              "44.08%+17.63%",
+              "48.64%+19.46%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.304,
+                0.1216,
+                0.1216,
+                0.1216,
+                0.1216,
+                0.1216
+              ],
+              [
+                0.3496,
+                0.1398,
+                0.1398,
+                0.1398,
+                0.1398,
+                0.1398
+              ],
+              [
+                0.39520000000000005,
+                0.15810000000000002,
+                0.15810000000000002,
+                0.15810000000000002,
+                0.15810000000000002,
+                0.15810000000000002
+              ],
+              [
+                0.44079999999999997,
+                0.17629999999999998,
+                0.17629999999999998,
+                0.17629999999999998,
+                0.17629999999999998,
+                0.17629999999999998
+              ],
+              [
+                0.4864,
+                0.1946,
+                0.1946,
+                0.1946,
+                0.1946,
+                0.1946
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "count": 6,
+            "cooldownSeconds": 20,
+            "sourceText": "Summon Jué to the aid. Jué soars through the air, dealing 30.40% Spectro DMG, and summons thunderbolts that strike nearby enemies up to 5 times, each hit dealing 12.16% Spectro DMG. Jué then spirals downward, attacking surrounding enemies twice, each hit dealing 30.40% Spectro DMG.\nCasting this Echo Skill grants the Resonator a Blessing of Time effect that lasts 15s, during when:\n- The Resonator gains 16.00% Resonance Skill DMG Bonus.\n- When the Resonator's Resonance Skill hits the target, inflict 10.00% Spectro DMG 1 time per second for 15s, considered as the Resonator's Resonance Skill DMG.\nCD: 20s · Summon Jué to the aid. Jué soars through the air, dealing 34.96% Spectro DMG, and summons thunderbolts that strike nearby enemies up to 5 times, each hit dealing 13.98% Spectro DMG. Jué then spirals downward, attacking surrounding enemies twice, each hit dealing 34.96% Spectro DMG.\nCasting this Echo Skill grants the Resonator a Blessing of Time effect that lasts 15s, during when:\n- The Resonator gains 16.00% Resonance Skill DMG Bonus.\n- When the Resonator's Resonance Skill hits the target, inflict 11.50% Spectro DMG 1 time per second for 15s, considered as the Resonator's Resonance Skill DMG.\nCD: 20s · Summon Jué to the aid. Jué soars through the air, dealing 39.52% Spectro DMG, and summons thunderbolts that strike nearby enemies up to 5 times, each hit dealing 15.81% Spectro DMG. Jué then spirals downward, attacking surrounding enemies twice, each hit dealing 39.52% Spectro DMG.\nCasting this Echo Skill grants the Resonator a Blessing of Time effect that lasts 15s, during when:\n- The Resonator gains 16.00% Resonance Skill DMG Bonus.\n- When the Resonator's Resonance Skill hits the target, inflict 13.00% Spectro DMG 1 time per second for 15s, considered as the Resonator's Resonance Skill DMG.\nCD: 20s · Summon Jué to the aid. Jué soars through the air, dealing 44.08% Spectro DMG, and summons thunderbolts that strike nearby enemies up to 5 times, each hit dealing 17.63% Spectro DMG. Jué then spirals downward, attacking surrounding enemies twice, each hit dealing 44.08% Spectro DMG.\nCasting this Echo Skill grants the Resonator a Blessing of Time effect that lasts 15s, during when:\n- The Resonator gains 16.00% Resonance Skill DMG Bonus.\n- When the Resonator's Resonance Skill hits the target, inflict 14.50% Spectro DMG 1 time per second for 15s, considered as the Resonator's Resonance Skill DMG.\nCD: 20s · Summon Jué to the aid. Jué soars through the air, dealing 48.64% Spectro DMG, and summons thunderbolts that strike nearby enemies up to 5 times, each hit dealing 19.46% Spectro DMG. Jué then spirals downward, attacking surrounding enemies twice, each hit dealing 48.64% Spectro DMG.\nCasting this Echo Skill grants the Resonator a Blessing of Time effect that lasts 15s, during when:\n- The Resonator gains 16.00% Resonance Skill DMG Bonus.\n- When the Resonator's Resonance Skill hits the target, inflict 16.00% Spectro DMG 1 time per second for 15s, considered as the Resonator's Resonance Skill DMG.\nCD: 20s"
+          },
+          {
+            "id": "echo:6000059:skill:2",
+            "name": "Jué - Echo Skill 2",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Spectro",
+            "expressions": [
+              "30.40%",
+              "34.96%",
+              "39.52%",
+              "44.08%",
+              "48.64%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.304,
+                0.304
+              ],
+              [
+                0.3496,
+                0.3496
+              ],
+              [
+                0.39520000000000005,
+                0.39520000000000005
+              ],
+              [
+                0.44079999999999997,
+                0.44079999999999997
+              ],
+              [
+                0.4864,
+                0.4864
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0
+            ],
+            "count": 2,
+            "cooldownSeconds": 20,
+            "sourceText": "Summon Jué to the aid. Jué soars through the air, dealing 30.40% Spectro DMG, and summons thunderbolts that strike nearby enemies up to 5 times, each hit dealing 12.16% Spectro DMG. Jué then spirals downward, attacking surrounding enemies twice, each hit dealing 30.40% Spectro DMG.\nCasting this Echo Skill grants the Resonator a Blessing of Time effect that lasts 15s, during when:\n- The Resonator gains 16.00% Resonance Skill DMG Bonus.\n- When the Resonator's Resonance Skill hits the target, inflict 10.00% Spectro DMG 1 time per second for 15s, considered as the Resonator's Resonance Skill DMG.\nCD: 20s · Summon Jué to the aid. Jué soars through the air, dealing 34.96% Spectro DMG, and summons thunderbolts that strike nearby enemies up to 5 times, each hit dealing 13.98% Spectro DMG. Jué then spirals downward, attacking surrounding enemies twice, each hit dealing 34.96% Spectro DMG.\nCasting this Echo Skill grants the Resonator a Blessing of Time effect that lasts 15s, during when:\n- The Resonator gains 16.00% Resonance Skill DMG Bonus.\n- When the Resonator's Resonance Skill hits the target, inflict 11.50% Spectro DMG 1 time per second for 15s, considered as the Resonator's Resonance Skill DMG.\nCD: 20s · Summon Jué to the aid. Jué soars through the air, dealing 39.52% Spectro DMG, and summons thunderbolts that strike nearby enemies up to 5 times, each hit dealing 15.81% Spectro DMG. Jué then spirals downward, attacking surrounding enemies twice, each hit dealing 39.52% Spectro DMG.\nCasting this Echo Skill grants the Resonator a Blessing of Time effect that lasts 15s, during when:\n- The Resonator gains 16.00% Resonance Skill DMG Bonus.\n- When the Resonator's Resonance Skill hits the target, inflict 13.00% Spectro DMG 1 time per second for 15s, considered as the Resonator's Resonance Skill DMG.\nCD: 20s · Summon Jué to the aid. Jué soars through the air, dealing 44.08% Spectro DMG, and summons thunderbolts that strike nearby enemies up to 5 times, each hit dealing 17.63% Spectro DMG. Jué then spirals downward, attacking surrounding enemies twice, each hit dealing 44.08% Spectro DMG.\nCasting this Echo Skill grants the Resonator a Blessing of Time effect that lasts 15s, during when:\n- The Resonator gains 16.00% Resonance Skill DMG Bonus.\n- When the Resonator's Resonance Skill hits the target, inflict 14.50% Spectro DMG 1 time per second for 15s, considered as the Resonator's Resonance Skill DMG.\nCD: 20s · Summon Jué to the aid. Jué soars through the air, dealing 48.64% Spectro DMG, and summons thunderbolts that strike nearby enemies up to 5 times, each hit dealing 19.46% Spectro DMG. Jué then spirals downward, attacking surrounding enemies twice, each hit dealing 48.64% Spectro DMG.\nCasting this Echo Skill grants the Resonator a Blessing of Time effect that lasts 15s, during when:\n- The Resonator gains 16.00% Resonance Skill DMG Bonus.\n- When the Resonator's Resonance Skill hits the target, inflict 16.00% Spectro DMG 1 time per second for 15s, considered as the Resonator's Resonance Skill DMG.\nCD: 20s"
+          },
+          {
+            "id": "echo:6000059:skill:3",
+            "name": "Jué - Blessing of Time follow-up",
+            "damageType": "skill",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Spectro",
+            "expressions": [
+              "10.00%",
+              "11.50%",
+              "13.00%",
+              "14.50%",
+              "16.00%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.1,
+                0.1,
+                0.1,
+                0.1,
+                0.1,
+                0.1,
+                0.1,
+                0.1,
+                0.1,
+                0.1,
+                0.1,
+                0.1,
+                0.1,
+                0.1,
+                0.1
+              ],
+              [
+                0.115,
+                0.115,
+                0.115,
+                0.115,
+                0.115,
+                0.115,
+                0.115,
+                0.115,
+                0.115,
+                0.115,
+                0.115,
+                0.115,
+                0.115,
+                0.115,
+                0.115
+              ],
+              [
+                0.13,
+                0.13,
+                0.13,
+                0.13,
+                0.13,
+                0.13,
+                0.13,
+                0.13,
+                0.13,
+                0.13,
+                0.13,
+                0.13,
+                0.13,
+                0.13,
+                0.13
+              ],
+              [
+                0.145,
+                0.145,
+                0.145,
+                0.145,
+                0.145,
+                0.145,
+                0.145,
+                0.145,
+                0.145,
+                0.145,
+                0.145,
+                0.145,
+                0.145,
+                0.145,
+                0.145
+              ],
+              [
+                0.16,
+                0.16,
+                0.16,
+                0.16,
+                0.16,
+                0.16,
+                0.16,
+                0.16,
+                0.16,
+                0.16,
+                0.16,
+                0.16,
+                0.16,
+                0.16,
+                0.16
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "count": 15,
+            "cooldownSeconds": 20,
+            "sourceText": "Summon Jué to the aid. Jué soars through the air, dealing 30.40% Spectro DMG, and summons thunderbolts that strike nearby enemies up to 5 times, each hit dealing 12.16% Spectro DMG. Jué then spirals downward, attacking surrounding enemies twice, each hit dealing 30.40% Spectro DMG.\nCasting this Echo Skill grants the Resonator a Blessing of Time effect that lasts 15s, during when:\n- The Resonator gains 16.00% Resonance Skill DMG Bonus.\n- When the Resonator's Resonance Skill hits the target, inflict 10.00% Spectro DMG 1 time per second for 15s, considered as the Resonator's Resonance Skill DMG.\nCD: 20s · Summon Jué to the aid. Jué soars through the air, dealing 34.96% Spectro DMG, and summons thunderbolts that strike nearby enemies up to 5 times, each hit dealing 13.98% Spectro DMG. Jué then spirals downward, attacking surrounding enemies twice, each hit dealing 34.96% Spectro DMG.\nCasting this Echo Skill grants the Resonator a Blessing of Time effect that lasts 15s, during when:\n- The Resonator gains 16.00% Resonance Skill DMG Bonus.\n- When the Resonator's Resonance Skill hits the target, inflict 11.50% Spectro DMG 1 time per second for 15s, considered as the Resonator's Resonance Skill DMG.\nCD: 20s · Summon Jué to the aid. Jué soars through the air, dealing 39.52% Spectro DMG, and summons thunderbolts that strike nearby enemies up to 5 times, each hit dealing 15.81% Spectro DMG. Jué then spirals downward, attacking surrounding enemies twice, each hit dealing 39.52% Spectro DMG.\nCasting this Echo Skill grants the Resonator a Blessing of Time effect that lasts 15s, during when:\n- The Resonator gains 16.00% Resonance Skill DMG Bonus.\n- When the Resonator's Resonance Skill hits the target, inflict 13.00% Spectro DMG 1 time per second for 15s, considered as the Resonator's Resonance Skill DMG.\nCD: 20s · Summon Jué to the aid. Jué soars through the air, dealing 44.08% Spectro DMG, and summons thunderbolts that strike nearby enemies up to 5 times, each hit dealing 17.63% Spectro DMG. Jué then spirals downward, attacking surrounding enemies twice, each hit dealing 44.08% Spectro DMG.\nCasting this Echo Skill grants the Resonator a Blessing of Time effect that lasts 15s, during when:\n- The Resonator gains 16.00% Resonance Skill DMG Bonus.\n- When the Resonator's Resonance Skill hits the target, inflict 14.50% Spectro DMG 1 time per second for 15s, considered as the Resonator's Resonance Skill DMG.\nCD: 20s · Summon Jué to the aid. Jué soars through the air, dealing 48.64% Spectro DMG, and summons thunderbolts that strike nearby enemies up to 5 times, each hit dealing 19.46% Spectro DMG. Jué then spirals downward, attacking surrounding enemies twice, each hit dealing 48.64% Spectro DMG.\nCasting this Echo Skill grants the Resonator a Blessing of Time effect that lasts 15s, during when:\n- The Resonator gains 16.00% Resonance Skill DMG Bonus.\n- When the Resonator's Resonance Skill hits the target, inflict 16.00% Spectro DMG 1 time per second for 15s, considered as the Resonator's Resonance Skill DMG.\nCD: 20s"
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "244065fd70689d11e4a50ef566fac0968b925a33b3872435552da14fa4ffcb69",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000059:effect:0",
+            "sourceName": "Jué",
+            "sourceType": "echo",
+            "text": "- The Resonator gains 16.00% Resonance Skill DMG Bonus.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "skillDamage",
+                  "operation": "addPercent",
+                  "value": 16,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Echo Skill",
+              "durationSeconds": 15
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

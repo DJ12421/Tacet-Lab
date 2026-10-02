@@ -1,0 +1,234 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21020096",
+  "entityName": "Azure Oath",
+  "sourceFingerprint": "782fbcc108ddf71ee0b21adb832ec2b25697e66acc808f4b65f6e652b623fa80",
+  "reviewedAt": "2026-09-16T11:04:34.875Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "27f8c97238c223470dda80ed79fbd87ee81d99ecb036110fc4707fcffcb4f28d",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020096:effect:0",
+            "sourceName": "Unbending",
+            "text": "Grants 12% All-Attribute DMG Bonus.",
+            "refinementTexts": [
+              "Grants 12% All-Attribute DMG Bonus.",
+              "Grants 15% All-Attribute DMG Bonus.",
+              "Grants 18% All-Attribute DMG Bonus.",
+              "Grants 21% All-Attribute DMG Bonus.",
+              "Grants 24% All-Attribute DMG Bonus."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "AllElementAttributeBonus",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21020096:effect:1",
+            "sourceName": "Unbending",
+            "text": "After inflicting Havoc Bane, the wielder gains 36% Heavy Attack DMG Amplification and their Heavy Attack DMG ignores 12% of the target's DEF, lasting for 8s.",
+            "refinementTexts": [
+              "After inflicting Havoc Bane, the wielder gains 36% Heavy Attack DMG Amplification and their Heavy Attack DMG ignores 12% of the target's DEF, lasting for 8s.",
+              "After inflicting Havoc Bane, the wielder gains 45% Heavy Attack DMG Amplification and their Heavy Attack DMG ignores 15% of the target's DEF, lasting for 8s.",
+              "After inflicting Havoc Bane, the wielder gains 54% Heavy Attack DMG Amplification and their Heavy Attack DMG ignores 18% of the target's DEF, lasting for 8s.",
+              "After inflicting Havoc Bane, the wielder gains 63% Heavy Attack DMG Amplification and their Heavy Attack DMG ignores 21% of the target's DEF, lasting for 8s.",
+              "After inflicting Havoc Bane, the wielder gains 72% Heavy Attack DMG Amplification and their Heavy Attack DMG ignores 24% of the target's DEF, lasting for 8s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 8,
+              "modifiers": [
+                {
+                  "stat": "heavyDamage",
+                  "operation": "amplifyPercent",
+                  "value": 36,
+                  "scope": "self"
+                },
+                {
+                  "stat": "DEFIgnore",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self",
+                  "appliesTo": "heavy"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Havoc Bane inflicted"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "value": 36
+                  },
+                  {
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Havoc Bane inflicted"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "value": 45
+                  },
+                  {
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Havoc Bane inflicted"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "value": 54
+                  },
+                  {
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Havoc Bane inflicted"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "value": 63
+                  },
+                  {
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Havoc Bane inflicted"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "value": 72
+                  },
+                  {
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Havoc Bane inflicted"
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

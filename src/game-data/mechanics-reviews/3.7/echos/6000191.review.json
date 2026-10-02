@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000191",
+  "entityName": "Sigillum",
+  "sourceFingerprint": "08ec258dbaa43816791187f1fcf2bb019c5c18179452baae3fe0883179c193eb",
+  "reviewedAt": "2026-09-26T18:47:52.590Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "06538574635900aa2c03b286ab76a49495dc4947b86598372647b4e2b274023e",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000191:skill",
+            "name": "Sigillum - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Fusion",
+            "expressions": [
+              "38.00%+114.00%",
+              "45.60%+136.80%",
+              "53.20%+159.60%",
+              "60.80%+182.40%",
+              "68.40%+205.20%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.38,
+                1.14
+              ],
+              [
+                0.456,
+                1.368
+              ],
+              [
+                0.532,
+                1.5959999999999999
+              ],
+              [
+                0.608,
+                1.824
+              ],
+              [
+                0.684,
+                2.052
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              1
+            ],
+            "count": 2,
+            "cooldownSeconds": 20,
+            "sourceText": "Summon Sigillum to unleash two attacks, dealing 38.00% and 114.00% Fusion DMG respectively.\nWhen equipped in the main slot by Aemeath, it grants 25.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon Sigillum to unleash two attacks, dealing 45.60% and 136.80% Fusion DMG respectively.\nWhen equipped in the main slot by Aemeath, it grants 25.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon Sigillum to unleash two attacks, dealing 53.20% and 159.60% Fusion DMG respectively.\nWhen equipped in the main slot by Aemeath, it grants 25.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon Sigillum to unleash two attacks, dealing 60.80% and 182.40% Fusion DMG respectively.\nWhen equipped in the main slot by Aemeath, it grants 25.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon Sigillum to unleash two attacks, dealing 68.40% and 205.20% Fusion DMG respectively.\nWhen equipped in the main slot by Aemeath, it grants 25.00% Resonance Liberation DMG Bonus.\nCD: 20s"
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "aa8ba0a936df934fa7c49bfef35dd38f491c5e467aa7359baec83149a3da28ba",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000191:effect:0",
+            "sourceName": "Sigillum",
+            "sourceType": "echo",
+            "text": "When equipped in the main slot by Aemeath, it grants 25.00% Resonance Liberation DMG Bonus.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "trigger": "Equipped by Aemeath",
+              "modifiers": [
+                {
+                  "stat": "liberationDamage",
+                  "operation": "addPercent",
+                  "value": 25,
+                  "scope": "self",
+                  "actionIds": [
+                    "1210:1:4",
+                    "1210:1:5",
+                    "1210:2:6",
+                    "1210:2:7",
+                    "1210:3:0",
+                    "1210:3:1",
+                    "1210:7:0",
+                    "1210:7:1"
+                  ]
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

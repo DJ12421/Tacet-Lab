@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000200",
+  "entityName": "Reminiscence: Denia",
+  "sourceFingerprint": "60d1874c6eec2b874918281f4190d94b9b816f7468886a00d2ffc232782ffe00",
+  "reviewedAt": "2026-09-26T18:47:52.611Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "433c9a74bf69fcc7093753c09ea1768ee13a76e5f1503355b7e9ed555facafdd",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000200:skill",
+            "name": "Reminiscence: Denia - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Fusion",
+            "expressions": [
+              "152.00%",
+              "182.40%",
+              "212.80%",
+              "243.20%",
+              "273.60%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.52
+              ],
+              [
+                1.824
+              ],
+              [
+                2.128
+              ],
+              [
+                2.432
+              ],
+              [
+                2.736
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 20,
+            "sourceText": "Summon \"Trickster\" to deal 152.00% Fusion DMG to enemies. Within the next 15s, casting Outro Skill grants the incoming Resonator 12.00% Fusion DMG Bonus for 15s.\nCD: 20s · Summon \"Trickster\" to deal 182.40% Fusion DMG to enemies. Within the next 15s, casting Outro Skill grants the incoming Resonator 12.00% Fusion DMG Bonus for 15s.\nCD: 20s · Summon \"Trickster\" to deal 212.80% Fusion DMG to enemies. Within the next 15s, casting Outro Skill grants the incoming Resonator 12.00% Fusion DMG Bonus for 15s.\nCD: 20s · Summon \"Trickster\" to deal 243.20% Fusion DMG to enemies. Within the next 15s, casting Outro Skill grants the incoming Resonator 12.00% Fusion DMG Bonus for 15s.\nCD: 20s · Summon \"Trickster\" to deal 273.60% Fusion DMG to enemies. Within the next 15s, casting Outro Skill grants the incoming Resonator 12.00% Fusion DMG Bonus for 15s.\nCD: 20s"
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "2e1e3a7b0b376c174e650333880424f592e120307a2c1f6beac2b7356726a325",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000200:effect:0",
+            "sourceName": "Reminiscence: Denia",
+            "sourceType": "echo",
+            "text": "Within the next 15s, casting Outro Skill grants the incoming Resonator 12.00% Fusion DMG Bonus for 15s.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Outro Skill",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "Fusion",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "next"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

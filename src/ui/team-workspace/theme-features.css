@@ -11,13 +11,8 @@
   background: var(--tw-surface);
 }
 
-.tw-member-page .tw-overview-art {
-  box-shadow: inset 2px 0 var(--tw-member-accent);
-}
-
 .tw-member-page .tw-member-art {
   background: var(--tw-surface);
-  box-shadow: inset 2px 0 var(--tw-member-accent);
 }
 
 .tw-member-page .tw-weapon-passive,
@@ -49,7 +44,6 @@
 
 .tw-member-page .tw-overview-formulas .tw-sheet-stats dl>div.is-modified {
   background: color-mix(in srgb, var(--tw-member-accent) 9%, transparent);
-  box-shadow: inset 2px 0 var(--tw-member-accent);
 }
 
 .tw-member-page .tw-overview-formulas .tw-sheet-stats dl>div.is-modified dd,
@@ -59,7 +53,6 @@
 
 .team-workspace .tw-member-showcase dl>div.is-modified {
   background: color-mix(in srgb, var(--tw-member-accent) 16%, rgba(4,9,10,.75));
-  box-shadow: inset 2px 0 var(--tw-member-accent);
 }
 
 .team-workspace .tw-member-showcase dl>div.is-modified dd {
@@ -104,7 +97,6 @@
 
 .team-workspace .echo-card.selected {
   border-color: var(--tw-line-strong);
-  box-shadow: inset 2px 0 var(--tw-member-accent,#c8d0ce);
 }
 
 .team-workspace .echo-identity>span {
@@ -136,7 +128,6 @@
   border-color: var(--tw-line-strong);
   background: var(--tw-surface-hover);
   color: #fff;
-  box-shadow: inset 2px 0 var(--tw-member-accent);
 }
 
 .tw-member-page .tw-sheet-column>button b {
@@ -171,7 +162,6 @@
 .tw-member-page .tw-sequence-column>header {
   border-color: var(--tw-line);
   background: var(--tw-surface-raised);
-  box-shadow: inset 2px 0 var(--tw-member-accent);
 }
 
 .tw-member-page .tw-skill-card dl>div,
@@ -193,7 +183,6 @@
 .tw-member-page .tw-passive-card.is-enabled,
 .tw-member-page .tw-sequence-column>article.unlocked {
   border-color: var(--tw-line);
-  border-left: 2px solid var(--tw-member-accent);
   background: #0f1415;
   box-shadow: none;
 }
@@ -233,7 +222,6 @@
   overflow: hidden;
   padding: 0;
   border: 1px solid var(--tw-line);
-  border-left: 2px solid color-mix(in srgb,var(--tw-member-accent,#c8d0ce) 56%,transparent);
   border-radius: 4px;
   background: #081019;
   box-shadow: none;
@@ -370,12 +358,10 @@
   align-items: stretch;
   border-bottom: 1px solid var(--tw-line);
   background: #111715;
-  box-shadow: inset 3px 0 color-mix(in srgb,var(--tw-member-accent,#c8d0ce) 62%,transparent);
 }
 
 .team-workspace .tw-v2-effect-list>article.is-inactive .tw-effect-condition {
   background: #0c1112;
-  box-shadow: inset 3px 0 rgba(255,255,255,.12);
 }
 
 .team-workspace .tw-v2-effect-list .tw-condition-toggle,
@@ -513,10 +499,6 @@
 .tw-member-page .tw-rotation-card-details>.calculated-value {
   border-color: var(--tw-line);
   background: var(--tw-surface);
-}
-
-.tw-member-page .tw-rotation-timeline::before {
-  background: linear-gradient(transparent,var(--tw-member-accent),transparent);
 }
 
 .tw-member-page .tw-rotation-marker b,

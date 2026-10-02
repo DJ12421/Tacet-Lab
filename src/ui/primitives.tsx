@@ -1,6 +1,6 @@
 import type { HTMLAttributes, PropsWithChildren, ReactNode } from 'react'
 
-export function Icon({ name }: { name: 'home' | 'scan' | 'echo' | 'backpack' | 'weapon' | 'build' | 'team' | 'optimize' | 'download' | 'upload' | 'lock' | 'unlock' | 'discard' | 'trash' | 'edit' | 'plus' | 'info' | 'settings' | 'more' | 'discord' | 'chevron' }) {
+export function Icon({ name }: { name: 'home' | 'scan' | 'echo' | 'backpack' | 'weapon' | 'build' | 'team' | 'optimize' | 'download' | 'upload' | 'lock' | 'unlock' | 'discard' | 'trash' | 'edit' | 'plus' | 'info' | 'settings' | 'more' | 'discord' | 'github' | 'chevron' }) {
   const paths: Record<typeof name, ReactNode> = {
     home: <><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10M9 20v-6h6v6"/></>,
     scan: <><path d="M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4"/><path d="M7 12h10M12 7v10"/></>,
@@ -36,6 +36,7 @@ export function Icon({ name }: { name: 'home' | 'scan' | 'echo' | 'backpack' | '
     settings: <><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></>,
     more: <><circle cx="5" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.5" fill="currentColor" stroke="none"/></>,
     discord: <path fill="currentColor" stroke="none" d="M19.3 5.4A16 16 0 0 0 15.4 4l-.5 1.1a14.7 14.7 0 0 0-5.8 0L8.6 4a16 16 0 0 0-3.9 1.4C2.2 9.1 1.5 12.7 1.8 16.2a16 16 0 0 0 4.8 2.4l1.2-1.7-1.8-.8.4-.3c3.5 1.6 7.7 1.6 11.2 0l.4.3-1.8.8 1.2 1.7a16 16 0 0 0 4.8-2.4c.4-4.1-.7-7.7-2.9-10.8ZM8.7 14.2c-1 0-1.9-1-1.9-2.2s.8-2.2 1.9-2.2 1.9 1 1.9 2.2-.8 2.2-1.9 2.2Zm6.6 0c-1 0-1.9-1-1.9-2.2s.8-2.2 1.9-2.2 1.9 1 1.9 2.2-.8 2.2-1.9 2.2Z"/>,
+    github: <path fill="currentColor" stroke="none" d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.69c-2.77.6-3.36-1.18-3.36-1.18-.45-1.14-1.1-1.45-1.1-1.45-.9-.61.07-.6.07-.6 1 .07 1.52 1.03 1.52 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.21-.25-4.53-1.1-4.53-4.93 0-1.09.39-1.98 1.03-2.67-.1-.26-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.6 9.6 0 0 1 12 5.7c.85 0 1.71.11 2.51.34 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.38.1 2.64.64.69 1.03 1.58 1.03 2.67 0 3.84-2.32 4.68-4.54 4.92.36.31.68.92.68 1.85v2.91c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/>,
     chevron: <path d="m7 9 5 5 5-5"/>
   }
   return <svg className={`icon${name === 'plus' ? ' icon-plus' : ''}`} viewBox="0 0 24 24" aria-hidden="true">{paths[name]}</svg>

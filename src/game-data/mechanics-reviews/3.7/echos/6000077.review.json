@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000077",
+  "entityName": "Abyssal Gladius",
+  "sourceFingerprint": "00b03397ca1646cc269d15e0d73623c5e9332e938f72c8a5abd6e922520d9005",
+  "reviewedAt": "2026-09-26T18:47:52.407Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "63a1af11d49ab5992151dcd21ec56b08b6a096363c24bca58d84cb8b0f35e243",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000077:skill:1",
+            "name": "Abyssal Gladius - Echo Skill 1",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Glacio",
+            "expressions": [
+              "149.00%",
+              "178.80%",
+              "208.60%",
+              "238.40%",
+              "268.20%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.49
+              ],
+              [
+                1.788
+              ],
+              [
+                2.086
+              ],
+              [
+                2.384
+              ],
+              [
+                2.682
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 15,
+            "sourceText": "Transform into Abyssal Gladius and attack enemies in front of you with the sword, dealing 149.00% Glacio DMG.\nHold the Echo Skill to maintain the Echo form for a while to slash enemies and cast a ranged attack forward, dealing 149.00% and 372.50% Glacio DMG respectively.\nCD: 15s. · Transform into Abyssal Gladius and attack enemies in front of you with the sword, dealing 178.80% Glacio DMG.\nHold the Echo Skill to maintain the Echo form for a while to slash enemies and cast a ranged attack forward, dealing 178.80% and 447.00% Glacio DMG respectively.\nCD: 15s. · Transform into Abyssal Gladius and attack enemies in front of you with the sword, dealing 208.60% Glacio DMG.\nHold the Echo Skill to maintain the Echo form for a while to slash enemies and cast a ranged attack forward, dealing 208.60% and 521.50% Glacio DMG respectively.\nCD: 15s. · Transform into Abyssal Gladius and attack enemies in front of you with the sword, dealing 238.40% Glacio DMG.\nHold the Echo Skill to maintain the Echo form for a while to slash enemies and cast a ranged attack forward, dealing 238.40% and 596.00% Glacio DMG respectively.\nCD: 15s. · Transform into Abyssal Gladius and attack enemies in front of you with the sword, dealing 268.20% Glacio DMG.\nHold the Echo Skill to maintain the Echo form for a while to slash enemies and cast a ranged attack forward, dealing 268.20% and 670.50% Glacio DMG respectively.\nCD: 15s."
+          },
+          {
+            "id": "echo:6000077:skill:2",
+            "name": "Abyssal Gladius - Held Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Glacio",
+            "expressions": [
+              "149.00%+372.50%",
+              "178.80%+447.00%",
+              "208.60%+521.50%",
+              "238.40%+596.00%",
+              "268.20%+670.50%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.49,
+                3.725
+              ],
+              [
+                1.788,
+                4.47
+              ],
+              [
+                2.086,
+                5.215
+              ],
+              [
+                2.384,
+                5.96
+              ],
+              [
+                2.682,
+                6.705
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              1
+            ],
+            "count": 2,
+            "cooldownSeconds": 15,
+            "sourceText": "Transform into Abyssal Gladius and attack enemies in front of you with the sword, dealing 149.00% Glacio DMG.\nHold the Echo Skill to maintain the Echo form for a while to slash enemies and cast a ranged attack forward, dealing 149.00% and 372.50% Glacio DMG respectively.\nCD: 15s. · Transform into Abyssal Gladius and attack enemies in front of you with the sword, dealing 178.80% Glacio DMG.\nHold the Echo Skill to maintain the Echo form for a while to slash enemies and cast a ranged attack forward, dealing 178.80% and 447.00% Glacio DMG respectively.\nCD: 15s. · Transform into Abyssal Gladius and attack enemies in front of you with the sword, dealing 208.60% Glacio DMG.\nHold the Echo Skill to maintain the Echo form for a while to slash enemies and cast a ranged attack forward, dealing 208.60% and 521.50% Glacio DMG respectively.\nCD: 15s. · Transform into Abyssal Gladius and attack enemies in front of you with the sword, dealing 238.40% Glacio DMG.\nHold the Echo Skill to maintain the Echo form for a while to slash enemies and cast a ranged attack forward, dealing 238.40% and 596.00% Glacio DMG respectively.\nCD: 15s. · Transform into Abyssal Gladius and attack enemies in front of you with the sword, dealing 268.20% Glacio DMG.\nHold the Echo Skill to maintain the Echo form for a while to slash enemies and cast a ranged attack forward, dealing 268.20% and 670.50% Glacio DMG respectively.\nCD: 15s."
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

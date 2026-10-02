@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000076",
+  "entityName": "Abyssal Patricius",
+  "sourceFingerprint": "d14579fd56ba9169cd0a361659ecddbec42c9699bd7ef456c9c0084239f7e3a0",
+  "reviewedAt": "2026-09-26T18:47:52.405Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "c8ea73e6399049f45bbccb9560f896c1dec0c9bfc76fcc0b0bc0364b23517409",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000076:skill",
+            "name": "Abyssal Patricius - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Glacio",
+            "expressions": [
+              "149.00%",
+              "178.80%",
+              "208.60%",
+              "238.40%",
+              "268.20%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.49
+              ],
+              [
+                1.788
+              ],
+              [
+                2.086
+              ],
+              [
+                2.384
+              ],
+              [
+                2.682
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 15,
+            "sourceText": "Transform into Abyssal Patricius and charge forward to attack enemies, dealing 149.00% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus.\nCD: 15s. · Transform into Abyssal Patricius and charge forward to attack enemies, dealing 178.80% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus.\nCD: 15s. · Transform into Abyssal Patricius and charge forward to attack enemies, dealing 208.60% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus.\nCD: 15s. · Transform into Abyssal Patricius and charge forward to attack enemies, dealing 238.40% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus.\nCD: 15s. · Transform into Abyssal Patricius and charge forward to attack enemies, dealing 268.20% Glacio DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus.\nCD: 15s."
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "21add22b29a7305b5cf754dfb93938141c01d5fa05ac5624bdcf0fd5412a9e4b",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000076:effect:0",
+            "sourceName": "Abyssal Patricius",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in the main slot gains 12.00% Glacio DMG Bonus.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Glacio",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21020023",
+  "entityName": "Originite: Type II",
+  "sourceFingerprint": "5425ae8ea23fee2f9838e110328e5b45130315547b21d2cf8f96bed979a8048b",
+  "reviewedAt": "2026-09-16T09:06:05.793Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "2c28f1957fa69fd53120d81e8d7e42dd8b0946b057b0e34cf8edf81b43d25d7e",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020023:effect:0",
+            "sourceName": "Vanquish",
+            "text": "When Resonance Liberation is cast, heals 5% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 20s.",
+            "refinementTexts": [
+              "When Resonance Liberation is cast, heals 5% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 20s.",
+              "When Resonance Liberation is cast, heals 6.25% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 20s.",
+              "When Resonance Liberation is cast, heals 7.5% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 20s.",
+              "When Resonance Liberation is cast, heals 8.75% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 20s.",
+              "When Resonance Liberation is cast, heals 10% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 20s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Liberation cast",
+              "modifiers": [],
+              "confidence": "high",
+              "warnings": [],
+              "triggeredAttacks": [
+                {
+                  "id": "triggered-1",
+                  "name": "Resonance Liberation",
+                  "scaling": "hp",
+                  "expression": "5%",
+                  "count": 1,
+                  "damageType": "healing"
+                }
+              ]
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation cast",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "triggeredAttacks": [
+                  {
+                    "expression": "5%"
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation cast",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "triggeredAttacks": [
+                  {
+                    "expression": "6.25%"
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation cast",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "triggeredAttacks": [
+                  {
+                    "expression": "7.5%"
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation cast",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "triggeredAttacks": [
+                  {
+                    "expression": "8.75%"
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation cast",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "triggeredAttacks": [
+                  {
+                    "expression": "10%"
+                  }
+                ]
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

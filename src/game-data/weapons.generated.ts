@@ -866,6 +866,78 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21020026_UI.webp"
   },
   {
+    "id": "21050116",
+    "name": "Blooming Jadehaven",
+    "description": "Jade to pillars, gold to nexus, a hundred mechanisms meshed into one working. Infinite forms divide and proliferate among the blooms, and it still fits in the palm of Her hand.\nWalls and mechanisms know no feeling. What makes a life's work worth the life is not the making, but that something in it was loved.",
+    "rarity": 5,
+    "type": "Rectifier",
+    "baseAtk": 587,
+    "secondaryStat": "Crit. Rate",
+    "secondaryStatValue": "24.3%",
+    "levelStats": [
+      {
+        "level": 1,
+        "baseAtk": 47,
+        "secondaryStatValue": "5.4%"
+      },
+      {
+        "level": 10,
+        "baseAtk": 82,
+        "secondaryStatValue": "7.4%"
+      },
+      {
+        "level": 20,
+        "baseAtk": 153,
+        "secondaryStatValue": "9.5%"
+      },
+      {
+        "level": 30,
+        "baseAtk": 193,
+        "secondaryStatValue": "11.6%"
+      },
+      {
+        "level": 40,
+        "baseAtk": 264,
+        "secondaryStatValue": "13.7%"
+      },
+      {
+        "level": 50,
+        "baseAtk": 335,
+        "secondaryStatValue": "15.8%"
+      },
+      {
+        "level": 60,
+        "baseAtk": 406,
+        "secondaryStatValue": "17.9%"
+      },
+      {
+        "level": 70,
+        "baseAtk": 476,
+        "secondaryStatValue": "20%"
+      },
+      {
+        "level": 80,
+        "baseAtk": 547,
+        "secondaryStatValue": "22.1%"
+      },
+      {
+        "level": 90,
+        "baseAtk": 587,
+        "secondaryStatValue": "24.3%"
+      }
+    ],
+    "passiveName": "Hundredfold Artifice",
+    "passiveEffects": [
+      "Grants 12% All-Attribute DMG Bonus. After the wielder inflicts Electro Flare or triggers Unison Response, Resonance Skill DMG is Amplified by 36% and ignores 10% of the target's Electro RES. While the wielder is the active Resonator, Electro Flare DMG taken by targets within a certain range is Amplified by 30% for 30s, triggered <SapTag=6>1</SapTag> {Cus:Sap,S=time P=times SapTag=6} every 0.1s. Only the strongest effect of the same name applies.",
+      "Grants 15% All-Attribute DMG Bonus. After the wielder inflicts Electro Flare or triggers Unison Response, Resonance Skill DMG is Amplified by 45% and ignores 13.5% of the target's Electro RES. While the wielder is the active Resonator, Electro Flare DMG taken by targets within a certain range is Amplified by 37.5% for 30s, triggered <SapTag=6>1</SapTag> {Cus:Sap,S=time P=times SapTag=6} every 0.1s. Only the strongest effect of the same name applies.",
+      "Grants 18% All-Attribute DMG Bonus. After the wielder inflicts Electro Flare or triggers Unison Response, Resonance Skill DMG is Amplified by 54% and ignores 17% of the target's Electro RES. While the wielder is the active Resonator, Electro Flare DMG taken by targets within a certain range is Amplified by 45% for 30s, triggered <SapTag=6>1</SapTag> {Cus:Sap,S=time P=times SapTag=6} every 0.1s. Only the strongest effect of the same name applies.",
+      "Grants 21% All-Attribute DMG Bonus. After the wielder inflicts Electro Flare or triggers Unison Response, Resonance Skill DMG is Amplified by 63% and ignores 20.5% of the target's Electro RES. While the wielder is the active Resonator, Electro Flare DMG taken by targets within a certain range is Amplified by 52.5% for 30s, triggered <SapTag=6>1</SapTag> {Cus:Sap,S=time P=times SapTag=6} every 0.1s. Only the strongest effect of the same name applies.",
+      "Grants 24% All-Attribute DMG Bonus. After the wielder inflicts Electro Flare or triggers Unison Response, Resonance Skill DMG is Amplified by 72% and ignores 24% of the target's Electro RES. While the wielder is the active Resonator, Electro Flare DMG taken by targets within a certain range is Amplified by 60% for 30s, triggered <SapTag=6>1</SapTag> {Cus:Sap,S=time P=times SapTag=6} every 0.1s. Only the strongest effect of the same name applies."
+    ],
+    "articleUrl": "https://ww.nanoka.cc/weapon/21050116",
+    "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21050116_UI.webp"
+  },
+  {
     "id": "21050045",
     "name": "Boson Astrolabe",
     "description": "Spacetrek Collective \"Synth Armament\" Series\nModel: SCSA-LHRi-RCTF325062\n\nForged from compound technology that fuses Exostrider biomorphic components with Tacetite, this weapon offers two core features: frequency auto-adaptation and user binding. Its power scales directly with the wielder's Forte, growing sharper through dedicated Forte training.\n\nComposed of a spectral ring-lens and layered glass plates, the device captures even the faintest frequency shifts. Like a guiding star that leads the seekers through a sea of tangled thoughts, it maps possibilities before they take shape. Ideal for the path observers who perceive the world a step ahead.",
@@ -8208,6 +8280,78 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     ],
     "articleUrl": "https://ww.nanoka.cc/weapon/21020036",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21020025_UI.webp"
+  },
+  {
+    "id": "21020107",
+    "name": "Unspoken Rue",
+    "description": "With this canopy, she sheltered all life and sealed the Evil Miasma. The Blight Rain ceased, the Miasmic Thunder fell silent, and a deep darkness lies trapped upon the canopy's surface. Beneath it linger the shadows of no return, always walking by her side.",
+    "rarity": 5,
+    "type": "Sword",
+    "baseAtk": 587,
+    "secondaryStat": "Crit. Rate",
+    "secondaryStatValue": "24.3%",
+    "levelStats": [
+      {
+        "level": 1,
+        "baseAtk": 47,
+        "secondaryStatValue": "5.4%"
+      },
+      {
+        "level": 10,
+        "baseAtk": 82,
+        "secondaryStatValue": "7.4%"
+      },
+      {
+        "level": 20,
+        "baseAtk": 153,
+        "secondaryStatValue": "9.5%"
+      },
+      {
+        "level": 30,
+        "baseAtk": 193,
+        "secondaryStatValue": "11.6%"
+      },
+      {
+        "level": 40,
+        "baseAtk": 264,
+        "secondaryStatValue": "13.7%"
+      },
+      {
+        "level": 50,
+        "baseAtk": 335,
+        "secondaryStatValue": "15.8%"
+      },
+      {
+        "level": 60,
+        "baseAtk": 406,
+        "secondaryStatValue": "17.9%"
+      },
+      {
+        "level": 70,
+        "baseAtk": 476,
+        "secondaryStatValue": "20%"
+      },
+      {
+        "level": 80,
+        "baseAtk": 547,
+        "secondaryStatValue": "22.1%"
+      },
+      {
+        "level": 90,
+        "baseAtk": 587,
+        "secondaryStatValue": "24.3%"
+      }
+    ],
+    "passiveName": "Locked Thunder, Trapped Rain",
+    "passiveEffects": [
+      "ATK is increased by 12%. Upon gaining Unison, the wielder gains 30% Electro DMG Bonus for 30s.\nUpon gaining Unison, the wielder removes Yearning Mind and grants all Resonators in the team the Binding Mind effect: gain 24% Electro DMG Bonus for 30s. Effects of the same name cannot stack.\nWhen the wielder consumes Concerto Energy, they remove Binding Mind from all Resonators in the team and gain the Yearning Mind effect: the wielder additionally gains 40% Electro DMG Bonus for 14s. Switching to another Resonator ends this effect early.",
+      "ATK is increased by 15%. Upon gaining Unison, the wielder gains 37.5% Electro DMG Bonus for 30s.\nUpon gaining Unison, the wielder removes Yearning Mind and grants all Resonators in the team the Binding Mind effect: gain 30% Electro DMG Bonus for 30s. Effects of the same name cannot stack.\nWhen the wielder consumes Concerto Energy, they remove Binding Mind from all Resonators in the team and gain the Yearning Mind effect: the wielder additionally gains 50% Electro DMG Bonus for 14s. Switching to another Resonator ends this effect early.",
+      "ATK is increased by 18%. Upon gaining Unison, the wielder gains 45% Electro DMG Bonus for 30s.\nUpon gaining Unison, the wielder removes Yearning Mind and grants all Resonators in the team the Binding Mind effect: gain 36% Electro DMG Bonus for 30s. Effects of the same name cannot stack.\nWhen the wielder consumes Concerto Energy, they remove Binding Mind from all Resonators in the team and gain the Yearning Mind effect: the wielder additionally gains 60% Electro DMG Bonus for 14s. Switching to another Resonator ends this effect early.",
+      "ATK is increased by 21%. Upon gaining Unison, the wielder gains 52.5% Electro DMG Bonus for 30s.\nUpon gaining Unison, the wielder removes Yearning Mind and grants all Resonators in the team the Binding Mind effect: gain 42% Electro DMG Bonus for 30s. Effects of the same name cannot stack.\nWhen the wielder consumes Concerto Energy, they remove Binding Mind from all Resonators in the team and gain the Yearning Mind effect: the wielder additionally gains 70% Electro DMG Bonus for 14s. Switching to another Resonator ends this effect early.",
+      "ATK is increased by 24%. Upon gaining Unison, the wielder gains 60% Electro DMG Bonus for 30s.\nUpon gaining Unison, the wielder removes Yearning Mind and grants all Resonators in the team the Binding Mind effect: gain 48% Electro DMG Bonus for 30s. Effects of the same name cannot stack.\nWhen the wielder consumes Concerto Energy, they remove Binding Mind from all Resonators in the team and gain the Yearning Mind effect: the wielder additionally gains 80% Electro DMG Bonus for 14s. Switching to another Resonator ends this effect early."
+    ],
+    "articleUrl": "https://ww.nanoka.cc/weapon/21020107",
+    "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21020107_UI.webp"
   },
   {
     "id": "21050024",

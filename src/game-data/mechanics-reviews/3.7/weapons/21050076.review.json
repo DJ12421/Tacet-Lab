@@ -1,0 +1,339 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21050076",
+  "entityName": "Forged Dwarf Star",
+  "sourceFingerprint": "b4e251d2f17d9ee31d7c7ba18a9583da72a4b74c95c08790cd76e178f49112e6",
+  "reviewedAt": "2026-09-15T01:00:25.122Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "bce75b63fcb643031dd4bd6720df3199214c34fdedd7fe58bfd797f97e1e663c",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050076:effect:0",
+            "sourceName": "Dissolution",
+            "text": "Increases ATK by 12%.",
+            "refinementTexts": [
+              "Increases ATK by 12%.",
+              "Increases ATK by 15%.",
+              "Increases ATK by 18%.",
+              "Increases ATK by 21%.",
+              "Increases ATK by 24%."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21050076:effect:1",
+            "sourceName": "Dissolution",
+            "text": "After the wielder inflicts Fusion Burst or Tune Strain - Shifting on the target, their Resonance Liberation DMG Bonus is increased by 36% for 5s.",
+            "refinementTexts": [
+              "After the wielder inflicts Fusion Burst or Tune Strain - Shifting on the target, their Resonance Liberation DMG Bonus is increased by 36% for 5s.",
+              "After the wielder inflicts Fusion Burst or Tune Strain - Shifting on the target, their Resonance Liberation DMG Bonus is increased by 45% for 5s.",
+              "After the wielder inflicts Fusion Burst or Tune Strain - Shifting on the target, their Resonance Liberation DMG Bonus is increased by 54% for 5s.",
+              "After the wielder inflicts Fusion Burst or Tune Strain - Shifting on the target, their Resonance Liberation DMG Bonus is increased by 63% for 5s.",
+              "After the wielder inflicts Fusion Burst or Tune Strain - Shifting on the target, their Resonance Liberation DMG Bonus is increased by 72% for 5s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 5,
+              "modifiers": [
+                {
+                  "stat": "liberationDamage",
+                  "operation": "addPercent",
+                  "value": 36,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Fusion Burst/Tune Strain - Shifting inflicted"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 5,
+                "modifiers": [
+                  {
+                    "value": 36
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Fusion Burst/Tune Strain - Shifting inflicted"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 5,
+                "modifiers": [
+                  {
+                    "value": 45
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Fusion Burst/Tune Strain - Shifting inflicted"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 5,
+                "modifiers": [
+                  {
+                    "value": 54
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Fusion Burst/Tune Strain - Shifting inflicted"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 5,
+                "modifiers": [
+                  {
+                    "value": 63
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Fusion Burst/Tune Strain - Shifting inflicted"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 5,
+                "modifiers": [
+                  {
+                    "value": 72
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Fusion Burst/Tune Strain - Shifting inflicted"
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21050076:effect:2",
+            "sourceName": "Dissolution",
+            "text": "While this effect lasts, after Resonators in the team inflict Fusion Burst or Tune Strain - Shifting, their ATK is increased by 24% for 15s.",
+            "refinementTexts": [
+              "While this effect lasts, after Resonators in the team inflict Fusion Burst or Tune Strain - Shifting, their ATK is increased by 24% for 15s.",
+              "While this effect lasts, after Resonators in the team inflict Fusion Burst or Tune Strain - Shifting, their ATK is increased by 30% for 15s.",
+              "While this effect lasts, after Resonators in the team inflict Fusion Burst or Tune Strain - Shifting, their ATK is increased by 36% for 15s.",
+              "While this effect lasts, after Resonators in the team inflict Fusion Burst or Tune Strain - Shifting, their ATK is increased by 42% for 15s.",
+              "While this effect lasts, after Resonators in the team inflict Fusion Burst or Tune Strain - Shifting, their ATK is increased by 48% for 15s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 24,
+                  "scope": "team"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Fusion Burst/Tune Strain - Shifting inflicted by ally"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Fusion Burst/Tune Strain - Shifting inflicted"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Fusion Burst/Tune Strain - Shifting inflicted"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "value": 36
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Fusion Burst/Tune Strain - Shifting inflicted"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "value": 42
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Fusion Burst/Tune Strain - Shifting inflicted"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "value": 48
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Fusion Burst/Tune Strain - Shifting inflicted"
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21050076:effect:3",
+            "sourceName": "Dissolution",
+            "text": "Effects of the same name cannot be stacked.",
+            "refinementTexts": [
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ],
+              "trigger": "While equipped"
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

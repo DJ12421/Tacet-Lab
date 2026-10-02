@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "390070077",
+  "entityName": "Excarat",
+  "sourceFingerprint": "2e1ffacd527f5b95c05ca5c12049748d8f858d1340d864d43763c172dfdc3f9d",
+  "reviewedAt": "2026-09-22T19:02:53.264Z",
+  "sections": {
+    "skill": {
+      "status": "approved-empty",
+      "sourceFingerprint": "92bc591083b3218f751420d9ecd18c2c9ca4c829724f9342cfe353de03dc25dc",
+      "approvedData": {
+        "attacks": [],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000216",
+  "entityName": "Forbidden Bastion",
+  "sourceFingerprint": "61072875d7d9fa53240ac5c6d0136f53ec9fdfc4f81e7236278c6d394463098d",
+  "reviewedAt": "2026-09-26T18:47:52.644Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "5af4546f74f13c5564d6407b616a1e3253402b360664c18146528271f6aa8466",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000216:skill",
+            "name": "Forbidden Bastion - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Glacio",
+            "expressions": [
+              "132.00%",
+              "158.40%",
+              "184.80%",
+              "211.20%",
+              "237.60%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.32
+              ],
+              [
+                1.584
+              ],
+              [
+                1.848
+              ],
+              [
+                2.112
+              ],
+              [
+                2.376
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 20,
+            "sourceText": "Use Echo Skill to summon Forbidden Bastion to bash over enemies, dealing 132.00% Glacio DMG.\nResonators with this Echo equipped in the main slot gain 10.00% Healing Bonus.\nCD: 20s · Use Echo Skill to summon Forbidden Bastion to bash over enemies, dealing 158.40% Glacio DMG.\nResonators with this Echo equipped in the main slot gain 10.00% Healing Bonus.\nCD: 20s · Use Echo Skill to summon Forbidden Bastion to bash over enemies, dealing 184.80% Glacio DMG.\nResonators with this Echo equipped in the main slot gain 10.00% Healing Bonus.\nCD: 20s · Use Echo Skill to summon Forbidden Bastion to bash over enemies, dealing 211.20% Glacio DMG.\nResonators with this Echo equipped in the main slot gain 10.00% Healing Bonus.\nCD: 20s · Use Echo Skill to summon Forbidden Bastion to bash over enemies, dealing 237.60% Glacio DMG.\nResonators with this Echo equipped in the main slot gain 10.00% Healing Bonus.\nCD: 20s"
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "e5667a138a9602f08ff7fc7e148af8e6520632bfba55d24792ab0e8942e154a7",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000216:effect:0",
+            "sourceName": "Forbidden Bastion",
+            "sourceType": "echo",
+            "text": "Resonators with this Echo equipped in the main slot gain 10.00% Healing Bonus.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "healingBonus",
+                  "operation": "addPercent",
+                  "value": 10,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

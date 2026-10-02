@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "sonata",
+  "entityId": "21",
+  "entityName": "Law of Harmony",
+  "sourceFingerprint": "94ee3f57e0e2231638c471725f1beba3f6c317e307eccea779bf68f35404c42a",
+  "reviewedAt": "2026-09-05T09:35:42.503Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "3126f474d86499569800d10fddd2a2f19b482b32a350b1e9d1f981b327823815",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:21:3:0",
+            "sourceName": "Law of Harmony",
+            "text": "Casting Echo Skill grants 30% Heavy Attack DMG Bonus to the caster for 4s.",
+            "refinementTexts": [
+              "Casting Echo Skill grants 30% Heavy Attack DMG Bonus to the caster for 4s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Echo Skill used",
+              "durationSeconds": 4,
+              "modifiers": [
+                {
+                  "stat": "heavyDamage",
+                  "operation": "addPercent",
+                  "value": 30
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 3
+          },
+          {
+            "id": "sonata:21:3:1",
+            "sourceName": "Law of Harmony",
+            "text": "Additionally, all Resonators in the team gain 4% Echo Skill DMG Bonus for 30s, stacking up to 4 times.",
+            "refinementTexts": [
+              "Additionally, all Resonators in the team gain 4% Echo Skill DMG Bonus for 30s, stacking up to 4 times."
+            ],
+            "parsed": {
+              "scope": "team",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 4
+              },
+              "durationSeconds": 30,
+              "modifiers": [
+                {
+                  "stat": "echoDamage",
+                  "operation": "addPercent",
+                  "value": 4
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "While equipped"
+            },
+            "sourceType": "sonata",
+            "pieces": 3
+          },
+          {
+            "id": "sonata:21:3:2",
+            "sourceName": "Law of Harmony",
+            "text": "Echoes of the same name can only trigger this effect once.",
+            "refinementTexts": [
+              "Echoes of the same name can only trigger this effect once."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ],
+              "trigger": "While equipped"
+            },
+            "sourceType": "sonata",
+            "pieces": 3,
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "sonata:21:3:3",
+            "sourceName": "Law of Harmony",
+            "text": "The record of Echo triggering this effect is cleared along with this effect.",
+            "refinementTexts": [
+              "The record of Echo triggering this effect is cleared along with this effect."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ],
+              "trigger": "While equipped"
+            },
+            "sourceType": "sonata",
+            "pieces": 3,
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "sonata:21:3:4",
+            "sourceName": "Law of Harmony",
+            "text": "At 4 stacks, casting Echo Skill again resets the duration of this effect.",
+            "refinementTexts": [
+              "At 4 stacks, casting Echo Skill again resets the duration of this effect."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 4
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence.",
+                "A stack threshold was used as the selectable maximum and requires review."
+              ],
+              "trigger": "4 stacks"
+            },
+            "sourceType": "sonata",
+            "pieces": 3,
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

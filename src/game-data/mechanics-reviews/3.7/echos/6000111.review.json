@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000111",
+  "entityName": "Pilgrim's Shell",
+  "sourceFingerprint": "0e4e5e68020db78243873a52c59b66578d1577397d6fcc4868b464134e6b5459",
+  "reviewedAt": "2026-09-26T18:47:52.498Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "745aea02030b781d96d710f8326b8db27ed3c379d8fc6ed21ff4ae3bf5a53ba0",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000111:skill",
+            "name": "Pilgrim's Shell - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Aero",
+            "expressions": [
+              "149.00%",
+              "178.80%",
+              "208.60%",
+              "238.40%",
+              "268.20%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.49
+              ],
+              [
+                1.788
+              ],
+              [
+                2.086
+              ],
+              [
+                2.384
+              ],
+              [
+                2.682
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 15,
+            "sourceText": "Transform into a Pilgrim's Shell to attack nearby enemies, dealing 149.00% Aero DMG.\nCD: 15s · Transform into a Pilgrim's Shell to attack nearby enemies, dealing 178.80% Aero DMG.\nCD: 15s · Transform into a Pilgrim's Shell to attack nearby enemies, dealing 208.60% Aero DMG.\nCD: 15s · Transform into a Pilgrim's Shell to attack nearby enemies, dealing 238.40% Aero DMG.\nCD: 15s · Transform into a Pilgrim's Shell to attack nearby enemies, dealing 268.20% Aero DMG.\nCD: 15s"
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

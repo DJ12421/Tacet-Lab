@@ -452,6 +452,11 @@
 }
 
 .tw-build-management-backdrop {
+  --tw-line: rgba(255,255,255,.12);
+  --tw-line-strong: rgba(255,255,255,.2);
+  --tw-mint-line: rgba(141,228,212,.3);
+  --tw-muted: #87928f;
+  --mint: #8de4d4;
   z-index: 120;
   padding: 18px;
 }

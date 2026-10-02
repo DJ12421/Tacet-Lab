@@ -9,7 +9,8 @@ import { mainStatKeysByCost, maxLevelByRarity, maxSubStatsForLevel } from '../ga
 import { tunableRolls } from '../game-data/tunable-rolls'
 import { db } from '../storage/database'
 import { duplicateSavedBuild, equipSavedBuild, equipmentConflicts, saveEquippedBuild, theorycraftFromBuild } from '../storage/loadouts'
-import { Icon, PageHeader, Panel } from './components'
+import { formatStat, Icon, PageHeader, Panel } from './components'
+import { statIconSource } from './stat-icons'
 
 type Props = {
   echoes: Echo[]; builds: Build[]; characters: OwnedCharacter[]; weapons: OwnedWeapon[]
@@ -18,6 +19,7 @@ type Props = {
   management?: boolean
   characterId?: string
   onSelectSource?: (source: LoadoutSourceRef) => void
+  onEditTheorycraft?: (build: TheorycraftBuild) => void
 }
 
 const sourceKey = (source: LoadoutSourceRef) => source.type === 'equipped' ? `equipped:${source.characterId}` : source.type === 'saved' ? `saved:${source.buildId}` : `theorycraft:${source.theorycraftBuildId}`
@@ -52,7 +54,7 @@ function ManagementGear({ source, collections }: { source: LoadoutSourceRef; col
   </div>
 }
 
-function TheorycraftEditor({ value, ownedCharacter, onClose, onSaved }: { value: TheorycraftBuild; ownedCharacter?: OwnedCharacter; onClose: () => void; onSaved: () => Promise<void> }) {
+export function TheorycraftEditor({ value, ownedCharacter, onClose, onSaved, backLabel = 'Back to builds' }: { value: TheorycraftBuild; ownedCharacter?: OwnedCharacter; onClose: () => void; onSaved: () => Promise<void>; backLabel?: string }) {
   const [draft, setDraft] = useState(() => structuredClone(value))
   const character = characterCatalog.find((entry) => entry.id === ownedCharacter?.catalogId) ?? characterCatalog[0]
   const compatibleWeapons = weaponCatalog.filter((entry) => entry.type.toLowerCase() === character?.weaponType.toLowerCase())
@@ -68,17 +70,21 @@ function TheorycraftEditor({ value, ownedCharacter, onClose, onSaved }: { value:
   const updateSlot = (index: number, patch: Partial<TheorycraftEchoSlot>) => setDraft((current) => ({ ...current, slots: current.slots.map((slot, slotIndex) => slotIndex === index ? { ...slot, ...patch } : slot), updatedAt: Date.now() }))
   const updateSubstatSlot = (index: number, lines: Array<{ key: StatKey; value: number }>) => setDraft((current) => current.substats.mode === 'slots' ? ({ ...current, substats: { mode: 'slots', slots: current.substats.slots.map((slot, slotIndex) => slotIndex === index ? lines : slot) }, updatedAt: Date.now() }) : current)
   const save = async () => { if (warnings.length) return; await db.theorycraftBuilds.put({ ...draft, name: draft.name.trim() || 'Theorycraft build', updatedAt: Date.now() }); await onSaved(); onClose() }
-  return <div className="modal-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}><Panel className="modal theorycraft-editor">
-    <header><div><span className="eyebrow">Hypothetical loadout</span><h2>{draft.name}</h2></div><button className="text-button" onClick={onClose}>Close</button></header>
-    <div className="theorycraft-grid">
+  return <div className="theorycraft-editor-page"><Panel className="theorycraft-editor">
+    <header><div><span className="eyebrow">Hypothetical loadout</span><h2>{draft.name}</h2></div><button className="secondary" onClick={onClose}>← {backLabel}</button></header>
+    <div className="theorycraft-overview">
+      <div className="theorycraft-overview-art">{character?.portraitSourceUrl && <img src={character.portraitSourceUrl} alt=""/>}<div><small>{character?.element} · {character?.weaponType}</small><h3>{character?.name}</h3><span>Lv. {ownedCharacter?.level ?? 90}</span></div></div>
+      <section className="theorycraft-overview-stats"><header><span>Live loadout preview</span>{liveDamage && <strong>{liveTarget?.label}: {formatDamage(liveDamage.expected)} avg DMG</strong>}</header>{liveStats ? <div className="loadout-final-stats">{summaryStatKeys.map((key) => <span key={key}><small><img src={statIconSource(key)} alt=""/>{statLabels[key]}</small><b>{formatStat(key, liveStats[key] ?? 0)}</b></span>)}</div> : <p>Complete the loadout to preview final stats.</p>}</section>
+    </div>
+    <section className="theorycraft-details"><div className="section-heading"><div><span className="eyebrow">Build setup</span><h3>Loadout details</h3></div></div><div className="theorycraft-grid">
       <label>Name<input value={draft.name} onChange={(event) => setDraft({ ...draft, name: event.target.value })}/></label>
       <label>Description<textarea value={draft.description} onChange={(event) => setDraft({ ...draft, description: event.target.value })}/></label>
       <label>Weapon<select value={draft.weapon.catalogId} onChange={(event) => setDraft({ ...draft, weapon: { ...draft.weapon, catalogId: event.target.value } })}>{compatibleWeapons.map((entry) => <option value={entry.id} key={entry.id}>{entry.name}</option>)}</select></label>
       <label>Weapon level<input type="number" min="1" max="90" value={draft.weapon.level} onChange={(event) => setDraft({ ...draft, weapon: { ...draft.weapon, level: Math.max(1, Math.min(90, Number(event.target.value))) } })}/></label>
       <label>Rank<input type="number" min="1" max="5" value={draft.weapon.rank} onChange={(event) => setDraft({ ...draft, weapon: { ...draft.weapon, rank: Math.max(1, Math.min(5, Number(event.target.value))) } })}/></label>
       <label>Main Echo<select value={draft.mainEchoName} onChange={(event) => { const main = echoCatalog.find((entry) => entry.name === event.target.value); setDraft({ ...draft, mainEchoName: event.target.value, slots: draft.slots.map((slot, index) => index === 0 && main ? { ...slot, cost: main.cost } : slot) }) }}>{compatibleMainEchoes.map((entry) => <option value={entry.name} key={entry.id}>{entry.name} · Cost {entry.cost}</option>)}</select></label>
-    </div>
-    <section><div className="section-heading"><div><span className="eyebrow">Anonymous Echoes</span><h3>Five stat slots</h3></div><b>{draft.slots.reduce((sum, slot) => sum + slot.cost, 0)}/12 cost</b></div>
+    </div></section>
+    <section><div className="section-heading"><div><span className="eyebrow">Echo setup</span><h3>Five stat slots</h3></div><b>{draft.slots.reduce((sum, slot) => sum + slot.cost, 0)}/12 cost</b></div>
       <div className="theorycraft-slots">{draft.slots.map((slot, index) => <article key={index}><strong>{index === 0 ? 'Main Echo slot' : `Slot ${index + 1}`}</strong>
         <label>Cost<select value={slot.cost} disabled={index === 0} onChange={(event) => { const cost = Number(event.target.value) as Echo['cost']; updateSlot(index, { cost, mainStatKey: mainStatKeysByCost[cost][0] }) }}>{[4, 3, 1].map((cost) => <option value={cost} key={cost}>{cost}</option>)}</select></label>
         <label>Rarity<select value={slot.rarity} onChange={(event) => { const rarity = Number(event.target.value) as Echo['rarity']; updateSlot(index, { rarity, level: Math.min(slot.level, maxLevelByRarity[rarity]) }) }}>{[5, 4, 3, 2, 1].map((rarity) => <option value={rarity} key={rarity}>{rarity} star</option>)}</select></label>
@@ -100,12 +106,11 @@ function TheorycraftEditor({ value, ownedCharacter, onClose, onSaved }: { value:
       </>}
     </section>
     {warnings.length > 0 && <div className="notice warning"><strong>Feasibility warnings</strong>{warnings.map((warning) => <p key={warning}>{warning}</p>)}</div>}
-    {liveStats && <section><div className="section-heading"><div><span className="eyebrow">Live calculation</span><h3>Final stats and reviewed preview</h3></div>{liveDamage && <b>{liveTarget?.label}: {formatDamage(liveDamage.expected)} average DMG</b>}</div><div className="loadout-final-stats">{summaryStatKeys.map((key) => <span key={key}><small>{statLabels[key]}</small><b>{floorGameValue(liveStats[key] ?? 0).toLocaleString('en-US')}</b></span>)}</div></section>}
     <div className="modal-actions"><button className="secondary" onClick={onClose}>Cancel</button><button className="primary" disabled={warnings.length > 0} onClick={() => void save()}>Save theorycraft</button></div>
   </Panel></div>
 }
 
-export function BuildsView({ echoes, builds, characters, weapons, equippedLoadouts, theorycraftBuilds, refresh, embedded = false, management = false, characterId, onSelectSource }: Props) {
+export function BuildsView({ echoes, builds, characters, weapons, equippedLoadouts, theorycraftBuilds, refresh, embedded = false, management = false, characterId, onSelectSource, onEditTheorycraft }: Props) {
   const collections = useMemo<LoadoutCollections>(() => ({ echoes, builds, characters, weapons, equippedLoadouts, theorycraftBuilds }), [echoes, builds, characters, weapons, equippedLoadouts, theorycraftBuilds])
   const sources = useMemo<LoadoutSourceRef[]>(() => {
     const candidates: LoadoutSourceRef[] = [
@@ -118,13 +123,14 @@ export function BuildsView({ echoes, builds, characters, weapons, equippedLoadou
   const [selectedKey, setSelectedKey] = useState(sourceKey(sources[0] ?? { type: 'equipped', characterId: '' }))
   const [compareKey, setCompareKey] = useState('')
   const [editing, setEditing] = useState<TheorycraftBuild>()
+  const openTheorycraft = onEditTheorycraft ?? setEditing
   const [message, setMessage] = useState('')
   const selected = sources.find((source) => sourceKey(source) === selectedKey) ?? sources[0]
   const selectedCharacterId = selected ? loadoutCharacterId(selected, collections) : undefined
   const compareOptions = sources.filter((source) => sourceKey(source) !== sourceKey(selected ?? { type: 'equipped', characterId: '' }) && loadoutCharacterId(source, collections) === selectedCharacterId)
 
   const run = async (action: () => Promise<unknown>, success: string) => { try { setMessage(''); await action(); await refresh(); setMessage(success) } catch (error) { setMessage(error instanceof Error ? error.message : String(error)) } }
-  const createTc = async (character: OwnedCharacter) => { const created = createTheorycraftBuild(character); created.id = createLocalId(); await db.theorycraftBuilds.add(created); await refresh(); setEditing(created); setSelectedKey(sourceKey({ type: 'theorycraft', theorycraftBuildId: created.id })) }
+  const createTc = (character: OwnedCharacter) => { const created = createTheorycraftBuild(character); created.id = createLocalId(); openTheorycraft(created); setSelectedKey(sourceKey({ type: 'theorycraft', theorycraftBuildId: created.id })) }
   const equip = async (build: Build) => {
     const conflicts = await equipmentConflicts(build.id)
     if (conflicts.length && !confirm(`Equip ${build.name}? Items will move from ${conflicts.join(', ')}.`)) return
@@ -165,7 +171,7 @@ export function BuildsView({ echoes, builds, characters, weapons, equippedLoadou
     await run(async () => { if (source.type === 'saved') await db.builds.update(source.buildId, { description, updatedAt: Date.now() }); else await db.theorycraftBuilds.update(source.theorycraftBuildId, { description, updatedAt: Date.now() }) }, 'Description updated.')
   }
   const duplicate = async (source: LoadoutSourceRef) => run(async () => { if (source.type === 'saved') await duplicateSavedBuild(source.buildId); else if (source.type === 'theorycraft') await theorycraftFromBuild(source) }, 'Build duplicated.')
-  const toTheorycraft = async (source: LoadoutSourceRef) => run(async () => { const created = await theorycraftFromBuild(source); setSelectedKey(sourceKey({ type: 'theorycraft', theorycraftBuildId: created.id })); setEditing(created) }, 'Theorycraft copy created.')
+  const toTheorycraft = async (source: LoadoutSourceRef) => run(async () => { const created = await theorycraftFromBuild(source); setSelectedKey(sourceKey({ type: 'theorycraft', theorycraftBuildId: created.id })); openTheorycraft(created) }, 'Theorycraft copy created.')
   const removeMissingReferences = async (buildId: string) => run(async () => {
     const build = builds.find((entry) => entry.id === buildId); if (!build) return
     const echoIds = build.echoIds.filter((id) => echoes.some((echo) => echo.id === id))
@@ -202,26 +208,26 @@ export function BuildsView({ echoes, builds, characters, weapons, equippedLoadou
       targetId:selectedTarget.id
     }).stats
     : undefined
+  if (editing) return <TheorycraftEditor value={editing} ownedCharacter={characters.find((entry) => entry.id === editing.characterId)} onClose={() => setEditing(undefined)} onSaved={refresh}/>
   if (management) {
     const equipped = grouped('equipped')[0]
     const saved = grouped('saved')
     const theorycraft = grouped('theorycraft')
     const card = (source: LoadoutSourceRef) => <article className={`build-management-card ${source.type}`} key={sourceKey(source)}>
-      <header><strong>{sourceLabel(source, collections)}{source.type === 'equipped' && ' Build'}</strong><span>{source.type === 'equipped' ? 'Current' : source.type === 'saved' ? 'Saved' : 'Theorycraft'}</span></header>
+      <header><strong>{sourceLabel(source, collections)}</strong><span>{source.type === 'equipped' ? 'Current' : source.type === 'saved' ? 'Saved' : 'Theorycraft'}</span></header>
       <ManagementGear source={source} collections={collections}/>
       <footer>
         {onSelectSource && <button title="Use this build" onClick={() => onSelectSource(source)}><Icon name="team"/></button>}
         {source.type === 'equipped' && <><button title="Save snapshot" onClick={() => void run(() => saveEquippedBuild(source.characterId), 'Snapshot saved.')}><Icon name="download"/></button><button title="Copy to theorycraft" onClick={() => void toTheorycraft(source)}><Icon name="plus"/></button></>}
         {source.type === 'saved' && <><button title="Equip" onClick={() => { const build = builds.find((entry) => entry.id === source.buildId); if (build) void equip(build) }}><Icon name="build"/></button><button title="Duplicate" onClick={() => void duplicate(source)}><Icon name="plus"/></button><button title="Rename" onClick={() => void rename(source)}><Icon name="edit"/></button><button title="Delete" onClick={() => void deleteSource(source)}><Icon name="trash"/></button></>}
-        {source.type === 'theorycraft' && <><button title="Edit" onClick={() => setEditing(theorycraftBuilds.find((entry) => entry.id === source.theorycraftBuildId))}><Icon name="edit"/></button><button title="Duplicate" onClick={() => void duplicate(source)}><Icon name="plus"/></button><button title="Delete" onClick={() => void deleteSource(source)}><Icon name="trash"/></button></>}
+        {source.type === 'theorycraft' && <><button title="Edit" onClick={() => { const build = theorycraftBuilds.find((entry) => entry.id === source.theorycraftBuildId); if (build) openTheorycraft(build) }}><Icon name="edit"/></button><button title="Duplicate" onClick={() => void duplicate(source)}><Icon name="plus"/></button><button title="Delete" onClick={() => void deleteSource(source)}><Icon name="trash"/></button></>}
       </footer>
     </article>
     return <div className="build-management-content">
       {message && <div className="notice warning">{message}</div>}
-      {equipped && <section className="build-management-equipped">{card(equipped)}</section>}
-      <section className="build-management-group"><header><h3>Builds</h3><button onClick={() => { if (equipped?.type === 'equipped') void run(() => saveEquippedBuild(equipped.characterId), 'New build saved.') }}><Icon name="plus"/>New Build</button></header><div className="build-management-cards">{saved.map(card)}</div><p><b>ⓘ</b>A Build is comprised of a weapon and 5 Echoes.</p></section>
-      <section className="build-management-group"><header><h3>Theorycrafted Builds</h3><button onClick={() => { const character = characters.find((entry) => entry.id === characterId); if (character) void createTc(character) }}><Icon name="plus"/>New Theorycrafted Build</button></header><div className="build-management-cards">{theorycraft.map(card)}</div><p><b>ⓘ</b>Theorycrafted Builds are separate hypothetical loadouts. Editing or selecting one never changes the equipped build.</p></section>
-      {editing && <TheorycraftEditor value={editing} ownedCharacter={characters.find((entry) => entry.id === editing.characterId)} onClose={() => setEditing(undefined)} onSaved={refresh}/>} 
+      <section className="build-management-group"><header><h3>Equipped</h3></header><div className="build-management-cards">{equipped && card(equipped)}</div></section>
+      <section className="build-management-group"><header><h3>Saved Builds <small>{saved.length}</small></h3><button onClick={() => { if (equipped?.type === 'equipped') void run(() => saveEquippedBuild(equipped.characterId), 'New build saved.') }}><Icon name="plus"/>New Build</button></header><div className="build-management-cards">{saved.map(card)}</div></section>
+      <section className="build-management-group"><header><h3>Theorycrafted Builds <small>{theorycraft.length}</small></h3><button onClick={() => { const character = characters.find((entry) => entry.id === characterId); if (character) void createTc(character) }}><Icon name="plus"/>New Theorycrafted Build</button></header><div className="build-management-cards">{theorycraft.map(card)}</div></section>
     </div>
   }
   return <>
@@ -241,6 +247,5 @@ export function BuildsView({ echoes, builds, characters, weapons, equippedLoadou
       {compareKey && <div className="loadout-comparison"><article><h3>{sourceLabel(selected!, collections)}</h3><LoadoutSummary source={selected!} collections={collections}/></article><article><h3>{sourceLabel(compareOptions.find((source) => sourceKey(source) === compareKey)!, collections)}</h3><LoadoutSummary source={compareOptions.find((source) => sourceKey(source) === compareKey)!} collections={collections}/></article></div>}
       </Panel></section>
     </div>
-    {editing && <TheorycraftEditor value={editing} ownedCharacter={characters.find((entry) => entry.id === editing.characterId)} onClose={() => setEditing(undefined)} onSaved={refresh}/>} 
   </>
 }

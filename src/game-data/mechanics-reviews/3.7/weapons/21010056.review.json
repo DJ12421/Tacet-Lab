@@ -1,0 +1,377 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21010056",
+  "entityName": "Kumokiri",
+  "sourceFingerprint": "e2702e09f4fca403601edfc337c3209951347f366061e2a3ad527c2df6c86af4",
+  "reviewedAt": "2026-09-15T12:22:25.276Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "08a97919cbf21f864e3641499b04284deabcc1fba0e0582a2251aaec56236001",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21010056:effect:0",
+            "sourceName": "Thread of Fate",
+            "text": "ATK is increased by 12%.",
+            "refinementTexts": [
+              "ATK is increased by 12%.",
+              "ATK is increased by 15%.",
+              "ATK is increased by 18%.",
+              "ATK is increased by 21%.",
+              "ATK is increased by 24%."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21010056:effect:1",
+            "sourceName": "Thread of Fate",
+            "text": "When the wielder casts Intro Skill or inflicts Negative Statuses, they gain 8% Resonance Liberation DMG Bonus, stacking up to 3 times for 15s.",
+            "refinementTexts": [
+              "When the wielder casts Intro Skill or inflicts Negative Statuses, they gain 8% Resonance Liberation DMG Bonus, stacking up to 3 times for 15s.",
+              "When the wielder casts Intro Skill or inflicts Negative Statuses, they gain 10% Resonance Liberation DMG Bonus, stacking up to 3 times for 15s.",
+              "When the wielder casts Intro Skill or inflicts Negative Statuses, they gain 12% Resonance Liberation DMG Bonus, stacking up to 3 times for 15s.",
+              "When the wielder casts Intro Skill or inflicts Negative Statuses, they gain 14% Resonance Liberation DMG Bonus, stacking up to 3 times for 15s.",
+              "When the wielder casts Intro Skill or inflicts Negative Statuses, they gain 16% Resonance Liberation DMG Bonus, stacking up to 3 times for 15s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 3,
+                "key": "effects:stacks:weapon:21010056:effect:1"
+              },
+              "trigger": "Negative Statuses inflicted",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "liberationDamage",
+                  "operation": "addPercent",
+                  "value": 8,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "trigger": "Negative Statuses inflicted",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "value": 8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "trigger": "Negative Statuses inflicted",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "trigger": "Negative Statuses inflicted",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "trigger": "Negative Statuses inflicted",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "value": 14
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "trigger": "Negative Statuses inflicted",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "value": 16
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21010056:effect:2",
+            "sourceName": "Thread of Fate",
+            "text": "At max stacks, when Resonators in the team inflict Negative Statuses, they gain 24% All-Attribute DMG Bonus for 15s.",
+            "refinementTexts": [
+              "At max stacks, when Resonators in the team inflict Negative Statuses, they gain 24% All-Attribute DMG Bonus for 15s.",
+              "At max stacks, when Resonators in the team inflict Negative Statuses, they gain 30% All-Attribute DMG Bonus for 15s.",
+              "At max stacks, when Resonators in the team inflict Negative Statuses, they gain 36% All-Attribute DMG Bonus for 15s.",
+              "At max stacks, when Resonators in the team inflict Negative Statuses, they gain 42% All-Attribute DMG Bonus for 15s.",
+              "At max stacks, when Resonators in the team inflict Negative Statuses, they gain 48% All-Attribute DMG Bonus for 15s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 3,
+                "key": "effects:stacks:weapon:21010056:effect:1"
+              },
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "AllElementAttributeBonus",
+                  "operation": "addPercent",
+                  "value": 24,
+                  "scope": "self",
+                  "scaling": "threshold",
+                  "minimumActivation": 3
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Negative Statuses inflicted"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "value": 24
+                  }
+                ],
+                "confidence": "review",
+                "warnings": [
+                  "Stack maximum was not explicit and requires review."
+                ],
+                "trigger": "Negative Statuses inflicted"
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "value": 30
+                  }
+                ],
+                "confidence": "review",
+                "warnings": [
+                  "Stack maximum was not explicit and requires review."
+                ],
+                "trigger": "Negative Statuses inflicted"
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "value": 36
+                  }
+                ],
+                "confidence": "review",
+                "warnings": [
+                  "Stack maximum was not explicit and requires review."
+                ],
+                "trigger": "Negative Statuses inflicted"
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "value": 42
+                  }
+                ],
+                "confidence": "review",
+                "warnings": [
+                  "Stack maximum was not explicit and requires review."
+                ],
+                "trigger": "Negative Statuses inflicted"
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "value": 48
+                  }
+                ],
+                "confidence": "review",
+                "warnings": [
+                  "Stack maximum was not explicit and requires review."
+                ],
+                "trigger": "Negative Statuses inflicted"
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21010056:effect:3",
+            "sourceName": "Thread of Fate",
+            "text": "Effects of the same name cannot be stacked.",
+            "refinementTexts": [
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ],
+              "trigger": "While equipped"
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

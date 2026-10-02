@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000219",
+  "entityName": "Jade Nether Serpent",
+  "sourceFingerprint": "8af00707847d0b951d5d026cf3b5ee78bb9c71ee846db25ab298c74962dbddd2",
+  "reviewedAt": "2026-10-01T09:06:58.578Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "fe78deeaac48c43776693e27411bc72ffa4e3abc4cb127b87dbd9dcb847a16f0",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000219:skill",
+            "name": "Jade Nether Serpent - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Fusion",
+            "expressions": [
+              "7.20%+36.00%",
+              "8.64%+43.20%",
+              "10.08%+50.40%",
+              "11.52%+57.60%",
+              "12.96%+64.80%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.07200000000000001,
+                0.07200000000000001,
+                0.07200000000000001,
+                0.07200000000000001,
+                0.07200000000000001,
+                0.36
+              ],
+              [
+                0.0864,
+                0.0864,
+                0.0864,
+                0.0864,
+                0.0864,
+                0.43200000000000005
+              ],
+              [
+                0.1008,
+                0.1008,
+                0.1008,
+                0.1008,
+                0.1008,
+                0.504
+              ],
+              [
+                0.1152,
+                0.1152,
+                0.1152,
+                0.1152,
+                0.1152,
+                0.5760000000000001
+              ],
+              [
+                0.12960000000000002,
+                0.12960000000000002,
+                0.12960000000000002,
+                0.12960000000000002,
+                0.12960000000000002,
+                0.648
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ],
+            "count": 6,
+            "cooldownSeconds": 8,
+            "sourceText": "Summon a Jade Nether Serpent that bombards the target with fireballs, dealing 7.20% Fusion DMG 5 times, then 36.00% Fusion DMG once.\nCD: 8s · Summon a Jade Nether Serpent that bombards the target with fireballs, dealing 8.64% Fusion DMG 5 times, then 43.20% Fusion DMG once.\nCD: 8s · Summon a Jade Nether Serpent that bombards the target with fireballs, dealing 10.08% Fusion DMG 5 times, then 50.40% Fusion DMG once.\nCD: 8s · Summon a Jade Nether Serpent that bombards the target with fireballs, dealing 11.52% Fusion DMG 5 times, then 57.60% Fusion DMG once.\nCD: 8s · Summon a Jade Nether Serpent that bombards the target with fireballs, dealing 12.96% Fusion DMG 5 times, then 64.80% Fusion DMG once.\nCD: 8s"
+          }
+        ],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  }
+}

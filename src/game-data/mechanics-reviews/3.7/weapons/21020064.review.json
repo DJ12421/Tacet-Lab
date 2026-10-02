@@ -1,0 +1,201 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21020064",
+  "entityName": "Lunar Cutter",
+  "sourceFingerprint": "0dc8363ddb5bf92b7284fb60fa167c82e5384aea60295b8e5d4a54661527feca",
+  "reviewedAt": "2026-09-09T05:34:59.333Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "e1b635f5c17db397a6db633f599fae72f0a3c61fcb3bd4b81e6ba52a0f90a39d",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020064:effect:0",
+            "sourceName": "Preordained",
+            "text": "Equipped Resonator gains 6 stack(s) of Oath upon entering the battlefield.",
+            "refinementTexts": [
+              "Equipped Resonator gains 6 stack(s) of Oath upon entering the battlefield.",
+              "Equipped Resonator gains 6 stack(s) of Oath upon entering the battlefield.",
+              "Equipped Resonator gains 6 stack(s) of Oath upon entering the battlefield.",
+              "Equipped Resonator gains 6 stack(s) of Oath upon entering the battlefield.",
+              "Equipped Resonator gains 6 stack(s) of Oath upon entering the battlefield."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence.",
+                "Stack maximum was not explicit and requires review."
+              ],
+              "trigger": "entering the battlefield"
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21020064:effect:1",
+            "sourceName": "Preordained",
+            "text": "Each stack increases ATK by 2%, up to 6 stacks. This effect can be triggered 1 time(s) every 12s.",
+            "refinementTexts": [
+              "Each stack increases ATK by 2%, up to 6 stacks. This effect can be triggered 1 time(s) every 12s.",
+              "Each stack increases ATK by 2.5%, up to 6 stacks. This effect can be triggered 1 time(s) every 12s.",
+              "Each stack increases ATK by 3%, up to 6 stacks. This effect can be triggered 1 time(s) every 12s.",
+              "Each stack increases ATK by 3.5%, up to 6 stacks. This effect can be triggered 1 time(s) every 12s.",
+              "Each stack increases ATK by 4%, up to 6 stacks. This effect can be triggered 1 time(s) every 12s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 6
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 2
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "While equipped"
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 6
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 2
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 6
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 2.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 6
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 3
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 6
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 3.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 6
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 4
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21020064:effect:2",
+            "sourceName": "Preordained",
+            "text": "The equipped Resonator loses 1 stack(s) of Oath every 2s, and gains 6 stack(s) upon defeating an enemy.",
+            "refinementTexts": [
+              "The equipped Resonator loses 1 stack(s) of Oath every 2s, and gains 6 stack(s) upon defeating an enemy.",
+              "The equipped Resonator loses 1 stack(s) of Oath every 2s, and gains 6 stack(s) upon defeating an enemy.",
+              "The equipped Resonator loses 1 stack(s) of Oath every 2s, and gains 6 stack(s) upon defeating an enemy.",
+              "The equipped Resonator loses 1 stack(s) of Oath every 2s, and gains 6 stack(s) upon defeating an enemy.",
+              "The equipped Resonator loses 1 stack(s) of Oath every 2s, and gains 6 stack(s) upon defeating an enemy."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence.",
+                "Stack maximum was not explicit and requires review."
+              ],
+              "trigger": "defeating an enemy"
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

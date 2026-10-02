@@ -1,0 +1,235 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21020076",
+  "entityName": "Everbright Polestar",
+  "sourceFingerprint": "dbc44582e7170b40e4ecbc6309023aa530d3878cd695a776dc2212e0df49e8bb",
+  "reviewedAt": "2026-09-16T09:57:51.107Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "34b44dda7c67a7c5f4eed326597e52673ecb6a2ec6c26d9b91f45082d818c8e4",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020076:effect:0",
+            "sourceName": "Starchaser",
+            "text": "Increases All-Attribute DMG Bonus by 12%.",
+            "refinementTexts": [
+              "Increases All-Attribute DMG Bonus by 12%.",
+              "Increases All-Attribute DMG Bonus by 15%.",
+              "Increases All-Attribute DMG Bonus by 18%.",
+              "Increases All-Attribute DMG Bonus by 21%.",
+              "Increases All-Attribute DMG Bonus by 24%."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "AllElementAttributeBonus",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21020076:effect:1",
+            "sourceName": "Starchaser",
+            "text": "When inflicting Tune Rupture - Shifting or Fusion Burst, the wielder's Resonance Liberation DMG ignores 32% DEF and 10% Fusion RES on targets for 8s.",
+            "refinementTexts": [
+              "When inflicting Tune Rupture - Shifting or Fusion Burst, the wielder's Resonance Liberation DMG ignores 32% DEF and 10% Fusion RES on targets for 8s.",
+              "When inflicting Tune Rupture - Shifting or Fusion Burst, the wielder's Resonance Liberation DMG ignores 40% DEF and 15% Fusion RES on targets for 8s.",
+              "When inflicting Tune Rupture - Shifting or Fusion Burst, the wielder's Resonance Liberation DMG ignores 48% DEF and 20% Fusion RES on targets for 8s.",
+              "When inflicting Tune Rupture - Shifting or Fusion Burst, the wielder's Resonance Liberation DMG ignores 56% DEF and 25% Fusion RES on targets for 8s.",
+              "When inflicting Tune Rupture - Shifting or Fusion Burst, the wielder's Resonance Liberation DMG ignores 64% DEF and 30% Fusion RES on targets for 8s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 8,
+              "modifiers": [
+                {
+                  "stat": "DEFIgnore",
+                  "operation": "addPercent",
+                  "value": 32,
+                  "scope": "self",
+                  "appliesTo": "liberation"
+                },
+                {
+                  "stat": "ResistIgnore:Fusion",
+                  "operation": "addPercent",
+                  "scope": "self",
+                  "appliesTo": "liberation",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Tune Rupture - Shifting/Fusion Burst inflicted"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "value": 32
+                  },
+                  {
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Tune Rupture - Shifting/Fusion Burst inflicted"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "value": 40
+                  },
+                  {
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Tune Rupture - Shifting/Fusion Burst inflicted"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "value": 48
+                  },
+                  {
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Tune Rupture - Shifting/Fusion Burst inflicted"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "value": 56
+                  },
+                  {
+                    "value": 25
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Tune Rupture - Shifting/Fusion Burst inflicted"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "value": 64
+                  },
+                  {
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Tune Rupture - Shifting/Fusion Burst inflicted"
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

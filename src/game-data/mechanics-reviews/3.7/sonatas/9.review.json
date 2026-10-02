@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "sonata",
+  "entityId": "9",
+  "entityName": "Lingering Tunes",
+  "sourceFingerprint": "81fed31f20e2ea61741b744f45d794b6dd9fa111846d142e06634f04db0d0bd8",
+  "reviewedAt": "2026-09-15T00:31:32.163Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "8f21f3cd6bba3ce4aedddd26cb03033745c703654ca23fc2f87665f6435871ab",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:9:2:0",
+            "sourceName": "Lingering Tunes",
+            "text": "ATK +10%",
+            "refinementTexts": [
+              "ATK +10%"
+            ],
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 10,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2
+          },
+          {
+            "id": "sonata:9:5:0",
+            "sourceName": "Lingering Tunes",
+            "text": "While on the field, ATK increases by 5% every 1.5s. This effect stacks up to 4 times.",
+            "refinementTexts": [
+              "While on the field, ATK increases by 5% every 1.5s. This effect stacks up to 4 times."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "mixed",
+                "minimum": 0,
+                "maximum": 4,
+                "labels": [
+                  "0s",
+                  "1.5s",
+                  "3.0s",
+                  "4.5s",
+                  "6.0s"
+                ]
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 5,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "while on field"
+            },
+            "sourceType": "sonata",
+            "pieces": 5
+          },
+          {
+            "id": "sonata:9:5:1",
+            "sourceName": "Lingering Tunes",
+            "text": "Outro Skill DMG + 60%.",
+            "refinementTexts": [
+              "Outro Skill DMG + 60%."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "outroDamage",
+                  "operation": "addPercent",
+                  "value": 60,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

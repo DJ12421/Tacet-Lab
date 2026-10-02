@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21050024",
+  "entityName": "Variation",
+  "sourceFingerprint": "a8728a5d855c2c4dddebd812db50c178bbe05b8fd17556847e08e664fd34dd3f",
+  "reviewedAt": "2026-09-09T07:54:56.716Z",
+  "sections": {
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "e6df21a002bb101861ea9a6023b898823bf57116c918932f6ecf3b91d59b4dd5",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

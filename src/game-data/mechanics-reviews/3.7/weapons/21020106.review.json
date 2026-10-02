@@ -1,0 +1,432 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21020106",
+  "entityName": "Glint of Clouds",
+  "sourceFingerprint": "f331e00f8cc48b56a430283375b611591dda3abeac087c1001fdb129cb4b2d90",
+  "reviewedAt": "2026-09-16T11:12:30.711Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "0dc8f4fa2e59e49b40f2c294771f972ca75a6ef6a3a3dc41e44afea5862822f7",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020106:effect:0",
+            "sourceName": "Evil's Scourge",
+            "text": "ATK is increased by 12%.",
+            "refinementTexts": [
+              "ATK is increased by 12%.",
+              "ATK is increased by 15%.",
+              "ATK is increased by 18%.",
+              "ATK is increased by 21%.",
+              "ATK is increased by 24%."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21020106:effect:1",
+            "sourceName": "Evil's Scourge",
+            "text": "Inflicting Tune Strain - Shifting grants 11.2% Aero DMG Bonus for 2s, stacking up to 5 times. This effect can be triggered once every 0.5s.",
+            "refinementTexts": [
+              "Inflicting Tune Strain - Shifting grants 11.2% Aero DMG Bonus for 2s, stacking up to 5 times. This effect can be triggered once every 0.5s.",
+              "Inflicting Tune Strain - Shifting grants 14% Aero DMG Bonus for 2s, stacking up to 5 times. This effect can be triggered once every 0.5s.",
+              "Inflicting Tune Strain - Shifting grants 16.8% Aero DMG Bonus for 2s, stacking up to 5 times. This effect can be triggered once every 0.5s.",
+              "Inflicting Tune Strain - Shifting grants 19.6% Aero DMG Bonus for 2s, stacking up to 5 times. This effect can be triggered once every 0.5s.",
+              "Inflicting Tune Strain - Shifting grants 22.4% Aero DMG Bonus for 2s, stacking up to 5 times. This effect can be triggered once every 0.5s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 5,
+                "key": "1"
+              },
+              "durationSeconds": 2,
+              "modifiers": [
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 11.2,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Tune Strain - Shifting  inflicted"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "durationSeconds": 2,
+                "modifiers": [
+                  {
+                    "value": 11.2
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Tune Strain - Shifting grants 11.2% Aero DMG Bonus for 2s inflicted"
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "durationSeconds": 2,
+                "modifiers": [
+                  {
+                    "value": 14
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Tune Strain - Shifting grants 14% Aero DMG Bonus for 2s inflicted"
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "durationSeconds": 2,
+                "modifiers": [
+                  {
+                    "value": 16.8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Tune Strain - Shifting grants 16.8% Aero DMG Bonus for 2s inflicted"
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "durationSeconds": 2,
+                "modifiers": [
+                  {
+                    "value": 19.6
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Tune Strain - Shifting grants 19.6% Aero DMG Bonus for 2s inflicted"
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 5
+                },
+                "durationSeconds": 2,
+                "modifiers": [
+                  {
+                    "value": 22.4
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Tune Strain - Shifting grants 22.4% Aero DMG Bonus for 2s inflicted"
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21020106:effect:2",
+            "sourceName": "Evil's Scourge",
+            "text": "Upon reaching the max stack limit, gain the following effects:",
+            "refinementTexts": [
+              "Upon reaching the max stack limit, gain the following effects:",
+              "Upon reaching the max stack limit, gain the following effects:",
+              "Upon reaching the max stack limit, gain the following effects:",
+              "Upon reaching the max stack limit, gain the following effects:",
+              "Upon reaching the max stack limit, gain the following effects:"
+            ],
+            "parsed": {
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence.",
+                "Stack maximum was not explicit and requires review."
+              ],
+              "trigger": "reaching the max stack limit"
+            },
+            "sourceType": "weapon",
+            "parsedByRefinement": [
+              {
+                "modifiers": [],
+                "triggeredAttacks": [],
+                "trigger": "reaching the max stack limit"
+              },
+              {
+                "modifiers": [],
+                "triggeredAttacks": [],
+                "trigger": "reaching the max stack limit"
+              },
+              {
+                "modifiers": [],
+                "triggeredAttacks": [],
+                "trigger": "reaching the max stack limit"
+              },
+              {
+                "modifiers": [],
+                "triggeredAttacks": [],
+                "trigger": "reaching the max stack limit"
+              },
+              {
+                "modifiers": [],
+                "triggeredAttacks": [],
+                "trigger": "reaching the max stack limit"
+              }
+            ],
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21020106:effect:3",
+            "sourceName": "Evil's Scourge",
+            "text": "- This Aero DMG Bonus effect's duration is extended to 30s.",
+            "refinementTexts": [
+              "- This Aero DMG Bonus effect's duration is extended to 30s.",
+              "- This Aero DMG Bonus effect's duration is extended to 30s.",
+              "- This Aero DMG Bonus effect's duration is extended to 30s.",
+              "- This Aero DMG Bonus effect's duration is extended to 30s.",
+              "- This Aero DMG Bonus effect's duration is extended to 30s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ],
+              "trigger": "While equipped"
+            },
+            "sourceType": "weapon",
+            "parsedByRefinement": [
+              {
+                "modifiers": [],
+                "triggeredAttacks": [],
+                "trigger": "While equipped"
+              },
+              {
+                "modifiers": [],
+                "triggeredAttacks": [],
+                "trigger": "While equipped"
+              },
+              {
+                "modifiers": [],
+                "triggeredAttacks": [],
+                "trigger": "While equipped"
+              },
+              {
+                "modifiers": [],
+                "triggeredAttacks": [],
+                "trigger": "While equipped"
+              },
+              {
+                "modifiers": [],
+                "triggeredAttacks": [],
+                "trigger": "While equipped"
+              }
+            ],
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21020106:effect:4",
+            "sourceName": "Evil's Scourge",
+            "text": "- Aero DMG ignores 10% of the target's DEF during this effect.",
+            "refinementTexts": [
+              "- Aero DMG ignores 10% of the target's DEF during this effect.",
+              "- Aero DMG ignores 12.5% of the target's DEF during this effect.",
+              "- Aero DMG ignores 15% of the target's DEF during this effect.",
+              "- Aero DMG ignores 17.5% of the target's DEF during this effect.",
+              "- Aero DMG ignores 20% of the target's DEF during this effect."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "stacks",
+                "key": "1",
+                "maximum": 5
+              },
+              "modifiers": [
+                {
+                  "stat": "DEFIgnore:Aero",
+                  "operation": "addPercent",
+                  "value": 10,
+                  "scope": "self",
+                  "scaling": "threshold",
+                  "minimumActivation": 5
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "While equipped"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 12.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 17.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000065",
+  "entityName": "Chop Chop: Leftless",
+  "sourceFingerprint": "f1644bdf2f82fc10d0b3386e4f84b65845195a6d4a861051829320c43944a1f7",
+  "reviewedAt": "2026-09-26T18:47:52.381Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "69cbaac7a84cbb2186748db1c4704e06aa711bcdf80aa7178967a0848d3e7402",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000065:skill",
+            "name": "Chop Chop: Leftless - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Spectro",
+            "expressions": [
+              "72.00%",
+              "86.40%",
+              "100.80%",
+              "115.20%",
+              "129.60%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.72
+              ],
+              [
+                0.8640000000000001
+              ],
+              [
+                1.008
+              ],
+              [
+                1.1520000000000001
+              ],
+              [
+                1.296
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 8,
+            "sourceText": "Summon a Chop Chop: Leftless to attack enemies, dealing 72.00% Spectro DMG.\nCD: 8s. · Summon a Chop Chop: Leftless to attack enemies, dealing 86.40% Spectro DMG.\nCD: 8s. · Summon a Chop Chop: Leftless to attack enemies, dealing 100.80% Spectro DMG.\nCD: 8s. · Summon a Chop Chop: Leftless to attack enemies, dealing 115.20% Spectro DMG.\nCD: 8s. · Summon a Chop Chop: Leftless to attack enemies, dealing 129.60% Spectro DMG.\nCD: 8s."
+          }
+        ],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

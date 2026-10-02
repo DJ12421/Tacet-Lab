@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21020013",
+  "entityName": "Sword of Night",
+  "sourceFingerprint": "992e9a5a0a2e213e7647bd7eddb4ef109be59b1db1ab9b7fb415da9ba6b3a720",
+  "reviewedAt": "2026-09-09T05:18:14.475Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "63f651cc18c989b5c9617b2f8f8f12d23412767f86c3835714dcf43090d387c8",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020013:effect:0",
+            "sourceName": "Valiance",
+            "text": "When Intro Skill is cast, increases ATK by 8%, lasting for 10s.",
+            "refinementTexts": [
+              "When Intro Skill is cast, increases ATK by 8%, lasting for 10s.",
+              "When Intro Skill is cast, increases ATK by 10%, lasting for 10s.",
+              "When Intro Skill is cast, increases ATK by 12%, lasting for 10s.",
+              "When Intro Skill is cast, increases ATK by 14%, lasting for 10s.",
+              "When Intro Skill is cast, increases ATK by 16%, lasting for 10s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Intro Skill cast",
+              "durationSeconds": 10,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 8
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill cast",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill cast",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill cast",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill cast",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 14
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill cast",
+                "durationSeconds": 10,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 16
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000182",
+  "entityName": "Mining Reindeer",
+  "sourceFingerprint": "e47025a73c47186d1472f7fb7ab987fb666a34c3f2577bfb6907adcb8792eb8f",
+  "reviewedAt": "2026-09-26T18:47:52.571Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "b2a96e1145bbac02ad1d0043da0eb9850eda224702eab5393b6e545a02fbcabe",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000182:skill",
+            "name": "Mining Reindeer - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Electro",
+            "expressions": [
+              "132.00%",
+              "158.40%",
+              "184.80%",
+              "211.20%",
+              "237.60%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.32
+              ],
+              [
+                1.584
+              ],
+              [
+                1.848
+              ],
+              [
+                2.112
+              ],
+              [
+                2.376
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 20,
+            "sourceText": "Summon a Mining Reindeer to launch a charged attack at enemies, dealing 132.00% Electro DMG.\nCD: 20s. · Summon a Mining Reindeer to launch a charged attack at enemies, dealing 158.40% Electro DMG.\nCD: 20s. · Summon a Mining Reindeer to launch a charged attack at enemies, dealing 184.80% Electro DMG.\nCD: 20s. · Summon a Mining Reindeer to launch a charged attack at enemies, dealing 211.20% Electro DMG.\nCD: 20s. · Summon a Mining Reindeer to launch a charged attack at enemies, dealing 237.60% Electro DMG.\nCD: 20s."
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

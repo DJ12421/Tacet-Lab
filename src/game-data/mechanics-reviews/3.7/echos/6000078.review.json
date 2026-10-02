@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000078",
+  "entityName": "Abyssal Mercator",
+  "sourceFingerprint": "4f657a0c7b3e0c27a42737dc743e9ea1593acd8427dc57e0906092e84324d1e5",
+  "reviewedAt": "2026-09-26T18:47:52.409Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "5bcc3bf57c46bc97a06dd74d17da51713950e1fae4d5209cb58ccb350cc8311e",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000078:skill",
+            "name": "Abyssal Mercator - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Glacio",
+            "expressions": [
+              "49.66%",
+              "59.59%",
+              "69.52%",
+              "79.46%",
+              "89.39%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.4966,
+                0.4966,
+                0.4966
+              ],
+              [
+                0.5959,
+                0.5959,
+                0.5959
+              ],
+              [
+                0.6951999999999999,
+                0.6951999999999999,
+                0.6951999999999999
+              ],
+              [
+                0.7946,
+                0.7946,
+                0.7946
+              ],
+              [
+                0.8939,
+                0.8939,
+                0.8939
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0,
+              0
+            ],
+            "count": 3,
+            "cooldownSeconds": 15,
+            "sourceText": "Transform into Abyssal Mercator and summon 3 Ice Spikes to attack enemies, each dealing 49.66% Glacio DMG.\nCD: 15s. · Transform into Abyssal Mercator and summon 3 Ice Spikes to attack enemies, each dealing 59.59% Glacio DMG.\nCD: 15s. · Transform into Abyssal Mercator and summon 3 Ice Spikes to attack enemies, each dealing 69.52% Glacio DMG.\nCD: 15s. · Transform into Abyssal Mercator and summon 3 Ice Spikes to attack enemies, each dealing 79.46% Glacio DMG.\nCD: 15s. · Transform into Abyssal Mercator and summon 3 Ice Spikes to attack enemies, each dealing 89.39% Glacio DMG.\nCD: 15s."
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

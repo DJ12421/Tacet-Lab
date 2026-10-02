@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "390070051",
+  "entityName": "Vanguard Junrock",
+  "sourceFingerprint": "f159d4b495523a086d45ba43aec6a551ceca01bcfe254ce3047f5f18441e4396",
+  "reviewedAt": "2026-09-26T18:27:48.055Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "179e9ff505cfb3e469d5fbfec5e139d7c4e06836a45da993d1be488583094d97",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390070051:skill",
+            "name": "Vanguard Junrock - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Physical",
+            "expressions": [
+              "20.00%+40",
+              "23.00%+46",
+              "26.00%+52",
+              "29.00%+58",
+              "32.00%+64"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.2
+              ],
+              [
+                0.23
+              ],
+              [
+                0.26
+              ],
+              [
+                0.29
+              ],
+              [
+                0.32
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 8,
+            "sourceText": "Summon a Vanguard Junrock that charges forward, dealing 20.00%+40 Physical DMG to enemies in its path.\nCD: 8s · Summon a Vanguard Junrock that charges forward, dealing 23.00%+46 Physical DMG to enemies in its path.\nCD: 8s · Summon a Vanguard Junrock that charges forward, dealing 26.00%+52 Physical DMG to enemies in its path.\nCD: 8s · Summon a Vanguard Junrock that charges forward, dealing 29.00%+58 Physical DMG to enemies in its path.\nCD: 8s · Summon a Vanguard Junrock that charges forward, dealing 32.00%+64 Physical DMG to enemies in its path.\nCD: 8s"
+          }
+        ],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

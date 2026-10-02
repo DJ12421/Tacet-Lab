@@ -1,6 +1,6 @@
 import type { AppSettings, StatKey } from '../domain/types'
 
-export const GAME_DATA_VERSION = 'nanoka-3.6-catalog'
+export const GAME_DATA_VERSION = 'nanoka-3.7-catalog'
 
 export const statLabels: Record<StatKey, string> = {
   hp: 'HP', hpPercent: 'HP %', atk: 'ATK', atkPercent: 'ATK %', def: 'DEF', defPercent: 'DEF %',

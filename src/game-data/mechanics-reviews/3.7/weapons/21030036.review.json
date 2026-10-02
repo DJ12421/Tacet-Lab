@@ -1,0 +1,514 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21030036",
+  "entityName": "Lux & Umbra",
+  "sourceFingerprint": "be1710e3dc3dcb905a885c32e0922de6996bed9a3b20fff98546f0bb008a9547",
+  "reviewedAt": "2026-09-16T11:27:03.439Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "1a06aa2787682d81c45e627d5f856335fdc3316f6685754452e68d3fa84be64f",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21030036:effect:0",
+            "sourceName": "To Fire She Returns",
+            "text": "ATK is increased by 12%.",
+            "refinementTexts": [
+              "ATK is increased by 12%.",
+              "ATK is increased by 15%.",
+              "ATK is increased by 18%.",
+              "ATK is increased by 21%.",
+              "ATK is increased by 24%."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21030036:effect:1",
+            "sourceName": "To Fire She Returns",
+            "text": "Upon dealing Echo Skill DMG, gain 24% Heavy Attack DMG Amplification for 6s.",
+            "refinementTexts": [
+              "Upon dealing Echo Skill DMG, gain 24% Heavy Attack DMG Amplification for 6s.",
+              "Upon dealing Echo Skill DMG, gain 30% Heavy Attack DMG Amplification for 6s.",
+              "Upon dealing Echo Skill DMG, gain 36% Heavy Attack DMG Amplification for 6s.",
+              "Upon dealing Echo Skill DMG, gain 42% Heavy Attack DMG Amplification for 6s.",
+              "Upon dealing Echo Skill DMG, gain 48% Heavy Attack DMG Amplification for 6s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle",
+                "key": "effects:activation:weapon:21030036:effect:1"
+              },
+              "trigger": "Echo Skill DMG dealt",
+              "durationSeconds": 6,
+              "modifiers": [
+                {
+                  "stat": "heavyDamage",
+                  "operation": "amplifyPercent",
+                  "value": 24,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "dealing Echo Skill DMG",
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "dealing Echo Skill DMG",
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "dealing Echo Skill DMG",
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 36
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "dealing Echo Skill DMG",
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 42
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "dealing Echo Skill DMG",
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 48
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21030036:effect:2",
+            "sourceName": "To Fire She Returns",
+            "text": "Upon dealing Heavy Attack DMG, gain 24% Echo Skill DMG Amplification for 6s.",
+            "refinementTexts": [
+              "Upon dealing Heavy Attack DMG, gain 24% Echo Skill DMG Amplification for 6s.",
+              "Upon dealing Heavy Attack DMG, gain 30% Echo Skill DMG Amplification for 6s.",
+              "Upon dealing Heavy Attack DMG, gain 36% Echo Skill DMG Amplification for 6s.",
+              "Upon dealing Heavy Attack DMG, gain 42% Echo Skill DMG Amplification for 6s.",
+              "Upon dealing Heavy Attack DMG, gain 48% Echo Skill DMG Amplification for 6s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle",
+                "key": "effects:activation:weapon:21030036:effect:2"
+              },
+              "trigger": "Heavy Attack DMG dealt",
+              "durationSeconds": 6,
+              "modifiers": [
+                {
+                  "stat": "echoDamage",
+                  "operation": "amplifyPercent",
+                  "value": 24,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "dealing Heavy Attack DMG",
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "dealing Heavy Attack DMG",
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "dealing Heavy Attack DMG",
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 36
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "dealing Heavy Attack DMG",
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 42
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "dealing Heavy Attack DMG",
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 48
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21030036:effect:3",
+            "sourceName": "To Fire She Returns",
+            "text": "DMG Amplification on each attack is capped at 24%.",
+            "refinementTexts": [
+              "DMG Amplification on each attack is capped at 24%.",
+              "DMG Amplification on each attack is capped at 30%.",
+              "DMG Amplification on each attack is capped at 36%.",
+              "DMG Amplification on each attack is capped at 42%.",
+              "DMG Amplification on each attack is capped at 48%."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle",
+                "key": "effects:activation:weapon:21030036:effect:3"
+              },
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "amplifyPercent",
+                  "value": 24,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "While equipped"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 36
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 42
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 48
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21030036:effect:4",
+            "sourceName": "To Fire She Returns",
+            "text": "While both effects are active, dealing damage ignores 8% of the target's DEF.",
+            "refinementTexts": [
+              "While both effects are active, dealing damage ignores 8% of the target's DEF.",
+              "While both effects are active, dealing damage ignores 10% of the target's DEF.",
+              "While both effects are active, dealing damage ignores 12% of the target's DEF.",
+              "While both effects are active, dealing damage ignores 14% of the target's DEF.",
+              "While both effects are active, dealing damage ignores 16% of the target's DEF."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "all",
+                "keys": [
+                  "effects:activation:weapon:21030036:effect:1",
+                  "effects:activation:weapon:21030036:effect:2"
+                ]
+              },
+              "modifiers": [
+                {
+                  "stat": "DEFIgnore",
+                  "operation": "addPercent",
+                  "value": 8,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "both effects are active"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "both effects are active"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "both effects are active"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "both effects are active"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 14
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "both effects are active"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 16
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "both effects are active"
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

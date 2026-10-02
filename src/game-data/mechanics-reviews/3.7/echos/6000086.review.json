@@ -1,0 +1,166 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000086",
+  "entityName": "Nightmare: Feilian Beringal",
+  "sourceFingerprint": "7e14a6e6e1e7cabf6bef4d252242cb94a62be05cb404c712980e5343b036fa1a",
+  "reviewedAt": "2026-09-26T18:47:52.433Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "f22402be633131007479a556feee070be5c95faf2e831e5a0dfad06e9c490f53",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000086:skill:1",
+            "name": "Nightmare: Feilian Beringal - Echo Skill 1",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Aero",
+            "expressions": [
+              "91.20%",
+              "109.44%",
+              "127.68%",
+              "145.92%",
+              "164.16%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.912
+              ],
+              [
+                1.0944
+              ],
+              [
+                1.2768000000000002
+              ],
+              [
+                1.4591999999999998
+              ],
+              [
+                1.6416
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 20,
+            "sourceText": "Summon a Nightmare: Feilian Beringal to attack enemies, dealing 91.20% Aero DMG. The remaining Whirlwind Beam will continuously attack surrounding enemies up to 5 times, each dealing 12.16% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s. · Summon a Nightmare: Feilian Beringal to attack enemies, dealing 109.44% Aero DMG. The remaining Whirlwind Beam will continuously attack surrounding enemies up to 5 times, each dealing 14.59% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s. · Summon a Nightmare: Feilian Beringal to attack enemies, dealing 127.68% Aero DMG. The remaining Whirlwind Beam will continuously attack surrounding enemies up to 5 times, each dealing 17.02% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s. · Summon a Nightmare: Feilian Beringal to attack enemies, dealing 145.92% Aero DMG. The remaining Whirlwind Beam will continuously attack surrounding enemies up to 5 times, each dealing 19.46% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s. · Summon a Nightmare: Feilian Beringal to attack enemies, dealing 164.16% Aero DMG. The remaining Whirlwind Beam will continuously attack surrounding enemies up to 5 times, each dealing 21.89% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s."
+          },
+          {
+            "id": "echo:6000086:skill:2",
+            "name": "Nightmare: Feilian Beringal - Echo Skill 2",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Aero",
+            "expressions": [
+              "12.16%",
+              "14.59%",
+              "17.02%",
+              "19.46%",
+              "21.89%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.1216,
+                0.1216,
+                0.1216,
+                0.1216,
+                0.1216
+              ],
+              [
+                0.1459,
+                0.1459,
+                0.1459,
+                0.1459,
+                0.1459
+              ],
+              [
+                0.1702,
+                0.1702,
+                0.1702,
+                0.1702,
+                0.1702
+              ],
+              [
+                0.1946,
+                0.1946,
+                0.1946,
+                0.1946,
+                0.1946
+              ],
+              [
+                0.2189,
+                0.2189,
+                0.2189,
+                0.2189,
+                0.2189
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "count": 5,
+            "cooldownSeconds": 20,
+            "sourceText": "Summon a Nightmare: Feilian Beringal to attack enemies, dealing 91.20% Aero DMG. The remaining Whirlwind Beam will continuously attack surrounding enemies up to 5 times, each dealing 12.16% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s. · Summon a Nightmare: Feilian Beringal to attack enemies, dealing 109.44% Aero DMG. The remaining Whirlwind Beam will continuously attack surrounding enemies up to 5 times, each dealing 14.59% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s. · Summon a Nightmare: Feilian Beringal to attack enemies, dealing 127.68% Aero DMG. The remaining Whirlwind Beam will continuously attack surrounding enemies up to 5 times, each dealing 17.02% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s. · Summon a Nightmare: Feilian Beringal to attack enemies, dealing 145.92% Aero DMG. The remaining Whirlwind Beam will continuously attack surrounding enemies up to 5 times, each dealing 19.46% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s. · Summon a Nightmare: Feilian Beringal to attack enemies, dealing 164.16% Aero DMG. The remaining Whirlwind Beam will continuously attack surrounding enemies up to 5 times, each dealing 21.89% Aero DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.\nCD: 20s."
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "1aed42f13bacb47da523721632003e4216019a4c54cfb999b8ea1a6ea6f13ed1",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000086:effect:0",
+            "sourceName": "Nightmare: Feilian Beringal",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in their main slot gains 12.00% Aero DMG Bonus and 12.00% Heavy Attack DMG Bonus.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "sonata",
+  "entityId": "22",
+  "entityName": "Flamewing's Shadow",
+  "sourceFingerprint": "babd7292fbc8bab84c41e8da51e7fca5cb14843d328747fa723b0c3074cc9e09",
+  "reviewedAt": "2026-09-15T00:33:17.416Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "e638a3c361b3530e28b4ef59d1c3b5a701d430a8832bda93eaff12ad563debb6",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:22:3:0",
+            "sourceName": "Flamewing's Shadow",
+            "text": "Dealing Echo Skill DMG increases Heavy Attack Crit. Rate by 20% for 6s.",
+            "refinementTexts": [
+              "Dealing Echo Skill DMG increases Heavy Attack Crit. Rate by 20% for 6s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle",
+                "key": "effects:activation:sonata:22:3:0"
+              },
+              "trigger": "Echo Skill DMG dealt",
+              "durationSeconds": 6,
+              "modifiers": [
+                {
+                  "stat": "critRate",
+                  "operation": "addPercent",
+                  "value": 20,
+                  "scope": "self",
+                  "appliesTo": "heavy"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 3
+          },
+          {
+            "id": "sonata:22:3:1",
+            "sourceName": "Flamewing's Shadow",
+            "text": "Dealing Heavy Attack DMG increases Echo Skill Crit. Rate by 20% for 6s.",
+            "refinementTexts": [
+              "Dealing Heavy Attack DMG increases Echo Skill Crit. Rate by 20% for 6s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle",
+                "key": "effects:activation:sonata:22:3:1"
+              },
+              "trigger": "Heavy Atk. DMG dealt",
+              "durationSeconds": 6,
+              "modifiers": [
+                {
+                  "stat": "critRate",
+                  "operation": "addPercent",
+                  "value": 20,
+                  "scope": "self",
+                  "appliesTo": "echo"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 3
+          },
+          {
+            "id": "sonata:22:3:2",
+            "sourceName": "Flamewing's Shadow",
+            "text": "While both effects are active, gain 16% Fusion DMG Bonus.",
+            "refinementTexts": [
+              "While both effects are active, gain 16% Fusion DMG Bonus."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "all",
+                "keys": [
+                  "effects:activation:sonata:22:3:0",
+                  "effects:activation:sonata:22:3:1"
+                ]
+              },
+              "modifiers": [
+                {
+                  "stat": "Fusion",
+                  "operation": "addPercent",
+                  "value": 16,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "both effects are active"
+            },
+            "sourceType": "sonata",
+            "pieces": 3
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

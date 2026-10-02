@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000042",
+  "entityName": "Crownless",
+  "sourceFingerprint": "8ef0f30c9c0d68313fbacc3fe86c3b5c7359863fdbbb11829f4a4d57912dc3b2",
+  "reviewedAt": "2026-09-26T18:33:46.754Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "fd8410fe2ee36c22f85ec4b9afa1918ba5a21385fa41b92776516d4a087ecd38",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000042:skill",
+            "name": "Crownless - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Havoc",
+            "expressions": [
+              "83.80%+62.85%+41.90%",
+              "96.37%+72.28%+48.19%",
+              "108.94%+81.71%+54.47%",
+              "121.51%+91.13%+60.76%",
+              "134.08%+100.56%+67.04%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.838,
+                0.838,
+                0.6285000000000001,
+                0.6285000000000001,
+                0.419,
+                0.419,
+                0.419
+              ],
+              [
+                0.9637,
+                0.9637,
+                0.7228,
+                0.7228,
+                0.4819,
+                0.4819,
+                0.4819
+              ],
+              [
+                1.0894,
+                1.0894,
+                0.8170999999999999,
+                0.8170999999999999,
+                0.5447,
+                0.5447,
+                0.5447
+              ],
+              [
+                1.2151,
+                1.2151,
+                0.9113,
+                0.9113,
+                0.6076,
+                0.6076,
+                0.6076
+              ],
+              [
+                1.3408000000000002,
+                1.3408000000000002,
+                1.0056,
+                1.0056,
+                0.6704000000000001,
+                0.6704000000000001,
+                0.6704000000000001
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0,
+              1,
+              1,
+              2,
+              2,
+              2
+            ],
+            "count": 7,
+            "cooldownSeconds": 20,
+            "sourceText": "Transform into Crownless and perform up to 4 consecutive attacks. The first 2 attacks deal 83.80% Havoc DMG each, the 3rd attack deals 62.85% Havoc DMG 2 times, and the 4th attack deals 41.90% Havoc DMG 3 times.\nAfter the transformation, increase current character's Havoc DMG by 12.00% and Resonance Skill DMG by 12.00% for 15s.\nCD: 20s · Transform into Crownless and perform up to 4 consecutive attacks. The first 2 attacks deal 96.37% Havoc DMG each, the 3rd attack deals 72.28% Havoc DMG 2 times, and the 4th attack deals 48.19% Havoc DMG 3 times.\nAfter the transformation, increase current character's Havoc DMG by 12.00% and Resonance Skill DMG by 12.00% for 15s.\nCD: 20s · Transform into Crownless and perform up to 4 consecutive attacks. The first 2 attacks deal 108.94% Havoc DMG each, the 3rd attack deals 81.71% Havoc DMG 2 times, and the 4th attack deals 54.47% Havoc DMG 3 times.\nAfter the transformation, increase current character's Havoc DMG by 12.00% and Resonance Skill DMG by 12.00% for 15s.\nCD: 20s · Transform into Crownless and perform up to 4 consecutive attacks. The first 2 attacks deal 121.51% Havoc DMG each, the 3rd attack deals 91.13% Havoc DMG 2 times, and the 4th attack deals 60.76% Havoc DMG 3 times.\nAfter the transformation, increase current character's Havoc DMG by 12.00% and Resonance Skill DMG by 12.00% for 15s.\nCD: 20s · Transform into Crownless and perform up to 4 consecutive attacks. The first 2 attacks deal 134.08% Havoc DMG each, the 3rd attack deals 100.56% Havoc DMG 2 times, and the 4th attack deals 67.04% Havoc DMG 3 times.\nAfter the transformation, increase current character's Havoc DMG by 12.00% and Resonance Skill DMG by 12.00% for 15s.\nCD: 20s"
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "fec4b12174a194faf472773012e552b0401aafc8346e2e154dad7a0744a31bf9",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000042:effect:0",
+            "sourceName": "Crownless",
+            "sourceType": "echo",
+            "text": "After the transformation, increase current character's Havoc DMG by 12.00% and Resonance Skill DMG by 12.00% for 15s.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "After the transformation",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "skillDamage",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                },
+                {
+                  "stat": "Havoc",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

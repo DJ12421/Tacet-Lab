@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "390077021",
+  "entityName": "Stonewall Bracer",
+  "sourceFingerprint": "c3ec771668cedc5f537dcbf63228b94b4398f0b59ced1bb5e23959c5457d7bb8",
+  "reviewedAt": "2026-09-26T18:28:28.597Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "9004c32f337219e2b8471de714f80285b7bf37bc8a816c475d441b4c194057c4",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390077021:skill",
+            "name": "Stonewall Bracer - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Physical",
+            "expressions": [
+              "70.40%+105.60%",
+              "80.96%+121.44%",
+              "91.52%+137.28%",
+              "102.08%+153.12%",
+              "112.64%+168.96%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.7040000000000001,
+                1.056
+              ],
+              [
+                0.8096,
+                1.2144
+              ],
+              [
+                0.9152,
+                1.3728
+              ],
+              [
+                1.0208,
+                1.5312000000000001
+              ],
+              [
+                1.1264,
+                1.6896
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              1
+            ],
+            "count": 2,
+            "cooldownSeconds": 15,
+            "sourceText": "Transform into Stonewall Bracer and charge forward, dealing 70.40% Physical DMG on-hit, then smash to deal 105.60% Physical DMG, and gain a shield of 10.00% of current character's Max HP that lasts 7s. Use the Echo skill again to exit the transformation state.\nCD: 15s · Transform into Stonewall Bracer and charge forward, dealing 80.96% Physical DMG on-hit, then smash to deal 121.44% Physical DMG, and gain a shield of 10.00% of current character's Max HP that lasts 7s. Use the Echo skill again to exit the transformation state.\nCD: 15s · Transform into Stonewall Bracer and charge forward, dealing 91.52% Physical DMG on-hit, then smash to deal 137.28% Physical DMG, and gain a shield of 10.00% of current character's Max HP that lasts 7s. Use the Echo skill again to exit the transformation state.\nCD: 15s · Transform into Stonewall Bracer and charge forward, dealing 102.08% Physical DMG on-hit, then smash to deal 153.12% Physical DMG, and gain a shield of 10.00% of current character's Max HP that lasts 7s. Use the Echo skill again to exit the transformation state.\nCD: 15s · Transform into Stonewall Bracer and charge forward, dealing 112.64% Physical DMG on-hit, then smash to deal 168.96% Physical DMG, and gain a shield of 10.00% of current character's Max HP that lasts 7s. Use the Echo skill again to exit the transformation state.\nCD: 15s"
+          },
+          {
+            "id": "echo:390077021:shield",
+            "name": "Stonewall Bracer - Echo Skill Shield",
+            "damageType": "shield",
+            "skillSource": "echo",
+            "recipient": "self",
+            "scaling": "hp",
+            "expressions": [
+              "10.00%",
+              "10.00%",
+              "10.00%",
+              "10.00%",
+              "10.00%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.1
+              ],
+              [
+                0.1
+              ],
+              [
+                0.1
+              ],
+              [
+                0.1
+              ],
+              [
+                0.1
+              ]
+            ],
+            "count": 1,
+            "cooldownSeconds": 15,
+            "sourceText": "Transform into Stonewall Bracer and charge forward, dealing 70.40% Physical DMG on-hit, then smash to deal 105.60% Physical DMG, and gain a shield of 10.00% of current character's Max HP that lasts 7s. Use the Echo skill again to exit the transformation state.\nCD: 15s · Transform into Stonewall Bracer and charge forward, dealing 80.96% Physical DMG on-hit, then smash to deal 121.44% Physical DMG, and gain a shield of 10.00% of current character's Max HP that lasts 7s. Use the Echo skill again to exit the transformation state.\nCD: 15s · Transform into Stonewall Bracer and charge forward, dealing 91.52% Physical DMG on-hit, then smash to deal 137.28% Physical DMG, and gain a shield of 10.00% of current character's Max HP that lasts 7s. Use the Echo skill again to exit the transformation state.\nCD: 15s · Transform into Stonewall Bracer and charge forward, dealing 102.08% Physical DMG on-hit, then smash to deal 153.12% Physical DMG, and gain a shield of 10.00% of current character's Max HP that lasts 7s. Use the Echo skill again to exit the transformation state.\nCD: 15s · Transform into Stonewall Bracer and charge forward, dealing 112.64% Physical DMG on-hit, then smash to deal 168.96% Physical DMG, and gain a shield of 10.00% of current character's Max HP that lasts 7s. Use the Echo skill again to exit the transformation state.\nCD: 15s"
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

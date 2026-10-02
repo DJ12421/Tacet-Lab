@@ -34,14 +34,14 @@
   top: 72px;
   align-self: stretch;
   display: grid;
-  grid-template-rows: minmax(260px,1fr) auto auto auto;
+  grid-template-rows: minmax(400px,1fr) auto auto;
   overflow: hidden;
-  background: linear-gradient(155deg,color-mix(in srgb,var(--tw-member-accent,#8de4d4) 10%,#0a1012),#080c0d 58%);
+  background: #080c0d;
 }
 
 .optimizer-current-hero {
   position: relative;
-  min-height: 260px;
+  min-height: 400px;
   display: flex;
   align-items: flex-end;
   gap: 12px;
@@ -63,13 +63,13 @@
 .optimizer-current-hero>img {
   position: absolute;
   z-index: 0;
-  inset: 0 0 0 auto;
-  width: 72%;
+  inset: 0;
+  width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center top;
+  object-fit: contain;
+  object-position: center bottom;
   opacity: .58;
-  mask-image: linear-gradient(90deg,transparent,#000 28%);
+  mask-image: linear-gradient(180deg,#000 72%,transparent);
 }
 
 .optimizer-current-hero>div {

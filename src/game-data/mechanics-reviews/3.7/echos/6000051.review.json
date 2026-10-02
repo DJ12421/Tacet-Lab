@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000051",
+  "entityName": "Clang Bang",
+  "sourceFingerprint": "8b1d8e147e255ae83a5e8887c9aac55cbb2738024312b66041bef2f84772480d",
+  "reviewedAt": "2026-09-26T18:37:22.866Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "3a6e116212fe549dc45fee363aada1ab9e8720ccf5ae651aa196f93030a36b07",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000051:skill",
+            "name": "Clang Bang - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Glacio",
+            "expressions": [
+              "20.00%+40",
+              "23.00%+46",
+              "26.00%+52",
+              "29.00%+58",
+              "32.00%+64"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.2
+              ],
+              [
+                0.23
+              ],
+              [
+                0.26
+              ],
+              [
+                0.29
+              ],
+              [
+                0.32
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 8,
+            "sourceText": "Summon a Clang Bang that follows the enemy and eventually self-combusts, dealing 20.00%+40 Glacio DMG.\nCD: 8s · Summon a Clang Bang that follows the enemy and eventually self-combusts, dealing 23.00%+46 Glacio DMG.\nCD: 8s · Summon a Clang Bang that follows the enemy and eventually self-combusts, dealing 26.00%+52 Glacio DMG.\nCD: 8s · Summon a Clang Bang that follows the enemy and eventually self-combusts, dealing 29.00%+58 Glacio DMG.\nCD: 8s · Summon a Clang Bang that follows the enemy and eventually self-combusts, dealing 32.00%+64 Glacio DMG.\nCD: 8s"
+          }
+        ],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000169",
+  "entityName": "Nightmare: Baby Viridblaze Saurian",
+  "sourceFingerprint": "b0c1fb29130958754a574678be9ecad2fb7f03eee2837dd4accb6d7153808f97",
+  "reviewedAt": "2026-09-26T18:47:52.544Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "0ce3c7e85d6918a646870b96a9a77c843f5ebd7cdbff8ef1cde36998e844cf26",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000169:healing",
+            "name": "Nightmare: Baby Viridblaze Saurian - Echo Skill",
+            "damageType": "healing",
+            "skillSource": "echo",
+            "recipient": "self",
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "unsupportedReason": "healing amount is not present in the source data",
+            "cooldownSeconds": 8,
+            "sourceText": "Transform into Baby Viridblaze Saurian to rest in place, and slowly restore HP.\nCD: 8s"
+          }
+        ],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

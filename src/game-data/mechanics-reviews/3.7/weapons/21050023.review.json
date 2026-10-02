@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21050023",
+  "entityName": "Originite: Type V",
+  "sourceFingerprint": "b055665bc8af223154720809a31fb5cdf9e6a428f7a1786da08b0ba38de6b0c2",
+  "reviewedAt": "2026-09-16T12:35:14.045Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "d77d645df64a39a75df42f87ab92821938c03c49f26227f4e04673c9adccb076",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050023:effect:0",
+            "sourceName": "Augment",
+            "text": "When Intro Skill is cast, heals 5% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 20s.",
+            "refinementTexts": [
+              "When Intro Skill is cast, heals 5% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 20s.",
+              "When Intro Skill is cast, heals 6.25% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 20s.",
+              "When Intro Skill is cast, heals 7.5% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 20s.",
+              "When Intro Skill is cast, heals 8.75% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 20s.",
+              "When Intro Skill is cast, heals 10% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 20s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Intro Skill cast",
+              "modifiers": [],
+              "confidence": "high",
+              "warnings": [],
+              "triggeredAttacks": [
+                {
+                  "id": "triggered-1",
+                  "name": "Intro Skill",
+                  "damageType": "healing",
+                  "scaling": "hp",
+                  "expression": "5%",
+                  "count": 1
+                }
+              ]
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill cast",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "triggeredAttacks": [
+                  {
+                    "expression": "5%"
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill cast",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "triggeredAttacks": [
+                  {
+                    "expression": "6.25%"
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill cast",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "triggeredAttacks": [
+                  {
+                    "expression": "7.5%"
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill cast",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "triggeredAttacks": [
+                  {
+                    "expression": "8.75%"
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill cast",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "triggeredAttacks": [
+                  {
+                    "expression": "10%"
+                  }
+                ]
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

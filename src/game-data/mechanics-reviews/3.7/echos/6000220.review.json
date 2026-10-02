@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000220",
+  "entityName": "Skywatch Lancer",
+  "sourceFingerprint": "803b39344c341e07aaa2851a5f210fd137b3d27713abf19ecc8af314f1c472ab",
+  "reviewedAt": "2026-10-01T09:06:58.584Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "ca168e9fd167e0a650d3fc1e24cb6d7dfef63fff62075e04e8aa864dfd0be014",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000220:skill",
+            "name": "Skywatch Lancer - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Aero",
+            "expressions": [
+              "17.83%",
+              "21.39%",
+              "24.96%",
+              "28.52%",
+              "32.09%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.1783,
+                0.1783,
+                0.1783,
+                0.1783,
+                0.1783,
+                0.1783
+              ],
+              [
+                0.2139,
+                0.2139,
+                0.2139,
+                0.2139,
+                0.2139,
+                0.2139
+              ],
+              [
+                0.24960000000000002,
+                0.24960000000000002,
+                0.24960000000000002,
+                0.24960000000000002,
+                0.24960000000000002,
+                0.24960000000000002
+              ],
+              [
+                0.2852,
+                0.2852,
+                0.2852,
+                0.2852,
+                0.2852,
+                0.2852
+              ],
+              [
+                0.3209,
+                0.3209,
+                0.3209,
+                0.3209,
+                0.3209,
+                0.3209
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "count": 6,
+            "cooldownSeconds": 15,
+            "sourceText": "Summon a Skywatch Lancer to attack the target, dealing 17.83% Aero DMG 6 times.\nCD: 15s · Summon a Skywatch Lancer to attack the target, dealing 21.39% Aero DMG 6 times.\nCD: 15s · Summon a Skywatch Lancer to attack the target, dealing 24.96% Aero DMG 6 times.\nCD: 15s · Summon a Skywatch Lancer to attack the target, dealing 28.52% Aero DMG 6 times.\nCD: 15s · Summon a Skywatch Lancer to attack the target, dealing 32.09% Aero DMG 6 times.\nCD: 15s"
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  }
+}

@@ -1,0 +1,224 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21020046",
+  "entityName": "Bloodpact's Pledge",
+  "sourceFingerprint": "6d83214dc41c8977d37648447d37a39d5af02d87158b1906fb2df33dc24eb2c2",
+  "reviewedAt": "2026-09-16T09:55:51.881Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "4f8865c0ad0671dbbc2c81e5c3fd609868b777d5c480b0defbe02235b8ec2020",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020046:effect:0",
+            "sourceName": "Harmonious Vibrancy",
+            "text": "Providing Healing increases Resonance Skill DMG by 10% for 6s.",
+            "refinementTexts": [
+              "Providing Healing increases Resonance Skill DMG by 10% for 6s.",
+              "Providing Healing increases Resonance Skill DMG by 14% for 6s.",
+              "Providing Healing increases Resonance Skill DMG by 18% for 6s.",
+              "Providing Healing increases Resonance Skill DMG by 22% for 6s.",
+              "Providing Healing increases Resonance Skill DMG by 26% for 6s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 6,
+              "modifiers": [
+                {
+                  "stat": "skillDamage",
+                  "operation": "addPercent",
+                  "value": 10,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Performed Healing"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 14
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 22
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 26
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21020046:effect:1",
+            "sourceName": "Harmonious Vibrancy",
+            "text": "When Rover: Aero casts Resonance Skill Unbound Flow, Aero DMG dealt by nearby Resonators on the field is Amplified by 10% for 30s.",
+            "refinementTexts": [
+              "When Rover: Aero casts Resonance Skill Unbound Flow, Aero DMG dealt by nearby Resonators on the field is Amplified by 10% for 30s.",
+              "When Rover: Aero casts Resonance Skill Unbound Flow, Aero DMG dealt by nearby Resonators on the field is Amplified by 14% for 30s.",
+              "When Rover: Aero casts Resonance Skill Unbound Flow, Aero DMG dealt by nearby Resonators on the field is Amplified by 18% for 30s.",
+              "When Rover: Aero casts Resonance Skill Unbound Flow, Aero DMG dealt by nearby Resonators on the field is Amplified by 22% for 30s.",
+              "When Rover: Aero casts Resonance Skill Unbound Flow, Aero DMG dealt by nearby Resonators on the field is Amplified by 26% for 30s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Aero Rover: Unbound Flow cast",
+              "durationSeconds": 30,
+              "modifiers": [
+                {
+                  "stat": "Aero",
+                  "operation": "amplifyPercent",
+                  "value": 10,
+                  "scope": "team"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Rover",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Rover",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "value": 14
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Rover",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Rover",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "value": 22
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Rover",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "value": 26
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

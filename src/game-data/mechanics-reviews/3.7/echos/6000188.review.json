@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000188",
+  "entityName": "Windlash Coleoid",
+  "sourceFingerprint": "3d6eb2fe14e71db89407b0a800b991a405aa943cafb7a191ba86f5e22d35d376",
+  "reviewedAt": "2026-09-26T18:47:52.583Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "00f19df6b17d4d39f348b363593205d455be77a2a61fc6ec6215c4d6748a58cd",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000188:skill",
+            "name": "Windlash Coleoid - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Aero",
+            "expressions": [
+              "149.00%",
+              "178.80%",
+              "208.60%",
+              "238.40%",
+              "268.20%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.49
+              ],
+              [
+                1.788
+              ],
+              [
+                2.086
+              ],
+              [
+                2.384
+              ],
+              [
+                2.682
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 15,
+            "sourceText": "Transform into a Windlash Coleoid to kick enemies, dealing 149.00% Aero DMG.\nCD: 15s. · Transform into a Windlash Coleoid to kick enemies, dealing 178.80% Aero DMG.\nCD: 15s. · Transform into a Windlash Coleoid to kick enemies, dealing 208.60% Aero DMG.\nCD: 15s. · Transform into a Windlash Coleoid to kick enemies, dealing 238.40% Aero DMG.\nCD: 15s. · Transform into a Windlash Coleoid to kick enemies, dealing 268.20% Aero DMG.\nCD: 15s."
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

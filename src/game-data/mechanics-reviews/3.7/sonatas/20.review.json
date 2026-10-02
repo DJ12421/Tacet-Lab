@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "sonata",
+  "entityId": "20",
+  "entityName": "Crown of Valor",
+  "sourceFingerprint": "37f7db781d98df9ddb5bd2c63b5d0395c8de07a2c4417ddb7ccba7abe8b295d5",
+  "reviewedAt": "2026-09-05T09:30:43.968Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "d41493138c795a769e45411cb11f064ba0867e964c87ee0ea370b1fafa8e1b15",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:20:3:0",
+            "sourceName": "Crown of Valor",
+            "text": "Upon gaining a Shield, increase the Resonator's ATK by 6% and Crit. DMG by 4% for 4s. This effect can be triggered once every 0.5s and stacks up to 5 times.",
+            "refinementTexts": [
+              "Upon gaining a Shield, increase the Resonator's ATK by 6% and Crit. DMG by 4% for 4s. This effect can be triggered once every 0.5s and stacks up to 5 times."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 5
+              },
+              "durationSeconds": 4,
+              "modifiers": [
+                {
+                  "stat": "critDamage",
+                  "operation": "addPercent",
+                  "value": 4
+                },
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 6
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "No. of Shield gained"
+            },
+            "sourceType": "sonata",
+            "pieces": 3
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "sonata",
+  "entityId": "2",
+  "entityName": "Molten Rift",
+  "sourceFingerprint": "e1992216ec68479a27251a58d96976bccc5609c7355cd2463c3219bd16bfa32e",
+  "reviewedAt": "2026-09-05T09:29:41.385Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "7e7fe008b9019fd1325762e2c6ea62c938c3b6488bf16ba15e8816149f6f6eb9",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:2:2:0",
+            "sourceName": "Molten Rift",
+            "text": "Fusion DMG + 10%.",
+            "refinementTexts": [
+              "Fusion DMG + 10%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Fusion",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2
+          },
+          {
+            "id": "sonata:2:5:0",
+            "sourceName": "Molten Rift",
+            "text": "Fusion DMG + 30% for 15s after releasing Resonance Skill.",
+            "refinementTexts": [
+              "Fusion DMG + 30% for 15s after releasing Resonance Skill."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Res. Skill used",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "Fusion",
+                  "operation": "addPercent",
+                  "value": 30
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

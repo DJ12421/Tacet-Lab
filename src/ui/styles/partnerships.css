@@ -1,0 +1,178 @@
+/* Local takes on React Bits Border Glow, Spotlight Card, Glare Hover, and Shiny Text. */
+@property --partner-glow-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.partnerships-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+  gap: 16px;
+}
+
+.partner-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  width: 100%;
+  max-width: 380px;
+  padding: 20px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: radial-gradient(circle at 90% 0, rgba(141, 228, 212, .13), transparent 50%) padding-box,
+    linear-gradient(155deg, #1a2323, #090e10 74%) padding-box,
+    conic-gradient(from var(--partner-glow-angle), rgba(228, 187, 94, .35), #8de4d4, #e4bb5e, rgba(141, 228, 212, .28), rgba(228, 187, 94, .35)) border-box;
+  box-shadow: inset 0 1px rgba(255, 244, 212, .1), 0 0 20px rgba(141, 228, 212, .13), 0 16px 38px rgba(0, 0, 0, .34);
+  animation: partner-enter .5s cubic-bezier(.2, .9, .25, 1), partner-border-glow 8s linear infinite;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.partner-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(140px circle at var(--light-x, 50%) var(--light-y, 50%), rgba(141, 228, 212, .2), transparent 75%);
+  transition: opacity .3s ease;
+}
+
+.partner-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(110deg, transparent 38%, rgba(255, 245, 210, .11) 50%, transparent 62%);
+  transform: translateX(-150%);
+}
+
+.partner-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.partner-card:is(:hover, :focus-within) {
+  transform: translateY(-4px);
+  box-shadow: inset 0 1px rgba(255, 244, 212, .16), 0 0 28px rgba(141, 228, 212, .28), 0 22px 48px rgba(0, 0, 0, .4);
+}
+
+.partner-card:is(:hover, :focus-within)::before { opacity: 1; }
+.partner-card:hover::after { animation: partner-glare .85s ease-out; }
+
+.partner-card-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.partner-card-head img {
+  width: 60px;
+  height: 60px;
+  flex: none;
+  border: 1px solid rgba(228, 187, 94, .6);
+  border-radius: 13px;
+  object-fit: cover;
+  box-shadow: 0 0 0 3px rgba(228, 187, 94, .07), 0 7px 20px rgba(0, 0, 0, .35);
+  animation: partner-logo 4s ease-in-out infinite;
+}
+
+.partner-shiny-text {
+  display: inline-block;
+  background: linear-gradient(100deg, #8de4d4 25%, #fff5ce 50%, #8de4d4 75%);
+  background-size: 220% 100%;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: partner-text-shine 5s linear infinite;
+}
+
+.partner-card h2 {
+  margin: 5px 0 0;
+  color: #fff2cf;
+  font-size: 1.65rem;
+  font-weight: 600;
+  letter-spacing: -.035em;
+  line-height: 1.05;
+}
+
+.partner-card p {
+  margin: 17px 0 18px;
+  max-width: 37ch;
+  color: #c6d1cc;
+  font-size: var(--font-size-small);
+  line-height: 1.5;
+}
+
+.partner-card nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid rgba(228, 187, 94, .2);
+}
+
+.partner-card nav>span {
+  color: #a79b78;
+  font-size: .65rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.partner-card nav>div { display: flex; gap: 8px; }
+
+.partner-card nav a {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(141, 228, 212, .32);
+  border-radius: 7px;
+  background: rgba(141, 228, 212, .06);
+  color: #baf5e8;
+  transition: transform .2s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease;
+}
+
+.partner-card nav a:is(:hover, :focus-visible) {
+  transform: translateY(-2px);
+  border-color: var(--mint);
+  background: rgba(141, 228, 212, .16);
+  box-shadow: 0 0 16px rgba(141, 228, 212, .3);
+}
+
+.partner-card nav .icon { width: 18px; height: 18px; }
+
+@keyframes partner-enter {
+  from { opacity: 0; transform: translateY(12px); }
+}
+
+@keyframes partner-border-glow {
+  to { --partner-glow-angle: 360deg; }
+}
+
+@keyframes partner-logo {
+  50% { box-shadow: 0 0 0 4px rgba(228, 187, 94, .15), 0 7px 23px rgba(228, 187, 94, .2); }
+}
+
+@keyframes partner-glare {
+  to { transform: translateX(150%); }
+}
+
+@keyframes partner-text-shine {
+  to { background-position: -220% 0; }
+}
+
+@media (max-width: 760px) {
+  .content .partnerships-page .partner-card { padding: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .partner-card, .partner-card-head img, .partner-shiny-text, .partner-card:hover::after { animation: none; }
+  .partner-card:is(:hover, :focus-within), .partner-card nav a:is(:hover, :focus-visible) { transform: none; }
+}
+
+@media (forced-colors: active) {
+  .partner-card { border-color: CanvasText; }
+  .partner-shiny-text { background: none; -webkit-text-fill-color: currentColor; }
+}

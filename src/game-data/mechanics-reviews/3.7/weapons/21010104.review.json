@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21010104",
+  "entityName": "Aureate Zenith",
+  "sourceFingerprint": "a84a51b0abf8bf0b6d7e7943f1d1b2a5f361b6b83e2fe531a14c0d95ca5b1764",
+  "reviewedAt": "2026-09-09T05:17:40.084Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "3748319db14b45eeecea20a6bb7d89591430717668793f8fdaefafdb13661610",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21010104:effect:0",
+            "sourceName": "Oath of Tide Hunters",
+            "text": "Casting Resonance Liberation increases ATK by 7.2% and grants 10.8% Heavy Attack DMG Bonus for 15s.",
+            "refinementTexts": [
+              "Casting Resonance Liberation increases ATK by 7.2% and grants 10.8% Heavy Attack DMG Bonus for 15s.",
+              "Casting Resonance Liberation increases ATK by 11.1% and grants 16.7% Heavy Attack DMG Bonus for 15s.",
+              "Casting Resonance Liberation increases ATK by 15.1% and grants 22.6% Heavy Attack DMG Bonus for 15s.",
+              "Casting Resonance Liberation increases ATK by 19% and grants 28.6% Heavy Attack DMG Bonus for 15s.",
+              "Casting Resonance Liberation increases ATK by 23% and grants 34.5% Heavy Attack DMG Bonus for 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Liberation used",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "heavyDamage",
+                  "operation": "addPercent",
+                  "value": 10.8
+                },
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 7.2
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 10.8
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 7.2
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 16.7
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 11.1
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 22.6
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15.1
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 28.6
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 19
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "heavyDamage",
+                    "operation": "addPercent",
+                    "value": 34.5
+                  },
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 23
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

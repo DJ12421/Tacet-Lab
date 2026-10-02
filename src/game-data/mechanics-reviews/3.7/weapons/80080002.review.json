@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "80080002",
+  "entityName": "Projection: Formless Broadblade",
+  "sourceFingerprint": "ed69af9d5a6dc469097e4e2a24da827fe4503bf99b637be8bec535f95ac51c82",
+  "reviewedAt": "2026-09-05T10:14:39.820Z",
+  "sections": {
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

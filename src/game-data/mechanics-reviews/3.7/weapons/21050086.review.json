@@ -1,0 +1,343 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21050086",
+  "entityName": "Freeze Frame",
+  "sourceFingerprint": "ace24ab870497b837bf0c681366af82507e144db85950c3820a2e8a10353c881",
+  "reviewedAt": "2026-09-09T08:00:58.262Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "203fb0f34e60174874ccb35f72d813a9386f3eb3de1f9844452d70a6c2143038",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050086:effect:0",
+            "sourceName": "Light's Offering",
+            "text": "Increases ATK by 12%.",
+            "refinementTexts": [
+              "Increases ATK by 12%.",
+              "Increases ATK by 15%.",
+              "Increases ATK by 18%.",
+              "Increases ATK by 21%.",
+              "Increases ATK by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21050086:effect:1",
+            "sourceName": "Light's Offering",
+            "text": "After inflicting Glacio Chafe on the target, the wielder gains 30% Glacio DMG Bonus for 12s, and all Resonators in the team gain 24% ATK increase for 30s.",
+            "refinementTexts": [
+              "After inflicting Glacio Chafe on the target, the wielder gains 30% Glacio DMG Bonus for 12s, and all Resonators in the team gain 24% ATK increase for 30s.",
+              "After inflicting Glacio Chafe on the target, the wielder gains 37.5% Glacio DMG Bonus for 12s, and all Resonators in the team gain 30% ATK increase for 30s.",
+              "After inflicting Glacio Chafe on the target, the wielder gains 45% Glacio DMG Bonus for 12s, and all Resonators in the team gain 36% ATK increase for 30s.",
+              "After inflicting Glacio Chafe on the target, the wielder gains 52.5% Glacio DMG Bonus for 12s, and all Resonators in the team gain 42% ATK increase for 30s.",
+              "After inflicting Glacio Chafe on the target, the wielder gains 60% Glacio DMG Bonus for 12s, and all Resonators in the team gain 48% ATK increase for 30s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle",
+                "key": "lights-offering-glacio-chafe"
+              },
+              "durationSeconds": 12,
+              "modifiers": [
+                {
+                  "stat": "Glacio",
+                  "operation": "addPercent",
+                  "scope": "self",
+                  "value": 30
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Glacio Chafe inflicted"
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "team",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 12,
+                "modifiers": [
+                  {
+                    "stat": "Glacio",
+                    "operation": "addPercent",
+                    "scope": "self",
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Glacio Chafe inflicted"
+              },
+              {
+                "scope": "team",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 12,
+                "modifiers": [
+                  {
+                    "stat": "Glacio",
+                    "operation": "addPercent",
+                    "scope": "self",
+                    "value": 37.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Glacio Chafe inflicted"
+              },
+              {
+                "scope": "team",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 12,
+                "modifiers": [
+                  {
+                    "stat": "Glacio",
+                    "operation": "addPercent",
+                    "scope": "self",
+                    "value": 45
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Glacio Chafe inflicted"
+              },
+              {
+                "scope": "team",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 12,
+                "modifiers": [
+                  {
+                    "stat": "Glacio",
+                    "operation": "addPercent",
+                    "scope": "self",
+                    "value": 52.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Glacio Chafe inflicted"
+              },
+              {
+                "scope": "team",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 12,
+                "modifiers": [
+                  {
+                    "stat": "Glacio",
+                    "operation": "addPercent",
+                    "scope": "self",
+                    "value": 60
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Glacio Chafe inflicted"
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21050086:effect:1-team-atk",
+            "sourceName": "Light's Offering",
+            "text": "After inflicting Glacio Chafe on the target, all Resonators in the team gain 24% ATK increase for 30s.",
+            "refinementTexts": [
+              "After inflicting Glacio Chafe on the target, all Resonators in the team gain 24% ATK increase for 30s.",
+              "After inflicting Glacio Chafe on the target, all Resonators in the team gain 30% ATK increase for 30s.",
+              "After inflicting Glacio Chafe on the target, all Resonators in the team gain 36% ATK increase for 30s.",
+              "After inflicting Glacio Chafe on the target, all Resonators in the team gain 42% ATK increase for 30s.",
+              "After inflicting Glacio Chafe on the target, all Resonators in the team gain 48% ATK increase for 30s."
+            ],
+            "parsed": {
+              "scope": "team",
+              "input": {
+                "kind": "toggle",
+                "key": "lights-offering-glacio-chafe"
+              },
+              "durationSeconds": 30,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 24
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Glacio Chafe inflicted"
+            },
+            "parsedByRefinement": [
+              {
+                "modifiers": [
+                  {
+                    "value": 24
+                  }
+                ]
+              },
+              {
+                "modifiers": [
+                  {
+                    "value": 30
+                  }
+                ]
+              },
+              {
+                "modifiers": [
+                  {
+                    "value": 36
+                  }
+                ]
+              },
+              {
+                "modifiers": [
+                  {
+                    "value": 42
+                  }
+                ]
+              },
+              {
+                "modifiers": [
+                  {
+                    "value": 48
+                  }
+                ]
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21050086:effect:2",
+            "sourceName": "Light's Offering",
+            "text": "Effects of the same name cannot be stacked.",
+            "refinementTexts": [
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ],
+              "trigger": "While equipped"
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

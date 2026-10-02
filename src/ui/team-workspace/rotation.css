@@ -439,7 +439,7 @@
 }
 
 .tw-rotation-card.is-playing {
-  box-shadow: inset 3px 0 var(--tw-member-accent,var(--mint)),0 0 16px rgba(200,208,206,.09);
+  border-color: var(--tw-member-accent,var(--mint));
 }
 
 .tw-rotation-card[draggable="true"] {

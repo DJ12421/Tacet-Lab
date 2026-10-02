@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000178",
+  "entityName": "Zip Zap",
+  "sourceFingerprint": "5d22e59e4abf42ca7e0fc239d7cd8c212f212f212ef7f5e49ceac687aebb888c",
+  "reviewedAt": "2026-09-26T18:47:52.562Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "2230340ffd904fdd68185b9fae7d7ab1ea535931d4257587916026c23e5bda93",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000178:skill",
+            "name": "Zip Zap - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Electro",
+            "expressions": [
+              "14.40%",
+              "17.28%",
+              "20.16%",
+              "23.04%",
+              "25.92%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.14400000000000002,
+                0.14400000000000002,
+                0.14400000000000002,
+                0.14400000000000002,
+                0.14400000000000002
+              ],
+              [
+                0.1728,
+                0.1728,
+                0.1728,
+                0.1728,
+                0.1728
+              ],
+              [
+                0.2016,
+                0.2016,
+                0.2016,
+                0.2016,
+                0.2016
+              ],
+              [
+                0.2304,
+                0.2304,
+                0.2304,
+                0.2304,
+                0.2304
+              ],
+              [
+                0.25920000000000004,
+                0.25920000000000004,
+                0.25920000000000004,
+                0.25920000000000004,
+                0.25920000000000004
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "count": 5,
+            "cooldownSeconds": 8,
+            "sourceText": "Summon a Zip Zap to launch spinning attacks at enemies, dealing 14.40% Electro DMG 5 times.\nCD: 8s. · Summon a Zip Zap to launch spinning attacks at enemies, dealing 17.28% Electro DMG 5 times.\nCD: 8s. · Summon a Zip Zap to launch spinning attacks at enemies, dealing 20.16% Electro DMG 5 times.\nCD: 8s. · Summon a Zip Zap to launch spinning attacks at enemies, dealing 23.04% Electro DMG 5 times.\nCD: 8s. · Summon a Zip Zap to launch spinning attacks at enemies, dealing 25.92% Electro DMG 5 times.\nCD: 8s."
+          }
+        ],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

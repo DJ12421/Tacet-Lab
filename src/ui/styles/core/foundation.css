@@ -38,8 +38,9 @@
   box-sizing: border-box;
 }
 
-:where(*:not(html, body)) {
-  border-radius: var(--radius-subtle);
+/* Round controls, not every nested row, cell, image, and formula block. */
+:where(button, input:not([type='checkbox']):not([type='radio']):not([type='range']), select, textarea) {
+  border-radius: 5px;
 }
 
 /* Chromium, Safari, and other WebKit-based browsers. */

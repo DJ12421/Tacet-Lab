@@ -1,0 +1,365 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21050016",
+  "entityName": "Stringmaster",
+  "sourceFingerprint": "e77ea78066c3cb56cee7f8e64839cd6405eb3a3ba8ad015c398c6939ca4605ab",
+  "reviewedAt": "2026-09-09T07:46:21.430Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "287b2de202a01b53c24820abe7c30ff168a6ccd60271080e49425d19f4a877d7",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050016:effect:0",
+            "sourceName": "Electric Amplification",
+            "text": "Grants 12% Attribute DMG Bonus.",
+            "refinementTexts": [
+              "Grants 12% Attribute DMG Bonus.",
+              "Grants 15% Attribute DMG Bonus.",
+              "Grants 18% Attribute DMG Bonus.",
+              "Grants 21% Attribute DMG Bonus.",
+              "Grants 24% Attribute DMG Bonus."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "AllElementAttributeBonus",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "AllElementAttributeBonus",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "AllElementAttributeBonus",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "AllElementAttributeBonus",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "AllElementAttributeBonus",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "AllElementAttributeBonus",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21050016:effect:1",
+            "sourceName": "Electric Amplification",
+            "text": "When dealing Resonance Skill DMG, increases ATK by 12%, stacking up to 2 times. This effect lasts for 5s.",
+            "refinementTexts": [
+              "When dealing Resonance Skill DMG, increases ATK by 12%, stacking up to 2 times. This effect lasts for 5s.",
+              "When dealing Resonance Skill DMG, increases ATK by 15%, stacking up to 2 times. This effect lasts for 5s.",
+              "When dealing Resonance Skill DMG, increases ATK by 18%, stacking up to 2 times. This effect lasts for 5s.",
+              "When dealing Resonance Skill DMG, increases ATK by 21%, stacking up to 2 times. This effect lasts for 5s.",
+              "When dealing Resonance Skill DMG, increases ATK by 24%, stacking up to 2 times. This effect lasts for 5s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 2
+              },
+              "trigger": "Res. Skill DMG dealt",
+              "durationSeconds": 5,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "trigger": "dealing Resonance Skill DMG",
+                "durationSeconds": 5,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "trigger": "dealing Resonance Skill DMG",
+                "durationSeconds": 5,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "trigger": "dealing Resonance Skill DMG",
+                "durationSeconds": 5,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "trigger": "dealing Resonance Skill DMG",
+                "durationSeconds": 5,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "trigger": "dealing Resonance Skill DMG",
+                "durationSeconds": 5,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21050016:effect:2",
+            "sourceName": "Electric Amplification",
+            "text": "When the wielder is not on the field, increases their ATK by an additional 12%.",
+            "refinementTexts": [
+              "When the wielder is not on the field, increases their ATK by an additional 12%.",
+              "When the wielder is not on the field, increases their ATK by an additional 15%.",
+              "When the wielder is not on the field, increases their ATK by an additional 18%.",
+              "When the wielder is not on the field, increases their ATK by an additional 21%.",
+              "When the wielder is not on the field, increases their ATK by an additional 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Weilder is off-field"
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the wielder is not on the field"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the wielder is not on the field"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the wielder is not on the field"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the wielder is not on the field"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the wielder is not on the field"
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

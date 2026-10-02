@@ -1,0 +1,372 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21010036",
+  "entityName": "Wildfire Mark",
+  "sourceFingerprint": "864407ddf84cd5eb26ca8b25bc36d674fab2609a8e391c0d3ea80f9098c0a6b0",
+  "reviewedAt": "2026-09-15T14:03:16.497Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "73ed396b3f2007e5677da696eeadd29a33e1df0a49fa861fbc90b3a31823d997",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21010036:effect:0",
+            "sourceName": "Blazing Starfire",
+            "text": "Increases ATK by 12%.",
+            "refinementTexts": [
+              "Increases ATK by 12%.",
+              "Increases ATK by 15%.",
+              "Increases ATK by 18%.",
+              "Increases ATK by 21%.",
+              "Increases ATK by 24%."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21010036:effect:1",
+            "sourceName": "Blazing Starfire",
+            "text": "Performing Intro Skill or Resonance Liberation increases Resonance Liberation DMG by 24% for 6s.",
+            "refinementTexts": [
+              "Performing Intro Skill or Resonance Liberation increases Resonance Liberation DMG by 24% for 6s.",
+              "Performing Intro Skill or Resonance Liberation increases Resonance Liberation DMG by 30% for 6s.",
+              "Performing Intro Skill or Resonance Liberation increases Resonance Liberation DMG by 36% for 6s.",
+              "Performing Intro Skill or Resonance Liberation increases Resonance Liberation DMG by 42% for 6s.",
+              "Performing Intro Skill or Resonance Liberation increases Resonance Liberation DMG by 48% for 6s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle",
+                "key": "effects:activation:weapon:21010036:effect:1"
+              },
+              "durationSeconds": 6,
+              "modifiers": [
+                {
+                  "stat": "liberationDamage",
+                  "operation": "addPercent",
+                  "value": 24,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Intro Skill/Res. Liberation used"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Intro Skill/Resonance Liberation performed"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Intro Skill/Resonance Liberation performed"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 36
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Intro Skill/Resonance Liberation performed"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 42
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Intro Skill/Resonance Liberation performed"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 48
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Intro Skill/Resonance Liberation performed"
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21010036:effect:2",
+            "sourceName": "Blazing Starfire",
+            "text": "Dealing Heavy Attack DMG extends this effect by 4s, up to 1 time.",
+            "refinementTexts": [
+              "Dealing Heavy Attack DMG extends this effect by 4s, up to 1 time.",
+              "Dealing Heavy Attack DMG extends this effect by 4s, up to 1 time.",
+              "Dealing Heavy Attack DMG extends this effect by 4s, up to 1 time.",
+              "Dealing Heavy Attack DMG extends this effect by 4s, up to 1 time.",
+              "Dealing Heavy Attack DMG extends this effect by 4s, up to 1 time."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle",
+                "key": "effects:activation:weapon:21010036:effect:2",
+                "requires": [
+                  "effects:activation:weapon:21010036:effect:1"
+                ]
+              },
+              "trigger": "Heavy Attack DMG dealt",
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21010036:effect:3",
+            "sourceName": "Blazing Starfire",
+            "text": "Each successful extension gives 24% Fusion DMG Bonus to all Resonators in the team for 30s.",
+            "refinementTexts": [
+              "Each successful extension gives 24% Fusion DMG Bonus to all Resonators in the team for 30s.",
+              "Each successful extension gives 30% Fusion DMG Bonus to all Resonators in the team for 30s.",
+              "Each successful extension gives 36% Fusion DMG Bonus to all Resonators in the team for 30s.",
+              "Each successful extension gives 42% Fusion DMG Bonus to all Resonators in the team for 30s.",
+              "Each successful extension gives 48% Fusion DMG Bonus to all Resonators in the team for 30s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "all",
+                "keys": [
+                  "effects:activation:weapon:21010036:effect:1",
+                  "effects:activation:weapon:21010036:effect:2"
+                ]
+              },
+              "durationSeconds": 30,
+              "modifiers": [
+                {
+                  "stat": "Fusion",
+                  "operation": "addPercent",
+                  "value": 24,
+                  "scope": "team"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "While equipped"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "value": 36
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "value": 42
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "value": 48
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21010036:effect:4",
+            "sourceName": "Blazing Starfire",
+            "text": "Effects of the same name cannot be stacked.",
+            "refinementTexts": [
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked.",
+              "Effects of the same name cannot be stacked."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ],
+              "trigger": "While equipped"
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

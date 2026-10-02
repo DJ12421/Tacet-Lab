@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "sonata",
+  "entityId": "36",
+  "entityName": "Heart of Sworn Vigil",
+  "sourceFingerprint": "79e0de03cf8e9378750be19274f3220f3e86fe0be8807f16020a3b16400aacb4",
+  "reviewedAt": "2026-10-01T00:25:48.517Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "6c92dc6252f6d5d6015d86aa8c049436777decb74d73288e1db493b2dfa0f0d1",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:36:2:0",
+            "sourceName": "Heart of Sworn Vigil",
+            "text": "Electro DMG + 10%",
+            "refinementTexts": [
+              "Electro DMG + 10%"
+            ],
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Electro",
+                  "operation": "addPercent",
+                  "value": 10,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:36:5:0",
+            "sourceName": "Heart of Sworn Vigil",
+            "text": "Inflicting Electro Flare on the target, obtaining Unison, or triggering Unison Response increases the Resonator's Crit. Rate by 15% and grants them 22.5% Electro DMG for 30s.",
+            "refinementTexts": [
+              "Inflicting Electro Flare on the target, obtaining Unison, or triggering Unison Response increases the Resonator's Crit. Rate by 15% and grants them 22.5% Electro DMG for 30s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 30,
+              "modifiers": [
+                {
+                  "stat": "critRate",
+                  "operation": "addPercent",
+                  "value": 15,
+                  "scope": "self"
+                },
+                {
+                  "stat": "Electro",
+                  "operation": "addPercent",
+                  "value": 22.5,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  }
+}

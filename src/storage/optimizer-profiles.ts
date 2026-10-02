@@ -51,6 +51,9 @@ function normalizeProfile(buildId: string, stored?: OptimizerProfile): Optimizer
       '3': stored.mainStatsByCost?.['3'] ?? defaults.mainStatsByCost['3'],
       '4': stored.mainStatsByCost?.['4'] ?? defaults.mainStatsByCost['4']
     },
+    excludedEchoIds: [],
+    minimumScore: undefined,
+    maximumScore: undefined,
     minimumStats: stored.minimumStats ?? {},
     maximumStats: stored.maximumStats ?? {},
     updatedAt: stored.updatedAt ?? Date.now()

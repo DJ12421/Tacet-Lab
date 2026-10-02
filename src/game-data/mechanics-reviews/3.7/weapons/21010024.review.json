@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21010024",
+  "entityName": "Discord",
+  "sourceFingerprint": "0c3d367dc8c95966a20b8255f6b8bcf1f4007040483de7f64899b929b06db013",
+  "reviewedAt": "2026-09-08T14:49:50.865Z",
+  "sections": {
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "179b08098358ff98f77ec69c269fe0e6c8e0ac6476ef78221ca3a5e1921b8d94",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

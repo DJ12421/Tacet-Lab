@@ -1,0 +1,157 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000160",
+  "entityName": "Lady of the Sea",
+  "sourceFingerprint": "729da1f1ef2c24bed120de025bd7efa10517476690cd6f4b8122ea583bd07398",
+  "reviewedAt": "2026-09-26T18:47:52.524Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "2276147a12b317f9a92c077e6880ece9a2405bbec5ed4a7825cad0c8686a22af",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000160:skill",
+            "name": "Lady of the Sea - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Aero",
+            "expressions": [
+              "7.60%+91.20%",
+              "9.12%+109.44%",
+              "10.64%+127.68%",
+              "12.16%+145.92%",
+              "13.68%+164.16%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.076,
+                0.076,
+                0.076,
+                0.076,
+                0.076,
+                0.076,
+                0.076,
+                0.076,
+                0.076,
+                0.076,
+                0.912
+              ],
+              [
+                0.09119999999999999,
+                0.09119999999999999,
+                0.09119999999999999,
+                0.09119999999999999,
+                0.09119999999999999,
+                0.09119999999999999,
+                0.09119999999999999,
+                0.09119999999999999,
+                0.09119999999999999,
+                0.09119999999999999,
+                1.0944
+              ],
+              [
+                0.10640000000000001,
+                0.10640000000000001,
+                0.10640000000000001,
+                0.10640000000000001,
+                0.10640000000000001,
+                0.10640000000000001,
+                0.10640000000000001,
+                0.10640000000000001,
+                0.10640000000000001,
+                0.10640000000000001,
+                1.2768000000000002
+              ],
+              [
+                0.1216,
+                0.1216,
+                0.1216,
+                0.1216,
+                0.1216,
+                0.1216,
+                0.1216,
+                0.1216,
+                0.1216,
+                0.1216,
+                1.4591999999999998
+              ],
+              [
+                0.1368,
+                0.1368,
+                0.1368,
+                0.1368,
+                0.1368,
+                0.1368,
+                0.1368,
+                0.1368,
+                0.1368,
+                0.1368,
+                1.6416
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ],
+            "count": 11,
+            "cooldownSeconds": 20,
+            "sourceText": "Summon a Tidestorm to deal 7.60% Aero DMG ten times and 91.20% Aero DMG one time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon a Tidestorm to deal 9.12% Aero DMG ten times and 109.44% Aero DMG one time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon a Tidestorm to deal 10.64% Aero DMG ten times and 127.68% Aero DMG one time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon a Tidestorm to deal 12.16% Aero DMG ten times and 145.92% Aero DMG one time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon a Tidestorm to deal 13.68% Aero DMG ten times and 164.16% Aero DMG one time to enemies.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s"
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "881c9261f46da3ff79638ecc4cc96be5772560e1e3ed870e57773f4aa12191d7",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000160:effect:0",
+            "sourceName": "Lady of the Sea",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in the main slot gains 12.00% Aero DMG Bonus and 12.00% Resonance Liberation DMG Bonus.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

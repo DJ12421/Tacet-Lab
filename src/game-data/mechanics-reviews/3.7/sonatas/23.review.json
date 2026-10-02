@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "sonata",
+  "entityId": "23",
+  "entityName": "Thread of Severed Fate",
+  "sourceFingerprint": "7a60177e5aa2de22094ba9fda4e9d2b5cb09da0fcecaf2b8d814587bb0a9b4c4",
+  "reviewedAt": "2026-09-05T09:38:20.656Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "f65da58accdaa62f56f70f37164152ddbea9f8d130d6616605b0bd3a6b4d62b2",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:23:3:0",
+            "sourceName": "Thread of Severed Fate",
+            "text": "Inflicting Havoc Bane increases the Resonator's ATK by 20% and grants 30% Resonance Liberation DMG Bonus for 5s.",
+            "refinementTexts": [
+              "Inflicting Havoc Bane increases the Resonator's ATK by 20% and grants 30% Resonance Liberation DMG Bonus for 5s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 5,
+              "modifiers": [
+                {
+                  "stat": "liberationDamage",
+                  "operation": "addPercent",
+                  "value": 30
+                },
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 20
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Havoc Bane inflicted"
+            },
+            "sourceType": "sonata",
+            "pieces": 3
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

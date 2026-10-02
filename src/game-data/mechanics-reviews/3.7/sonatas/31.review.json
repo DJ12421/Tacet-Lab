@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "sonata",
+  "entityId": "31",
+  "entityName": "Reel of Spliced Memories",
+  "sourceFingerprint": "0137e104f6a55264ebe4c5967e7d5b16a07d1fde0a478f8aca1437993c65da51",
+  "reviewedAt": "2026-09-05T10:02:52.591Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "986982e8878203d8143ad8359ad1b31647ca7b3efe1bc10f32d40ef9e33149b6",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:31:2:0",
+            "sourceName": "Reel of Spliced Memories",
+            "text": "ATK + 10%",
+            "refinementTexts": [
+              "ATK + 10%"
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2
+          },
+          {
+            "id": "sonata:31:5:0",
+            "sourceName": "Reel of Spliced Memories",
+            "text": "Inflicting Tune Rupture - Shifting or Tune Strain - Shifting on enemies increases the Tune Break Boost of Resonators in the team by 20 for 30s.",
+            "refinementTexts": [
+              "Inflicting Tune Rupture - Shifting or Tune Strain - Shifting on enemies increases the Tune Break Boost of Resonators in the team by 20 for 30s."
+            ],
+            "parsed": {
+              "scope": "team",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 30,
+              "modifiers": [
+                {
+                  "stat": "tuneBreakBoost",
+                  "operation": "addPercent",
+                  "value": 20
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Tune Rupture - Shifting/Tune Strain - Shifting inflicted"
+            },
+            "sourceType": "sonata",
+            "pieces": 5
+          },
+          {
+            "id": "sonata:31:5:1",
+            "sourceName": "Reel of Spliced Memories",
+            "text": "Effects of the same name do not stack.",
+            "refinementTexts": [
+              "Effects of the same name do not stack."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence.",
+                "Stack maximum was not explicit and requires review."
+              ],
+              "trigger": "While equipped"
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

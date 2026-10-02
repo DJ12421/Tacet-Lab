@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000174",
+  "entityName": "Tremor Warrior",
+  "sourceFingerprint": "64b5e8347e00267e976a463c1627de00c458a16b7b8e2451bb1eb9cd2fa1ae8f",
+  "reviewedAt": "2026-09-26T18:47:52.554Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "4adbeca4c91c53d44a569c0fcebee84eb40f6a20b60b78a7e6bf339203726168",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000174:skill",
+            "name": "Tremor Warrior - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Electro",
+            "expressions": [
+              "114.00%",
+              "136.80%",
+              "159.60%",
+              "182.40%",
+              "205.20%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.14
+              ],
+              [
+                1.368
+              ],
+              [
+                1.5959999999999999
+              ],
+              [
+                1.824
+              ],
+              [
+                2.052
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 8,
+            "sourceText": "Transform into a Tremor Warrior and viciously attack enemies in the front, dealing 114.00% Electro DMG.\nCD: 8s. · Transform into a Tremor Warrior and viciously attack enemies in the front, dealing 136.80% Electro DMG.\nCD: 8s. · Transform into a Tremor Warrior and viciously attack enemies in the front, dealing 159.60% Electro DMG.\nCD: 8s. · Transform into a Tremor Warrior and viciously attack enemies in the front, dealing 182.40% Electro DMG.\nCD: 8s. · Transform into a Tremor Warrior and viciously attack enemies in the front, dealing 205.20% Electro DMG.\nCD: 8s."
+          }
+        ],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

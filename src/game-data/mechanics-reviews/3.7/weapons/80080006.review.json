@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "80080006",
+  "entityName": "Projection: Formless Rectifier",
+  "sourceFingerprint": "538bd16e3b16c765b33568ae53c033865c92ab22517c9d5ae52891d8abc8df94",
+  "reviewedAt": "2026-09-05T10:14:57.228Z",
+  "sections": {
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

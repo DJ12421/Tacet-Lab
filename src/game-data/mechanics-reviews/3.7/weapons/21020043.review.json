@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21020043",
+  "entityName": "Sword of Voyager",
+  "sourceFingerprint": "f92b6b884e86284daeb98597915ff44564aa1d7652c0e85c21efdac1269783da",
+  "reviewedAt": "2026-09-09T05:28:04.594Z",
+  "sections": {
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "30439e0e3ece5b45bd6aca35195e9880c1c35797b9637046225ac930a564d934",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

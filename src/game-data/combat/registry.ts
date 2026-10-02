@@ -1,5 +1,6 @@
 import type { DamageType, EffectMechanics, EffectOperation, Element, MechanicsRegistry, Stat, StatValue } from '../../domain/combat'
 import { generatedCharacterCatalog } from '../characters.generated'
+import { generatedEchoCatalog } from '../echoes.generated'
 import { generatedWeaponCatalog } from '../weapons.generated'
 import { reviewedMechanicsCatalog } from './reviewed-mechanics.generated'
 import { supplementalCharacterActions } from './supplemental-character-actions'
@@ -91,20 +92,19 @@ const isSkillTreeStatNodeEffect = (effect: EffectMechanics) => /:\d+:(?:9|10|11|
 
 export const mechanicsRegistry: MechanicsRegistry = {
   dataVersion:reviewedMechanicsCatalog.dataVersion,
-  characters:Object.fromEntries(generatedCharacterCatalog.flatMap((character) => {
+  characters:Object.fromEntries(generatedCharacterCatalog.map((character) => {
     const reviewed = reviewedMechanicsCatalog.characters[character.id]
-    if (!reviewed) return []
-    return [[character.id, {
+    return [character.id, {
       id:character.id,
-      sourceId:reviewed.sourceId,
-      reviewFingerprint:reviewed.reviewFingerprint,
+      sourceId:reviewed?.sourceId ?? `character:${character.id}`,
+      reviewFingerprint:reviewed?.reviewFingerprint ?? `tba:${reviewedMechanicsCatalog.dataVersion}:${character.id}`,
       levelStats:character.levelStats.map((stats) => ({
         ...stats,
         critRate:character.baseStats.critRate / 100,
         critDamage:character.baseStats.critDamage / 100,
         energyRegen:1
       })),
-      actions:Object.fromEntries(Object.entries({ ...reviewed.actions, ...(supplementalCharacterActions[character.id] ?? {}) }).map(([id, action]) => {
+      actions:Object.fromEntries(Object.entries({ ...(reviewed?.actions ?? {}), ...(reviewed ? supplementalCharacterActions[character.id] ?? {} : {}) }).map(([id, action]) => {
         const correction = wutheringToolsActionClassification[id]
         const damageType = correction?.damageType ?? action.damageType
         const tags = [...new Set([...(action.tags ?? []), ...(correction?.addTags ?? [])])]
@@ -115,20 +115,26 @@ export const mechanicsRegistry: MechanicsRegistry = {
         }])) : 'formulas' in action ? action.formulas : undefined
         return [id, { ...action, damageType, ...(tags.length ? { tags } : {}), ...(formulas ? { formulas } : {}) }]
       })),
-      effects:normalizeReviewedEffects(reviewed.effects?.filter((effect) => !isSkillTreeStatNodeEffect(effect)))
-    }]]
+      effects:normalizeReviewedEffects(reviewed?.effects?.filter((effect) => !isSkillTreeStatNodeEffect(effect)))
+    }]
   })),
-  weapons:Object.fromEntries(generatedWeaponCatalog.flatMap((weapon) => {
+  weapons:Object.fromEntries(generatedWeaponCatalog.map((weapon) => {
     const reviewed = reviewedMechanicsCatalog.weapons[weapon.id]
-    if (!reviewed) return []
-    return [[weapon.id, {
+    return [weapon.id, {
       id:weapon.id,
-      sourceId:reviewed.sourceId,
-      reviewFingerprint:reviewed.reviewFingerprint,
+      sourceId:reviewed?.sourceId ?? `weapon:${weapon.id}`,
+      reviewFingerprint:reviewed?.reviewFingerprint ?? `tba:${reviewedMechanicsCatalog.dataVersion}:${weapon.id}`,
       levelStats:weapon.levelStats.map((stats) => ({ level:stats.level, atk:stats.baseAtk, stats:secondaryStat(weapon.secondaryStat, stats.secondaryStatValue) })),
-      effects:normalizeReviewedEffects(reviewed.effects)
-    }]]
+      effects:normalizeReviewedEffects(reviewed?.effects)
+    }]
   })),
-  echoes:Object.fromEntries(Object.entries(reviewedMechanicsCatalog.echoes ?? {}).map(([id, echo]) => [id, { ...echo, effects:normalizeReviewedEffects(echo.effects) ?? [] }])),
+  echoes:Object.fromEntries(generatedEchoCatalog.map((catalog) => {
+    const reviewed = reviewedMechanicsCatalog.echoes?.[catalog.id]
+    return [catalog.id, reviewed
+      ? { ...reviewed, effects:normalizeReviewedEffects(reviewed.effects) ?? [] }
+      : { id:catalog.id, name:catalog.name, description:catalog.skillDescription,
+          sourceId:`echo:${catalog.id}`, reviewFingerprint:`tba:${reviewedMechanicsCatalog.dataVersion}:${catalog.id}`,
+          actions:{}, effects:[] }]
+  })),
   sonatas:Object.fromEntries(Object.entries(reviewedMechanicsCatalog.sonatas ?? {}).map(([id, sonata]) => [id, { ...sonata, effects:normalizeReviewedEffects(sonata.effects) ?? [] }]))
 }

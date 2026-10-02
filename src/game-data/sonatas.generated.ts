@@ -486,6 +486,51 @@ export const generatedSonataCatalog:GeneratedSonataCatalogEntry[]=[
         "description": "Upon gaining a Shield, gain 5% increase in Crit. Rate for 5s, max 4 stacks. This effect can be triggered every 0.5s. At max stacks, gain 15% Fusion DMG Bonus."
       }
     ]
+  },
+  {
+    "id": "36",
+    "name": "Heart of Sworn Vigil",
+    "echoCount": 8,
+    "effects": [
+      {
+        "pieces": 2,
+        "description": "Electro DMG + 10%"
+      },
+      {
+        "pieces": 5,
+        "description": "Inflicting Electro Flare on the target, obtaining Unison, or triggering Unison Response increases the Resonator's Crit. Rate by 15% and grants them 22.5% Electro DMG for 30s."
+      }
+    ]
+  },
+  {
+    "id": "37",
+    "name": "Flash of Electric Reflection",
+    "echoCount": 7,
+    "effects": [
+      {
+        "pieces": 2,
+        "description": "Electro DMG + 10%"
+      },
+      {
+        "pieces": 5,
+        "description": "When the Resonator inflicts Electro Flare on enemies, they gain the following effects: Gain 10% Electro DMG Bonus for 15s. While this effect is active, casting Outro Skill grants the incoming Resonator 25% Electro DMG Bonus for 15s."
+      }
+    ]
+  },
+  {
+    "id": "38",
+    "name": "Flower of Tinged Yearning",
+    "echoCount": 7,
+    "effects": [
+      {
+        "pieces": 2,
+        "description": "Healing + 10%"
+      },
+      {
+        "pieces": 5,
+        "description": "Healing a Resonator in the team increases the ATK of all Resonators in the team by 10% for 30s. Effects of the same name cannot be stacked. While the effect is active, if the Resonator gains Unison or triggers Unison Response, their ATK is further increased by 15%."
+      }
+    ]
   }
 ]
 export const generatedSonataIconSources:Record<string,string>={
@@ -522,5 +567,8 @@ export const generatedSonataIconSources:Record<string,string>={
   "Shadow of Shattered Dreams": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconElementAttri/T_IconElementAttriAdam.webp",
   "Song of Feathered Trace": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconElementAttri/T_IconElementAttriYangyang.webp",
   "Heart of Evil's Purge": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconElementAttri/T_IconElementAttriQingxiao.webp",
-  "Lamp of Nether Road": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconElementAttri/T_IconElementAttriJingran.webp"
+  "Lamp of Nether Road": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconElementAttri/T_IconElementAttriJingran.webp",
+  "Heart of Sworn Vigil": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconElementAttri/T_IconElementAttriXin.webp",
+  "Flash of Electric Reflection": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconElementAttri/T_IconElementAttriThunderError.webp",
+  "Flower of Tinged Yearning": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconElementAttri/T_IconElementAttriCureA.webp"
 }

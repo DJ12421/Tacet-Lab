@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "sonata",
+  "entityId": "8",
+  "entityName": "Moonlit Clouds",
+  "sourceFingerprint": "d6407e2396de6c85fa43065c0ade6c91796ded3611def05f25333bf5be0779b0",
+  "reviewedAt": "2026-09-05T10:09:46.688Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "bb8f8b5618cafa702c2e769806f1c68c687768e4bd73b136957f990fda1bfe19",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:8:2:0",
+            "sourceName": "Moonlit Clouds",
+            "text": "Energy Regen + 10%.",
+            "refinementTexts": [
+              "Energy Regen + 10%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "energyRegen",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2
+          },
+          {
+            "id": "sonata:8:5:0",
+            "sourceName": "Moonlit Clouds",
+            "text": "Upon using Outro Skill, increases the ATK of the next Resonator by 22.5% for 15s.",
+            "refinementTexts": [
+              "Upon using Outro Skill, increases the ATK of the next Resonator by 22.5% for 15s."
+            ],
+            "parsed": {
+              "scope": "next",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Outro Skill casted",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 22.5
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

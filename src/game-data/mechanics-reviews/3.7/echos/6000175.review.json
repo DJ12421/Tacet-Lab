@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000175",
+  "entityName": "Flora Drone",
+  "sourceFingerprint": "baccf2d5f57fa0da000bf87f73d86ad6597b3c5fe3fe6d218df49355ee54f99a",
+  "reviewedAt": "2026-09-26T18:47:52.556Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "5f23da96f9a07d4fa1f5286c31b99bfe7c9f5ce2438be9faa23834d91b2c626d",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000175:skill",
+            "name": "Flora Drone - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Aero",
+            "expressions": [
+              "36.00%",
+              "43.20%",
+              "50.40%",
+              "57.60%",
+              "64.80%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.36
+              ],
+              [
+                0.43200000000000005
+              ],
+              [
+                0.504
+              ],
+              [
+                0.5760000000000001
+              ],
+              [
+                0.648
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 8,
+            "sourceText": "Summon a Flora Drone, dealing 36.00% Aero DMG to enemies and healing Resonators within range by 2.00% of their Max HP plus an additional 160 HP.\nCD: 8s · Summon a Flora Drone, dealing 43.20% Aero DMG to enemies and healing Resonators within range by 2.40% of their Max HP plus an additional 160 HP.\nCD: 8s · Summon a Flora Drone, dealing 50.40% Aero DMG to enemies and healing Resonators within range by 2.80% of their Max HP plus an additional 160 HP.\nCD: 8s · Summon a Flora Drone, dealing 57.60% Aero DMG to enemies and healing Resonators within range by 3.20% of their Max HP plus an additional 160 HP.\nCD: 8s · Summon a Flora Drone, dealing 64.80% Aero DMG to enemies and healing Resonators within range by 3.60% of their Max HP plus an additional 160 HP.\nCD: 8s"
+          },
+          {
+            "id": "echo:6000175:healing",
+            "name": "Flora Drone - Echo Skill Healing",
+            "damageType": "healing",
+            "skillSource": "echo",
+            "recipient": "team",
+            "scaling": "hp",
+            "expressions": [
+              "2%+160",
+              "2.4%+160",
+              "2.8%+160",
+              "3.2%+160",
+              "3.6%+160"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.02
+              ],
+              [
+                0.024
+              ],
+              [
+                0.027999999999999997
+              ],
+              [
+                0.032
+              ],
+              [
+                0.036000000000000004
+              ]
+            ],
+            "count": 1,
+            "cooldownSeconds": 8,
+            "sourceText": "Summon a Flora Drone, dealing 36.00% Aero DMG to enemies and healing Resonators within range by 2.00% of their Max HP plus an additional 160 HP.\nCD: 8s · Summon a Flora Drone, dealing 43.20% Aero DMG to enemies and healing Resonators within range by 2.40% of their Max HP plus an additional 160 HP.\nCD: 8s · Summon a Flora Drone, dealing 50.40% Aero DMG to enemies and healing Resonators within range by 2.80% of their Max HP plus an additional 160 HP.\nCD: 8s · Summon a Flora Drone, dealing 57.60% Aero DMG to enemies and healing Resonators within range by 3.20% of their Max HP plus an additional 160 HP.\nCD: 8s · Summon a Flora Drone, dealing 64.80% Aero DMG to enemies and healing Resonators within range by 3.60% of their Max HP plus an additional 160 HP.\nCD: 8s"
+          }
+        ],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

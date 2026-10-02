@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "390070075",
+  "entityName": "Sabyr Boar",
+  "sourceFingerprint": "26a8c928186bbc460f6c59648ed5e9bc05fb3c49eaaa5a090eadf738916cb2df",
+  "reviewedAt": "2026-09-26T18:28:09.756Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "0650259d98daad54d27588a85868ae6ce6bb161c14eb1d3a5cfdd52307158ab8",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390070075:skill",
+            "name": "Sabyr Boar - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Physical",
+            "expressions": [
+              "20.00%+40",
+              "23.00%+46",
+              "26.00%+52",
+              "29.00%+58",
+              "32.00%+64"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.2
+              ],
+              [
+                0.23
+              ],
+              [
+                0.26
+              ],
+              [
+                0.29
+              ],
+              [
+                0.32
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 8,
+            "sourceText": "Summon a Sabyr Boar to headbutt the enemy into the air, dealing 20.00%+40 Physical DMG.\nCD: 8s · Summon a Sabyr Boar to headbutt the enemy into the air, dealing 23.00%+46 Physical DMG.\nCD: 8s · Summon a Sabyr Boar to headbutt the enemy into the air, dealing 26.00%+52 Physical DMG.\nCD: 8s · Summon a Sabyr Boar to headbutt the enemy into the air, dealing 29.00%+58 Physical DMG.\nCD: 8s · Summon a Sabyr Boar to headbutt the enemy into the air, dealing 32.00%+64 Physical DMG.\nCD: 8s"
+          }
+        ],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

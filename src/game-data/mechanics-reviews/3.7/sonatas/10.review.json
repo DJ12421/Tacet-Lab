@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "sonata",
+  "entityId": "10",
+  "entityName": "Frosty Resolve",
+  "sourceFingerprint": "f9396c177adbca3f0fec08acce18f52c446029888e52b20d44f63eddf331026b",
+  "reviewedAt": "2026-10-01T00:25:48.503Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "bc7306ca2b01deef98b9d9e7a76cd46fdbadc6330cccadb58f4137ada106f98c",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:10:2:0",
+            "sourceName": "Frosty Resolve",
+            "text": "Resonance Skill DMG + 12%",
+            "refinementTexts": [
+              "Resonance Skill DMG + 12%"
+            ],
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "skillDamage",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2
+          },
+          {
+            "id": "sonata:10:5:0",
+            "sourceName": "Frosty Resolve",
+            "text": "Casting Resonance Skill grants 22.5% Glacio DMG Bonus for 15s",
+            "refinementTexts": [
+              "Casting Resonance Skill grants 22.5% Glacio DMG Bonus for 15s"
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Skill",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "Glacio",
+                  "operation": "addPercent",
+                  "value": 22.5,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5
+          },
+          {
+            "id": "sonata:10:5:1",
+            "sourceName": "Frosty Resolve",
+            "text": "casting Resonance Liberation increases Resonance Skill DMG by 18%, lasting for 5s. This effect stacks up to 2 times.",
+            "refinementTexts": [
+              "casting Resonance Liberation increases Resonance Skill DMG by 18%, lasting for 5s. This effect stacks up to 2 times."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 2
+              },
+              "trigger": "Resonance Liberation",
+              "durationSeconds": 5,
+              "modifiers": [
+                {
+                  "stat": "skillDamage",
+                  "operation": "addPercent",
+                  "value": 18,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "sonata",
+  "entityId": "7",
+  "entityName": "Rejuvenating Glow",
+  "sourceFingerprint": "d3528caa997855c757a4ad78709b6374c5e247a5d813103e20bba6d1b941b285",
+  "reviewedAt": "2026-09-09T05:07:52.915Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "93089d9709f83744bd637a789044aad216c4ecdae9a31f33c3f6838aff08412b",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:7:2:0",
+            "sourceName": "Rejuvenating Glow",
+            "text": "Healing Bonus + 10%.",
+            "refinementTexts": [
+              "Healing Bonus + 10%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "healingBonus",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2
+          },
+          {
+            "id": "sonata:7:5:0",
+            "sourceName": "Rejuvenating Glow",
+            "text": "Increases the ATK of all party members by 15% for 30s upon healing allies.",
+            "refinementTexts": [
+              "Increases the ATK of all party members by 15% for 30s upon healing allies."
+            ],
+            "parsed": {
+              "scope": "team",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 30,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 15
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Performed Healing"
+            },
+            "sourceType": "sonata",
+            "pieces": 5
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

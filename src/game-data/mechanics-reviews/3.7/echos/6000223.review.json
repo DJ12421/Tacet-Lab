@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000223",
+  "entityName": "Formrender",
+  "sourceFingerprint": "ea2626afbc3bba9c1ae66a3a95bc93357d618c00913ca990baaad8a0fa546fab",
+  "reviewedAt": "2026-10-01T00:25:48.525Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "4aab1f558eb8663cca180d7a7e127d7a87795a8e61a085f160d2039ce4e103ca",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000223:skill",
+            "name": "Formrender - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Fusion",
+            "expressions": [
+              "152.00%",
+              "182.40%",
+              "212.80%",
+              "243.20%",
+              "273.60%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.52
+              ],
+              [
+                1.824
+              ],
+              [
+                2.128
+              ],
+              [
+                2.432
+              ],
+              [
+                2.736
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 20,
+            "sourceText": "Use Echo Skill to summon a Formrender, dealing 152.00% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 10.00% Energy Regen.\nCD: 20s · Use Echo Skill to summon a Formrender, dealing 182.40% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 10.00% Energy Regen.\nCD: 20s · Use Echo Skill to summon a Formrender, dealing 212.80% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 10.00% Energy Regen.\nCD: 20s · Use Echo Skill to summon a Formrender, dealing 243.20% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 10.00% Energy Regen.\nCD: 20s · Use Echo Skill to summon a Formrender, dealing 273.60% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 10.00% Energy Regen.\nCD: 20s"
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "374caa789e4396f4ecb746b1d40316324a1c86b8672e12569503e4d65409ec40",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000223:effect:0",
+            "sourceName": "Formrender",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in the main slot gains 10.00% Energy Regen.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "energyRegen",
+                  "operation": "addPercent",
+                  "value": 10,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            }
+          }
+        ]
+      }
+    }
+  }
+}

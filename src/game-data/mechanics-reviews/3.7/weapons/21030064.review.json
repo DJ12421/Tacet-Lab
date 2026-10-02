@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21030064",
+  "entityName": "Novaburst",
+  "sourceFingerprint": "63aa4970315351e7e3779e56ada59351c507b55a02342f8ddd57fcdac19a4af6",
+  "reviewedAt": "2026-09-09T06:44:13.190Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "42265620d9c65d5db0bc4f482c43bfef4c35739447f06cf3c5153eee61f0686d",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21030064:effect:0",
+            "sourceName": "Ever-changing",
+            "text": "When the Resonator dashes or dodges, increases ATK by 4%, stacking up to 3 time(s). This effect lasts for 8s.",
+            "refinementTexts": [
+              "When the Resonator dashes or dodges, increases ATK by 4%, stacking up to 3 time(s). This effect lasts for 8s.",
+              "When the Resonator dashes or dodges, increases ATK by 5%, stacking up to 3 time(s). This effect lasts for 8s.",
+              "When the Resonator dashes or dodges, increases ATK by 6%, stacking up to 3 time(s). This effect lasts for 8s.",
+              "When the Resonator dashes or dodges, increases ATK by 7%, stacking up to 3 time(s). This effect lasts for 8s.",
+              "When the Resonator dashes or dodges, increases ATK by 8%, stacking up to 3 time(s). This effect lasts for 8s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "durationSeconds": 8,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 4
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Resonator dashes/dodges"
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 4
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the Resonator dashes/dodges"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the Resonator dashes/dodges"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 6
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the Resonator dashes/dodges"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 7
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the Resonator dashes/dodges"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 3
+                },
+                "durationSeconds": 8,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 8
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the Resonator dashes/dodges"
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

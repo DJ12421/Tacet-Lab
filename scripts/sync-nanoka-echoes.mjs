@@ -1,8 +1,8 @@
 import { writeFile } from 'node:fs/promises'
-const version='3.6',base=`https://static.nanoka.cc/ww/${version}`
+const version='3.7',base=`https://static.nanoka.cc/ww/${version}`
 const encoreBase='https://api-v2.encore.moe/api/en'
 const sources={characters:`${base}/character.json`,weapons:`${base}/weapon.json`,echoes:`${base}/echo.json`,titles:`${encoreBase}/title`}
-const names=['','Freezing Frost','Molten Rift','Void Thunder','Sierra Gale','Celestial Light','Havoc Eclipse','Rejuvenating Glow','Moonlit Clouds','Lingering Tunes','Frosty Resolve','Eternal Radiance','Midnight Veil','Empyrean Anthem','Tidebreaking Courage',,'Gusts of Welkin','Windward Pilgrimage','Flaming Clawprint','Dream of the Lost','Crown of Valor','Law of Harmony',"Flamewing's Shadow",'Thread of Severed Fate','Pact of Neonlight Leap','Halo of Starry Radiance','Rite of Gilded Revelation','Trailblazing Star','Chromatic Foam','Sound of True Name','Wishes of Quiet Snowfall','Reel of Spliced Memories','Shadow of Shattered Dreams','Song of Feathered Trace',"Heart of Evil's Purge",'Lamp of Nether Road']
+const names=['','Freezing Frost','Molten Rift','Void Thunder','Sierra Gale','Celestial Light','Havoc Eclipse','Rejuvenating Glow','Moonlit Clouds','Lingering Tunes','Frosty Resolve','Eternal Radiance','Midnight Veil','Empyrean Anthem','Tidebreaking Courage',,'Gusts of Welkin','Windward Pilgrimage','Flaming Clawprint','Dream of the Lost','Crown of Valor','Law of Harmony',"Flamewing's Shadow",'Thread of Severed Fate','Pact of Neonlight Leap','Halo of Starry Radiance','Rite of Gilded Revelation','Trailblazing Star','Chromatic Foam','Sound of True Name','Wishes of Quiet Snowfall','Reel of Spliced Memories','Shadow of Shattered Dreams','Song of Feathered Trace',"Heart of Evil's Purge",'Lamp of Nether Road','Heart of Sworn Vigil','Flash of Electric Reflection','Flower of Tinged Yearning']
 const load=async(source,attempt=0)=>{
   try{const response=await fetch(source);if(!response.ok)throw Error(`Nanoka ${response.status}: ${source}`);return response.json()}
   catch(error){if(attempt>=2)throw error;await new Promise(resolve=>setTimeout(resolve,400*(attempt+1)));return load(source,attempt+1)}
@@ -25,6 +25,10 @@ const skillInputDescription=(description='',inputs=[])=>description
 const spineAsset=path=>{
   const match=String(path??'').match(/\/Portraits\/([^/]+)\/([^/.]+)/i)
   return match?`https://static.nanoka.cc/assets/ww/portraits/${match[1]}/${match[2]}`:''
+}
+const encoreLuckdraws={
+  '1311':'C_Xin_01/c_xin_01',
+  '1312':'C_SuoMing_01/c_suoming_01'
 }
 const sonataIconFallbackBase='https://wuthering.gg/images/iconelement'
 const sonataAsset=async path=>{
@@ -210,7 +214,10 @@ const characters=Object.entries(rawCharacters).map(([id,c])=>{
   // Luckdraw asset, so preserve their formation Spine render as the fallback.
   const luckdrawId=String(detail?.audio??'').trim().toLowerCase()
   const formationSpineBaseUrl=spineAsset(animatedSkin?.formation_spine_skel)
-  const spineBaseUrl=luckdrawId?`https://static.nanoka.cc/assets/ww/luckdraw/${luckdrawId}/${luckdrawId}`:formationSpineBaseUrl
+  const encoreLuckdraw=encoreLuckdraws[id]
+  const spineBaseUrl=encoreLuckdraw
+    ? `https://api-v2.encore.moe/resource/Data/Game/Aki/UI/UIResources/UiLuckdraw/Spine/Character/${encoreLuckdraw}`
+    : luckdrawId?`https://static.nanoka.cc/assets/ww/luckdraw/${luckdrawId}/${luckdrawId}`:formationSpineBaseUrl
   const roles=Object.values(detail?.tag??{}).map(tag=>tag.name).filter(Boolean)
   return {id,name:c.en,title:detail?.chara_info?.talent_name??c.nickname??c.en,nickname:c.nickname,description:c.desc.replace(/<[^>]+>/g,''),rarity:c.rank,element:elements[c.element]??'Unknown',weaponType:weaponTypes[c.weapon]??'Unknown',role:roles[0]??'Resonator',roles,gender,baseStats:{hp:maxStats.hp,atk:maxStats.atk,def:maxStats.def,critRate:5,critDamage:150},levelStats,skillIcons,skillTreeExtras,sequenceIcons,skillInputGuide,flatSkillValues,attacks,articleUrl:`https://ww.nanoka.cc/character/${id}`,iconSourceUrl:asset(c.icon),portraitSourceUrl:asset(detail?.background??detail?.background_stand??c.icon),titleCardSourceUrl:titleCardByCharacter.get(c.en)??'',spineSkeletonSourceUrl:spineBaseUrl?`${spineBaseUrl}.skel`:'',spineAtlasSourceUrl:spineBaseUrl?`${spineBaseUrl}.atlas`:''}
 }).sort((a,b)=>a.name.localeCompare(b.name))

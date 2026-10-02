@@ -1,10 +1,10 @@
 import { readFile, readdir, writeFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 
-const upstreamRoot = resolve(process.argv[2] ?? '.codex-work/upstream-commit-age')
+const upstreamRoot = resolve(process.argv[2] ?? '.codex-work/wutheringtools-3.7')
 const characterRoot = join(upstreamRoot, 'src', 'characters')
 const weaponRoot = join(upstreamRoot, 'src', 'weapons')
-const reviewRoot = resolve('src/game-data/mechanics-reviews/3.6')
+const reviewRoot = resolve('src/game-data/mechanics-reviews/3.7')
 const weaponReviewRoot = join(reviewRoot, 'weapons')
 const outputPath = resolve('src/game-data/combat/wutheringtools-action-classification.generated.ts')
 const effectScopeOutputPath = resolve('src/game-data/combat/wutheringtools-effect-scopes.generated.ts')
@@ -222,7 +222,7 @@ for (const [characterKey, review] of reviewsByCharacter) {
     })
     if (matches.length !== 1) continue
     const modifierScopes = specificModifierScopes(matches[0], actionIdsByKey)
-    const scope = sharedActionScope(modifierScopes)
+    const scope = modifierScopes.length === entry.parsed.modifiers.length ? sharedActionScope(modifierScopes) : undefined
     const byOperation = !scope && modifierScopes.length === entry.parsed.modifiers.length && modifierScopes.every(Boolean) ? modifierScopes : undefined
     if (!scope && !byOperation) {
       if (entry.parsed.modifiers.every(modifier => modifier.actionIds?.length)) continue

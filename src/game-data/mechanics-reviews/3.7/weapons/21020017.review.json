@@ -1,0 +1,313 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21020017",
+  "entityName": "Somnoire Anchor",
+  "sourceFingerprint": "ace11013e525ddf9f8f3f88ac9082aa6d62da814be4c2a512bf7a2256758a6ed",
+  "reviewedAt": "2026-09-16T08:26:45.051Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "8af457d5b2264ef8c7f76a2e9e76b83382cb7316484029aece935f4f5f8e9276",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020017:effect:0",
+            "sourceName": "Meow!",
+            "text": "Gain 1 stack of Hiss when dealing damage to the target, with 1 stack generated every 1s.",
+            "refinementTexts": [
+              "Gain 1 stack of Hiss when dealing damage to the target, with 1 stack generated every 1s.",
+              "Gain 1 stack of Hiss when dealing damage to the target, with 1 stack generated every 1s.",
+              "Gain 1 stack of Hiss when dealing damage to the target, with 1 stack generated every 1s.",
+              "Gain 1 stack of Hiss when dealing damage to the target, with 1 stack generated every 1s.",
+              "Gain 1 stack of Hiss when dealing damage to the target, with 1 stack generated every 1s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence.",
+                "Stack maximum was not explicit and requires review.",
+                "A stack threshold was used as the selectable maximum and requires review."
+              ],
+              "trigger": "While equipped"
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21020017:effect:1",
+            "sourceName": "Meow!",
+            "text": "Hiss: each stack increases the wielder's ATK by 2% for 3s, stacking up to 10 times.",
+            "refinementTexts": [
+              "Hiss: each stack increases the wielder's ATK by 2% for 3s, stacking up to 10 times.",
+              "Hiss: each stack increases the wielder's ATK by 2.5% for 3s, stacking up to 10 times.",
+              "Hiss: each stack increases the wielder's ATK by 3% for 3s, stacking up to 10 times.",
+              "Hiss: each stack increases the wielder's ATK by 3.5% for 3s, stacking up to 10 times.",
+              "Hiss: each stack increases the wielder's ATK by 4% for 3s, stacking up to 10 times."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 10,
+                "key": "1"
+              },
+              "durationSeconds": 3,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 2,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Dmg dealt"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 10
+                },
+                "durationSeconds": 3,
+                "modifiers": [
+                  {
+                    "value": 2
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 10
+                },
+                "durationSeconds": 3,
+                "modifiers": [
+                  {
+                    "value": 2.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 10
+                },
+                "durationSeconds": 3,
+                "modifiers": [
+                  {
+                    "value": 3
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 10
+                },
+                "durationSeconds": 3,
+                "modifiers": [
+                  {
+                    "value": 3.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 10
+                },
+                "durationSeconds": 3,
+                "modifiers": [
+                  {
+                    "value": 4
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "While equipped"
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21020017:effect:2",
+            "sourceName": "Meow!",
+            "text": "Switching off the wielder clears all stacks.",
+            "refinementTexts": [
+              "Switching off the wielder clears all stacks.",
+              "Switching off the wielder clears all stacks.",
+              "Switching off the wielder clears all stacks.",
+              "Switching off the wielder clears all stacks.",
+              "Switching off the wielder clears all stacks."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence.",
+                "Stack maximum was not explicit and requires review."
+              ],
+              "trigger": "While equipped"
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21020017:effect:3",
+            "sourceName": "Meow!",
+            "text": "Gaining 10 stacks increases the wielder's Crit. Rate by 6%.",
+            "refinementTexts": [
+              "Gaining 10 stacks increases the wielder's Crit. Rate by 6%.",
+              "Gaining 10 stacks increases the wielder's Crit. Rate by 7.5%.",
+              "Gaining 10 stacks increases the wielder's Crit. Rate by 9%.",
+              "Gaining 10 stacks increases the wielder's Crit. Rate by 10.5%.",
+              "Gaining 10 stacks increases the wielder's Crit. Rate by 12%."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 10,
+                "key": "1"
+              },
+              "modifiers": [
+                {
+                  "stat": "critRate",
+                  "operation": "addPercent",
+                  "value": 6,
+                  "scope": "self",
+                  "scaling": "threshold",
+                  "minimumActivation": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "10 stacks gained"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "modifiers": [
+                  {
+                    "value": 6
+                  }
+                ],
+                "confidence": "review",
+                "warnings": [
+                  "Stack maximum was not explicit and requires review."
+                ],
+                "trigger": "10 stacks gained"
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "modifiers": [
+                  {
+                    "value": 7.5
+                  }
+                ],
+                "confidence": "review",
+                "warnings": [
+                  "Stack maximum was not explicit and requires review."
+                ],
+                "trigger": "10 stacks gained"
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "modifiers": [
+                  {
+                    "value": 9
+                  }
+                ],
+                "confidence": "review",
+                "warnings": [
+                  "Stack maximum was not explicit and requires review."
+                ],
+                "trigger": "10 stacks gained"
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "modifiers": [
+                  {
+                    "value": 10.5
+                  }
+                ],
+                "confidence": "review",
+                "warnings": [
+                  "Stack maximum was not explicit and requires review."
+                ],
+                "trigger": "10 stacks gained"
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "modifiers": [
+                  {
+                    "value": 12
+                  }
+                ],
+                "confidence": "review",
+                "warnings": [
+                  "Stack maximum was not explicit and requires review."
+                ],
+                "trigger": "10 stacks gained"
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

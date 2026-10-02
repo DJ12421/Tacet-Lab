@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000186",
+  "entityName": "Sabercat Prowler",
+  "sourceFingerprint": "bfbb1ad4016fd4a60587004f1f4bc9c826b5df3bd40efe8d3c0df97248519d80",
+  "reviewedAt": "2026-09-26T18:47:52.579Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "ebb7dad2a563b8c0b3b4c57ffb2d85ecf859ac54050f1036f973db0c7ada904b",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000186:skill",
+            "name": "Sabercat Prowler - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Havoc",
+            "expressions": [
+              "107.00%",
+              "128.40%",
+              "149.80%",
+              "171.20%",
+              "192.60%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.07
+              ],
+              [
+                1.284
+              ],
+              [
+                1.4980000000000002
+              ],
+              [
+                1.712
+              ],
+              [
+                1.926
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 15,
+            "sourceText": "Summon a Sabercat Prowler to fire beams at enemies, dealing 107.00% Havoc DMG.\nCD: 15s. · Summon a Sabercat Prowler to fire beams at enemies, dealing 128.40% Havoc DMG.\nCD: 15s. · Summon a Sabercat Prowler to fire beams at enemies, dealing 149.80% Havoc DMG.\nCD: 15s. · Summon a Sabercat Prowler to fire beams at enemies, dealing 171.20% Havoc DMG.\nCD: 15s. · Summon a Sabercat Prowler to fire beams at enemies, dealing 192.60% Havoc DMG.\nCD: 15s."
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

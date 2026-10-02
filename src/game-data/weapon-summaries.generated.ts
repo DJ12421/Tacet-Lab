@@ -134,6 +134,17 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21020026_UI.webp"
   },
   {
+    "id": "21050116",
+    "name": "Blooming Jadehaven",
+    "rarity": 5,
+    "type": "Rectifier",
+    "baseAtk": 587,
+    "secondaryStat": "Crit. Rate",
+    "secondaryStatValue": "24.3%",
+    "articleUrl": "https://ww.nanoka.cc/weapon/21050116",
+    "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21050116_UI.webp"
+  },
+  {
     "id": "21050045",
     "name": "Boson Astrolabe",
     "rarity": 5,
@@ -1254,6 +1265,17 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "secondaryStatValue": "77%",
     "articleUrl": "https://ww.nanoka.cc/weapon/21020036",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21020025_UI.webp"
+  },
+  {
+    "id": "21020107",
+    "name": "Unspoken Rue",
+    "rarity": 5,
+    "type": "Sword",
+    "baseAtk": 587,
+    "secondaryStat": "Crit. Rate",
+    "secondaryStatValue": "24.3%",
+    "articleUrl": "https://ww.nanoka.cc/weapon/21020107",
+    "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21020107_UI.webp"
   },
   {
     "id": "21050024",

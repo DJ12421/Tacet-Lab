@@ -23,9 +23,9 @@ const DEBUG_LAYOUT_STORAGE_KEY = 'tacet-lab-character-card-layout-debug-v1'
 const LEVELS = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90]
 const SKILLS = [
   ['normalAttack', 'Normal Attack'],
-  ['resonanceSkill', 'Resonance Skill'],
+  ['resonanceSkill', 'Res. Skill'],
   ['forteCircuit', 'Forte Circuit'],
-  ['resonanceLiberation', 'Resonance Liberation'],
+  ['resonanceLiberation', 'Res. Liberation'],
   ['introSkill', 'Intro Skill']
 ] as const
 const ELEMENT_ACCENTS: Record<string, string> = { Spectro: '#e8cc72', Fusion: '#ee715e', Glacio: '#76cef2', Electro: '#b581ef', Aero: '#62d7ae', Havoc: '#d36adf' }

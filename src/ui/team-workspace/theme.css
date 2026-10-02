@@ -438,6 +438,16 @@
   background: linear-gradient(90deg,transparent 12%,rgba(8,12,13,.1) 38%,rgba(8,12,13,.88) 72%);
 }
 
+.team-gallery-original .tw-gallery-member.empty {
+  border-bottom-color: rgba(255,255,255,.1);
+  border-left-color: rgba(255,255,255,.1);
+  background: #080c0d;
+}
+
+.team-gallery-original .tw-gallery-member.empty::after {
+  background: none;
+}
+
 .team-gallery-original .tw-gallery-character strong {
   color: #edf2f0;
 }

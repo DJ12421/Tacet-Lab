@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000048",
+  "entityName": "Mech Abomination",
+  "sourceFingerprint": "f3552acd5a47a08448fa85d35a209a81e18b7844d2bc144e08e06e05f6e54c1d",
+  "reviewedAt": "2026-09-26T18:36:09.846Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "d666d156efe72d61e46b4c4160663b6fff86be1566fc8990119b3c1c7dcb2ada",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000048:skill:1",
+            "name": "Mech Abomination - Echo Skill 1",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Electro",
+            "expressions": [
+              "30.40%",
+              "34.96%",
+              "39.52%",
+              "44.08%",
+              "48.64%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.304
+              ],
+              [
+                0.3496
+              ],
+              [
+                0.39520000000000005
+              ],
+              [
+                0.44079999999999997
+              ],
+              [
+                0.4864
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 20,
+            "sourceText": "Strike enemies in front, dealing 30.40% Electro DMG, and summon Mech Waste to attack. Mech Waste deals 200.00% Electro DMG on hit and explodes after a while, dealing 100.00% Electro DMG.\nAfter casting this Echo Skill, increase the current character's ATK by 12.00% for 15s.\nDamage dealt by Mech Waste equals to the Resonator's Outro Skill DMG.\nCD: 20s · Strike enemies in front, dealing 34.96% Electro DMG, and summon Mech Waste to attack. Mech Waste deals 230.00% Electro DMG on hit and explodes after a while, dealing 115.00% Electro DMG.\nAfter casting this Echo Skill, increase the current character's ATK by 12.00% for 15s.\nDamage dealt by Mech Waste equals to the Resonator's Outro Skill DMG.\nCD: 20s · Strike enemies in front, dealing 39.52% Electro DMG, and summon Mech Waste to attack. Mech Waste deals 260.00% Electro DMG on hit and explodes after a while, dealing 130.00% Electro DMG.\nAfter casting this Echo Skill, increase the current character's ATK by 12.00% for 15s.\nDamage dealt by Mech Waste equals to the Resonator's Outro Skill DMG.\nCD: 20s · Strike enemies in front, dealing 44.08% Electro DMG, and summon Mech Waste to attack. Mech Waste deals 290.00% Electro DMG on hit and explodes after a while, dealing 145.00% Electro DMG.\nAfter casting this Echo Skill, increase the current character's ATK by 12.00% for 15s.\nDamage dealt by Mech Waste equals to the Resonator's Outro Skill DMG.\nCD: 20s · Strike enemies in front, dealing 48.64% Electro DMG, and summon Mech Waste to attack. Mech Waste deals 320.00% Electro DMG on hit and explodes after a while, dealing 160.00% Electro DMG.\nAfter casting this Echo Skill, increase the current character's ATK by 12.00% for 15s.\nDamage dealt by Mech Waste equals to the Resonator's Outro Skill DMG.\nCD: 20s"
+          },
+          {
+            "id": "echo:6000048:skill:2",
+            "name": "Mech Abomination - Echo Skill 2",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Electro",
+            "expressions": [
+              "200.00%+100.00%",
+              "230.00%+115.00%",
+              "260.00%+130.00%",
+              "290.00%+145.00%",
+              "320.00%+160.00%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                2,
+                1
+              ],
+              [
+                2.3,
+                1.15
+              ],
+              [
+                2.6,
+                1.3
+              ],
+              [
+                2.9,
+                1.45
+              ],
+              [
+                3.2,
+                1.6
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              1
+            ],
+            "count": 2,
+            "cooldownSeconds": 20,
+            "sourceText": "Strike enemies in front, dealing 30.40% Electro DMG, and summon Mech Waste to attack. Mech Waste deals 200.00% Electro DMG on hit and explodes after a while, dealing 100.00% Electro DMG.\nAfter casting this Echo Skill, increase the current character's ATK by 12.00% for 15s.\nDamage dealt by Mech Waste equals to the Resonator's Outro Skill DMG.\nCD: 20s · Strike enemies in front, dealing 34.96% Electro DMG, and summon Mech Waste to attack. Mech Waste deals 230.00% Electro DMG on hit and explodes after a while, dealing 115.00% Electro DMG.\nAfter casting this Echo Skill, increase the current character's ATK by 12.00% for 15s.\nDamage dealt by Mech Waste equals to the Resonator's Outro Skill DMG.\nCD: 20s · Strike enemies in front, dealing 39.52% Electro DMG, and summon Mech Waste to attack. Mech Waste deals 260.00% Electro DMG on hit and explodes after a while, dealing 130.00% Electro DMG.\nAfter casting this Echo Skill, increase the current character's ATK by 12.00% for 15s.\nDamage dealt by Mech Waste equals to the Resonator's Outro Skill DMG.\nCD: 20s · Strike enemies in front, dealing 44.08% Electro DMG, and summon Mech Waste to attack. Mech Waste deals 290.00% Electro DMG on hit and explodes after a while, dealing 145.00% Electro DMG.\nAfter casting this Echo Skill, increase the current character's ATK by 12.00% for 15s.\nDamage dealt by Mech Waste equals to the Resonator's Outro Skill DMG.\nCD: 20s · Strike enemies in front, dealing 48.64% Electro DMG, and summon Mech Waste to attack. Mech Waste deals 320.00% Electro DMG on hit and explodes after a while, dealing 160.00% Electro DMG.\nAfter casting this Echo Skill, increase the current character's ATK by 12.00% for 15s.\nDamage dealt by Mech Waste equals to the Resonator's Outro Skill DMG.\nCD: 20s"
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "5bfe94b60e69b67f41e234f90d47df08c1339da134a7a52722069e7625c411ef",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000048:effect:0",
+            "sourceName": "Mech Abomination",
+            "sourceType": "echo",
+            "text": "After casting this Echo Skill, increase the current character's ATK by 12.00% for 15s.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "this Echo Skill cast",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

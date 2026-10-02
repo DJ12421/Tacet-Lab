@@ -16,6 +16,7 @@
 @import './styles/archive/base.css';
 @import './styles/shell/footer.css';
 @import './styles/legal.css';
+@import './styles/partnerships.css';
 @import './styles/scanner/workflow.css';
 @import './styles/core/legacy-responsive.css';
 @import './styles/weapons/base.css';
@@ -42,7 +43,7 @@ body:has(.modal-backdrop,.catalog-picker-backdrop,.weapon-detail-backdrop,.chara
   overflow-y: hidden;
 }
 
-.modal-backdrop:not(.scan-review-backdrop):not(.import-data-backdrop):not(.roll-quality-backdrop):not(.echo-editor-backdrop):not(.cs-weight-editor-backdrop)>* {
+.modal-backdrop:not(.scan-review-backdrop):not(.import-data-backdrop):not(.roll-quality-backdrop):not(.echo-editor-backdrop):not(.cs-weight-editor-backdrop):not(.tw-build-management-backdrop)>* {
   max-height: none;
   overflow: visible;
 }
@@ -51,8 +52,7 @@ body:has(.modal-backdrop,.catalog-picker-backdrop,.weapon-detail-backdrop,.chara
   .tw-rotation-analysis,
   .tw-member-page.section-overview .tw-weapon-passive,
   .tw-main-echo-details .game-description,
-  .optimizer-exclusion-list,
-  .optimizer-sonata-picker>div:last-child
+  .optimizer-exclusion-list
 ) {
   height: auto;
   max-height: none;
@@ -90,4 +90,21 @@ body:has(.modal-backdrop,.catalog-picker-backdrop,.weapon-detail-backdrop,.chara
 .detail-weapon-body .weapon-stat-icon {
   width: 16px;
   height: 16px;
+}
+
+/* Keep native arrows aligned while matching Archive's dark select controls. */
+:is(.content,.modal-backdrop) :not(.cs-loadout-source) > select:not([multiple]) {
+  min-height: 36px;
+  padding: 0 9px;
+  border: 1px solid rgba(141,228,212,.25);
+  border-radius: 4px;
+  background-color: #070b0c;
+  color: #e6eeeb;
+  color-scheme: dark;
+  cursor: pointer;
+}
+
+:is(.content,.modal-backdrop) :not(.cs-loadout-source) > select:not([multiple]):hover,
+:is(.content,.modal-backdrop) :not(.cs-loadout-source) > select:not([multiple]):focus-visible {
+  border-color: rgba(141,228,212,.65);
 }

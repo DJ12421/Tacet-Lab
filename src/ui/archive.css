@@ -290,10 +290,9 @@
 .archive-filter-row {
   display: flex;
   align-items: end;
+  flex-wrap: wrap;
   gap: 12px;
-  overflow-x: auto;
   padding-bottom: 2px;
-  scrollbar-width: thin;
 }
 
 .archive-filter-row>.owned-chip-filter {
@@ -766,10 +765,9 @@
   min-width: 0;
   display: flex;
   align-items: end;
+  flex-wrap: wrap;
   gap: 9px;
-  overflow-x: auto;
   padding-bottom: 2px;
-  scrollbar-width: thin;
 }
 
 .archive-toolbar-row:has(.archive-sort.open) {
@@ -796,7 +794,25 @@
 
 .archive-toolbar-row .filter-chips button {
   min-height: 34px;
-  border-radius:0px;
+}
+
+.archive-browser .archive-toolbar-row .filter-chips,
+.archive-browser .archive-toolbar-row .sonata-picker-trigger,
+.archive-browser .archive-toolbar-row .sonata-picker-menu {
+  border-radius: 6px;
+}
+
+.archive-browser .archive-toolbar-row .filter-chips {
+  flex-wrap: wrap;
+  overflow: visible;
+}
+
+.archive-browser .archive-toolbar-row .filter-chips button:first-child {
+  border-radius: 5px 0 0 5px;
+}
+
+.archive-browser .archive-toolbar-row .filter-chips button:last-child {
+  border-radius: 0 5px 5px 0;
 }
 
 .archive-browser .archive-cost.cost-1 {
@@ -896,8 +912,8 @@
   right: 0;
   top: calc(100% + 7px);
   width: min(330px,calc(100vw - 32px));
-  max-height: none;
-  overflow: visible;
+  max-height: min(50dvh,360px);
+  overflow-y: auto;
   display: grid;
   grid-template-columns: minmax(0,1fr);
   gap: 2px;
@@ -941,9 +957,8 @@
     display: flex;
     width: 100%;
     max-width: 100%;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none;
+    flex-wrap: wrap;
+    overflow: visible;
   }
 
   .archive-browser .archive-toolbar-row>.owned-chip-filter .filter-chips::-webkit-scrollbar {
@@ -1082,6 +1097,7 @@
   min-width: 0;
   padding: 10px;
   border: 1px solid rgba(255,255,255,.07);
+  border-radius: 6px;
   background: rgba(255,255,255,.025);
 }
 
@@ -1275,8 +1291,7 @@
 }
 
 .archive-detail-role-list {
-  flex-wrap: nowrap;
-  overflow-x: auto;
+  flex-wrap: wrap;
 }
 
 .archive-role-chip,
@@ -1284,6 +1299,7 @@
   flex: 0 0 auto;
   padding: 5px 8px;
   border: 1px solid rgba(141,228,212,.18);
+  border-radius: 5px;
   background: rgba(141,228,212,.055);
   font-size: var(--font-size-caption);
   font-weight: 600;
@@ -1333,4 +1349,20 @@
 
 .archive-detail-echo .archive-detail-facts {
   grid-template-columns: 88px minmax(0,1fr);
+}
+.archive-tba {
+  font-style: normal;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: #efc989;
+}
+
+.archive-tba-note {
+  margin: 0 0 1rem;
+  padding: .8rem 1rem;
+  border: 1px solid rgba(239, 201, 137, .35);
+  border-radius: .7rem;
+  color: #f2d8ab;
+  background: rgba(105, 75, 30, .2);
 }

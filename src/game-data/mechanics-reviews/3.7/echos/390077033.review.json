@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "390077033",
+  "entityName": "Havoc Dreadmane",
+  "sourceFingerprint": "27281cabfc53fc8d692fb45106801080f936f3c5514148d6fa0400b602e61dd4",
+  "reviewedAt": "2026-09-26T18:28:52.780Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "2185815120b386fb3885f2a0fffe81ea1ea605c7c80406debdc631a77379346e",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390077033:skill",
+            "name": "Havoc Dreadmane - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Havoc",
+            "expressions": [
+              "72.90%+48.60%",
+              "83.84%+55.89%",
+              "94.77%+63.18%",
+              "105.71%+70.47%",
+              "116.64%+77.76%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.7290000000000001,
+                0.486,
+                0.7290000000000001,
+                0.486
+              ],
+              [
+                0.8384,
+                0.5589,
+                0.8384,
+                0.5589
+              ],
+              [
+                0.9477,
+                0.6318,
+                0.9477,
+                0.6318
+              ],
+              [
+                1.0571,
+                0.7047,
+                1.0571,
+                0.7047
+              ],
+              [
+                1.1664,
+                0.7776000000000001,
+                1.1664,
+                0.7776000000000001
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              1,
+              0,
+              1
+            ],
+            "count": 4,
+            "cooldownSeconds": 15,
+            "sourceText": "Transform into a Havoc Dreadmane to perform up to 2 tail strikes. Each strike deals 72.90% Havoc DMG and inflicts an additional instance of 48.60% Havoc DMG upon hitting the target.\nCD: 15s · Transform into a Havoc Dreadmane to perform up to 2 tail strikes. Each strike deals 83.84% Havoc DMG and inflicts an additional instance of 55.89% Havoc DMG upon hitting the target.\nCD: 15s · Transform into a Havoc Dreadmane to perform up to 2 tail strikes. Each strike deals 94.77% Havoc DMG and inflicts an additional instance of 63.18% Havoc DMG upon hitting the target.\nCD: 15s · Transform into a Havoc Dreadmane to perform up to 2 tail strikes. Each strike deals 105.71% Havoc DMG and inflicts an additional instance of 70.47% Havoc DMG upon hitting the target.\nCD: 15s · Transform into a Havoc Dreadmane to perform up to 2 tail strikes. Each strike deals 116.64% Havoc DMG and inflicts an additional instance of 77.76% Havoc DMG upon hitting the target.\nCD: 15s"
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

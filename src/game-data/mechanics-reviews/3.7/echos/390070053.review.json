@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "390070053",
+  "entityName": "Electro Predator",
+  "sourceFingerprint": "8ed336bdcd0c15547c7e384acde2414b3a6c25308a6ad4defa20132e744eff5b",
+  "reviewedAt": "2026-09-26T18:27:50.814Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "5b912a837077ed027828bdf78810733ddda2a8cc704f4ef43f4222630219a3c4",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390070053:skill",
+            "name": "Electro Predator - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Electro",
+            "expressions": [
+              "10.80%+28.80%",
+              "12.42%+33.12%",
+              "14.04%+37.44%",
+              "15.66%+41.76%",
+              "17.28%+46.08%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.10800000000000001,
+                0.10800000000000001,
+                0.10800000000000001,
+                0.10800000000000001,
+                0.28800000000000003
+              ],
+              [
+                0.1242,
+                0.1242,
+                0.1242,
+                0.1242,
+                0.3312
+              ],
+              [
+                0.1404,
+                0.1404,
+                0.1404,
+                0.1404,
+                0.37439999999999996
+              ],
+              [
+                0.1566,
+                0.1566,
+                0.1566,
+                0.1566,
+                0.41759999999999997
+              ],
+              [
+                0.1728,
+                0.1728,
+                0.1728,
+                0.1728,
+                0.4608
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0,
+              0,
+              0,
+              1
+            ],
+            "count": 5,
+            "cooldownSeconds": 8,
+            "sourceText": "Summon an Electro Predator to shoot the enemy 5 times. The first 4 shots deals 10.80% Electro DMG, and the last deals 28.80% Electro DMG.\nCD: 8s · Summon an Electro Predator to shoot the enemy 5 times. The first 4 shots deals 12.42% Electro DMG, and the last deals 33.12% Electro DMG.\nCD: 8s · Summon an Electro Predator to shoot the enemy 5 times. The first 4 shots deals 14.04% Electro DMG, and the last deals 37.44% Electro DMG.\nCD: 8s · Summon an Electro Predator to shoot the enemy 5 times. The first 4 shots deals 15.66% Electro DMG, and the last deals 41.76% Electro DMG.\nCD: 8s · Summon an Electro Predator to shoot the enemy 5 times. The first 4 shots deals 17.28% Electro DMG, and the last deals 46.08% Electro DMG.\nCD: 8s"
+          }
+        ],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

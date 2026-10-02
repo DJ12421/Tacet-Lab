@@ -187,4 +187,4 @@ export interface OptimizerRun {
 }
 export interface AccountDocument { schemaVersion: 1 | 2 | 3 | 4 | 5 | 6 | 7; gameDataVersion: string; exportedAt: string; echoes: Echo[]; characters: OwnedCharacter[]; weapons: OwnedWeapon[]; builds: Build[]; equippedLoadouts?: EquippedLoadout[]; theorycraftBuilds?: TheorycraftBuild[]; teams: Team[]; optimizerProfiles?: OptimizerProfile[]; optimizerRuns?: OptimizerRun[]; settings: AppSettings }
 export interface AppSettings { displayName: string; uid: string; privacyMode: boolean; background: 'signal' | 'tacet' | 'plain'; scanIntervalMs: number; roverGender: 'male' | 'female'; liveCharacterArt: boolean; scoreWeights: Record<string, Partial<Record<StatKey, number>>>; characterSubstatWeights: Record<string, Partial<Record<StatKey, number>>>; characterEnergyRegenMinimums: Record<string, number> }
-export type AppView = 'dashboard' | 'archive' | 'scanner' | 'echoes' | 'weapons' | 'characters' | 'teams' | 'legal'
+export type AppView = 'dashboard' | 'archive' | 'scanner' | 'echoes' | 'weapons' | 'characters' | 'teams' | 'partnerships' | 'legal'

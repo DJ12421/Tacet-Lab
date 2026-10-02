@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000096",
+  "entityName": "Rage Against the Statue",
+  "sourceFingerprint": "3278ce88a57415d99afd13d870162fa336ed0237f89409fb12e0567e0179fda0",
+  "reviewedAt": "2026-09-26T18:47:52.460Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "d74aef82e2f48428e04d772c58831b0d4197d574ad41650668e25efd3888c19d",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000096:skill:1",
+            "name": "Rage Against the Statue - Echo Skill 1",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Spectro",
+            "expressions": [
+              "174.00%",
+              "208.80%",
+              "243.60%",
+              "278.40%",
+              "313.20%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.74
+              ],
+              [
+                2.088
+              ],
+              [
+                2.436
+              ],
+              [
+                2.784
+              ],
+              [
+                3.1319999999999997
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 20,
+            "sourceText": "Transform into Rage Against the Statue to attack enemies, dealing 174.00% Spectro DMG. Hold the Echo Skill to maintain the Echo form and charge towards enemies, dealing 261.00% Spectro DMG.\nCD: 20s. · Transform into Rage Against the Statue to attack enemies, dealing 208.80% Spectro DMG. Hold the Echo Skill to maintain the Echo form and charge towards enemies, dealing 313.20% Spectro DMG.\nCD: 20s. · Transform into Rage Against the Statue to attack enemies, dealing 243.60% Spectro DMG. Hold the Echo Skill to maintain the Echo form and charge towards enemies, dealing 365.40% Spectro DMG.\nCD: 20s. · Transform into Rage Against the Statue to attack enemies, dealing 278.40% Spectro DMG. Hold the Echo Skill to maintain the Echo form and charge towards enemies, dealing 417.60% Spectro DMG.\nCD: 20s. · Transform into Rage Against the Statue to attack enemies, dealing 313.20% Spectro DMG. Hold the Echo Skill to maintain the Echo form and charge towards enemies, dealing 469.80% Spectro DMG.\nCD: 20s."
+          },
+          {
+            "id": "echo:6000096:skill:2",
+            "name": "Rage Against the Statue - Held Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Spectro",
+            "expressions": [
+              "261.00%",
+              "313.20%",
+              "365.40%",
+              "417.60%",
+              "469.80%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                2.61
+              ],
+              [
+                3.1319999999999997
+              ],
+              [
+                3.654
+              ],
+              [
+                4.176
+              ],
+              [
+                4.698
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 20,
+            "sourceText": "Transform into Rage Against the Statue to attack enemies, dealing 174.00% Spectro DMG. Hold the Echo Skill to maintain the Echo form and charge towards enemies, dealing 261.00% Spectro DMG.\nCD: 20s. · Transform into Rage Against the Statue to attack enemies, dealing 208.80% Spectro DMG. Hold the Echo Skill to maintain the Echo form and charge towards enemies, dealing 313.20% Spectro DMG.\nCD: 20s. · Transform into Rage Against the Statue to attack enemies, dealing 243.60% Spectro DMG. Hold the Echo Skill to maintain the Echo form and charge towards enemies, dealing 365.40% Spectro DMG.\nCD: 20s. · Transform into Rage Against the Statue to attack enemies, dealing 278.40% Spectro DMG. Hold the Echo Skill to maintain the Echo form and charge towards enemies, dealing 417.60% Spectro DMG.\nCD: 20s. · Transform into Rage Against the Statue to attack enemies, dealing 313.20% Spectro DMG. Hold the Echo Skill to maintain the Echo form and charge towards enemies, dealing 469.80% Spectro DMG.\nCD: 20s."
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

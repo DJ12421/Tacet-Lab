@@ -769,27 +769,67 @@
   width: min(1380px,96vw);
 }
 
+.cs-echo-picker > header .cs-picker-close {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  font-size: 24px;
+  line-height: 1;
+}
+
 .cs-echo-picker-filters {
   display: grid;
-  gap: 10px;
-  padding: 12px;
+  gap: 6px;
+  padding: 8px 12px;
   border-bottom: 1px solid rgba(var(--cs-accent-rgb),.25);
   background: #070b0c;
 }
 
 .cs-echo-picker-filters .filter-heading {
   margin: 0;
+  padding-bottom: 0;
+}
+
+.cs-echo-picker-filter-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cs-echo-picker-filter-actions .danger {
+  min-height: 32px;
+  padding: 4px 10px;
 }
 
 .cs-echo-picker-filters .filter-body {
   display: grid;
-  grid-template-columns: repeat(4,minmax(150px,1fr));
-  gap: 9px;
+  grid-template-columns: repeat(12,minmax(0,1fr));
+  gap: 6px;
   align-items: end;
+  padding-top: 0;
 }
 
 .cs-echo-picker-filters .filter-group {
   min-width: 0;
+  grid-column: span 6;
+}
+
+.cs-echo-picker-filters .filter-body > label {
+  grid-column: span 2;
+  min-width: 0;
+}
+
+.cs-echo-picker-filters :is(.filter-chips,.filter-body select,.multi-select-trigger) {
+  min-height: 34px;
+}
+
+.cs-echo-picker-filters .filter-body > .check {
+  display: flex;
+  align-items: center;
+  min-height: 34px;
+  gap: 5px;
+  letter-spacing: normal;
+  text-transform: none;
 }
 
 .cs-echo-picker-filters .multi-select-menu {
@@ -801,6 +841,11 @@
   grid-template-columns: repeat(auto-fill,minmax(270px,1fr));
   gap: 10px;
   overflow: auto;
+}
+
+.cs-echo-picker .echo-picker-list > .echo-pagination {
+  grid-column: 1/-1;
+  margin: 0;
 }
 
 .cs-echo-picker .echo-picker-options {
@@ -832,6 +877,9 @@
   }
   .cs-echo-picker-filters .filter-body {
     grid-template-columns: 1fr;
+  }
+  .cs-echo-picker-filters .filter-body > :is(.filter-group,label) {
+    grid-column: 1;
   }
   .cs-echo-picker .echo-picker-list {
     grid-template-columns: 1fr;

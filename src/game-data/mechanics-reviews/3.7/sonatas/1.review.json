@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "sonata",
+  "entityId": "1",
+  "entityName": "Freezing Frost",
+  "sourceFingerprint": "a73ef39c8f1579f0c329f5cd2a286c99bbc3b40f0c2496e49bddcf0c80809a52",
+  "reviewedAt": "2026-09-04T09:40:48.446Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "0ae718802fffd6f601825827af59f6e197f8c63717c1daf4f7dfde9584699d60",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:1:2:0",
+            "sourceName": "Freezing Frost",
+            "text": "Glacio DMG + 10%.",
+            "refinementTexts": [
+              "Glacio DMG + 10%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Glacio",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2
+          },
+          {
+            "id": "sonata:1:5:0",
+            "sourceName": "Freezing Frost",
+            "text": "Glacio DMG + 10% after releasing Basic Attack or Heavy Attack. This effect stacks up to 3 times, each stack lasts 15s.",
+            "refinementTexts": [
+              "Glacio DMG + 10% after releasing Basic Attack or Heavy Attack. This effect stacks up to 3 times, each stack lasts 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "modifiers": [
+                {
+                  "stat": "Glacio",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Basic Atk./Heavy Atk. used",
+              "durationSeconds": 15
+            },
+            "sourceType": "sonata",
+            "pieces": 5
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000057",
+  "entityName": "Lumiscale Construct",
+  "sourceFingerprint": "559bccad1a4c62bce830b1084dbd3879bb3e7292b23f5fb908e09a47030c24f9",
+  "reviewedAt": "2026-09-26T18:47:52.349Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "5acd227d38c1c45f58468fcc359038938a434c57477ec455327448c4466dacfa",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000057:skill:1",
+            "name": "Lumiscale Construct - Echo Skill 1",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Glacio",
+            "condition": "You are not attacked during the Parry Stance",
+            "expressions": [
+              "346.00%",
+              "397.90%",
+              "449.80%",
+              "501.70%",
+              "553.60%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                3.46
+              ],
+              [
+                3.9789999999999996
+              ],
+              [
+                4.498
+              ],
+              [
+                5.0169999999999995
+              ],
+              [
+                5.5360000000000005
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 15,
+            "sourceText": "Transform into a Lumiscale Construct and enter a Parry Stance. If you are not attacked during the Parry Stance, slash to deal 346.00% Glacio DMG when the stance finishes. If attacked, counterattack instantly, dealing 346.00%+173.00% Glacio DMG. When hit with a Special Skill attack while in the Parry Stance, break the Special Skill and counterattack, dealing 346.00%+173.00% Glacio DMG.\nCD: 15s · Transform into a Lumiscale Construct and enter a Parry Stance. If you are not attacked during the Parry Stance, slash to deal 397.90% Glacio DMG when the stance finishes. If attacked, counterattack instantly, dealing 397.90%+198.95% Glacio DMG. When hit with a Special Skill attack while in the Parry Stance, break the Special Skill and counterattack, dealing 397.90%+198.95% Glacio DMG.\nCD: 15s · Transform into a Lumiscale Construct and enter a Parry Stance. If you are not attacked during the Parry Stance, slash to deal 449.80% Glacio DMG when the stance finishes. If attacked, counterattack instantly, dealing 449.80%+224.90% Glacio DMG. When hit with a Special Skill attack while in the Parry Stance, break the Special Skill and counterattack, dealing 449.80%+224.90% Glacio DMG.\nCD: 15s · Transform into a Lumiscale Construct and enter a Parry Stance. If you are not attacked during the Parry Stance, slash to deal 501.70% Glacio DMG when the stance finishes. If attacked, counterattack instantly, dealing 501.70%+250.85% Glacio DMG. When hit with a Special Skill attack while in the Parry Stance, break the Special Skill and counterattack, dealing 501.70%+250.85% Glacio DMG.\nCD: 15s · Transform into a Lumiscale Construct and enter a Parry Stance. If you are not attacked during the Parry Stance, slash to deal 553.60% Glacio DMG when the stance finishes. If attacked, counterattack instantly, dealing 553.60%+276.80% Glacio DMG. When hit with a Special Skill attack while in the Parry Stance, break the Special Skill and counterattack, dealing 553.60%+276.80% Glacio DMG.\nCD: 15s"
+          },
+          {
+            "id": "echo:6000057:skill:2",
+            "name": "Lumiscale Construct - Counterattack",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Glacio",
+            "condition": "Attacked",
+            "expressions": [
+              "346.00%+173.00%",
+              "397.90%+198.95%",
+              "449.80%+224.90%",
+              "501.70%+250.85%",
+              "553.60%+276.80%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                3.46,
+                1.73
+              ],
+              [
+                3.9789999999999996,
+                1.9894999999999998
+              ],
+              [
+                4.498,
+                2.249
+              ],
+              [
+                5.0169999999999995,
+                2.5084999999999997
+              ],
+              [
+                5.5360000000000005,
+                2.7680000000000002
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              1
+            ],
+            "count": 2,
+            "cooldownSeconds": 15,
+            "sourceText": "Transform into a Lumiscale Construct and enter a Parry Stance. If you are not attacked during the Parry Stance, slash to deal 346.00% Glacio DMG when the stance finishes. If attacked, counterattack instantly, dealing 346.00%+173.00% Glacio DMG. When hit with a Special Skill attack while in the Parry Stance, break the Special Skill and counterattack, dealing 346.00%+173.00% Glacio DMG.\nCD: 15s · Transform into a Lumiscale Construct and enter a Parry Stance. If you are not attacked during the Parry Stance, slash to deal 397.90% Glacio DMG when the stance finishes. If attacked, counterattack instantly, dealing 397.90%+198.95% Glacio DMG. When hit with a Special Skill attack while in the Parry Stance, break the Special Skill and counterattack, dealing 397.90%+198.95% Glacio DMG.\nCD: 15s · Transform into a Lumiscale Construct and enter a Parry Stance. If you are not attacked during the Parry Stance, slash to deal 449.80% Glacio DMG when the stance finishes. If attacked, counterattack instantly, dealing 449.80%+224.90% Glacio DMG. When hit with a Special Skill attack while in the Parry Stance, break the Special Skill and counterattack, dealing 449.80%+224.90% Glacio DMG.\nCD: 15s · Transform into a Lumiscale Construct and enter a Parry Stance. If you are not attacked during the Parry Stance, slash to deal 501.70% Glacio DMG when the stance finishes. If attacked, counterattack instantly, dealing 501.70%+250.85% Glacio DMG. When hit with a Special Skill attack while in the Parry Stance, break the Special Skill and counterattack, dealing 501.70%+250.85% Glacio DMG.\nCD: 15s · Transform into a Lumiscale Construct and enter a Parry Stance. If you are not attacked during the Parry Stance, slash to deal 553.60% Glacio DMG when the stance finishes. If attacked, counterattack instantly, dealing 553.60%+276.80% Glacio DMG. When hit with a Special Skill attack while in the Parry Stance, break the Special Skill and counterattack, dealing 553.60%+276.80% Glacio DMG.\nCD: 15s"
+          },
+          {
+            "id": "echo:6000057:skill:3",
+            "name": "Lumiscale Construct - Counterattack",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Glacio",
+            "expressions": [
+              "346.00%+173.00%",
+              "397.90%+198.95%",
+              "449.80%+224.90%",
+              "501.70%+250.85%",
+              "553.60%+276.80%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                3.46,
+                1.73
+              ],
+              [
+                3.9789999999999996,
+                1.9894999999999998
+              ],
+              [
+                4.498,
+                2.249
+              ],
+              [
+                5.0169999999999995,
+                2.5084999999999997
+              ],
+              [
+                5.5360000000000005,
+                2.7680000000000002
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              1
+            ],
+            "count": 2,
+            "cooldownSeconds": 15,
+            "sourceText": "Transform into a Lumiscale Construct and enter a Parry Stance. If you are not attacked during the Parry Stance, slash to deal 346.00% Glacio DMG when the stance finishes. If attacked, counterattack instantly, dealing 346.00%+173.00% Glacio DMG. When hit with a Special Skill attack while in the Parry Stance, break the Special Skill and counterattack, dealing 346.00%+173.00% Glacio DMG.\nCD: 15s · Transform into a Lumiscale Construct and enter a Parry Stance. If you are not attacked during the Parry Stance, slash to deal 397.90% Glacio DMG when the stance finishes. If attacked, counterattack instantly, dealing 397.90%+198.95% Glacio DMG. When hit with a Special Skill attack while in the Parry Stance, break the Special Skill and counterattack, dealing 397.90%+198.95% Glacio DMG.\nCD: 15s · Transform into a Lumiscale Construct and enter a Parry Stance. If you are not attacked during the Parry Stance, slash to deal 449.80% Glacio DMG when the stance finishes. If attacked, counterattack instantly, dealing 449.80%+224.90% Glacio DMG. When hit with a Special Skill attack while in the Parry Stance, break the Special Skill and counterattack, dealing 449.80%+224.90% Glacio DMG.\nCD: 15s · Transform into a Lumiscale Construct and enter a Parry Stance. If you are not attacked during the Parry Stance, slash to deal 501.70% Glacio DMG when the stance finishes. If attacked, counterattack instantly, dealing 501.70%+250.85% Glacio DMG. When hit with a Special Skill attack while in the Parry Stance, break the Special Skill and counterattack, dealing 501.70%+250.85% Glacio DMG.\nCD: 15s · Transform into a Lumiscale Construct and enter a Parry Stance. If you are not attacked during the Parry Stance, slash to deal 553.60% Glacio DMG when the stance finishes. If attacked, counterattack instantly, dealing 553.60%+276.80% Glacio DMG. When hit with a Special Skill attack while in the Parry Stance, break the Special Skill and counterattack, dealing 553.60%+276.80% Glacio DMG.\nCD: 15s"
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

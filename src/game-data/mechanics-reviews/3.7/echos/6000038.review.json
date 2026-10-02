@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000038",
+  "entityName": "Hooscamp",
+  "sourceFingerprint": "ebe610b4c05a70376a57198bc339dcd815ca8d4a63690139b01d88c984c04d8f",
+  "reviewedAt": "2026-09-26T18:30:54.093Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "5d0ce8cf41023f0f082fa70d27f5f69846fed46b92b5290c0f947e1199f40542",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000038:skill",
+            "name": "Hooscamp - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Aero",
+            "expressions": [
+              "30.00%+60",
+              "34.50%+69",
+              "39.00%+78",
+              "43.50%+87",
+              "48.00%+96"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.3
+              ],
+              [
+                0.345
+              ],
+              [
+                0.39
+              ],
+              [
+                0.435
+              ],
+              [
+                0.48
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 8,
+            "sourceText": "Transform into Hooscamp Flinger and pounce at the enemies, dealing 30.00%+60 Aero DMG.\nCD: 8s · Transform into Hooscamp Flinger and pounce at the enemies, dealing 34.50%+69 Aero DMG.\nCD: 8s · Transform into Hooscamp Flinger and pounce at the enemies, dealing 39.00%+78 Aero DMG.\nCD: 8s · Transform into Hooscamp Flinger and pounce at the enemies, dealing 43.50%+87 Aero DMG.\nCD: 8s · Transform into Hooscamp Flinger and pounce at the enemies, dealing 48.00%+96 Aero DMG.\nCD: 8s"
+          }
+        ],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

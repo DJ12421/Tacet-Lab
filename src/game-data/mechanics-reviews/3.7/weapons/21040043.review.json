@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21040043",
+  "entityName": "Gauntlets of Voyager",
+  "sourceFingerprint": "b7313ec81493b6fdd2ee3e5fbd8eb1122fa0cb3aad00ea36941916370e11518d",
+  "reviewedAt": "2026-09-15T01:05:06.907Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "aef9597ac4f49dfd1016cb48d959f47065de26dfbc6f84e8faf2660f8fd2bb76",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21040043:effect:0",
+            "sourceName": "Crusade",
+            "text": "When Resonance Skill is cast, restores 8 Resonance Energy. This effect can be triggered 1 time(s) every 20s.",
+            "refinementTexts": [
+              "When Resonance Skill is cast, restores 8 Resonance Energy. This effect can be triggered 1 time(s) every 20s.",
+              "When Resonance Skill is cast, restores 9 Resonance Energy. This effect can be triggered 1 time(s) every 20s.",
+              "When Resonance Skill is cast, restores 10 Resonance Energy. This effect can be triggered 1 time(s) every 20s.",
+              "When Resonance Skill is cast, restores 11 Resonance Energy. This effect can be triggered 1 time(s) every 20s.",
+              "When Resonance Skill is cast, restores 12 Resonance Energy. This effect can be triggered 1 time(s) every 20s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Skill cast",
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

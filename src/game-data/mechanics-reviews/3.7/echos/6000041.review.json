@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000041",
+  "entityName": "Diamondclaw",
+  "sourceFingerprint": "a597aabf70fff7f01e5be3a2555521845d21464c649c00164d2056dd965bc7d7",
+  "reviewedAt": "2026-09-26T18:31:28.350Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "7206ab2db293f720e7028c445178432d01971f7a7241ed2f583c55e671f01c7d",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000041:skill",
+            "name": "Diamondclaw - Counterattack",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Physical",
+            "expressions": [
+              "30.00%+60",
+              "34.50%+69",
+              "39.00%+78",
+              "43.50%+87",
+              "48.00%+96"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.3
+              ],
+              [
+                0.345
+              ],
+              [
+                0.39
+              ],
+              [
+                0.435
+              ],
+              [
+                0.48
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 8,
+            "sourceText": "Transform into Crystal Scorpion and enter a Parry State. Counterattack when the Parry State is over, dealing 30.00%+60 Physical DMG.\nCD: 8s · Transform into Crystal Scorpion and enter a Parry State. Counterattack when the Parry State is over, dealing 34.50%+69 Physical DMG.\nCD: 8s · Transform into Crystal Scorpion and enter a Parry State. Counterattack when the Parry State is over, dealing 39.00%+78 Physical DMG.\nCD: 8s · Transform into Crystal Scorpion and enter a Parry State. Counterattack when the Parry State is over, dealing 43.50%+87 Physical DMG.\nCD: 8s · Transform into Crystal Scorpion and enter a Parry State. Counterattack when the Parry State is over, dealing 48.00%+96 Physical DMG.\nCD: 8s"
+          }
+        ],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

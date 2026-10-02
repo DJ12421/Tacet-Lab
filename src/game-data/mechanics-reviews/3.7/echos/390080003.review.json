@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "390080003",
+  "entityName": "Thundering Mephis",
+  "sourceFingerprint": "93928c107c2b06b55e46a5260584efd434ee4c6741e4764cdc85f28d4cc19ee8",
+  "reviewedAt": "2026-09-26T18:30:00.554Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "fbfa85565975a5012fef607da35498f761daef8f9e39d5167a970c352e7947ac",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:390080003:skill",
+            "name": "Thundering Mephis - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Electro",
+            "expressions": [
+              "82.88%+118.40%+19.73%",
+              "95.31%+136.16%+22.69%",
+              "107.74%+153.92%+25.65%",
+              "120.18%+171.68%+28.61%",
+              "132.61%+189.44%+31.57%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.8288,
+                0.8288,
+                0.8288,
+                0.8288,
+                0.8288,
+                1.1840000000000002,
+                0.1973
+              ],
+              [
+                0.9531000000000001,
+                0.9531000000000001,
+                0.9531000000000001,
+                0.9531000000000001,
+                0.9531000000000001,
+                1.3616,
+                0.22690000000000002
+              ],
+              [
+                1.0774,
+                1.0774,
+                1.0774,
+                1.0774,
+                1.0774,
+                1.5392,
+                0.2565
+              ],
+              [
+                1.2018,
+                1.2018,
+                1.2018,
+                1.2018,
+                1.2018,
+                1.7168,
+                0.2861
+              ],
+              [
+                1.3261,
+                1.3261,
+                1.3261,
+                1.3261,
+                1.3261,
+                1.8944,
+                0.3157
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              1,
+              2
+            ],
+            "count": 7,
+            "cooldownSeconds": 20,
+            "sourceText": "Transform into Thundering Mephis, engaging in a rapid assault of up to 6 strikes. The first 5 strikes deal 82.88% Electro DMG each, while the final strike inflicts 118.40% Electro DMG, with an additional 19.73% Electro DMG from the thunder.\nAfter the final hit, increase the current character's Electro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s.\nCD: 20s · Transform into Thundering Mephis, engaging in a rapid assault of up to 6 strikes. The first 5 strikes deal 95.31% Electro DMG each, while the final strike inflicts 136.16% Electro DMG, with an additional 22.69% Electro DMG from the thunder.\nAfter the final hit, increase the current character's Electro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s.\nCD: 20s · Transform into Thundering Mephis, engaging in a rapid assault of up to 6 strikes. The first 5 strikes deal 107.74% Electro DMG each, while the final strike inflicts 153.92% Electro DMG, with an additional 25.65% Electro DMG from the thunder.\nAfter the final hit, increase the current character's Electro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s.\nCD: 20s · Transform into Thundering Mephis, engaging in a rapid assault of up to 6 strikes. The first 5 strikes deal 120.18% Electro DMG each, while the final strike inflicts 171.68% Electro DMG, with an additional 28.61% Electro DMG from the thunder.\nAfter the final hit, increase the current character's Electro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s.\nCD: 20s · Transform into Thundering Mephis, engaging in a rapid assault of up to 6 strikes. The first 5 strikes deal 132.61% Electro DMG each, while the final strike inflicts 189.44% Electro DMG, with an additional 31.57% Electro DMG from the thunder.\nAfter the final hit, increase the current character's Electro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s.\nCD: 20s"
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "0fccf1b026f4ae6ef533c724842e5e24d203d1c1ca09e25c3e6cf38d8263d291",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:390080003:effect:0",
+            "sourceName": "Thundering Mephis",
+            "sourceType": "echo",
+            "text": "After the final hit, increase the current character's Electro DMG by 12.00% and Resonance Liberation DMG by 12.00% for 15s.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "After the final hit",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "liberationDamage",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                },
+                {
+                  "stat": "Electro",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

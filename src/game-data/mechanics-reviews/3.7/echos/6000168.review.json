@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000168",
+  "entityName": "Nightmare: Viridblaze Saurian",
+  "sourceFingerprint": "40713f6ae3e08c8c410b7ec96e75f6b06563edf08b0a241bcdbbc86c401c0fd0",
+  "reviewedAt": "2026-09-26T18:47:52.542Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "be99c459afdffd4e6d34af56b9cb11787fdfb72df918edfc8eea18633e827ae6",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000168:skill",
+            "name": "Nightmare: Viridblaze Saurian - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Fusion",
+            "expressions": [
+              "10.70%",
+              "12.31%",
+              "13.91%",
+              "15.52%",
+              "17.12%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.107,
+                0.107,
+                0.107,
+                0.107,
+                0.107,
+                0.107,
+                0.107,
+                0.107,
+                0.107,
+                0.107
+              ],
+              [
+                0.1231,
+                0.1231,
+                0.1231,
+                0.1231,
+                0.1231,
+                0.1231,
+                0.1231,
+                0.1231,
+                0.1231,
+                0.1231
+              ],
+              [
+                0.1391,
+                0.1391,
+                0.1391,
+                0.1391,
+                0.1391,
+                0.1391,
+                0.1391,
+                0.1391,
+                0.1391,
+                0.1391
+              ],
+              [
+                0.1552,
+                0.1552,
+                0.1552,
+                0.1552,
+                0.1552,
+                0.1552,
+                0.1552,
+                0.1552,
+                0.1552,
+                0.1552
+              ],
+              [
+                0.17120000000000002,
+                0.17120000000000002,
+                0.17120000000000002,
+                0.17120000000000002,
+                0.17120000000000002,
+                0.17120000000000002,
+                0.17120000000000002,
+                0.17120000000000002,
+                0.17120000000000002,
+                0.17120000000000002
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "count": 10,
+            "cooldownSeconds": 15,
+            "sourceText": "Summon a Viridblaze Saurian to continuously spit fire, dealing 10.70% Fusion DMG 10 times.\nCD: 15s · Summon a Viridblaze Saurian to continuously spit fire, dealing 12.31% Fusion DMG 10 times.\nCD: 15s · Summon a Viridblaze Saurian to continuously spit fire, dealing 13.91% Fusion DMG 10 times.\nCD: 15s · Summon a Viridblaze Saurian to continuously spit fire, dealing 15.52% Fusion DMG 10 times.\nCD: 15s · Summon a Viridblaze Saurian to continuously spit fire, dealing 17.12% Fusion DMG 10 times.\nCD: 15s"
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

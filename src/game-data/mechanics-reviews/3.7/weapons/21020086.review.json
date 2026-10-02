@@ -1,0 +1,382 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21020086",
+  "entityName": "Frostburn",
+  "sourceFingerprint": "f121c3fc4afac0f3da7872547f5083088e844c28a2ed25d11ffb84c829cf8b6a",
+  "reviewedAt": "2026-09-16T11:04:06.385Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "c4c2c676c97eaf7760c49922d2ca55ea29243ec1771c5278714f25e7a1991ae1",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020086:effect:0",
+            "sourceName": "Self No More",
+            "text": "ATK is increased by 12%.",
+            "refinementTexts": [
+              "ATK is increased by 12%.",
+              "ATK is increased by 15%.",
+              "ATK is increased by 18%.",
+              "ATK is increased by 21%.",
+              "ATK is increased by 24%."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21020086:effect:1",
+            "sourceName": "Self No More",
+            "text": "After the wielder applies Glacio Chafe, Glacio DMG is Amplified by 28%, and Resonance Liberation DMG ignores 10% of the target's DEF.",
+            "refinementTexts": [
+              "After the wielder applies Glacio Chafe, Glacio DMG is Amplified by 28%, and Resonance Liberation DMG ignores 10% of the target's DEF.",
+              "After the wielder applies Glacio Chafe, Glacio DMG is Amplified by 35%, and Resonance Liberation DMG ignores 12.5% of the target's DEF.",
+              "After the wielder applies Glacio Chafe, Glacio DMG is Amplified by 42%, and Resonance Liberation DMG ignores 15% of the target's DEF.",
+              "After the wielder applies Glacio Chafe, Glacio DMG is Amplified by 49%, and Resonance Liberation DMG ignores 17.5% of the target's DEF.",
+              "After the wielder applies Glacio Chafe, Glacio DMG is Amplified by 56%, and Resonance Liberation DMG ignores 20% of the target's DEF."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "Glacio",
+                  "operation": "amplifyPercent",
+                  "value": 28,
+                  "scope": "self"
+                },
+                {
+                  "stat": "DEFIgnore",
+                  "operation": "addPercent",
+                  "value": 10,
+                  "scope": "self",
+                  "appliesTo": "liberation"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Glacio Chafe Inflicted"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 28
+                  },
+                  {
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the wielder applies Glacio Chafe"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 35
+                  },
+                  {
+                    "value": 12.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the wielder applies Glacio Chafe"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 42
+                  },
+                  {
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the wielder applies Glacio Chafe"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 49
+                  },
+                  {
+                    "value": 17.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the wielder applies Glacio Chafe"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "value": 56
+                  },
+                  {
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the wielder applies Glacio Chafe"
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21020086:effect:2",
+            "sourceName": "Self No More",
+            "text": "If the wielder is the active Resonator in the team, Glacio Chafe DMG dealt to all targets within a certain range is Amplified by 20% for 6s. This effect can be triggered up to 1 every 0.1s.",
+            "refinementTexts": [
+              "If the wielder is the active Resonator in the team, Glacio Chafe DMG dealt to all targets within a certain range is Amplified by 20% for 6s. This effect can be triggered up to 1 every 0.1s.",
+              "If the wielder is the active Resonator in the team, Glacio Chafe DMG dealt to all targets within a certain range is Amplified by 25% for 6s. This effect can be triggered up to 1 every 0.1s.",
+              "If the wielder is the active Resonator in the team, Glacio Chafe DMG dealt to all targets within a certain range is Amplified by 30% for 6s. This effect can be triggered up to 1 every 0.1s.",
+              "If the wielder is the active Resonator in the team, Glacio Chafe DMG dealt to all targets within a certain range is Amplified by 35% for 6s. This effect can be triggered up to 1 every 0.1s.",
+              "If the wielder is the active Resonator in the team, Glacio Chafe DMG dealt to all targets within a certain range is Amplified by 40% for 6s. This effect can be triggered up to 1 every 0.1s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 6,
+              "modifiers": [
+                {
+                  "stat": "glacioChafeDamage",
+                  "operation": "amplifyPercent",
+                  "value": 20,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "wielder on field"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the wielder is the active Resonator in the team"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 25
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the wielder is the active Resonator in the team"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the wielder is the active Resonator in the team"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 35
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the wielder is the active Resonator in the team"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 6,
+                "modifiers": [
+                  {
+                    "value": 40
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the wielder is the active Resonator in the team"
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21020086:effect:3",
+            "sourceName": "Self No More",
+            "text": "Only the strongest effect of the same name applies.",
+            "refinementTexts": [
+              "Only the strongest effect of the same name applies.",
+              "Only the strongest effect of the same name applies.",
+              "Only the strongest effect of the same name applies.",
+              "Only the strongest effect of the same name applies.",
+              "Only the strongest effect of the same name applies."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ],
+              "trigger": "While equipped"
+            },
+            "sourceType": "weapon",
+            "parsedByRefinement": [
+              {
+                "modifiers": [],
+                "triggeredAttacks": [],
+                "trigger": "While equipped"
+              },
+              {
+                "modifiers": [],
+                "triggeredAttacks": [],
+                "trigger": "While equipped"
+              },
+              {
+                "modifiers": [],
+                "triggeredAttacks": [],
+                "trigger": "While equipped"
+              },
+              {
+                "modifiers": [],
+                "triggeredAttacks": [],
+                "trigger": "While equipped"
+              },
+              {
+                "modifiers": [],
+                "triggeredAttacks": [],
+                "trigger": "While equipped"
+              }
+            ],
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

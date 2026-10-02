@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "sonata",
+  "entityId": "38",
+  "entityName": "Flower of Tinged Yearning",
+  "sourceFingerprint": "96328aa4e2c048f8bd0c407b6bdb887bf43e214060646d9521153ec84c9ab444",
+  "reviewedAt": "2026-10-01T00:25:48.522Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "2a5f5107bcc71c2c06ad331e2c488b9a77b91bd3ee6146e0c0498cdce91f7962",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:38:2:0",
+            "sourceName": "Flower of Tinged Yearning",
+            "text": "Healing + 10%",
+            "refinementTexts": [
+              "Healing + 10%"
+            ],
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "healingBonus",
+                  "operation": "addPercent",
+                  "value": 10,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:38:5:0",
+            "sourceName": "Flower of Tinged Yearning",
+            "text": "Healing a Resonator in the team increases the ATK of all Resonators in the team by 10% for 30s.",
+            "refinementTexts": [
+              "Healing a Resonator in the team increases the ATK of all Resonators in the team by 10% for 30s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 30,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 10,
+                  "scope": "team"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Team member healed"
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:38:5:1",
+            "sourceName": "Flower of Tinged Yearning",
+            "text": "Effects of the same name cannot be stacked.",
+            "refinementTexts": [
+              "Effects of the same name cannot be stacked."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "sonata:38:5:2",
+            "sourceName": "Flower of Tinged Yearning",
+            "text": "While the effect is active, if the Resonator gains Unison or triggers Unison Response, their ATK is further increased by 15%.",
+            "refinementTexts": [
+              "While the effect is active, if the Resonator gains Unison or triggers Unison Response, their ATK is further increased by 15%."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 15,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Unison gained or Unison Response triggered while set effect active"
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  }
+}

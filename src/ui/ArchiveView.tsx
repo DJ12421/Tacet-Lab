@@ -4,6 +4,7 @@ import { generatedCharacterCatalog as characterCatalog } from '../game-data/char
 import { echoCatalog } from '../game-data/echoes'
 import { generatedSonataCatalog as sonataCatalog, generatedSonataIconSources } from '../game-data/sonatas.generated'
 import { generatedWeaponCatalog as weaponCatalog } from '../game-data/weapons.generated'
+import { pendingMechanics } from '../game-data/review-status.generated'
 import { getSettings } from '../storage/database'
 import { ElementFilterIcon, FilterChips, Icon, PageHeader } from './components'
 import { SonataPicker } from './SonataPicker'
@@ -16,6 +17,8 @@ type ArchiveDetail =
   | { kind: 'character'; item: (typeof characterCatalog)[number] }
   | { kind: 'weapon'; item: (typeof weaponCatalog)[number] }
   | { kind: 'echo'; item: (typeof echoCatalog)[number] }
+
+const tbaSections = (kind: string, id?: string) => id ? pendingMechanics[kind]?.[id] ?? [] : []
 
 const sortOptionsFor = (tab: ArchiveTab): Array<{ value: SortMode; label: string }> => [
   ...(tab === 'sonatas' ? [{ value: 'release-order' as const, label: 'Release order' }] : []),
@@ -99,6 +102,7 @@ function ArchiveDetailDialog({ detail, onClose }: { detail: ArchiveDetail; onClo
       </header>
 
       <div className="archive-detail-body">
+        {tbaSections(kind, item.id).length > 0 && <p className="archive-tba-note"><strong>TBA:</strong> {tbaSections(kind, item.id).join(', ')} mechanics are not included in Tacet Lab calculations. Catalog details remain available.</p>}
         {kind === 'character' && <>
           <p className="archive-detail-description">{plainDescription(item.description)}</p>
           <dl className="archive-detail-facts">
@@ -268,13 +272,13 @@ export function ArchiveView({ roverGender, tab, onTabChange }: { roverGender: 'm
 
     {results.length === 0 && <section className="archive-empty"><span aria-hidden="true">⌕</span><h2>No matches</h2><button type="button" className="secondary" onClick={clearFilters}>Reset filters</button></section>}
 
-    {tab === 'characters' && <div className="archive-results-grid archive-character-grid">{(visibleResults as typeof characterCatalog).map((item) => <button type="button" className="archive-entry-card archive-character-card" aria-haspopup="dialog" onClick={(event) => openDetail({ kind: 'character', item }, event.currentTarget)} key={item.id}><div className="archive-entry-art"><CatalogImage src={item.iconSourceUrl} alt={item.name}/></div><div className="archive-entry-copy"><div><h2>{item.name}</h2><ElementIcon element={item.element}/></div><p>{item.title}</p><footer><span>{item.weaponType}</span><b aria-label={`${item.rarity} stars`}>{'★'.repeat(item.rarity)}</b></footer></div></button>)}</div>}
-    {tab === 'weapons' && <div className="archive-results-grid archive-weapon-grid">{(visibleResults as typeof weaponCatalog).map((item) => <button type="button" className="archive-entry-card archive-weapon-card" aria-haspopup="dialog" onClick={(event) => openDetail({ kind: 'weapon', item }, event.currentTarget)} key={item.id}><div className="archive-entry-art"><CatalogImage src={item.iconSourceUrl} alt={item.name}/></div><div className="archive-entry-copy"><h2>{item.name}</h2><p>{item.type}</p><dl><div><dt><img className="weapon-stat-icon" src={statIconSource('atk')} alt="" aria-hidden="true"/>ATK</dt><dd>{item.baseAtk}</dd></div><div><dt><img className="weapon-stat-icon" src={weaponStatIconSource(item.secondaryStat)} alt="" aria-hidden="true"/>{item.secondaryStat}</dt><dd>{item.secondaryStatValue}</dd></div></dl><footer><b aria-label={`${item.rarity} stars`}>{'★'.repeat(item.rarity)}</b></footer></div></button>)}</div>}
+    {tab === 'characters' && <div className="archive-results-grid archive-character-grid">{(visibleResults as typeof characterCatalog).map((item) => <button type="button" className="archive-entry-card archive-character-card" aria-haspopup="dialog" onClick={(event) => openDetail({ kind: 'character', item }, event.currentTarget)} key={item.id}><div className="archive-entry-art"><CatalogImage src={item.iconSourceUrl} alt={item.name}/></div><div className="archive-entry-copy"><div><h2>{item.name}</h2><ElementIcon element={item.element}/></div><p>{item.title}</p><footer><span>{item.weaponType}</span>{tbaSections('character', item.id).length > 0 && <em className="archive-tba">TBA</em>}<b aria-label={`${item.rarity} stars`}>{'★'.repeat(item.rarity)}</b></footer></div></button>)}</div>}
+    {tab === 'weapons' && <div className="archive-results-grid archive-weapon-grid">{(visibleResults as typeof weaponCatalog).map((item) => <button type="button" className="archive-entry-card archive-weapon-card" aria-haspopup="dialog" onClick={(event) => openDetail({ kind: 'weapon', item }, event.currentTarget)} key={item.id}><div className="archive-entry-art"><CatalogImage src={item.iconSourceUrl} alt={item.name}/></div><div className="archive-entry-copy"><h2>{item.name}</h2><p>{item.type}</p><dl><div><dt><img className="weapon-stat-icon" src={statIconSource('atk')} alt="" aria-hidden="true"/>ATK</dt><dd>{item.baseAtk}</dd></div><div><dt><img className="weapon-stat-icon" src={weaponStatIconSource(item.secondaryStat)} alt="" aria-hidden="true"/>{item.secondaryStat}</dt><dd>{item.secondaryStatValue}</dd></div></dl><footer>{tbaSections('weapon', item.id).length > 0 && <em className="archive-tba">TBA</em>}<b aria-label={`${item.rarity} stars`}>{'★'.repeat(item.rarity)}</b></footer></div></button>)}</div>}
     {tab === 'sonatas' && <div className="archive-results-grid archive-sonata-grid">{(visibleResults as typeof sonataCatalog).map((item) => <article className="archive-sonata-card" key={item.id}><header><span><CatalogImage src={generatedSonataIconSources[item.name]} alt=""/></span><div><h2>{item.name}</h2><p>{item.echoCount} compatible Echoes</p></div></header><div className="archive-sonata-effects">{item.effects.map((effect) => <div key={effect.pieces}><b>{effect.pieces}<small>PC</small></b><p>{effect.description}</p></div>)}</div></article>)}</div>}
-    {tab === 'echoes' && <div className="archive-results-grid archive-echo-grid">{(visibleResults as typeof echoCatalog).map((item) => <button type="button" className="archive-entry-card archive-echo-card" aria-haspopup="dialog" onClick={(event) => openDetail({ kind: 'echo', item }, event.currentTarget)} key={item.id}><div className="archive-entry-art"><CatalogImage src={item.iconSourceUrl} alt={item.name}/><b className={`archive-cost cost-${item.cost}`}>{item.cost}</b></div><div className="archive-entry-copy"><h2>{item.name}</h2><div className="archive-echo-sonatas" aria-label={`Sonatas: ${item.sonatas.join(', ')}`}>{item.sonatas.map((name) => <img src={generatedSonataIconSources[name]} alt="" title={name} key={name}/>)}</div><footer><span>{item.cost} cost</span></footer></div></button>)}</div>}
+    {tab === 'echoes' && <div className="archive-results-grid archive-echo-grid">{(visibleResults as typeof echoCatalog).map((item) => <button type="button" className="archive-entry-card archive-echo-card" aria-haspopup="dialog" onClick={(event) => openDetail({ kind: 'echo', item }, event.currentTarget)} key={item.id}><div className="archive-entry-art"><CatalogImage src={item.iconSourceUrl} alt={item.name}/><b className={`archive-cost cost-${item.cost}`}>{item.cost}</b></div><div className="archive-entry-copy"><h2>{item.name}</h2><div className="archive-echo-sonatas" aria-label={`Sonatas: ${item.sonatas.join(', ')}`}>{item.sonatas.map((name) => <img src={generatedSonataIconSources[name]} alt="" title={name} key={name}/>)}</div><footer><span>{item.cost} cost</span>{tbaSections('echo', item.id).length > 0 && <em className="archive-tba">TBA</em>}</footer></div></button>)}</div>}
 
     {tab !== 'characters' && tab !== 'weapons' && visibleLimit < results.length && <div className="archive-load-more"><p>Showing {visibleResults.length} of {results.length}</p><button type="button" className="secondary" onClick={() => setVisibleLimit((value) => value + PAGE_SIZE)}>Show {Math.min(PAGE_SIZE, results.length - visibleLimit)} more</button></div>}
-    <p className="archive-credit">Catalog and artwork from Nanoka 3.6. Select a card for details.</p>
+    <p className="archive-credit">Catalog and artwork from Nanoka 3.7. Select a card for details.</p>
     {activeDetail && <ArchiveDetailDialog detail={activeDetail} onClose={closeDetail}/>}
   </section>
 }

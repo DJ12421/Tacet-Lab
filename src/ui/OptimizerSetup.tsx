@@ -1,16 +1,21 @@
-import { useMemo, useState, type Dispatch, type SetStateAction } from 'react'
+import { useMemo, useState, type CSSProperties, type Dispatch, type SetStateAction } from 'react'
 import { echoMatchesOptimizerProfile } from '../domain/optimizer'
 import type { AggregatedStats, Echo, OptimizerProfile, OptimizerStatKey, StatKey } from '../domain/types'
 import { echoCatalog, sonataCatalog, statLabels } from '../game-data'
 import { generatedSonataIconSources } from '../game-data/sonatas.generated'
 import { mainStatKeysByCost } from '../game-data/echo-main-stats'
-import { EchoMiniCard, formatStat, Icon, Panel } from './components'
+import { Icon, Panel } from './components'
 import { statIconSource } from './stat-icons'
 import { compactAttackLabel } from './team-workspace-model'
 
 const CORE_STATS: OptimizerStatKey[] = ['hp', 'atk', 'def', 'critRate', 'critDamage', 'energyRegen', 'basicDamage', 'heavyDamage', 'skillDamage', 'liberationDamage']
 const RESULT_LIMITS = [5, 10, 20, 50, 100]
 const WORKER_COUNTS: Array<number | 'auto'> = ['auto', 1, 2, 4, 8, 12, 16]
+function toggleChip<T>(selected: readonly T[], value: T, all: readonly T[]): T[] {
+  if (selected.length === all.length) return [value]
+  if (selected.length === 1 && selected[0] === value) return [...all]
+  return selected.includes(value) ? selected.filter((entry) => entry !== value) : [...selected, value]
+}
 function OptimizerEchoThumb({ echo, main }: { echo?: Echo; main?: boolean }) {
   if (!echo) return <span className="optimizer-echo-thumb is-empty" aria-label="Empty Echo slot"><b>+</b></span>
   const artwork = echoCatalog.find((entry) => entry.name === echo.name)?.iconSourceUrl
@@ -38,12 +43,11 @@ type OptimizerSetupProps = {
   buildName: string
   characterName: string
   portraitUrl?: string
-  weaponName: string
   currentStats?: AggregatedStats
   currentScore?: number
   objectiveLabel: string
   targetId: string
-  targets: Array<{ id: string; label: string }>
+  targets: Array<{ id: string; label: string; group: string }>
   onTargetChange: (id: string) => void
   scalesWith: string[]
   scalesWithTitle?: string
@@ -54,29 +58,26 @@ type OptimizerSetupProps = {
 
 export function OptimizerSetup(props: OptimizerSetupProps) {
   const {
-    profile, setProfile, echoes, currentEchoes, buildId, buildName, characterName, portraitUrl, weaponName,
+    profile, setProfile, echoes, currentEchoes, buildId, buildName, characterName, portraitUrl,
     currentStats, currentScore, objectiveLabel, targetId, targets, onTargetChange, scalesWith, scalesWithTitle = 'Selected target scales with', running, onRun, onCancel
   } = props
   const [constraintStat, setConstraintStat] = useState<OptimizerStatKey>('energyRegen')
   const [requirementSonata, setRequirementSonata] = useState(sonataCatalog[0]?.name ?? '')
   const [requirementPieces, setRequirementPieces] = useState(2)
-  const [exclusionSearch, setExclusionSearch] = useState('')
   const update = (patch: Partial<OptimizerProfile>) => setProfile((current) => ({ ...current, ...patch, updatedAt: Date.now() }))
   const eligible = useMemo(() => echoes.filter((echo) => echoMatchesOptimizerProfile(echo, profile, buildId)), [buildId, echoes, profile])
   const mainOptions = eligible
-  const sonataCounts = useMemo(() => new Map(echoes.map((echo) => echo.sonata).map((name) => [name, echoes.filter((echo) => echo.sonata === name).length])), [echoes])
-  const filteredExclusions = echoes.filter((echo) => `${echo.name} ${echo.sonata} ${statLabels[echo.mainStat.key]}`.toLowerCase().includes(exclusionSearch.toLowerCase()))
 
   const toggleRarity = (rarity: Echo['rarity']) => update({
-    rarities: profile.rarities.includes(rarity) ? profile.rarities.filter((entry) => entry !== rarity) : [...profile.rarities, rarity].sort()
+    rarities: toggleChip(profile.rarities, rarity, [1, 2, 3, 4, 5])
   })
   const toggleMainStat = (cost: Echo['cost'], key: StatKey) => {
     const costKey = String(cost) as '1' | '3' | '4'
     const selected = profile.mainStatsByCost[costKey]
-    update({ mainStatsByCost: { ...profile.mainStatsByCost, [costKey]: selected.includes(key) ? selected.filter((entry) => entry !== key) : [...selected, key] } })
+    update({ mainStatsByCost: { ...profile.mainStatsByCost, [costKey]: toggleChip(selected, key, mainStatKeysByCost[cost]) } })
   }
   const toggleSonata = (name: string) => update({
-    allowedSonatas: profile.allowedSonatas.includes(name) ? profile.allowedSonatas.filter((entry) => entry !== name) : [...profile.allowedSonatas, name]
+    allowedSonatas: toggleChip(profile.allowedSonatas, name, sonataCatalog.map((sonata) => sonata.name))
   })
   const addConstraint = () => {
     if (constraintStat in profile.minimumStats || constraintStat in profile.maximumStats) return
@@ -101,10 +102,9 @@ export function OptimizerSetup(props: OptimizerSetupProps) {
       <Panel className="optimizer-current-build">
         <div className="optimizer-current-hero">
           {portraitUrl ? <img src={portraitUrl} alt=""/> : <div className="optimizer-portrait-placeholder"><Icon name="build"/></div>}
-          <div><span className="eyebrow">Current loadout</span><h2>{characterName}</h2><strong>{buildName}</strong><small>{weaponName}</small></div>
+          <div><span className="eyebrow">Current loadout</span><h2>{characterName}</h2><strong>{buildName}</strong></div>
         </div>
         <div className="optimizer-current-echoes" aria-label="Current Echo loadout">{Array.from({ length: 5 }, (_, index) => <OptimizerEchoThumb echo={currentEchoes[index]} main={index === 0} key={currentEchoes[index]?.id ?? index}/>)}</div>
-        <dl className="optimizer-current-stats">{CORE_STATS.slice(0, 8).map((key) => <div key={key}><dt>{statLabels[key]}</dt><dd>{currentStats ? formatStat(key, currentStats[key]) : 'Unavailable'}</dd></div>)}</dl>
         <div className="optimizer-current-target"><span>{objectiveLabel}</span><b>{currentScore === undefined ? 'Unavailable' : Math.floor(currentScore).toLocaleString('en-US')}</b></div>
       </Panel>
 
@@ -113,7 +113,7 @@ export function OptimizerSetup(props: OptimizerSetupProps) {
           <header><div><span className="eyebrow">Inventory filters</span><h3>Echo level and rarity</h3></div><b>{eligible.length}/{echoes.length}</b></header>
           <div className="optimizer-level-filter">
             <label><span>Minimum level</span><input type="number" min="0" max="25" value={profile.levelLow} onChange={(event) => update({ levelLow: Math.min(profile.levelHigh, Math.max(0, Number(event.target.value))) })}/></label>
-            <div><input aria-label="Minimum Echo level" type="range" min="0" max="25" value={profile.levelLow} onChange={(event) => update({ levelLow: Math.min(profile.levelHigh, Number(event.target.value)) })}/><input aria-label="Maximum Echo level" type="range" min="0" max="25" value={profile.levelHigh} onChange={(event) => update({ levelHigh: Math.max(profile.levelLow, Number(event.target.value)) })}/></div>
+            <div style={{ '--level-low': `${profile.levelLow * 4}%`, '--level-high': `${profile.levelHigh * 4}%` } as CSSProperties}><input aria-label="Minimum Echo level" type="range" min="0" max="25" value={profile.levelLow} onChange={(event) => update({ levelLow: Math.min(profile.levelHigh, Number(event.target.value)) })}/><input aria-label="Maximum Echo level" type="range" min="0" max="25" value={profile.levelHigh} onChange={(event) => update({ levelHigh: Math.max(profile.levelLow, Number(event.target.value)) })}/></div>
             <label><span>Maximum level</span><input type="number" min="0" max="25" value={profile.levelHigh} onChange={(event) => update({ levelHigh: Math.max(profile.levelLow, Math.min(25, Number(event.target.value))) })}/></label>
           </div>
           <div className="optimizer-toggle-row"><span>Rarity</span><div>{([1, 2, 3, 4, 5] as Echo['rarity'][]).map((rarity) => { const active = profile.rarities.includes(rarity); return <button type="button" className={active ? 'active' : ''} aria-pressed={active} data-filter-state={active ? 'included' : 'excluded'} onClick={() => toggleRarity(rarity)} key={rarity}>{rarity}★ <small>{echoes.filter((echo) => echo.rarity === rarity).length}</small></button> })}</div></div>
@@ -127,10 +127,6 @@ export function OptimizerSetup(props: OptimizerSetupProps) {
           })}</div></section>)}
         </Panel>
 
-        <details className="optimizer-editor optimizer-exclusion-editor">
-          <summary><span><b>Individual Echo exclusions</b><small>{profile.excludedEchoIds.length} manually excluded</small></span><i>Manage</i></summary>
-          <div><input type="search" placeholder="Search Echoes, Sonatas, or main stats" value={exclusionSearch} onChange={(event) => setExclusionSearch(event.target.value)}/><div className="optimizer-exclusion-list">{filteredExclusions.map((echo) => <label key={echo.id}><input type="checkbox" checked={profile.excludedEchoIds.includes(echo.id)} onChange={() => update({ excludedEchoIds: profile.excludedEchoIds.includes(echo.id) ? profile.excludedEchoIds.filter((id) => id !== echo.id) : [...profile.excludedEchoIds, echo.id] })}/><span><b>{echo.name}</b><small>{echo.cost}-Cost · Lv. {echo.level} · {echo.sonata} · {statLabels[echo.mainStat.key]}</small></span>{echo.equippedBy && <em>{echo.equippedByName ?? 'Equipped'}</em>}</label>)}</div></div>
-        </details>
       </div>
 
       <div className="optimizer-rule-column">
@@ -138,7 +134,7 @@ export function OptimizerSetup(props: OptimizerSetupProps) {
           <header><div><span className="eyebrow">Sonata configuration</span><h3>Allowed set effects</h3></div><b>{profile.allowedSonatas.length}/{sonataCatalog.length}</b></header>
           <label className="optimizer-field"><span>Build pattern</span><select value={profile.sonataMode} onChange={(event) => update({ sonataMode: event.target.value as OptimizerProfile['sonataMode'] })}><option value="any">Any allowed pattern</option><option value="highest">Highest-tier set effect</option><option value="dual">Two active Sonatas</option><option value="custom">Custom requirements</option></select><small>{SONATA_MODE_COPY[profile.sonataMode]}</small></label>
           <label className="optimizer-check"><input type="checkbox" checked={profile.allowNoSonata} onChange={(event) => update({ allowNoSonata: event.target.checked })}/><span>Allow builds with no active Sonata effect</span></label>
-          <details className="optimizer-sonata-picker"><summary><span>Choose allowed Sonatas</span><b>{profile.allowedSonatas.length} enabled</b></summary><div className="optimizer-picker-actions"><button type="button" onClick={() => update({ allowedSonatas: sonataCatalog.map((sonata) => sonata.name) })}>Enable all</button><button type="button" onClick={() => update({ allowedSonatas: [] })}>Disable all</button></div><div>{sonataCatalog.map((sonata) => { const active = profile.allowedSonatas.includes(sonata.name); return <button type="button" className={active ? 'active' : ''} aria-pressed={active} data-filter-state={active ? 'included' : 'excluded'} onClick={() => toggleSonata(sonata.name)} key={sonata.id}><span>{sonata.name}</span><small>{sonata.effects.map((effect) => `${effect.pieces}-pc`).join(' · ')} · {sonataCounts.get(sonata.name) ?? 0} Echoes</small></button> })}</div></details>
+          <div className="optimizer-sonata-selection"><div className="optimizer-picker-actions"><span>Allowed Sonatas</span><div><button type="button" onClick={() => update({ allowedSonatas: sonataCatalog.map((sonata) => sonata.name) })}>Enable all</button><button type="button" onClick={() => update({ allowedSonatas: [] })}>Disable all</button></div></div><div className="optimizer-sonata-options">{sonataCatalog.map((sonata) => { const active = profile.allowedSonatas.includes(sonata.name); return <button type="button" className={active ? 'active' : ''} aria-pressed={active} aria-label={`${sonata.name}, ${active ? 'enabled' : 'disabled'}`} title={sonata.name} data-filter-state={active ? 'included' : 'excluded'} onClick={() => toggleSonata(sonata.name)} key={sonata.id}><img src={generatedSonataIconSources[sonata.name]} alt=""/></button> })}</div></div>
           {profile.sonataMode === 'custom' && <div className="optimizer-requirements"><div><select value={requirementSonata} onChange={(event) => { const name = event.target.value; setRequirementSonata(name); setRequirementPieces(sonataCatalog.find((sonata) => sonata.name === name)?.effects[0]?.pieces ?? 1) }}>{sonataCatalog.map((sonata) => <option value={sonata.name} key={sonata.id}>{sonata.name}</option>)}</select><select value={requirementPieces} onChange={(event) => setRequirementPieces(Number(event.target.value))}>{availableRequirementPieces.map((pieces) => <option value={pieces} key={pieces}>{pieces}-piece</option>)}</select><button type="button" onClick={addRequirement}>Add</button></div>{profile.requiredSonataEffects.map((entry) => <span key={`${entry.sonata}-${entry.pieces}`}>{entry.sonata} · {entry.pieces}-piece<button type="button" aria-label={`Remove ${entry.sonata} requirement`} onClick={() => update({ requiredSonataEffects: profile.requiredSonataEffects.filter((required) => required !== entry) })}>×</button></span>)}</div>}
         </Panel>
 
@@ -154,14 +150,13 @@ export function OptimizerSetup(props: OptimizerSetupProps) {
           <header><div><span className="eyebrow">Build constraints</span><h3>Minimum and maximum values</h3></div><b>{constraintKeys.length}</b></header>
           <div className="optimizer-add-constraint"><select value={constraintStat} onChange={(event) => setConstraintStat(event.target.value as OptimizerStatKey)}>{CORE_STATS.map((key) => <option value={key} key={key}>{statLabels[key]}</option>)}</select><button type="button" onClick={addConstraint}>Add constraint</button></div>
           <div className="optimizer-constraint-list">{constraintKeys.map((key) => <div key={key}><span>{statLabels[key]}</span><label><small>Minimum</small><input type="number" step="0.1" value={profile.minimumStats[key] ?? ''} placeholder="None" onChange={(event) => { const value = event.target.value; const minimumStats = { ...profile.minimumStats }; if (value === '') delete minimumStats[key]; else minimumStats[key] = Number(value); update({ minimumStats }) }}/></label><label><small>Maximum</small><input type="number" step="0.1" value={profile.maximumStats[key] ?? ''} placeholder="None" onChange={(event) => { const value = event.target.value; const maximumStats = { ...profile.maximumStats }; if (value === '') delete maximumStats[key]; else maximumStats[key] = Number(value); update({ maximumStats }) }}/></label><button type="button" aria-label={`Remove ${statLabels[key]} constraint`} onClick={() => removeConstraint(key)}>×</button></div>)}</div>
-          <div className="optimizer-score-constraints"><label><span>Minimum target score</span><input type="number" value={profile.minimumScore ?? ''} placeholder="None" onChange={(event) => update({ minimumScore: event.target.value === '' ? undefined : Number(event.target.value) })}/></label><label><span>Maximum target score</span><input type="number" value={profile.maximumScore ?? ''} placeholder="None" onChange={(event) => update({ maximumScore: event.target.value === '' ? undefined : Number(event.target.value) })}/></label></div>
         </Panel>
       </div>
     </section>
 
     <div className="optimizer-scales-with"><span>{scalesWithTitle}</span>{scalesWith.map((label) => <b key={label}>{label}</b>)}<small>Team effects, enemy state, sequences, weapon effects, and enabled conditions are frozen when generation starts.</small></div>
     <Panel className="optimizer-run-bar">
-      <label><span>Optimization target</span><select value={targetId} onChange={(event) => onTargetChange(event.target.value)}>{targets.map((target) => <option value={target.id} key={target.id}>{compactAttackLabel(target.label)}</option>)}</select></label>
+      <label><span>Optimization target</span><select value={targetId} onChange={(event) => onTargetChange(event.target.value)}>{[...new Set(targets.map((target) => target.group))].map((group) => <optgroup label={compactAttackLabel(group)} key={group}>{targets.filter((target) => target.group === group).map((target) => <option value={target.id} key={target.id}>{compactAttackLabel(target.label)}</option>)}</optgroup>)}</select></label>
       <label><span>Results</span><select value={profile.resultLimit} onChange={(event) => update({ resultLimit: Number(event.target.value) })}>{RESULT_LIMITS.map((limit) => <option value={limit} key={limit}>{limit} builds</option>)}</select></label>
       <label><span>Workers</span><select value={profile.workerCount} onChange={(event) => update({ workerCount: event.target.value === 'auto' ? 'auto' : Number(event.target.value) })}>{WORKER_COUNTS.map((count) => <option value={count} key={count}>{count === 'auto' ? 'Auto' : count}</option>)}</select></label>
       <label><span>Search</span><select value={profile.searchMode} onChange={(event) => update({ searchMode: event.target.value as OptimizerProfile['searchMode'] })}><option value="exact">Exact</option><option value="fast">Fast · capped</option></select></label>

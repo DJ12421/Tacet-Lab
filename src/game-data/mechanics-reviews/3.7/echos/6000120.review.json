@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000120",
+  "entityName": "Corrosaurus",
+  "sourceFingerprint": "0873337d5594fccfd0098be5e44315121dec0c6fb0d79683aa5c8fecb7b34cec",
+  "reviewedAt": "2026-09-26T18:47:52.520Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "41bb591e5c6d992cc73f5ca45bc85102a598441a4cd863efed69258f31138417",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000120:skill",
+            "name": "Corrosaurus - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Fusion",
+            "expressions": [
+              "152.00%",
+              "182.40%",
+              "212.80%",
+              "243.20%",
+              "273.60%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.52
+              ],
+              [
+                1.824
+              ],
+              [
+                2.128
+              ],
+              [
+                2.432
+              ],
+              [
+                2.736
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 20,
+            "sourceText": "Summon a Corrosaurus to attack enemies, dealing 152.00% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s · Summon a Corrosaurus to attack enemies, dealing 182.40% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s · Summon a Corrosaurus to attack enemies, dealing 212.80% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s · Summon a Corrosaurus to attack enemies, dealing 243.20% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s · Summon a Corrosaurus to attack enemies, dealing 273.60% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 20.00% Echo Skill DMG Bonus.\nCD: 20s"
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "6bcce6dfc2b0863ec0d08fa87279d90c82d9e3eb7e6b8d426f49813e4f970303",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000120:effect:0",
+            "sourceName": "Corrosaurus",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 20.00% Echo Skill DMG Bonus.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "echoDamage",
+                  "operation": "addPercent",
+                  "value": 20,
+                  "scope": "self"
+                },
+                {
+                  "stat": "Fusion",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

@@ -1,8 +1,9 @@
 # Clean-room combat calculation module
 
-Status: reviewed 3.6 mechanics are integrated into Teams, rotations, build
-previews, the optimizer worker, and the Theorizer. The former damage module and
-general-purpose formula engine have been removed.
+Status: reviewed 3.7 mechanics are integrated into Teams, rotations, build
+previews, the optimizer worker, and the Theorizer. Pending mechanics are marked
+TBA in the Archive and calculation views; reviewed actions and effects remain available.
+The former damage module and general-purpose formula engine have been removed.
 
 ## Decision
 

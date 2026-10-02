@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000222",
+  "entityName": "Bloomburst Puppet",
+  "sourceFingerprint": "8e4f0183726da0fc4d4e250054ace2b8d9a9dca9178c7b16b69249547988fc45",
+  "reviewedAt": "2026-10-01T09:06:58.586Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "747637af11d38d32a033bef7d1587452f4d671ea30ede623e3ce3d80eef6f2a8",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000222:skill",
+            "name": "Bloomburst Puppet - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Glacio",
+            "expressions": [
+              "14.40%+7.20%+43.20%",
+              "17.28%+8.64%+51.84%",
+              "20.16%+10.08%+60.48%",
+              "23.04%+11.52%+69.12%",
+              "25.92%+12.96%+77.76%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.14400000000000002,
+                0.07200000000000001,
+                0.07200000000000001,
+                0.43200000000000005
+              ],
+              [
+                0.1728,
+                0.0864,
+                0.0864,
+                0.5184000000000001
+              ],
+              [
+                0.2016,
+                0.1008,
+                0.1008,
+                0.6048
+              ],
+              [
+                0.2304,
+                0.1152,
+                0.1152,
+                0.6912
+              ],
+              [
+                0.25920000000000004,
+                0.12960000000000002,
+                0.12960000000000002,
+                0.7776000000000001
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              1,
+              1,
+              2
+            ],
+            "count": 4,
+            "cooldownSeconds": 8,
+            "sourceText": "Summon a Bloomburst Puppet to startle the target, dealing 1 instance of 14.40% Glacio DMG, followed by 2 instances of 7.20% Glacio DMG and 1 instance of 43.20% Glacio DMG.\nCD: 8s · Summon a Bloomburst Puppet to startle the target, dealing 1 instance of 17.28% Glacio DMG, followed by 2 instances of 8.64% Glacio DMG and 1 instance of 51.84% Glacio DMG.\nCD: 8s · Summon a Bloomburst Puppet to startle the target, dealing 1 instance of 20.16% Glacio DMG, followed by 2 instances of 10.08% Glacio DMG and 1 instance of 60.48% Glacio DMG.\nCD: 8s · Summon a Bloomburst Puppet to startle the target, dealing 1 instance of 23.04% Glacio DMG, followed by 2 instances of 11.52% Glacio DMG and 1 instance of 69.12% Glacio DMG.\nCD: 8s · Summon a Bloomburst Puppet to startle the target, dealing 1 instance of 25.92% Glacio DMG, followed by 2 instances of 12.96% Glacio DMG and 1 instance of 77.76% Glacio DMG.\nCD: 8s"
+          }
+        ],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  }
+}

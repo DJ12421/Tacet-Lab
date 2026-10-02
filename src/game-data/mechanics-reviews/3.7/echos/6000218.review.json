@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000218",
+  "entityName": "Thousand-Puppet Pavilion",
+  "sourceFingerprint": "6f1bc1425a5fc7038eb5f5abc99a6800b6697c84dee72a0ac362bf9bf68b0eac",
+  "reviewedAt": "2026-09-26T18:47:52.649Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "4cc1529ce813e83fdbf31cbe464a30166465315ff9704f7fbdcde9bee6dc27d4",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000218:skill:1",
+            "name": "Thousand-Puppet Pavilion - Echo Skill 1",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Havoc",
+            "expressions": [
+              "60.80%",
+              "72.96%",
+              "85.12%",
+              "97.28%",
+              "109.44%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.608
+              ],
+              [
+                0.7295999999999999
+              ],
+              [
+                0.8512000000000001
+              ],
+              [
+                0.9728
+              ],
+              [
+                1.0944
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 20,
+            "sourceText": "Use Echo Skill to attack nearby enemies, dealing 60.80% Havoc DMG and summoning 4 Blades of Thousand Memories that last 15s.\nWhile Blades of Thousand Memories last, when the Resonator inflicts Havoc Bane, consume 1 Blade of Thousand Memories to deal 22.80% Havoc DMG once to the target. This effect can be triggered once every 1s.\nResonators with this Echo equipped in the main slot gain 12.00% Havoc DMG and 12.00% Heavy Attack DMG bonuses.\nCD: 20s · Use Echo Skill to attack nearby enemies, dealing 72.96% Havoc DMG and summoning 4 Blades of Thousand Memories that last 15s.\nWhile Blades of Thousand Memories last, when the Resonator inflicts Havoc Bane, consume 1 Blade of Thousand Memories to deal 27.36% Havoc DMG once to the target. This effect can be triggered once every 1s.\nResonators with this Echo equipped in the main slot gain 12.00% Havoc DMG and 12.00% Heavy Attack DMG bonuses.\nCD: 20s · Use Echo Skill to attack nearby enemies, dealing 85.12% Havoc DMG and summoning 4 Blades of Thousand Memories that last 15s.\nWhile Blades of Thousand Memories last, when the Resonator inflicts Havoc Bane, consume 1 Blade of Thousand Memories to deal 31.92% Havoc DMG once to the target. This effect can be triggered once every 1s.\nResonators with this Echo equipped in the main slot gain 12.00% Havoc DMG and 12.00% Heavy Attack DMG bonuses.\nCD: 20s · Use Echo Skill to attack nearby enemies, dealing 97.28% Havoc DMG and summoning 4 Blades of Thousand Memories that last 15s.\nWhile Blades of Thousand Memories last, when the Resonator inflicts Havoc Bane, consume 1 Blade of Thousand Memories to deal 36.48% Havoc DMG once to the target. This effect can be triggered once every 1s.\nResonators with this Echo equipped in the main slot gain 12.00% Havoc DMG and 12.00% Heavy Attack DMG bonuses.\nCD: 20s · Use Echo Skill to attack nearby enemies, dealing 109.44% Havoc DMG and summoning 4 Blades of Thousand Memories that last 15s.\nWhile Blades of Thousand Memories last, when the Resonator inflicts Havoc Bane, consume 1 Blade of Thousand Memories to deal 41.04% Havoc DMG once to the target. This effect can be triggered once every 1s.\nResonators with this Echo equipped in the main slot gain 12.00% Havoc DMG and 12.00% Heavy Attack DMG bonuses.\nCD: 20s"
+          },
+          {
+            "id": "echo:6000218:skill:2",
+            "name": "Thousand-Puppet Pavilion - Blade of Thousand Memories",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Havoc",
+            "expressions": [
+              "22.80%",
+              "27.36%",
+              "31.92%",
+              "36.48%",
+              "41.04%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.228
+              ],
+              [
+                0.2736
+              ],
+              [
+                0.31920000000000004
+              ],
+              [
+                0.36479999999999996
+              ],
+              [
+                0.4104
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 20,
+            "sourceText": "Use Echo Skill to attack nearby enemies, dealing 60.80% Havoc DMG and summoning 4 Blades of Thousand Memories that last 15s.\nWhile Blades of Thousand Memories last, when the Resonator inflicts Havoc Bane, consume 1 Blade of Thousand Memories to deal 22.80% Havoc DMG once to the target. This effect can be triggered once every 1s.\nResonators with this Echo equipped in the main slot gain 12.00% Havoc DMG and 12.00% Heavy Attack DMG bonuses.\nCD: 20s · Use Echo Skill to attack nearby enemies, dealing 72.96% Havoc DMG and summoning 4 Blades of Thousand Memories that last 15s.\nWhile Blades of Thousand Memories last, when the Resonator inflicts Havoc Bane, consume 1 Blade of Thousand Memories to deal 27.36% Havoc DMG once to the target. This effect can be triggered once every 1s.\nResonators with this Echo equipped in the main slot gain 12.00% Havoc DMG and 12.00% Heavy Attack DMG bonuses.\nCD: 20s · Use Echo Skill to attack nearby enemies, dealing 85.12% Havoc DMG and summoning 4 Blades of Thousand Memories that last 15s.\nWhile Blades of Thousand Memories last, when the Resonator inflicts Havoc Bane, consume 1 Blade of Thousand Memories to deal 31.92% Havoc DMG once to the target. This effect can be triggered once every 1s.\nResonators with this Echo equipped in the main slot gain 12.00% Havoc DMG and 12.00% Heavy Attack DMG bonuses.\nCD: 20s · Use Echo Skill to attack nearby enemies, dealing 97.28% Havoc DMG and summoning 4 Blades of Thousand Memories that last 15s.\nWhile Blades of Thousand Memories last, when the Resonator inflicts Havoc Bane, consume 1 Blade of Thousand Memories to deal 36.48% Havoc DMG once to the target. This effect can be triggered once every 1s.\nResonators with this Echo equipped in the main slot gain 12.00% Havoc DMG and 12.00% Heavy Attack DMG bonuses.\nCD: 20s · Use Echo Skill to attack nearby enemies, dealing 109.44% Havoc DMG and summoning 4 Blades of Thousand Memories that last 15s.\nWhile Blades of Thousand Memories last, when the Resonator inflicts Havoc Bane, consume 1 Blade of Thousand Memories to deal 41.04% Havoc DMG once to the target. This effect can be triggered once every 1s.\nResonators with this Echo equipped in the main slot gain 12.00% Havoc DMG and 12.00% Heavy Attack DMG bonuses.\nCD: 20s"
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "2690d1712b6888301d8eb538581eecfae31a07a43fef1f5d9aa83c0ad1d55a7f",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000218:effect:0",
+            "sourceName": "Thousand-Puppet Pavilion",
+            "sourceType": "echo",
+            "text": "Resonators with this Echo equipped in the main slot gain 12.00% Havoc DMG and 12.00% Heavy Attack DMG bonuses.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Havoc",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "sonata",
+  "entityId": "19",
+  "entityName": "Dream of the Lost",
+  "sourceFingerprint": "adbcb6d62452ae8c0838f2f20e2af485335891d8db296df58919aa1653942893",
+  "reviewedAt": "2026-09-05T09:28:55.744Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "d325bcfa8c047adbf3682e9441f0f9512ea249bbca0064d718370c0f9d469805",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:19:3:0",
+            "sourceName": "Dream of the Lost",
+            "text": "Holding 0 Resonance Energy increases Crit. Rate by 20% and grants 35% Echo Skill DMG Bonus.",
+            "refinementTexts": [
+              "Holding 0 Resonance Energy increases Crit. Rate by 20% and grants 35% Echo Skill DMG Bonus."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "critRate",
+                  "operation": "addPercent",
+                  "value": 20
+                },
+                {
+                  "stat": "echoDamage",
+                  "operation": "addPercent",
+                  "value": 35
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Res. Energy = 0"
+            },
+            "sourceType": "sonata",
+            "pieces": 3
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

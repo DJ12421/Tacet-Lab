@@ -161,7 +161,6 @@ function safeAdd(left: number, right: number) {
 export function echoMatchesOptimizerProfile(echo: Echo, profile: OptimizerRequest['profile'], includeEquippedBy?: string) {
   if (echo.excluded) return false
   if (!profile) return !echo.equippedBy || echo.equippedBy === includeEquippedBy
-  if (profile.excludedEchoIds.includes(echo.id)) return false
   if (echo.level < profile.levelLow || echo.level > profile.levelHigh) return false
   if (!profile.rarities.includes(echo.rarity)) return false
   if (!(profile.mainStatsByCost[String(echo.cost) as '1' | '3' | '4'] ?? []).includes(echo.mainStat.key)) return false
@@ -201,7 +200,7 @@ function pruneDominatedEchoes(echoes: Echo[], request: OptimizerRequest, protect
   // Reviewed effects can depend on exact pieces and activation state, so
   // combat searches keep every candidate unless a reviewed bound proves safe.
   if (!request.profile || request.profile.mainEchoPolicy === 'any' || request.combat
-    || Object.keys(request.maximumStats ?? {}).length || request.profile.maximumScore !== undefined) return echoes
+    || Object.keys(request.maximumStats ?? {}).length) return echoes
   const threshold = request.limit + 4
   const groups = new Map<string, Echo[]>()
   for (const echo of echoes) {
@@ -463,20 +462,16 @@ function branchCannotQualify(
   data: CompiledOptimizerData,
 ) {
   if (request.combat) return false
-  const profile = request.profile
   const localThreshold = localResults.length >= request.limit ? localResults[localResults.length - 1].score : Number.NEGATIVE_INFINITY
   const globalThreshold = request.scoreThreshold ?? Number.NEGATIVE_INFINITY
   const hasStatConstraints = Object.keys(request.minimumStats).length > 0 || Object.keys(request.maximumStats ?? {}).length > 0
-  const hasScoreBounds = profile?.minimumScore !== undefined || profile?.maximumScore !== undefined
-    || Number.isFinite(localThreshold) || Number.isFinite(globalThreshold)
+  const hasScoreBounds = Number.isFinite(localThreshold) || Number.isFinite(globalThreshold)
   if (!hasStatConstraints && !hasScoreBounds) return false
   const envelope = statEnvelope(request, selected, candidates, start, amount, data)
   if (Object.entries(request.minimumStats).some(([key, value]) => envelope.max[key as OptimizerStatKey] < (value ?? Number.NEGATIVE_INFINITY))) return true
   if (Object.entries(request.maximumStats ?? {}).some(([key, value]) => envelope.min[key as OptimizerStatKey] > (value ?? Number.POSITIVE_INFINITY))) return true
   if (!hasScoreBounds) return false
   const score = scoreEnvelope(request, envelope)
-  if (profile?.minimumScore !== undefined && score.max < profile.minimumScore) return true
-  if (profile?.maximumScore !== undefined && score.min > profile.maximumScore) return true
   return Number.isFinite(score.max) && score.max < Math.max(localThreshold, globalThreshold)
 }
 
@@ -583,7 +578,7 @@ function runOptimizerTasks(
     const evaluated = evaluateCandidate?.(ordered)
     const partial = { requestId: request.requestId, echoIds: ordered.map((echo) => echo.id), mainEchoId: main.id, stats, damage: evaluated?.damage ?? damage }
     const score = evaluated?.score ?? resultScore(partial, request.objective)
-    if (!Number.isFinite(score) || (profile?.minimumScore !== undefined && score < profile.minimumScore) || (profile?.maximumScore !== undefined && score > profile.maximumScore)) { reject(); return }
+    if (!Number.isFinite(score)) { reject(); return }
     progress.tested += 1
     progress.processed += 1
     const plotValue = stats[profile?.plotStat ?? 'atk']

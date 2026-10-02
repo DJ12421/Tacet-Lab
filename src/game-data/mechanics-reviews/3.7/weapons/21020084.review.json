@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21020084",
+  "entityName": "Endless Collapse",
+  "sourceFingerprint": "28290d560df330c35d469ab963a5577d143e2866d798df79d4d62380c30b28cf",
+  "reviewedAt": "2026-09-09T05:41:11.194Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "2b0523a9ab36c367096f8dfca5e89c5df1344ce46bed8c6f40890c5dc8fc3a0d",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020084:effect:0",
+            "sourceName": "Intergalactic Gaze",
+            "text": "Casting the Resonance Skill grants 6 Resonance Energy and increases ATK by 10%, lasting for 16s. This effect can be triggered once every 20s.",
+            "refinementTexts": [
+              "Casting the Resonance Skill grants 6 Resonance Energy and increases ATK by 10%, lasting for 16s. This effect can be triggered once every 20s.",
+              "Casting the Resonance Skill grants 7 Resonance Energy and increases ATK by 12.5%, lasting for 16s. This effect can be triggered once every 20s.",
+              "Casting the Resonance Skill grants 8 Resonance Energy and increases ATK by 15%, lasting for 16s. This effect can be triggered once every 20s.",
+              "Casting the Resonance Skill grants 9 Resonance Energy and increases ATK by 17.5%, lasting for 16s. This effect can be triggered once every 20s.",
+              "Casting the Resonance Skill grants 10 Resonance Energy and increases ATK by 20%, lasting for 16s. This effect can be triggered once every 20s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 16,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Resonance Skill used"
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 16,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the Resonance Skill cast"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 16,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the Resonance Skill cast"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 16,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the Resonance Skill cast"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 16,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 17.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the Resonance Skill cast"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 16,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "the Resonance Skill cast"
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

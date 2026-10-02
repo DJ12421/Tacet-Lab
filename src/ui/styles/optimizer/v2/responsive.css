@@ -61,7 +61,7 @@
   .optimizer-constraint-list>div>span {
     grid-column: 1/-1;
   }
-  .optimizer-score-constraints,.optimizer-run-bar {
+  .optimizer-run-bar {
     grid-template-columns: 1fr;
   }
   .optimizer-run-bar>label:first-child,.optimizer-run-bar>button {
@@ -123,7 +123,7 @@
 
 .optimizer-comparison-tray article.is-selected {
   border-color: var(--gold);
-  box-shadow: inset 3px 0 0 var(--gold);
+  box-shadow: none;
 }
 
 .optimizer-comparison-select {

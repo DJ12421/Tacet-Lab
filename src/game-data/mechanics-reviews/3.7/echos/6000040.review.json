@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000040",
+  "entityName": "Hoochief",
+  "sourceFingerprint": "013b60b34346b6ab534b291f819fd9862aa7709df4f5716fceef1ad72c87344b",
+  "reviewedAt": "2026-09-26T18:31:21.790Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "fb0e74373172761329c7fb163cca52fbc25f8fb60341d317e539dc88d70bc021",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000040:skill",
+            "name": "Hoochief - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Aero",
+            "expressions": [
+              "149%",
+              "178.80%",
+              "208.60%",
+              "238.40%",
+              "268.20%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.49
+              ],
+              [
+                1.788
+              ],
+              [
+                2.086
+              ],
+              [
+                2.384
+              ],
+              [
+                2.682
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 15,
+            "sourceText": "Transform into Hoochief and smack the enemies, dealing 149% Aero DMG.\nCD: 15s · Transform into Hoochief and smack the enemies, dealing 178.80% Aero DMG.\nCD: 15s · Transform into Hoochief and smack the enemies, dealing 208.60% Aero DMG.\nCD: 15s · Transform into Hoochief and smack the enemies, dealing 238.40% Aero DMG.\nCD: 15s · Transform into Hoochief and smack the enemies, dealing 268.20% Aero DMG.\nCD: 15s"
+          }
+        ],
+        "cooldownSeconds": 15
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

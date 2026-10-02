@@ -166,6 +166,12 @@
   overscroll-behavior-x: contain;
 }
 
+.wv-toolbar .filter-chips,
+.character-roster-toolbar .filter-chips,
+.catalog-picker-filters .filter-chips {
+  border-radius: 6px;
+}
+
 .owned-chip-filter .filter-chips button {
   flex: 0 0 auto;
   min-width: 56px;

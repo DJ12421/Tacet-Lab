@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "sonata",
+  "entityId": "25",
+  "entityName": "Halo of Starry Radiance",
+  "sourceFingerprint": "59d5c1181fc3cdb19172a7e80682ed0a35939cbc2234e52da4fe7cd2a0c8891a",
+  "reviewedAt": "2026-09-15T10:43:30.072Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "9b84ef02eec45f4bc8dd5f77a810efcc8e696f21180f4f3408ae6f1ee7c3d9ed",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:25:2:0",
+            "sourceName": "Halo of Starry Radiance",
+            "text": "Healing Bonus + 10%.",
+            "refinementTexts": [
+              "Healing Bonus + 10%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "healingBonus",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2
+          },
+          {
+            "id": "sonata:25:5:0",
+            "sourceName": "Halo of Starry Radiance",
+            "text": "When healing a Resonator in the team, every 1% of Off-Tune Buildup Rate grants a 0.2% ATK increase to all Resonators in the team for 4s, up to 25%.",
+            "refinementTexts": [
+              "When healing a Resonator in the team, every 1% of Off-Tune Buildup Rate grants a 0.2% ATK increase to all Resonators in the team for 4s, up to 25%."
+            ],
+            "parsed": {
+              "scope": "team",
+              "input": {
+                "kind": "conditional-value",
+                "key": "healing-buff",
+                "source": "provider",
+                "stat": "offTuneBuildupRate",
+                "minimum": 0,
+                "maximum": 125,
+                "step": 1,
+                "label": "Off-Tune Buildup Rate"
+              },
+              "durationSeconds": 4,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 0.2,
+                  "scaling": "per-unit",
+                  "sourceStat": "offTuneBuildupRate",
+                  "maximumValue": 25,
+                  "scope": "team"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Healing a Resonator in the team"
+            },
+            "sourceType": "sonata",
+            "pieces": 5
+          },
+          {
+            "id": "sonata:25:5:1",
+            "sourceName": "Halo of Starry Radiance",
+            "text": "Effects of the same name cannot be stacked.",
+            "refinementTexts": [
+              "Effects of the same name cannot be stacked."
+            ],
+            "reviewStatus": "no-mechanic",
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "sonata",
+            "pieces": 5
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000207",
+  "entityName": "Kernel Puppet: Anger",
+  "sourceFingerprint": "9231dd3b088f2d7d4c37bd77a41f8a430db210ebaf13a2a8058d214bfc6ed575",
+  "reviewedAt": "2026-09-26T18:47:52.625Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "ea86d3603d7ea7133e6695c593e4a00307950a421790b638cff05c7a94a35148",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000207:skill",
+            "name": "Kernel Puppet: Anger - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Fusion",
+            "expressions": [
+              "72.00%",
+              "86.40%",
+              "100.80%",
+              "115.20%",
+              "129.60%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.72
+              ],
+              [
+                0.8640000000000001
+              ],
+              [
+                1.008
+              ],
+              [
+                1.1520000000000001
+              ],
+              [
+                1.296
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 8,
+            "sourceText": "Use Echo Skill to summon Kernel Puppet: Worry to attack enemies, dealing 72.00% Fusion DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Worry to attack enemies, dealing 86.40% Fusion DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Worry to attack enemies, dealing 100.80% Fusion DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Worry to attack enemies, dealing 115.20% Fusion DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Worry to attack enemies, dealing 129.60% Fusion DMG.\nCD: 8s"
+          }
+        ],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000039",
+  "entityName": "Tempest Mephis",
+  "sourceFingerprint": "77a4b120746ffdea539a55b8c9e54d1a4031b7f7df41faa7c7859296f56bb5e0",
+  "reviewedAt": "2026-09-26T18:31:13.000Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "69673960b00e3dd37c9bd41fb2f66146d83d11730dd73046123326e680cd131b",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000039:skill",
+            "name": "Tempest Mephis - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Electro",
+            "expressions": [
+              "64.05%+109.80%",
+              "73.66%+126.27%",
+              "83.27%+142.74%",
+              "92.87%+159.21%",
+              "102.48%+175.68%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.6405,
+                1.0979999999999999
+              ],
+              [
+                0.7365999999999999,
+                1.2627
+              ],
+              [
+                0.8327,
+                1.4274
+              ],
+              [
+                0.9287000000000001,
+                1.5921
+              ],
+              [
+                1.0248,
+                1.7568000000000001
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              1
+            ],
+            "count": 2,
+            "cooldownSeconds": 20,
+            "sourceText": "Transform into Tempest Mephis to perform tail swing attacks followed by a claw attack. The lightning strike summoned by the tail swing deals 64.05% Electro DMG each time, while the claw attack deals 109.80% Electro DMG.\nAfter the claw hit, increase the current character's Electro DMG by 12.00% and Heavy Attack DMG by 12.00% for 15s.\nCD: 20s · Transform into Tempest Mephis to perform tail swing attacks followed by a claw attack. The lightning strike summoned by the tail swing deals 73.66% Electro DMG each time, while the claw attack deals 126.27% Electro DMG.\nAfter the claw hit, increase the current character's Electro DMG by 12.00% and Heavy Attack DMG by 12.00% for 15s.\nCD: 20s · Transform into Tempest Mephis to perform tail swing attacks followed by a claw attack. The lightning strike summoned by the tail swing deals 83.27% Electro DMG each time, while the claw attack deals 142.74% Electro DMG.\nAfter the claw hit, increase the current character's Electro DMG by 12.00% and Heavy Attack DMG by 12.00% for 15s.\nCD: 20s · Transform into Tempest Mephis to perform tail swing attacks followed by a claw attack. The lightning strike summoned by the tail swing deals 92.87% Electro DMG each time, while the claw attack deals 159.21% Electro DMG.\nAfter the claw hit, increase the current character's Electro DMG by 12.00% and Heavy Attack DMG by 12.00% for 15s.\nCD: 20s · Transform into Tempest Mephis to perform tail swing attacks followed by a claw attack. The lightning strike summoned by the tail swing deals 102.48% Electro DMG each time, while the claw attack deals 175.68% Electro DMG.\nAfter the claw hit, increase the current character's Electro DMG by 12.00% and Heavy Attack DMG by 12.00% for 15s.\nCD: 20s"
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "1b29ca47b934dda54b0beda3eb2a1f08ca553f1dd502e6899fd2841d9726217d",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000039:effect:0",
+            "sourceName": "Tempest Mephis",
+            "sourceType": "echo",
+            "text": "After the claw hit, increase the current character's Electro DMG by 12.00% and Heavy Attack DMG by 12.00% for 15s.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "After the claw hit",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "heavyDamage",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                },
+                {
+                  "stat": "Electro",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            }
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

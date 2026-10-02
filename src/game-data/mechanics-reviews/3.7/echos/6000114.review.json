@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000114",
+  "entityName": "Lioness of Glory",
+  "sourceFingerprint": "7a55c42e571ea5545f5150c4b00725cfb3e6201d69afd88cd1ec1448ec634438",
+  "reviewedAt": "2026-09-26T18:47:52.506Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "e8bb1cdc623940a0d88ca6ec2bddcde05401619b6b8cc7d266c83ceec3092037",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000114:skill",
+            "name": "Lioness of Glory - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Fusion",
+            "expressions": [
+              "45.60%+106.40%",
+              "54.72%+127.68%",
+              "63.84%+148.96%",
+              "72.96%+170.24%",
+              "82.08%+191.52%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.456,
+                1.064
+              ],
+              [
+                0.5472,
+                1.2768000000000002
+              ],
+              [
+                0.6384000000000001,
+                1.4896
+              ],
+              [
+                0.7295999999999999,
+                1.7024000000000001
+              ],
+              [
+                0.8208,
+                1.9152
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0,
+              1
+            ],
+            "count": 2,
+            "cooldownSeconds": 20,
+            "sourceText": "Summon the Halberd of Glory to crush an area, dealing 45.60% Fusion DMG to nearby targets, and then blast off after a short delay, dealing 106.40% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon the Halberd of Glory to crush an area, dealing 54.72% Fusion DMG to nearby targets, and then blast off after a short delay, dealing 127.68% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon the Halberd of Glory to crush an area, dealing 63.84% Fusion DMG to nearby targets, and then blast off after a short delay, dealing 148.96% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon the Halberd of Glory to crush an area, dealing 72.96% Fusion DMG to nearby targets, and then blast off after a short delay, dealing 170.24% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s · Summon the Halberd of Glory to crush an area, dealing 82.08% Fusion DMG to nearby targets, and then blast off after a short delay, dealing 191.52% Fusion DMG.\nThe Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Resonance Liberation DMG Bonus.\nCD: 20s"
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "10e0a5faf84713808758a45e23afeafecc27c99f2bfaea4ef613eebf0a775b97",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000114:effect:0",
+            "sourceName": "Lioness of Glory",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in the main slot gains 12.00% Fusion DMG Bonus and 12.00% Resonance Liberation DMG Bonus.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Fusion",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

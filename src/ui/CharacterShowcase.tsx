@@ -2,7 +2,8 @@ import { useCallback, useContext, useDeferredValue, useEffect, useMemo, useRef, 
 import type { CSSProperties, ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { toPng } from 'html-to-image'
-import { baseTuneBreakBoost, characterCatalog, sonataNames, statLabels, weaponCatalog, type CharacterCatalogEntry, type WeaponCatalogEntry } from '../game-data'
+import { baseTuneBreakBoost, characterCatalog, echoCatalog, sonataNames, statLabels, weaponCatalog, type CharacterCatalogEntry, type WeaponCatalogEntry } from '../game-data'
+import { pendingMechanics } from '../game-data/review-status.generated'
 import { characterSubstatScoreKeys } from '../game-data/character-substat-preferences'
 import { generatedSonataIconSources } from '../game-data/sonatas.generated'
 import { effectiveSubStats } from '../game-data/echo-main-stats'
@@ -167,7 +168,7 @@ function EchoFilterSelect({ label, values, options, emptyLabel, onChange, icon }
   const close = useCallback(() => setOpen(false), [])
   useDismissableLayer(open, ref, close)
   const toggle = (value: string) => onChange(values.includes(value) ? values.filter((item) => item !== value) : [...values, value])
-  return <label className="multi-filter">{label}<div className="multi-select" ref={ref}><button type="button" className="multi-select-trigger" aria-expanded={open} onClick={() => setOpen((current) => !current)}><span className="multi-select-values">{values.length ? values.map((value) => <span className="multi-select-chip" key={value}>{icon?.(value)}<b>{options.find((option) => option.value === value)?.label ?? value}</b></span>) : <em>{emptyLabel}</em>}</span><strong>⌄</strong></button>{open && <div className="multi-select-menu"><div className="multi-select-options">{options.map((option) => <button type="button" className={values.includes(option.value) ? 'active' : ''} onClick={() => toggle(option.value)} key={option.value}>{icon?.(option.value)}<span>{option.label}</span><i>{values.includes(option.value) ? '✓' : ''}</i></button>)}</div><footer><button type="button" className="multi-select-clear" disabled={!values.length} onClick={() => onChange([])}>Clear selections</button></footer></div>}</div></label>
+  return <label className="multi-filter"><span className="sr-only">{label}</span><div className="multi-select" ref={ref}><button type="button" className="multi-select-trigger" aria-expanded={open} onClick={() => setOpen((current) => !current)}><span className="multi-select-values">{values.length ? values.map((value) => <span className="multi-select-chip" key={value}>{icon?.(value)}<b>{options.find((option) => option.value === value)?.label ?? value}</b></span>) : <em>{emptyLabel}</em>}</span><strong>⌄</strong></button>{open && <div className="multi-select-menu"><div className="multi-select-options">{options.map((option) => <button type="button" className={values.includes(option.value) ? 'active' : ''} onClick={() => toggle(option.value)} key={option.value}>{icon?.(option.value)}<span>{option.label}</span><i>{values.includes(option.value) ? '✓' : ''}</i></button>)}</div><footer><button type="button" className="multi-select-clear" disabled={!values.length} onClick={() => onChange([])}>Clear selections</button></footer></div>}</div></label>
 }
 
 function WeaponPicker({ character, characters, catalog, weapons, refresh, onClose }: { character: OwnedCharacter; characters: OwnedCharacter[]; catalog: CharacterCatalogEntry; weapons: OwnedWeapon[]; refresh: () => Promise<void>; onClose: () => void }) {
@@ -194,7 +195,8 @@ function WeaponPicker({ character, characters, catalog, weapons, refresh, onClos
   </div></section></div>, document.body)
 }
 
-function EchoPicker({ slot, characterId, currentIds, echoes, accentClass, refresh, onClose }: { slot: number; characterId: string; currentIds: string[]; echoes: Echo[]; accentClass: string; refresh: () => Promise<void>; onClose: () => void }) {
+export function EchoPicker({ slot, characterId, currentIds, echoes, accentClass, refresh, onClose, onSelect }: { slot: number; characterId: string; currentIds: string[]; echoes: Echo[]; accentClass: string; refresh: () => Promise<void>; onClose: () => void; onSelect?: (echoIds: string[], next?: Echo) => Promise<boolean | void> }) {
+  const pageSize = 30
   const characterSubstatProfile = useContext(CharacterSubstatProfileContext)
   const currentId = currentIds[slot]
   const [query, setQuery] = useState('')
@@ -207,6 +209,8 @@ function EchoPicker({ slot, characterId, currentIds, echoes, accentClass, refres
   const [assignment, setAssignment] = useState<'all' | 'equipped' | 'unequipped'>('all')
   const [showExcluded, setShowExcluded] = useState(false)
   const [error, setError] = useState('')
+  const [page, setPage] = useState(1)
+  const listRef = useRef<HTMLDivElement>(null)
   const deferredQuery = useDeferredValue(query.trim().toLowerCase())
   const statKeys = Object.keys(statLabels) as StatKey[]
   const toggleNumber = (values: number[], value: number, change: (next: number[]) => void) => change(values.includes(value) ? values.filter((item) => item !== value) : [...values, value])
@@ -237,13 +241,21 @@ function EchoPicker({ slot, characterId, currentIds, echoes, accentClass, refres
     }
     return (echoMeta.get(right.id)?.rollRating.average ?? 0) - (echoMeta.get(left.id)?.rollRating.average ?? 0) || left.name.localeCompare(right.name)
   }), [assignment, characterSubstatProfile, costs, deferredQuery, echoes, echoMeta, lockState, mainStats, rarities, showExcluded, sonatas, subStats])
+  useEffect(() => setPage(1), [assignment, costs, deferredQuery, lockState, mainStats, rarities, showExcluded, sonatas, subStats])
+  const pageCount = Math.max(1, Math.ceil(options.length / pageSize))
+  const currentPage = Math.min(page, pageCount)
+  const pageOptions = options.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+  const changePage = (next: number) => { setPage(next); listRef.current?.scrollTo({ top: 0 }) }
+  const pagination = <nav className="echo-pagination" aria-label="Echo picker pages"><span>{options.length ? (currentPage - 1) * pageSize + 1 : 0}–{Math.min(currentPage * pageSize, options.length)} <small>of {options.length}</small></span><div>{pageCount > 1 && <><button type="button" className="echo-page-arrow" disabled={currentPage === 1} onClick={() => changePage(currentPage - 1)} aria-label="Previous page">‹</button><label className="echo-page-select"><span className="sr-only">Page</span><select value={currentPage} onChange={(event) => changePage(Number(event.target.value))}>{Array.from({ length: pageCount }, (_, index) => <option value={index + 1} key={index + 1}>{index + 1}</option>)}</select><small>/ {pageCount}</small></label><button type="button" className="echo-page-arrow" disabled={currentPage === pageCount} onClick={() => changePage(currentPage + 1)} aria-label="Next page">›</button></>}</div></nav>
   const choose = async (next?: Echo) => {
     setError('')
     try {
       const nextIds = [...currentIds]
       if (next) nextIds[slot] = next.id
       else nextIds.splice(slot, 1)
-      await setEquippedEchoIds(characterId, nextIds.filter(Boolean))
+      if (onSelect) {
+        if (await onSelect(nextIds.filter(Boolean), next) === false) return
+      } else await setEquippedEchoIds(characterId, nextIds.filter(Boolean))
       await refresh()
       onClose()
     } catch (cause) {
@@ -252,25 +264,26 @@ function EchoPicker({ slot, characterId, currentIds, echoes, accentClass, refres
   }
   return createPortal(<div className={`catalog-picker-backdrop cs-picker-backdrop ${accentClass}`} onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}>
     <section className="catalog-picker cs-picker cs-echo-picker" role="dialog" aria-modal="true" aria-label={`Equip Echo slot ${slot + 1}`}>
-      <header><div><span className="eyebrow">Echo slot {slot + 1}</span><h2>Equip Echo</h2></div><button className="text-button" onClick={onClose}>Close</button></header>
+      <header><div><span className="eyebrow">Echo slot {slot + 1}</span><h2>Equip Echo</h2></div><button type="button" className="text-button cs-picker-close" aria-label="Close Echo picker" title="Close" onClick={onClose}>×</button></header>
       <div className="cs-echo-picker-filters">
-        <div className="filter-heading"><div><strong>Echo filters</strong><span>{options.length} / {echoes.length} shown</span></div><button className="text-button" onClick={resetFilters}>Reset</button></div>
+        <div className="filter-heading"><div><strong>Echo filters</strong><span>{options.length} / {echoes.length} shown</span></div><div className="cs-echo-picker-filter-actions"><button type="button" className="text-button" onClick={resetFilters}>Reset</button>{currentId && <button type="button" className="danger" onClick={() => void choose()}>Unequip current Echo</button>}</div></div>
         <label className="search"><span>⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search Echo, Sonata, or stat..."/></label>
         <div className="filter-body">
-          <div className="filter-group"><span>Cost</span><div className="filter-chips">{[1,3,4].map((value) => <button className={costs.includes(value) ? 'active' : ''} onClick={() => toggleNumber(costs, value, setCosts)} key={value}>{value} cost</button>)}</div></div>
-          <div className="filter-group"><span>Rarity</span><div className="filter-chips">{[5,4,3,2,1].map((value) => <button className={rarities.includes(value) ? 'active' : ''} onClick={() => toggleNumber(rarities, value, setRarities)} key={value}>{value} ★</button>)}</div></div>
+          <div className="filter-group" aria-label="Cost"><div className="filter-chips">{[1,3,4].map((value) => <button className={costs.includes(value) ? 'active' : ''} onClick={() => toggleNumber(costs, value, setCosts)} key={value}>{value} cost</button>)}</div></div>
+          <div className="filter-group" aria-label="Rarity"><div className="filter-chips">{[5,4,3,2,1].map((value) => <button className={rarities.includes(value) ? 'active' : ''} onClick={() => toggleNumber(rarities, value, setRarities)} key={value}>{value} ★</button>)}</div></div>
           <EchoFilterSelect label="Sonata" values={sonatas} options={sonataNames.map((name) => ({ value: name, label: name }))} emptyLabel="All Sonatas" onChange={setSonatas} icon={(name) => <img src={generatedSonataIconSources[name]} alt=""/>}/>
           <EchoFilterSelect label="Main stat" values={mainStats} options={statKeys.map((key) => ({ value: key, label: statLabels[key] }))} emptyLabel="Any main stat" onChange={setMainStats}/>
           <EchoFilterSelect label="Substat" values={subStats} options={statKeys.map((key) => ({ value: key, label: statLabels[key] }))} emptyLabel="Any substat" onChange={setSubStats}/>
-          <label>Lock state<select value={lockState} onChange={(event) => setLockState(event.target.value as typeof lockState)}><option value="all">All</option><option value="locked">Locked</option><option value="unlocked">Unlocked</option></select></label>
-          <label>Equipped<select value={assignment} onChange={(event) => setAssignment(event.target.value as typeof assignment)}><option value="all">All</option><option value="equipped">Equipped anywhere</option><option value="unequipped">Unequipped</option></select></label>
+          <label><span className="sr-only">Lock state</span><select value={lockState} onChange={(event) => setLockState(event.target.value as typeof lockState)}><option value="all">Any lock state</option><option value="locked">Locked</option><option value="unlocked">Unlocked</option></select></label>
+          <label><span className="sr-only">Equipped</span><select value={assignment} onChange={(event) => setAssignment(event.target.value as typeof assignment)}><option value="all">Any owner</option><option value="equipped">Equipped anywhere</option><option value="unequipped">Unequipped</option></select></label>
           <label className="check"><input type="checkbox" checked={showExcluded} onChange={(event) => setShowExcluded(event.target.checked)}/>Include discarded</label>
         </div>
       </div>
-      <div className="echo-picker-list">
+      <div className="echo-picker-list" ref={listRef}>
         {error && <div className="notice error">{error}</div>}
-        {currentId && <button className="danger" onClick={() => void choose()}>Unequip current Echo</button>}
-        <div className="echo-picker-options">{options.map((echo) => <EchoMiniCard key={echo.id} echo={echo} selected={echo.id === currentId} rollRating={echoMeta.get(echo.id)?.rollRating} onClick={() => void choose(echo)} equipment={echo.equippedBy && echo.equippedBy !== characterId ? <EquippedCharacterLabel name={echo.equippedByName ?? 'Another character'}/> : undefined}/>)}</div>
+        {pagination}
+        <div className="echo-picker-options">{pageOptions.map((echo) => <EchoMiniCard key={echo.id} echo={echo} selected={echo.id === currentId} rollRating={echoMeta.get(echo.id)?.rollRating} onClick={() => void choose(echo)} equipment={echo.equippedBy && echo.equippedBy !== characterId ? <EquippedCharacterLabel name={echo.equippedByName ?? 'Another character'}/> : undefined}/>)}</div>
+        {pageCount > 1 && pagination}
       </div>
     </section>
   </div>, document.body)
@@ -385,6 +398,11 @@ export function CharacterShowcase({ character, characters, catalog, weapons, ech
   const runtimeWeapons = useMemo(() => resolvedLoadout.weapon && !weapons.some((entry) => entry.id === resolvedLoadout.weapon?.id) ? [...weapons, resolvedLoadout.weapon] : weapons, [resolvedLoadout.weapon, weapons])
   const runtimeEchoes = useMemo(() => resolvedLoadout.echoes.some((entry) => !echoes.some((owned) => owned.id === entry.id)) ? [...echoes, ...resolvedLoadout.echoes] : echoes, [echoes, resolvedLoadout.echoes])
   const model = useMemo(() => resolveCharacterShowcaseModel({ character, catalog, weapons: runtimeWeapons, echoes: runtimeEchoes, builds: resolvedLoadout.build ? [resolvedLoadout.build] : [] }), [catalog, character, resolvedLoadout.build, runtimeEchoes, runtimeWeapons])
+  const tbaSources = [
+    pendingMechanics.character?.[catalog.id]?.length ? catalog.name : '',
+    resolvedLoadout.weapon?.catalogId && pendingMechanics.weapon?.[resolvedLoadout.weapon.catalogId]?.length ? 'weapon passive' : '',
+    echoCatalog.find((entry) => entry.name === resolvedLoadout.echoes[0]?.name && entry.id && pendingMechanics.echo?.[entry.id]?.length)?.name ?? ''
+  ].filter(Boolean)
   const customSubstatWeights = settings.characterSubstatWeights[catalog.id]
   const recommendedSubstatProfile = useMemo(() => resolveCharacterSubstatProfile(catalog), [catalog])
   const characterSubstatProfile = useMemo(() => resolveCharacterSubstatProfile(catalog, customSubstatWeights), [catalog, customSubstatWeights])
@@ -535,6 +553,7 @@ export function CharacterShowcase({ character, characters, catalog, weapons, ech
   return <CharacterSubstatProfileContext.Provider value={characterSubstatProfile}><section className={`cs-page cs-element-${catalog.element.toLowerCase()}`} style={customAccentStyle(cardAccent)}>
     <header className="cs-toolbar"><button className="cs-back" onClick={onBack}>← Characters</button><div className="cs-toolbar-identity"><strong>{catalog.name}</strong><small>{loadoutSource.type === 'equipped' ? 'Tap a card section to edit' : 'Build preview'}</small></div><label className="cs-loadout-source"><select aria-label="Build" value={loadoutSource.type === 'equipped' ? `equipped:${loadoutSource.characterId}` : loadoutSource.type === 'saved' ? `saved:${loadoutSource.buildId}` : `theorycraft:${loadoutSource.theorycraftBuildId}`} onChange={(event) => { const separator = event.target.value.indexOf(':'); const type = event.target.value.slice(0, separator); const id = event.target.value.slice(separator + 1); setLoadoutSource(type === 'equipped' ? { type, characterId: id } : type === 'saved' ? { type, buildId: id } : { type: 'theorycraft', theorycraftBuildId: id }) }}>{loadoutSources.map(({ source, label }) => { const value = source.type === 'equipped' ? `equipped:${source.characterId}` : source.type === 'saved' ? `saved:${source.buildId}` : `theorycraft:${source.theorycraftBuildId}`; return <option value={value} key={value}>{label}</option> })}</select></label><div className="cs-layout-controls-host" ref={setLayoutControlsHost}/><div className="cs-toolbar-actions"><button aria-label={character.favorite ? 'Remove from favorites' : 'Add to favorites'} className={character.favorite ? 'cs-favorite active' : 'cs-favorite'} onClick={() => void updateCharacter({ favorite: !character.favorite })}>{character.favorite ? '♥ Favorited' : '♡ Favorite'}</button><button aria-label={deleteArmed ? 'Confirm character deletion' : 'Delete character'} className={`danger ${deleteArmed ? 'is-armed' : ''}`} onClick={() => void removeCharacter()}><Icon name="trash"/><span>{deleteArmed ? 'Confirm delete' : 'Delete'}</span></button><button aria-label="Export character card" className="secondary cs-export-button" disabled={exporting} onClick={() => void exportCharacterCard()}><Icon name="download"/><span>{exporting ? 'Rendering...' : 'Export'}</span></button></div></header>
     {exportMessage && <div className={`cs-export-message ${exportMessage.startsWith('Image export failed') ? 'is-error' : ''}`} role="status">{exportMessage}</div>}
+    {tbaSources.length > 0 && <div className="notice">TBA mechanics for {tbaSources.join(', ')} are omitted from calculated stats and damage.</div>}
 
     <div className="cs-card-workspace"><CharacterBuildCard
       ref={exportRef}

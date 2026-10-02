@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "sonata",
+  "entityId": "3",
+  "entityName": "Void Thunder",
+  "sourceFingerprint": "e0606441667326735ba35ad1ef205dad5fc28e4d94d7fc41511895d42091425b",
+  "reviewedAt": "2026-09-05T09:59:20.458Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "7f159655d1e968ac55cc96ded302c65359966c5cae3a7c5338e4698a2e714c61",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:3:2:0",
+            "sourceName": "Void Thunder",
+            "text": "Electro DMG + 10%.",
+            "refinementTexts": [
+              "Electro DMG + 10%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Electro",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2
+          },
+          {
+            "id": "sonata:3:5:0",
+            "sourceName": "Void Thunder",
+            "text": "Electro DMG + 15% after releasing Heavy Attack or Resonance Skill. This effect stacks up to 2 times, each stack lasts 15s.",
+            "refinementTexts": [
+              "Electro DMG + 15% after releasing Heavy Attack or Resonance Skill. This effect stacks up to 2 times, each stack lasts 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 2
+              },
+              "modifiers": [
+                {
+                  "stat": "Electro",
+                  "operation": "addPercent",
+                  "value": 15
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Heavy Attack/Resonance Skill used",
+              "durationSeconds": 15
+            },
+            "sourceType": "sonata",
+            "pieces": 5
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

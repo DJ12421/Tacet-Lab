@@ -1,0 +1,348 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21030056",
+  "entityName": "Spectral Trigger",
+  "sourceFingerprint": "b37ee89dd8ef0572608ed614c578d26f6ace04a289398923f888fb9ec1b2e0d4",
+  "reviewedAt": "2026-09-16T11:35:18.607Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "2bd3336b09bb6a2aff29b82dec684c5bee46633aa5dab10daf96043a0d67daab",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21030056:effect:0",
+            "sourceName": "Sunken Dream",
+            "text": "Increases ATK by 12%.",
+            "refinementTexts": [
+              "Increases ATK by 12%.",
+              "Increases ATK by 15%.",
+              "Increases ATK by 18%.",
+              "Increases ATK by 21%.",
+              "Increases ATK by 24%."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21030056:effect:1",
+            "sourceName": "Sunken Dream",
+            "text": "Casting Resonance Skill grants 20% Spectro DMG Bonus to the wielder for 14s, stacking up to 2 times.",
+            "refinementTexts": [
+              "Casting Resonance Skill grants 20% Spectro DMG Bonus to the wielder for 14s, stacking up to 2 times.",
+              "Casting Resonance Skill grants 25% Spectro DMG Bonus to the wielder for 14s, stacking up to 2 times.",
+              "Casting Resonance Skill grants 30% Spectro DMG Bonus to the wielder for 14s, stacking up to 2 times.",
+              "Casting Resonance Skill grants 35% Spectro DMG Bonus to the wielder for 14s, stacking up to 2 times.",
+              "Casting Resonance Skill grants 40% Spectro DMG Bonus to the wielder for 14s, stacking up to 2 times."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 2
+              },
+              "trigger": "Resonance Skill cast",
+              "durationSeconds": 14,
+              "modifiers": [
+                {
+                  "stat": "Spectro",
+                  "operation": "addPercent",
+                  "value": 20,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "trigger": "Resonance Skill cast",
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "trigger": "Resonance Skill cast",
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "value": 25
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "trigger": "Resonance Skill cast",
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "trigger": "Resonance Skill cast",
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "value": 35
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 2
+                },
+                "trigger": "Resonance Skill cast",
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "value": 40
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21030056:effect:2",
+            "sourceName": "Sunken Dream",
+            "text": "Inflicting Hack - Shifting grants 30% Heavy Attack DMG Amplification to the wielder for 14s, during which Heavy Attack DMG ignores 10% of the target's DEF.",
+            "refinementTexts": [
+              "Inflicting Hack - Shifting grants 30% Heavy Attack DMG Amplification to the wielder for 14s, during which Heavy Attack DMG ignores 10% of the target's DEF.",
+              "Inflicting Hack - Shifting grants 37.5% Heavy Attack DMG Amplification to the wielder for 14s, during which Heavy Attack DMG ignores 12.5% of the target's DEF.",
+              "Inflicting Hack - Shifting grants 45% Heavy Attack DMG Amplification to the wielder for 14s, during which Heavy Attack DMG ignores 15% of the target's DEF.",
+              "Inflicting Hack - Shifting grants 52.5% Heavy Attack DMG Amplification to the wielder for 14s, during which Heavy Attack DMG ignores 17.5% of the target's DEF.",
+              "Inflicting Hack - Shifting grants 60% Heavy Attack DMG Amplification to the wielder for 14s, during which Heavy Attack DMG ignores 20% of the target's DEF."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 14,
+              "modifiers": [
+                {
+                  "stat": "heavyDamage",
+                  "operation": "amplifyPercent",
+                  "value": 30,
+                  "scope": "self"
+                },
+                {
+                  "stat": "DEFIgnore",
+                  "operation": "addPercent",
+                  "value": 10,
+                  "scope": "self",
+                  "appliesTo": "heavy"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Hack - Shifting inflicted"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "value": 30
+                  },
+                  {
+                    "value": 10
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Hack - Shifting grants 30% Heavy Attack DMG Amplification to the wielder for 14s inflicted"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "value": 37.5
+                  },
+                  {
+                    "value": 12.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Hack - Shifting grants 37.5% Heavy Attack DMG Amplification to the wielder for 14s inflicted"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "value": 45
+                  },
+                  {
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Hack - Shifting grants 45% Heavy Attack DMG Amplification to the wielder for 14s inflicted"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "value": 52.5
+                  },
+                  {
+                    "value": 17.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Hack - Shifting grants 52.5% Heavy Attack DMG Amplification to the wielder for 14s inflicted"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "value": 60
+                  },
+                  {
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Hack - Shifting grants 60% Heavy Attack DMG Amplification to the wielder for 14s inflicted"
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

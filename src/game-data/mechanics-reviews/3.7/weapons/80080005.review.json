@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "80080005",
+  "entityName": "Projection: Formless Gauntlets",
+  "sourceFingerprint": "38a77f23c208c0c2facc8fed245790b249b83db6e367453e1276e29beb16dd68",
+  "reviewedAt": "2026-09-05T10:14:44.620Z",
+  "sections": {
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000105",
+  "entityName": "Nightmare: Lampylumen Myriad",
+  "sourceFingerprint": "6e210aea884714370b782877056e5d24e3b956d6df8bd29e1a089447ba313c0d",
+  "reviewedAt": "2026-09-26T18:47:52.484Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "5685e607c1ca6f6884793e8ae9a0e0bcaea33da55064f296c1cac3dc39ca5a50",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000105:skill",
+            "name": "Nightmare: Lampylumen Myriad - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Glacio",
+            "expressions": [
+              "152.00%",
+              "182.40%",
+              "212.80%",
+              "243.20%",
+              "273.60%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                1.52
+              ],
+              [
+                1.824
+              ],
+              [
+                2.128
+              ],
+              [
+                2.432
+              ],
+              [
+                2.736
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 20,
+            "sourceText": "Summon Nightmare: Lampylumen Myriad and attack surrounding enemies, dealing 152.00% Glacio DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and deals 30.00% more Coordinated Attack DMG.\nCD: 20s. · Summon Nightmare: Lampylumen Myriad and attack surrounding enemies, dealing 182.40% Glacio DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and deals 30.00% more Coordinated Attack DMG.\nCD: 20s. · Summon Nightmare: Lampylumen Myriad and attack surrounding enemies, dealing 212.80% Glacio DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and deals 30.00% more Coordinated Attack DMG.\nCD: 20s. · Summon Nightmare: Lampylumen Myriad and attack surrounding enemies, dealing 243.20% Glacio DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and deals 30.00% more Coordinated Attack DMG.\nCD: 20s. · Summon Nightmare: Lampylumen Myriad and attack surrounding enemies, dealing 273.60% Glacio DMG.\nThe Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and deals 30.00% more Coordinated Attack DMG.\nCD: 20s."
+          }
+        ],
+        "cooldownSeconds": 20
+      }
+    },
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "50ceb5f1241fa36df93aa0b7afb225c7d39032d7cae519c0e290e9554b069e42",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "echo:6000105:effect:0",
+            "sourceName": "Nightmare: Lampylumen Myriad",
+            "sourceType": "echo",
+            "text": "The Resonator with this Echo equipped in their main slot gains 12.00% Glacio DMG Bonus and deals 30.00% more Coordinated Attack DMG.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "coordinatedDamage",
+                  "operation": "addPercent",
+                  "value": 30,
+                  "scope": "self"
+                },
+                {
+                  "stat": "Glacio",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

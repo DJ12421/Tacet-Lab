@@ -1,0 +1,280 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21040045",
+  "entityName": "Pulsation Bracer",
+  "sourceFingerprint": "89bdc2e156f6f8ef288a0af096ad9db3e866a7f6287e065ef8f7f3b37531ccc5",
+  "reviewedAt": "2026-09-09T07:54:50.654Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "a72e62c6382a3b6b3847b11ce5bb027b3d9d275371f886acbec8b12e8ac29706",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21040045:effect:0",
+            "sourceName": "Barrier Breacher",
+            "text": "Increases ATK by 12%.",
+            "refinementTexts": [
+              "Increases ATK by 12%.",
+              "Increases ATK by 15%.",
+              "Increases ATK by 18%.",
+              "Increases ATK by 21%.",
+              "Increases ATK by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21040045:effect:1",
+            "sourceName": "Barrier Breacher",
+            "text": "Dealing damage to targets under Tune Strain - Interfered grants 6% Basic Attack DMG Bonus for 3s, stacking up to 4 times. This effect can be triggered 1 every 0.5s.",
+            "refinementTexts": [
+              "Dealing damage to targets under Tune Strain - Interfered grants 6% Basic Attack DMG Bonus for 3s, stacking up to 4 times. This effect can be triggered 1 every 0.5s.",
+              "Dealing damage to targets under Tune Strain - Interfered grants 6.7% Basic Attack DMG Bonus for 3s, stacking up to 4 times. This effect can be triggered 1 every 0.5s.",
+              "Dealing damage to targets under Tune Strain - Interfered grants 7.5% Basic Attack DMG Bonus for 3s, stacking up to 4 times. This effect can be triggered 1 every 0.5s.",
+              "Dealing damage to targets under Tune Strain - Interfered grants 8.2% Basic Attack DMG Bonus for 3s, stacking up to 4 times. This effect can be triggered 1 every 0.5s.",
+              "Dealing damage to targets under Tune Strain - Interfered grants 9% Basic Attack DMG Bonus for 3s, stacking up to 4 times. This effect can be triggered 1 every 0.5s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 4
+              },
+              "durationSeconds": 3,
+              "modifiers": [
+                {
+                  "stat": "basicDamage",
+                  "operation": "addPercent",
+                  "value": 6
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Damage dealt to enemies under Tune Strain - Interfered"
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "durationSeconds": 3,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 6
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Damage dealt to targets under Tune Strain - Interfered"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "durationSeconds": 3,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 6.7
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Damage dealt to targets under Tune Strain - Interfered"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "durationSeconds": 3,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 7.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Damage dealt to targets under Tune Strain - Interfered"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "durationSeconds": 3,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 8.2
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Damage dealt to targets under Tune Strain - Interfered"
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4
+                },
+                "durationSeconds": 3,
+                "modifiers": [
+                  {
+                    "stat": "basicDamage",
+                    "operation": "addPercent",
+                    "value": 9
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Damage dealt to targets under Tune Strain - Interfered"
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21040045:effect:2",
+            "sourceName": "Barrier Breacher",
+            "text": "Retriggering the effect resets its duration.",
+            "refinementTexts": [
+              "Retriggering the effect resets its duration.",
+              "Retriggering the effect resets its duration.",
+              "Retriggering the effect resets its duration.",
+              "Retriggering the effect resets its duration.",
+              "Retriggering the effect resets its duration."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ],
+              "trigger": "While equipped"
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

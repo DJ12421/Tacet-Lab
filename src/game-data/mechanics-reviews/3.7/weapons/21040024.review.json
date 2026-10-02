@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21040024",
+  "entityName": "Marcato",
+  "sourceFingerprint": "560c8d832428105625e1673114a76cc9c1e41d8eba3140cffd208807ee756d96",
+  "reviewedAt": "2026-09-09T08:01:16.052Z",
+  "sections": {
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "eebc64113b63c341ae2044790ebe272b9e1e5a185b4fd4a4b6ebc0dae92450e0",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

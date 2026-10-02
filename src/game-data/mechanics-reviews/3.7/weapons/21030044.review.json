@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21030044",
+  "entityName": "Undying Flame",
+  "sourceFingerprint": "8ec71b5c833144aa1e9a2ffe330d82e42f8a409a4cd3762db327ec56f87358d2",
+  "reviewedAt": "2026-09-09T06:36:27.875Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "af81be06f65203a1bb3a6b3e3ba64b01cf6561ce1b9f19b98aa66fe9610d4e19",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21030044:effect:0",
+            "sourceName": "Loyalty",
+            "text": "When Intro Skill is cast, increases Resonance Skill DMG Bonus by 20% for 15s.",
+            "refinementTexts": [
+              "When Intro Skill is cast, increases Resonance Skill DMG Bonus by 20% for 15s.",
+              "When Intro Skill is cast, increases Resonance Skill DMG Bonus by 25% for 15s.",
+              "When Intro Skill is cast, increases Resonance Skill DMG Bonus by 30% for 15s.",
+              "When Intro Skill is cast, increases Resonance Skill DMG Bonus by 35% for 15s.",
+              "When Intro Skill is cast, increases Resonance Skill DMG Bonus by 40% for 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Intro Skill cast",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "skillDamage",
+                  "operation": "addPercent",
+                  "value": 20
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 25
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 30
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 35
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Intro Skill cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 40
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

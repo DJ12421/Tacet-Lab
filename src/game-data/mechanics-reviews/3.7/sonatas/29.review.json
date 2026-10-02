@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "sonata",
+  "entityId": "29",
+  "entityName": "Sound of True Name",
+  "sourceFingerprint": "f7d755207ba21c6c2f1e7aaf594cf561f582439abcf7cd6b6fc12693ed4e21c6",
+  "reviewedAt": "2026-09-16T13:09:13.224Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "636d5ba4a8236a87b57c39a9fe5561b7aff0811153612e10ccc953e0850b6ebc",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:29:2:0",
+            "sourceName": "Sound of True Name",
+            "text": "Aero DMG + 10%",
+            "refinementTexts": [
+              "Aero DMG + 10%"
+            ],
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 10,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2
+          },
+          {
+            "id": "sonata:29:5:0",
+            "sourceName": "Sound of True Name",
+            "text": "Dealing Echo Skill DMG to enemies increases the Resonator's Echo Skill Crit. Rate by 20%, and grants 15% Aero DMG Bonus for 5s.",
+            "refinementTexts": [
+              "Dealing Echo Skill DMG to enemies increases the Resonator's Echo Skill Crit. Rate by 20%, and grants 15% Aero DMG Bonus for 5s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Echo Skill DMG dealt",
+              "durationSeconds": 5,
+              "modifiers": [
+                {
+                  "stat": "critRate",
+                  "operation": "addPercent",
+                  "value": 20,
+                  "scope": "self",
+                  "appliesTo": "echo"
+                },
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "scope": "self",
+                  "value": 15
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

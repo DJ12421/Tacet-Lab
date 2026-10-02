@@ -1,0 +1,415 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21050116",
+  "entityName": "Blooming Jadehaven",
+  "sourceFingerprint": "ef88b28f746616785042ba13ac4f039747b5f17768add1aecf8875be4d66cd69",
+  "reviewedAt": "2026-10-01T00:25:48.515Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "e26e1813bf9d35cc66cdcfbcca137ad51ec999ee758955b005054f4b9e1db0c5",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050116:effect:0",
+            "sourceName": "Hundredfold Artifice",
+            "text": "Grants 12% All-Attribute DMG Bonus.",
+            "refinementTexts": [
+              "Grants 12% All-Attribute DMG Bonus.",
+              "Grants 15% All-Attribute DMG Bonus.",
+              "Grants 18% All-Attribute DMG Bonus.",
+              "Grants 21% All-Attribute DMG Bonus.",
+              "Grants 24% All-Attribute DMG Bonus."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "AllElementAttributeBonus",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "AllElementAttributeBonus",
+                    "operation": "addPercent",
+                    "value": 12,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "AllElementAttributeBonus",
+                    "operation": "addPercent",
+                    "value": 15,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "AllElementAttributeBonus",
+                    "operation": "addPercent",
+                    "value": 18,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "AllElementAttributeBonus",
+                    "operation": "addPercent",
+                    "value": 21,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "AllElementAttributeBonus",
+                    "operation": "addPercent",
+                    "value": 24,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21050116:effect:1",
+            "sourceName": "Hundredfold Artifice",
+            "text": "After the wielder inflicts Electro Flare or triggers Unison Response, Resonance Skill DMG is Amplified by 36% and ignores 10% of the target's Electro RES.",
+            "refinementTexts": [
+              "After the wielder inflicts Electro Flare or triggers Unison Response, Resonance Skill DMG is Amplified by 36% and ignores 10% of the target's Electro RES.",
+              "After the wielder inflicts Electro Flare or triggers Unison Response, Resonance Skill DMG is Amplified by 45% and ignores 13.5% of the target's Electro RES.",
+              "After the wielder inflicts Electro Flare or triggers Unison Response, Resonance Skill DMG is Amplified by 54% and ignores 17% of the target's Electro RES.",
+              "After the wielder inflicts Electro Flare or triggers Unison Response, Resonance Skill DMG is Amplified by 63% and ignores 20.5% of the target's Electro RES.",
+              "After the wielder inflicts Electro Flare or triggers Unison Response, Resonance Skill DMG is Amplified by 72% and ignores 24% of the target's Electro RES."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "After the wielder inflicts Electro Flare or triggers Unison Response",
+              "modifiers": [
+                {
+                  "stat": "skillDamage",
+                  "operation": "amplifyPercent",
+                  "value": 36,
+                  "scope": "self"
+                },
+                {
+                  "stat": "ResistIgnore:Electro",
+                  "operation": "addPercent",
+                  "value": 10,
+                  "scope": "self",
+                  "appliesTo": "skill"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "After the wielder inflicts Electro Flare or triggers Unison Response",
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "amplifyPercent",
+                    "value": 36,
+                    "scope": "self"
+                  },
+                  {
+                    "stat": "ResistIgnore:Electro",
+                    "operation": "addPercent",
+                    "value": 10,
+                    "scope": "self",
+                    "appliesTo": "skill"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "After the wielder inflicts Electro Flare or triggers Unison Response",
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "amplifyPercent",
+                    "value": 45,
+                    "scope": "self"
+                  },
+                  {
+                    "stat": "ResistIgnore:Electro",
+                    "operation": "addPercent",
+                    "value": 13.5,
+                    "scope": "self",
+                    "appliesTo": "skill"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "After the wielder inflicts Electro Flare or triggers Unison Response",
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "amplifyPercent",
+                    "value": 54,
+                    "scope": "self"
+                  },
+                  {
+                    "stat": "ResistIgnore:Electro",
+                    "operation": "addPercent",
+                    "value": 17,
+                    "scope": "self",
+                    "appliesTo": "skill"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "After the wielder inflicts Electro Flare or triggers Unison Response",
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "amplifyPercent",
+                    "value": 63,
+                    "scope": "self"
+                  },
+                  {
+                    "stat": "ResistIgnore:Electro",
+                    "operation": "addPercent",
+                    "value": 20.5,
+                    "scope": "self",
+                    "appliesTo": "skill"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "After the wielder inflicts Electro Flare or triggers Unison Response",
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "amplifyPercent",
+                    "value": 72,
+                    "scope": "self"
+                  },
+                  {
+                    "stat": "ResistIgnore:Electro",
+                    "operation": "addPercent",
+                    "value": 24,
+                    "scope": "self",
+                    "appliesTo": "skill"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21050116:effect:2",
+            "sourceName": "Hundredfold Artifice",
+            "text": "While the wielder is the active Resonator, Electro Flare DMG taken by targets within a certain range is Amplified by 30% for 30s, triggered 1 every 0.1s.",
+            "refinementTexts": [
+              "While the wielder is the active Resonator, Electro Flare DMG taken by targets within a certain range is Amplified by 30% for 30s, triggered 1 every 0.1s.",
+              "While the wielder is the active Resonator, Electro Flare DMG taken by targets within a certain range is Amplified by 37.5% for 30s, triggered 1 every 0.1s.",
+              "While the wielder is the active Resonator, Electro Flare DMG taken by targets within a certain range is Amplified by 45% for 30s, triggered 1 every 0.1s.",
+              "While the wielder is the active Resonator, Electro Flare DMG taken by targets within a certain range is Amplified by 52.5% for 30s, triggered 1 every 0.1s.",
+              "While the wielder is the active Resonator, Electro Flare DMG taken by targets within a certain range is Amplified by 60% for 30s, triggered 1 every 0.1s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 30,
+              "modifiers": [
+                {
+                  "stat": "electroFlareDamage",
+                  "operation": "amplifyPercent",
+                  "value": 30,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "electroFlareDamage",
+                    "operation": "amplifyPercent",
+                    "value": 30,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "electroFlareDamage",
+                    "operation": "amplifyPercent",
+                    "value": 37.5,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "electroFlareDamage",
+                    "operation": "amplifyPercent",
+                    "value": 45,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "electroFlareDamage",
+                    "operation": "amplifyPercent",
+                    "value": 52.5,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "electroFlareDamage",
+                    "operation": "amplifyPercent",
+                    "value": 60,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21050116:effect:3",
+            "sourceName": "Hundredfold Artifice",
+            "text": "Only the strongest effect of the same name applies.",
+            "refinementTexts": [
+              "Only the strongest effect of the same name applies.",
+              "Only the strongest effect of the same name applies.",
+              "Only the strongest effect of the same name applies.",
+              "Only the strongest effect of the same name applies.",
+              "Only the strongest effect of the same name applies."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  }
+}

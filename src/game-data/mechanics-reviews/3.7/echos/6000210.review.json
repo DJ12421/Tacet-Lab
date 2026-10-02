@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "echo",
+  "entityId": "6000210",
+  "entityName": "Kernel Puppet: Grief",
+  "sourceFingerprint": "0d5b2e118aab5a80fb1fef3d7f693d6426c138b1f624e2c993930064dcd12ce5",
+  "reviewedAt": "2026-09-26T18:47:52.630Z",
+  "sections": {
+    "skill": {
+      "status": "approved",
+      "sourceFingerprint": "314ebe68180b473a5b049fe3bbbb9ee9906863ceaa92982bf5f4a63809b7261b",
+      "approvedData": {
+        "attacks": [
+          {
+            "id": "echo:6000210:skill",
+            "name": "Kernel Puppet: Grief - Echo Skill",
+            "damageType": "echo",
+            "skillSource": "echo",
+            "scaling": "atk",
+            "element": "Spectro",
+            "expressions": [
+              "72.00%",
+              "86.40%",
+              "100.80%",
+              "115.20%",
+              "129.60%"
+            ],
+            "talentLevels": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "hitMultipliers": [
+              [
+                0.72
+              ],
+              [
+                0.8640000000000001
+              ],
+              [
+                1.008
+              ],
+              [
+                1.1520000000000001
+              ],
+              [
+                1.296
+              ]
+            ],
+            "componentFormulaIndexes": [
+              0
+            ],
+            "count": 1,
+            "cooldownSeconds": 8,
+            "sourceText": "Use Echo Skill to summon Kernel Puppet: Grief to attack enemies, dealing 72.00% Spectro DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Grief to attack enemies, dealing 86.40% Spectro DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Grief to attack enemies, dealing 100.80% Spectro DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Grief to attack enemies, dealing 115.20% Spectro DMG.\nCD: 8s · Use Echo Skill to summon Kernel Puppet: Grief to attack enemies, dealing 129.60% Spectro DMG.\nCD: 8s"
+          }
+        ],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "reviewMethod": "Codex conservative first pass from refreshed Nanoka English text; user final review required.",
+  "carriedFromVersion": "3.6"
+}

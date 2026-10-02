@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "sonata",
+  "entityId": "24",
+  "entityName": "Pact of Neonlight Leap",
+  "sourceFingerprint": "bc09476e87633609c432571b9b77e2a1d65a76ec6c10e0f9279e072154528fd8",
+  "reviewedAt": "2026-09-05T09:42:44.047Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "311430f959e73f62a2773cfb4a0d0197909f71593b476c9ac7394264a43fe482",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:24:2:0",
+            "sourceName": "Pact of Neonlight Leap",
+            "text": "Spectro DMG + 10%",
+            "refinementTexts": [
+              "Spectro DMG + 10%"
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Spectro",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2
+          },
+          {
+            "id": "sonata:24:5:0",
+            "sourceName": "Pact of Neonlight Leap",
+            "text": "Casting Outro Skill increases the ATK of the incoming Resonator who casts Intro Skill by 15%.",
+            "refinementTexts": [
+              "Casting Outro Skill increases the ATK of the incoming Resonator who casts Intro Skill by 15%."
+            ],
+            "parsed": {
+              "scope": "next",
+              "input": {
+                "kind": "toggle",
+                "key": "outro-swap"
+              },
+              "trigger": "Outro Skill cast",
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 15
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5
+          },
+          {
+            "id": "sonata:24:5:1",
+            "sourceName": "Pact of Neonlight Leap",
+            "text": "Each point of Tune Break Boost the incoming Resonator has additionally increases their ATK by 0.3%, up to 15%. This effect lasts for 15s, or until the Resonator is switched out.",
+            "refinementTexts": [
+              "Each point of Tune Break Boost the incoming Resonator has additionally increases their ATK by 0.3%, up to 15%. This effect lasts for 15s, or until the Resonator is switched out."
+            ],
+            "parsed": {
+              "scope": "next",
+              "input": {
+                "kind": "conditional-value",
+                "key": "outro-swap",
+                "source": "recipient",
+                "stat": "tuneBreakBoost",
+                "minimum": 0,
+                "maximum": 50,
+                "step": 1,
+                "label": "Tune Break Boost"
+              },
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 0.3,
+                  "scaling": "per-unit",
+                  "sourceStat": "tuneBreakBoost",
+                  "maximumValue": 15
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Outro Skill Cast"
+            },
+            "sourceType": "sonata",
+            "pieces": 5
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

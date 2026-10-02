@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21050043",
+  "entityName": "Rectifier of Voyager",
+  "sourceFingerprint": "82e38131683bdbea9848ace6acba37eda0b57c2540149e14cca4f37a13a5cd11",
+  "reviewedAt": "2026-09-09T07:53:54.309Z",
+  "sections": {
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "39eb227be5e48b6bb1577421a91b2eaeaa6b63ad30c9a776a769d6299068ddce",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

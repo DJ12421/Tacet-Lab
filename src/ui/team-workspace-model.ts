@@ -10,6 +10,7 @@ import {
   type CharacterCatalogEntry
 } from '../game-data'
 import { generatedSonataIconSources } from '../game-data/sonatas.generated'
+import { pendingMechanics } from '../game-data/review-status.generated'
 import { resolveCharacterShowcaseModel, type CharacterShowcaseModel } from './character-showcase-model'
 
 const SKILL_KEYS = ['normalAttack', 'resonanceSkill', 'forteCircuit', 'resonanceLiberation', 'introSkill'] as const
@@ -18,7 +19,7 @@ export const TEAM_ROTATION_TARGET_ID = 'team:rotation'
 
 export function compactAttackLabel(label: string) {
   const separator = label.indexOf(' - ')
-  return separator < 0 ? label : label.slice(separator + 3)
+  return (separator < 0 ? label : label.slice(separator + 3)).replaceAll('Resonance Skill', 'Res. Skill').replaceAll('Resonance Liberation', 'Res. Liberation')
 }
 
 export interface TeamWorkspaceInput {
@@ -250,6 +251,13 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
       ? resolveCharacterShowcaseModel({ character, catalog, weapons: runtimeOwnedWeapons, echoes: runtimeEchoes, builds: [comparison.build] }) : undefined
     const attacks = catalog && character ? attackModels(catalog, character, resolved?.echoes ?? []) : []
     const warnings: string[] = [...(resolved?.warnings ?? [])]
+    const characterPending = catalog ? pendingMechanics.character?.[catalog.id] : undefined
+    if (characterPending?.length) warnings.push(`TBA: ${catalog!.name} ${characterPending.join(', ')} mechanics are not included in calculations.`)
+    const weaponPending = resolved?.weapon ? pendingMechanics.weapon?.[resolved.weapon.catalogId] : undefined
+    if (weaponPending?.length) warnings.push('TBA: equipped weapon passive mechanics are not included in calculations.')
+    const mainEcho = echoCatalog.find((entry) => entry.name === resolved?.echoes[0]?.name)
+    const echoPending = mainEcho?.id ? pendingMechanics.echo?.[mainEcho.id] : undefined
+    if (echoPending?.length) warnings.push(`TBA: ${mainEcho!.name} ${echoPending.join(', ')} mechanics are not included in calculations.`)
     if (!build) warnings.push('No build assigned to this slot.')
     else {
       if (!catalog || !character) warnings.push('Owned character or Nanoka catalog data is missing.')

@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "sonata",
+  "entityId": "17",
+  "entityName": "Windward Pilgrimage",
+  "sourceFingerprint": "70f419a4a3ef3749321e18530f35ce1c2bac2a600d9a215e8931eea95bdd11e3",
+  "reviewedAt": "2026-09-09T04:52:56.468Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "26bc44b09ee741057ce2a83bb27486ad83f6427f3fe1909b70559ae424beb753",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:17:2:0",
+            "sourceName": "Windward Pilgrimage",
+            "text": "Aero DMG + 10%",
+            "refinementTexts": [
+              "Aero DMG + 10%"
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2
+          },
+          {
+            "id": "sonata:17:5:0",
+            "sourceName": "Windward Pilgrimage",
+            "text": "Hitting a target with Aero Erosion increases Crit. Rate by 10% and grants 30% Aero DMG Bonus, lasting for 10s.",
+            "refinementTexts": [
+              "Hitting a target with Aero Erosion increases Crit. Rate by 10% and grants 30% Aero DMG Bonus, lasting for 10s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 10,
+              "modifiers": [
+                {
+                  "stat": "critRate",
+                  "operation": "addPercent",
+                  "value": 10
+                },
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 30
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Dmg dealt to target inflicted with Aero Erosion"
+            },
+            "sourceType": "sonata",
+            "pieces": 5
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

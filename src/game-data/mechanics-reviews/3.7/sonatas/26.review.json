@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "sonata",
+  "entityId": "26",
+  "entityName": "Rite of Gilded Revelation",
+  "sourceFingerprint": "6bafe99c53db93a531ae39bda40927f77442367ab8a034c35316495b2c07202d",
+  "reviewedAt": "2026-09-05T09:47:45.400Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "75a3ff7e3c81e1de51a511e5d51ea947a2d8d897e9ab90e6405d0a9887795602",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:26:2:0",
+            "sourceName": "Rite of Gilded Revelation",
+            "text": "Spectro DMG + 10%",
+            "refinementTexts": [
+              "Spectro DMG + 10%"
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Spectro",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2
+          },
+          {
+            "id": "sonata:26:5:0",
+            "sourceName": "Rite of Gilded Revelation",
+            "text": "Dealing Basic Attack DMG increases Spectro DMG by 10% for 5s, stacking up to 3 times.",
+            "refinementTexts": [
+              "Dealing Basic Attack DMG increases Spectro DMG by 10% for 5s, stacking up to 3 times."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "key": "rite-stacks",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "trigger": "Basic Attack DMG dealt",
+              "durationSeconds": 5,
+              "modifiers": [
+                {
+                  "stat": "Spectro",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5
+          },
+          {
+            "id": "sonata:26:5:1",
+            "sourceName": "Rite of Gilded Revelation",
+            "text": "With 3 stacks, casting Resonance Liberation grants 40% Basic Attack DMG Bonus.",
+            "refinementTexts": [
+              "With 3 stacks, casting Resonance Liberation grants 40% Basic Attack DMG Bonus."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "key": "rite-stacks",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "modifiers": [
+                {
+                  "stat": "basicDamage",
+                  "operation": "addPercent",
+                  "value": 40,
+                  "scaling": "threshold",
+                  "minimumActivation": 3
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "3 stacks"
+            },
+            "sourceType": "sonata",
+            "pieces": 5
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

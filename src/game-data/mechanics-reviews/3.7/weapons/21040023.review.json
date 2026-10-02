@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21040023",
+  "entityName": "Originite: Type IV",
+  "sourceFingerprint": "3f14d40faf5e53669daad20cf6de00bc5d8418eb8d828d9802b3fd2c87625d87",
+  "reviewedAt": "2026-09-16T11:31:53.836Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "47c92be19838b5c0ed5294c73308381d8db38a083247fed7a0f29df37fecd44a",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21040023:effect:0",
+            "sourceName": "Rejuvinate",
+            "text": "When dealing Basic Attack DMG, heals 0.5% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 3s.",
+            "refinementTexts": [
+              "When dealing Basic Attack DMG, heals 0.5% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 3s.",
+              "When dealing Basic Attack DMG, heals 0.65% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 3s.",
+              "When dealing Basic Attack DMG, heals 0.8% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 3s.",
+              "When dealing Basic Attack DMG, heals 0.95% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 3s.",
+              "When dealing Basic Attack DMG, heals 1.1% of the Resonator's Max HP. This effect can be triggered 1 time(s) every 3s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Basic Atk. DMG dealt",
+              "modifiers": [],
+              "confidence": "high",
+              "warnings": [],
+              "triggeredAttacks": [
+                {
+                  "id": "triggered-1",
+                  "name": "Basic Atk. DMG",
+                  "scaling": "hp",
+                  "expression": "0.5%",
+                  "count": 1,
+                  "damageType": "healing"
+                }
+              ]
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "dealing Basic Attack DMG",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "triggeredAttacks": [
+                  {
+                    "expression": "0.5%"
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "dealing Basic Attack DMG",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "triggeredAttacks": [
+                  {
+                    "expression": "0.65%"
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "dealing Basic Attack DMG",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "triggeredAttacks": [
+                  {
+                    "expression": "0.8%"
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "dealing Basic Attack DMG",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "triggeredAttacks": [
+                  {
+                    "expression": "0.95%"
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "dealing Basic Attack DMG",
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "triggeredAttacks": [
+                  {
+                    "expression": "1.1%"
+                  }
+                ]
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

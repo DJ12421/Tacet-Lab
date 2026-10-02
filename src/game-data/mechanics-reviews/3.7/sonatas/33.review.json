@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "sonata",
+  "entityId": "33",
+  "entityName": "Song of Feathered Trace",
+  "sourceFingerprint": "12f955513ea55578b5988ce9a25d55939e7372be2afe4737a65aaf01724b9e49",
+  "reviewedAt": "2026-09-05T10:05:08.687Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "6731a24216a449fda627e29267cdc5a8cf58a9ae16a6c72a89936a7fc760246e",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:33:2:0",
+            "sourceName": "Song of Feathered Trace",
+            "text": "Energy Regen + 10%",
+            "refinementTexts": [
+              "Energy Regen + 10%"
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "energyRegen",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2
+          },
+          {
+            "id": "sonata:33:5:0",
+            "sourceName": "Song of Feathered Trace",
+            "text": "Upon inflicting Havoc Bane, gain Xuanling's Feather, which grants a 20% increase in Crit. Rate and 35% increase in Heavy Attack DMG Bonus to the Resonator, lasting 15s.",
+            "refinementTexts": [
+              "Upon inflicting Havoc Bane, gain Xuanling's Feather, which grants a 20% increase in Crit. Rate and 35% increase in Heavy Attack DMG Bonus to the Resonator, lasting 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "critRate",
+                  "operation": "addPercent",
+                  "value": 20
+                },
+                {
+                  "stat": "heavyDamage",
+                  "operation": "addPercent",
+                  "value": 35
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Havoc Bane inflicted"
+            },
+            "sourceType": "sonata",
+            "pieces": 5
+          },
+          {
+            "id": "sonata:33:5:1",
+            "sourceName": "Song of Feathered Trace",
+            "text": "Upon inflicting Glacio Chafe, gain Chongming's Feather, which grants a 0.1% increase in ATK to Resonators in the team for every 1% of the Resonator's Energy Regen, up to 25%, lasting 10s.",
+            "refinementTexts": [
+              "Upon inflicting Glacio Chafe, gain Chongming's Feather, which grants a 0.1% increase in ATK to Resonators in the team for every 1% of the Resonator's Energy Regen, up to 25%, lasting 10s."
+            ],
+            "parsed": {
+              "scope": "team",
+              "input": {
+                "kind": "conditional-value",
+                "key": "glacio-chafe",
+                "source": "provider",
+                "stat": "energyRegen",
+                "minimum": 0,
+                "maximum": 250,
+                "step": 1,
+                "label": "Energy Regen"
+              },
+              "durationSeconds": 10,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 0.1,
+                  "scaling": "per-unit",
+                  "sourceStat": "energyRegen",
+                  "maximumValue": 25,
+                  "scope": "team"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Glacio Chafe inflicted"
+            },
+            "sourceType": "sonata",
+            "pieces": 5
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type Dispatch, type SetStateAction } from 'react'
-import { characterCatalog, GAME_DATA_VERSION, sonataCatalog, statLabels } from '../game-data'
+import { characterCatalog, echoCatalog, GAME_DATA_VERSION, sonataCatalog, statLabels } from '../game-data'
+import { pendingMechanics } from '../game-data/review-status.generated'
 import { createTheorycraftBuild } from '../domain/loadouts'
 import { db } from '../storage/database'
 import { setEquippedEchoIds } from '../storage/loadouts'
@@ -144,7 +145,12 @@ export function OptimizerView({
   const formulaTargets = combatTargets(resonator?.id ?? '').filter(isOptimizerCombatTarget)
   const formulaTarget = formulaTargets.find((target) => target.id === attack?.id) ?? formulaTargets[0]
   const currentEchoes = useMemo(() => build?.echoIds.map((id) => echoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)) ?? [], [build, echoes])
-  const targets = [...(rotation ? [{ id: TEAM_ROTATION_TARGET_ID, label: 'Rotation' }] : []), ...(resonator?.attacks.map((item) => ({ id: item.id, label: item.name })) ?? [])]
+  const pendingSources = [
+    resonator?.id && pendingMechanics.character?.[resonator.id]?.length ? resonator.name : '',
+    runtime?.weapon.catalogId && pendingMechanics.weapon?.[runtime.weapon.catalogId]?.length ? weapon?.name ?? 'Weapon' : '',
+    echoCatalog.find((entry) => entry.name === currentEchoes[0]?.name && entry.id && pendingMechanics.echo?.[entry.id]?.length)?.name ?? ''
+  ].filter(Boolean)
+  const targets = [...(rotation ? [{ id: TEAM_ROTATION_TARGET_ID, label: 'Rotation', group: 'Team' }] : []), ...(resonator?.attacks.map((item) => ({ id: item.id, label: item.name, group: formulaTargets.find((target) => target.id === item.id)?.group ?? 'Other' })) ?? [])]
   const optimizerEnemy = (): EnemyConfig => ({
     ...(initialEnemy ?? {}),
     level: Math.min(200, Math.max(1, initialEnemy?.level ?? 100)),
@@ -479,16 +485,17 @@ export function OptimizerView({
     return [{ key, echoIds: point.echoIds, score: 'score' in point ? point.score : point.y, stats: point.stats, rank: resultIndex >= 0 ? resultIndex + 1 : undefined }]
   })
   return <section className="tw-optimizer-workspace optimizer-v2-workspace">
-    <header className="tw-optimizer-heading tw-panel"><h2>Optimize Echoes</h2></header>
+    <header className="tw-optimizer-heading tw-panel"><h2>Optimizer</h2></header>
     {profileReady && build && runtime && showcase && <OptimizerSetup
       profile={profile} setProfile={updateProfile} echoes={inventoryEchoes} currentEchoes={currentEchoes} buildId={build.id} buildName={build.name}
       characterName={showcase.catalog.name} portraitUrl={showcase.catalog.portraitSourceUrl || showcase.catalog.iconSourceUrl}
-      weaponName={showcase.weapon?.catalog.name ?? 'No weapon equipped'} currentStats={currentStats} currentScore={currentScore}
+      currentStats={currentStats} currentScore={currentScore}
       objectiveLabel={selectedObjectiveLabel} targetId={targetId} targets={targets}
       onTargetChange={(id) => { setTargetId(id); updateProfile((current) => ({ ...current, targetId: id, updatedAt: Date.now() })) }} scalesWith={scalesWith} scalesWithTitle={rotationTarget ? 'Rotation includes' : undefined} running={running} onRun={run} onCancel={cancel}
     />}
     {!profileReady && <Panel className="searching"><div className="orbit"><i/><i/><i/></div><h2>Loading optimizer profile</h2><p>Your saved filters and most recent compatible run stay on this device.</p></Panel>}
     {error && <div className="notice error">{error}</div>}
+    {pendingSources.length > 0 && <div className="notice">TBA mechanics for {pendingSources.join(', ')} are omitted from calculated scores.</div>}
     {message && <div className="notice success">{message}</div>}
     {running && <Panel className="optimizer-progress-panel">
       <header><div><span className="eyebrow">Background search</span><h3>{profile.searchMode === 'exact' ? 'Testing the exact search space' : 'Testing the capped search space'}</h3></div><b>{progressPercent.toFixed(2)}%</b></header>

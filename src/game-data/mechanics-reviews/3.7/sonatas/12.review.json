@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "sonata",
+  "entityId": "12",
+  "entityName": "Midnight Veil",
+  "sourceFingerprint": "e7a61ed4f4986b3077fb8925dd2dc1ed0ddc46a49c3b9a50ea10dcf3345d7fbd",
+  "reviewedAt": "2026-09-16T14:31:16.128Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "dc597388afa69eb8d82493c9245849e9aeb7c180f3ea8be0137321dbe6953d4a",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:12:2:0",
+            "sourceName": "Midnight Veil",
+            "text": "Havoc DMG + 10%",
+            "refinementTexts": [
+              "Havoc DMG + 10%"
+            ],
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Havoc",
+                  "operation": "addPercent",
+                  "value": 10,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "While equipped"
+            },
+            "sourceType": "sonata",
+            "pieces": 2
+          },
+          {
+            "id": "sonata:12:5:0",
+            "sourceName": "Midnight Veil",
+            "text": "When Outro Skill is triggered, deal additional 480% Havoc DMG to surrounding enemies, considered Outro Skill DMG, and grant the incoming Resonator 15% Havoc DMG Bonus for 15s.",
+            "refinementTexts": [
+              "When Outro Skill is triggered, deal additional 480% Havoc DMG to surrounding enemies, considered Outro Skill DMG, and grant the incoming Resonator 15% Havoc DMG Bonus for 15s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "Havoc",
+                  "operation": "addPercent",
+                  "value": 15,
+                  "scope": "next"
+                }
+              ],
+              "triggeredAttacks": [
+                {
+                  "id": "triggered-1",
+                  "name": "Outro Skill cast",
+                  "damageType": "outro",
+                  "element": "Havoc",
+                  "scaling": "atk",
+                  "expression": "480%",
+                  "count": 1
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Outro Skill cast"
+            },
+            "sourceType": "sonata",
+            "pieces": 5
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

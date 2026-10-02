@@ -86,7 +86,7 @@
   text-align: left;
 }
 .tw-theorizer-list>button:hover,.tw-theorizer-list>button.active { border-color: color-mix(in srgb,var(--tw-member-accent,var(--mint)) 58%,var(--tw-line)); background-color: var(--tw-surface-hover); }
-.tw-theorizer-list>button.active { box-shadow: inset 2px 0 var(--tw-member-accent,var(--mint)); }
+.tw-theorizer-list>button.active { border-color: var(--tw-member-accent,var(--mint)); }
 .tw-theorizer-rank { position: relative; color: var(--tw-muted); font-weight: 800; text-align: center; }
 .tw-theorizer-rank.is-base::before { content: ''; position: absolute; left: -1px; top: 50%; width: 6px; height: 6px; border-radius: 50%; background: var(--tw-member-accent,var(--mint)); box-shadow: 0 0 8px var(--tw-member-accent,var(--mint)); }
 .tw-theorizer-summary { display: flex; align-items: center; min-width: 0; }
@@ -259,7 +259,6 @@
   border: 1px solid color-mix(in srgb,var(--tw-member-accent) 66%,var(--tw-line));
   border-radius: 4px;
   background: linear-gradient(90deg,color-mix(in srgb,var(--tw-member-accent) 30%,#10191a),#10191a);
-  box-shadow: inset 3px 0 var(--tw-member-accent);
 }
 .tw-member-column>header.tw-member-open>strong {
   display: none;
@@ -282,7 +281,6 @@
   color: #eef5f3;
   cursor: pointer;
   list-style: none;
-  box-shadow: inset 3px 0 var(--mint);
 }
 .tw-member-build-picker>summary::-webkit-details-marker {
   display: none;
@@ -346,7 +344,8 @@
 }
 /* Build Management follows the reference hierarchy while staying native to Tacet Lab. */
 .tw-build-management-modal {
-  background: linear-gradient(145deg,#10191a,#080d0e);
+  width: min(920px,96vw);
+  background: #0b1113;
 }
 .tw-build-management-modal>header {
   background: #121d1e;
@@ -358,17 +357,14 @@
   color: #a8d8d2;
 }
 .tw-build-management-body {
-  padding: 16px;
+  padding: 12px;
 }
 .build-management-content {
   display: grid;
-  gap: 22px;
-}
-.build-management-equipped {
-  display: flex;
+  gap: 12px;
 }
 .build-management-card {
-  width: min(100%,570px);
+  width: min(100%,430px);
   overflow: hidden;
   border: 1px solid var(--tw-line-strong);
   border-radius: 5px;
@@ -382,7 +378,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 11px 13px;
+  padding: 8px 10px;
   border-bottom: 1px solid var(--tw-line);
   background: #152021;
 }
@@ -400,8 +396,8 @@
 .build-management-gear {
   display: grid;
   grid-template-columns: 1.25fr repeat(5,1fr);
-  gap: 6px;
-  padding: 12px;
+  gap: 4px;
+  padding: 8px;
 }
 .build-management-gear>span {
   position: relative;
@@ -454,7 +450,7 @@
   display: flex;
   justify-content: flex-end;
   gap: 4px;
-  padding: 8px 10px;
+  padding: 4px 8px;
   border-top: 1px solid var(--tw-line);
   background: #0c1415;
 }
@@ -475,7 +471,7 @@
 }
 .build-management-group {
   display: grid;
-  gap: 10px;
+  gap: 6px;
 }
 .build-management-group>header {
   display: flex;
@@ -484,8 +480,9 @@
 }
 .build-management-group>header h3 {
   margin: 0;
-  font-size: var(--font-size-heading-small);
+  font-size: var(--font-size-body);
 }
+.build-management-group>header small { color: var(--tw-muted); font-size: var(--font-size-caption); }
 .build-management-group>header button {
   min-height: 34px;
   display: flex;
@@ -581,7 +578,6 @@
   border: 1px solid color-mix(in srgb,var(--mint) 55%,#24302f);
   border-radius: 4px;
   background: linear-gradient(180deg,#173839,#10292a);
-  box-shadow: inset 3px 0 var(--mint);
   color: #eef5f3;
   cursor: pointer;
 }

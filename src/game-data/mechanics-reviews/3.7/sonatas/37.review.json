@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "sonata",
+  "entityId": "37",
+  "entityName": "Flash of Electric Reflection",
+  "sourceFingerprint": "6cd319a5ef045ff0e7f35b195735eb27b09daca3516f7cfa2f962bae2d50b112",
+  "reviewedAt": "2026-10-01T00:25:48.520Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "494d6f57d84b716afce98ca679764f77535890cb8ea1146c8c0248f76bec949d",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:37:2:0",
+            "sourceName": "Flash of Electric Reflection",
+            "text": "Electro DMG + 10%",
+            "refinementTexts": [
+              "Electro DMG + 10%"
+            ],
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Electro",
+                  "operation": "addPercent",
+                  "value": 10,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:37:5:0",
+            "sourceName": "Flash of Electric Reflection",
+            "text": "When the Resonator inflicts Electro Flare on enemies, they gain the following effects: Gain 10% Electro DMG Bonus for 15s.",
+            "refinementTexts": [
+              "When the Resonator inflicts Electro Flare on enemies, they gain the following effects: Gain 10% Electro DMG Bonus for 15s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "When the Resonator inflicts Electro Flare on enemies",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "Electro",
+                  "operation": "addPercent",
+                  "value": 10,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "include"
+          },
+          {
+            "id": "sonata:37:5:1",
+            "sourceName": "Flash of Electric Reflection",
+            "text": "While this effect is active, casting Outro Skill grants the incoming Resonator 25% Electro DMG Bonus for 15s.",
+            "refinementTexts": [
+              "While this effect is active, casting Outro Skill grants the incoming Resonator 25% Electro DMG Bonus for 15s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Outro Skill",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "Electro",
+                  "operation": "addPercent",
+                  "value": 25,
+                  "scope": "next"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5,
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  }
+}

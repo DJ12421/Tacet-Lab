@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "sonata",
+  "entityId": "6",
+  "entityName": "Havoc Eclipse",
+  "sourceFingerprint": "c1db5ba763956e86f874b0e330a73c47e0879c97385ec25af9dac5e1e2dc6d0a",
+  "reviewedAt": "2026-09-05T10:08:27.503Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "b5d599f9068fd0dd980fec6f5d66b7cef1b0b041e9b7807f722fbb121175a423",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:6:2:0",
+            "sourceName": "Havoc Eclipse",
+            "text": "Havoc DMG + 10%.",
+            "refinementTexts": [
+              "Havoc DMG + 10%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Havoc",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2
+          },
+          {
+            "id": "sonata:6:5:0",
+            "sourceName": "Havoc Eclipse",
+            "text": "Havoc DMG + 7.5% after releasing Basic Attack or Heavy Attack. This effect stacks up to 4 times, each stack lasts 15s.",
+            "refinementTexts": [
+              "Havoc DMG + 7.5% after releasing Basic Attack or Heavy Attack. This effect stacks up to 4 times, each stack lasts 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 4
+              },
+              "modifiers": [
+                {
+                  "stat": "Havoc",
+                  "operation": "addPercent",
+                  "value": 7.5
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Basic Atk/Heavy Atk used",
+              "durationSeconds": 15
+            },
+            "sourceType": "sonata",
+            "pieces": 5
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}

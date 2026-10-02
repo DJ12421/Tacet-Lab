@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.7",
+  "entityKind": "weapon",
+  "entityId": "21050074",
+  "entityName": "Augment",
+  "sourceFingerprint": "57e5b869ebe97ee3c2cccd106cde3de9c507d2aaa7da9700f7be18049aea0079",
+  "reviewedAt": "2026-09-09T07:51:57.093Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "405107a2b48b6c1aa1e8e8501086467a3ac1cd9251c312730df48ce8921748e9",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050074:effect:0",
+            "sourceName": "Forgiving Resilience",
+            "text": "Casting Resonance Liberation increases the wielder's ATK by 15%, lasting for 15s.",
+            "refinementTexts": [
+              "Casting Resonance Liberation increases the wielder's ATK by 15%, lasting for 15s.",
+              "Casting Resonance Liberation increases the wielder's ATK by 23.25%, lasting for 15s.",
+              "Casting Resonance Liberation increases the wielder's ATK by 31.5%, lasting for 15s.",
+              "Casting Resonance Liberation increases the wielder's ATK by 39.75%, lasting for 15s.",
+              "Casting Resonance Liberation increases the wielder's ATK by 48%, lasting for 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Liberation used",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 15
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 23.25
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 31.5
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 39.75
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 48
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.6"
+}
