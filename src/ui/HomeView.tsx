@@ -41,6 +41,22 @@ const quickStarts = [
 ]
 
 const changelogEntries = [
+  { hash: '200bf5a', date: 'Oct 2, 2026', title: 'Update the character, weapon, Echo, Sonata, and scanner catalog for Version 3.7' },
+  { hash: '200bf5a', date: 'Oct 2, 2026', title: 'Rework Teams with richer Formation, character, equipment, and stat views' },
+  { hash: '200bf5a', date: 'Oct 2, 2026', title: 'Mark pending 3.7 mechanics as TBA in the Archive and calculations' },
+  { hash: '200bf5a', date: 'Oct 2, 2026', title: 'Edit or switch Echoes and manage builds directly from Teams' },
+  { hash: '200bf5a', date: 'Oct 2, 2026', title: 'Add live Theorycraft previews and improve Echo picker filters and paging' },
+  { hash: '200bf5a', date: 'Oct 2, 2026', title: 'Simplify Optimizer filters and group combat targets and Sonatas' },
+  { hash: '200bf5a', date: 'Oct 2, 2026', title: 'Add a Partnerships page with community links' },
+  { hash: '0447bb1', date: 'Sep 30, 2026', title: 'Clarify rotation damage calculation details in Optimizer results' },
+  { hash: 'dfb342e', date: 'Sep 30, 2026', title: 'Optimize Echo builds for total team rotation damage' },
+  { hash: '6f4eb6b', date: 'Sep 30, 2026', title: 'Refresh Teams Formation and improve stat icons across the app' },
+  { hash: 'c740a47', date: 'Sep 29, 2026', title: 'Keep larger app assets available through the offline cache' },
+  { hash: '58faeb9', date: 'Sep 29, 2026', title: 'Rebuild combat calculations across Teams, Builds, Optimizer, and Theorizer' },
+  { hash: '58faeb9', date: 'Sep 29, 2026', title: 'Add detailed damage breakdowns and controls for reviewed effects' },
+  { hash: '58faeb9', date: 'Sep 29, 2026', title: 'Expand in-app Archive details for characters, weapons, and Echoes' },
+  { hash: '5d1a6f5', date: 'Sep 4, 2026', title: 'Clarify homepage copy and site descriptions for search and sharing' },
+  { hash: '8f039f2', date: 'Sep 3, 2026', title: 'Polish Archive cards, navigation, and Teams status messaging' },
   { hash: '424fe33', date: 'Sep 1, 2026', title: 'Unify damage calculations across Teams and Theorizer' },
   { hash: '424fe33', date: 'Sep 1, 2026', title: 'Refresh the Teams Formation Console and member workspaces' },
   { hash: '424fe33', date: 'Sep 1, 2026', title: 'Improve responsive build, scanner, inventory, and optimizer workflows' },
