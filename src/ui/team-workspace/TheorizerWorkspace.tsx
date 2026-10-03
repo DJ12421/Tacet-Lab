@@ -8,6 +8,8 @@ import { generatedSonataIconSources } from '../../game-data/sonatas.generated'
 import type { TheorizerMode, TheorizerRankingRequest, TheorizerRankingResponse } from '../../workers/theorizer.worker'
 import { statIconSource } from '../stat-icons'
 import { compactAttackLabel, formatWorkspaceStat, TEAM_ROTATION_TARGET_ID, type TeamMemberModel, type TeamWorkspaceModel } from '../team-workspace-model'
+import { EquipmentBuffSettings } from './EquipmentBuffSettings'
+import { useWorkspacePreference } from './useWorkspacePreference'
 
 type RankedSuggestion = TheorizerRankingResponse['results'][number]
 
@@ -18,6 +20,7 @@ const theorizerCache: Array<{ input: Omit<TheorizerRankingRequest, 'requestId'>;
 
 function sameRankingInput(left: Omit<TheorizerRankingRequest, 'requestId'>, right: Omit<TheorizerRankingRequest, 'requestId'>) {
   return left.mode === right.mode && left.targetId === right.targetId && left.resultMode === right.resultMode
+    && left.disabledEquipmentBuffKeys === right.disabledEquipmentBuffKeys
     && left.scalesWith === right.scalesWith && left.element === right.element && left.weaponType === right.weaponType
     && left.memberSlot === right.memberSlot && left.baseline === right.baseline && left.team === right.team
     && left.echoes === right.echoes && left.builds === right.builds && left.characters === right.characters
@@ -245,12 +248,15 @@ function SubstatStepTable({ entries, baselineScore, resultModeLabel, loading }: 
   </section>
 }
 
-export function TheorizerWorkspace({ member, model, echoes, builds, characters, weapons, equippedLoadouts, theorycraftBuilds, roverGender, refresh: _refresh }: {
+export function TheorizerWorkspace({ member, model, echoes, builds, characters, weapons, equippedLoadouts, theorycraftBuilds, roverGender, refresh: _refresh, accent }: {
   member: TeamMemberModel; model: TeamWorkspaceModel; echoes: Echo[]; builds: Build[]; characters: OwnedCharacter[]; weapons: OwnedWeapon[]
-  equippedLoadouts: EquippedLoadout[]; theorycraftBuilds: TheorycraftBuild[]; roverGender: 'male' | 'female'; refresh: () => Promise<void>
+  equippedLoadouts: EquippedLoadout[]; theorycraftBuilds: TheorycraftBuild[]; roverGender: 'male' | 'female'; refresh: () => Promise<void>; accent?: string
 }) {
-  const [mode, setMode] = useState<TheorizerMode>('mainStats')
-  const [targetId, setTargetId] = useState(TEAM_ROTATION_TARGET_ID)
+  const preferenceKey = `${model.team.id}:${member.slot}`
+  const [mode, setMode] = useWorkspacePreference<TheorizerMode>(`theorizer:${preferenceKey}:mode`, 'mainStats')
+  const [disabledEquipmentBuffKeys, setDisabledEquipmentBuffKeys] = useWorkspacePreference<string[]>(`buffs:${preferenceKey}`, [])
+  const [buffSettingsOpen, setBuffSettingsOpen] = useState(false)
+  const [targetId, setTargetId] = useWorkspacePreference(`theorizer:${preferenceKey}:target`, TEAM_ROTATION_TARGET_ID)
   const [selectedId, setSelectedId] = useState('')
   const [ranking, setRanking] = useState<Pick<TheorizerRankingResponse, 'baselineScore' | 'baselineStats' | 'results'>>({ baselineScore: 0, results: [] })
   const [loading, setLoading] = useState(true)
@@ -319,11 +325,12 @@ export function TheorizerWorkspace({ member, model, echoes, builds, characters, 
       theorycraftBuilds,
       roverGender,
       mode,
+      disabledEquipmentBuffKeys,
       baseline,
       memberSlot: member.slot,
       targetId: activeTargetId,
       resultMode,
-      scalesWith: member.attacks[0]?.scalesWith ?? 'atk',
+      scalesWith: member.attacks[0]?.scalesWith === 'level' ? 'atk' : member.attacks[0]?.scalesWith ?? 'atk',
       element: member.catalog?.element ?? 'Aero',
       weaponType: member.catalog?.weaponType,
       substatDraft: undefined
@@ -337,7 +344,7 @@ export function TheorizerWorkspace({ member, model, echoes, builds, characters, 
       setLoading(false)
     })
     return () => { current = false }
-  }, [activeTargetId, baseline, builds, characters, echoes, equippedLoadouts, member.attacks, member.catalog?.element, member.catalog?.weaponType, member.resolvedEchoes, member.slot, mode, model.team, resultMode, roverGender, theorycraftBuilds, weapons])
+  }, [activeTargetId, disabledEquipmentBuffKeys, baseline, builds, characters, echoes, equippedLoadouts, member.attacks, member.catalog?.element, member.catalog?.weaponType, member.resolvedEchoes, member.slot, mode, model.team, resultMode, roverGender, theorycraftBuilds, weapons])
 
   const ranked: RankedSuggestion[] = ranking.results
   const selected = ranked.find((entry) => entry.id === selectedId)
@@ -345,7 +352,7 @@ export function TheorizerWorkspace({ member, model, echoes, builds, characters, 
   const modeLabel = MODES.find((entry) => entry.id === mode)?.label ?? 'options'
 
   return <section className="tw-theorizer tw-panel">
-    <header className="tw-theorizer-header"><h2>Theorizer</h2></header>
+    <header className="tw-theorizer-header"><h2>Theorizer</h2><button type="button" className="equipment-buff-trigger" aria-haspopup="dialog" onClick={() => setBuffSettingsOpen(true)}>Buff settings</button></header>
     <div className="tw-theorizer-toolbar"><div className="tw-theorizer-modes" role="tablist" aria-label="Suggestion type">{MODES.map((entry) => <button type="button" role="tab" aria-selected={mode === entry.id} className={mode === entry.id ? 'active' : ''} onClick={() => { setMode(entry.id); setSelectedId('') }} key={entry.id}>{entry.label}</button>)}</div><label><span>Rank for</span><select value={activeTargetId} onChange={(event) => { setTargetId(event.target.value); setSelectedId('') }}>{targetGroups.map(([group, entries]) => <optgroup label={compactAttackLabel(group)} key={group}>{entries.map((target) => <option value={target.id} key={target.id}>{target.label}</option>)}</optgroup>)}</select></label></div>
     {mode === 'substats' ? <>{error ? <p className="tw-empty-state">{error}</p> : <SubstatStepTable entries={ranked} baselineScore={ranking.baselineScore} resultModeLabel={resultModeLabel} loading={loading}/>}</> : <>
     <div className="tw-theorizer-list-heading"><span>{mode === 'sonatas' ? 'Set plans' : modeLabel} ({ranked.length})</span><b>Ranked by {resultModeLabel}</b></div>
@@ -356,5 +363,6 @@ export function TheorizerWorkspace({ member, model, echoes, builds, characters, 
     }) : <p className="tw-empty-state">No valid suggestions are available for this loadout.</p>}</div>
     </>}
     {selected && <ComparisonModal entry={selected} baselineScore={ranking.baselineScore} baselineStats={ranking.baselineStats} resultModeLabel={resultModeLabel} targetLabel={targets.find((target) => target.id === activeTargetId)?.label ?? 'Selected action'} onClose={() => setSelectedId('')}/>}
+    {buffSettingsOpen && <EquipmentBuffSettings accent={accent} disabledKeys={disabledEquipmentBuffKeys} onChange={setDisabledEquipmentBuffKeys} onClose={() => setBuffSettingsOpen(false)} weaponType={member.catalog?.weaponType}/>}
   </section>
 }

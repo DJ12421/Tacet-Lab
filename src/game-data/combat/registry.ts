@@ -1,4 +1,5 @@
 import type { DamageType, EffectMechanics, EffectOperation, Element, MechanicsRegistry, Stat, StatValue } from '../../domain/combat'
+import { negativeStatusActions } from './negative-status'
 import { generatedCharacterCatalog } from '../characters.generated'
 import { generatedEchoCatalog } from '../echoes.generated'
 import { generatedWeaponCatalog } from '../weapons.generated'
@@ -104,7 +105,24 @@ export const mechanicsRegistry: MechanicsRegistry = {
         critDamage:character.baseStats.critDamage / 100,
         energyRegen:1
       })),
-      actions:Object.fromEntries(Object.entries({ ...(reviewed?.actions ?? {}), ...(reviewed ? supplementalCharacterActions[character.id] ?? {} : {}) }).map(([id, action]) => {
+      actions:Object.fromEntries(Object.entries({
+        ...(reviewed?.actions ?? {}),
+        ...(reviewed ? supplementalCharacterActions[character.id] ?? {} : {}),
+        [`${character.id}:tune-break`]:{
+          id:`${character.id}:tune-break`, name:character.skillTreeExtras.tuneBreakSkill.name,
+          group:'Tune Break', sourceId:`character:${character.id}:tune-break`, reviewFingerprint:'estimated:tune-break:2026-10-03',
+          kind:'damage' as const, damageType:'tune-break' as const, element:'physical' as const, tags:[] as const, skillLevelIndex:0,
+          formulas:{ 1:{ kind:'tune-break' as const } }
+        },
+        ...Object.fromEntries(negativeStatusActions.filter(({ characterIds }) =>
+          characterIds.some((id) => id === character.id)
+        ).map(({ status, name, element }) => [`status:${status}`, {
+          id:`status:${status}`, name, group:'Elemental Effects', sourceId:`status:${status}`,
+          reviewFingerprint:'estimated:negative-status:2026-10-03', kind:'damage' as const,
+          damageType:'status' as const, element, tags:[status], skillLevelIndex:0,
+          formulas:{ 1:{ kind:'negative-status' as const, status } }
+        }]))
+      }).map(([id, action]) => {
         const correction = wutheringToolsActionClassification[id]
         const damageType = correction?.damageType ?? action.damageType
         const tags = [...new Set([...(action.tags ?? []), ...(correction?.addTags ?? [])])]

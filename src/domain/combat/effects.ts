@@ -127,7 +127,7 @@ function candidateEffects(registry: MechanicsRegistry, request: ActionRequest): 
       })
     }
   }
-  return candidates
+  return candidates.filter(({ effect, provider }) => !request.setup.disabledEffectIdsByMember?.[provider.memberId]?.includes(effect.id))
 }
 
 function inputValues(request: ActionRequest) {

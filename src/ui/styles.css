@@ -43,7 +43,7 @@ body:has(.modal-backdrop,.catalog-picker-backdrop,.weapon-detail-backdrop,.chara
   overflow-y: hidden;
 }
 
-.modal-backdrop:not(.scan-review-backdrop):not(.import-data-backdrop):not(.roll-quality-backdrop):not(.echo-editor-backdrop):not(.cs-weight-editor-backdrop):not(.tw-build-management-backdrop)>* {
+.modal-backdrop:not(.scan-review-backdrop):not(.import-data-backdrop):not(.roll-quality-backdrop):not(.echo-editor-backdrop):not(.cs-weight-editor-backdrop):not(.tw-build-management-backdrop):not(.equipment-buff-backdrop)>* {
   max-height: none;
   overflow: visible;
 }

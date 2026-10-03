@@ -1,37 +1,47 @@
-/* Clear local-only status, consistent chip filters, and concise supporting copy. */
+/* Top bar brand, chip filters, and concise supporting copy. */
 
-.local-only-status {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  letter-spacing: .06em;
+.topbar>div.topbar-brand {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  margin-left: -15px;
+  line-height: 1.1;
 }
 
-.mobile-topbar-brand {
-  transform:translatey(3px);
-  display: none;
+.topbar>div:last-child {
+  margin-left: auto;
+}
+
+.topbar-brand strong {
+  width: fit-content;
+  color: var(--gold);
+  font-size: 1.375rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  background: linear-gradient(105deg, var(--gold) 30%, #fff8dc 50%, var(--gold) 70%);
+  background-size: 220% 100%;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: topbar-brand-shine 8s linear infinite;
+}
+
+.topbar-brand small {
+  color: #afc9c1;
+  font-size: .75rem;
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+
+@keyframes topbar-brand-shine {
+  to { background-position: -220% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topbar-brand strong { animation: none; }
 }
 
 .primary>.icon-plus {
   stroke: #000;
-}
-
-.local-only-status>span:last-child {
-  display: grid;
-  line-height: 1.15;
-}
-
-.local-only-status strong {
-  color: #dce6e2;
-  font-size: var(--font-size-caption);
-  letter-spacing: .13em;
-}
-
-.local-only-status small {
-  margin-top: 3px;
-  color: var(--muted);
-  font-size: var(--font-size-caption);
-  letter-spacing: 0;
 }
 
 .settings-modal label>small {
@@ -262,24 +272,21 @@
   font-size: var(--font-size-caption);
 }
 
+@media (max-width:760px) {
+  .topbar>div.topbar-brand {
+    margin-left: 0;
+  }
+}
+
 @media (max-width:650px) {
-  .topbar>div.local-only-status {
-    display: flex;
-    min-width: 0;
+  .topbar-brand strong {
+    font-size: 1rem;
+    letter-spacing: .08em;
   }
 
-  .topbar .mobile-topbar-brand {
-    display: block;
-    color: var(--gold);
-    font-size: var(--font-size-small);
-    font-weight: 800;
-    letter-spacing: .15em;
-    white-space: nowrap;
-  }
-
-  .topbar .local-only-status>.pulse,
-  .topbar .local-only-status>span:last-child {
-    display: none;
+  .topbar-brand small {
+    font-size: clamp(.5rem, 2.4vw, .625rem);
+    letter-spacing: 0;
   }
 
   .chip-toolbar {

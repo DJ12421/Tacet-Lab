@@ -30,7 +30,7 @@ import type {
   OwnedWeapon,
   TeamScenario
 } from '../domain/types'
-import { calculateBuildModes, combatTargets, formatDamage, resolveRuntimeBuild, type CombatTarget } from '../domain/combat/runtime'
+import { calculateBuildModes, combatTargets, disabledEquipmentEffectIds, formatDamage, resolveRuntimeBuild, sonatasForEchoes, withEquipmentBuffs, type CombatTarget } from '../domain/combat/runtime'
 import { createLocalId } from '../domain/id'
 import { EchoMiniCard, EquippedCharacterLabel, formatStat, Icon, Panel } from './components'
 import { CalculatedValue, traceCalculationDetail } from './CalculationDetails'
@@ -38,7 +38,9 @@ import { runtimeStatDetail } from './calculation-detail-model'
 import { resolveCharacterShowcaseModel } from './character-showcase-model'
 import { OptimizerDistributionChart } from './OptimizerDistributionChart'
 import { OptimizerSetup } from './OptimizerSetup'
-import { rotationDamageByMode, TEAM_ROTATION_TARGET_ID, type TeamWorkspaceInput, type TeamWorkspaceModel } from './team-workspace-model'
+import { resolveTeamWorkspace, rotationDamageByMode, TEAM_ROTATION_TARGET_ID, type TeamWorkspaceInput, type TeamWorkspaceModel } from './team-workspace-model'
+import { EquipmentBuffSettings } from './team-workspace/EquipmentBuffSettings'
+import { useWorkspacePreference } from './team-workspace/useWorkspacePreference'
 
 type WorkerMessage =
   | { type: 'ready'; requestId: string; total: number; workCount: number }
@@ -103,14 +105,15 @@ type OptimizerViewProps = {
   damageMode?: FormulaResultMode
   scenario?: TeamScenario
   rotation?: { input: TeamWorkspaceInput; memberSlot: number; model: TeamWorkspaceModel }
+  accent?: string
 }
 
 export function OptimizerView({
   echoes, builds, characters, ownedWeapons, refresh, openScanner, buildId, teamBuildIds = [], initialEnemy,
-  damageMode, scenario, rotation
+  damageMode, scenario, rotation, accent
 }: OptimizerViewProps) {
   const objective: OptimizerObjective = damageMode ?? 'expected'
-  const [targetId, setTargetId] = useState(rotation ? TEAM_ROTATION_TARGET_ID : '')
+  const [targetId, setTargetId] = useWorkspacePreference(`optimizer:${buildId}:target`, '')
   const [profile, setProfile] = useState<OptimizerProfile>(() => ({
     id: `optimizer-${buildId}`, buildId, levelLow: 0, levelHigh: 25, rarities: [1, 2, 3, 4, 5],
     mainStatsByCost: { '1': [], '3': [], '4': [] }, excludedEchoIds: [], equippedPolicy: 'current', teamBuildIds: [],
@@ -129,6 +132,8 @@ export function OptimizerView({
   const [generatedAt, setGeneratedAt] = useState<number>()
   const [runFingerprint, setRunFingerprint] = useState('')
   const [running, setRunning] = useState(false)
+  const [disabledEquipmentBuffKeys, setDisabledEquipmentBuffKeys] = useWorkspacePreference<string[]>(`buffs:${rotation?.input.team.id ?? buildId}:${rotation?.memberSlot ?? 0}`, [])
+  const [buffSettingsOpen, setBuffSettingsOpen] = useState(false)
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
   const workersRef = useRef<Worker[]>([])
@@ -145,6 +150,10 @@ export function OptimizerView({
   const formulaTargets = combatTargets(resonator?.id ?? '').filter(isOptimizerCombatTarget)
   const formulaTarget = formulaTargets.find((target) => target.id === attack?.id) ?? formulaTargets[0]
   const currentEchoes = useMemo(() => build?.echoIds.map((id) => echoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)) ?? [], [build, echoes])
+  const disabledEffectIds = useMemo(() => runtime ? disabledEquipmentEffectIds(runtime.weapon, sonatasForEchoes(currentEchoes), disabledEquipmentBuffKeys) : [], [currentEchoes, disabledEquipmentBuffKeys, runtime])
+  const currentScenario = useMemo(() => build && runtime
+    ? withEquipmentBuffs(scenario, build.id, runtime.weapon, currentEchoes, disabledEquipmentBuffKeys) : scenario,
+  [build, currentEchoes, disabledEquipmentBuffKeys, runtime, scenario])
   const pendingSources = [
     resonator?.id && pendingMechanics.character?.[resonator.id]?.length ? resonator.name : '',
     runtime?.weapon.catalogId && pendingMechanics.weapon?.[runtime.weapon.catalogId]?.length ? weapon?.name ?? 'Weapon' : '',
@@ -153,15 +162,18 @@ export function OptimizerView({
   const targets = [...(rotation ? [{ id: TEAM_ROTATION_TARGET_ID, label: 'Rotation', group: 'Team' }] : []), ...(resonator?.attacks.map((item) => ({ id: item.id, label: item.name, group: formulaTargets.find((target) => target.id === item.id)?.group ?? 'Other' })) ?? [])]
   const optimizerEnemy = (): EnemyConfig => ({
     ...(initialEnemy ?? {}),
-    level: Math.min(200, Math.max(1, initialEnemy?.level ?? 100)),
+    level: Math.min(120, Math.max(1, initialEnemy?.level ?? 100)),
     resistance: Math.min(100, Math.max(-100, initialEnemy?.resistance ?? 10)),
     damageReduction: initialEnemy?.damageReduction ?? 0
   })
   const currentCalculation = useMemo(() => {
     if (!build || !runtime || !formulaTarget) return undefined
-    return calculateBuildModes({ build, character:runtime.character, weapon:runtime.weapon, echoes:currentEchoes, enemy:optimizerEnemy(), scenario, targetId:formulaTarget.id })
-  }, [build, currentEchoes, formulaTarget, initialEnemy, runtime, scenario])
-  const currentDamage = rotationTarget && rotation ? rotationDamageByMode(rotation.model) : currentCalculation?.values
+    return calculateBuildModes({ build, character:runtime.character, weapon:runtime.weapon, echoes:currentEchoes, enemy:optimizerEnemy(), scenario:currentScenario, disabledEffectIdsByMember:{ [build.id]:disabledEffectIds }, targetId:formulaTarget.id })
+  }, [build, currentEchoes, currentScenario, disabledEffectIds, formulaTarget, initialEnemy, runtime])
+  const currentRotationModel = useMemo(() => rotationTarget && rotation && runtime && build
+    ? resolveTeamWorkspace({ ...rotation.input, team: { ...rotation.input.team, scenario: withEquipmentBuffs(rotation.input.team.scenario, rotation.input.team.members?.[rotation.memberSlot]?.memberId ?? rotation.input.team.buildIds[rotation.memberSlot] ?? build.id, runtime.weapon, currentEchoes, disabledEquipmentBuffKeys) }, disabledEffectIdsByMember:{ [rotation.input.team.members?.[rotation.memberSlot]?.memberId ?? rotation.input.team.buildIds[rotation.memberSlot] ?? build.id]:disabledEffectIds } })
+    : rotation?.model, [build?.id, currentEchoes, disabledEffectIds, disabledEquipmentBuffKeys, rotation, rotationTarget, runtime])
+  const currentDamage = rotationTarget && currentRotationModel ? rotationDamageByMode(currentRotationModel) : currentCalculation?.values
   const currentStats = currentCalculation?.stats
   const currentScore = currentDamage && (objective === 'normal' || objective === 'critical' || objective === 'expected') ? currentDamage[objective] : currentStats?.[objective as OptimizerStatKey]
   const scalesWith = useMemo(() => {
@@ -182,9 +194,10 @@ export function OptimizerView({
     targetId,
     initialEnemy,
     scenario,
+    disabledEquipmentBuffKeys,
     rotation: rotationTarget ? rotation?.input : undefined,
     gameDataVersion: GAME_DATA_VERSION
-  }), [initialEnemy, objective, rotation?.input, rotationTarget, scenario, targetId])
+  }), [disabledEquipmentBuffKeys, initialEnemy, objective, rotation?.input, rotationTarget, scenario, targetId])
 
   const terminateWorkers = () => { for (const worker of workersRef.current) worker.terminate(); workersRef.current = [] }
   const clearResults = () => { setResults([]); setPlotPoints([]); setSelectedKey(undefined); setHighlightedKeys([]); setActiveRunId(undefined); setExpandedResult(null); setGeneratedAt(undefined); setRunFingerprint('') }
@@ -195,22 +208,24 @@ export function OptimizerView({
 
   useEffect(() => () => terminateWorkers(), [])
   useEffect(() => {
+    if (!profileReady || targets.some((target) => target.id === targetId)) return
     const nextId = rotation ? TEAM_ROTATION_TARGET_ID : resonator?.attacks[0]?.id ?? ''
     setTargetId(nextId)
     clearResults()
     setError('')
-  }, [resonator?.id, rotation?.memberSlot])
+  }, [profileReady, resonator?.id, rotation?.memberSlot])
   useEffect(() => {
     let live = true
     setProfileReady(false)
     const fingerprint = optimizerInventoryFingerprint(inventoryEchoes)
     Promise.all([loadOptimizerProfile(buildId), loadLatestOptimizerRun(buildId)]).then(([storedProfile, run]) => {
       if (!live) return
-      const savedTarget = targets.some((target) => target.id === storedProfile.targetId) ? storedProfile.targetId : undefined
+      const savedTarget = targets.some((target) => target.id === targetId) ? targetId
+        : targets.some((target) => target.id === storedProfile.targetId) ? storedProfile.targetId : undefined
       const nextTarget = savedTarget ?? targets[0]?.id ?? ''
       const nextProfile = { ...storedProfile, targetId: nextTarget || undefined, teamBuildIds: [...new Set(teamBuildIds)] }
       setProfile(nextProfile)
-      const contextFingerprint = optimizerContextFingerprint({ objective, targetId: nextTarget, initialEnemy, scenario, rotation: nextTarget === TEAM_ROTATION_TARGET_ID ? rotation?.input : undefined, gameDataVersion: GAME_DATA_VERSION })
+      const contextFingerprint = optimizerContextFingerprint({ objective, targetId: nextTarget, initialEnemy, scenario, disabledEquipmentBuffKeys, rotation: nextTarget === TEAM_ROTATION_TARGET_ID ? rotation?.input : undefined, gameDataVersion: GAME_DATA_VERSION })
       contextFingerprintRef.current = contextFingerprint
       setTargetId(nextTarget)
       if (run && run.profileId === nextProfile.id && run.profileFingerprint === optimizerProfileFingerprint(nextProfile) && run.contextFingerprint === contextFingerprint && run.inventoryFingerprint === fingerprint && run.gameDataVersion === GAME_DATA_VERSION && run.results.every((result) => result.echoIds.every((id) => echoes.some((echo) => echo.id === id)))) {
@@ -282,7 +297,7 @@ export function OptimizerView({
     const enemy = optimizerEnemy()
     const mode = objective === 'normal' || objective === 'critical' || objective === 'expected' ? objective : undefined
     const baseRequest: Omit<OptimizerRequest, 'partition'> = {
-      requestId, echoes: inventoryEchoes, resonator, weapon, attack, enemy, objective, minimumStats: profile.minimumStats,
+      requestId, echoes: inventoryEchoes, resonator, weapon, attack, enemy, objective, disabledEquipmentBuffKeys, minimumStats: profile.minimumStats,
       maximumStats: profile.maximumStats, limit: profile.resultLimit, maxEvaluations: profile.maxEvaluations,
       includeEquippedBy: runtime.character.id, currentMainEchoId: build.echoIds[0], profile: { ...profile, teamBuildIds: [...new Set(teamBuildIds)] },
       combat: formulaTarget ? { target: { id: formulaTarget.id, label: formulaTarget.label, kind: formulaTarget.kind, mode:mode ?? 'expected' }, build, character:runtime.character, weapon:runtime.weapon, scenario } : undefined,
@@ -471,7 +486,7 @@ export function OptimizerView({
       ? runtimeStatDetail(resonator, weapon, resultEchoes, objective, result.score)
       : { title: String(objective), value: String(result.score), rows: [{ label: 'Optimizer result', value: String(result.score) }] }
     if (!build || !runtime || !formulaTarget) return { title: `${attack?.name ?? 'Formula target'} · ${objective}`, value: String(result.score), rows: [{ label: 'Optimizer result', value: String(result.score) }] }
-    const calculated = calculateBuildModes({ build, character:runtime.character, weapon:runtime.weapon, echoes:resultEchoes, enemy:optimizerEnemy(), scenario, targetId:formulaTarget.id, trace:true })
+    const calculated = calculateBuildModes({ build, character:runtime.character, weapon:runtime.weapon, echoes:resultEchoes, enemy:optimizerEnemy(), scenario:withEquipmentBuffs(scenario, build.id, runtime.weapon, resultEchoes, disabledEquipmentBuffKeys), disabledEffectIdsByMember:{ [build.id]:disabledEquipmentEffectIds(runtime.weapon, sonatasForEchoes(resultEchoes), disabledEquipmentBuffKeys) }, targetId:formulaTarget.id, trace:true })
     const trace = calculated.traces[objective]
     return trace ? traceCalculationDetail(trace, `${formulaTarget.label} · ${objective}`) : { title:formulaTarget.label, value:String(result.score), rows:[{ label:'Optimizer result', value:String(result.score) }] }
   }
@@ -485,8 +500,9 @@ export function OptimizerView({
     return [{ key, echoIds: point.echoIds, score: 'score' in point ? point.score : point.y, stats: point.stats, rank: resultIndex >= 0 ? resultIndex + 1 : undefined }]
   })
   return <section className="tw-optimizer-workspace optimizer-v2-workspace">
-    <header className="tw-optimizer-heading tw-panel"><h2>Optimizer</h2></header>
-    {profileReady && build && runtime && showcase && <OptimizerSetup
+    <header className="tw-optimizer-heading tw-panel"><h2>Optimizer</h2><button type="button" className="equipment-buff-trigger" aria-haspopup="dialog" onClick={() => setBuffSettingsOpen(true)}>Buff settings</button></header>
+    {buffSettingsOpen && <EquipmentBuffSettings accent={accent} disabledKeys={disabledEquipmentBuffKeys} onChange={(keys) => { requestIdRef.current = ''; terminateWorkers(); setRunning(false); clearResults(); setDisabledEquipmentBuffKeys(keys) }} onClose={() => setBuffSettingsOpen(false)} weaponType={showcase?.catalog.weaponType}/>}
+    {profileReady && build && runtime && showcase && <OptimizerSetup key={build.id}
       profile={profile} setProfile={updateProfile} echoes={inventoryEchoes} currentEchoes={currentEchoes} buildId={build.id} buildName={build.name}
       characterName={showcase.catalog.name} portraitUrl={showcase.catalog.portraitSourceUrl || showcase.catalog.iconSourceUrl}
       currentStats={currentStats} currentScore={currentScore}

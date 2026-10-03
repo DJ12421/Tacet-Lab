@@ -142,9 +142,6 @@
 }
 
 @media (max-width:650px) {
-  .local-only-status small {
-    display: none;
-  }
   .chip-toolbar>.owned-chip-filter,.archive-toolbar.chip-toolbar>.owned-chip-filter,.archive-toolbar.chip-toolbar>.sonata-picker {
     width: auto;
     flex-basis: auto;

@@ -1,5 +1,6 @@
 /// <reference lib="webworker" />
 import { createOptimizerWorkPlan, optimizeOptimizerWorkUnit, type OptimizerCandidateEvaluator, type OptimizerWorkPlan } from '../domain/optimizer'
+import { disabledEquipmentEffectIds, sonatasForEchoes, withEquipmentBuffs } from '../domain/combat/runtime'
 import type { OptimizerRequest } from '../domain/types'
 import { resolveTeamWorkspace, rotationDamageByMode } from '../ui/team-workspace-model'
 
@@ -24,9 +25,10 @@ function rotationEvaluator(request: OptimizerRequest): OptimizerCandidateEvaluat
     else buildIds[rotation.memberSlot] = build.id
     const model = resolveTeamWorkspace({
       ...rotation,
-      team: { ...rotation.team, buildIds, ...(member ? { members } : {}) },
+      team: { ...rotation.team, buildIds, ...(member ? { members } : {}), ...(request.combat ? { scenario: withEquipmentBuffs(rotation.team.scenario, member?.memberId ?? build.id, request.combat.weapon, echoes, request.disabledEquipmentBuffKeys) } : {}) },
       builds: [...rotation.builds.filter((entry) => entry.id !== build.id), build],
-      echoes: request.echoes
+      echoes: request.echoes,
+      disabledEffectIdsByMember:request.combat ? { [member?.memberId ?? build.id]:disabledEquipmentEffectIds(request.combat.weapon, sonatasForEchoes(echoes), request.disabledEquipmentBuffKeys ?? []) } : undefined
     })
     const totals = rotationDamageByMode(model)
     const mode = rotation.team.scenario?.resultMode ?? 'expected'

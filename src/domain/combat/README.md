@@ -149,6 +149,7 @@ export interface CalculationDiagnostic {
     | 'unsupported-mechanic'
     | 'stale-data'
     | 'invalid-rotation'
+    | 'unverified-data'
   message: string
   sourceId?: string
   actorId?: string

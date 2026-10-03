@@ -84,6 +84,7 @@ export interface CombatBuildMember {
 export interface BuildCombatInput extends CombatBuildMember {
   enemy: EnemyConfig
   scenario?: TeamScenario
+  disabledEffectIdsByMember?: Record<string, string[]>
   buffs?: BuffEffect[]
   bonusStatLines?: StatLine[]
   actionInputs?: Record<string, ScenarioValue>
@@ -122,6 +123,55 @@ const selectedInputs = (build: Build, scenario?: TeamScenario, actionInputs?: Re
   ...(scenario?.enemyConditions ?? {}),
   ...(actionInputs ?? {})
 })
+
+function candidateEquipmentEffects(weapon: Pick<OwnedWeapon, 'catalogId' | 'rank'>, sonatas: readonly { name: string; pieces: number }[]) {
+  return [
+    ...(mechanicsRegistry.weapons[weapon.catalogId]?.effects ?? []).filter((effect) => weapon.rank >= (effect.minimumRank ?? 1) && weapon.rank <= (effect.maximumRank ?? Infinity)).map((effect) => ({ effect, key:`weapon-effect:${effect.sourceId}` })),
+    ...sonatas.flatMap(({ name, pieces }) => {
+      const id = String(sonataCatalog.find((sonata) => sonata.name === name)?.id ?? '')
+      return (mechanicsRegistry.sonatas?.[id]?.effects ?? []).filter((effect) => pieces >= (effect.minimumPieces ?? 2)).map((effect) => ({ effect, key:`sonata-effect:${effect.sourceId}` }))
+    })
+  ]
+}
+
+export function disabledEquipmentEffectIds(weapon: Pick<OwnedWeapon, 'catalogId' | 'rank'>, sonatas: readonly { name: string; pieces: number }[], disabledKeys: readonly string[]) {
+  return candidateEquipmentEffects(weapon, sonatas).filter(({ key }) => disabledKeys.includes(key)).map(({ effect }) => effect.id)
+}
+
+export function sonatasForEchoes(echoes: readonly Echo[]) {
+  const counts = echoes.reduce<Record<string, number>>((result, echo) => {
+    result[echo.sonata] = (result[echo.sonata] ?? 0) + 1
+    return result
+  }, {})
+  return Object.entries(counts).map(([name, pieces]) => ({ name, pieces }))
+}
+
+export function equipmentBuffConditions(weapon: Pick<OwnedWeapon, 'catalogId' | 'rank'>, sonatas: readonly { name: string; pieces: number }[], current: Record<string, ScenarioValue> = {}, disabledKeys: readonly string[] = []) {
+  const effects = candidateEquipmentEffects(weapon, sonatas)
+  const conditions: Record<string, ScenarioValue> = Object.fromEntries(Object.entries(current).filter(([id]) => !id.startsWith('weapon:') && !id.startsWith('sonata:')))
+  const exclusiveGroups = new Set<string>()
+  for (const { effect, key } of effects) {
+    if (disabledKeys.includes(key)) continue
+    if (effect.exclusiveGroup && exclusiveGroups.has(effect.exclusiveGroup)) continue
+    if (effect.exclusiveGroup) exclusiveGroups.add(effect.exclusiveGroup)
+    const activation = effect.activation
+    if (activation.kind === 'always') continue
+    const ids = activation.kind === 'all' ? activation.inputs : [activation.kind === 'conditional-value' ? activation.toggleInput : activation.input]
+    for (const id of ids) conditions[id] = activation.kind === 'stacks' || activation.kind === 'value' ? activation.maximum : true
+  }
+  return conditions
+}
+
+export function withEquipmentBuffs(scenario: TeamScenario | undefined, buildId: string, weapon: Pick<OwnedWeapon, 'catalogId' | 'rank'>, echoes: readonly Echo[], disabledKeys: readonly string[] = []): TeamScenario {
+  const base: TeamScenario = scenario ?? { resultMode: 'expected', memberConditions: {}, enemyConditions: {}, selectedTargetByBuild: {} }
+  return {
+    ...base,
+    memberConditions: {
+      ...base.memberConditions,
+      [buildId]: equipmentBuffConditions(weapon, sonatasForEchoes(echoes), base.memberConditions[buildId], disabledKeys)
+    }
+  }
+}
 
 const memberFor = (input: Pick<BuildCombatInput, 'build' | 'character' | 'weapon' | 'echoes'>): CombatMember => {
   const skillLevel = Math.max(1, input.build.skillLevel || 1)
@@ -167,7 +217,7 @@ const skillTreeStatLines = (character: OwnedCharacter): Array<{ label: string; v
   }))
 }
 
-const runtimeBonuses = (character: OwnedCharacter, buffs: readonly BuffEffect[] = [], bonusStatLines: readonly StatLine[] = [], specialMultiplier = 0) => {
+const runtimeBonuses = (character: OwnedCharacter, buffs: readonly BuffEffect[] = [], bonusStatLines: readonly StatLine[] = []) => {
   const statContributions = [...skillTreeStatLines(character), ...bonusStatLines.map((line) => ({ label:'Build bonus', value:combatStat(line) }))]
   const statLines: StatValue[] = statContributions.map((entry) => entry.value)
   const damageBonuses: number[] = []
@@ -178,14 +228,12 @@ const runtimeBonuses = (character: OwnedCharacter, buffs: readonly BuffEffect[] 
     if (effect.stat === 'amplify') { const value = effect.value / 100; amplifications.push(value); amplificationContributions.push({ label:effect.name, value }) }
     else { const value = combatStat({ key:effect.stat, value:effect.value }); statLines.push(value); statContributions.push({ label:effect.name, value }) }
   }
-  const specialMultipliers = specialMultiplier ? [specialMultiplier / 100] : []
   return {
-    statLines, damageBonuses, amplifications, specialMultipliers,
+    statLines, damageBonuses, amplifications,
     contributions:{
       statLines:statContributions,
       damageBonuses:damageBonusContributions,
-      amplifications:amplificationContributions,
-      specialMultipliers:specialMultiplier ? [{ label:'Enemy special multiplier', value:specialMultiplier / 100 }] : []
+      amplifications:amplificationContributions
     }
   }
 }
@@ -318,21 +366,25 @@ function combatSetup(input: BuildStatsInput, member: CombatMember): CombatSetup 
   return {
     dataVersion:mechanicsRegistry.dataVersion,
     members,
+    disabledEffectIdsByMember:input.disabledEffectIdsByMember,
     enemy:{
       level:input.enemy.level,
+      cost:input.enemy.cost ?? 4,
+      statusStacks:input.enemy.statusStacks,
+      electroRageStacks:input.enemy.electroRageStacks,
+      havocBaneStacks:input.enemy.havocBaneStacks,
+      strainStacks:input.enemy.strainStacks,
       resistance:{ spectro:input.enemy.resistance / 100, fusion:input.enemy.resistance / 100, glacio:input.enemy.resistance / 100, electro:input.enemy.resistance / 100, aero:input.enemy.resistance / 100, havoc:input.enemy.resistance / 100, physical:input.enemy.resistance / 100 },
       damageReduction:input.enemy.damageReduction / 100,
       defenseIgnore:(input.enemy.defenseIgnore ?? 0) / 100,
       defenseReduction:(input.enemy.defenseReduction ?? 0) / 100,
-      resistanceIgnore:(input.enemy.resistanceIgnore ?? 0) / 100,
-      resistanceReduction:(input.enemy.resistanceReduction ?? 0) / 100
+      resistanceIgnore:(input.enemy.resistanceIgnore ?? 0) / 100
     },
     selections,
     memberBonuses:Object.fromEntries(sourceMembers.map((entry) => [entry.build.id, runtimeBonuses(
       entry.character,
       entry.build.id === input.build.id ? input.buffs : [],
-      entry.build.id === input.build.id ? input.bonusStatLines : [],
-      entry.build.id === input.build.id ? input.enemy.specialMultiplier : 0
+      entry.build.id === input.build.id ? input.bonusStatLines : []
     )]))
   }
 }

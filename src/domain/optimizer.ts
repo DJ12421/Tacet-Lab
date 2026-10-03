@@ -1,4 +1,4 @@
-import { calculateBuildModes } from './combat/runtime'
+import { calculateBuildModes, disabledEquipmentEffectIds, sonatasForEchoes, withEquipmentBuffs } from './combat/runtime'
 import { echoStatLines } from '../game-data/echo-main-stats'
 import { sonataCatalog } from '../game-data'
 import type {
@@ -567,7 +567,8 @@ function runOptimizerTasks(
       weapon:request.combat.weapon,
       echoes:ordered,
       enemy:request.enemy,
-      scenario:request.combat.scenario,
+      scenario:withEquipmentBuffs(request.combat.scenario, request.combat.build.id, request.combat.weapon, ordered, request.disabledEquipmentBuffKeys),
+      disabledEffectIdsByMember:{ [request.combat.build.id]:disabledEquipmentEffectIds(request.combat.weapon, sonatasForEchoes(ordered), request.disabledEquipmentBuffKeys ?? []) },
       bonusStatLines:request.combat.bonusStatLines,
       targetId:request.combat.target.id
     }) : undefined

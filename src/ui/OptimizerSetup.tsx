@@ -1,4 +1,4 @@
-import { useMemo, useState, type CSSProperties, type Dispatch, type SetStateAction } from 'react'
+import { useMemo, type CSSProperties, type Dispatch, type SetStateAction } from 'react'
 import { echoMatchesOptimizerProfile } from '../domain/optimizer'
 import type { AggregatedStats, Echo, OptimizerProfile, OptimizerStatKey, StatKey } from '../domain/types'
 import { echoCatalog, sonataCatalog, statLabels } from '../game-data'
@@ -7,6 +7,7 @@ import { mainStatKeysByCost } from '../game-data/echo-main-stats'
 import { Icon, Panel } from './components'
 import { statIconSource } from './stat-icons'
 import { compactAttackLabel } from './team-workspace-model'
+import { useWorkspacePreference } from './team-workspace/useWorkspacePreference'
 
 const CORE_STATS: OptimizerStatKey[] = ['hp', 'atk', 'def', 'critRate', 'critDamage', 'energyRegen', 'basicDamage', 'heavyDamage', 'skillDamage', 'liberationDamage']
 const RESULT_LIMITS = [5, 10, 20, 50, 100]
@@ -61,9 +62,9 @@ export function OptimizerSetup(props: OptimizerSetupProps) {
     profile, setProfile, echoes, currentEchoes, buildId, buildName, characterName, portraitUrl,
     currentStats, currentScore, objectiveLabel, targetId, targets, onTargetChange, scalesWith, scalesWithTitle = 'Selected target scales with', running, onRun, onCancel
   } = props
-  const [constraintStat, setConstraintStat] = useState<OptimizerStatKey>('energyRegen')
-  const [requirementSonata, setRequirementSonata] = useState(sonataCatalog[0]?.name ?? '')
-  const [requirementPieces, setRequirementPieces] = useState(2)
+  const [constraintStat, setConstraintStat] = useWorkspacePreference<OptimizerStatKey>(`optimizer:${buildId}:constraint-stat`, 'energyRegen')
+  const [requirementSonata, setRequirementSonata] = useWorkspacePreference(`optimizer:${buildId}:requirement-sonata`, sonataCatalog[0]?.name ?? '')
+  const [requirementPieces, setRequirementPieces] = useWorkspacePreference(`optimizer:${buildId}:requirement-pieces`, 2)
   const update = (patch: Partial<OptimizerProfile>) => setProfile((current) => ({ ...current, ...patch, updatedAt: Date.now() }))
   const eligible = useMemo(() => echoes.filter((echo) => echoMatchesOptimizerProfile(echo, profile, buildId)), [buildId, echoes, profile])
   const mainOptions = eligible

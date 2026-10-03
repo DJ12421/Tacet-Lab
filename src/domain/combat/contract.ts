@@ -73,6 +73,18 @@ export interface FixedDamageFormula {
   hits: readonly number[]
 }
 
+/** Base Tune Break uses a Cost-dependent level value rather than ATK scaling. */
+export interface TuneBreakFormula {
+  kind: 'tune-break'
+}
+
+export type NegativeStatus = 'spectro-frazzle' | 'aero-erosion' | 'fusion-burst' | 'electro-flare' | 'glacio-chafe'
+
+export interface NegativeStatusFormula {
+  kind: 'negative-status'
+  status: NegativeStatus
+}
+
 export interface SupportFormula {
   kind: 'healing' | 'shield'
   scaling: Readonly<Partial<Record<ScalingStat, number>>>
@@ -86,7 +98,7 @@ export interface UnsupportedFormula {
   family: string
 }
 
-export type ActionFormula = DamageFormula | FixedDamageFormula | SupportFormula | UnsupportedFormula
+export type ActionFormula = DamageFormula | FixedDamageFormula | TuneBreakFormula | NegativeStatusFormula | SupportFormula | UnsupportedFormula
 
 export interface EffectFilter {
   actionIds?: readonly string[]
@@ -289,6 +301,11 @@ export interface CombatMember {
 
 export interface EnemyInput {
   level: number
+  cost?: 1 | 3 | 4
+  statusStacks?: Readonly<Partial<Record<NegativeStatus, number>>>
+  electroRageStacks?: number
+  havocBaneStacks?: number
+  strainStacks?: number
   resistance: Readonly<Partial<Record<Element, number>>>
   damageReduction: number
   defenseReduction?: number
@@ -302,6 +319,7 @@ export interface CombatSetup {
   members: readonly CombatMember[]
   enemy: EnemyInput
   selections: Readonly<Record<string, MechanicInputValue>>
+  disabledEffectIdsByMember?: Readonly<Record<string, readonly string[]>>
   memberBonuses?: Readonly<Record<string, {
     statLines?: readonly StatValue[]
     damageBonuses?: readonly number[]
@@ -349,6 +367,7 @@ export type CalculationDiagnosticCode =
   | 'unsupported-mechanic'
   | 'stale-data'
   | 'invalid-rotation'
+  | 'unverified-data'
 
 export interface CalculationDiagnostic {
   code: CalculationDiagnosticCode

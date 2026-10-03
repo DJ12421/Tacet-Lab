@@ -380,20 +380,33 @@ No choice about exact expiration boundaries is made here.
 
 ## Tune Break
 
-The Tune Break formula family remains deferred until its level table, typed
-inputs, crit behavior, and independent fixtures are defined.
+`TUNE-001` supports an estimated base Tune Break hit for enemy Cost 1, 3, or 4
+at character levels 1, 20, 40, 50, 60, 70, 80, and 90. The hit is modeled as
+`level base × Cost factor × 12.8 × (1 + Tune Break Boost / 100) × Tune Break bonus × special multiplier × DEF × physical RES × vulnerability × final bonus × damage reduction`. Ordinary crit stats and RES shred do not apply to this base hit.
+The level and Cost factors follow the [linked optimizer's model](https://github.com/ryanbenson/wuthering-waves-optimizer/blob/master/src/calculator/calculator.ts).
+This is not verified against the current English in-game UI. The hand-calculated engine
+fixture covers normal and critical results. Configured Tune Strain stacks boost ordinary damage using Tune Break Boost. Tune Rupture, Hack damage, Off-Tune buildup, and automatic trigger timing remain unsupported.
 
-| Rule | Status | Decision |
-| --- | --- | --- |
-| `TUNE-001` | `deferred` | Do not implement Tune Break until its input model, level table, crit rules, and independent fixtures are completed. |
+## Negative statuses
+
+`STATUS-001` shows Spectro Frazzle, Aero Erosion, Fusion Burst, Electro Flare,
+and Glacio Chafe damage in the attack breakdown of characters whose kits apply
+or consume those statuses, including cross-element application. These are also available as rotation actions, while
+the breakdown does not require a rotation. The enemy scenario supplies
+stack counts; Electro Rage adds to Electro Flare's motion value. Each hit uses
+`character level constant × stack motion value / 10000 × DEF × RES × status amplification`.
+These hits do not inherit ordinary ATK, elemental bonuses, crit, or DEF ignore.
+Havoc Bane reduces enemy DEF by 2% per configured stack and doubles the reviewed
+Core of Collapse action when present. Values are estimates awaiting English in-game
+verification. Automatic application, expiry, and tick scheduling are not modeled.
 
 ## Deferred formula families
 
 These must not be implemented as ordinary damage with guessed modifiers:
 
-- Tune Break and Tune Rupture formulas
+- Tune Rupture, Hack damage, and Off-Tune timing
 - Vibration-strength damage
-- Negative-status damage and stacking
+- Automatic negative-status application, expiry, and tick scheduling
 - Damage based on another damage instance
 - Damage based on healing or shield strength
 - Damage transfer or shared damage
@@ -428,7 +441,7 @@ Deferred and required to fail closed:
 - Generic flat additions to ordinary damage
 - Multiple enemy damage-reduction effects
 - Incoming-healing effects, shield refresh, and shield absorption
-- Tune Break and special-status formula tables
+- Tune Break follow-up and special-status formula tables
 - Every deferred formula family above
 
 The implementation must emit `unsupported-mechanic` rather than guessing any
@@ -462,6 +475,7 @@ The next step may create fixtures only for rules accepted above:
 22. Basic shield strength with stat scaling, flat strength, and shield bonus.
 23. One deliberately unsupported mechanic returning a failure.
 
-Rotations, incoming-healing effects, shield simulation, Tune Break, negative
-statuses, and other special formula families wait for their own evidence-backed
-fixture steps.
+This Step 2 checklist predates the later rotation and base Tune Break work.
+Incoming-healing effects, shield simulation, Tune Break follow-ups, automatic
+status timing, and other special formula families still need their own reviewed
+fixtures.

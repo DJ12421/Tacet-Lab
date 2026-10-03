@@ -35,6 +35,8 @@ export type {
   LevelStats,
   MechanicInputValue,
   MechanicsRegistry,
+  NegativeStatus,
+  NegativeStatusFormula,
   ResultKind,
   ResultMode,
   ReviewedEffectSource,

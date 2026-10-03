@@ -10,11 +10,12 @@ import {
   type CharacterCatalogEntry
 } from '../game-data'
 import { generatedSonataIconSources } from '../game-data/sonatas.generated'
+import { applicableTeamStatusEffects, negativeStatusActions } from '../game-data/combat/negative-status'
 import { pendingMechanics } from '../game-data/review-status.generated'
 import { resolveCharacterShowcaseModel, type CharacterShowcaseModel } from './character-showcase-model'
 
 const SKILL_KEYS = ['normalAttack', 'resonanceSkill', 'forteCircuit', 'resonanceLiberation', 'introSkill'] as const
-export type TeamAttackGroup = 'basic' | 'skill' | 'forte' | 'liberation' | 'intro' | 'outro' | 'echo' | 'tuneBreak'
+export type TeamAttackGroup = 'basic' | 'skill' | 'forte' | 'liberation' | 'intro' | 'outro' | 'echo' | 'tuneBreak' | 'status'
 export const TEAM_ROTATION_TARGET_ID = 'team:rotation'
 
 export function compactAttackLabel(label: string) {
@@ -24,6 +25,7 @@ export function compactAttackLabel(label: string) {
 
 export interface TeamWorkspaceInput {
   team: Team
+  disabledEffectIdsByMember?: Record<string, string[]>
   builds: Build[]
   characters: OwnedCharacter[]
   weapons: OwnedWeapon[]
@@ -40,7 +42,7 @@ export interface TeamAttackModel {
   multiplier: number
   multiplierLabel: string
   hitMultipliers: number[]
-  scalesWith: 'atk' | 'hp' | 'def'
+  scalesWith: 'atk' | 'hp' | 'def' | 'level'
   skillLevel: number
   skillName: string
   iconSourceUrl: string
@@ -128,7 +130,7 @@ export function rotationDamageByMode(model: Pick<TeamWorkspaceModel, 'actions'>)
 }
 
 function attackModels(catalog: CharacterCatalogEntry, character: OwnedCharacter, echoes: readonly Echo[] = []): TeamAttackModel[] {
-  const characterAttacks = catalog.attacks.flatMap((attack) => {
+  const characterAttacks = catalog.attacks.flatMap((attack): TeamAttackModel[] => {
     if (isFixedSkillValueName(attack.name)) return []
     const target = resolveCombatTarget(catalog.id, attack.id, echoes)
     const level = Math.max(1, Math.min(attack.multipliers.length, character.skillLevels?.[attack.skillLevelIndex] ?? 1))
@@ -146,7 +148,7 @@ function attackModels(catalog: CharacterCatalogEntry, character: OwnedCharacter,
     return [{
       id: attack.id,
       name: attack.name,
-      type:target?.kind === 'healing' ? 'healing' : target?.damageType === 'tune-break' ? 'skill' : target?.damageType ?? attack.type,
+      type:target?.kind === 'healing' ? 'healing' : target?.damageType === 'tune-break' ? 'tuneBreak' : target?.damageType ?? attack.type,
       multiplier: attack.multipliers[level - 1] ?? 0,
       multiplierLabel: `${((attack.multipliers[level - 1] ?? 0) * 100).toFixed(2)}%`,
       hitMultipliers: attack.hitMultipliers?.map((hit) => hit[level - 1] ?? 0) ?? [attack.multipliers[level - 1] ?? 0],
@@ -162,11 +164,11 @@ function attackModels(catalog: CharacterCatalogEntry, character: OwnedCharacter,
     return target ? [target.id] : []
   }))
   const reviewedExtras = combatTargets(catalog.id, echoes).filter((target) => !matchedTargetIds.has(target.id) && target.kind !== 'utility').map((target): TeamAttackModel => {
-    const group: TeamAttackGroup = target.group === 'Echo Skill' ? 'echo' : target.damageType === 'outro' ? 'outro' : target.damageType === 'tune-break' ? 'tuneBreak' : 'forte'
-    const type: DamageType = target.kind === 'damage' ? (target.damageType === 'tune-break' ? 'skill' : target.damageType ?? 'skill') : 'healing'
+    const group: TeamAttackGroup = target.group === 'Echo Skill' ? 'echo' : target.damageType === 'outro' ? 'outro' : target.damageType === 'tune-break' ? 'tuneBreak' : target.damageType === 'status' ? 'status' : 'forte'
+    const type: DamageType = target.kind === 'damage' ? (target.damageType === 'tune-break' ? 'tuneBreak' : target.damageType ?? 'skill') : 'healing'
     return {
       id:target.id, name:target.label, type,
-      multiplier:0, multiplierLabel:'Reviewed formula', hitMultipliers:[], scalesWith:'atk', skillLevel:group === 'echo' ? echoes[0]?.rarity ?? 1 : character.skillLevels?.[4] ?? 1,
+      multiplier:0, multiplierLabel:group === 'status' || group === 'tuneBreak' ? 'Estimated formula' : 'Reviewed formula', hitMultipliers:[], scalesWith:group === 'status' || group === 'tuneBreak' ? 'level' : 'atk', skillLevel:group === 'status' || group === 'tuneBreak' ? character.level : group === 'echo' ? echoes[0]?.rarity ?? 1 : character.skillLevels?.[4] ?? 1,
       skillName:target.group, iconSourceUrl:group === 'echo' ? echoCatalog.find((entry) => entry.name === echoes[0]?.name)?.iconSourceUrl ?? '' : '', group
     }
   })
@@ -271,6 +273,15 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
     }
   }) as [TeamMemberModel, TeamMemberModel, TeamMemberModel]
 
+  const applicableStatuses = applicableTeamStatusEffects(baseMembers.flatMap((member) => member.character ? [member.character.catalogId] : []))
+  const effectiveEnemy = {
+    ...input.team.enemy,
+    strainStacks:applicableStatuses.has('tune-strain') ? input.team.enemy.strainStacks : 0,
+    havocBaneStacks:applicableStatuses.has('havoc-bane') ? input.team.enemy.havocBaneStacks : 0,
+    electroRageStacks:applicableStatuses.has('electro-rage') ? input.team.enemy.electroRageStacks : 0,
+    statusStacks:Object.fromEntries(negativeStatusActions.map(({ status }) => [status, applicableStatuses.has(status) ? input.team.enemy.statusStacks?.[status] ?? 0 : 0]))
+  }
+
   const combatTeamMembers = baseMembers.flatMap((member) => member.build && member.character && member.showcase?.weapon
     ? [{ build:member.build, character:member.character, weapon:member.showcase.weapon.owned, echoes:member.build.echoIds.map((id) => runtimeEchoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)) }]
     : [])
@@ -284,7 +295,7 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
       const statResult = calculateBuildStats({
         build:member.build, character:member.character, weapon:ownedWeapon,
         echoes:member.build.echoIds.map((id) => runtimeEchoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)),
-        enemy:input.team.enemy, scenario:input.team.scenario, buffs:member.receivedBuffs, teamMembers:combatTeamMembers
+        enemy:effectiveEnemy, scenario:input.team.scenario, buffs:member.receivedBuffs, teamMembers:combatTeamMembers, disabledEffectIdsByMember:input.disabledEffectIdsByMember
       })
       if (statResult.ok) member.conditionedStats = statResult.stats
       else member.warnings.push(...statResult.errors.map((error) => error.message))
@@ -293,7 +304,7 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
         const result = calculateBuildModes({
           build: member.build!, character: member.character!, weapon: ownedWeapon,
           echoes: member.build!.echoIds.map((id) => runtimeEchoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)),
-          enemy: input.team.enemy, scenario: input.team.scenario, buffs: member.receivedBuffs, targetId: target.id, trace:true, teamMembers:combatTeamMembers
+          enemy: effectiveEnemy, scenario: input.team.scenario, buffs: member.receivedBuffs, targetId: target.id, trace:true, teamMembers:combatTeamMembers, disabledEffectIdsByMember:input.disabledEffectIdsByMember
         })
         member.warnings.push(...result.warnings)
         const fallback: CalculationTrace = { stage:'unavailable', value:0, children:[] }
@@ -322,7 +333,7 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
       const calculated = calculateBuildModes({
         build: member.build, character: member.character, weapon: ownedWeapon,
         echoes: member.build.echoIds.map((id) => runtimeEchoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)),
-        enemy: input.team.enemy, scenario: input.team.scenario, buffs: activeBuffs, actionInputs: action.inputs, targetId: target.id, trace:true, teamMembers:combatTeamMembers
+        enemy: effectiveEnemy, scenario: input.team.scenario, buffs: activeBuffs, actionInputs: action.inputs, targetId: target.id, trace:true, teamMembers:combatTeamMembers, disabledEffectIdsByMember:input.disabledEffectIdsByMember
       })
       warnings.push(...calculated.warnings)
       const mode = input.team.scenario?.resultMode ?? 'expected'

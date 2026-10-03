@@ -55,6 +55,7 @@ interface FixtureOptions {
   weaponRank?: number
   mainEchoId?: string
   selections?: Readonly<Record<string, boolean | number | string>>
+  tuneBreakBoost?: number
 }
 
 function fixture(options: FixtureOptions = {}) {
@@ -93,7 +94,8 @@ function fixture(options: FixtureOptions = {}) {
       mainStat: line,
       substats: []
     })),
-    mainEchoId: options.mainEchoId
+    mainEchoId: options.mainEchoId,
+    conditionStats: { tuneBreakBoost: options.tuneBreakBoost ?? 0 }
   }
   const enemy: EnemyInput = {
     ...baseEnemy,
@@ -306,6 +308,31 @@ describe('combat Step 3 public interface fixtures', () => {
     expect(withTrace.totals).toEqual(withoutTrace.totals)
     expect(withTrace.hits).toEqual(withoutTrace.hits)
     expect(withTrace.trace?.stage).toBe('damage')
+  })
+
+  it('calculates base Tune Break from enemy Cost, Boost, and physical RES without ordinary crit', () => {
+    const action: ActionMechanics = { id:'tune-break', sourceId:'fixture:tune-break', reviewFingerprint:'fixture:tune-break:reviewed', kind:'damage', damageType:'tune-break', element:'physical', formula:{ kind:'tune-break' } }
+    const run = fixture({ actions:[action], enemy:{ cost:4, resistance:{ physical:0.1 } }, tuneBreakBoost:10 })
+    const result = valueOf(run.calculate('tune-break', 'expected'))
+    expect(run.calculate('tune-break', 'expected').warnings[0]?.code).toBe('unverified-data')
+    const expected = 716.22 * 14 * 12.8 * 1.1 * (1520 / 3032) * 0.9
+    expectClose(result.selected, expected)
+    expectClose(result.totals.normal, expected)
+    expectClose(result.totals.critical, expected)
+    expect(valueOf(fixture({ actions:[action], enemy:{ cost:1 } }).calculate('tune-break')).selected).toBeCloseTo(716.22 * 12.8 * (1520 / 3032), 10)
+    expect(fixture({ actions:[action] }).calculate('tune-break').ok).toBe(false)
+  })
+
+  it('uses configured negative status stacks as rotation damage without ordinary crit or DEF ignore', () => {
+    const action: ActionMechanics = { id:'status:electro-flare', sourceId:'fixture:electro-flare', reviewFingerprint:'fixture:electro-flare:reviewed', kind:'damage', damageType:'status', element:'electro', tags:['electro-flare'], formula:{ kind:'negative-status', status:'electro-flare' } }
+    const run = fixture({ actions:[action], stats:{ critRate:1, critDamage:3 }, enemy:{ statusStacks:{ 'electro-flare':2 }, electroRageStacks:1, resistance:{ electro:0.1 }, defenseIgnore:1 } })
+    const result = valueOf(run.calculate('status:electro-flare', 'expected'))
+    expectClose(result.selected, 3674 * (9065 + 5000) / 10000 * D90 * 0.9)
+    expectClose(result.totals.critical, result.totals.normal)
+    expect(run.calculate('status:electro-flare').warnings[0]?.code).toBe('unverified-data')
+    const inactive = fixture({ actions:[action], enemy:{ electroRageStacks:1 } }).calculate('status:electro-flare')
+    expect(valueOf(inactive).selected).toBe(0)
+    expect(inactive.warnings).toEqual([])
   })
 
 })

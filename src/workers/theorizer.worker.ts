@@ -1,5 +1,6 @@
 /// <reference lib="webworker" />
 import { isSonataAvailableToCharacter, theorycraftRollValue, theorycraftSonataPlanKey, theorycraftSubstatLines } from '../domain/loadouts'
+import { disabledEquipmentEffectIds, equipmentBuffConditions } from '../domain/combat/runtime'
 import type { AggregatedStats, Echo, StatKey, TheorycraftBuild } from '../domain/types'
 import { echoCatalog, sonataCatalog, statLabels, weaponCatalog } from '../game-data'
 import { mainStatKeysByCost } from '../game-data/echo-main-stats'
@@ -7,7 +8,7 @@ import { tunableRolls } from '../game-data/tunable-rolls'
 import { resolveTeamWorkspace, rotationDamageByMode, TEAM_ROTATION_TARGET_ID, type TeamWorkspaceInput } from '../ui/team-workspace-model'
 
 export type TheorizerMode = 'mainStats' | 'substats' | 'sonatas' | 'weapons'
-export type TheorizerRankingRequest = TeamWorkspaceInput & { requestId: number; mode: TheorizerMode; baseline: TheorycraftBuild; memberSlot: number; targetId: string; resultMode: 'normal' | 'critical' | 'expected'; scalesWith: 'atk' | 'hp' | 'def'; element: string; weaponType?: string; substatDraft?: TheorycraftBuild }
+export type TheorizerRankingRequest = TeamWorkspaceInput & { requestId: number; mode: TheorizerMode; baseline: TheorycraftBuild; memberSlot: number; targetId: string; resultMode: 'normal' | 'critical' | 'expected'; scalesWith: 'atk' | 'hp' | 'def'; element: string; weaponType?: string; substatDraft?: TheorycraftBuild; disabledEquipmentBuffKeys?: string[] }
 export interface TheorizerComparisonStats { hp: number; atk: number; def: number; critRate: number; critDamage: number; energyRegen: number; healingBonus: number; typeDamage: Record<'basic' | 'heavy' | 'skill' | 'liberation', number>; elementalDamage: Record<'spectro' | 'fusion' | 'glacio' | 'electro' | 'aero' | 'havoc', number> }
 export interface TheorizerRankingEntry { id: string; rank?: number; label: string; detail: string; image?: string; draft: TheorycraftBuild; score: number; delta: number; candidateStats?: TheorizerComparisonStats }
 export type TheorizerRankingResponse = { requestId: number; baselineScore: number; baselineStats?: TheorizerComparisonStats; results: TheorizerRankingEntry[] }
@@ -82,7 +83,10 @@ function resolveCandidate(input: TheorizerRankingRequest, draft: TheorycraftBuil
   const members = [...(input.team.members ?? [])], record = members[input.memberSlot]
   if (!record) return undefined
   members[input.memberSlot] = { ...record, loadoutSource: { type: 'theorycraft', theorycraftBuildId: draft.id } }
-  const model = resolveTeamWorkspace({ ...input, team: { ...input.team, members }, theorycraftBuilds: [...(input.theorycraftBuilds ?? []), draft] })
+  const theorycraftBuilds = [...(input.theorycraftBuilds ?? []), draft]
+  const conditions = equipmentBuffConditions(draft.weapon, draft.sonatas, input.team.scenario?.memberConditions[record.memberId], input.disabledEquipmentBuffKeys)
+  const scenario = input.team.scenario ?? { resultMode: input.resultMode, memberConditions: {}, enemyConditions: {}, selectedTargetByBuild: {} }
+  const model = resolveTeamWorkspace({ ...input, team: { ...input.team, members, scenario: { ...scenario, memberConditions: { ...scenario.memberConditions, [record.memberId]: conditions } } }, theorycraftBuilds, disabledEffectIdsByMember:{ [record.memberId]:disabledEquipmentEffectIds(draft.weapon, draft.sonatas, input.disabledEquipmentBuffKeys ?? []) } })
   const member = model.members[input.memberSlot]
   const score = input.targetId === TEAM_ROTATION_TARGET_ID
     ? rotationDamageByMode(model)[input.resultMode]

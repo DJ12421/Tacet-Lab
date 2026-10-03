@@ -49,6 +49,7 @@ function fixture(options: {
   actionDamageType?: ActionMechanics['damageType']
   actionElement?: ActionMechanics['element']
   actorCharacterId?: string
+  disabledEffectIds?: string[]
 } = {}) {
   const actorCharacterId = options.actorCharacterId ?? 'actor'
   const registry: MechanicsRegistry = {
@@ -102,7 +103,8 @@ function fixture(options: {
       dataVersion: registry.dataVersion,
       members: options.providerEffects ? [actor, provider] : [actor],
       enemy: { level: 90, resistance: {}, damageReduction: 0 },
-      selections: options.selections ?? {}
+      selections: options.selections ?? {},
+      disabledEffectIdsByMember:options.disabledEffectIds ? { [actor.memberId]:options.disabledEffectIds } : undefined
     },
     actorId: actor.memberId,
     actionId: action.id,
@@ -326,6 +328,12 @@ describe('combat Step 4 reviewed effects', () => {
     })
     expectClose(valueOf(fixture({ selections: { 'echo-hit': true }, characterEffects: [linked] })).selected, 1000 * D90)
     expectClose(valueOf(fixture({ selections: { 'echo-hit': true, 'heavy-hit': true }, characterEffects: [linked] })).selected, 1160 * D90)
+  })
+
+  it('excludes a disabled always-active Sonata effect', () => {
+    const sonata = effect('sonata-2', { minimumPieces:2 })
+    expect(valueOf(fixture({ echoes:2, sonataEffects:[sonata] })).appliedEffects).toContain('sonata-2')
+    expect(valueOf(fixture({ echoes:2, sonataEffects:[sonata], disabledEffectIds:['sonata-2'] })).appliedEffects).not.toContain('sonata-2')
   })
 
   it('supports explicit crit overrides without a second formula path', () => {

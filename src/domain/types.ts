@@ -1,5 +1,5 @@
 export type StatKey = 'hp' | 'hpPercent' | 'atk' | 'atkPercent' | 'def' | 'defPercent' | 'critRate' | 'critDamage' | 'energyRegen' | 'basicDamage' | 'heavyDamage' | 'skillDamage' | 'liberationDamage' | 'spectroDamage' | 'fusionDamage' | 'glacioDamage' | 'electroDamage' | 'aeroDamage' | 'havocDamage' | 'healingBonus'
-export type DamageType = 'basic' | 'heavy' | 'skill' | 'liberation' | 'intro' | 'outro' | 'echo' | 'status' | 'healing'
+export type DamageType = 'basic' | 'heavy' | 'skill' | 'liberation' | 'intro' | 'outro' | 'echo' | 'tuneBreak' | 'status' | 'healing'
 export type Element = 'spectro' | 'fusion' | 'glacio' | 'electro' | 'aero' | 'havoc'
 export interface StatLine { key: StatKey; value: number }
 export interface Echo { id: string; name: string; cost: 1 | 3 | 4; rarity: 1 | 2 | 3 | 4 | 5; level: number; sonata: string; mainStat: StatLine; subStats: StatLine[]; locked: boolean; excluded: boolean; /** Owned-character ID for actual equipment. Legacy backups may contain a build ID and are migrated on open/import. */ equippedBy?: string; equippedByName?: string; createdAt: number; source: 'scan' | 'screenshot' | 'manual' | 'import' }
@@ -50,13 +50,16 @@ export interface RotationAction { id: string; timestamp: number; duration?: numb
 export interface BuffEffect { id: string; name: string; sourceBuildId: string; target: 'self' | 'next' | 'team'; triggerAttackId: string; duration: number; stat: StatKey | 'amplify'; value: number; stackingGroup: string }
 export interface EnemyConfig {
   level: number
+  cost?: 1 | 3 | 4
+  statusStacks?: Partial<Record<import('./combat/contract').NegativeStatus, number>>
+  electroRageStacks?: number
+  havocBaneStacks?: number
+  strainStacks?: number
   resistance: number
   damageReduction: number
   defenseIgnore?: number
   defenseReduction?: number
   resistanceIgnore?: number
-  resistanceReduction?: number
-  specialMultiplier?: number
 }
 export interface AggregatedStats { baseHp: number; baseAtk: number; baseDef: number; hp: number; atk: number; def: number; critRate: number; critDamage: number; energyRegen: number; basicDamage: number; heavyDamage: number; skillDamage: number; liberationDamage: number; spectroDamage: number; fusionDamage: number; glacioDamage: number; electroDamage: number; aeroDamage: number; havocDamage: number; healingBonus: number }
 export interface DamageResult { normal: number; critical: number; expected: number; hits: number; attackId: string }
@@ -137,6 +140,7 @@ export interface OptimizerProgress {
 export interface OptimizerPlotPoint { x: number; y: number; echoIds: string[]; mainEchoId: string; stats?: AggregatedStats }
 export interface OptimizerRequest {
   requestId: string
+  disabledEquipmentBuffKeys?: string[]
   echoes: Echo[]
   resonator: Resonator
   weapon: Weapon
