@@ -41,6 +41,10 @@ const quickStarts = [
 ]
 
 const changelogEntries = [
+  { hash: '89202c4', date: 'Oct 4, 2026', title: 'Add estimated Tune Break and negative status damage with clear verification warnings' },
+  { hash: '89202c4', date: 'Oct 4, 2026', title: 'Add enemy Cost and status stack controls to team damage scenarios' },
+  { hash: '89202c4', date: 'Oct 4, 2026', title: 'Choose active weapon and Sonata buffs for Optimizer and Theorizer comparisons' },
+  { hash: '89202c4', date: 'Oct 4, 2026', title: 'Remember workspace choices and refresh the app header and team controls' },
   { hash: '200bf5a', date: 'Oct 2, 2026', title: 'Update the character, weapon, Echo, Sonata, and scanner catalog for Version 3.7' },
   { hash: '200bf5a', date: 'Oct 2, 2026', title: 'Rework Teams with richer Formation, character, equipment, and stat views' },
   { hash: '200bf5a', date: 'Oct 2, 2026', title: 'Mark pending 3.7 mechanics as TBA in the Archive and calculations' },
