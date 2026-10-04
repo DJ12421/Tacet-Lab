@@ -196,6 +196,9 @@
   left: 0;
   right: 0;
   top: calc(100% + 4px);
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   max-height: 280px;
   overflow: auto;
   padding: 5px;
@@ -205,22 +208,7 @@
 }
 
 .sonata-picker-search {
-  position: sticky;
-  z-index: 2;
-  top: 0;
   width: 100%;
-  min-height: 36px;
-  margin-bottom: 5px;
-  padding: 0 10px;
-  border: 1px solid rgba(141,228,212,.45);
-  background: #0b1112;
-  color: #edf4f1;
-  outline: 0;
-}
-
-.sonata-picker-search:focus {
-  border-color: var(--mint);
-  box-shadow: 0 0 0 1px rgba(141,228,212,.18);
 }
 
 .sonata-picker-search::placeholder {
@@ -234,7 +222,7 @@
   background: transparent;
   color: #aeb8b5;
   display: grid;
-  grid-template-columns: 28px 1fr;
+  grid-template-columns: 28px minmax(0, 1fr);
   align-items: center;
   gap: 7px;
   text-align: left;
@@ -247,6 +235,10 @@
 }
 
 .sonata-picker-menu b {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   font-size: var(--font-size-caption);
 }
 

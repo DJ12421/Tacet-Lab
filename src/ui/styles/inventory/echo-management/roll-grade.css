@@ -220,7 +220,7 @@
 
 .roll-tier-legend {
   display: grid;
-  grid-template-columns: repeat(4,1fr);
+  grid-template-columns: repeat(5,1fr);
   gap: 6px;
   margin: 12px 0;
 }
@@ -235,7 +235,7 @@
 }
 
 .tier-low {
-  color: #9aa5a8;
+  color: #f1f4f3;
 }
 
 .tier-mid {
@@ -243,6 +243,10 @@
 }
 
 .tier-high {
+  color: #65b9ff;
+}
+
+.tier-strong {
   color: #c374ff;
 }
 
@@ -266,6 +270,16 @@
 .quality-formula span {
   color: var(--gold);
   font-size: var(--font-size-small);
+}
+
+.roll-grade-formula {
+  grid-template-columns: minmax(0, 1fr) 56px minmax(0, 1fr) 56px minmax(0, .7fr);
+}
+
+.roll-grade-formula span {
+  min-width: 56px;
+  font-size: 2rem;
+  font-weight: 900;
 }
 
 .grade-legend {
@@ -304,11 +318,14 @@
   .quality-formula {
     grid-template-columns: 1fr;
   }
+  .roll-grade-formula {
+    grid-template-columns: 1fr;
+  }
   .quality-formula span {
     font-size: var(--font-size-caption);
   }
   .roll-tier-legend {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2,1fr);
   }
 }
 
@@ -342,6 +359,10 @@
 
 .quality-formula span {
   font-size: var(--font-size-body-large);
+}
+
+.roll-grade-formula span {
+  font-size: 2rem;
 }
 
 .grade-legend>span {

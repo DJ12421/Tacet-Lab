@@ -198,6 +198,7 @@
   color: #fff;
   text-align: left;
   cursor: pointer;
+  border-radius: 6px;
 }
 
 .character-equip-trigger img,.character-equip-menu img {
@@ -256,11 +257,15 @@
   left: 0;
   right: 0;
   top: calc(100% + 4px);
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   max-height: 235px;
   overflow-y: auto;
   padding: 5px;
-  border: 1px solid color-mix(in srgb,var(--weapon-accent,var(--gold)) 60%,transparent);
-  background: #070a0b;
+  border: 1px solid var(--gold-soft);
+  border-radius: 6px;
+  background: #080b0c;
   box-shadow: 0 18px 45px #000;
 }
 
@@ -273,6 +278,7 @@
   gap: 8px;
   padding: 4px 7px;
   border: 0;
+  border-radius: 4px;
   background: transparent;
   color: #dce3e1;
   text-align: left;
@@ -280,14 +286,37 @@
 }
 
 .character-equip-menu button:hover,.character-equip-menu button.active {
-  background: var(--weapon-glow,rgba(228,187,94,.13));
-  color: #fff;
+  background: rgba(141,228,212,.12);
+  color: var(--mint);
+}
+
+.wv-toolbar .weapon-type-filter-icon,
+.catalog-picker-filters .weapon-type-filter-icon {
+  width: 25px;
+  height: 25px;
+  display: block;
+  margin: auto;
+  object-fit: contain;
+}
+
+.wv-toolbar .filter-chips button:has(.weapon-type-filter-icon),
+.catalog-picker-filters .filter-chips button:has(.weapon-type-filter-icon) {
+  height: 38px;
+  min-height: 38px;
+  max-height: 38px;
 }
 
 @media (max-width:650px) {
+  .wv-toolbar .filter-chips button:has(.weapon-type-filter-icon),
+  .catalog-picker-filters .filter-chips button:has(.weapon-type-filter-icon) {
+    height: 44px;
+    min-height: 44px;
+    max-height: 44px;
+  }
+
   .character-equip-menu {
-    top: auto;
-    bottom: calc(100% + 5px);
+    top: calc(100% + 5px);
+    bottom: auto;
     max-height: min(42dvh,260px);
     z-index: 240;
   }

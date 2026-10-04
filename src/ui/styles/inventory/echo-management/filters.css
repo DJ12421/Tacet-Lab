@@ -104,7 +104,9 @@
   left: 0;
   right: 0;
   top: calc(100% + 4px);
-  min-width: 230px;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   max-height: 330px;
   display: grid;
   grid-template-rows: minmax(0,1fr) auto;
@@ -133,6 +135,13 @@
   color: #aeb8b5;
   text-align: left;
   cursor: pointer;
+}
+
+.multi-select-options button span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .multi-select-options button:hover,.multi-select-options button.active {
@@ -204,15 +213,15 @@
 
 /* Substat value colors use the same 1-8 roll points as Echo scoring. */
 
-.substats b.roll-tier-0,.substats b.roll-tier-1,.substats b.roll-tier-2 {
+.substats b.roll-tier-0,.substats b.roll-tier-1 {
   color: #f1f4f3;
 }
 
-.substats b.roll-tier-3 {
+.substats b.roll-tier-2 {
   color: #69cf7c;
 }
 
-.substats b.roll-tier-4 {
+.substats b.roll-tier-3,.substats b.roll-tier-4 {
   color: #65b9ff;
 }
 

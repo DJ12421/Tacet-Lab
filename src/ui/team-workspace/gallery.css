@@ -745,6 +745,9 @@
   top: calc(100% + 5px);
   left: 0;
   right: 0;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   max-height: 310px;
   overflow-y: auto;
   padding: 5px;

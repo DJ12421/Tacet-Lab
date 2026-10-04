@@ -55,7 +55,7 @@
 }
 
 .multi-select-menu {
-  min-width: 260px;
+  min-width: 0;
   border-color: var(--gold);
   background: #030506;
   box-shadow: 0 20px 55px #000,0 0 0 1px rgba(228,187,94,.15);
@@ -118,6 +118,20 @@
 .echo-identity h3 {
   font-size: var(--font-size-body);
   line-height: 1.2;
+}
+
+.echo-card-head {
+  position: relative;
+}
+
+.echo-card-head > .icon {
+  position: absolute;
+  top: 2px;
+  right: 0;
+}
+
+.echo-card-head:has(> .icon) .echo-identity h3 {
+  padding-right: 22px;
 }
 
 .echo-identity>span.echo-sonata {

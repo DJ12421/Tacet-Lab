@@ -623,8 +623,12 @@
   font-size: var(--font-size-body);
 }
 
-.scan-review-popout .echo-search-menu>input,.scan-review-popout .sonata-picker-search {
+.scan-review-popout .echo-search-menu>.search-field,
+.scan-review-popout .sonata-picker-menu>.search-field {
   min-height: 44px;
+}
+
+.scan-review-popout .search-field>input[data-search] {
   font-size: var(--font-size-body);
 }
 

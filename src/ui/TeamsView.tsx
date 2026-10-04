@@ -429,7 +429,7 @@ function TeamGallery({ teams, builds, characters, weapons, echoes, equippedLoado
     <section className="tw-gallery-controls tw-panel">
       <div><span className="eyebrow">Team archive</span><h1>Your teams</h1><p>Choose a team to open its full composition, member sheets, buffs, and rotation workspace.</p></div>
       <label><span>Character filter</span><CharacterFilterPicker value={characterFilter} options={characterOptions} onChange={setCharacterFilter}/></label>
-      <label><span>Team name</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search teams..."/></label>
+      <label><span>Team name</span><span className="search-field"><Icon name="scan"/><input data-search="" autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search teams..."/><kbd>Ctrl K</kbd></span></label>
       <button type="button" className="primary tw-gallery-create" onClick={() => void onCreate()}><Icon name="plus"/>Add team</button>
       <strong className="tw-gallery-count">Showing {visibleTeams.length} of {teams.length} teams</strong>
     </section>
@@ -754,6 +754,7 @@ function RotationWorkspace({ model, updateTeam, focusBuildId }: { model: TeamWor
   }, [isPlaying, model.team.rotationDuration])
 
   const commitActions = (next: RotationAction[], previous = timelineActions) => {
+    if (next.some((action) => !Number.isFinite(action.timestamp) || (action.duration !== undefined && !Number.isFinite(action.duration)))) return
     if (sameActions(next, previous)) return
     undoStackRef.current.push(previous)
     if (undoStackRef.current.length > 80) undoStackRef.current.shift()
@@ -959,7 +960,7 @@ function RotationWorkspace({ model, updateTeam, focusBuildId }: { model: TeamWor
   }, [clipboardActions, isPlaying, model.team.rotationDuration, playhead, selectedActionIds, timelineActions])
   const addAction = async () => {
     const attack = draftMember?.attacks.find((entry) => entry.id === draftAttackId) ?? draftMember?.attacks[0]
-    if (!draftMember?.build || !attack) return
+    if (!draftMember?.build || !attack || !Number.isFinite(draftTimestamp) || !Number.isFinite(draftDuration)) return
     const duration = timelineClamp(draftDuration, ROTATION_MIN_CLIP_DURATION, model.team.rotationDuration)
     const timestamp = timelineClamp(draftTimestamp, 0, Math.max(0, model.team.rotationDuration - duration))
     commitActions([...timelineActions, { id: createLocalId(), timestamp, duration, buildId: draftMember.build.id, attackId: attack.id, formulaTargetId: `${draftMember.catalog?.id}:${attack.id}` }])
@@ -1123,7 +1124,7 @@ function RotationWorkspace({ model, updateTeam, focusBuildId }: { model: TeamWor
           <label><span>Attack</span><select value={draftAttackId} onChange={(event) => { setDraftAttackId(event.target.value); setDraftDuration(defaultRotationClipDuration(draftMember?.attacks.find((attack) => attack.id === event.target.value)?.group ?? 'skill')) }}>{ROTATION_ATTACK_GROUPS.map((group) => { const attacks = draftMember?.attacks.filter((attack) => attack.group === group.id) ?? []; return attacks.length ? <optgroup label={group.label} key={group.id}>{attacks.map((attack) => <option value={attack.id} key={attack.id}>{compactAttackLabel(attack.name)}</option>)}</optgroup> : null })}</select></label>
           <label><span>Time</span><input type="number" min="0" max={model.team.rotationDuration} step="0.1" value={draftTimestamp} onChange={(event) => setDraftTimestamp(Number(event.target.value))}/></label>
           <label><span>Duration</span><input type="number" min={ROTATION_MIN_CLIP_DURATION} max={model.team.rotationDuration} step="0.1" value={draftDuration} onChange={(event) => setDraftDuration(Number(event.target.value))}/></label>
-          <button className="primary" onClick={() => void addAction()} disabled={!draftMember?.build || !draftAttackId}><Icon name="plus"/>Add</button>
+          <button className="primary" onClick={() => void addAction()} disabled={!draftMember?.build || !draftAttackId || !Number.isFinite(draftTimestamp) || !Number.isFinite(draftDuration)}><Icon name="plus"/>Add</button>
         </div>
       </section>
 

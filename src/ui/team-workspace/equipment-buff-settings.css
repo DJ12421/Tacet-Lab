@@ -67,5 +67,5 @@
   .equipment-buff-dialog { max-height: 94vh; padding: 13px; }
   .equipment-buff-heading p { display: none; }
   .equipment-buff-controls { align-items: stretch; }
-  .equipment-buff-toolbar input { flex-basis: 100%; }
+  .equipment-buff-toolbar > .search-field { flex-basis: 100%; }
 }

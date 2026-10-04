@@ -1,4 +1,4 @@
-import type { Echo, OptimizerProfile, OptimizerRun } from '../domain/types'
+import type { Echo, OptimizerProfile } from '../domain/types'
 import { sonataCatalog } from '../game-data'
 import { mainStatKeysByCost } from '../game-data/echo-main-stats'
 import { db } from './database'
@@ -11,7 +11,7 @@ export function defaultOptimizerProfile(buildId: string): OptimizerProfile {
     buildId,
     levelLow: 0,
     levelHigh: 25,
-    rarities: [1, 2, 3, 4, 5],
+    rarities: [2, 3, 4, 5],
     mainStatsByCost: {
       '1': [...mainStatKeysByCost[1]],
       '3': [...mainStatKeysByCost[3]],
@@ -45,7 +45,7 @@ function normalizeProfile(buildId: string, stored?: OptimizerProfile): Optimizer
     ...stored,
     id: profileId(buildId),
     buildId,
-    rarities: stored.rarities?.filter((rarity) => [1, 2, 3, 4, 5].includes(rarity)) ?? defaults.rarities,
+    rarities: stored.rarities?.filter((rarity) => [2, 3, 4, 5].includes(rarity)) ?? defaults.rarities,
     mainStatsByCost: {
       '1': stored.mainStatsByCost?.['1'] ?? defaults.mainStatsByCost['1'],
       '3': stored.mainStatsByCost?.['3'] ?? defaults.mainStatsByCost['3'],
@@ -70,24 +70,6 @@ export async function saveOptimizerProfile(profile: OptimizerProfile) {
   return normalized
 }
 
-export async function loadLatestOptimizerRun(buildId: string): Promise<OptimizerRun | undefined> {
-  const runs = await db.optimizerRuns.where('buildId').equals(buildId).toArray()
-  return runs.sort((left, right) => right.createdAt - left.createdAt)[0]
-}
-
-export async function saveOptimizerRun(run: OptimizerRun) {
-  await db.transaction('rw', db.optimizerRuns, async () => {
-    await db.optimizerRuns.put(run)
-    const runs = (await db.optimizerRuns.where('buildId').equals(run.buildId).toArray()).sort((left, right) => right.createdAt - left.createdAt)
-    const stale = runs.slice(5)
-    if (stale.length) await db.optimizerRuns.bulkDelete(stale.map((entry) => entry.id))
-  })
-}
-
-export async function updateOptimizerRunHighlights(runId: string, highlightedBuildKeys: string[]) {
-  await db.optimizerRuns.update(runId, { highlightedBuildKeys })
-}
-
 function fingerprint(source: string) {
   let hash = 2166136261
   for (let index = 0; index < source.length; index += 1) {
@@ -95,11 +77,6 @@ function fingerprint(source: string) {
     hash = Math.imul(hash, 16777619)
   }
   return (hash >>> 0).toString(36)
-}
-
-export function optimizerProfileFingerprint(profile: OptimizerProfile) {
-  const { updatedAt: _, plotStat: __, ...searchConfiguration } = profile
-  return fingerprint(JSON.stringify(searchConfiguration))
 }
 
 export function optimizerContextFingerprint(context: unknown) {

@@ -1,8 +1,9 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { TheorycraftBuild } from '../domain/types'
+import type { OptimizerRun, TheorycraftBuild } from '../domain/types'
 import { characterCatalog, weaponCatalog } from '../game-data'
-import { db, ensureSeedData, exportAccount, importAccount, previewAccountImport, requestPersistentStorage, setOwnedWeaponOwner, validateAccount } from './database'
+import { accountBackupError, db, ensureSeedData, exportAccount, importAccount, prepareAccountBackup, previewAccountImport, requestPersistentStorage, setOwnedWeaponOwner, validateAccount } from './database'
 import { createOwnedCharacterWithDefaultWeapon, ensureAllEquippedLoadouts } from './loadouts'
+import { defaultOptimizerProfile } from './optimizer-profiles'
 
 describe('local account persistence', () => {
   beforeEach(async () => {
@@ -81,11 +82,55 @@ describe('local account persistence', () => {
     expect(exported.schemaVersion).toBe(7)
     expect(exported.equippedLoadouts).toEqual([])
     expect(exported.theorycraftBuilds).toEqual([])
-    expect(exported.optimizerProfiles).toEqual([])
-    expect(exported.optimizerRuns).toEqual([])
+    expect(exported.optimizerProfiles).toBeUndefined()
+    expect(exported.optimizerRuns).toBeUndefined()
     expect(validateAccount(exported)).toBe(true)
     await importAccount(exported)
     expect((await exportAccount()).builds).toHaveLength(0)
+  })
+
+  it('keeps optimizer profiles and runs out of backups and ignores them in older imports', async () => {
+    await ensureSeedData()
+    const profile = defaultOptimizerProfile('saved-build')
+    const run: OptimizerRun = {
+      id: 'old-run', buildId: 'saved-build', profileId: profile.id, requestId: 'request', createdAt: 1,
+      gameDataVersion: 'test', inventoryFingerprint: 'inventory', profileFingerprint: 'profile', contextFingerprint: 'context',
+      results: [], plot: [], complete: true,
+      progress: { requestId: 'request', total: 0, processed: 0, tested: 0, rejected: 0, skipped: 0, elapsedMs: 0, testedPerSecond: 0 }
+    }
+    const backup = await exportAccount()
+    expect(validateAccount({ ...backup, optimizerProfiles: [profile], optimizerRuns: [run] })).toBe(true)
+    expect((await previewAccountImport({ ...backup, optimizerProfiles: [profile], optimizerRuns: [run] })).collections.map((entry) => entry.key)).not.toContain('optimizerRuns')
+    await importAccount({ ...backup, optimizerProfiles: [profile], optimizerRuns: [run] })
+    expect(await db.optimizerProfiles.count()).toBe(0)
+    expect(await db.optimizerRuns.count()).toBe(0)
+
+    await db.optimizerProfiles.put(profile)
+    await db.optimizerRuns.put(run)
+    const exported = await exportAccount()
+    expect('optimizerProfiles' in exported).toBe(false)
+    expect('optimizerRuns' in exported).toBe(false)
+  })
+
+  it('recovers missing rotation timing from an old export and preserves it on the next export', async () => {
+    await ensureSeedData()
+    const base = await exportAccount()
+    const action = { id: 'status', buildId: 'member', attackId: 'status:aero-erosion', timestamp: null, duration: null }
+    const team = { id: 'team', name: 'Team', buildIds: [], enemy: { level: 90, resistance: 10, damageReduction: 0 }, rotationDuration: 20, actions: [
+      { id: 'first', buildId: 'member', attackId: 'skill', timestamp: 1, duration: 0.2 }, action,
+      { id: 'legacy', buildId: 'member', attackId: 'skill', timestamp: 2 }
+    ] }
+    const oldBackup = { ...base, teams: [team] }
+
+    expect(accountBackupError(oldBackup)).toContain('Team 1, rotation action 2')
+    const { document, repairs } = prepareAccountBackup(oldBackup)
+    expect(repairs).toHaveLength(1)
+    expect(document.teams[0].actions[1]).toMatchObject({ timestamp: 1.2, duration: 0.8 })
+    expect(document.teams[0].actions[2]).toMatchObject({ timestamp: 2, duration: 0.8 })
+    expect(validateAccount(document)).toBe(true)
+
+    await importAccount(document)
+    expect((await exportAccount()).teams[0].actions[1]).toMatchObject({ timestamp: 1.2, duration: 0.8 })
   })
 
   it('previews duplicates and appends imports without deleting current data or preferences', async () => {

@@ -197,15 +197,15 @@
   text-align: center;
 }
 
-.cs-echo-substats .roll-tier-0,.cs-echo-substats .roll-tier-1,.cs-echo-substats .roll-tier-2 {
+.cs-echo-substats .roll-tier-0,.cs-echo-substats .roll-tier-1 {
   color: #f1f4f3;
 }
 
-.cs-echo-substats .roll-tier-3 {
+.cs-echo-substats .roll-tier-2 {
   color: #69cf7c;
 }
 
-.cs-echo-substats .roll-tier-4 {
+.cs-echo-substats .roll-tier-3,.cs-echo-substats .roll-tier-4 {
   color: #65b9ff;
 }
 

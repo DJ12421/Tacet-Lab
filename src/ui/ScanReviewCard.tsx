@@ -7,7 +7,7 @@ import { candidateErrors } from '../scanner/parser'
 import type { Echo, ScanCandidate, StatKey } from '../domain/types'
 import { tunableRolls } from '../game-data/tunable-rolls'
 import { fixedSecondaryMainStat, mainStatKeysByCost, maxLevelByRarity, maxSubStatsForLevel, normalizeEchoMainStat } from '../game-data/echo-main-stats'
-import { Confidence, formatStat, Panel } from './components'
+import { Confidence, formatStat, Icon, Panel } from './components'
 import { SonataPicker } from './SonataPicker'
 import type { DiagnosticScanCandidate } from '../scanner/types'
 import { useDismissableLayer } from './useDismissableLayer'
@@ -27,7 +27,7 @@ function EchoPicker({ value, onChange }: { value: string; onChange: (value: stri
   useDismissableLayer(open, ref, close)
   return <div className="echo-search-picker scan-echo-picker" ref={ref}>
     <button type="button" className="echo-search-trigger" aria-label={`Name ${value}`} aria-expanded={open} onClick={() => { setOpen((current) => !current); setQuery('') }}>{selected?.iconSourceUrl ? <img src={selected.iconSourceUrl} alt=""/> : <span>◇</span>}<b>{value}</b><i>⌄</i></button>
-    {open && <div className="echo-search-menu"><input autoFocus aria-label="Filter Echo names" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Filter Echoes by name, cost, or Sonata..."/><div>{options.map((entry) => <button type="button" className={entry.name === value ? 'active' : ''} key={entry.id ?? entry.name} onClick={() => { onChange(entry.name); setOpen(false) }}>{entry.iconSourceUrl ? <img src={entry.iconSourceUrl} alt=""/> : <span>◇</span>}<b>{entry.name}</b><small>{entry.cost} cost · {entry.sonatas.join(' / ')}</small></button>)}</div></div>}
+    {open && <div className="echo-search-menu"><span className="search-field"><Icon name="scan"/><input data-search="" autoFocus aria-label="Filter Echo names" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Filter Echoes by name, cost, or Sonata..."/><kbd>Ctrl K</kbd></span><div>{options.map((entry) => <button type="button" className={entry.name === value ? 'active' : ''} key={entry.id ?? entry.name} onClick={() => { onChange(entry.name); setOpen(false) }}>{entry.iconSourceUrl ? <img src={entry.iconSourceUrl} alt=""/> : <span>◇</span>}<b>{entry.name}</b><small>{entry.cost} cost · {entry.sonatas.join(' / ')}</small></button>)}</div></div>}
   </div>
 }
 
@@ -43,7 +43,7 @@ function CharacterPicker({ value, onChange }: { value: string; onChange: (value:
   useDismissableLayer(open, ref, close)
   return <div className="echo-search-picker scan-character-picker" ref={ref}>
     <button type="button" className="echo-search-trigger" aria-label={`Equipped by ${value || 'Unassigned'}`} aria-expanded={open} onClick={() => { setOpen((current) => !current); setQuery('') }}>{selected ? <img src={selected.iconSourceUrl} alt=""/> : <span>—</span>}<b>{value || 'Unassigned'}</b><i>⌄</i></button>
-    {open && <div className="echo-search-menu"><input autoFocus aria-label="Filter characters" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Filter characters..."/><div><button type="button" className={!value ? 'active' : ''} onClick={() => { onChange(''); setOpen(false) }}><span>—</span><b>Unassigned</b><small>No character</small></button>{options.map((entry) => <button type="button" className={entry.name === value ? 'active' : ''} key={entry.name} onClick={() => { onChange(entry.name); setOpen(false) }}><img src={entry.iconSourceUrl} alt=""/><b>{entry.name}</b><small>{entry.element} · {entry.weaponType}</small></button>)}</div></div>}
+    {open && <div className="echo-search-menu"><span className="search-field"><Icon name="scan"/><input data-search="" autoFocus aria-label="Filter characters" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Filter characters..."/><kbd>Ctrl K</kbd></span><div><button type="button" className={!value ? 'active' : ''} onClick={() => { onChange(''); setOpen(false) }}><span>—</span><b>Unassigned</b><small>No character</small></button>{options.map((entry) => <button type="button" className={entry.name === value ? 'active' : ''} key={entry.name} onClick={() => { onChange(entry.name); setOpen(false) }}><img src={entry.iconSourceUrl} alt=""/><b>{entry.name}</b><small>{entry.element} · {entry.weaponType}</small></button>)}</div></div>}
   </div>
 }
 
@@ -59,7 +59,7 @@ export function ScanReviewCard({ candidate, onChange, onDiscard, onSave, selecte
 }) {
   const errors = candidateErrors(candidate)
   const selectedEcho = echoCatalog.find((entry) => entry.name === candidate.fields.name.value)
-  const rarityOptions = selectedEcho?.rarities?.filter((value): value is Echo['rarity'] => [1, 2, 3, 4, 5].includes(value)) ?? [1, 2, 3, 4, 5] as Echo['rarity'][]
+  const rarityOptions = selectedEcho?.rarities?.filter((value): value is Echo['rarity'] => [2, 3, 4, 5].includes(value)) ?? [2, 3, 4, 5] as Echo['rarity'][]
   const maxLevel = maxLevelByRarity[candidate.fields.rarity.value]
   const maxSubStats = maxSubStatsForLevel(candidate.fields.level.value)
   const secondary = fixedSecondaryMainStat({ cost: candidate.fields.cost.value, rarity: candidate.fields.rarity.value, level: candidate.fields.level.value })
@@ -72,7 +72,7 @@ export function ScanReviewCard({ candidate, onChange, onDiscard, onSave, selecte
     const entry = echoCatalog.find((item) => item.name === name)
     if (!entry) return
     const sonata = entry.sonatas.includes(candidate.fields.sonata.value) ? candidate.fields.sonata.value : entry.sonatas[0] ?? candidate.fields.sonata.value
-    const supportedRarities = entry.rarities?.filter((value): value is Echo['rarity'] => [1, 2, 3, 4, 5].includes(value)) ?? [1, 2, 3, 4, 5] as Echo['rarity'][]
+    const supportedRarities = entry.rarities?.filter((value): value is Echo['rarity'] => [2, 3, 4, 5].includes(value)) ?? [2, 3, 4, 5] as Echo['rarity'][]
     const rarity = supportedRarities.includes(candidate.fields.rarity.value) ? candidate.fields.rarity.value : Math.max(...supportedRarities) as Echo['rarity']
     const level = Math.min(candidate.fields.level.value, maxLevelByRarity[rarity])
     updateFields({

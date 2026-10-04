@@ -232,10 +232,6 @@
   transition: border-color var(--motion-base),background-color var(--motion-base),box-shadow var(--motion-base),transform var(--motion-fast);
 }
 
-:where(input,select,textarea):focus {
-  border-color: color-mix(in srgb,var(--mint) 75%,transparent);
-  box-shadow: 0 0 0 3px rgba(141,228,212,.08),0 8px 24px rgba(0,0,0,.16);
-}
 
 .search:focus-within {
   border-color: rgba(141,228,212,.52);

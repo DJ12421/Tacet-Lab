@@ -1,12 +1,14 @@
-import { useCallback, useMemo, useRef, useState, type ReactNode } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { statLabels } from '../game-data/core'
 import { echoCatalog } from '../game-data/echoes'
 import { generatedSonataCatalog, generatedSonataIconSources } from '../game-data/sonatas.generated'
 import { effectiveSubStats, fixedSecondaryMainStat, mainStatError, mainStatKeysByCost, maxLevelByRarity, maxSubStatsForLevel, normalizeEchoMainStat } from '../game-data/echo-main-stats'
 import { tunableRolls } from '../game-data/tunable-rolls'
+import { echoRollRating } from '../domain/echo-grade'
 import type { Echo, StatKey } from '../domain/types'
-import { EchoMiniCard, formatStat, Panel } from './components'
+import { EchoMiniCard, formatStat, Icon, Panel } from './components'
+import { statIconSource } from './stat-icons'
 import { useDismissableLayer } from './useDismissableLayer'
 import { availableSubstatKeys, duplicateSubstatKeys } from '../domain/echo-substats'
 
@@ -14,22 +16,18 @@ const sonataNames = generatedSonataCatalog.map((sonata) => sonata.name)
 const subStatKeys = Object.keys(tunableRolls) as StatKey[]
 const levelStops = [0, 5, 10, 15, 20, 25]
 
-function SearchablePicker({ label, value, options, onChange }: { label: string; value: string; options: Array<{ value: string; icon?: string; detail?: string }>; onChange: (value: string) => void }) {
+function SearchablePicker({ label, value, options, onChange, inline = false, searchable = true }: { label: string; value: string; options: Array<{ value: string; label?: string; icon?: string; symbol?: string; detail?: string; suffix?: string }>; onChange: (value: string) => void; inline?: boolean; searchable?: boolean }) {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const ref = useRef<HTMLDivElement>(null)
   const close = useCallback(() => setOpen(false), [])
   const selected = options.find((option) => option.value === value)
-  const visible = options.filter((option) => `${option.value} ${option.detail ?? ''}`.toLowerCase().includes(query.toLowerCase()))
+  const visible = options.filter((option) => `${option.label ?? option.value} ${option.detail ?? ''}`.toLowerCase().includes(query.toLowerCase()))
   useDismissableLayer(open, ref, close)
-  return <label>{label}<div className="echo-search-picker" ref={ref}>
-    <button type="button" className="echo-search-trigger" aria-expanded={open} onClick={() => { setOpen((current) => !current); setQuery('') }}>{selected?.icon ? <img src={selected.icon} alt=""/> : <span>◇</span>}<b>{value}</b><i>⌄</i></button>
-    {open && <div className="echo-search-menu"><input autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`Filter ${label.toLowerCase()}...`}/><div>{visible.map((option) => <button type="button" className={option.value === value ? 'active' : ''} key={option.value} onClick={() => { onChange(option.value); setOpen(false) }}>{option.icon ? <img src={option.icon} alt=""/> : <span>◇</span>}<b>{option.value}</b>{option.detail && <small>{option.detail}</small>}</button>)}</div></div>}
+  return <label className={inline ? 'echo-inline-picker' : undefined}>{inline ? <span className="sr-only">{label}</span> : label}<div className="echo-search-picker" ref={ref} onKeyDown={(event) => { if (event.key === 'Escape' && open) { close(); ref.current?.querySelector<HTMLButtonElement>('.echo-search-trigger')?.focus() } }}>
+    <button type="button" className="echo-search-trigger" aria-label={label} aria-haspopup="true" aria-expanded={open} onClick={() => { setOpen((current) => !current); setQuery('') }}>{selected?.suffix ? <span className="echo-picker-suffix-value"><b>{selected.label ?? value}</b><span aria-hidden="true">{selected.suffix}</span></span> : <>{selected?.icon ? <img src={selected.icon} alt=""/> : <span>{selected?.symbol ?? '◇'}</span>}<b>{selected?.label ?? value}</b></>}<i>⌄</i></button>
+    {open && <div className="echo-search-menu">{searchable && <span className="search-field"><Icon name="scan"/><input data-search="" autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`Filter ${label.toLowerCase()}...`}/><kbd>Ctrl K</kbd></span>}<div>{visible.map((option) => <button type="button" className={option.value === value ? 'active' : ''} aria-label={option.suffix ? `${option.label ?? option.value} star` : undefined} key={option.value} onClick={() => { onChange(option.value); close(); ref.current?.querySelector<HTMLButtonElement>('.echo-search-trigger')?.focus() }}>{option.suffix ? <span className="echo-picker-suffix-value"><b>{option.label ?? option.value}</b><span aria-hidden="true">{option.suffix}</span></span> : <>{option.icon ? <img src={option.icon} alt=""/> : <span>{option.symbol ?? '◇'}</span>}<b>{option.label ?? option.value}</b>{option.detail && <small>{option.detail}</small>}</>}</button>)}</div></div>}
   </div></label>
-}
-
-function ReadOnlyStat({ label, children }: { label: string; children: ReactNode }) {
-  return <div className="echo-fixed-stat"><span>{label}</span>{children}</div>
 }
 
 export function EchoEditModal({ echo, onClose, onSave }: { echo: Echo; onClose: () => void; onSave: (echo: Echo) => Promise<void> }) {
@@ -78,19 +76,19 @@ export function EchoEditModal({ echo, onClose, onSave }: { echo: Echo; onClose: 
             <SearchablePicker label="Name" value={draft.name} options={echoOptions} onChange={(name) => { const entry = echoCatalog.find((item) => item.name === name); if (!entry) return; setDraft((current) => { const next = { ...current, name, cost: entry.cost }; return { ...next, mainStat: normalizeEchoMainStat(next) } }) }}/>
             <SearchablePicker label="Sonata" value={draft.sonata} options={sonataOptions} onChange={(sonata) => setDraft({ ...draft, sonata })}/>
             <label>Cost<div className="echo-readonly-name echo-canonical-cost"><b>{canonicalCost}</b></div></label>
-            <label>Rarity<select value={draft.rarity} onChange={(event) => { const rarity = Number(event.target.value) as Echo['rarity']; updateCore({ rarity, level: Math.min(draft.level, maxLevelByRarity[rarity]) }) }}>{[2, 3, 4, 5].map((value) => <option key={value} value={value}>{value} star</option>)}</select></label>
+            <SearchablePicker label="Rarity" searchable={false} value={String(draft.rarity)} options={[2, 3, 4, 5].map((value) => ({ value: String(value), label: String(value), suffix: '★' }))} onChange={(value) => { const rarity = Number(value) as Echo['rarity']; updateCore({ rarity, level: Math.min(draft.level, maxLevelByRarity[rarity]) }) }}/>
           </div>
           {selectedEcho && !selectedEcho.sonatas.includes(draft.sonata) && <div className="notice warning">Choose an Echo available for {draft.sonata}.</div>}
           <div className="echo-level-editor"><label>Level <strong>+{draft.level}</strong><input type="range" min="0" max={maxLevelByRarity[draft.rarity]} value={draft.level} onChange={(event) => updateCore({ level: Number(event.target.value) })}/></label><div>{levelStops.filter((level) => level <= maxLevelByRarity[draft.rarity]).map((level) => <button type="button" className={draft.level === level ? 'active' : ''} onClick={() => updateCore({ level })} key={level}>+{level}</button>)}</div></div>
           <div className="echo-main-stat-group">
-            <div className="echo-stat-line main"><span>Primary</span><select value={draft.mainStat.key} onChange={(event) => updateCore({}, event.target.value as StatKey)}>{mainStatKeysByCost[draft.cost].map((key) => <option key={key} value={key}>{statLabels[key]}</option>)}</select><ReadOnlyStat label="Level value"><strong>{formatStat(draft.mainStat.key, draft.mainStat.value)}</strong></ReadOnlyStat></div>
-            <div className="echo-stat-line secondary-main"><span>Secondary</span><div className="echo-readonly-name">{statLabels[secondary.key]}</div><ReadOnlyStat label="Fixed value"><strong>{formatStat(secondary.key, secondary.value)}</strong></ReadOnlyStat></div>
+            <div className="echo-stat-line main"><span>Primary</span><SearchablePicker inline label="Primary stat" value={draft.mainStat.key} options={mainStatKeysByCost[draft.cost].map((key) => ({ value: key, label: statLabels[key], icon: statIconSource(key) }))} onChange={(value) => updateCore({}, value as StatKey)}/><strong className="echo-main-value">{formatStat(draft.mainStat.key, draft.mainStat.value)}</strong></div>
+            <div className="echo-stat-line secondary-main"><span>Secondary</span><div className="echo-readonly-name">{statLabels[secondary.key]}</div><strong className="echo-main-value">{formatStat(secondary.key, secondary.value)}</strong></div>
           </div>
-          <div className="echo-editor-substats"><header><h3>Substats</h3><span>{draft.subStats.length}/{maxSubStats} tuned</span></header>{draft.subStats.map((stat, index) => { const rolls = tunableRolls[stat.key] ?? []; const rollIndex = Math.max(0, rolls.findIndex((roll) => Math.abs(roll.value - stat.value) < 0.001)); const keys = availableSubstatKeys(subStatKeys, draft.subStats, index); return <div className="echo-substat-row" key={index}><div className="echo-stat-line"><span>#{index + 1}</span><select value={stat.key} onChange={(event) => setSubStat(index, event.target.value as StatKey, 0)}>{keys.map((key) => <option key={key} value={key}>{statLabels[key]}</option>)}</select><strong>{formatStat(stat.key, rolls[rollIndex]?.value ?? stat.value)}</strong><button type="button" className="text-button" onClick={() => setDraft({ ...draft, subStats: draft.subStats.filter((_, statIndex) => statIndex !== index) })}>Remove</button></div><div className="echo-roll-slider"><input aria-label={`Substat ${index + 1} roll`} type="range" min="0" max={Math.max(0, rolls.length - 1)} step="1" value={rollIndex} onChange={(event) => setSubStat(index, stat.key, Number(event.target.value))}/><div>{rolls.map((roll, point) => <i className={point === rollIndex ? 'active' : ''} key={roll.value}>{roll.value}</i>)}</div></div></div> })}{(() => { const keys = availableSubstatKeys(subStatKeys, draft.subStats); const key = keys[0]; return <button type="button" className="secondary add-substat" disabled={draft.subStats.length >= maxSubStats || !key} onClick={() => key && setDraft({ ...draft, subStats: [...draft.subStats, { key, value: tunableRolls[key]?.[0].value ?? 0 }] })}><span aria-hidden="true">+</span> Add substat</button> })()}</div>
+          <div className="echo-editor-substats"><header><h3>Substats</h3><span>{draft.subStats.length}/{maxSubStats} tuned</span></header>{draft.subStats.map((stat, index) => { const rolls = tunableRolls[stat.key] ?? []; const rollIndex = Math.max(0, rolls.findIndex((roll) => Math.abs(roll.value - stat.value) < 0.001)); const keys = availableSubstatKeys(subStatKeys, draft.subStats, index); return <div className="echo-substat-row" key={index}><div className="echo-stat-line"><button type="button" className="echo-remove-substat" aria-label={`Remove substat ${index + 1}`} title="Remove substat" onClick={() => setDraft({ ...draft, subStats: draft.subStats.filter((_, statIndex) => statIndex !== index) })}>×</button><SearchablePicker inline label={`Substat ${index + 1}`} value={stat.key} options={keys.map((key) => ({ value: key, label: statLabels[key], icon: statIconSource(key) }))} onChange={(value) => setSubStat(index, value as StatKey, 0)}/><strong className="echo-substat-value">{formatStat(stat.key, rolls[rollIndex]?.value ?? stat.value)}</strong></div><div className="echo-roll-slider"><input aria-label={`Substat ${index + 1} roll`} type="range" min="0" max={Math.max(0, rolls.length - 1)} step="1" value={rollIndex} onChange={(event) => setSubStat(index, stat.key, Number(event.target.value))}/><div>{rolls.map((roll, point) => <button type="button" className={point === rollIndex ? 'active' : ''} aria-label={`Set ${statLabels[stat.key]} to ${formatStat(stat.key, roll.value)}`} aria-pressed={point === rollIndex} onClick={() => setSubStat(index, stat.key, point)} key={roll.value}>{roll.value}</button>)}</div></div></div> })}{(() => { const keys = availableSubstatKeys(subStatKeys, draft.subStats); const key = keys[0]; return <button type="button" className="secondary add-substat" disabled={draft.subStats.length >= maxSubStats || !key} onClick={() => key && setDraft({ ...draft, subStats: [...draft.subStats, { key, value: tunableRolls[key]?.[0].value ?? 0 }] })}><span aria-hidden="true">+</span> Add substat</button> })()}</div>
           <div className="echo-editor-states"><label><input type="checkbox" checked={draft.locked} onChange={(event) => setDraft({ ...draft, locked: event.target.checked, excluded: event.target.checked ? false : draft.excluded })}/>Locked</label><label><input type="checkbox" checked={draft.excluded} onChange={(event) => setDraft({ ...draft, excluded: event.target.checked, locked: event.target.checked ? false : draft.locked })}/>Discarded</label></div>
           {error && <div className="notice error">{error}</div>}
         </section>
-        <aside className="echo-editor-previews"><div><span className="eyebrow">Before edit</span><EchoMiniCard echo={echo}/></div><div><span className="eyebrow">Live preview</span><EchoMiniCard echo={draft}/></div></aside>
+        <aside className="echo-editor-previews"><div><span className="eyebrow">Before edit</span><EchoMiniCard echo={echo} rollRating={echoRollRating(echo)}/></div><div><span className="eyebrow">Live preview</span><EchoMiniCard echo={draft} rollRating={echoRollRating(draft)}/></div></aside>
       </div>
       <footer className="echo-editor-actions"><button className="text-button" onClick={onClose}>Cancel</button><button className="primary" onClick={() => void submit()}>Save Echo</button></footer>
     </Panel>

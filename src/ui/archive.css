@@ -118,7 +118,7 @@
 
 .archive-search .icon {
   flex: none;
-  color: var(--mint);
+  color: #fff;
 }
 
 .archive-search input {
@@ -142,16 +142,6 @@
   color: #abb6b3;
   font-size: var(--font-size-body-large);
   cursor: pointer;
-}
-
-.archive-search kbd {
-  padding: 3px 6px;
-  border: 1px solid rgba(255,255,255,.1);
-  border-radius: 4px;
-  color: #687572;
-  font: inherit;
-  font-size: var(--font-size-caption);
-  white-space: nowrap;
 }
 
 .archive-sort {
@@ -243,7 +233,8 @@
   z-index: 40;
   top: calc(100% + 7px);
   right: 0;
-  width: min(310px,calc(100vw - 32px));
+  width: 100%;
+  box-sizing: border-box;
   padding: 6px;
   display: grid;
   grid-template-columns: repeat(1,minmax(0,1fr));
@@ -362,6 +353,12 @@
   text-decoration: none;
   cursor: pointer;
   transition: transform .18s,border-color .18s,box-shadow .18s;
+}
+
+.archive-sort-menu button span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .archive-entry-card:hover {
@@ -522,7 +519,47 @@
 }
 
 .archive-weapon-card .archive-entry-copy footer {
-  justify-content: flex-end;
+  justify-content: space-between;
+}
+
+.archive-weapon-card .archive-entry-copy footer span {
+  min-width: 0;
+  margin-right: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.archive-weapon-type-icon {
+  position: absolute;
+  z-index: 2;
+  top: 9px;
+  left: 9px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(5, 9, 10, 0.31);
+}
+
+.archive-entry-art .archive-weapon-type-icon img {
+  width: 27px;
+  height: 27px;
+  padding: 0;
+  object-fit: contain;
+}
+
+.archive-entry-card:hover .archive-weapon-type-icon img {
+  transform: none;
+}
+
+.archive-toolbar-row .weapon-type-filter-icon {
+  width: 25px;
+  height: 25px;
+  display: block;
+  margin: auto;
+  object-fit: contain;
 }
 
 .archive-character-card .archive-entry-art img {
@@ -692,9 +729,6 @@
   .archive-sonata-grid {
     grid-template-columns: 1fr;
   }
-  .archive-search kbd {
-    display: none;
-  }
 }
 
 @media (max-width:730px) {
@@ -807,14 +841,6 @@
   overflow: visible;
 }
 
-.archive-browser .archive-toolbar-row .filter-chips button:first-child {
-  border-radius: 5px 0 0 5px;
-}
-
-.archive-browser .archive-toolbar-row .filter-chips button:last-child {
-  border-radius: 0 5px 5px 0;
-}
-
 .archive-browser .archive-cost.cost-1 {
   border-color: #79be69;
   background: #79be69;
@@ -854,6 +880,12 @@
   width: auto;
   min-width: 0;
   flex: 0 0 auto;
+}
+
+.archive-browser .archive-toolbar-row>.sonata-picker {
+  width: 380px;
+  max-width: 100%;
+  flex-basis: 380px;
 }
 
 .archive-browser .archive-toolbar-row>.owned-chip-filter .filter-chips {
@@ -903,15 +935,21 @@
   text-overflow: clip;
 }
 
+.archive-browser .archive-toolbar-weapons .filter-chips button:has(.weapon-type-filter-icon) {
+  height: 38px;
+  min-height: 38px;
+  max-height: 38px;
+}
+
 .archive-browser .archive-toolbar-row:has(>.sonata-picker) {
   overflow: visible;
 }
 
 .archive-browser .archive-toolbar-row>.sonata-picker .sonata-picker-menu {
-  left: auto;
+  left: 0;
   right: 0;
   top: calc(100% + 7px);
-  width: min(330px,calc(100vw - 32px));
+  width: 100%;
   max-height: min(50dvh,360px);
   overflow-y: auto;
   display: grid;
@@ -919,7 +957,7 @@
   gap: 2px;
 }
 
-.archive-browser .archive-toolbar-row>.sonata-picker .sonata-picker-search,.archive-browser .archive-toolbar-row>.sonata-picker .sonata-picker-empty {
+.archive-browser .archive-toolbar-row>.sonata-picker .search-field,.archive-browser .archive-toolbar-row>.sonata-picker .sonata-picker-empty {
   grid-column: 1/-1;
 }
 
@@ -975,6 +1013,12 @@
     white-space: nowrap;
   }
 
+  .archive-browser .archive-toolbar-weapons .filter-chips button:has(.weapon-type-filter-icon) {
+    height: 44px;
+    min-height: 44px;
+    max-height: 44px;
+  }
+
   .archive-browser .archive-toolbar-row>.owned-chip-filter:has(.filter-element-icon) .filter-chips button {
     width: auto;
     min-width: 48px;
@@ -990,9 +1034,8 @@
   .archive-browser .archive-toolbar-row>.archive-sort .archive-sort-menu,
   .archive-browser .archive-toolbar-row>.sonata-picker .sonata-picker-menu {
     left: 0;
-    right: auto;
-    width: min(100%,calc(100vw - 32px));
-    max-width: calc(100vw - 32px);
+    right: 0;
+    width: 100%;
     max-height: min(50dvh,360px);
     overflow-y: auto;
     grid-template-columns: 1fr;

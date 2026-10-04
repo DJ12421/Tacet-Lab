@@ -84,19 +84,13 @@
   top: calc(100% + 5px);
   left: 0;
   right: 0;
-  min-width: 300px;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   padding: 7px;
   border: 1px solid var(--gold);
   background: #06090a;
   box-shadow: 0 22px 55px #000;
-}
-
-.echo-search-menu>input {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  margin-bottom: 6px;
-  border-color: rgba(228,187,94,.55);
 }
 
 .echo-search-menu>div {
@@ -125,12 +119,16 @@
 }
 
 .echo-search-menu button b {
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .echo-search-menu button small {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: var(--muted);
   white-space: nowrap;
 }
@@ -299,12 +297,12 @@
   grid-column: 1/-1;
 }
 
-.scan-echo-picker .echo-search-menu {
-  min-width: min(620px,75vw);
+.scan-echo-picker .echo-search-menu button {
+  grid-template-columns: 42px minmax(0,1fr);
 }
 
-.scan-echo-picker .echo-search-menu button {
-  grid-template-columns: 42px minmax(150px,1fr) minmax(170px,auto);
+.scan-echo-picker .echo-search-menu button small {
+  grid-column: 2;
 }
 
 .scan-readonly-field {
@@ -412,10 +410,6 @@
   .review-fields {
     grid-template-columns: 1fr;
   }
-  .scan-echo-picker .echo-search-menu {
-    min-width: calc(100vw - 56px);
-    left: 0;
-  }
   .scan-echo-picker .echo-search-menu button {
     grid-template-columns: 36px minmax(0,1fr);
   }
@@ -476,12 +470,12 @@
   text-align: right;
 }
 
-.scan-character-picker .echo-search-menu {
-  min-width: min(440px,70vw);
+.scan-character-picker .echo-search-menu button {
+  grid-template-columns: 42px minmax(0,1fr);
 }
 
-.scan-character-picker .echo-search-menu button {
-  grid-template-columns: 42px minmax(135px,1fr) auto;
+.scan-character-picker .echo-search-menu button small {
+  grid-column: 2;
 }
 
 .scan-character-picker .echo-search-trigger img,.scan-character-picker .echo-search-menu img {
@@ -490,9 +484,6 @@
 }
 
 @media (max-width:720px) {
-  .scan-character-picker .echo-search-menu {
-    min-width: calc(100vw - 56px);
-  }
   .scan-character-picker .echo-search-menu button {
     grid-template-columns: 36px minmax(0,1fr);
   }

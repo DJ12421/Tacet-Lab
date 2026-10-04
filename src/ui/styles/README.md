@@ -11,6 +11,10 @@ not be alphabetized.
 - A page can have more than one partial when later rules intentionally override
   its base styles. Keep new rules in the narrowest existing owner.
 
+Keep scrolling enabled while hiding scrollbar chrome site-wide. The global rule
+lives in `core/foundation.css`; do not hide scrollbars by disabling overflow or
+add visible per-component scrollbar styling.
+
 Some established component stylesheets still live beside their React
 components, including `character-showcase.css`, `home-view.css`, and
 `team-workspace.css`. They should remain component-owned rather than being

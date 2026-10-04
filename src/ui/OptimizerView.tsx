@@ -5,14 +5,10 @@ import { createTheorycraftBuild } from '../domain/loadouts'
 import { db } from '../storage/database'
 import { setEquippedEchoIds } from '../storage/loadouts'
 import {
-  loadLatestOptimizerRun,
   loadOptimizerProfile,
   optimizerContextFingerprint,
   optimizerInventoryFingerprint,
-  optimizerProfileFingerprint,
-  saveOptimizerProfile,
-  saveOptimizerRun,
-  updateOptimizerRunHighlights
+  saveOptimizerProfile
 } from '../storage/optimizer-profiles'
 import type {
   Build,
@@ -115,7 +111,7 @@ export function OptimizerView({
   const objective: OptimizerObjective = damageMode ?? 'expected'
   const [targetId, setTargetId] = useWorkspacePreference(`optimizer:${buildId}:target`, '')
   const [profile, setProfile] = useState<OptimizerProfile>(() => ({
-    id: `optimizer-${buildId}`, buildId, levelLow: 0, levelHigh: 25, rarities: [1, 2, 3, 4, 5],
+    id: `optimizer-${buildId}`, buildId, levelLow: 0, levelHigh: 25, rarities: [2, 3, 4, 5],
     mainStatsByCost: { '1': [], '3': [], '4': [] }, excludedEchoIds: [], equippedPolicy: 'current', teamBuildIds: [],
     mainEchoPolicy: 'current', allowedSonatas: [], sonataMode: 'any', allowNoSonata: true, requiredSonataEffects: [],
     minimumStats: {}, maximumStats: {}, resultLimit: 10, plotStat: 'atk', workerCount: 'auto', searchMode: 'exact',
@@ -217,8 +213,7 @@ export function OptimizerView({
   useEffect(() => {
     let live = true
     setProfileReady(false)
-    const fingerprint = optimizerInventoryFingerprint(inventoryEchoes)
-    Promise.all([loadOptimizerProfile(buildId), loadLatestOptimizerRun(buildId)]).then(([storedProfile, run]) => {
+    loadOptimizerProfile(buildId).then((storedProfile) => {
       if (!live) return
       const savedTarget = targets.some((target) => target.id === targetId) ? targetId
         : targets.some((target) => target.id === storedProfile.targetId) ? storedProfile.targetId : undefined
@@ -228,16 +223,7 @@ export function OptimizerView({
       const contextFingerprint = optimizerContextFingerprint({ objective, targetId: nextTarget, initialEnemy, scenario, disabledEquipmentBuffKeys, rotation: nextTarget === TEAM_ROTATION_TARGET_ID ? rotation?.input : undefined, gameDataVersion: GAME_DATA_VERSION })
       contextFingerprintRef.current = contextFingerprint
       setTargetId(nextTarget)
-      if (run && run.profileId === nextProfile.id && run.profileFingerprint === optimizerProfileFingerprint(nextProfile) && run.contextFingerprint === contextFingerprint && run.inventoryFingerprint === fingerprint && run.gameDataVersion === GAME_DATA_VERSION && run.results.every((result) => result.echoIds.every((id) => echoes.some((echo) => echo.id === id)))) {
-        setResults(run.results)
-        setPlotPoints(run.plot)
-        setProgress(run.progress)
-        setGeneratedAt(run.createdAt)
-        setRunFingerprint(run.inventoryFingerprint)
-        setActiveRunId(run.id)
-        setHighlightedKeys(run.highlightedBuildKeys ?? [])
-        setExpandedResult(run.results.length ? 0 : null)
-      } else clearResults()
+      clearResults()
       setProfileReady(true)
     }).catch(() => { if (live) { setError('Saved optimizer settings could not be loaded.'); setProfileReady(true) } })
     return () => { live = false }
@@ -252,12 +238,6 @@ export function OptimizerView({
     if (contextFingerprintRef.current && contextFingerprintRef.current !== activeContextFingerprint) clearResults()
     contextFingerprintRef.current = activeContextFingerprint
   }, [activeContextFingerprint, profileReady])
-  useEffect(() => {
-    if (!activeRunId) return
-    const timer = window.setTimeout(() => { void updateOptimizerRunHighlights(activeRunId, highlightedKeys).catch(() => setError('Build comparisons could not be saved locally.')) }, 200)
-    return () => window.clearTimeout(timer)
-  }, [activeRunId, highlightedKeys])
-
   const cancel = () => {
     requestIdRef.current = ''
     terminateWorkers()
@@ -277,8 +257,6 @@ export function OptimizerView({
     const requestId = createLocalId()
     requestIdRef.current = requestId
     const fingerprint = optimizerInventoryFingerprint(inventoryEchoes)
-    const profileFingerprint = optimizerProfileFingerprint({ ...profile, teamBuildIds: [...new Set(teamBuildIds)] })
-    const contextFingerprint = activeContextFingerprint
     const hardwareWorkers = Math.max(1, Math.min(8, (navigator.hardwareConcurrency ?? 4) - 1))
     const workerCount = Math.max(1, Math.min(16, profile.workerCount === 'auto' ? hardwareWorkers : profile.workerCount))
     const workerProgress = Array.from({ length: workerCount }, () => emptyProgress(requestId))
@@ -368,7 +346,6 @@ export function OptimizerView({
         const performance = `${merged.progress.tested.toLocaleString('en-US')} evaluated, ${merged.progress.skipped.toLocaleString('en-US')} skipped (${skippedPercent.toFixed(1)}%) in ${(merged.progress.elapsedMs / 1000).toFixed(2)}s.`
         setMessage(`${merged.complete ? 'Exact branch-and-bound search complete.' : 'Fast search reached its evaluation cap; the best discovered builds are shown.'} ${performance}`)
       }
-      void saveOptimizerRun({ id: runId, buildId: build.id, profileId: profile.id, requestId, createdAt, gameDataVersion: GAME_DATA_VERSION, inventoryFingerprint: fingerprint, profileFingerprint, contextFingerprint, results: merged.results, plot: merged.plot, complete: merged.complete, progress: merged.progress, highlightedBuildKeys: [] }).catch(() => setError('Results were generated, but the run could not be saved locally.'))
     }
     for (let index = 0; index < workerCount; index += 1) {
       const worker = new Worker(new URL('../workers/optimizer.worker.ts', import.meta.url), { type: 'module' })
@@ -509,7 +486,7 @@ export function OptimizerView({
       objectiveLabel={selectedObjectiveLabel} targetId={targetId} targets={targets}
       onTargetChange={(id) => { setTargetId(id); updateProfile((current) => ({ ...current, targetId: id, updatedAt: Date.now() })) }} scalesWith={scalesWith} scalesWithTitle={rotationTarget ? 'Rotation includes' : undefined} running={running} onRun={run} onCancel={cancel}
     />}
-    {!profileReady && <Panel className="searching"><div className="orbit"><i/><i/><i/></div><h2>Loading optimizer profile</h2><p>Your saved filters and most recent compatible run stay on this device.</p></Panel>}
+    {!profileReady && <Panel className="searching"><div className="orbit"><i/><i/><i/></div><h2>Loading optimizer profile</h2><p>Your saved filters stay on this device. Search results are only kept for the current session.</p></Panel>}
     {error && <div className="notice error">{error}</div>}
     {pendingSources.length > 0 && <div className="notice">TBA mechanics for {pendingSources.join(', ')} are omitted from calculated scores.</div>}
     {message && <div className="notice success">{message}</div>}

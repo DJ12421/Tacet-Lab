@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import type { AppView } from '../domain/types'
-import { clearAccount, exportAccount, saveSettings } from '../storage/database'
+import { clearAccount, saveSettings } from '../storage/database'
 import { ArchiveView } from './ArchiveView'
 import { CharacterInventory } from './CharacterInventoryView'
 import { HomeView } from './HomeView'
 import { ImportDataModal } from './ImportDataModal'
+import { ExportDataModal } from './ExportDataModal'
 import { InventoryView } from './InventoryView'
 import { WeaponInventory } from './OwnedInventoryView'
 import { PartnershipsView } from './PartnershipsView'
@@ -130,6 +131,7 @@ export default function App() {
   const view = route.view
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [importOpen, setImportOpen] = useState(false)
+  const [exportOpen, setExportOpen] = useState(false)
   const [mobileMoreOpen, setMobileMoreOpen] = useState(false)
   const mobileMoreRef = useRef<HTMLDialogElement>(null)
   const [toast, setToast] = useState('')
@@ -193,20 +195,34 @@ export default function App() {
     const label = nav.find((item) => item.view === view)?.label ?? (view === 'legal' ? 'Privacy & Legal' : view === 'partnerships' ? 'Partnerships' : 'Tacet Lab')
     document.title = view === 'dashboard' ? 'Tacet Lab | Wuthering Waves Optimizer & Echo Scanner' : `${label} | Tacet Lab`
   }, [view])
-  useEffect(() => { window.scrollTo(0, 0) }, [navigationVersion])
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    const frame = requestAnimationFrame(() => {
+      if (document.querySelector('[aria-modal="true"], dialog[open]')) return
+      const search = document.querySelector<HTMLInputElement>('main input[data-search]')
+      if (search?.getClientRects().length) search.focus()
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [navigationVersion])
+  useEffect(() => {
+    const focusSearch = (event: KeyboardEvent) => {
+      if ((!event.ctrlKey && !event.metaKey) || event.altKey || event.shiftKey || event.key.toLowerCase() !== 'k') return
+      const dialogs = Array.from(document.querySelectorAll<HTMLElement>('[aria-modal="true"], dialog[open]')).filter((dialog) => dialog.getClientRects().length)
+      const scope = dialogs[dialogs.length - 1] ?? document.querySelector('main')
+      if (!scope) return
+      const searches = Array.from(scope.querySelectorAll<HTMLInputElement>('input[data-search]')).filter((input) => !input.disabled && input.getClientRects().length)
+      const focused = document.activeElement
+      const search = searches.find((input) => input === focused) ?? searches[searches.length - 1]
+      if (!search) return
+      event.preventDefault()
+      search.focus()
+    }
+    window.addEventListener('keydown', focusSearch)
+    return () => window.removeEventListener('keydown', focusSearch)
+  }, [])
   useEffect(() => {
     try { window.localStorage.setItem(sidebarPinStorageKey, String(sidebarPinned)) } catch { /* Keep the preference session-only when storage is unavailable. */ }
   }, [sidebarPinned])
-  const exportData = async () => {
-    const account = await exportAccount()
-    const blob = new Blob([JSON.stringify(account, null, 2)], { type: 'application/json' })
-    const anchor = document.createElement('a')
-    anchor.href = URL.createObjectURL(blob)
-    anchor.download = 'tacet-lab-' + new Date().toISOString().slice(0, 10) + '.json'
-    anchor.click()
-    window.setTimeout(() => URL.revokeObjectURL(anchor.href), 1_000)
-    notify('Data exported')
-  }
   const savePreferences = async (form: HTMLFormElement) => {
     const values = new FormData(form)
     await saveSettings({
@@ -236,7 +252,7 @@ export default function App() {
       <div className="side-bottom"><div className="local-status"><i/><div><strong>Local inventory</strong><span>{data.echoes.length} Echoes · {data.characters.length} characters · {data.weapons.length} weapons</span></div></div><button className={view === 'partnerships' ? 'active' : ''} onClick={() => setView('partnerships')}><Icon name="team"/><span>Partnerships</span></button><button className={view === 'legal' ? 'active' : ''} onClick={() => setView('legal')}><Icon name="lock"/><span>Privacy & Legal</span></button><button onClick={() => setSettingsOpen(true)}><Icon name="settings"/><span>Settings</span></button></div>
     </aside>
     <main>
-      <div className="topbar"><div className="topbar-brand"><strong>Tacet Lab</strong><small>The one for all wuwa optimizer</small></div><div><button type="button" aria-label="Import data" onClick={() => setImportOpen(true)}><Icon name="upload"/><span>Import</span></button><button type="button" aria-label="Export data" onClick={exportData}><Icon name="download"/><span>Export</span></button><a className="discord-button" href="https://discord.gg/fy66NmapWb" target="_blank" rel="noreferrer" aria-label="Join the Tacet Lab Discord" title="Join the Tacet Lab Discord"><Icon name="discord"/></a></div></div>
+      <div className="topbar"><div className="topbar-brand"><strong>Tacet Lab</strong><small>The one for all wuwa optimizer</small></div><div><button type="button" aria-label="Import data" onClick={() => setImportOpen(true)}><Icon name="upload"/><span>Import</span></button><button type="button" aria-label="Export data" onClick={() => setExportOpen(true)}><Icon name="download"/><span>Export</span></button><a className="discord-button" href="https://discord.gg/fy66NmapWb" target="_blank" rel="noreferrer" aria-label="Join the Tacet Lab Discord" title="Join the Tacet Lab Discord"><Icon name="discord"/></a></div></div>
       <div className={`content${view === 'teams' ? ' teams-content' : ''}`}>
         {view === 'dashboard' && <HomeView echoes={data.echoes} characters={data.characters} weapons={data.weapons} builds={data.builds} teams={data.teams} navigate={setView}/>}
         {view === 'archive' && <ArchiveView roverGender={data.settings.roverGender} tab={route.archiveTab ?? 'characters'} onTabChange={(archiveTab) => setRoute({ view: 'archive', archiveTab })}/>}
@@ -256,6 +272,7 @@ export default function App() {
       <nav aria-label="More destinations">{mobileMoreNav.map((item) => <button key={item.view} type="button" aria-current={view === item.view ? 'page' : undefined} className={view === item.view ? 'active' : ''} onClick={() => navigateFromShell(item.view)}><NavIcon item={item}/><span><strong>{item.label}</strong>{item.view === 'scanner' && <small>Upload or enter Echoes manually on mobile</small>}</span></button>)}<button type="button" className={view === 'partnerships' ? 'active' : ''} aria-current={view === 'partnerships' ? 'page' : undefined} onClick={() => navigateFromShell('partnerships')}><Icon name="team"/><span><strong>Partnerships</strong><small>Community and creator spotlights</small></span></button><button type="button" className={view === 'legal' ? 'active' : ''} aria-current={view === 'legal' ? 'page' : undefined} onClick={() => navigateFromShell('legal')}><Icon name="lock"/><span><strong>Privacy & Legal</strong><small>How Tacet Lab keeps your data local</small></span></button><button type="button" onClick={() => { setMobileMoreOpen(false); setSettingsOpen(true) }}><Icon name="settings"/><span><strong>Settings</strong><small>Appearance, build cards, and local data</small></span></button></nav>
     </dialog>
     {importOpen && <ImportDataModal onClose={() => setImportOpen(false)} onImported={async (preview) => { await data.refresh(); notify(`Import merged: ${preview.added} new, ${preview.updated} updated, ${preview.duplicates} duplicates skipped`) }}/>} 
+    {exportOpen && <ExportDataModal onClose={() => setExportOpen(false)} onExported={() => notify('Backup download started')}/>}
     {settingsOpen && <div className="modal-backdrop" onMouseDown={() => setSettingsOpen(false)}><Panel className="settings-modal" role="dialog" aria-modal="true" aria-labelledby="settings-title" onMouseDown={(event) => event.stopPropagation()}>
       <div className="settings-header"><div><span className="eyebrow">Make it yours</span><h2 id="settings-title">Settings</h2></div><button className="close" aria-label="Close settings" onClick={() => setSettingsOpen(false)}>×</button></div>
       <form onSubmit={(event) => { event.preventDefault(); void savePreferences(event.currentTarget) }}>
@@ -274,13 +291,13 @@ export default function App() {
         </section>
         <section className="settings-section settings-data-section">
           <div className="settings-section-title"><span className="settings-section-icon"><Icon name="lock"/></span><div><strong>Your data</strong><small>Stored only in this browser.</small></div></div>
-          <div className="settings-data-actions"><button type="button" className="secondary" onClick={() => { setSettingsOpen(false); setImportOpen(true) }}><Icon name="upload"/><span>Import</span></button><button type="button" className="secondary" onClick={() => void exportData()}><Icon name="download"/><span>Export</span></button></div>
+          <div className="settings-data-actions"><button type="button" className="secondary" onClick={() => { setSettingsOpen(false); setImportOpen(true) }}><Icon name="upload"/><span>Import</span></button><button type="button" className="secondary" onClick={() => { setSettingsOpen(false); setExportOpen(true) }}><Icon name="download"/><span>Export</span></button></div>
           <button type="button" className="danger text settings-delete" onClick={async () => { if (confirm('Delete all local Echoes, characters, weapons, builds, teams, and settings?')) { await clearAccount(); await data.refresh(); setSettingsOpen(false); notify('Local data cleared') } }}>Delete all local data</button>
         </section>
         <div className="settings-save"><button className="primary" type="submit">Save changes</button></div>
       </form>
     </Panel></div>}
     {toast && <div className="toast" role="status" aria-live="polite">{toast}</div>}
-    <PwaUpdatePrompt safeToActivate={!scannerSessionAtRisk && !importOpen && !settingsOpen} navigationVersion={navigationVersion}/>
+    <PwaUpdatePrompt safeToActivate={!scannerSessionAtRisk && !importOpen && !exportOpen && !settingsOpen} navigationVersion={navigationVersion}/>
   </div>
 }

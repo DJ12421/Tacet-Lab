@@ -193,9 +193,13 @@
   }
 
   .sidebar {
-    height: calc(72px + env(safe-area-inset-bottom));
+    position: fixed;
+    inset: auto 0 0;
+    width: auto;
+    height: auto;
     padding: 0 0 env(safe-area-inset-bottom);
     overflow: hidden;
+    background: #070a0b;
   }
 
   .sidebar .desktop-nav {
@@ -217,7 +221,7 @@
     min-width: 0;
     height: 72px;
     min-height: 44px;
-    padding: 5px 2px 4px;
+    padding: 5px 2px 12px;
     display: grid;
     grid-template-rows: 26px auto;
     place-items: center;

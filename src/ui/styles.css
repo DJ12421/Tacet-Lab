@@ -108,3 +108,82 @@ body:has(.modal-backdrop,.catalog-picker-backdrop,.weapon-detail-backdrop,.chara
 :is(.content,.modal-backdrop) :not(.cs-loadout-source) > select:not([multiple]):focus-visible {
   border-color: rgba(141,228,212,.65);
 }
+
+/* Every searchable field uses the Archive search treatment. */
+.search-field,
+.search.search-field,
+.archive-search.search-field {
+  min-width: 0;
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  border: 1px solid rgba(141,228,212,.22);
+  border-radius: 6px;
+  background: #070b0c;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.search-field:focus-within,
+.search.search-field:focus-within,
+.archive-search.search-field:focus-within {
+  border-color: var(--mint);
+  box-shadow: 0 0 0 2px rgba(141,228,212,.08);
+}
+
+.search-field > .icon {
+  flex: none;
+  color: #fff;
+}
+
+.search-field > input[data-search],
+.tw-gallery-controls .search-field > input[data-search] {
+  min-width: 0;
+  width: 100%;
+  flex: 1;
+  height: 40px;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  outline: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #edf3ef;
+}
+
+.search-field > input[data-search]:focus,
+.search-field > input[data-search]:focus-visible,
+.tw-gallery-controls .search-field > input[data-search]:focus,
+.tw-gallery-controls .search-field > input[data-search]:focus-visible {
+  border: 0;
+  outline: 0;
+  box-shadow: none;
+}
+
+.search-field > kbd {
+  flex: none;
+  padding: 3px 6px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 4px;
+  color: #687572;
+  font: inherit;
+  font-size: var(--font-size-caption);
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.echo-search-menu > .search-field,
+.sonata-picker-menu > .search-field {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  width: 100%;
+  margin-bottom: 6px;
+}
+
+.equipment-buff-toolbar > .search-field {
+  flex: 1 1 220px;
+}

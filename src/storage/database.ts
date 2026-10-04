@@ -75,14 +75,13 @@ class TacetDatabase extends Dexie {
       optimizerRuns: 'id, buildId, profileId, createdAt',
       settings: 'id'
     }).upgrade(async (transaction) => {
-      const [builds, characters, echoes, weapons, teams, optimizerProfiles, optimizerRuns] = await Promise.all([
+      const [builds, characters, echoes, weapons, teams, optimizerProfiles] = await Promise.all([
         transaction.table<Build, string>('builds').toArray(),
         transaction.table<OwnedCharacter, string>('characters').toArray(),
         transaction.table<Echo, string>('echoes').toArray(),
         transaction.table<OwnedWeapon, string>('weapons').toArray(),
         transaction.table<Team, string>('teams').toArray(),
-        transaction.table<OptimizerProfile, string>('optimizerProfiles').toArray(),
-        transaction.table<OptimizerRun, string>('optimizerRuns').toArray()
+        transaction.table<OptimizerProfile, string>('optimizerProfiles').toArray()
       ])
       const now = Date.now()
       const characterByCatalog = new Map(characters.map((entry) => [entry.catalogId, entry]))
@@ -147,7 +146,6 @@ class TacetDatabase extends Dexie {
           const build = buildById.get(id); return build ? characterByCatalog.get(build.resonatorId)?.id ?? id : id
         })
       })
-      for (const run of optimizerRuns) await transaction.table<OptimizerRun, string>('optimizerRuns').put({ ...run, buildId: memberIdByBuild.get(run.buildId) ?? run.buildId })
     })
     const assertUniqueSubstats = (echo: Pick<Echo, 'subStats'>) => {
       if (duplicateSubstatKeys(echo.subStats).length) throw new Error('Each Echo substat type can only appear once.')
@@ -410,8 +408,6 @@ export async function exportAccount(): Promise<AccountDocument> {
     equippedLoadouts: await db.equippedLoadouts.toArray(),
     theorycraftBuilds: await db.theorycraftBuilds.toArray(),
     teams: await db.teams.toArray(),
-    optimizerProfiles: await db.optimizerProfiles.toArray(),
-    optimizerRuns: await db.optimizerRuns.toArray(),
     settings: await getSettings()
   }
 }
@@ -423,14 +419,73 @@ export function validateAccount(value: unknown): value is AccountDocument {
     && (value.schemaVersion === 1 || (Array.isArray(value.weapons) && value.weapons.every(isOwnedWeapon)))
     && Array.isArray(value.builds) && value.builds.every(isBuild)
     && Array.isArray(value.teams) && value.teams.every(isTeam)
-    && (Number(value.schemaVersion) < 6 || (Array.isArray(value.optimizerProfiles) && value.optimizerProfiles.every(isOptimizerProfile)))
-    && (Number(value.schemaVersion) < 6 || (Array.isArray(value.optimizerRuns) && value.optimizerRuns.every(isOptimizerRun)))
+    && (value.optimizerProfiles === undefined || (Array.isArray(value.optimizerProfiles) && value.optimizerProfiles.every(isOptimizerProfile)))
+    && (value.optimizerRuns === undefined || (Array.isArray(value.optimizerRuns) && value.optimizerRuns.every(isOptimizerRun)))
     && (Number(value.schemaVersion) < 7 || (Array.isArray(value.equippedLoadouts) && value.equippedLoadouts.every(isEquippedLoadout)))
     && (Number(value.schemaVersion) < 7 || (Array.isArray(value.theorycraftBuilds) && value.theorycraftBuilds.every(isTheorycraftBuild)))
     && isSettings(value.settings)
 }
 
-export type AccountImportCollectionKey = 'echoes' | 'characters' | 'weapons' | 'builds' | 'equippedLoadouts' | 'theorycraftBuilds' | 'teams' | 'optimizerProfiles' | 'optimizerRuns'
+export function accountBackupError(value: unknown): string | null {
+  if (!isRecord(value)) return 'This file does not contain a Tacet Lab account.'
+  if (![1, 2, 3, 4, 5, 6, 7].includes(Number(value.schemaVersion))) return `Backup version ${String(value.schemaVersion ?? 'missing')} is not supported.`
+  if (typeof value.gameDataVersion !== 'string' || typeof value.exportedAt !== 'string') return 'The backup is missing its game data version or export date.'
+  const collections: Array<[string, (item: unknown) => boolean, boolean]> = [
+    ['echoes', isEcho, true], ['characters', isOwnedCharacter, value.schemaVersion !== 1],
+    ['weapons', isOwnedWeapon, value.schemaVersion !== 1], ['builds', isBuild, true], ['teams', isTeam, true],
+    ['optimizerProfiles', isOptimizerProfile, false],
+    ['optimizerRuns', isOptimizerRun, false],
+    ['equippedLoadouts', isEquippedLoadout, Number(value.schemaVersion) >= 7],
+    ['theorycraftBuilds', isTheorycraftBuild, Number(value.schemaVersion) >= 7]
+  ]
+  for (const [key, valid, required] of collections) {
+    const rows = value[key]
+    if (!required && rows === undefined) continue
+    if (!Array.isArray(rows)) return `The backup is missing its ${key} list.`
+    const index = rows.findIndex((row) => !valid(row))
+    if (index < 0) continue
+    if (key === 'teams' && isRecord(rows[index]) && Array.isArray(rows[index].actions)) {
+      const actionIndex = rows[index].actions.findIndex((action) => isRecord(action) && (!isFiniteNumber(action.timestamp) || (action.duration !== undefined && (!isFiniteNumber(action.duration) || action.duration <= 0))))
+      if (actionIndex >= 0) return `Team ${index + 1}, rotation action ${actionIndex + 1} has missing or invalid timing. Check its timestamp and duration.`
+    }
+    return `The ${key} list has an invalid record at position ${index + 1}. Review that record in the backup.`
+  }
+  return isSettings(value.settings) ? null : 'The backup settings are missing or invalid.'
+}
+
+export function prepareAccountBackup(value: unknown): { document: AccountDocument; repairs: string[] } {
+  if (!isRecord(value)) throw new Error(accountBackupError(value) ?? 'Invalid backup.')
+  const repairs: string[] = []
+  const teams = Array.isArray(value.teams) ? value.teams.map((entry, teamIndex) => {
+    if (!isRecord(entry) || !Array.isArray(entry.actions) || !isFiniteNumber(entry.rotationDuration) || entry.rotationDuration <= 0) return entry
+    const rotationDuration = entry.rotationDuration
+    const sourceActions = entry.actions
+    const actions = sourceActions.map((action, actionIndex) => {
+      if (!isRecord(action)) return action
+      if (isFiniteNumber(action.timestamp) && action.duration === undefined) {
+        return { ...action, duration: Math.min(0.8, Math.max(0.1, rotationDuration - action.timestamp)) }
+      }
+      if (isFiniteNumber(action.timestamp) && isFiniteNumber(action.duration)) return action
+      const previous = sourceActions[actionIndex - 1]
+      const previousEnd = isRecord(previous) && isFiniteNumber(previous.timestamp)
+        ? previous.timestamp + (isFiniteNumber(previous.duration) ? previous.duration : 0) : 0
+      const timestamp = isFiniteNumber(action.timestamp) ? action.timestamp : Math.max(0, Math.min(rotationDuration - 0.1, previousEnd))
+      const duration = isFiniteNumber(action.duration) ? action.duration : Math.min(0.8, Math.max(0.1, rotationDuration - timestamp))
+      repairs.push(`Team ${teamIndex + 1}, rotation action ${actionIndex + 1}: missing timing restored to ${Number(timestamp.toFixed(2))}s and ${Number(duration.toFixed(2))}s. Review this action after import.`)
+      return { ...action, timestamp, duration }
+    })
+    return { ...entry, actions }
+  }) : value.teams
+  const document: Record<string, unknown> = { ...value, teams }
+  delete document.optimizerProfiles
+  delete document.optimizerRuns
+  const error = accountBackupError(document)
+  if (error) throw new Error(error)
+  if (!validateAccount(document)) throw new Error('The backup contains unsupported account data.')
+  return { document: document as unknown as AccountDocument, repairs }
+}
+
+export type AccountImportCollectionKey = 'echoes' | 'characters' | 'weapons' | 'builds' | 'equippedLoadouts' | 'theorycraftBuilds' | 'teams'
 
 export interface AccountImportCollectionSummary {
   key: AccountImportCollectionKey
@@ -453,7 +508,7 @@ export interface AccountImportPreview {
   duplicates: number
 }
 
-type ImportEntity = Echo | OwnedCharacter | OwnedWeapon | Build | EquippedLoadout | TheorycraftBuild | Team | OptimizerProfile | OptimizerRun
+type ImportEntity = Echo | OwnedCharacter | OwnedWeapon | Build | EquippedLoadout | TheorycraftBuild | Team
 type ImportEntityWithId = ImportEntity & { id: string }
 type ImportIdMaps = Record<AccountImportCollectionKey, Map<string, string>>
 interface PlannedCollection<T extends ImportEntityWithId> {
@@ -468,9 +523,7 @@ const importCollectionLabels: Record<AccountImportCollectionKey, string> = {
   builds: 'Builds',
   equippedLoadouts: 'Equipped loadouts',
   theorycraftBuilds: 'Theorycraft builds',
-  teams: 'Teams',
-  optimizerProfiles: 'Optimizer profiles',
-  optimizerRuns: 'Saved optimizer runs'
+  teams: 'Teams'
 }
 
 function canonicalImportValue(value: unknown): unknown {
@@ -572,8 +625,6 @@ async function createAccountImportPlan(document: AccountDocument) {
   const incomingEquippedLoadouts = document.equippedLoadouts ?? []
   const incomingTheorycraftBuilds = document.theorycraftBuilds ?? []
   const incomingTeams = document.teams
-  const incomingProfiles = document.optimizerProfiles ?? []
-  const incomingRuns = document.optimizerRuns ?? []
 
   const maps = {} as ImportIdMaps
   maps.echoes = resolveImportIds(current.echoes, incomingEchoes, (echo) => importFingerprint(echo, ['id', 'source', 'equippedBy', 'equippedByName']))
@@ -598,39 +649,6 @@ async function createAccountImportPlan(document: AccountDocument) {
   const remappedTeams = incomingTeams.map((team) => ({ ...remapTeam(team, maps.builds), members: team.members?.map((member) => ({ ...member, characterId: maps.characters.get(member.characterId) ?? member.characterId, loadoutSource: remapSource(member.loadoutSource), compareSource: member.compareSource ? remapSource(member.compareSource) : undefined })) }))
   maps.teams = resolveImportIds(current.teams, remappedTeams, (team) => importFingerprint(team))
 
-  const remapProfile = (profile: OptimizerProfile): OptimizerProfile => ({
-    ...profile,
-    buildId: maps.builds.get(profile.buildId) ?? profile.buildId,
-    teamBuildIds: profile.teamBuildIds.map((id) => {
-      if (Number(document.schemaVersion) >= 7) return maps.characters.get(id) ?? id
-      const build = incomingBuilds.find((entry) => entry.id === id)
-      const character = incomingCharacters.find((entry) => entry.catalogId === build?.resonatorId)
-      return character ? maps.characters.get(character.id) ?? character.id : id
-    }),
-    excludedEchoIds: profile.excludedEchoIds.map((id) => maps.echoes.get(id) ?? id),
-    selectedMainEchoId: remapOptionalId(maps.echoes, profile.selectedMainEchoId)
-  })
-  const remappedProfiles = incomingProfiles.map(remapProfile)
-  maps.optimizerProfiles = resolveImportIds(current.optimizerProfiles ?? [], remappedProfiles, (profile) => importFingerprint(profile))
-
-  const remapRun = (run: OptimizerRun): OptimizerRun => ({
-    ...run,
-    buildId: maps.builds.get(run.buildId) ?? run.buildId,
-    profileId: maps.optimizerProfiles.get(run.profileId) ?? run.profileId,
-    results: run.results.map((result) => ({
-      ...result,
-      echoIds: result.echoIds.map((id) => maps.echoes.get(id) ?? id),
-      mainEchoId: remapOptionalId(maps.echoes, result.mainEchoId)
-    })),
-    plot: run.plot.map((point) => ({
-      ...point,
-      echoIds: point.echoIds.map((id) => maps.echoes.get(id) ?? id),
-      mainEchoId: maps.echoes.get(point.mainEchoId) ?? point.mainEchoId
-    }))
-  })
-  const remappedRuns = incomingRuns.map(remapRun)
-  maps.optimizerRuns = resolveImportIds(current.optimizerRuns ?? [], remappedRuns, (run) => importFingerprint(run))
-
   const echoes = planImportCollection('echoes', current.echoes, incomingEchoes, maps.echoes, (echo) => ({
     ...echo,
     equippedBy: Number(document.schemaVersion) >= 7
@@ -650,9 +668,7 @@ async function createAccountImportPlan(document: AccountDocument) {
   const equippedLoadouts = planImportCollection('equippedLoadouts', current.equippedLoadouts ?? [], incomingEquippedLoadouts, maps.equippedLoadouts, (loadout) => ({ ...loadout, characterId: maps.characters.get(loadout.characterId) ?? loadout.characterId, weaponId: maps.weapons.get(loadout.weaponId) ?? loadout.weaponId, echoIds: loadout.echoIds.map((id) => maps.echoes.get(id) ?? id) }))
   const theorycraftBuilds = planImportCollection('theorycraftBuilds', current.theorycraftBuilds ?? [], incomingTheorycraftBuilds, maps.theorycraftBuilds, remapTheorycraft)
   const teams = planImportCollection('teams', current.teams, remappedTeams, maps.teams, (team) => team)
-  const optimizerProfiles = planImportCollection('optimizerProfiles', current.optimizerProfiles ?? [], incomingProfiles, maps.optimizerProfiles, remapProfile)
-  const optimizerRuns = planImportCollection('optimizerRuns', current.optimizerRuns ?? [], incomingRuns, maps.optimizerRuns, remapRun)
-  const collections = [echoes, characters, weapons, builds, equippedLoadouts, theorycraftBuilds, teams, optimizerProfiles, optimizerRuns]
+  const collections = [echoes, characters, weapons, builds, equippedLoadouts, theorycraftBuilds, teams]
   const preview: AccountImportPreview = {
     schemaVersion: document.schemaVersion,
     gameDataVersion: document.gameDataVersion,
@@ -662,18 +678,18 @@ async function createAccountImportPlan(document: AccountDocument) {
     updated: collections.reduce((sum, collection) => sum + collection.summary.updated, 0),
     duplicates: collections.reduce((sum, collection) => sum + collection.summary.duplicates, 0)
   }
-  return { preview, echoes, characters, weapons, builds, equippedLoadouts, theorycraftBuilds, teams, optimizerProfiles, optimizerRuns }
+  return { preview, echoes, characters, weapons, builds, equippedLoadouts, theorycraftBuilds, teams }
 }
 
 export async function previewAccountImport(document: AccountDocument): Promise<AccountImportPreview> {
-  if (!validateAccount(document)) throw new Error('The account backup is invalid or unsupported.')
+  if (!validateAccount(document)) throw new Error(accountBackupError(document) ?? 'The account backup is invalid.')
   return (await createAccountImportPlan(document)).preview
 }
 
 export async function importAccount(document: AccountDocument): Promise<AccountImportPreview> {
-  if (!validateAccount(document)) throw new Error('The account backup is invalid or unsupported.')
+  if (!validateAccount(document)) throw new Error(accountBackupError(document) ?? 'The account backup is invalid.')
   const plan = await createAccountImportPlan(document)
-  await db.transaction('rw', [db.echoes, db.characters, db.weapons, db.builds, db.equippedLoadouts, db.theorycraftBuilds, db.teams, db.optimizerProfiles, db.optimizerRuns], async () => {
+  await db.transaction('rw', [db.echoes, db.characters, db.weapons, db.builds, db.equippedLoadouts, db.theorycraftBuilds, db.teams], async () => {
     await db.echoes.bulkPut(plan.echoes.records)
     await db.characters.bulkPut(plan.characters.records)
     await db.weapons.bulkPut(plan.weapons.records)
@@ -681,8 +697,6 @@ export async function importAccount(document: AccountDocument): Promise<AccountI
     await db.equippedLoadouts.bulkPut(plan.equippedLoadouts.records)
     await db.theorycraftBuilds.bulkPut(plan.theorycraftBuilds.records)
     await db.teams.bulkPut(plan.teams.records)
-    await db.optimizerProfiles.bulkPut(plan.optimizerProfiles.records)
-    await db.optimizerRuns.bulkPut(plan.optimizerRuns.records)
   })
   await ensureSchemaSevenRelations()
   await removeRedundantImportedBuilds()
@@ -692,9 +706,9 @@ export async function importAccount(document: AccountDocument): Promise<AccountI
 }
 
 async function ensureSchemaSevenRelations() {
-  await db.transaction('rw', [db.characters, db.weapons, db.echoes, db.builds, db.equippedLoadouts, db.teams, db.optimizerProfiles, db.optimizerRuns], async () => {
-    const [characters, weapons, echoes, builds, loadouts, teams, profiles, runs] = await Promise.all([
-      db.characters.toArray(), db.weapons.toArray(), db.echoes.toArray(), db.builds.toArray(), db.equippedLoadouts.toArray(), db.teams.toArray(), db.optimizerProfiles.toArray(), db.optimizerRuns.toArray()
+  await db.transaction('rw', [db.characters, db.weapons, db.echoes, db.builds, db.equippedLoadouts, db.teams, db.optimizerProfiles], async () => {
+    const [characters, weapons, echoes, builds, loadouts, teams, profiles] = await Promise.all([
+      db.characters.toArray(), db.weapons.toArray(), db.echoes.toArray(), db.builds.toArray(), db.equippedLoadouts.toArray(), db.teams.toArray(), db.optimizerProfiles.toArray()
     ])
     for (const character of characters) {
       if (loadouts.some((entry) => entry.characterId === character.id)) continue
@@ -726,10 +740,6 @@ async function ensureSchemaSevenRelations() {
     for (const profile of profiles) {
       const buildId = memberIdByBuild.get(profile.buildId)
       if (buildId) await db.optimizerProfiles.update(profile.id, { buildId })
-    }
-    for (const run of runs) {
-      const buildId = memberIdByBuild.get(run.buildId)
-      if (buildId) await db.optimizerRuns.update(run.id, { buildId })
     }
   })
 }

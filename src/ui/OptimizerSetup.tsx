@@ -70,7 +70,7 @@ export function OptimizerSetup(props: OptimizerSetupProps) {
   const mainOptions = eligible
 
   const toggleRarity = (rarity: Echo['rarity']) => update({
-    rarities: toggleChip(profile.rarities, rarity, [1, 2, 3, 4, 5])
+    rarities: toggleChip(profile.rarities, rarity, [2, 3, 4, 5])
   })
   const toggleMainStat = (cost: Echo['cost'], key: StatKey) => {
     const costKey = String(cost) as '1' | '3' | '4'
@@ -117,7 +117,7 @@ export function OptimizerSetup(props: OptimizerSetupProps) {
             <div style={{ '--level-low': `${profile.levelLow * 4}%`, '--level-high': `${profile.levelHigh * 4}%` } as CSSProperties}><input aria-label="Minimum Echo level" type="range" min="0" max="25" value={profile.levelLow} onChange={(event) => update({ levelLow: Math.min(profile.levelHigh, Number(event.target.value)) })}/><input aria-label="Maximum Echo level" type="range" min="0" max="25" value={profile.levelHigh} onChange={(event) => update({ levelHigh: Math.max(profile.levelLow, Number(event.target.value)) })}/></div>
             <label><span>Maximum level</span><input type="number" min="0" max="25" value={profile.levelHigh} onChange={(event) => update({ levelHigh: Math.max(profile.levelLow, Math.min(25, Number(event.target.value))) })}/></label>
           </div>
-          <div className="optimizer-toggle-row"><span>Rarity</span><div>{([1, 2, 3, 4, 5] as Echo['rarity'][]).map((rarity) => { const active = profile.rarities.includes(rarity); return <button type="button" className={active ? 'active' : ''} aria-pressed={active} data-filter-state={active ? 'included' : 'excluded'} onClick={() => toggleRarity(rarity)} key={rarity}>{rarity}★ <small>{echoes.filter((echo) => echo.rarity === rarity).length}</small></button> })}</div></div>
+          <div className="optimizer-toggle-row"><span>Rarity</span><div>{([2, 3, 4, 5] as Echo['rarity'][]).map((rarity) => { const active = profile.rarities.includes(rarity); return <button type="button" className={active ? 'active' : ''} aria-pressed={active} data-filter-state={active ? 'included' : 'excluded'} onClick={() => toggleRarity(rarity)} key={rarity}>{rarity}★ <small>{echoes.filter((echo) => echo.rarity === rarity).length}</small></button> })}</div></div>
         </Panel>
 
         <Panel className="optimizer-filter-card optimizer-main-stat-card">
