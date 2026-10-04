@@ -2,7 +2,7 @@ import { createLocalId } from '../domain/id'
 import type { Build, Echo, EquippedLoadout, LoadoutSourceRef, OwnedCharacter, OwnedWeapon, TheorycraftBuild } from '../domain/types'
 import { createTheorycraftBuild } from '../domain/loadouts'
 import { characterCatalog, echoCatalog, weaponCatalog } from '../game-data'
-import { db } from './database'
+import { db, repairEchoAssignmentConsistency } from './database'
 
 function defaultWeaponFor(character: OwnedCharacter) {
   const characterEntry = characterCatalog.find((entry) => entry.id === character.catalogId)
@@ -77,17 +77,11 @@ export async function setEquippedEchoIds(characterId: string, requestedIds: stri
     const selected = echoIds.length ? await db.echoes.where('id').anyOf(echoIds).toArray() : []
     if (selected.length !== echoIds.length) throw new Error('One or more selected Echoes no longer exist.')
     validateEchoSelection(selected)
-    const allLoadouts = await db.equippedLoadouts.toArray()
-    for (const loadout of allLoadouts) {
-      if (loadout.characterId === characterId || !loadout.echoIds.some((id) => echoIds.includes(id))) continue
-      await db.equippedLoadouts.update(loadout.id, { echoIds: loadout.echoIds.filter((id) => !echoIds.includes(id)), updatedAt: Date.now() })
-    }
-    await db.echoes.where('equippedBy').equals(characterId).modify({ equippedBy: undefined, equippedByName: undefined })
-    if (echoIds.length) await db.echoes.where('id').anyOf(echoIds).modify({ equippedBy: characterId, equippedByName: characterCatalog.find((entry) => entry.id === character.catalogId)?.name })
     const current = await db.equippedLoadouts.where('characterId').equals(character.id).first()
     if (current) await db.equippedLoadouts.update(current.id, { echoIds, updatedAt: Date.now() })
     else await db.equippedLoadouts.add({ id: `equipped:${character.id}`, characterId: character.id, weaponId: '', echoIds, updatedAt: Date.now() })
   })
+  await repairEchoAssignmentConsistency()
 }
 
 export async function setEquippedWeapon(characterId: string, weaponId: string) {
@@ -145,18 +139,16 @@ export async function equipSavedBuild(buildId: string) {
     const loadouts = await db.equippedLoadouts.toArray()
     for (const loadout of loadouts) {
       if (loadout.characterId === character.id) continue
-      const echoIds = loadout.echoIds.filter((id) => !build.echoIds.includes(id))
       const weaponId = build.weaponId && loadout.weaponId === build.weaponId ? '' : loadout.weaponId
-      if (echoIds.length !== loadout.echoIds.length || weaponId !== loadout.weaponId) await db.equippedLoadouts.update(loadout.id, { echoIds, weaponId, updatedAt: Date.now() })
+      if (weaponId !== loadout.weaponId) await db.equippedLoadouts.update(loadout.id, { weaponId, updatedAt: Date.now() })
     }
-    await db.echoes.where('equippedBy').equals(character.id).modify({ equippedBy: undefined, equippedByName: undefined })
-    if (build.echoIds.length) await db.echoes.where('id').anyOf(build.echoIds).modify({ equippedBy: character.id, equippedByName: characterEntry?.name })
     await db.weapons.where('equippedBy').equals(character.id).modify({ equippedBy: undefined })
     if (weapon) await db.weapons.update(weapon.id, { equippedBy: character.id })
     const current = loadouts.find((entry) => entry.characterId === character.id)
     const next: EquippedLoadout = { id: current?.id ?? `equipped:${character.id}`, characterId: character.id, weaponId: weapon?.id ?? '', echoIds: [...build.echoIds], updatedAt: Date.now() }
     await db.equippedLoadouts.put(next)
   })
+  await repairEchoAssignmentConsistency()
 }
 
 export async function equipmentConflicts(buildId: string) {
@@ -164,8 +156,6 @@ export async function equipmentConflicts(buildId: string) {
   if (!build) return []
   const character = build.characterId ? await db.characters.get(build.characterId) : undefined
   const names = new Set<string>()
-  const echoes = await db.echoes.where('id').anyOf(build.echoIds).toArray()
-  for (const echo of echoes) if (echo.equippedBy && echo.equippedBy !== character?.id) names.add(echo.equippedByName ?? 'another character')
   const weapon = await db.weapons.get(build.weaponId)
   if (weapon?.equippedBy && weapon.equippedBy !== character?.id) {
     const owner = await db.characters.get(weapon.equippedBy)

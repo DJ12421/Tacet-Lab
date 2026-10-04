@@ -11,11 +11,11 @@ import { echoRollRating } from '../domain/echo-grade'
 import { resolveCharacterSubstatProfile, scoreCharacterSubstats } from '../domain/character-substat-score'
 import { createLocalId } from '../domain/id'
 import { resolveLoadout, type LoadoutCollections } from '../domain/loadouts'
-import { db, saveSettings, setOwnedWeaponOwner } from '../storage/database'
+import { db, repairEchoAssignmentConsistency, saveSettings, setOwnedWeaponOwner } from '../storage/database'
 import { deleteCharacterArtwork, loadCharacterArtwork, saveCharacterArtwork } from '../storage/character-art-cache'
 import { setEquippedEchoIds } from '../storage/loadouts'
 import type { AppSettings, Build, Echo, EquippedLoadout, LoadoutSourceRef, OwnedCharacter, OwnedWeapon, StatKey, TheorycraftBuild } from '../domain/types'
-import { CharacterSubstatProfileContext, EchoMiniCard, EquippedCharacterLabel, Icon, Panel } from './components'
+import { CharacterSubstatProfileContext, EchoMiniCard, Icon, Panel } from './components'
 import { EchoEditModal } from './EchoEditModal'
 import type { NanokaSpinePortraitHandle } from './NanokaSpinePortrait'
 import type { CalculationDetail } from './CalculationDetails'
@@ -282,7 +282,7 @@ export function EchoPicker({ slot, characterId, currentIds, echoes, accentClass,
       <div className="echo-picker-list" ref={listRef}>
         {error && <div className="notice error">{error}</div>}
         {pagination}
-        <div className="echo-picker-options">{pageOptions.map((echo) => <EchoMiniCard key={echo.id} echo={echo} selected={echo.id === currentId} rollRating={echoMeta.get(echo.id)?.rollRating} onClick={() => void choose(echo)} equipment={echo.equippedBy && echo.equippedBy !== characterId ? <EquippedCharacterLabel name={echo.equippedByName ?? 'Another character'}/> : undefined}/>)}</div>
+        <div className="echo-picker-options">{pageOptions.map((echo) => <EchoMiniCard key={echo.id} echo={echo} selected={echo.id === currentId} rollRating={echoMeta.get(echo.id)?.rollRating} onClick={() => void choose(echo)}/>)}</div>
         {pageCount > 1 && pagination}
       </div>
     </section>
@@ -435,6 +435,7 @@ export function CharacterShowcase({ character, characters, catalog, weapons, ech
         if (team.scenario) team.scenario = { ...team.scenario, memberConditions: keep(team.scenario.memberConditions), selectedTargetByBuild: keep(team.scenario.selectedTargetByBuild), compareBuildId: team.scenario.compareBuildId && !removed.has(team.scenario.compareBuildId) ? team.scenario.compareBuildId : undefined }
       })
     })
+    await repairEchoAssignmentConsistency()
     await deleteCharacterArtwork(character.id).catch(() => undefined)
     await refresh()
     onBack()

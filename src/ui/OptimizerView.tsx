@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type Dispatch, type SetStateAction } from 'react'
-import { characterCatalog, echoCatalog, GAME_DATA_VERSION, sonataCatalog, statLabels } from '../game-data'
+import { echoCatalog, GAME_DATA_VERSION, sonataCatalog, statLabels } from '../game-data'
 import { pendingMechanics } from '../game-data/review-status.generated'
 import { createTheorycraftBuild } from '../domain/loadouts'
 import { db } from '../storage/database'
@@ -28,7 +28,7 @@ import type {
 } from '../domain/types'
 import { calculateBuildModes, combatTargets, disabledEquipmentEffectIds, formatDamage, resolveRuntimeBuild, sonatasForEchoes, withEquipmentBuffs, type CombatTarget } from '../domain/combat/runtime'
 import { createLocalId } from '../domain/id'
-import { EchoMiniCard, EquippedCharacterLabel, formatStat, Icon, Panel } from './components'
+import { EchoMiniCard, formatStat, Icon, Panel } from './components'
 import { CalculatedValue, traceCalculationDetail } from './CalculationDetails'
 import { runtimeStatDetail } from './calculation-detail-model'
 import { resolveCharacterShowcaseModel } from './character-showcase-model'
@@ -135,9 +135,12 @@ export function OptimizerView({
   const workersRef = useRef<Worker[]>([])
   const requestIdRef = useRef('')
   const contextFingerprintRef = useRef('')
-  const inventoryEchoes = useMemo(() => echoes.filter((echo) => !echo.id.startsWith('theorycraft:')), [echoes])
   const build = builds.find((item) => item.id === buildId) ?? builds[0]
   const runtime = useMemo(() => build ? resolveRuntimeBuild(build, characters, ownedWeapons) : undefined, [build, characters, ownedWeapons])
+  const inventoryEchoes = useMemo(() => {
+    const ownedIds = new Set(rotation?.input.equippedLoadouts?.find((loadout) => loadout.characterId === runtime?.character.id)?.echoIds ?? [])
+    return echoes.filter((echo) => !echo.id.startsWith('theorycraft:')).map((echo) => ownedIds.has(echo.id) ? { ...echo, equippedBy: runtime?.character.id } : echo)
+  }, [echoes, rotation?.input.equippedLoadouts, runtime?.character.id])
   const showcase = useMemo(() => build && runtime ? resolveCharacterShowcaseModel({ character: runtime.character, weapons: ownedWeapons, echoes, builds: [build] }) : undefined, [build, runtime, ownedWeapons, echoes])
   const resonator = runtime?.resonator
   const weapon = runtime?.runtimeWeapon
@@ -404,11 +407,6 @@ export function OptimizerView({
     if (runFingerprint && runFingerprint !== optimizerInventoryFingerprint(inventoryEchoes)) { setError('Inventory assignments changed after this search. Generate builds again before equipping.'); return }
     const selected = result.echoIds.map((id) => echoes.find((echo) => echo.id === id))
     if (selected.some((echo) => !echo)) { setError('One or more Echoes in this result no longer exist.'); return }
-    const borrowed = selected.filter((echo): echo is Echo => Boolean(echo?.equippedBy && echo.equippedBy !== runtime?.character.id))
-    if (borrowed.length) {
-      const sources = [...new Set(borrowed.map((echo) => echo.equippedByName ?? builds.find((candidate) => candidate.id === echo.equippedBy)?.name ?? 'another build'))]
-      if (!window.confirm(`Equip this result and move ${borrowed.length} Echo${borrowed.length === 1 ? '' : 'es'} from ${sources.join(', ')}?`)) return
-    }
     try {
       if (!runtime?.character) throw new Error('The optimizer character is missing.')
       await setEquippedEchoIds(runtime.character.id, result.echoIds)
@@ -502,7 +500,6 @@ export function OptimizerView({
       <div className="optimizer-results-heading"><div><span>{results.length} ranked builds</span>{generatedAt && <small>Generated {new Date(generatedAt).toLocaleString()} · {progress.tested.toLocaleString('en-US')} evaluated</small>}</div><div><span className={`optimizer-mode-chip ${results[0]?.complete ? 'complete' : 'capped'}`}>{results[0]?.complete ? 'Exact result' : 'Best found'}</span><button className="secondary" onClick={clearResults}>Clear results</button></div></div>
       <div className="optimizer-build-list">{results.map((result, index) => {
         const resultEchoes = result.echoIds.map((id) => echoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo))
-        const borrowedEchoes = resultEchoes.filter((echo) => echo.equippedBy && echo.equippedBy !== runtime?.character.id)
         const improvement = currentScore === undefined ? undefined : result.score - currentScore
         const improvementPercent = currentScore && improvement !== undefined ? improvement / currentScore * 100 : undefined
         const expanded = expandedResult === index
@@ -510,8 +507,8 @@ export function OptimizerView({
         const sonatas = [...resultEchoes.reduce((counts, echo) => counts.set(echo.sonata, (counts.get(echo.sonata) ?? 0) + 1), new Map<string, number>())].filter(([name, count]) => sonataCatalog.some((sonata) => sonata.name === name && sonata.effects.some((effect) => count >= effect.pieces)))
         return <Panel className={`optimizer-build-result ${expanded ? 'is-expanded' : ''} ${selectedKey === buildKey(result.echoIds) ? 'is-selected' : ''}`} key={buildKey(result.echoIds)}>
           <header><button className="optimizer-result-toggle" onClick={() => { setExpandedResult(expanded ? null : index); setSelectedKey(expanded ? undefined : buildKey(result.echoIds)) }} aria-expanded={expanded}><span className="optimizer-rank">#{index + 1}</span><span><b>{result.complete ? 'OPTIMAL BUILD' : 'BEST FOUND'}</b><small>{result.mainEchoId === result.echoIds[0] ? 'Main Echo verified' : 'Main Echo reordered'}</small></span><span className="optimizer-score"><small>{selectedTargetLabel}</small><strong>{Math.round(result.score).toLocaleString('en-US')}</strong>{improvement !== undefined && <em className={improvement > 0 ? 'positive' : improvement < 0 ? 'negative' : ''}>{improvement > 0 ? '+' : ''}{formatDamage(improvement)}{improvementPercent !== undefined ? ` (${improvementPercent > 0 ? '+' : ''}${improvementPercent.toFixed(1)}%)` : ''}</em>}</span><span className="optimizer-score-modes"><i>Non-CRIT <b>{formatDamage(result.damage.normal)}</b></i><i>Average <b>{formatDamage(result.damage.expected)}</b></i><i>CRIT <b>{formatDamage(result.damage.critical)}</b></i></span><span className="optimizer-chevron">⌄</span></button><div className="optimizer-result-actions"><button className="primary" onClick={() => void apply(result)}>Equip</button><button className="secondary" onClick={() => void saveResult(result)}>Save build</button><button className="secondary" onClick={() => void theorycraftResult(result)}>Theorycraft</button></div></header>
-          <div className="optimizer-result-tags"><b>Main: {resultEchoes[0]?.name ?? 'Unavailable'}</b>{sonatas.map(([name, count]) => <span key={name}>{name} · {count}-pc</span>)}{borrowedEchoes.length > 0 && <em>{borrowedEchoes.length} borrowed</em>}</div>
-          <div className="optimizer-echo-strip">{resultEchoes.map((echo, echoIndex) => { const ownerBuild = builds.find((candidate) => candidate.echoIds.includes(echo.id)); const ownerCharacter = characterCatalog.find((candidate) => candidate.id === ownerBuild?.resonatorId); const ownerName = ownerCharacter?.name ?? echo.equippedByName ?? ownerBuild?.name ?? (echo.equippedBy ? 'Equipped' : 'Inventory'); return <div className={echoIndex === 0 ? 'optimizer-main-echo' : ''} key={echo.id}>{echoIndex === 0 && <span>Main Echo</span>}<EchoMiniCard echo={echo} equipment={<EquippedCharacterLabel name={ownerName}/>} /></div> })}</div>
+          <div className="optimizer-result-tags"><b>Main: {resultEchoes[0]?.name ?? 'Unavailable'}</b>{sonatas.map(([name, count]) => <span key={name}>{name} · {count}-pc</span>)}</div>
+          <div className="optimizer-echo-strip">{resultEchoes.map((echo, echoIndex) => { return <div className={echoIndex === 0 ? 'optimizer-main-echo' : ''} key={echo.id}>{echoIndex === 0 && <span>Main Echo</span>}<EchoMiniCard echo={echo} /></div> })}</div>
           {expanded && <div className="optimizer-result-details"><section><h3>Build statistics</h3><div className="optimizer-stat-table">{statKeys.map((key) => { const previous = currentStats?.[key] ?? result.stats[key]; const delta = result.stats[key] - previous; return <div key={key}><span>{statLabels[key]}</span>{resonator && weapon ? <CalculatedValue detail={runtimeStatDetail(resonator, weapon, resultEchoes, key, result.stats[key])}><b>{formatStat(key, result.stats[key])}</b></CalculatedValue> : <b>{formatStat(key, result.stats[key])}</b>}<small className={delta > 0 ? 'positive' : delta < 0 ? 'negative' : ''}>{delta === 0 ? '—' : `${delta > 0 ? '+' : ''}${formatStat(key, delta)}`}</small></div> })}</div></section><section><h3>Target comparison</h3><div className="optimizer-damage-table"><div><span>Current score</span><b>{currentScore === undefined ? 'Unavailable' : formatDamage(currentScore)}</b></div><div><span>Optimized score</span><CalculatedValue detail={detailForResult(result)}><b>{Math.round(result.score).toLocaleString('en-US')}</b></CalculatedValue></div><div><span>Improvement</span><b className={improvement !== undefined && improvement > 0 ? 'positive' : improvement !== undefined && improvement < 0 ? 'negative' : ''}>{improvement === undefined ? 'Unavailable' : `${improvement > 0 ? '+' : ''}${formatDamage(improvement)}${improvementPercent !== undefined ? ` (${improvementPercent > 0 ? '+' : ''}${improvementPercent.toFixed(1)}%)` : ''}`}</b></div><div><span>Search guarantee</span><b>{result.complete ? 'Exact within active filters' : 'Capped search'}</b></div></div></section></div>}
         </Panel>
       })}</div>

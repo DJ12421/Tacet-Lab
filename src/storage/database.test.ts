@@ -1,8 +1,8 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { OptimizerRun, TheorycraftBuild } from '../domain/types'
 import { characterCatalog, weaponCatalog } from '../game-data'
-import { accountBackupError, db, ensureSeedData, exportAccount, importAccount, prepareAccountBackup, previewAccountImport, requestPersistentStorage, setOwnedWeaponOwner, validateAccount } from './database'
-import { createOwnedCharacterWithDefaultWeapon, ensureAllEquippedLoadouts } from './loadouts'
+import { accountBackupError, db, ensureSeedData, exportAccount, importAccount, prepareAccountBackup, previewAccountImport, repairEchoAssignmentConsistency, requestPersistentStorage, setOwnedWeaponOwner, validateAccount } from './database'
+import { createOwnedCharacterWithDefaultWeapon, ensureAllEquippedLoadouts, setEquippedEchoIds } from './loadouts'
 import { defaultOptimizerProfile } from './optimizer-profiles'
 
 describe('local account persistence', () => {
@@ -87,6 +87,23 @@ describe('local account persistence', () => {
     expect(validateAccount(exported)).toBe(true)
     await importAccount(exported)
     expect((await exportAccount()).builds).toHaveLength(0)
+  })
+
+  it('keeps one Echo equipped by multiple characters through repair and unequip', async () => {
+    const catalog = characterCatalog.find((entry) => entry.name === 'Lucy')!
+    const first = await createOwnedCharacterWithDefaultWeapon(catalog.id)
+    const second = await createOwnedCharacterWithDefaultWeapon(catalog.id)
+    await db.echoes.add({ id: 'shared-echo', name: 'Fusion Warrior', cost: 1, rarity: 5, level: 0, sonata: 'Molten Rift', mainStat: { key: 'atkPercent', value: 18 }, subStats: [], locked: false, excluded: false, createdAt: 1, source: 'manual' })
+
+    await setEquippedEchoIds(first.id, ['shared-echo'])
+    await setEquippedEchoIds(second.id, ['shared-echo'])
+    await repairEchoAssignmentConsistency()
+    expect((await db.equippedLoadouts.where('characterId').equals(first.id).first())?.echoIds).toEqual(['shared-echo'])
+    expect((await db.equippedLoadouts.where('characterId').equals(second.id).first())?.echoIds).toEqual(['shared-echo'])
+
+    await setEquippedEchoIds(first.id, [])
+    expect((await db.equippedLoadouts.where('characterId').equals(second.id).first())?.echoIds).toEqual(['shared-echo'])
+    expect((await db.echoes.get('shared-echo'))?.equippedBy).toBe(second.id)
   })
 
   it('keeps optimizer profiles and runs out of backups and ignores them in older imports', async () => {

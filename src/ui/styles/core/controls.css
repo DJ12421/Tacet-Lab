@@ -188,6 +188,10 @@
   white-space: nowrap;
 }
 
+.owned-chip-filter .filter-chips button:has(>.weapon-type-filter-icon) {
+  padding-block: 0;
+}
+
 .filter-element-icon {
   width: 25px;
   height: 25px;

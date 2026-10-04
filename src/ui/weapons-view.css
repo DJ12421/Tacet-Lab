@@ -122,7 +122,7 @@
 }
 
 .wv-card:hover .wv-card-art img {
-  transform: scale(1.035);
+  transform: scale(1.22);
 }
 
 .wv-card-art span {
@@ -144,12 +144,14 @@
 .wv-card-copy>small {
   color: #7b8985;
   font-size: var(--font-size-caption);
+  margin-bottom: 8px;
 }
 
 .wv-card-copy h2 {
-  margin: 3px 0 12px;
+  margin: 0 0 3px;
   overflow: hidden;
   color: #eff4f2;
+  font-size: var(--font-size-body-large);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -419,21 +421,6 @@
   color: var(--weapon-accent);
 }
 
-.wv-rank {
-  display: grid;
-  gap: 5px;
-  color: #87938f;
-  font-size: var(--font-size-caption);
-}
-
-.wv-rank select {
-  min-height: 39px;
-  padding: 0 9px;
-  border: 1px solid rgba(255,255,255,.13);
-  background: #070b0c;
-  color: #fff;
-}
-
 .wv-stats-card>span,.wv-passive-card>span {
   color: #75827e;
   font-size: var(--font-size-caption);
@@ -587,6 +574,9 @@
   .wv-card,.wv-card-art img {
     transition: none;
   }
+  .wv-card:hover .wv-card-art img {
+    transform: scale(1.15);
+  }
 }
 
 .wv-card {
@@ -624,18 +614,16 @@
 }
 
 .wv-card-art img {
-  width: 148px;
-  height: 176px;
+  width: auto;
+  height: auto;
+  margin: 0 0 0 24px;
+  transform: scale(1.15);
 }
 
 .wv-card-copy {
   padding: 22px 18px 16px 6px;
 }
 
-.wv-card-copy h2 {
-  margin-bottom: 16px;
-  font-size: var(--font-size-body-large);
-}
 
 .wv-card-stats {
   gap: 0;
@@ -705,18 +693,6 @@
   background: rgba(5,8,9,.72);
 }
 
-.wv-card-art img {
-  height: 164px;
-}
-
-@media (max-width:860px) {
-  .wv-card-main {
-    min-height: 186px;
-  }
-  .wv-card-art img {
-    height: 142px;
-  }
-}
 
 .wv-card-main {
   min-height: 176px;
@@ -731,17 +707,13 @@
   text-shadow: 0 1px 8px #000;
 }
 
-.wv-card-art img {
-  height: 100%;
-}
-
 .wv-card-copy {
   padding: 13px 15px 10px 4px;
 }
 
 .wv-card-copy h2 {
-  margin: 2px 0 9px;
-  font-size: var(--font-size-body);
+  margin: 2px 0 2px;
+  font-size: 20px;
   line-height: 1.2;
 }
 
@@ -751,6 +723,10 @@
 
 .wv-card-stats {
   margin-top: 9px;
+}
+
+.wv-card-copy > :is(h2,small,.wv-card-level,.wv-card-stats) {
+  margin-left: 28px;
 }
 
 .wv-card-stats span {
@@ -883,6 +859,11 @@
 
 .weapon-config-modal .wv-detail-intro>p {
   margin-top: 16px;
+}
+
+.weapon-config-modal .character-equip-menu {
+  top: auto;
+  bottom: calc(100% + 4px);
 }
 
 @media (max-width:650px) {

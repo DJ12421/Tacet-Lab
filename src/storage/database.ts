@@ -213,11 +213,11 @@ export async function repairEchoAssignmentConsistency() {
       let cost = 0
       const echoIds = [...new Set(loadout.echoIds)].filter((id) => {
         const echo = echoById.get(id)
-        if (!echo || claimedBy.has(id) || cost + echo.cost > 12) return false
+        if (!echo || cost + echo.cost > 12) return false
         cost += echo.cost
         return true
       }).slice(0, 5)
-      echoIds.forEach((id) => claimedBy.set(id, loadout.characterId))
+      echoIds.forEach((id) => { if (!claimedBy.has(id)) claimedBy.set(id, loadout.characterId) })
       if (echoIds.length !== loadout.echoIds.length || echoIds.some((id, index) => id !== loadout.echoIds[index])) await db.equippedLoadouts.update(loadout.id, { echoIds, updatedAt: Date.now() })
     }
     const characterById = new Map(characters.map((entry) => [entry.id, entry]))

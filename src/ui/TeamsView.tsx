@@ -427,7 +427,7 @@ function TeamGallery({ teams, builds, characters, weapons, echoes, equippedLoado
 
   return <div className="tw-gallery-page">
     <section className="tw-gallery-controls tw-panel">
-      <div><span className="eyebrow">Team archive</span><h1>Your teams</h1><p>Choose a team to open its full composition, member sheets, buffs, and rotation workspace.</p></div>
+      <div><span className="eyebrow">Team Loadout</span><h1>Your teams</h1><p>Choose a team to open its full composition, member sheets, buffs, and rotation workspace.</p></div>
       <label><span>Character filter</span><CharacterFilterPicker value={characterFilter} options={characterOptions} onChange={setCharacterFilter}/></label>
       <label><span>Team name</span><span className="search-field"><Icon name="scan"/><input data-search="" autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search teams..."/><kbd>Ctrl K</kbd></span></label>
       <button type="button" className="primary tw-gallery-create" onClick={() => void onCreate()}><Icon name="plus"/>Add team</button>
@@ -1728,11 +1728,10 @@ function MemberWorkspace({ member, model, section, setSection, backToFormation, 
     if (member.source?.type === 'theorycraft') setEchoSlot(slot)
     else setEditingEcho(echo)
   }
-  const selectEcho = async (echoIds: string[], next?: Echo) => {
+  const selectEcho = async (echoIds: string[]) => {
     const selected = echoIds.map((id) => echoes.find((echo) => echo.id === id))
     if (selected.some((echo) => !echo) || new Set(echoIds).size !== echoIds.length || selected.reduce((total, echo) => total + (echo?.cost ?? 0), 0) > 12) throw new Error('This Echo combination is not valid for the loadout.')
     if (member.source?.type === 'equipped') {
-      if (next?.equippedBy && next.equippedBy !== member.character?.id && !confirm(`Move ${next.name} from ${next.equippedByName ?? 'another character'}?`)) return false
       await setEquippedEchoIds(member.character!.id, echoIds)
     } else if (member.source?.type === 'saved') {
       if (!await db.builds.update(member.source.buildId, { echoIds, updatedAt: Date.now() })) throw new Error('The saved build no longer exists.')

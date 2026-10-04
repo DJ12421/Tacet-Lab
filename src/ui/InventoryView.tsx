@@ -5,10 +5,10 @@ import { generatedSonataCatalog } from '../game-data/sonatas.generated'
 import { generatedSonataIconSources } from '../game-data/sonatas.generated'
 import { generatedCharacterSummaries as characterCatalog } from '../game-data/character-summaries.generated'
 import { echoRollRating } from '../domain/echo-grade'
+import { echoStatIdentity } from '../domain/echo-identity'
 import { effectiveSubStats } from '../game-data/echo-main-stats'
 import { db } from '../storage/database'
-import { setEquippedEchoIds } from '../storage/loadouts'
-import type { Build, Echo, OwnedCharacter, StatKey } from '../domain/types'
+import type { Build, Echo, EquippedLoadout, OwnedCharacter, StatKey } from '../domain/types'
 import { EchoMiniCard, Icon, PageHeader, Panel } from './components'
 import { EchoEditModal } from './EchoEditModal'
 import type { CompatibleCharacter } from './OwnedInventoryView'
@@ -75,7 +75,7 @@ function MultiSelect({ label, values, options, emptyLabel, onChange, icon, open,
   </div></label>
 }
 
-export function InventoryView({ echoes, builds: _builds = [], characters = [], refresh, openScanner, embedded = false }: { echoes: Echo[]; builds?: Build[]; characters?: OwnedCharacter[]; refresh: (scope?: 'all' | 'echoes' | 'echoes-builds') => Promise<void>; openScanner: () => void; embedded?: boolean }) {
+export function InventoryView({ echoes, builds = [], equippedLoadouts = [], characters = [], refresh, openScanner, embedded = false }: { echoes: Echo[]; builds?: Build[]; equippedLoadouts?: EquippedLoadout[]; characters?: OwnedCharacter[]; refresh: (scope?: 'all' | 'echoes' | 'echoes-builds') => Promise<void>; openScanner: () => void; embedded?: boolean }) {
   const [query, setQuery] = useState('')
   const [costs, setCosts] = useState<number[]>(echoCosts)
   const [rarities, setRarities] = useState<number[]>(echoRarities)
@@ -112,6 +112,29 @@ export function InventoryView({ echoes, builds: _builds = [], characters = [], r
     return catalog ? [{ item, catalog }] : []
   }), [characters])
   const characterNames = useMemo(() => new Map(characterOptions.map(({ item, catalog }) => [item.id, catalog.name.toLowerCase()])), [characterOptions])
+  const equippedOwners = useMemo(() => {
+    const owners = new Map<string, string[]>()
+    for (const loadout of equippedLoadouts) for (const id of loadout.echoIds) owners.set(id, [...(owners.get(id) ?? []), loadout.characterId])
+    return owners
+  }, [equippedLoadouts])
+  const echoCharacters = useMemo(() => {
+    const identities = new Map(echoes.map((echo) => [echo.id, echoStatIdentity(echo)]))
+    const byIdentity = new Map<string, Set<string>>()
+    const add = (echoId: string, characterId?: string) => {
+      const identity = identities.get(echoId)
+      if (!identity || !characterId) return
+      if (!byIdentity.has(identity)) byIdentity.set(identity, new Set())
+      byIdentity.get(identity)!.add(characterId)
+    }
+    for (const echo of echoes) add(echo.id, echo.equippedBy)
+    for (const build of builds) {
+      const characterId = build.characterId ?? characters.find((character) => character.catalogId === build.resonatorId)?.id
+      for (const echoId of build.echoIds) add(echoId, characterId)
+    }
+    return new Map(echoes.map((echo) => [echo.id, [...(byIdentity.get(identities.get(echo.id)!) ?? [])]
+      .map((id) => characterOptions.find(({ item }) => item.id === id)?.catalog.name ?? (id === echo.equippedBy ? echo.equippedByName : undefined))
+      .filter((name): name is string => Boolean(name))]))
+  }, [builds, characterOptions, characters, echoes])
   const activeFilterCount = Number(costs.length !== echoCosts.length) + Number(rarities.length !== echoRarities.length) + Number(sonatas.length > 0) + Number(mainStats.length > 0) + Number(subStats.length > 0) + Number(lockState !== 'all') + Number(assignment !== 'all') + Number(showExcluded)
 
   const filtered = useMemo(() => echoes.filter((echo) =>
@@ -122,8 +145,8 @@ export function InventoryView({ echoes, builds: _builds = [], characters = [], r
     (!mainStats.length || mainStats.includes(echo.mainStat.key)) &&
     (!subStats.length || subStats.every((key) => echoMeta.get(echo.id)?.substats.some((stat) => stat.key === key))) &&
     (lockState === 'all' || echo.locked === (lockState === 'locked')) &&
-    (assignment === 'all' || Boolean(echo.equippedBy) === (assignment === 'equipped')) &&
-    (!deferredQuery || echo.name.toLowerCase().includes(deferredQuery) || (characterNames.get(echo.equippedBy ?? '') ?? echo.equippedByName ?? '').toLowerCase().includes(deferredQuery))
+    (assignment === 'all' || Boolean(equippedOwners.get(echo.id)?.length) === (assignment === 'equipped')) &&
+    (!deferredQuery || echo.name.toLowerCase().includes(deferredQuery) || (characterNames.get(echo.equippedBy ?? '') ?? echo.equippedByName ?? '').toLowerCase().includes(deferredQuery) || equippedOwners.get(echo.id)?.some((id) => characterNames.get(id)?.includes(deferredQuery)) || echoCharacters.get(echo.id)?.some((name) => name.toLowerCase().includes(deferredQuery)))
   ).sort((left, right) => {
     const direction = descending ? -1 : 1
     if (sort === 'score') return ((echoMeta.get(left.id)?.rollRating.average ?? echoScore(left)) - (echoMeta.get(right.id)?.rollRating.average ?? echoScore(right))) * direction || left.name.localeCompare(right.name)
@@ -131,7 +154,7 @@ export function InventoryView({ echoes, builds: _builds = [], characters = [], r
     if (sort === 'cost') return (left.cost - right.cost) * direction || (left.level - right.level) * direction
     if (sort === 'level') return (left.level - right.level) * direction || (left.cost - right.cost) * direction
     return (left.createdAt - right.createdAt) * direction
-  }), [assignment, characterNames, costs, deferredQuery, descending, echoes, echoMeta, lockState, mainStats, rarities, showExcluded, sonatas, sort, subStats])
+  }), [assignment, characterNames, costs, deferredQuery, descending, echoes, echoCharacters, echoMeta, equippedOwners, lockState, mainStats, rarities, showExcluded, sonatas, sort, subStats])
   const pageCount = Math.max(1, Math.ceil(filtered.length / ECHOES_PER_PAGE))
   const currentPage = Math.min(page, pageCount)
   const pageEchoes = useMemo(() => filtered.slice((currentPage - 1) * ECHOES_PER_PAGE, currentPage * ECHOES_PER_PAGE), [currentPage, filtered])
@@ -151,27 +174,11 @@ export function InventoryView({ echoes, builds: _builds = [], characters = [], r
     if (echo.locked) return
     if (!confirm(`Delete ${echo.name}? This cannot be undone.`)) return
     await db.transaction('rw', db.echoes, db.equippedLoadouts, async () => {
-      if (echo.equippedBy) {
-        const loadout = await db.equippedLoadouts.where('characterId').equals(echo.equippedBy).first()
-        if (loadout) await db.equippedLoadouts.update(loadout.id, { echoIds: loadout.echoIds.filter((id) => id !== echo.id), updatedAt: Date.now() })
-      }
+      await db.equippedLoadouts.toCollection().modify((loadout) => { loadout.echoIds = loadout.echoIds.filter((id) => id !== echo.id) })
       await db.echoes.delete(echo.id)
     })
     await refresh('echoes-builds')
   }
-  const equipEcho = async (echo: Echo, characterId: string) => {
-    if (!characterId && !echo.equippedBy) return
-    try {
-      const current = await db.equippedLoadouts.where('characterId').equals(characterId || echo.equippedBy!).first()
-      await setEquippedEchoIds(characterId || echo.equippedBy!, characterId
-        ? [...(current?.echoIds.filter((id) => id !== echo.id) ?? []), echo.id]
-        : current?.echoIds.filter((id) => id !== echo.id) ?? [])
-      await refresh('echoes-builds')
-    } catch (error) {
-      window.alert(error instanceof Error ? error.message : 'Could not change the equipped character.')
-    }
-  }
-
   return <section className="echo-inventory-view">
     {!embedded && <PageHeader eyebrow="Echo collection" title="Your Echoes" description="Find the pieces worth building around." />}
     {embedded && <div className="inventory-section-heading"><div><span className="eyebrow">Collection</span><h2>Echoes</h2></div></div>}
@@ -207,7 +214,7 @@ export function InventoryView({ echoes, builds: _builds = [], characters = [], r
     </Panel>}
     {filtered.length ? <>
       <div className="echo-results-anchor"><EchoPagination page={currentPage} pageCount={pageCount} total={filtered.length} onChange={changePage}/></div>
-      <div className="echo-grid">{pageEchoes.map((echo) => <EchoMiniCard key={echo.id} echo={echo} onClick={() => setEditing(echo)} rollRating={echoMeta.get(echo.id)?.rollRating} scoreLabel={<button type="button" className="echo-roll-info" aria-label="Open Roll Grade guide" title="How Roll Grade works" onClick={(event) => { event.stopPropagation(); setRollInfoOpen(true) }} onKeyDown={(event) => event.stopPropagation()}><Icon name="info"/></button>} equipment={<><SingleSelect label={`Equipped character for ${echo.name}`} value={echo.equippedBy ?? ''} options={[{ value: '', label: 'Unequipped' }, ...characterOptions.map(({ item, catalog }) => ({ value: item.id, label: catalog.name, icon: catalog.iconSourceUrl }))]} onChange={(characterId) => void equipEcho(echo, characterId)}/><button type="button" title="Edit Echo" aria-label={`Edit ${echo.name}`} onClick={(event) => { event.stopPropagation(); setEditing(echo) }}><Icon name="edit"/></button></>} actions={<div className="card-actions"><button className={`echo-lock-action ${echo.locked ? 'locked' : 'unlocked'}`} aria-label={echo.locked ? `Unlock ${echo.name}` : `Lock ${echo.name}`} title={echo.locked ? 'Unlock' : 'Lock'} onClick={(event) => { event.stopPropagation(); void patchEcho(echo, { locked: !echo.locked }) }}><Icon name={echo.locked ? 'lock' : 'unlock'}/></button><button className="echo-discard-action" aria-label={echo.excluded ? `Restore ${echo.name}` : `Discard ${echo.name}`} title={echo.locked ? 'Unlock before discarding' : echo.excluded ? 'Restore discarded Echo' : 'Mark as discarded'} disabled={echo.locked} onClick={(event) => { event.stopPropagation(); void patchEcho(echo, { excluded: !echo.excluded }) }}><Icon name="discard"/></button><button className="echo-delete-action" aria-label={`Delete ${echo.name}`} title={echo.locked ? 'Unlock before deleting' : 'Delete'} disabled={echo.locked} onClick={(event) => { event.stopPropagation(); void removeEcho(echo) }}><Icon name="trash"/></button></div>} />)}</div>
+      <div className="echo-grid">{pageEchoes.map((echo) => <EchoMiniCard key={echo.id} echo={echo} onClick={() => setEditing(echo)} rollRating={echoMeta.get(echo.id)?.rollRating} scoreLabel={<button type="button" className="echo-roll-info" aria-label="Open Roll Grade guide" title="How Roll Grade works" onClick={(event) => { event.stopPropagation(); setRollInfoOpen(true) }} onKeyDown={(event) => event.stopPropagation()}><Icon name="info"/></button>} equipment={<button type="button" title="Edit Echo" aria-label={`Edit ${echo.name}`} onClick={(event) => { event.stopPropagation(); setEditing(echo) }}><Icon name="edit"/></button>} actions={<div className="card-actions"><button className={`echo-lock-action ${echo.locked ? 'locked' : 'unlocked'}`} aria-label={echo.locked ? `Unlock ${echo.name}` : `Lock ${echo.name}`} title={echo.locked ? 'Unlock' : 'Lock'} onClick={(event) => { event.stopPropagation(); void patchEcho(echo, { locked: !echo.locked }) }}><Icon name={echo.locked ? 'lock' : 'unlock'}/></button><button className="echo-discard-action" aria-label={echo.excluded ? `Restore ${echo.name}` : `Discard ${echo.name}`} title={echo.locked ? 'Unlock before discarding' : echo.excluded ? 'Restore discarded Echo' : 'Mark as discarded'} disabled={echo.locked} onClick={(event) => { event.stopPropagation(); void patchEcho(echo, { excluded: !echo.excluded }) }}><Icon name="discard"/></button><button className="echo-delete-action" aria-label={`Delete ${echo.name}`} title={echo.locked ? 'Unlock before deleting' : 'Delete'} disabled={echo.locked} onClick={(event) => { event.stopPropagation(); void removeEcho(echo) }}><Icon name="trash"/></button></div>} />)}</div>
       {pageCount > 1 && <EchoPagination page={currentPage} pageCount={pageCount} total={filtered.length} onChange={changePage}/>}
     </> : echoes.length === 0 ? <Panel className="empty-state echo-empty-welcome"><div className="empty-glyph"><img src={`${import.meta.env.BASE_URL}sidebar-icons/echoes.svg`} alt=""/></div><h2>Add your first Echo</h2><p>Scan it or enter it by hand.</p><button className="primary" onClick={openScanner}><Icon name="plus"/>Add Echo</button></Panel> : <Panel className="empty-state echo-empty-filtered"><div className="empty-glyph">⌕</div><h2>No matches</h2><button className="secondary" onClick={reset}>Clear filters</button></Panel>}
     {rollInfoOpen && createPortal(<div className="modal-backdrop roll-quality-backdrop" onMouseDown={() => setRollInfoOpen(false)}><Panel className="roll-quality-modal" role="dialog" aria-modal="true" aria-labelledby="roll-quality-title" onMouseDown={(event) => event.stopPropagation()}>

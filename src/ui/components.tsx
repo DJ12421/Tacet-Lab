@@ -1,4 +1,4 @@
-import { createContext, memo, useContext, type ReactNode } from 'react'
+import { createContext, memo, useCallback, useContext, useRef, useState, type ReactNode } from 'react'
 import { generatedCharacterSummaries as characterCatalog } from '../game-data/character-summaries.generated'
 import { statLabels } from '../game-data/core'
 import { echoCatalog } from '../game-data/echoes'
@@ -15,10 +15,18 @@ import { EchoWaveform } from './EchoWaveform'
 import { CalculatedValue, type CalculationDetail } from './CalculationDetails'
 import { Icon, PageHeader, Panel } from './primitives'
 import { statIconSource } from './stat-icons'
+import { useDismissableLayer } from './useDismissableLayer'
 
 export { Icon, PageHeader, Panel } from './primitives'
 
 export const CharacterSubstatProfileContext = createContext<CharacterSubstatProfile | undefined>(undefined)
+export const EchoEquipmentContext = createContext<{
+  ownedIds: Set<string>
+  owners: Map<string, string[]>
+  characters: Array<{ id: string; name: string; icon: string }>
+  toggle: (echoId: string, characterId: string) => Promise<void>
+  clear: (echoId: string) => Promise<void>
+} | undefined>(undefined)
 const echoCatalogByName = new Map(echoCatalog.map((item) => [item.name, item]))
 const normalizedCharacterCatalog = new Map(characterCatalog.map((entry) => [entry.name.toLowerCase().replace(/[^a-z0-9]/g, ''), entry]))
 
@@ -75,8 +83,29 @@ export function ElementFilterIcon({ element }: { element: string }) {
     : <span>{element}</span>
 }
 
+function EchoOwnerPicker({ echo, owners, characters, toggle, clear }: {
+  echo: Echo
+  owners: string[]
+  characters: Array<{ id: string; name: string; icon: string }>
+  toggle: (echoId: string, characterId: string) => Promise<void>
+  clear: (echoId: string) => Promise<void>
+}) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  const close = useCallback(() => setOpen(false), [])
+  useDismissableLayer(open, ref, close)
+  const selected = characters.filter((character) => owners.includes(character.id))
+  const names = selected.map((character) => character.name).join(', ')
+  return <div className={`echo-owner-picker echo-single-select${open ? ' is-open' : ''}`} ref={ref} onClick={(event) => event.stopPropagation()} onKeyDown={(event) => { event.stopPropagation(); if (event.key === 'Escape' && open) { close(); ref.current?.querySelector<HTMLButtonElement>('.multi-select-trigger')?.focus() } }}>
+    <button type="button" className="multi-select-trigger" aria-label={`Equipped by: ${names || 'no characters'}`} title={names || 'Unequipped'} aria-haspopup="true" aria-expanded={open} onClick={() => setOpen((current) => !current)}><span className="multi-select-values">{selected.length ? <><span className="echo-owner-stack" aria-hidden="true">{selected.map((character) => <img src={character.icon} alt="" key={character.id}/>)}</span><em>{names}</em></> : <em>Unequipped</em>}</span><strong aria-hidden="true">⌄</strong></button>
+    {open && <div className="echo-single-select-menu echo-owner-options" aria-label={`Equip ${echo.name}`}><button type="button" className={!owners.length ? 'active' : ''} aria-pressed={!owners.length} onClick={() => { void clear(echo.id); close() }}><span className="echo-owner-empty">—</span><span>Unequipped</span></button>{characters.map((character) => <button type="button" className={owners.includes(character.id) ? 'active' : ''} aria-pressed={owners.includes(character.id)} key={character.id} onClick={() => void toggle(echo.id, character.id)}><img src={character.icon} alt=""/><span>{character.name}</span>{owners.includes(character.id) && <span className="echo-owner-check" aria-hidden="true">✓</span>}</button>)}</div>}
+  </div>
+}
+
 export const EchoMiniCard = memo(function EchoMiniCard({ echo, selected, onClick, actions, equipment, grade, rollRating, scoreLabel }: { echo: Echo; selected?: boolean; onClick?: () => void; actions?: ReactNode; equipment?: ReactNode; grade?: string; rollRating?: EchoRollRating; scoreLabel?: ReactNode }) {
   const characterProfile = useContext(CharacterSubstatProfileContext)
+  const equipmentContext = useContext(EchoEquipmentContext)
+  const owners = equipmentContext?.owners.get(echo.id) ?? []
   const characterScore = characterProfile ? scoreCharacterSubstats(echo, characterProfile) : undefined
   const catalog = echoCatalogByName.get(echo.name)
   const secondary = fixedSecondaryMainStat(echo)
@@ -105,7 +134,10 @@ export const EchoMiniCard = memo(function EchoMiniCard({ echo, selected, onClick
     <div className="substats">{effectiveSubStats(echo).map((stat, index) => { const tier = substatTierPoints(stat.key, stat.value); return <div key={`${stat.key}-${index}`}><span><img className="echo-stat-icon" src={statIconSource(stat.key)} alt="" aria-hidden="true"/>{statLabels[stat.key]}</span><b className={`roll-tier-${tier}`} title={tier ? `Roll tier ${tier}/8` : 'Unknown roll tier'}>{formatStat(stat.key, stat.value)}</b></div> })}</div>
     {gradeTone && <EchoWaveform/>}
     <footer>{displayedGrade && <><span>{displayedScoreLabel}</span>{scoreDetail ? <span className="echo-score-action" onClick={(event) => event.stopPropagation()} onKeyDown={(event) => event.stopPropagation()}><CalculatedValue detail={scoreDetail}><strong className={`echo-score ${gradeTone ? `grade-${gradeTone}` : ''}`} title={displayedGradeTitle}>{displayedGrade}</strong></CalculatedValue></span> : <strong className={`echo-score ${gradeTone ? `grade-${gradeTone}` : ''}`} title={displayedGradeTitle}>{displayedGrade}</strong>}</>}{actions}</footer>
-    {equipment && <div className="echo-equipment">{equipment}</div>}
+    {(equipment || equipmentContext?.ownedIds.has(echo.id)) && <div className="echo-equipment">
+      {equipmentContext?.ownedIds.has(echo.id) && <EchoOwnerPicker echo={echo} owners={owners} characters={equipmentContext.characters} toggle={equipmentContext.toggle} clear={equipmentContext.clear}/>}
+      {equipment}
+    </div>}
   </article>
 })
 

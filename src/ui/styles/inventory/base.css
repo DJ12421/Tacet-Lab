@@ -648,7 +648,7 @@
 .main-stat {
   display: flex;
   justify-content: space-between;
-  align-items: end;
+  align-items: center;
   padding: 13px 8px 10px;
   margin-top: 7px;
   background: rgba(255,255,255,.018);

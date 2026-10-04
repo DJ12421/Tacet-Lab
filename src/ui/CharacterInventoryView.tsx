@@ -117,7 +117,7 @@ export function CharacterInventory({ owned, weapons = [], echoes = [], builds = 
   if (selected) return <CharacterShowcase character={selected.item} characters={owned} catalog={selected.catalog} weapons={weapons} echoes={echoes} builds={builds} equippedLoadouts={equippedLoadouts} theorycraftBuilds={theorycraftBuilds} settings={settings} refresh={refresh} onBack={() => { setSelectedId(null); onCharacterChange?.(null) }}/>
 
   return <>
-    <PageHeader eyebrow="Local roster" title="Characters" description="Open a character to inspect their loadout and team links."/>
+    <PageHeader eyebrow="Your resonators" title="Characters" description="Open a character to inspect their loadout and team links."/>
     <Panel className="owned-filter chip-toolbar character-roster-toolbar"><label className="search search-field"><Icon name="scan"/><input data-search="" autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search characters..."/><span className="search-count" aria-live="polite">{visible.length}/{owned.length}</span><kbd>Ctrl K</kbd></label><FilterChips label="Element" hideLabel values={characterElements} selected={elements} onChange={setElements} renderValue={(value) => <ElementFilterIcon element={value}/>}/><FilterChips label="Rarity" hideLabel values={characterRarities} selected={rarities} onChange={setRarities} renderValue={(value) => `${value} ★`}/><button type="button" className="primary" onClick={() => setPickerOpen(true)}><Icon name="plus"/>Add character</button></Panel>
     <div className="character-candy-grid">{visible.map(({ item, catalog, weapon, weaponEntry, equipped }) => {
       const openCharacter = () => { setSelectedId(item.id); onCharacterChange?.({ id: catalog.id, name: catalog.name }) }

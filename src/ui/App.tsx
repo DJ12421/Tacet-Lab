@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import type { AppView } from '../domain/types'
-import { clearAccount, saveSettings } from '../storage/database'
+import { clearAccount, db, saveSettings } from '../storage/database'
+import { setEquippedEchoIds } from '../storage/loadouts'
+import { generatedCharacterSummaries as characterCatalog } from '../game-data/character-summaries.generated'
+import { EchoEquipmentContext } from './components'
 import { ArchiveView } from './ArchiveView'
 import { CharacterInventory } from './CharacterInventoryView'
 import { HomeView } from './HomeView'
@@ -240,7 +243,33 @@ export default function App() {
   if (!data.ready) return <div className="boot"><div className="brand-mark"><i/><i/><i/></div><span>INITIALIZING LOCAL ARCHIVE</span></div>
   if (data.error) return <div className="boot"><div className="brand-mark"><i/><i/><i/></div><strong>LOCAL ARCHIVE UNAVAILABLE</strong><span>{data.error}</span><button className="secondary" onClick={() => location.reload()}>Retry</button></div>
 
-  return <div className={`app-shell ${view === 'dashboard' ? 'is-home' : ''} ${sidebarPinned ? 'sidebar-pinned' : ''} ${sidebarOpen ? 'sidebar-open' : ''} ${sidebarReserved ? 'sidebar-reserved' : ''}`}>
+  const owners = new Map<string, string[]>()
+  for (const loadout of data.equippedLoadouts) for (const echoId of loadout.echoIds) owners.set(echoId, [...(owners.get(echoId) ?? []), loadout.characterId])
+  const equipment = {
+    ownedIds: new Set(data.echoes.map((echo) => echo.id)), owners,
+    characters: data.characters.flatMap((character) => {
+      const catalog = characterCatalog.find((entry) => entry.id === character.catalogId)
+      return catalog ? [{ id: character.id, name: catalog.name, icon: catalog.iconSourceUrl }] : []
+    }),
+    toggle: async (echoId: string, characterId: string) => {
+      try {
+        const loadout = await db.equippedLoadouts.where('characterId').equals(characterId).first()
+        const ids = loadout?.echoIds ?? []
+        await setEquippedEchoIds(characterId, ids.includes(echoId) ? ids.filter((id) => id !== echoId) : [...ids, echoId])
+        await data.refresh('echoes-builds')
+      } catch (error) { window.alert(error instanceof Error ? error.message : 'Could not change Echo equipment.') }
+    },
+    clear: async (echoId: string) => {
+      try {
+        for (const loadout of data.equippedLoadouts.filter((entry) => entry.echoIds.includes(echoId))) {
+          await setEquippedEchoIds(loadout.characterId, loadout.echoIds.filter((id) => id !== echoId))
+        }
+        await data.refresh('echoes-builds')
+      } catch (error) { window.alert(error instanceof Error ? error.message : 'Could not unequip this Echo.') }
+    }
+  }
+
+  return <EchoEquipmentContext.Provider value={equipment}><div className={`app-shell ${view === 'dashboard' ? 'is-home' : ''} ${sidebarPinned ? 'sidebar-pinned' : ''} ${sidebarOpen ? 'sidebar-open' : ''} ${sidebarReserved ? 'sidebar-reserved' : ''}`}>
     <aside className="sidebar" aria-label="Primary navigation">
       <div className="sidebar-controls">
         <span className="sidebar-label">Navigation</span>
@@ -257,7 +286,7 @@ export default function App() {
         {view === 'dashboard' && <HomeView echoes={data.echoes} characters={data.characters} weapons={data.weapons} builds={data.builds} teams={data.teams} navigate={setView}/>}
         {view === 'archive' && <ArchiveView roverGender={data.settings.roverGender} tab={route.archiveTab ?? 'characters'} onTabChange={(archiveTab) => setRoute({ view: 'archive', archiveTab })}/>}
         {view === 'scanner' && <ScannerView echoes={data.echoes} refresh={data.refresh} scanIntervalMs={data.settings.scanIntervalMs} onScanIntervalChange={async (scanIntervalMs) => { await saveSettings({ ...data.settings, scanIntervalMs }); await data.refresh(); notify('Scan speed saved') }} onSessionRiskChange={setScannerSessionAtRisk}/>}
-        {view === 'echoes' && <InventoryView echoes={data.echoes} builds={data.builds} characters={data.characters} refresh={data.refresh} openScanner={() => setView('scanner')}/>}
+        {view === 'echoes' && <InventoryView echoes={data.echoes} builds={data.builds} equippedLoadouts={data.equippedLoadouts} characters={data.characters} refresh={data.refresh} openScanner={() => setView('scanner')}/>}
         {view === 'weapons' && <WeaponInventory owned={data.weapons} characters={data.characters} builds={data.builds} refresh={data.refresh} weaponIdentifier={route.weapon} onWeaponChange={(weapon) => setRoute({ view: 'weapons', weapon: weapon?.id })}/>}
         {view === 'characters' && <CharacterInventory owned={data.characters} weapons={data.weapons} echoes={data.echoes} builds={data.builds} equippedLoadouts={data.equippedLoadouts} theorycraftBuilds={data.theorycraftBuilds} teams={data.teams} settings={data.settings} roverGender={data.settings.roverGender} refresh={data.refresh} characterIdentifier={route.character} onCharacterChange={(entry) => setRoute({ view: 'characters', character: entry ? characterSlug(entry.name) : undefined })}/>} 
         {view === 'teams' && <TeamsView echoes={data.echoes} builds={data.builds} equippedLoadouts={data.equippedLoadouts} theorycraftBuilds={data.theorycraftBuilds} teams={data.teams} characters={data.characters} weapons={data.weapons} refresh={data.refresh} openScanner={() => setView('scanner')} galleryRequest={teamsGalleryRequest} roverGender={data.settings.roverGender} route={{ team: route.team, character: route.teamCharacter, section: route.teamSection }} onRouteChange={(next) => setRoute({ view: 'teams', team: next.team, teamCharacter: next.character, teamSection: next.section })}/>} 
@@ -299,5 +328,5 @@ export default function App() {
     </Panel></div>}
     {toast && <div className="toast" role="status" aria-live="polite">{toast}</div>}
     <PwaUpdatePrompt safeToActivate={!scannerSessionAtRisk && !importOpen && !exportOpen && !settingsOpen} navigationVersion={navigationVersion}/>
-  </div>
+  </div></EchoEquipmentContext.Provider>
 }

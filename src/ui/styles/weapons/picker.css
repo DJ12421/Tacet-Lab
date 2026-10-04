@@ -1,5 +1,39 @@
 /* Keep weapon picker sizing after the shared catalog rules above. */
 
+.weapon-catalog-picker .catalog-picker-filters {
+  gap: 8px;
+}
+
+.weapon-catalog-picker .catalog-picker-filters .owned-chip-filter:first-child {
+  flex: 1 1 280px;
+  min-width: 0;
+}
+
+.weapon-catalog-picker .catalog-picker-filters .owned-chip-filter:first-child .filter-chips {
+  width: 100%;
+}
+
+.weapon-catalog-picker .catalog-picker-filters .owned-chip-filter:first-child .filter-chips button {
+  flex: 1 1 0;
+  min-width: 48px;
+  padding-inline: 0;
+}
+
+.weapon-catalog-picker .catalog-picker-filters .owned-chip-filter:nth-child(2) {
+  flex: 1 1 390px;
+  min-width: 0;
+}
+
+.weapon-catalog-picker .catalog-picker-filters .owned-chip-filter:nth-child(2) .filter-chips {
+  width: 100%;
+}
+
+.weapon-catalog-picker .catalog-picker-filters .owned-chip-filter:nth-child(2) .filter-chips button {
+  flex: 1 1 0;
+  min-width: max-content;
+  padding-inline: 8px;
+}
+
 .catalog-picker-grid {
   grid-template-columns: repeat(auto-fill,minmax(285px,1fr));
   gap: 12px;
@@ -13,12 +47,12 @@
 }
 
 .catalog-choice.weapon-choice>img {
-  width: 118px;
+  width: 128px;
   background: radial-gradient(circle,var(--weapon-glow),transparent 68%);
 }
 
 .catalog-choice.weapon-choice strong {
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-body-large);
 }
 
 .catalog-choice.weapon-choice small {
@@ -27,19 +61,26 @@
 
 .catalog-choice .picker-weapon-stats b {
   color: #dbe2e0;
-  font-size: var(--font-size-caption);
+  font-size: 12px;
   letter-spacing: 0;
 }
 
+.catalog-choice .picker-weapon-stats .weapon-stat-icon {
+  width: 20px;
+  height: 20px;
+  flex-basis: 20px;
+}
+
 @media (max-width:650px) {
+  .weapon-catalog-picker .catalog-picker-filters .owned-chip-filter:is(:first-child,:nth-child(2),:last-child) {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
   .catalog-picker-grid {
     grid-template-columns: 1fr;
   }
   .catalog-choice.weapon-choice {
     grid-template-columns: 100px minmax(0,1fr);
-  }
-  .catalog-choice.weapon-choice>img {
-    width: 100px;
   }
 }
 

@@ -186,6 +186,15 @@
   object-fit: contain;
 }
 
+.echo-card .main-stat :is(span,strong),
+.echo-card .substats :is(span,b) {
+  line-height: 1;
+}
+
+.echo-card :is(.main-stat,.substats) .echo-stat-icon {
+  transform: translateY(-2px);
+}
+
 .main-stat strong {
   font-size: var(--font-size-heading-small);
 }

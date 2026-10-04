@@ -554,6 +554,10 @@
   z-index: 10;
 }
 
+.echo-inventory-view .echo-card:has(.echo-owner-picker.is-open) {
+  z-index: 20;
+}
+
 .echo-inventory-view .echo-equipment .multi-select-trigger {
   min-height: 40px;
   display: flex;

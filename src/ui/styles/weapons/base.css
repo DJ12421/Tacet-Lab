@@ -299,21 +299,7 @@
   object-fit: contain;
 }
 
-.wv-toolbar .filter-chips button:has(.weapon-type-filter-icon),
-.catalog-picker-filters .filter-chips button:has(.weapon-type-filter-icon) {
-  height: 38px;
-  min-height: 38px;
-  max-height: 38px;
-}
-
 @media (max-width:650px) {
-  .wv-toolbar .filter-chips button:has(.weapon-type-filter-icon),
-  .catalog-picker-filters .filter-chips button:has(.weapon-type-filter-icon) {
-    height: 44px;
-    min-height: 44px;
-    max-height: 44px;
-  }
-
   .character-equip-menu {
     top: calc(100% + 5px);
     bottom: auto;
@@ -356,13 +342,13 @@
 }
 
 .catalog-choice.weapon-choice>img {
-  width: 118px;
+  width: 128px;
 }
 
 .picker-weapon-stats {
   display: grid;
   gap: 5px;
-  margin-top: 6px;
+  margin-top:0px;
 }
 
 .weapon-detail {

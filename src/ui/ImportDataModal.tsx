@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { AccountDocument } from '../domain/types'
 import { importAccount, prepareAccountBackup, previewAccountImport, type AccountImportPreview } from '../storage/database'
+import { prepareNativeBuildChoices } from '../storage/import-build-choices'
 import { convertWutheringToolsExport, isWutheringToolsExport, type WutheringToolsCharacterChoice } from '../storage/import-wuthering-tools'
 import { Icon, Panel } from './primitives'
 
@@ -24,6 +25,7 @@ export function ImportDataModal({ onClose, onImported }: ImportDataModalProps) {
   const [sourceLabel, setSourceLabel] = useState('')
   const [sourceCharacters, setSourceCharacters] = useState<WutheringToolsCharacterChoice[]>([])
   const [wutheringToolsSource, setWutheringToolsSource] = useState<Record<string, unknown>>()
+  const [nativeSource, setNativeSource] = useState<unknown>()
   const [error, setError] = useState('')
   const [analyzing, setAnalyzing] = useState(false)
   const [importing, setImporting] = useState(false)
@@ -39,15 +41,18 @@ export function ImportDataModal({ onClose, onImported }: ImportDataModalProps) {
   const prepare = async (parsed: unknown, analysisId: number, choices: Record<string, boolean> = {}) => {
     const converted = isWutheringToolsExport(parsed) ? await convertWutheringToolsExport(parsed, choices) : undefined
     const prepared = prepareAccountBackup(converted?.document ?? parsed)
-    const nextPreview = await previewAccountImport(prepared.document)
+    const native = converted ? undefined : await prepareNativeBuildChoices(prepared.document, choices)
+    const document = native?.document ?? prepared.document
+    const nextPreview = await previewAccountImport(document)
     if (analysisId !== analysisRef.current) return
-    setAccount(prepared.document)
+    setAccount(document)
     setPreview(nextPreview)
     setRepairs(prepared.repairs)
     setSourceNotices(converted?.notices ?? [])
     setSourceLabel(converted ? 'Wuthering Tools v9' : '')
-    setSourceCharacters(converted?.choices ?? [])
+    setSourceCharacters(converted?.choices ?? native?.choices ?? [])
     setWutheringToolsSource(converted ? parsed as Record<string, unknown> : undefined)
+    setNativeSource(converted ? undefined : parsed)
   }
 
   const analyze = async (nextRaw: string, nextFileName = 'Pasted JSON data', pasted = false) => {
@@ -61,6 +66,7 @@ export function ImportDataModal({ onClose, onImported }: ImportDataModalProps) {
     setSourceLabel('')
     setSourceCharacters([])
     setWutheringToolsSource(undefined)
+    setNativeSource(undefined)
     setError('')
     if (!nextRaw.trim()) {
       setAnalyzing(false)
@@ -80,14 +86,14 @@ export function ImportDataModal({ onClose, onImported }: ImportDataModalProps) {
   }
 
   const setBuildChoice = async (catalogId: string, enabled: boolean) => {
-    if (!wutheringToolsSource) return
+    if (!wutheringToolsSource && !nativeSource) return
     const analysisId = ++analysisRef.current
     const choices = Object.fromEntries(sourceCharacters.map((choice) => [choice.catalogId, choice.catalogId === catalogId ? enabled : choice.addAsNewBuild]))
     setAnalyzing(true)
     setAccount(undefined)
     setPreview(undefined)
     setError('')
-    try { await prepare(wutheringToolsSource, analysisId, choices) }
+    try { await prepare(wutheringToolsSource ?? nativeSource, analysisId, choices) }
     catch (caught) { if (analysisId === analysisRef.current) setError(caught instanceof Error ? caught.message : 'Could not update the import preview.') }
     finally { if (analysisId === analysisRef.current) setAnalyzing(false) }
   }
@@ -146,8 +152,8 @@ export function ImportDataModal({ onClose, onImported }: ImportDataModalProps) {
           <div><span className="eyebrow">Import preview</span><h3>{sourceLabel || preview.gameDataVersion || 'Tacet Lab backup'}</h3></div>
           <div><span>Schema v{preview.schemaVersion}</span><small>Exported {formattedExportDate(preview.exportedAt)}</small></div>
         </header>
-        {sourceNotices.length > 0 && <div className="import-repair-notice" role="status"><strong>Wuthering Tools import notes</strong><ul>{sourceNotices.map((notice) => <li key={notice}>{notice}</li>)}</ul></div>}
-        {sourceCharacters.some((choice) => choice.existing) && <section className="import-build-choices" aria-label="Build import choices"><h3>For each existing character</h3>{sourceCharacters.filter((choice) => choice.existing).map((choice) => <label key={choice.catalogId}><span><strong>{choice.name}</strong><small>{choice.addAsNewBuild ? 'Save separately; keep Equipped' : 'Replace Equipped with this import'}</small></span><input type="checkbox" checked={choice.addAsNewBuild} disabled={importing || analyzing} onChange={(event) => void setBuildChoice(choice.catalogId, event.target.checked)}/><span>Add as new build</span></label>)}</section>}
+        {sourceNotices.length > 0 && <div className="import-repair-notice import-source-notices" role="status"><strong>Wuthering Tools import notes</strong><p>{sourceNotices[0]}</p>{sourceNotices.length > 1 && <details><summary>{sourceNotices.length - 1} more import notes</summary><ul>{sourceNotices.slice(1).map((notice) => <li key={notice}>{notice}</li>)}</ul></details>}</div>}
+        {sourceCharacters.some((choice) => choice.existing) && <section className="import-build-choices" aria-label="Build import choices"><header><h3>Existing characters</h3><p>Save a new build to keep Equipped, or turn it off to replace Equipped.</p></header><div>{sourceCharacters.filter((choice) => choice.existing).map((choice) => <label key={choice.catalogId}><strong title={choice.name}>{choice.name}</strong><span>{choice.addAsNewBuild ? 'New build' : 'Replace Equipped'}</span><input type="checkbox" aria-label={`Save ${choice.name} as a new build`} checked={choice.addAsNewBuild} disabled={importing || analyzing} onChange={(event) => void setBuildChoice(choice.catalogId, event.target.checked)}/></label>)}</div></section>}
         {repairs.length > 0 && <div className="import-repair-notice" role="status"><strong>Timing recovered from this backup</strong><p>{repairs.length} rotation action{repairs.length === 1 ? '' : 's'} had missing timing. Tacet Lab estimated the values below. Review these actions after import.</p><ul>{repairs.map((repair) => <li key={repair}>{repair}</li>)}</ul></div>}
         <div className="import-summary-strip">
           <div><span>New</span><strong>{preview.added}</strong></div>
@@ -170,7 +176,7 @@ export function ImportDataModal({ onClose, onImported }: ImportDataModalProps) {
       </div>
 
       <footer className="import-data-actions">
-        <div>{preview && sourceLabel && !sourceCharacters.length ? <span>No new character or build data to import.</span> : preview && !hasChanges ? <span>Everything in this backup is already present.</span> : sourceCharacters.some((choice) => choice.existing && !choice.addAsNewBuild) ? <span>Equipped will be replaced for characters with the toggle off.</span> : repairs.length ? <span>Review the recovered timing before applying changes.</span> : <span>New records are added; matching records are updated.</span>}</div>
+        <div>{preview && !hasChanges ? <span>Everything in this backup is already present.</span> : sourceCharacters.some((choice) => choice.existing && !choice.addAsNewBuild) ? <span>Equipped will be replaced for characters with the toggle off.</span> : repairs.length ? <span>Review the recovered timing before applying changes.</span> : <span>New records are added; matching records are updated.</span>}</div>
         <button className="secondary" type="button" disabled={importing} onClick={onClose}>Cancel</button>
         <button className="primary" type="button" disabled={!hasChanges || importing || analyzing} onClick={() => void merge()}><Icon name="upload"/>{importing ? 'Merging…' : `Apply ${(preview?.added ?? 0) + (preview?.updated ?? 0)} changes`}</button>
       </footer>

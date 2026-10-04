@@ -635,6 +635,7 @@
 .archive-sonata-effects>div {
   display: grid;
   grid-template-columns: 42px minmax(0,1fr);
+  align-items: center;
   gap: 9px;
 }
 
@@ -838,7 +839,7 @@
 
 .archive-browser .archive-toolbar-row .filter-chips {
   flex-wrap: wrap;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .archive-browser .archive-cost.cost-1 {
@@ -935,12 +936,6 @@
   text-overflow: clip;
 }
 
-.archive-browser .archive-toolbar-weapons .filter-chips button:has(.weapon-type-filter-icon) {
-  height: 38px;
-  min-height: 38px;
-  max-height: 38px;
-}
-
 .archive-browser .archive-toolbar-row:has(>.sonata-picker) {
   overflow: visible;
 }
@@ -996,7 +991,7 @@
     width: 100%;
     max-width: 100%;
     flex-wrap: wrap;
-    overflow: visible;
+    overflow: hidden;
   }
 
   .archive-browser .archive-toolbar-row>.owned-chip-filter .filter-chips::-webkit-scrollbar {
@@ -1013,10 +1008,8 @@
     white-space: nowrap;
   }
 
-  .archive-browser .archive-toolbar-weapons .filter-chips button:has(.weapon-type-filter-icon) {
-    height: 44px;
-    min-height: 44px;
-    max-height: 44px;
+  .archive-browser .archive-toolbar-weapons>.owned-chip-filter .filter-chips button:has(>.weapon-type-filter-icon) {
+    padding-block: 0;
   }
 
   .archive-browser .archive-toolbar-row>.owned-chip-filter:has(.filter-element-icon) .filter-chips button {
