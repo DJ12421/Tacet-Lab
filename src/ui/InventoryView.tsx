@@ -63,8 +63,8 @@ function EchoPagination({ page, pageCount, total, onChange }: { page: number; pa
   </nav>
 }
 
-export function MultiSelect({ label, values, options, emptyLabel, onChange, icon, open, onToggle, hideLabel = false }: { label: string; values: string[]; options: Array<{ value: string; label: string }>; emptyLabel: string; onChange: (values: string[]) => void; icon?: (value: string) => ReactNode; open: boolean; onToggle: () => void; hideLabel?: boolean }) {
-  const toggle = (value: string) => onChange(values.includes(value) ? values.filter((item) => item !== value) : [...values, value])
+export function MultiSelect<T extends string>({ label, values, options, emptyLabel, onChange, icon, open, onToggle, hideLabel = false }: { label: string; values: T[]; options: Array<{ value: T; label: string }>; emptyLabel: string; onChange: (values: T[]) => void; icon?: (value: T) => ReactNode; open: boolean; onToggle: () => void; hideLabel?: boolean }) {
+  const toggle = (value: T) => onChange(values.includes(value) ? values.filter((item) => item !== value) : [...values, value])
   return <label className="multi-filter"><span className={hideLabel ? 'sr-only' : undefined}>{label}</span><div className="multi-select">
     <button type="button" className="multi-select-trigger" aria-expanded={open} onClick={onToggle}>
       <span className="multi-select-values">{values.length ? <span className="multi-select-summary">{icon?.(values[0])}<b>{options.find((option) => option.value === values[0])?.label ?? values[0]}</b>{values.length > 1 && <i>+{values.length - 1}</i>}</span> : <em>{emptyLabel}</em>}</span><strong>⌄</strong>

@@ -244,7 +244,7 @@ describe('CharacterBuildCard direct editing', () => {
     expect(picker).toHaveClass('echo-inventory-view')
     expect(picker.querySelector('.echo-grid')).toBeInTheDocument()
     expect(within(picker).getByRole('button', { name: 'Filters' })).toHaveAttribute('aria-expanded', 'true')
-    expect(within(picker).getByRole('button', { name: /All Sonatas/ })).toBeInTheDocument()
+    expect(within(picker).getByRole('button', { name: 'Sonata' })).toBeInTheDocument()
     const oneCost = within(within(picker).getByRole('group', { name: 'Cost' })).getByRole('button', { name: '1 cost' })
     expect(oneCost).toHaveAttribute('aria-pressed', 'true')
     fireEvent.click(oneCost)
