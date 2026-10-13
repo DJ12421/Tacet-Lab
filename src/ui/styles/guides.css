@@ -27,9 +27,13 @@
 .guide-screenshot .guide-step-image{max-height:520px;object-fit:contain;background:#0b1516}
 .guide-screenshot figcaption{margin-top:7px;color:var(--muted);font-size:.76rem;text-align:right}
 .guide-end{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px 24px;border:1px solid rgba(var(--mint-rgb),.3);border-radius:8px}
-.tutorial-spotlight{position:fixed;z-index:240;pointer-events:none;border:3px solid var(--mint);border-radius:8px;box-shadow:0 0 0 5px rgba(var(--mint-rgb),.16),0 0 25px rgba(var(--mint-rgb),.42);transition:top .12s,left .12s,width .12s,height .12s}
-.tutorial-panel{position:fixed;right:20px;bottom:20px;z-index:241;width:min(390px,calc(100vw - 24px));padding:20px;border:1px solid rgba(var(--mint-rgb),.55);border-radius:9px;background:#0b1415;box-shadow:0 15px 55px rgba(0,0,0,.65);color:#edf3f1}
+.tutorial-layer{position:fixed;inset:0;z-index:2000;pointer-events:none}
+.tutorial-spotlight{position:fixed;z-index:1;pointer-events:none;border:3px solid var(--mint);border-radius:8px;box-shadow:0 0 0 5px rgba(var(--mint-rgb),.16),0 0 25px rgba(var(--mint-rgb),.42);transition:top .12s,left .12s,width .12s,height .12s;animation:tutorial-glow 1.6s ease-in-out infinite alternate}
+.tutorial-spotlight::after{content:attr(data-step);position:absolute;top:-14px;right:-14px;display:grid;place-items:center;min-width:25px;height:25px;padding:0 4px;border-radius:50%;background:var(--mint);color:#081312;font-size:.78rem;font-weight:800;box-shadow:0 3px 12px #0008}
+@keyframes tutorial-glow{to{box-shadow:0 0 0 9px rgba(var(--mint-rgb),.2),0 0 34px rgba(var(--mint-rgb),.7)}}
+.tutorial-panel{position:fixed;right:20px;bottom:20px;z-index:2;pointer-events:auto;width:min(390px,calc(100vw - 24px));padding:20px;border:1px solid rgba(var(--mint-rgb),.55);border-radius:9px;background:#0b1415;box-shadow:0 15px 55px rgba(0,0,0,.65);color:#edf3f1}
 .tutorial-panel-left{left:20px;right:auto}
+.tutorial-panel-top{top:20px;bottom:auto}
 .tutorial-panel header,.tutorial-panel footer{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .tutorial-panel header button{border:0;background:transparent;color:#e8f2ef;font-size:1.5rem;cursor:pointer}
 .tutorial-panel h2{margin:12px 0 7px;font-size:1.3rem}.tutorial-panel p{margin:0 0 9px;line-height:1.55}.tutorial-panel small{display:block;color:#aebeba;line-height:1.45}
@@ -38,4 +42,5 @@
 .tutorial-panel footer{justify-content:flex-end}.tutorial-panel footer button{min-height:35px;padding:6px 11px}
 @media(max-width:900px){.guide-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.guide-step{grid-template-columns:1fr}}
 @media(max-width:650px){.topbar .topbar-tutorial span{display:none}.topbar .topbar-tutorial{justify-content:center}}
-@media(max-width:600px){.guide-grid{grid-template-columns:1fr}.guide-feature,.guide-documents,.guide-end{align-items:stretch;flex-direction:column}.guide-step{padding:17px}.tutorial-panel,.tutorial-panel-left{left:12px;right:12px;bottom:76px;width:auto}.tutorial-panel{padding:15px}}
+@media(max-width:600px){.guide-grid{grid-template-columns:1fr}.guide-feature,.guide-documents,.guide-end{align-items:stretch;flex-direction:column}.guide-step{padding:17px}.tutorial-panel,.tutorial-panel-left{left:12px;right:12px;bottom:76px;width:auto}.tutorial-panel-top{top:12px;bottom:auto}.tutorial-panel{padding:15px}}
+@media(prefers-reduced-motion:reduce){.tutorial-spotlight{animation:none;transition:none}}

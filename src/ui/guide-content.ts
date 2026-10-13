@@ -12,7 +12,7 @@ export interface GuideStep {
   complete?: string
   increase?: string
   count?: keyof GuideCounts
-  when?: 'first' | 'returning' | 'no-echoes' | 'has-echoes' | 'no-weapons' | 'has-weapons' | 'no-characters' | 'has-characters' | 'no-teams' | 'has-teams'
+  when?: 'first' | 'returning' | 'no-echoes' | 'has-echoes' | 'few-echoes' | 'no-weapons' | 'has-weapons' | 'no-characters' | 'has-characters' | 'no-teams' | 'has-teams'
 }
 export interface Guide {
   id: GuideId
@@ -28,6 +28,7 @@ export const stepsFor = (guide: Guide, counts: GuideCounts, firstVisit: boolean)
     case 'returning': return !firstVisit
     case 'no-echoes': return counts.echoes === 0
     case 'has-echoes': return counts.echoes > 0
+    case 'few-echoes': return counts.echoes > 0 && counts.echoes < 5
     case 'no-weapons': return counts.weapons === 0
     case 'has-weapons': return counts.weapons > 0
     case 'no-characters': return counts.characters === 0
@@ -72,14 +73,14 @@ export const guides: readonly Guide[] = [
       { title: 'Find calibration if needed', body: 'Calibration is hidden by default. Open Advanced scanner settings to find Calibrate. Use it only if fields are read incorrectly; otherwise leave the calibration profile alone.', target: '.scanner-advanced', action: '.scanner-advanced summary', complete: '.scanner-advanced[open]', image: 'scanner-advanced.jpg' },
       { title: 'Choose a capture method', body: 'Use Scan game window on supported desktop browsers, or import images/video. Manual entry works when capture is unavailable. Screen sharing requires your browser approval.', target: '.scanner-start-actions', action: '.scanner-start-actions button, .scanner-start-actions input', image: 'scanner-methods.jpg' },
       { title: 'Review before saving', body: 'After capture, open Check scans. Correct uncertain fields and inspect duplicates before approving a candidate. Nothing enters your collection automatically.', target: '.scanned-echo-actions', action: '.scanned-echo-actions button:first-child', complete: '.scan-review-popout', image: 'scanner-ready.jpg' },
-      { title: 'Save the reviewed Echo', body: 'Save the approved candidate from the review window. The collection count must increase before this tutorial is complete.', target: '.scan-review-popout, .scanned-echo-actions', action: '.scan-review-popout button, .scanned-echo-actions .primary', count: 'echoes', image: 'scanner-ready.jpg' }
+      { title: 'Save the reviewed Echo', body: 'Resolve the highlighted name and Sonata if needed, then approve the candidate. The collection count must increase before this tutorial is complete.', target: '.scan-review-popout button[aria-label^="Name Unknown Echo"], .scan-review-popout .sonata-picker-trigger, .scan-review-popout, .scanned-echo-actions', action: '.scan-review-popout .review-actions .primary, .scanned-echo-actions .primary', count: 'echoes', image: 'scanner-ready.jpg' }
     ]
   },
   {
     id: 'echoes', title: 'Manage your Echoes', summary: 'A first-Echo path or an owned-collection path, selected from your local inventory.', outcome: 'Find, inspect, and protect an Echo.',
     steps: [
       { title: 'Add your first Echo', body: 'Choose Add Echo. Scanner opens; use manual entry or capture, review the candidate, and save it before returning to Echoes.', target: '.echo-empty-welcome button', action: '.echo-empty-welcome button', image: 'echoes.jpg', when: 'no-echoes' },
-      { title: 'Save the new Echo', body: 'Complete the Scanner review and save. Return to Echoes to inspect the new card.', target: '.scanned-echo-actions, .scan-review-popout', action: '.scan-review-popout button, .scanned-echo-actions .primary', count: 'echoes', image: 'scanner-ready.jpg', when: 'no-echoes' },
+      { title: 'Save the new Echo', body: 'Resolve the highlighted name and Sonata if needed, then approve the candidate. Return to Echoes to inspect the new card.', target: '.scan-review-popout button[aria-label^="Name Unknown Echo"], .scan-review-popout .sonata-picker-trigger, .scan-review-popout, .scanned-echo-actions', action: '.scan-review-popout .review-actions .primary, .scanned-echo-actions .primary', count: 'echoes', image: 'scanner-ready.jpg', when: 'no-echoes' },
       { title: 'Inspect your first Echo', body: 'Return to Echoes from the main navigation and open the saved card. Check its stats, Sonata, level, and equipment before using it in a build.', target: '.echo-grid, .desktop-nav, .mobile-nav', action: '.echo-grid > *', complete: '.echo-editor-backdrop', image: 'echoes-detail.jpg', when: 'no-echoes' },
       { title: 'Find an owned Echo', body: 'Search, filter by cost or Sonata, or sort the collection to narrow the cards.', target: '.echo-inventory-toolbar, .echo-grid', action: '.echo-inventory-toolbar input, .echo-filter-toggle, .echo-sort-trigger', image: 'echoes-owned.jpg', when: 'has-echoes' },
       { title: 'Inspect the card', body: 'Open a saved Echo to check its main stat, substats, Sonata, level, and equipment. Edit incorrect values in its detail window.', target: '.echo-grid', action: '.echo-grid > *', complete: '.echo-editor-backdrop', image: 'echoes-detail.jpg', when: 'has-echoes' },
@@ -135,8 +136,8 @@ export const guides: readonly Guide[] = [
     steps: [
       ...teamMemberStart,
       { title: 'Open a member Overview', body: 'Open a team, choose a filled member slot, and select Overview.', target: '.tw-primary-tabs, .tw-subnav', action: '.tw-primary-tabs button:not(:first-child), .tw-subnav [role="tab"]:nth-child(1)', image: 'teams-member.jpg' },
-      { title: 'Check equipped gear', body: 'Inspect the weapon and Echo slots. A missing item or over-cost Echo setup changes the estimate.', target: '.tw-member-page', action: '.tw-member-page button', image: 'teams-member.jpg' },
-      { title: 'Inspect stats and effects', body: 'Read the resolved stats and conditional effects. Set only effects that apply in your scenario.', target: '.tw-member-page', action: '.tw-member-page button, .tw-member-page input', image: 'teams-member.jpg' },
+      { title: 'Check equipped gear', body: 'Read the weapon and Echo slots, then open an Echo slot to see which owned pieces can be equipped. Missing or over-cost gear changes the estimate.', target: '.tw-overview-equipment', action: '.tw-echo-slot-add, .tw-overview-echo-actions button:last-child', image: 'teams-member.jpg' },
+      { title: 'Inspect stats and effects', body: 'Select a resolved stat to see its sources. Check conditional effects only when they apply in your scenario.', target: '.tw-sheet-stats, .tw-v2-effect-list', action: '.tw-sheet-stats .calculated-value, .tw-condition-toggle', image: 'teams-member.jpg' },
       { title: 'Compare result modes', body: 'Switch Average, Non-crit, or Critical in the shared team navigation. The selected mode also affects Forte and Rotation.', target: '.tw-nav-result-modes', action: '.tw-nav-result-modes button', image: 'teams-forte.jpg' }
     ]
   },
@@ -145,9 +146,9 @@ export const guides: readonly Guide[] = [
     steps: [
       ...teamMemberStart,
       { title: 'Open Forte', body: 'Open a filled Team member and select Forte.', target: '.tw-primary-tabs, .tw-subnav', action: '.tw-subnav [role="tab"]:nth-child(2)', image: 'teams-forte.jpg' },
-      { title: 'Read the sections', body: 'Normal Attack, Skill, Forte Circuit, Liberation, and Intro are grouped with their in-game descriptions and calculated attacks.', target: '.tw-forte-heading', action: '.tw-forte-heading button, .tw-forte-workspace button', image: 'teams-forte.jpg' },
-      { title: 'Inspect a damage value', body: 'Choose a calculated number to see its breakdown. Use the result mode buttons to compare average, non-crit, and critical values.', target: '.tw-forte-workspace, .tw-nav-result-modes', action: '.tw-forte-workspace button, .tw-nav-result-modes button', image: 'teams-forte.jpg' },
-      { title: 'Check conditions', body: 'Review effects and target conditions before interpreting a value. Bundled game values are estimates pending in-game verification.', target: '.tw-forte-workspace', action: '.tw-forte-workspace button, .tw-forte-workspace input', image: 'teams-forte.jpg' }
+      { title: 'Read the sections', body: 'Normal Attack, Skill, Forte Circuit, Liberation, and Intro are grouped with their in-game descriptions and calculated attacks. Expand a description to read it.', target: '.tw-forte-heading, .tw-skill-card', action: '.tw-forte-workspace .tw-description-trigger, .tw-forte-heading button', image: 'teams-forte.jpg' },
+      { title: 'Inspect a damage value', body: 'Choose a calculated number to see its breakdown. Use the result mode buttons to compare average, non-crit, and critical values.', target: '.tw-forte-workspace .calculated-value', action: '.tw-forte-workspace .calculated-value', complete: '.calculation-backdrop', image: 'teams-forte.jpg' },
+      { title: 'Check skill levels', body: 'Close the breakdown and open a skill-level menu to check the level used for these values. Review any visible effect conditions too. Bundled game values remain estimates pending in-game verification.', target: '.tw-skill-card select, .tw-forte-workspace .tw-condition-toggle', action: '.tw-skill-card select, .tw-forte-workspace .tw-condition-toggle', image: 'teams-forte.jpg' }
     ]
   },
   {
@@ -155,9 +156,13 @@ export const guides: readonly Guide[] = [
     steps: [
       ...teamMemberStart,
       { title: 'Open Optimizer', body: 'Open a team with a filled member and choose Optimizer on the member subnavigation.', target: '.tw-primary-tabs, .tw-subnav', action: '.tw-subnav [role="tab"]:nth-child(3)', image: 'optimizer.jpg' },
-      { title: 'Choose the search pool', body: 'Set eligibility rules for the owned Echoes you are willing to use, then choose the damage objective.', target: '.optimizer-filter-column, .optimizer-rule-column', action: '.optimizer-filter-column input, .optimizer-filter-column button, .optimizer-rule-column button', image: 'optimizer-filters.jpg' },
-      { title: 'Generate results', body: 'Run the search and compare ranked scores against the current build. A capped search may stop before every combination is explored.', target: '.optimizer-filter-column, .optimizer-results-heading', action: '.optimizer-filter-column button, .optimizer-rule-column button', complete: '.optimizer-results-heading', image: 'optimizer-results.jpg' },
-      { title: 'Inspect and keep a result', body: 'Open a result to review stats. Equip changes the active loadout; Save build stores a reusable copy; Theorycraft creates a separate hypothetical copy.', target: '.optimizer-result-actions, .optimizer-results-heading', action: '.optimizer-result-actions button', image: 'optimizer-result-detail.jpg' }
+      { title: 'Add Echoes to search', body: 'Your inventory has no Echoes yet. Open the scanner to add reviewed Echoes, then return to this guide when you have a search pool.', target: '.optimizer-empty', action: '.optimizer-empty button', image: 'optimizer-filters.jpg', when: 'no-echoes' },
+      { title: 'Allow a partial build', body: 'With fewer than five Echoes, enable partial builds so the search can use the pieces you own.', target: '.optimizer-source-card', action: '.optimizer-source-card input[type="checkbox"]:last-of-type', event: 'change', image: 'optimizer-filters.jpg', when: 'few-echoes' },
+      { title: 'Choose the search pool', body: 'Adjust an inventory filter for owned Echoes. Keep the eligible count above zero; then check the damage objective below.', target: '.optimizer-filter-column', action: '.optimizer-level-filter input[aria-label="Minimum Echo level"], .optimizer-level-filter input[aria-label="Maximum Echo level"], .optimizer-toggle-row button', image: 'optimizer-filters.jpg', when: 'has-echoes' },
+      { title: 'Check the main Echo rule', body: 'Open Main Echo policy. If the character has no equipped main Echo, choose Optimize the main Echo too so the search can select one from inventory.', target: '.optimizer-source-card', action: '.optimizer-source-card select:has(option[value="selected"])', image: 'optimizer-filters.jpg', when: 'has-echoes' },
+      { title: 'Generate results', body: 'Choose the damage objective in the run bar, then Generate builds. A capped search may stop before every combination is explored.', target: '.optimizer-run-bar', action: '.optimizer-run-bar .primary', complete: '.optimizer-results-heading', image: 'optimizer-results.jpg', when: 'has-echoes' },
+      { title: 'Inspect a result', body: 'Open a ranked build to review its Echoes, stats, and damage difference against the current loadout.', target: '.optimizer-build-result', action: '.optimizer-result-toggle', complete: '.optimizer-result-details', image: 'optimizer-result-detail.jpg', when: 'has-echoes' },
+      { title: 'Keep or compare the build', body: 'Equip changes the active loadout; Save build stores a reusable copy; Theorycraft creates a separate hypothetical copy. Choose the option you want.', target: '.optimizer-result-actions', action: '.optimizer-result-actions button', image: 'optimizer-result-detail.jpg', when: 'has-echoes' }
     ]
   },
   {
@@ -180,8 +185,8 @@ export const guides: readonly Guide[] = [
       { title: 'Open Rotation', body: 'Open a team with at least one filled member and choose Rotation.', target: '.tw-primary-tabs, .tw-subnav', action: '.tw-subnav [role="tab"]:nth-child(5)', image: 'rotation.jpg' },
       { title: 'Set the time window', body: 'Enter the sequence length in seconds. DPS is rotation damage divided by this window, so use the interval you intend to model.', target: '.tw-rotation-window', action: '.tw-rotation-window input', event: 'input', image: 'rotation.jpg' },
       { title: 'Add an action', body: 'Choose member, attack, and timestamp in the composer, then add it. Double-clicking a member track also inserts an action at that time.', target: '.tw-rotation-composer, .tw-sequencer-viewport', action: '.tw-rotation-composer button, .tw-sequencer-viewport', increase: '.tw-rotation-card', image: 'rotation-action.jpg' },
-      { title: 'Edit play order and timing', body: 'Open an action card to set attack, timestamp, duration, and repeat count. Drag clips to move or trim them; the card’s arrows can reorder play order.', target: '.tw-rotation-editor', action: '.tw-rotation-card button, .tw-rotation-action-editor summary, .tw-rotation-card input', image: 'rotation-editor.jpg' },
-      { title: 'Review mechanics', body: 'Open Edit action and mechanics to inspect authored buffs, triggers, and other effects. Only set effects that actually occur in the sequence.', target: '.tw-rotation-action-editor', action: '.tw-rotation-action-editor summary, .tw-rotation-action-editor input', image: 'rotation-editor.jpg' },
+      { title: 'Edit play order and timing', body: 'Open Edit action and mechanics on the action card. Change attack, timestamp, duration, or repeat count there; drag clips to move or trim them.', target: '.tw-rotation-action-editor', action: '.tw-rotation-action-editor summary', complete: '.tw-rotation-action-editor[open]', image: 'rotation-editor.jpg' },
+      { title: 'Review mechanics', body: 'Inspect the effects and damage split in the open editor. Close it when finished; only model effects that actually occur in the sequence.', target: '.tw-rotation-mechanics, .tw-action-breakdown', action: '.tw-rotation-action-editor summary', image: 'rotation-editor.jpg' },
       { title: 'Read the result', body: 'Rotation analysis shows total damage, DPS, and each contribution. Open the calculated rotation total to trace its number.', target: '.tw-rotation-kpis', action: '.tw-rotation-kpis .calculated-value', complete: '.calculation-backdrop', image: 'rotation-action.jpg' }
     ]
   },

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import { GuidesView } from './GuidesView'
 import { LiveTutorial } from './LiveTutorial'
@@ -19,6 +19,10 @@ describe('guides', () => {
     expect(stepsFor(guideFor('archive')!, empty, false)[0].title).toBe('Switch categories')
     expect(stepsFor(guideFor('theorizer')!, empty, true).map((step) => step.title)).toContain('Create a team workspace')
     expect(stepsFor(guideFor('rotation')!, owned, false).map((step) => step.title)).toContain('Select a filled member')
+    expect(stepsFor(guideFor('optimizer')!, empty, true).map((step) => step.title)).toContain('Add Echoes to search')
+    expect(stepsFor(guideFor('optimizer')!, empty, true).map((step) => step.title)).not.toContain('Generate results')
+    expect(stepsFor(guideFor('optimizer')!, owned, false).map((step) => step.title)).toContain('Allow a partial build')
+    expect(stepsFor(guideFor('optimizer')!, { ...owned, echoes: 5 }, false).map((step) => step.title)).not.toContain('Allow a partial build')
     expect(guides.map((guide) => guide.id)).not.toContain('partnerships')
     expect(guides.map((guide) => guide.id)).not.toContain('settings')
   })
@@ -42,5 +46,26 @@ describe('guides', () => {
     fireEvent.click(container.querySelector('.home-hero-character-menu button')!)
     expect(screen.getByRole('button', { name: 'Next' })).toBeEnabled()
     expect(onClose).not.toHaveBeenCalled()
+  })
+
+  it('portals controls to the page root and advances after a checked action', () => {
+    vi.useFakeTimers()
+    try {
+      const { container } = render(<><div className="home-hero-character-control"><div className="home-hero-character-menu"><button type="button" role="option">Hero option</button></div></div><LiveTutorial id="dashboard" counts={empty} firstVisit onClose={vi.fn()}/></>)
+      expect(document.body.querySelector('.tutorial-layer .tutorial-panel')).not.toBeNull()
+      fireEvent.click(container.querySelector('.home-hero-character-menu button')!)
+      act(() => vi.advanceTimersByTime(700))
+      expect(screen.getByRole('heading', { name: 'Start the build path' })).toBeInTheDocument()
+    } finally { vi.useRealTimers() }
+  })
+
+  it('points to a blocking dialog close control', () => {
+    const bounds = vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({ x: 10, y: 10, left: 10, top: 10, right: 110, bottom: 40, width: 100, height: 30 } as DOMRect)
+    const rects = vi.spyOn(HTMLElement.prototype, 'getClientRects').mockReturnValue({ length: 1 } as DOMRectList)
+    try {
+      render(<><div className="home-hero-character-control"><div className="home-hero-character-menu"><button role="option">Hero option</button></div></div><section role="dialog" aria-modal="true"><button aria-label="Close example">Close</button></section><LiveTutorial id="dashboard" counts={empty} firstVisit onClose={vi.fn()}/></>)
+      expect(screen.getByRole('status')).toHaveTextContent('Close the highlighted dialog')
+      expect(document.body.querySelector('.tutorial-layer .tutorial-spotlight')).not.toBeNull()
+    } finally { bounds.mockRestore(); rects.mockRestore() }
   })
 })
