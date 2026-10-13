@@ -1477,7 +1477,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Luminal Synthesis",
             "name": "Luminal Synthesis - Incarnation - Basic Attack 1 DMG",
-            "damageType": "basic",
+            "damageType": "skill",
             "tags": [
               "forte"
             ],
@@ -1536,7 +1536,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Luminal Synthesis",
             "name": "Luminal Synthesis - Incarnation - Basic Attack 2 DMG",
-            "damageType": "basic",
+            "damageType": "skill",
             "tags": [
               "forte"
             ],
@@ -1637,7 +1637,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Luminal Synthesis",
             "name": "Luminal Synthesis - Incarnation - Basic Attack 3 DMG",
-            "damageType": "basic",
+            "damageType": "skill",
             "tags": [
               "forte"
             ],
@@ -1717,7 +1717,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Luminal Synthesis",
             "name": "Luminal Synthesis - Incarnation - Basic Attack 4 DMG",
-            "damageType": "basic",
+            "damageType": "skill",
             "tags": [
               "forte"
             ],
@@ -2391,7 +2391,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Luminal Synthesis",
             "name": "Luminal Synthesis - Illuminous Epiphany: Stella Glamor DMG",
-            "damageType": "basic",
+            "damageType": "skill",
             "tags": [
               "forte"
             ],
@@ -2845,12 +2845,20 @@
                   "maximum": 4
                 },
                 "durationSeconds": 6,
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "modifiers": [
+                  {
+                    "stat": "damageBonus",
+                    "operation": "addPercent",
+                    "value": 20,
+                    "scope": "self",
+                    "actionIds": [
+                      "1304:7:7",
+                      "1304:7:8"
+                    ]
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {

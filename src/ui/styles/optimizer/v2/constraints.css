@@ -1,7 +1,7 @@
 /* Embedded Teams optimizer: constraints, baseline, and explicit swap plan. */
 
 .optimizer-v2-workspace {
-  --optimizer-current-gold: #e4bb5e;
+  --optimizer-current-gold: var(--gold);
 }
 
 .optimizer-constraints {
@@ -44,7 +44,7 @@
   min-width: 0;
   height: 38px;
   padding: 0 9px;
-  border: 1px solid rgba(141,228,212,.28);
+  border: 1px solid rgba(var(--mint-rgb),.28);
   background: #071011;
   color: #edf3f1;
 }
@@ -55,8 +55,8 @@
   align-content: center;
   gap: 3px;
   padding: 7px 10px;
-  border: 1px solid rgba(228,187,94,.22);
-  background: rgba(228,187,94,.055);
+  border: 1px solid rgba(var(--gold-rgb),.22);
+  background: rgba(var(--gold-rgb),.055);
 }
 
 .optimizer-current-baseline b {

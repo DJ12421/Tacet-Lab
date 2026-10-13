@@ -10,7 +10,7 @@
   min-height: 54px;
   grid-template-columns: 38px minmax(0,1fr) auto;
   padding: 7px 10px;
-  background: linear-gradient(90deg,rgba(141,228,212,.19),rgba(228,187,94,.07));
+  background: linear-gradient(90deg,rgba(var(--mint-rgb),.19),rgba(var(--gold-rgb),.07));
 }
 
 .tw-member-heading-icon {
@@ -41,8 +41,8 @@
   gap: 9px;
   margin: 8px 9px 0;
   padding: 7px 8px;
-  border: 1px solid rgba(228,187,94,.22);
-  background: rgba(228,187,94,.055);
+  border: 1px solid rgba(var(--gold-rgb),.22);
+  background: rgba(var(--gold-rgb),.055);
 }
 
 .tw-member-switcher>span {
@@ -168,8 +168,8 @@
 }
 
 .tw-member-column>.tw-echo-thumbs>span {
-  border-color: rgba(228,187,94,.34);
-  background: linear-gradient(145deg,rgba(228,187,94,.12),#091112);
+  border-color: rgba(var(--gold-rgb),.34);
+  background: linear-gradient(145deg,rgba(var(--gold-rgb),.12),#091112);
 }
 
 .tw-member-column>.tw-echo-thumbs small {
@@ -188,7 +188,7 @@
   min-height: 100px;
   margin: 5px 9px 8px;
   padding: 0;
-  background: linear-gradient(90deg,rgba(228,187,94,.16),#091112 36%);
+  background: linear-gradient(90deg,rgba(var(--gold-rgb),.16),#091112 36%);
 }
 
 .tw-member-column>.tw-member-weapon>img {
@@ -219,7 +219,7 @@
   flex: 1 1 auto;
   min-height: 31px;
   border-radius: 4px;
-  background: rgba(141,228,212,.08);
+  background: rgba(var(--mint-rgb),.08);
   font-size: var(--font-size-caption);
 }
 
@@ -238,7 +238,7 @@
   gap: 7px;
   cursor: pointer;
   list-style: none;
-  background: rgba(141,228,212,.08);
+  background: rgba(var(--mint-rgb),.08);
 }
 
 .tw-member-buffs>summary::-webkit-details-marker {

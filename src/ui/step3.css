@@ -1,7 +1,7 @@
 .notice.success {
   color: #b8f0e5;
-  background: rgba(141, 228, 212, .07);
-  border: 1px solid rgba(141, 228, 212, .22);
+  background: rgba(var(--mint-rgb), .07);
+  border: 1px solid rgba(var(--mint-rgb), .22);
 }
 
 .sort-select {

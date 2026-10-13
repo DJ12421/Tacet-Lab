@@ -1443,12 +1443,21 @@
                 "input": {
                   "kind": "toggle"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "modifiers": [
+                  {
+                    "stat": "shieldBonus",
+                    "operation": "addPercent",
+                    "value": 40,
+                    "scope": "self",
+                    "actionIds": [
+                      "1601:7:3",
+                      "1601:7:4",
+                      "1601:7:5"
+                    ]
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               }
             ]
           },
@@ -1535,6 +1544,9 @@
                     "expression": "25%",
                     "count": 1
                   }
+                ],
+                "triggerActionIds": [
+                  "1601:1:6"
                 ]
               },
               {

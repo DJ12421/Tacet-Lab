@@ -1,9 +1,9 @@
 /* Teams pages share the site's dark panels and compact controls. */
 
 .team-workspace:not(.team-gallery-original) {
-  --gold: #e4bb5e;
-  --mint: #8de4d4;
-  --gold-soft: #a98438;
+  --gold: var(--theme-gold);
+  --mint: var(--site-mint);
+  --gold-soft: color-mix(in srgb, var(--theme-gold) 65%, #101718);
   --tw-console: #090d0f;
   --tw-console-raised: #101619;
   --tw-console-line: rgba(200, 208, 206, .12);
@@ -674,7 +674,7 @@
 .tw-overview-sonata-list > article > header b {
   padding: 3px 6px;
   border-radius: 3px;
-  background: rgba(141, 228, 212, .12);
+  background: rgba(var(--mint-rgb), .12);
   color: var(--tw-member-accent);
   font-size: var(--font-size-caption);
 }
@@ -1046,17 +1046,17 @@
 .team-workspace:not(.team-gallery-original) .tw-v2-effect-list .tw-effect-copy {
   min-height: 44px;
   padding: 6px 8px;
-  background: color-mix(in srgb, var(--tw-member-accent, #8de4d4) 12%, #111c1d);
+  background: color-mix(in srgb, var(--tw-member-accent, var(--mint)) 12%, #111c1d);
 }
 
 .team-workspace:not(.team-gallery-original) .tw-v2-effect-list .tw-effect-copy small {
-  color: var(--tw-member-accent, #8de4d4);
+  color: var(--tw-member-accent, var(--mint));
 }
 
 .team-workspace:not(.team-gallery-original) .tw-v2-effect-list .tw-effect-results > div {
   min-height: 28px;
   padding: 4px 8px;
-  background: color-mix(in srgb, var(--tw-member-accent, #8de4d4) 6%, #0d1719);
+  background: color-mix(in srgb, var(--tw-member-accent, var(--mint)) 6%, #0d1719);
 }
 
 .tw-stat-icon {

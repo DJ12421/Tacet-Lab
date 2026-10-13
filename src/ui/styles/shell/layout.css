@@ -2,7 +2,7 @@
   min-height: 100vh;
   display: grid;
   grid-template-columns: 238px minmax(0, 1fr);
-  background: radial-gradient(circle at 75% -20%, rgba(141, 228, 212, .08), transparent 32%), linear-gradient(135deg, #07090b, #0b1011 55%, #07090a);
+  background: radial-gradient(circle at 75% -20%, rgba(var(--mint-rgb), .08), transparent 32%), linear-gradient(135deg, #07090b, #0b1011 55%, #07090a);
 }
 
 .app-shell::before {
@@ -62,7 +62,7 @@
   align-items: center;
   justify-content: center;
   gap: 4px;
-  box-shadow: inset 0 0 16px rgba(228,187,94,.12);
+  box-shadow: inset 0 0 16px rgba(var(--gold-rgb),.12);
 }
 
 .brand-mark i {
@@ -105,9 +105,9 @@
 }
 
 .sidebar nav button.active, .side-bottom>button.active {
-  color: #fff2c8;
-  border-color: rgba(228,187,94,.24);
-  background: linear-gradient(90deg, rgba(228,187,94,.13), transparent);
+  color: color-mix(in srgb, var(--gold) 45%, white);
+  border-color: rgba(var(--gold-rgb),.24);
+  background: linear-gradient(90deg, rgba(var(--gold-rgb),.13), transparent);
   box-shadow: inset 2px 0 var(--gold);
   border-radius: 4px;
 }
@@ -116,7 +116,7 @@
   margin-left: auto;
   font-size: var(--font-size-caption);
   letter-spacing: .12em;
-  background: rgba(141,228,212,.12);
+  background: rgba(var(--mint-rgb),.12);
   color: var(--mint);
   padding: 3px 5px;
 }
@@ -194,6 +194,7 @@ main {
   width: 40px;
   min-width: 40px;
   height: 40px;
+  min-height: 40px;
   flex: 0 0 40px;
   transform: translateX(15px);
   align-self: center;
@@ -201,22 +202,27 @@ main {
   padding: 0;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(228,187,94,.5);
+  border: 1px solid rgba(var(--gold-rgb),.5);
   border-radius: 50%;
   color: var(--gold);
-  background: rgba(228,187,94,.035);
+  background: rgba(var(--gold-rgb),.035);
   text-decoration: none;
 }
 
-.topbar .discord-button:hover {
+.topbar .discord-button:not(:disabled):hover {
   border-color: var(--gold);
-  background: rgba(228,187,94,.12);
-  box-shadow: 0 0 20px rgba(228,187,94,.12);
+  background: rgba(var(--gold-rgb),.12);
+  box-shadow: 0 0 20px rgba(var(--gold-rgb),.12);
 }
 
 .topbar .discord-button .icon {
   width: 20px;
   height: 20px;
+}
+
+.topbar .donation-button:disabled {
+  opacity: 1;
+  cursor: default;
 }
 
 .pulse {
@@ -294,24 +300,24 @@ button.primary, button.secondary, button.danger {
 
 button.primary {
   color: #16140d;
-  border: 1px solid #f0cd78;
-  background: linear-gradient(135deg, #f0ce7c, #ba8e39);
+  border: 1px solid var(--gold);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--gold) 85%, white), color-mix(in srgb, var(--gold) 75%, black));
   font-weight: 650;
 }
 
 button.primary:hover {
   filter: brightness(1.08);
-  box-shadow: 0 0 25px rgba(228,187,94,.18);
+  box-shadow: 0 0 25px rgba(var(--gold-rgb),.18);
 }
 
 button.secondary {
-  border: 1px solid rgba(228,187,94,.3);
-  background: rgba(228,187,94,.06);
-  color: #f2dfaa;
+  border: 1px solid rgba(var(--gold-rgb),.3);
+  background: rgba(var(--gold-rgb),.06);
+  color: color-mix(in srgb, var(--gold) 45%, white);
 }
 
 button.secondary:hover {
-  background: rgba(228,187,94,.12);
+  background: rgba(var(--gold-rgb),.12);
 }
 
 button.danger {

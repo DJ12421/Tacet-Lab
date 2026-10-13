@@ -1059,7 +1059,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Unassuming Blade",
             "name": "Unassuming Blade - Thunder Uprising Damage",
-            "damageType": "basic",
+            "damageType": "skill",
             "tags": [
               "forte"
             ],
@@ -2345,13 +2345,24 @@
                 "input": {
                   "kind": "toggle"
                 },
-                "trigger": "When the Coordinated Attacks of Resonance Skill's Thunder Wedge hits a target",
                 "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Thunder Wedge coordinated attack hits",
+                "triggerActionIds": [
+                  "1303:2:1"
                 ],
-                "reviewStatus": "no-mechanic"
+                "triggeredAttacks": [
+                  {
+                    "id": "thunder-wedge-def-followup",
+                    "name": "Thunder Wedge additional DEF damage",
+                    "damageType": "skill",
+                    "element": "electro",
+                    "scaling": "def",
+                    "expression": "20%",
+                    "count": 1
+                  }
+                ]
               }
             ]
           },
@@ -2362,16 +2373,26 @@
             "parsedEffects": [
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "always"
                 },
-                "trigger": "Resonance Liberation",
-                "durationSeconds": 10,
+                "trigger": "Blazing Might cast",
                 "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "triggerActionIds": [
+                  "1303:3:0"
                 ],
-                "reviewStatus": "no-mechanic"
+                "triggeredAttacks": [
+                  {
+                    "id": "retributive-knuckles-shield",
+                    "name": "Retributive Knuckles shield",
+                    "damageType": "shield",
+                    "recipient": "self",
+                    "scaling": "def",
+                    "expression": "200%",
+                    "count": 1
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
               }
             ]
           },

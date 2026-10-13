@@ -11,7 +11,7 @@
 .import-data-modal {
   --import-ink: #f3f5f2;
   --import-muted: #9aa8a4;
-  --import-edge: rgba(228,187,94,.24);
+  --import-edge: rgba(var(--gold-rgb),.24);
   width: min(1180px,96vw);
   max-height: 94vh;
   display: grid;
@@ -63,8 +63,8 @@
 }
 
 .import-data-header .close {
-  width: 40px;
-  height: 40px;
+  width: 64px;
+  height: 64px;
   padding: 0;
   display: grid;
   place-items: center;
@@ -72,7 +72,7 @@
   border: 0;
   background: transparent;
   color: #d4ded9;
-  font-size: var(--font-size-heading);
+  font-size: var(--font-size-display);
   line-height: 1;
   cursor: pointer;
 }
@@ -189,7 +189,7 @@
 .import-paste summary {
   width: fit-content;
   cursor: pointer;
-  color: #f2cd78;
+  color: color-mix(in srgb, var(--gold) 82%, white);
   font-weight: 700;
 }
 
@@ -215,7 +215,7 @@
 
 .import-json-input textarea:focus {
   border-color: var(--gold);
-  outline: 1px solid rgba(228,187,94,.3);
+  outline: 1px solid rgba(var(--gold-rgb),.3);
 }
 
 .import-message {
@@ -247,7 +247,7 @@
 
 .import-repair-notice {
   padding: 14px 16px;
-  border: 1px solid rgba(228,187,94,.42);
+  border: 1px solid rgba(var(--gold-rgb),.42);
   border-left: 3px solid var(--gold);
   border-radius: 6px;
   background: #15150f;
@@ -277,12 +277,12 @@
 .import-source-notices details {
   margin-top: 9px;
   padding-top: 9px;
-  border-top: 1px solid rgba(228,187,94,.22);
+  border-top: 1px solid rgba(var(--gold-rgb),.22);
 }
 
 .import-source-notices summary {
   width: fit-content;
-  color: #f2cd78;
+  color: color-mix(in srgb, var(--gold) 82%, white);
   cursor: pointer;
   font-weight: 700;
 }
@@ -295,7 +295,7 @@
   width: 16px;
   height: 16px;
   flex: none;
-  border: 2px solid rgba(141,228,212,.2);
+  border: 2px solid rgba(var(--mint-rgb),.2);
   border-top-color: var(--mint);
   border-radius: 50%;
   animation: spin .7s linear infinite;
@@ -350,7 +350,7 @@
 
 .import-build-choices h3 {
   margin: 0;
-  color: #e4d0a0;
+  color: color-mix(in srgb, var(--gold) 82%, white);
   font-size: var(--font-size-body);
 }
 
@@ -517,7 +517,7 @@
   gap: 8px;
   padding: 9px 11px;
   border-bottom: 1px solid rgba(255,255,255,.07);
-  background: rgba(228,187,94,.05);
+  background: rgba(var(--gold-rgb),.05);
 }
 
 .import-collection-grid article>header strong {

@@ -44,7 +44,7 @@
   width: auto;
   max-width: min(360px, calc(100vw - 32px));
   padding: 11px 14px;
-  border-color: rgba(141, 228, 212, .55);
+  border-color: rgba(var(--mint-rgb), .55);
   background: rgba(19, 29, 28, .96);
 }
 

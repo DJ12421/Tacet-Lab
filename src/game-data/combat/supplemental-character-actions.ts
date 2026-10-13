@@ -18,6 +18,10 @@ function reviewedAction(input: {
   kind: ResultKind
   formula: ActionFormula
   skillLevelIndex?: number
+  minimumSequence?: number
+  cooldownSeconds?: number
+  maximumUses?: number
+  recipient?: CharacterActionMechanics['recipient']
   damageType?: CharacterActionMechanics['damageType']
   element?: Element
   tags?: CharacterActionMechanics['tags']
@@ -29,10 +33,14 @@ function reviewedAction(input: {
     sourceId:`character:${input.characterId}:supplemental:${input.id}`,
     reviewFingerprint:`manual-reviewed:3.6:2026-09-28:${input.id}`,
     kind:input.kind,
+    ...(input.recipient ? { recipient:input.recipient } : {}),
     damageType:input.damageType,
     element:input.element,
     tags:input.tags,
     skillLevelIndex:input.skillLevelIndex ?? 4,
+    ...(input.minimumSequence === undefined ? {} : { minimumSequence:input.minimumSequence }),
+    ...(input.cooldownSeconds === undefined ? {} : { cooldownSeconds:input.cooldownSeconds }),
+    ...(input.maximumUses === undefined ? {} : { maximumUses:input.maximumUses }),
     formulas:{ 1:input.formula }
   })
 }
@@ -76,6 +84,51 @@ reviewedAction({
   formula:{ kind:'healing', scaling:{ hp:1 }, motionValue:0.0034, flatValue:62 }
 })
 reviewedAction({
+  characterId:'1410', id:'1410:review:waxing-ascent-shield', name:'Waxing Ascent Shield', group:'Inherent Skill', kind:'shield', recipient:'self',
+  formula:{ kind:'shield', scaling:{ atk:1 }, motionValue:0.32, flatValue:0 }
+})
+reviewedAction({
+  characterId:'1212', id:'1212:review:hark-the-dust-shield', name:'Hark the Dust Shield', group:'Inherent Skill', kind:'shield', recipient:'self',
+  formula:{ kind:'shield', scaling:{ hp:1 }, motionValue:0.016, flatValue:700 }
+})
+reviewedAction({
+  characterId:'1212', id:'1212:review:yinghuo-shield', name:'Yinghuo Shield', group:'Inherent Skill', kind:'shield', recipient:'self',
+  formula:{ kind:'shield', scaling:{ hp:1 }, motionValue:0.008, flatValue:350 }
+})
+// shortcut: Grace of Life needs the protected member's fatal-hit event and ten-minute cooldown before it can be automatic.
+reviewedAction({
+  characterId:'1503', id:'1503:review:grace-of-life-shield', name:'Grace of Life Shield', group:'Inherent Skill', kind:'shield', recipient:'team',
+  formula:{ kind:'shield', scaling:{ atk:1 }, motionValue:1.2, flatValue:0 }
+})
+// shortcut: Boundedness healing follows removal of a per-member protection state; select it manually after that event.
+reviewedAction({
+  characterId:'1209', id:'1209:review:boundedness-heal', name:'Boundedness Healing', group:'Inherent Skill', kind:'healing', recipient:'team',
+  formula:{ kind:'healing', scaling:{ def:1 }, motionValue:1.5, flatValue:0 }
+})
+// shortcut: the Intro user in Ruler's Realm must be chosen manually until support recipients follow team actions.
+reviewedAction({
+  characterId:'1306', id:'1306:review:rulers-realm-shield', name:"Ruler's Realm Shield", group:'Forte Circuit', kind:'shield', recipient:'team',
+  formula:{ kind:'shield', scaling:{ hp:1 }, motionValue:0.05, flatValue:650 }
+})
+// shortcut: Antique Appraisal uses Scroll Divination's rank-one healing values; derive all skill ranks from its reviewed healing action when support formulas can reference actions.
+reviewedAction({
+  characterId:'1106', id:'1106:review:antique-appraisal-heal', name:'Antique Appraisal Team Heal', group:'Inherent Skill', kind:'healing', recipient:'team',
+  formula:{ kind:'healing', scaling:{ atk:1 }, motionValue:0.117, flatValue:312.3 }
+})
+// shortcut: incoming-hit triggers and cooldowns are not tracked; select these S5 shields only after their conditions occur.
+reviewedAction({
+  characterId:'1210', id:'1210:review:s5-digital-ghost-shield', name:'2D Digital Ghost Team Shield', group:'Sequence 5', kind:'shield', recipient:'team', minimumSequence:5,
+  formula:{ kind:'shield', scaling:{ atk:1 }, motionValue:3.6, flatValue:0 }
+})
+reviewedAction({
+  characterId:'1409', id:'1409:review:s5-fatal-blow-shield', name:'Hope Reshaped in Storms Shield', group:'Sequence 5', kind:'shield', recipient:'self', minimumSequence:5,
+  formula:{ kind:'shield', scaling:{ hp:1 }, motionValue:0.25, flatValue:0 }
+})
+reviewedAction({
+  characterId:'1511', id:'1511:review:s5-optical-illusion-shield', name:'A Broken Path to Hell Shield', group:'Sequence 5', kind:'shield', recipient:'self', minimumSequence:5,
+  formula:{ kind:'shield', scaling:{ atk:1 }, motionValue:1.5, flatValue:0 }
+})
+reviewedAction({
   characterId:'1306', id:'1306:review:glorys-favor-shield', name:"Glory's Favor Shield", group:'Inherent Skill', kind:'shield',
   formula:{ kind:'shield', scaling:{ hp:1 }, motionValue:0.025, flatValue:350 }
 })
@@ -84,8 +137,35 @@ reviewedAction({
   damageType:'outro', element:'havoc', formula:{ kind:'damage', scaling:{ atk:1 }, hits:[4.5902], canCrit:true }
 })
 
+// shortcut: Brant's local source only has manually transcribed rank-one formulas here; add reviewed level curves when skill-level parity is required.
+reviewedAction({
+  characterId:'1206', id:'1206:review:returned-from-ashes', name:'Returned from Ashes', group:'Forte Circuit', kind:'damage',
+  damageType:'basic', element:'fusion', formula:{ kind:'damage', scaling:{ atk:1 }, hits:[0.2375,0.2375,0.475,0.95,0.95,6.65], canCrit:true }
+})
+reviewedAction({
+  characterId:'1206', id:'1206:review:returned-from-ashes-shield', name:'Returned from Ashes Shield', group:'Forte Circuit', kind:'shield',
+  formula:{ kind:'shield', scaling:{ energyRegen:1 }, motionValue:900, flatValue:2500 }
+})
+// shortcut: insert after an incoming teammate's Skill during Brant's Outro window; the two-blast cap needs linked rotation state.
+reviewedAction({
+  characterId:'1206', id:'1206:review:s2-outro-blast', name:'For Smiles and Cheers Blast', group:'Sequence 2', kind:'damage', minimumSequence:2, cooldownSeconds:1, maximumUses:2,
+  damageType:'basic', element:'fusion', formula:{ kind:'damage', scaling:{ atk:1 }, hits:[4.4], canCrit:true }
+})
+reviewedAction({
+  characterId:'1508', id:'1508:review:s1-unseen-snare-hit', name:'Wandering Through the Desolate Corridors Hit', group:'Sequence 1', kind:'damage', minimumSequence:1,
+  damageType:'basic', element:'havoc', formula:{ kind:'unsupported', family:'fixed 61803 hit requires target HP, a 61.8% HP floor, and once-per-target state' }
+})
+
+for (const [id, name, group, sequence, coefficient] of [
+  ['1411:review:straw-cape-in-drizzly-rain', 'Straw Cape in Drizzly Rain', 'Resonance Skill', 3, 5],
+  ['1411:review:sheath-fallen-new-shoots', 'Sheath Fallen, New Shoots Revealed', 'Outro Skill', 3, 5],
+  ['1411:review:exit-inksplash-of-mind', 'Exit Inksplash of Mind', 'Sequence 6', 6, 6]
+] as Array<[string, string, string, number, number]>) reviewedAction({
+  characterId:'1411', id, name, group, kind:'damage', minimumSequence:sequence,
+  damageType:'echo', element:'aero', formula:{ kind:'damage', scaling:{ atk:1 }, hits:[coefficient], canCrit:true }
+})
+
 for (const [characterId, id, name, damageType, element, tags] of [
-  ['1206','1206:review:returned-from-ashes','Returned from Ashes','basic','fusion',undefined],
   ['1410','1410:review:arc-beyond-edge','Arc Beyond the Edge','liberation','aero',undefined],
   ['1409','status:aero-erosion','Forced Aero Erosion DMG','status','aero',['aero-erosion']]
 ] as Array<[string, string, string, CharacterActionMechanics['damageType'], Element, CharacterActionMechanics['tags']]>) reviewedAction({

@@ -1626,7 +1626,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Radiant Invocation",
             "name": "Radiant Invocation - Utter Confession DMG",
-            "damageType": "heavy",
+            "damageType": "skill",
             "tags": [
               "forte"
             ],
@@ -2039,18 +2039,29 @@
             "text": "- Confession Enhancement: Grant Silent Prayer to the Resonator on the field, reducing the Spectro RES of nearby targets by 10% and granting 100% Spectro Frazzle DMG Amplification.",
             "parsed": {
               "input": {
-                "kind": "always"
+                "kind": "toggle",
+                "key": "phoebe-confession-silent-prayer"
               },
+              "trigger": "Confession Silent Prayer is active on the field",
+              "durationSeconds": 30,
               "modifiers": [
                 {
                   "stat": "spectroFrazzleDamage",
                   "operation": "amplifyPercent",
                   "value": 100,
-                  "scope": "self"
+                  "scope": "team"
+                },
+                {
+                  "stat": "ResistShred:Spectro",
+                  "operation": "addPercent",
+                  "value": 10,
+                  "scope": "team"
                 }
               ],
               "confidence": "high",
-              "warnings": []
+              "warnings": [
+                "Silent Prayer follows the active Resonator; the toggle represents its active duration."
+              ]
             },
             "reviewStatus": "include"
           },

@@ -59,7 +59,7 @@
   right: 1%;
   bottom: 4%;
   border: 1px dashed var(--mint);
-  box-shadow: 0 0 40px rgba(141,228,212,.08);
+  box-shadow: 0 0 40px rgba(var(--mint-rgb),.08);
 }
 
 .active .crop-guide {
@@ -136,7 +136,7 @@
   margin-top: 12px;
   padding: 11px 13px;
   border-left: 2px solid var(--mint);
-  background: rgba(141,228,212,.045);
+  background: rgba(var(--mint-rgb),.045);
   display: flex;
   gap: 11px;
   font-size: var(--font-size-caption);
@@ -161,7 +161,7 @@
 
 .drop-panel.active {
   border-color: var(--mint);
-  background: rgba(141,228,212,.06);
+  background: rgba(var(--mint-rgb),.06);
 }
 
 .drop-panel>.icon {
@@ -296,7 +296,7 @@
 }
 
 .notice.warning {
-  color: #f1d797;
-  background: rgba(228,187,94,.07);
-  border: 1px solid rgba(228,187,94,.2);
+  color: color-mix(in srgb, var(--gold) 45%, white);
+  background: rgba(var(--gold-rgb),.07);
+  border: 1px solid rgba(var(--gold-rgb),.2);
 }

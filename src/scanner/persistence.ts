@@ -147,8 +147,13 @@ export async function saveScannedCandidates(
       pendingEchoes.push(...groupEchoes)
       groupEchoes.forEach((echo) => pendingEchoesById.set(echo.id, echo))
       if (loadout) {
-        const previousIds = first.buildCard && group.length > 1 ? [] : loadout.echoIds
-        loadout = { ...loadout, echoIds: [...previousIds, ...newlyAssigned.map((echo) => echo.id)].slice(0, 5), updatedAt: Date.now() }
+        const echoIds = [...(first.buildCard && group.length > 1 ? [] : loadout.echoIds)]
+        for (const echo of newlyAssigned) {
+          const emptySlot = echoIds.indexOf('')
+          if (emptySlot >= 0) echoIds[emptySlot] = echo.id
+          else echoIds.push(echo.id)
+        }
+        loadout = { ...loadout, echoIds: echoIds.slice(0, 5), updatedAt: Date.now() }
         await db.equippedLoadouts.put(loadout)
       }
     }

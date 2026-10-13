@@ -163,7 +163,7 @@
             "skillType": "Normal Attack",
             "skillName": "Edge of Life and Death",
             "name": "Edge of Life and Death - Basic Attack - Drink Soul Stage 3 DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "normal-chain"
             ],
@@ -290,7 +290,7 @@
             "skillType": "Normal Attack",
             "skillName": "Edge of Life and Death",
             "name": "Edge of Life and Death - Basic Attack - Drink Soul Stage 4 DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "normal-chain"
             ],
@@ -561,7 +561,7 @@
             "skillType": "Normal Attack",
             "skillName": "Edge of Life and Death",
             "name": "Edge of Life and Death - Basic Attack - Devil's Bane Stage 3 DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "normal-chain"
             ],
@@ -666,7 +666,7 @@
             "skillType": "Normal Attack",
             "skillName": "Edge of Life and Death",
             "name": "Edge of Life and Death - Basic Attack - Devil's Bane Stage 4 DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "normal-chain"
             ],
@@ -854,7 +854,7 @@
             "skillType": "Normal Attack",
             "skillName": "Edge of Life and Death",
             "name": "Edge of Life and Death - Dodge Counter - Nether Dive DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "dodge-counter"
             ],
@@ -981,7 +981,7 @@
             "skillType": "Normal Attack",
             "skillName": "Edge of Life and Death",
             "name": "Edge of Life and Death - Dodge Counter - Light Watch DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "dodge-counter"
             ],
@@ -1527,7 +1527,7 @@
             "skillType": "Resonance Skill",
             "skillName": "Malevolent Encounter",
             "name": "Malevolent Encounter - Afterlife's Guide DMG",
-            "damageType": "skill",
+            "damageType": "heavy",
             "skillSource": "skill",
             "scaling": "atk",
             "expressions": [
@@ -3065,21 +3065,25 @@
             "text": "Each stack of Fortune in Disguise grants additional Fusion DMG Bonus based on Jingran's Max HP: For every 1000 points of Max HP, Jingran gains 0.05% additional Fusion DMG Bonus for 15s, up to 2.5% for each stack of Fortune in Disguise.",
             "parsed": {
               "input": {
-                "kind": "stacks",
+                "kind": "value",
                 "minimum": 0,
-                "maximum": 1
+                "maximum": 2500,
+                "key": "jingran-fortune-hp-thousands-times-stacks"
               },
               "durationSeconds": 15,
+              "trigger": "Max HP in 1,000-point units, capped at 50, multiplied by active Fortune in Disguise stacks, capped at 50",
               "modifiers": [
                 {
                   "stat": "Fusion",
                   "operation": "addPercent",
                   "value": 0.05,
-                  "scope": "self"
+                  "maximumValue": 125
                 }
               ],
               "confidence": "high",
-              "warnings": []
+              "warnings": [
+                "Enter the combined HP-thousands × Fortune stacks value; the calculator does not derive it from target or rotation state."
+              ]
             },
             "reviewStatus": "include"
           },
@@ -3218,17 +3222,24 @@
             "text": "- Jingran gains Fusion DMG Bonus based on Max HP: For every 1000 of Max HP, Jingran receives 1.5% Fusion DMG Bonus, up to 75%.",
             "parsed": {
               "input": {
-                "kind": "toggle"
+                "kind": "value",
+                "minimum": 0,
+                "maximum": 50,
+                "key": "jingran-hp-thousands-fusion"
               },
+              "trigger": "Max HP in 1,000-point units",
               "modifiers": [
                 {
                   "stat": "Fusion",
                   "operation": "addPercent",
-                  "value": 1.5
+                  "value": 1.5,
+                  "maximumValue": 75
                 }
               ],
               "confidence": "high",
-              "warnings": []
+              "warnings": [
+                "Enter Max HP divided by 1,000."
+              ]
             },
             "reviewStatus": "include"
           },
@@ -3239,16 +3250,29 @@
             "text": "Jingran gains additional ATK based on Max HP: For every 1000 of Max HP, Jingran gains 36 additional ATK, up to 1800.",
             "parsed": {
               "input": {
-                "kind": "toggle"
+                "kind": "value",
+                "minimum": 0,
+                "maximum": 50,
+                "key": "jingran-base-yinyang-hp-thousands",
+                "suppressedBy": [
+                  "jingran-s3-yinyang-everflow-hp-thousands"
+                ]
               },
-              "modifiers": [],
-              "confidence": "review",
-              "warnings": [
-                "Reviewed: no supported deterministic calculator mechanic."
+              "trigger": "Max HP in 1,000-point units while Yang Changes, Yin Unites is active",
+              "modifiers": [
+                {
+                  "stat": "atkFlat",
+                  "operation": "addFlat",
+                  "value": 36,
+                  "maximumValue": 1800
+                }
               ],
-              "reviewStatus": "no-mechanic"
+              "confidence": "high",
+              "warnings": [
+                "Enter Max HP divided by 1,000; Yin-Yang Everflow replaces this bonus while active."
+              ]
             },
-            "reviewStatus": "no-mechanic"
+            "reviewStatus": "include"
           },
           {
             "id": "1212:9:effect:0",
@@ -3494,12 +3518,20 @@
                 "input": {
                   "kind": "toggle"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "modifiers": [
+                  {
+                    "stat": "damageBonus",
+                    "operation": "amplifyPercent",
+                    "value": 180,
+                    "scope": "self",
+                    "actionIds": [
+                      "1212:7:2",
+                      "1212:7:3"
+                    ]
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {
@@ -3588,7 +3620,8 @@
                 "input": {
                   "kind": "value",
                   "minimum": 0,
-                  "maximum": 50
+                  "maximum": 50,
+                  "key": "jingran-s3-yinyang-everflow-hp-thousands"
                 },
                 "trigger": "Max HP in 1,000-point units",
                 "modifiers": [
@@ -3724,14 +3757,19 @@
             "parsedEffects": [
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "always"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "modifiers": [
+                  {
+                    "stat": "damageBonus",
+                    "operation": "amplifyPercent",
+                    "value": 40,
+                    "appliesTo": "heavy",
+                    "scope": "self"
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {
@@ -3783,7 +3821,7 @@
                 "modifiers": [],
                 "confidence": "review",
                 "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                  "Parade of Thousand Souls can summon Chimei Wangliang once per second up to eight times; rotation-wide event charges are not tracked."
                 ],
                 "reviewStatus": "no-mechanic"
               },

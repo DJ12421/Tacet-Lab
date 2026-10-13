@@ -110,7 +110,7 @@ function ArchiveDetailDialog({ detail, onClose }: { detail: ArchiveDetail; onClo
             <div><dt>Element</dt><dd><ElementIcon element={item.element}/>{item.element}</dd></div>
             <div><dt>Weapon</dt><dd>{item.weaponType}</dd></div>
             <div><dt>Roles</dt><dd className="archive-detail-role-list">{(item.roles.length ? item.roles : [item.role]).map((role) => <span className="archive-role-chip" key={role}>{role}</span>)}</dd></div>
-            <div><dt>Rarity</dt><dd aria-label={`${item.rarity} stars`}>{'★'.repeat(item.rarity)}</dd></div>
+            <div><dt>Rarity</dt><dd className={`rarity-${item.rarity}`} aria-label={`${item.rarity} stars`}>{'★'.repeat(item.rarity)}</dd></div>
           </dl>
           <section className="archive-detail-section archive-skill-input-guide">
             <h3>Skill Input</h3>
@@ -127,7 +127,7 @@ function ArchiveDetailDialog({ detail, onClose }: { detail: ArchiveDetail; onClo
           <p className="archive-detail-description">{plainDescription(item.description)}</p>
           <dl className="archive-detail-facts">
             <div><dt>Type</dt><dd>{item.type}</dd></div>
-            <div><dt>Rarity</dt><dd aria-label={`${item.rarity} stars`}>{'★'.repeat(item.rarity)}</dd></div>
+            <div><dt>Rarity</dt><dd className={`rarity-${item.rarity}`} aria-label={`${item.rarity} stars`}>{'★'.repeat(item.rarity)}</dd></div>
             <div><dt><img className="weapon-stat-icon" src={statIconSource('atk')} alt="" aria-hidden="true"/>ATK</dt><dd>{item.baseAtk}</dd></div>
             <div><dt><img className="weapon-stat-icon" src={weaponStatIconSource(item.secondaryStat)} alt="" aria-hidden="true"/>{item.secondaryStat}</dt><dd>{item.secondaryStatValue}</dd></div>
           </dl>
@@ -199,7 +199,7 @@ export function ArchiveView({ roverGender, tab, onTabChange }: { roverGender: 'm
       return a.name.localeCompare(b.name)
     })
 
-    if (tab === 'characters') return byName(characterCatalog.filter((item) => isSelectedGenderVariant(item, roverGender) && includesQuery(item.name) && includesRarity(item.rarity) && includesCategory(item.element)))
+    if (tab === 'characters') return byName(characterCatalog.filter((item) => isSelectedGenderVariant(item, roverGender) && includesQuery(item.name) && includesRarity(item.rarity) && includesCategory(item.element) && selectedWeaponTypes.includes(item.weaponType)))
     if (tab === 'weapons') return byName(weaponCatalog.filter((item) => includesQuery(item.name) && includesRarity(item.rarity) && includesCategory(item.secondaryStat) && selectedWeaponTypes.includes(item.type)))
     if (tab === 'sonatas') return byName(sonataCatalog.filter((item) => includesQuery(item.name)))
     return byName(echoCatalog.filter((item) => includesQuery(item.name) && includesCategory(`${item.cost} cost`) && (sonata === 'all' || item.sonatas.includes(sonata))))
@@ -228,7 +228,7 @@ export function ArchiveView({ roverGender, tab, onTabChange }: { roverGender: 'm
     <PageHeader eyebrow="Discover Wuthering Waves" title="Archive" description="Pick a category and start exploring." />
 
     <nav className="archive-section-tabs" aria-label="Archive categories">
-      {tabs.map((item) => <button type="button" aria-current={tab === item.id ? 'page' : undefined} className={tab === item.id ? 'active' : ''} onClick={() => onTabChange(item.id)} key={item.id}>
+      {tabs.map((item) => <button type="button" data-archive-tab={item.id} aria-current={tab === item.id ? 'page' : undefined} className={tab === item.id ? 'active' : ''} onClick={() => onTabChange(item.id)} key={item.id}>
         <i><img src={item.id === 'sonatas' ? featuredElementIcon : item.iconSource} alt=""/></i><strong>{item.label}</strong><b>{item.count}</b>
       </button>)}
     </nav>
@@ -252,7 +252,7 @@ export function ArchiveView({ roverGender, tab, onTabChange }: { roverGender: 'm
           onChange={setCategories}
           renderValue={(value) => <ElementFilterIcon element={value}/>}
         />}
-        {tab === 'weapons' && <FilterChips label="Weapon type" hideLabel values={weaponTypes} selected={selectedWeaponTypes} onChange={setSelectedWeaponTypes} renderValue={(value) => <img className="weapon-type-filter-icon" src={weaponTypeIconSource(value)} alt={value} title={value}/>}/>}
+        {(tab === 'characters' || tab === 'weapons') && <FilterChips label="Weapon type" hideLabel values={weaponTypes} selected={selectedWeaponTypes} onChange={setSelectedWeaponTypes} renderValue={(value) => <img className="weapon-type-filter-icon" src={weaponTypeIconSource(value)} alt={value} title={value}/>}/>}
         {tab === 'weapons' && <FilterChips label="Secondary stat" hideLabel values={categoryOptions} selected={categories} onChange={setCategories}/>}
         {tab === 'echoes' && <SonataPicker id="archive-sonata-filter" value={sonata} onChange={setSonata} allowAll/>}
         {tab === 'echoes' && <FilterChips label="Cost" hideLabel values={categoryOptions} selected={categories} onChange={setCategories}/>}
@@ -263,8 +263,8 @@ export function ArchiveView({ roverGender, tab, onTabChange }: { roverGender: 'm
 
     {results.length === 0 && <section className="archive-empty"><span aria-hidden="true">⌕</span><h2>No matches</h2><button type="button" className="secondary" onClick={clearFilters}>Reset filters</button></section>}
 
-    {tab === 'characters' && <div className="archive-results-grid archive-character-grid">{(visibleResults as typeof characterCatalog).map((item) => <button type="button" className="archive-entry-card archive-character-card" aria-haspopup="dialog" onClick={(event) => openDetail({ kind: 'character', item }, event.currentTarget)} key={item.id}><div className="archive-entry-art"><CatalogImage src={item.iconSourceUrl} alt={item.name}/></div><div className="archive-entry-copy"><div><h2>{item.name}</h2><ElementIcon element={item.element}/></div><p>{item.title}</p><footer><span>{item.weaponType}</span>{tbaSections('character', item.id).length > 0 && <em className="archive-tba">TBA</em>}<b aria-label={`${item.rarity} stars`}>{'★'.repeat(item.rarity)}</b></footer></div></button>)}</div>}
-    {tab === 'weapons' && <div className="archive-results-grid archive-weapon-grid">{(visibleResults as typeof weaponCatalog).map((item) => <button type="button" className="archive-entry-card archive-weapon-card" aria-haspopup="dialog" onClick={(event) => openDetail({ kind: 'weapon', item }, event.currentTarget)} key={item.id}><div className="archive-entry-art"><CatalogImage src={item.iconSourceUrl} alt={item.name}/><span className="archive-weapon-type-icon"><img src={weaponTypeIconSource(item.type)} alt=""/></span></div><div className="archive-entry-copy"><h2>{item.name}</h2><dl><div><dt><img className="weapon-stat-icon" src={statIconSource('atk')} alt="" aria-hidden="true"/>ATK</dt><dd>{item.baseAtk}</dd></div><div><dt><img className="weapon-stat-icon" src={weaponStatIconSource(item.secondaryStat)} alt="" aria-hidden="true"/>{item.secondaryStat}</dt><dd>{item.secondaryStatValue}</dd></div></dl><footer><span>{item.type}</span>{tbaSections('weapon', item.id).length > 0 && <em className="archive-tba">TBA</em>}<b aria-label={`${item.rarity} stars`}>{'★'.repeat(item.rarity)}</b></footer></div></button>)}</div>}
+    {tab === 'characters' && <div className="archive-results-grid archive-character-grid">{(visibleResults as typeof characterCatalog).map((item) => <button type="button" className="archive-entry-card archive-character-card" aria-haspopup="dialog" onClick={(event) => openDetail({ kind: 'character', item }, event.currentTarget)} key={item.id}><div className="archive-entry-art"><CatalogImage src={item.iconSourceUrl} alt={item.name}/></div><div className="archive-entry-copy"><div><h2>{item.name}</h2><ElementIcon element={item.element}/></div><p>{item.title}</p><footer><span>{item.weaponType}</span>{tbaSections('character', item.id).length > 0 && <em className="archive-tba">TBA</em>}<b className={`rarity-${item.rarity}`} aria-label={`${item.rarity} stars`}>{'★'.repeat(item.rarity)}</b></footer></div></button>)}</div>}
+    {tab === 'weapons' && <div className="archive-results-grid archive-weapon-grid">{(visibleResults as typeof weaponCatalog).map((item) => <button type="button" className="archive-entry-card archive-weapon-card" aria-haspopup="dialog" onClick={(event) => openDetail({ kind: 'weapon', item }, event.currentTarget)} key={item.id}><div className="archive-entry-art"><CatalogImage src={item.iconSourceUrl} alt={item.name}/><span className="archive-weapon-type-icon"><img src={weaponTypeIconSource(item.type)} alt=""/></span></div><div className="archive-entry-copy"><h2>{item.name}</h2><dl><div><dt><img className="weapon-stat-icon" src={statIconSource('atk')} alt="" aria-hidden="true"/>ATK</dt><dd>{item.baseAtk}</dd></div><div><dt><img className="weapon-stat-icon" src={weaponStatIconSource(item.secondaryStat)} alt="" aria-hidden="true"/>{item.secondaryStat}</dt><dd>{item.secondaryStatValue}</dd></div></dl><footer><span>{item.type}</span>{tbaSections('weapon', item.id).length > 0 && <em className="archive-tba">TBA</em>}<b className={`rarity-${item.rarity}`} aria-label={`${item.rarity} stars`}>{'★'.repeat(item.rarity)}</b></footer></div></button>)}</div>}
     {tab === 'sonatas' && <div className="archive-results-grid archive-sonata-grid">{(visibleResults as typeof sonataCatalog).map((item) => <article className="archive-sonata-card" key={item.id}><header><span><CatalogImage src={generatedSonataIconSources[item.name]} alt=""/></span><div><h2>{item.name}</h2><p>{item.echoCount} compatible Echoes</p></div></header><div className="archive-sonata-effects">{item.effects.map((effect) => <div key={effect.pieces}><b>{effect.pieces}<small>PC</small></b><p>{effect.description}</p></div>)}</div></article>)}</div>}
     {tab === 'echoes' && <div className="archive-results-grid archive-echo-grid">{(visibleResults as typeof echoCatalog).map((item) => <button type="button" className="archive-entry-card archive-echo-card" aria-haspopup="dialog" onClick={(event) => openDetail({ kind: 'echo', item }, event.currentTarget)} key={item.id}><div className="archive-entry-art"><CatalogImage src={item.iconSourceUrl} alt={item.name}/><b className={`archive-cost cost-${item.cost}`}>{item.cost}</b></div><div className="archive-entry-copy"><h2>{item.name}</h2><div className="archive-echo-sonatas" aria-label={`Sonatas: ${item.sonatas.join(', ')}`}>{item.sonatas.map((name) => <img src={generatedSonataIconSources[name]} alt="" title={name} key={name}/>)}</div><footer><span>{item.cost} cost</span>{tbaSections('echo', item.id).length > 0 && <em className="archive-tba">TBA</em>}</footer></div></button>)}</div>}
 

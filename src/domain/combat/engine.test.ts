@@ -160,6 +160,19 @@ describe('combat Step 3 public interface fixtures', () => {
     expect(result).toMatchObject({ ok:false, errors:[{ code:'invalid-rotation' }] })
   })
 
+  it('limits a sequence action to its reviewed number of rotation uses', () => {
+    const action = damageAction('sequence-blast', { kind:'damage', scaling:{ atk:1 }, hits:[4.4], canCrit:true }, { cooldownSeconds:1, maximumUses:2 })
+    const context = fixture({ actions:[action] })
+    const result = context.calculator.calculateRotation({
+      setup:context.setup, duration:4, resultMode:'normal', actions:[
+        { id:'first', actorId:'actor', actionId:'sequence-blast', timestamp:0 },
+        { id:'second', actorId:'actor', actionId:'sequence-blast', timestamp:1 },
+        { id:'third', actorId:'actor', actionId:'sequence-blast', timestamp:2 }
+      ]
+    })
+    expect(result).toMatchObject({ ok:false, errors:[{ code:'invalid-rotation', actionId:'sequence-blast' }] })
+  })
+
   it('F01, F02, and F03 aggregate base, percentage, and flat primary stats', () => {
     const atk = valueOf(fixture({
       stats: { atk: 500.9 },

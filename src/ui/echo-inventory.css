@@ -14,7 +14,7 @@
   top: 0;
   margin: 0;
   padding: 11px;
-  border-color: rgba(228, 187, 94, .25);
+  border-color: rgba(var(--gold-rgb),.25);
   border-radius: 0px;
   background: rgba(7, 12, 13, .96);
   box-shadow: 0 14px 38px rgba(0, 0, 0, .3);
@@ -27,14 +27,14 @@
 
 .echo-inventory-view .echo-toolbar-main > .search {
   min-height: 44px;
-  border-color: rgba(141, 228, 212, .2);
+  border-color: rgba(var(--mint-rgb), .2);
   border-radius: 6px;
   background: #070b0c;
 }
 
 .echo-inventory-view .echo-toolbar-main > .search:focus-within {
   border-color: var(--mint);
-  box-shadow: 0 0 0 2px rgba(141, 228, 212, .08);
+  box-shadow: 0 0 0 2px rgba(var(--mint-rgb), .08);
 }
 
 .echo-inventory-view .echo-toolbar-main > .search > span {
@@ -55,9 +55,9 @@
 }
 
 .echo-inventory-view .echo-quick-filters button.active {
-  background: rgba(141, 228, 212, .14);
+  background: rgba(var(--mint-rgb), .14);
   color: var(--mint);
-  box-shadow: inset 0 0 0 1px rgba(141, 228, 212, .22);
+  box-shadow: inset 0 0 0 1px rgba(var(--mint-rgb), .22);
 }
 
 .echo-inventory-view .echo-filter-toggle {
@@ -77,8 +77,8 @@
 
 .echo-inventory-view .echo-sort-control:focus-within,
 .echo-inventory-view .echo-sort-control.open {
-  border-color: rgba(141, 228, 212, .75);
-  box-shadow: 0 0 0 2px rgba(141, 228, 212, .12), inset 0 0 0 1px rgba(141, 228, 212, .18);
+  border-color: rgba(var(--mint-rgb), .75);
+  box-shadow: 0 0 0 2px rgba(var(--mint-rgb), .12), inset 0 0 0 1px rgba(var(--mint-rgb), .18);
 }
 
 .echo-inventory-view .echo-sort-picker {
@@ -152,7 +152,7 @@
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
   gap: 3px;
-  border: 1px solid rgba(228, 187, 94, .48);
+  border: 1px solid rgba(var(--gold-rgb),.48);
   border-radius: 8px;
   background: #070b0c;
   box-shadow: 0 20px 48px rgba(0, 0, 0, .72);
@@ -177,13 +177,13 @@
 .echo-inventory-view .echo-sort-menu button:hover,
 .echo-inventory-view .echo-sort-menu button:focus-visible {
   outline: 0;
-  background: rgba(141, 228, 212, .1);
+  background: rgba(var(--mint-rgb), .1);
   color: #fff;
 }
 
 .echo-inventory-view .echo-sort-menu button.active {
-  background: rgba(228, 187, 94, .14);
-  color: #fff1c7;
+  background: rgba(var(--gold-rgb),.14);
+  color: color-mix(in srgb, var(--gold) 45%, white);
 }
 
 .echo-inventory-view .echo-sort-menu button span {
@@ -312,7 +312,7 @@
 .echo-inventory-view .echo-single-select-menu button:hover,
 .echo-inventory-view .echo-single-select-menu button:focus-visible,
 .echo-inventory-view .echo-single-select-menu button.active {
-  background: rgba(141, 228, 212, .12);
+  background: rgba(var(--mint-rgb), .12);
   color: var(--mint);
 }
 
@@ -333,7 +333,7 @@
 }
 
 .echo-inventory-view .echo-filter-drawer .filter-chips button.active {
-  background: rgba(141, 228, 212, .14);
+  background: rgba(var(--mint-rgb), .14);
   color: var(--mint);
   border-radius:0px;
 }
@@ -372,7 +372,7 @@
 }
 
 .echo-inventory-view .multi-filter:has(.multi-select-summary) .multi-select-trigger {
-  border-color: rgba(141, 228, 212, .45);
+  border-color: rgba(var(--mint-rgb), .45);
 }
 
 .echo-inventory-view .multi-select-summary b {
@@ -380,13 +380,13 @@
 }
 
 .echo-inventory-view .multi-select-summary i {
-  background: rgba(141, 228, 212, .14);
+  background: rgba(var(--mint-rgb), .14);
   color: var(--mint);
 }
 
 .echo-inventory-view .multi-select-options button.active {
-  outline-color: rgba(141, 228, 212, .5);
-  background: rgba(141, 228, 212, .12);
+  outline-color: rgba(var(--mint-rgb), .5);
+  background: rgba(var(--mint-rgb), .12);
   color: var(--mint);
 }
 
@@ -395,7 +395,7 @@
 }
 
 .echo-inventory-view .echo-filter-drawer .multi-select-trigger:hover {
-  border-color: rgba(228, 187, 94, .48);
+  border-color: rgba(var(--gold-rgb),.48);
 }
 
 .echo-inventory-view .echo-filter-footer {
@@ -503,7 +503,7 @@
 }
 
 .echo-inventory-view .echo-roll-info:hover {
-  color: #ffe7a9;
+  color: color-mix(in srgb, var(--gold) 45%, white);
 }
 
 .echo-inventory-view .echo-card.has-grade-wave > footer .echo-score {
@@ -600,7 +600,7 @@
 }
 
 .echo-inventory-view .card-actions .echo-lock-action.locked:hover {
-  color: #ffe09a;
+  color: color-mix(in srgb, var(--gold) 45%, white);
 }
 
 .echo-inventory-view .card-actions .echo-lock-action.unlocked:hover,
@@ -631,7 +631,7 @@
 .echo-edit-modal .echo-editor-header {
   min-height: 78px;
   padding: 14px 18px;
-  background: linear-gradient(90deg, rgba(228, 187, 94, .1), rgba(10, 16, 17, .97) 45%);
+  background: linear-gradient(90deg, rgba(var(--gold-rgb),.1), rgba(10, 16, 17, .97) 45%);
 }
 
 .echo-edit-modal .echo-editor-header h2 {
@@ -739,7 +739,7 @@
   display: grid;
   place-items: center;
   padding: 0;
-  border: 1px solid rgba(228, 187, 94, .35);
+  border: 1px solid rgba(var(--gold-rgb),.35);
   border-radius: 5px;
   background: #080c0d;
   color: var(--gold);
@@ -751,7 +751,7 @@
 .echo-edit-modal .echo-remove-substat:hover,
 .echo-edit-modal .echo-remove-substat:focus-visible {
   border-color: var(--gold);
-  box-shadow: 0 0 12px rgba(228, 187, 94, .4);
+  box-shadow: 0 0 12px rgba(var(--gold-rgb),.4);
 }
 
 .echo-edit-modal .echo-roll-slider > div {
@@ -780,9 +780,9 @@
 .echo-edit-modal .echo-roll-slider > div button:hover,
 .echo-edit-modal .echo-roll-slider > div button:focus-visible {
   border-color: var(--gold);
-  background: rgba(228, 187, 94, .12);
-  box-shadow: 0 0 12px rgba(228, 187, 94, .45);
-  color: #ffe4a3;
+  background: rgba(var(--gold-rgb),.12);
+  box-shadow: 0 0 12px rgba(var(--gold-rgb),.45);
+  color: color-mix(in srgb, var(--gold) 45%, white);
 }
 
 .echo-edit-modal .echo-editor-previews {

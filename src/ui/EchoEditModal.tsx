@@ -11,6 +11,7 @@ import { EchoMiniCard, formatStat, Icon, Panel } from './components'
 import { statIconSource } from './stat-icons'
 import { useDismissableLayer } from './useDismissableLayer'
 import { availableSubstatKeys, duplicateSubstatKeys } from '../domain/echo-substats'
+import { confirmDiscardChanges, useUnsavedChanges } from './useUnsavedChanges'
 
 const sonataNames = generatedSonataCatalog.map((sonata) => sonata.name)
 const subStatKeys = Object.keys(tunableRolls) as StatKey[]
@@ -36,6 +37,10 @@ export function EchoEditModal({ echo, onClose, onSave }: { echo: Echo; onClose: 
     const canonicalEcho = catalogEcho ? { ...structuredClone(echo), cost: catalogEcho.cost } : structuredClone(echo)
     return { ...canonicalEcho, mainStat: normalizeEchoMainStat(canonicalEcho), subStats: effectiveSubStats(canonicalEcho) }
   })
+  const initialDraft = useRef(JSON.stringify(draft))
+  const dirty = JSON.stringify(draft) !== initialDraft.current
+  useUnsavedChanges(dirty)
+  const requestClose = () => { if (confirmDiscardChanges(dirty)) onClose() }
   const [error, setError] = useState('')
   const selectedEcho = echoCatalog.find((item) => item.name === draft.name)
   const canonicalCost = selectedEcho?.cost ?? draft.cost
@@ -67,9 +72,9 @@ export function EchoEditModal({ echo, onClose, onSave }: { echo: Echo; onClose: 
     await onSave(normalizedDraft)
   }
 
-  return createPortal(<div className="modal-backdrop echo-editor-backdrop" onMouseDown={onClose}>
+  return createPortal(<div className="modal-backdrop echo-editor-backdrop" onMouseDown={requestClose}>
     <Panel className="echo-edit-modal" onMouseDown={(event) => event.stopPropagation()}>
-      <header className="echo-editor-header"><div><span className="eyebrow">Edit Echo</span><h2>{draft.name}</h2></div><button className="close" aria-label="Close Echo editor" onClick={onClose}>×</button></header>
+      <header className="echo-editor-header"><div><span className="eyebrow">Edit Echo</span><h2>{draft.name}</h2></div><button className="close" aria-label="Close Echo editor" onClick={requestClose}>×</button></header>
       <div className="echo-editor-layout">
         <section className="echo-editor-fields">
           <div className="echo-editor-identity">
@@ -90,7 +95,7 @@ export function EchoEditModal({ echo, onClose, onSave }: { echo: Echo; onClose: 
         </section>
         <aside className="echo-editor-previews"><div><span className="eyebrow">Before edit</span><EchoMiniCard echo={echo} rollRating={echoRollRating(echo)}/></div><div><span className="eyebrow">Live preview</span><EchoMiniCard echo={draft} rollRating={echoRollRating(draft)}/></div></aside>
       </div>
-      <footer className="echo-editor-actions"><button className="text-button" onClick={onClose}>Cancel</button><button className="primary" onClick={() => void submit()}>Save Echo</button></footer>
+      <footer className="echo-editor-actions"><button className="text-button" onClick={requestClose}>Cancel</button><button className="primary" onClick={() => void submit()}>Save Echo</button></footer>
     </Panel>
   </div>, document.body)
 }

@@ -74,7 +74,7 @@
 
 .tw-member-page.section-overview .tw-loadout-echoes .tw-echo-thumbs>span {
   max-height: 76px;
-  background: linear-gradient(145deg,rgba(228,187,94,.13),#091112);
+  background: linear-gradient(145deg,rgba(var(--gold-rgb),.13),#091112);
 }
 
 .tw-member-page.section-overview .tw-loadout-echoes>.tw-chip-list {
@@ -94,7 +94,7 @@
 
 .tw-member-page.section-overview .tw-member-art {
   min-height: 720px;
-  background: radial-gradient(circle at 55% 30%,rgba(228,187,94,.24),transparent 48%),linear-gradient(180deg,#101a1b,#071011);
+  background: radial-gradient(circle at 55% 30%,rgba(var(--gold-rgb),.24),transparent 48%),linear-gradient(180deg,#101a1b,#071011);
 }
 
 .tw-member-page.section-overview .tw-member-art>img {
@@ -280,7 +280,7 @@
 .tw-member-page.section-overview>.tw-member-echoes .tw-echo-card {
   overflow: hidden;
   padding: 0;
-  background: linear-gradient(180deg,rgba(228,187,94,.09),#0a1112 42%);
+  background: linear-gradient(180deg,rgba(var(--gold-rgb),.09),#0a1112 42%);
 }
 
 .tw-member-page.section-overview>.tw-member-echoes .tw-echo-card>header {
@@ -288,7 +288,7 @@
   grid-template-columns: minmax(0,1fr) 105px 23px;
   align-items: start;
   padding: 9px;
-  background: linear-gradient(135deg,rgba(228,187,94,.27),rgba(164,115,194,.15));
+  background: linear-gradient(135deg,rgba(var(--gold-rgb),.27),rgba(164,115,194,.15));
 }
 
 .tw-member-page.section-overview>.tw-member-echoes .tw-echo-card>header img {

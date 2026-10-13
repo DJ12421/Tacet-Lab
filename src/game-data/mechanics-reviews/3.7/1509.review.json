@@ -1263,7 +1263,7 @@
             "skillType": "Normal Attack",
             "skillName": "Chroma Drift",
             "name": "Chroma Drift - Kaleidoscopic Parade - Ground Heavy Attack DMG",
-            "damageType": "heavy",
+            "damageType": "basic",
             "skillSource": "basic",
             "scaling": "atk",
             "expressions": [
@@ -1596,7 +1596,7 @@
             "skillType": "Normal Attack",
             "skillName": "Chroma Drift",
             "name": "Chroma Drift - Kaleidoscopic Parade - Mid-air Heavy Attack DMG",
-            "damageType": "heavy",
+            "damageType": "basic",
             "tags": [
               "mid-air"
             ],
@@ -1995,7 +1995,7 @@
             "skillType": "Resonance Liberation",
             "skillName": "Prismatic Overblast",
             "name": "Prismatic Overblast - Prismatic Overblast DMG",
-            "damageType": "basic",
+            "damageType": "liberation",
             "skillSource": "liberation",
             "scaling": "atk",
             "expressions": [
@@ -4653,17 +4653,24 @@
             "text": "This skill consumes 3 points of True Color and grants all nearby Resonators in the team 40 points of Tune Break Boost for 30s.",
             "parsed": {
               "input": {
-                "kind": "toggle"
+                "kind": "toggle",
+                "key": "lynae-visual-impact-team-tune-break-boost"
               },
               "durationSeconds": 30,
-              "modifiers": [],
-              "confidence": "review",
-              "warnings": [
-                "Reviewed: no supported deterministic calculator mechanic."
+              "modifiers": [
+                {
+                  "stat": "tuneBreakBoost",
+                  "operation": "addFlat",
+                  "value": 40,
+                  "scope": "team"
+                }
               ],
-              "reviewStatus": "no-mechanic"
+              "confidence": "high",
+              "warnings": [
+                "Enable after Visual Impact; the 30-second duration and True Color cost are selected manually."
+              ]
             },
-            "reviewStatus": "no-mechanic"
+            "reviewStatus": "include"
           },
           {
             "id": "1509:8:effect:1",

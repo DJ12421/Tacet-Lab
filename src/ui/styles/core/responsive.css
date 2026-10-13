@@ -504,6 +504,7 @@ img,video,canvas,svg {
     width: 36px;
     min-width: 36px;
     height: 36px;
+    min-height: 36px;
     flex-basis: 36px;
     transform: none;
   }
@@ -568,7 +569,7 @@ img,video,canvas,svg {
     font-size: var(--font-size-caption);
     padding: 0 6px;
   }
-  .topbar .discord-button { width: 36px; min-width: 36px; height: 36px; flex-basis: 36px; transform: none; }
+  .topbar .discord-button { width: 36px; min-width: 36px; height: 36px; min-height: 36px; flex-basis: 36px; transform: none; }
 }
 
 @media (max-width:360px) {

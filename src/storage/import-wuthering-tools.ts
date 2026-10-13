@@ -8,6 +8,10 @@ import { db } from './database'
 type RecordValue = Record<string, unknown>
 const record = (value: unknown): value is RecordValue => Boolean(value) && typeof value === 'object' && !Array.isArray(value)
 const key = (value: string) => value.toLowerCase().replace(/[^a-z0-9]/g, '')
+const progression = (value: unknown, min: number, max: number, fallback: number) => {
+  const parsed = typeof value === 'string' && value.trim() ? Number(value) : value
+  return typeof parsed === 'number' && Number.isInteger(parsed) && parsed >= min && parsed <= max ? parsed : fallback
+}
 
 const statKeys: Record<string, StatKey> = {
   hp: 'hpPercent', atk: 'atkPercent', def: 'defPercent', hpflat: 'hp', atkflat: 'atk', defflat: 'def',
@@ -105,6 +109,9 @@ export async function convertWutheringToolsExport(value: RecordValue, addAsNewBu
     characterCatalogIds.set(sourceKey, catalogId)
     if (roverVariants) { characterIds.set(roverType, characterId); characterCatalogIds.set(roverType, catalogId) }
     const currentLoadout = currentLoadouts.find((entry) => entry.characterId === characterId)
+    const characterLevel = progression(character.characterLevel, 1, 90, 90)
+    const talents: RecordValue = record(character.talents) ? character.talents : {}
+    const skillLevels = ['basic', 'skill', 'forte', 'liberation', 'intro'].map((name) => progression(talents[name], 1, 10, 10))
     const variants = [{ source: character, build: activeBuild, active: true },
       ...sourceBuilds.filter((build) => build !== activeBuild).map((build) => ({ source: build, build, active: false }))]
     for (const [variantIndex, variant] of variants.entries()) {
@@ -133,15 +140,20 @@ export async function convertWutheringToolsExport(value: RecordValue, addAsNewBu
     if (variant.active) choices.push({ catalogId, name: catalogCharacter.name, existing: hasCurrentBuild, addAsNewBuild: saveSecondBuild })
     const now = createdAt + choices.length + variantIndex
     if (!ownedCharacter && !characters.some((entry) => entry.id === characterId)) characters.push({
-      id: characterId, catalogId, level: 90, sequence: 0, locked: false,
-      skillLevels: [10, 10, 10, 10, 10], createdAt: now
+      id: characterId, catalogId, level: characterLevel, sequence: progression(character.sequence, 0, 6, 0), locked: false,
+      skillLevels, createdAt: now
     })
     const importedWeaponId = `wuthering-tools:weapon:${catalogId}:${catalogWeapon.id}`
     const existingWeapon = [...ownedWeapons, ...weapons].find((weapon) => weapon.id === importedWeaponId && weapon.catalogId === catalogWeapon.id)
       ?? [...ownedWeapons, ...weapons].find((weapon) => weapon.catalogId === catalogWeapon.id && (weapon.equippedBy === characterId || !weapon.equippedBy))
     const weaponId = existingWeapon?.id ?? importedWeaponId
+    const sourceWeapons: RecordValue = record(variant.source.weapons) ? variant.source.weapons : {}
+    const characterWeapons: RecordValue = record(character.weapons) ? character.weapons : {}
+    const weaponProgress: RecordValue = record(sourceWeapons[weaponName]) ? sourceWeapons[weaponName]
+      : record(characterWeapons[weaponName]) ? characterWeapons[weaponName] : {}
     if (!existingWeapon) weapons.push({
-      id: weaponId, catalogId: catalogWeapon.id, level: 90, rank: 1, locked: false,
+      id: weaponId, catalogId: catalogWeapon.id, level: progression(weaponProgress.weaponLevel, 1, 90, 90),
+      rank: progression(weaponProgress.refinement, 1, 5, 1), locked: false,
       equippedBy: saveSecondBuild ? undefined : characterId, createdAt: now
     })
     const echoIds: string[] = []
@@ -236,7 +248,7 @@ export async function convertWutheringToolsExport(value: RecordValue, addAsNewBu
         id, name: existingBuild?.name ?? (!variant.active && typeof variant.build?.name === 'string' && variant.build.name.trim() ? variant.build.name.trim() : `Build ${number}`), description: existingBuild?.description ?? '',
         characterId, resonatorId: catalogId, weaponId, echoIds,
         // This is an explicitly saved snapshot, so the legacy imported-build cleanup must retain it.
-        level: ownedCharacter?.level ?? 90, skillLevel: ownedCharacter?.skillLevels?.[1] ?? 10,
+        level: ownedCharacter?.level ?? characterLevel, skillLevel: ownedCharacter?.skillLevels?.[1] ?? skillLevels[1],
         createdAt: existingBuild?.createdAt ?? now, updatedAt: existingBuild?.updatedAt ?? now, source: 'manual'
       })
       const ref: LoadoutSourceRef = { type: 'saved', buildId: id }
@@ -252,6 +264,12 @@ export async function convertWutheringToolsExport(value: RecordValue, addAsNewBu
     }
     }
   }
+  const missingCharacters = Object.keys(characterData.characters).filter((name) => {
+    const roverType = roverTypeKey(name)
+    const catalogId = characterCatalogIds.get(key(name)) ?? (roverTypes.has(roverType) ? characterCatalogIds.get(roverType) : undefined)
+    return !catalogId || ![...ownedCharacters, ...characters].some((entry) => entry.catalogId === catalogId)
+  })
+  if (missingCharacters.length) throw new Error(`Could not account for ${missingCharacters.length} of ${Object.keys(characterData.characters).length} Wuthering Tools characters: ${missingCharacters.join(', ')}.`)
   let rotationData: unknown
   if (typeof data.teamRotations === 'string') {
     try { rotationData = JSON.parse(data.teamRotations) } catch { notices.push('Team rotations could not be read from this export.') }
@@ -317,7 +335,7 @@ export async function convertWutheringToolsExport(value: RecordValue, addAsNewBu
     }
   }
   notices.unshift(characters.length || weapons.length || echoes.length || builds.length || equippedLoadouts.length || teams.length
-    ? 'New characters and weapons default to level 90, skills 10, S0, and R1. Existing progression is preserved. Missing weapons use a matching 1-star Training weapon. Echo levels are inferred from substats; character buffs and other calculator settings are not imported.'
+    ? 'New characters and weapons use exported levels, talents, and refinement when available; missing values default to level 90, skills 10, S0, and R1. Existing progression is preserved. Missing weapons use a matching 1-star Training weapon. Echo levels are inferred from substats; character buffs and other calculator settings are not imported.'
     : 'No character, build, or team data was found; no account data will change.')
   const document: AccountDocument = {
     schemaVersion: 7, gameDataVersion: GAME_DATA_VERSION, exportedAt: new Date().toISOString(),

@@ -493,7 +493,7 @@
             "skillType": "Normal Attack",
             "skillName": "Feather as Blade",
             "name": "Feather as Blade - Zephyr Song Damage",
-            "damageType": "heavy",
+            "damageType": "basic",
             "skillSource": "basic",
             "scaling": "atk",
             "expressions": [

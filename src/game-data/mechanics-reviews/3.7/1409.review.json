@@ -566,7 +566,7 @@
             "skillType": "Normal Attack",
             "skillName": "Sword to Carve My Forms",
             "name": "Sword to Carve My Forms - Heavy Attack DMG",
-            "damageType": "heavy",
+            "damageType": "basic",
             "skillSource": "basic",
             "scaling": "hp",
             "expressions": [
@@ -2391,7 +2391,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Tempest",
             "name": "Tempest - Enhanced Heavy Attack DMG",
-            "damageType": "heavy",
+            "damageType": "basic",
             "tags": [
               "forte"
             ],
@@ -3256,7 +3256,10 @@
               "warnings": [
                 "Reviewed: no supported deterministic calculator mechanic."
               ],
-              "reviewStatus": "no-mechanic"
+              "reviewStatus": "no-mechanic",
+              "triggerActionIds": [
+                "1409:3:0"
+              ]
             },
             "reviewStatus": "no-mechanic"
           },
@@ -3331,16 +3334,19 @@
             "text": "Targets with 1 to 3 stacks of Aero Erosion take 30% more DMG from Cartethyia and Fleurdelys.",
             "parsed": {
               "input": {
-                "kind": "stacks",
-                "minimum": 0,
-                "maximum": 1
+                "kind": "toggle",
+                "key": "cartethyia-aero-erosion-at-least-one"
               },
-              "modifiers": [],
-              "confidence": "review",
-              "warnings": [
-                "Reviewed: no supported deterministic calculator mechanic."
+              "trigger": "Target has at least one Aero Erosion stack",
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 30
+                }
               ],
-              "reviewStatus": "no-mechanic"
+              "confidence": "high",
+              "warnings": []
             },
             "reviewStatus": "no-mechanic"
           },
@@ -3353,14 +3359,19 @@
               "input": {
                 "kind": "stacks",
                 "minimum": 0,
-                "maximum": 3
+                "maximum": 3,
+                "key": "cartethyia-aero-erosion-over-three"
               },
-              "modifiers": [],
-              "confidence": "review",
-              "warnings": [
-                "Reviewed: no supported deterministic calculator mechanic."
+              "trigger": "Target Aero Erosion stacks above three, capped at three additional stacks",
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "addPercent",
+                  "value": 10
+                }
               ],
-              "reviewStatus": "no-mechanic"
+              "confidence": "high",
+              "warnings": []
             },
             "reviewStatus": "no-mechanic"
           },
@@ -3764,16 +3775,24 @@
                     "operation": "addPercent",
                     "value": 50,
                     "actionIds": [
+                      "1409:1:0",
+                      "1409:1:1",
+                      "1409:1:2",
+                      "1409:1:3",
                       "1409:1:4",
                       "1409:1:5",
+                      "1409:6:0"
+                    ]
+                  },
+                  {
+                    "stat": "motionValue",
+                    "operation": "addPercent",
+                    "value": 200,
+                    "actionIds": [
                       "1409:1:6",
-                      "1409:7:0",
-                      "1409:7:1",
-                      "1409:7:2",
-                      "1409:7:3",
-                      "1409:7:4",
-                      "1409:7:5",
-                      "1409:7:7"
+                      "1409:1:7",
+                      "1409:1:8",
+                      "1409:1:9"
                     ]
                   }
                 ],
@@ -3909,8 +3928,8 @@
                 "trigger": "Voice Flux active",
                 "modifiers": [
                   {
-                    "stat": "damageBonus",
-                    "operation": "amplifyPercent",
+                    "stat": "specialMultiplier",
+                    "operation": "addPercent",
                     "value": 40,
                     "actionIds": [
                       "1409:6:1",
@@ -3944,6 +3963,9 @@
                     "referenceMultiplier": 1,
                     "count": 1
                   }
+                ],
+                "triggerActionIds": [
+                  "1409:3:0"
                 ]
               },
               {

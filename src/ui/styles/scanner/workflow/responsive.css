@@ -151,8 +151,8 @@
     display: block;
     margin: 0;
     padding: 10px 12px;
-    border: 1px solid rgba(141,228,212,.25);
-    background: rgba(141,228,212,.06);
+    border: 1px solid rgba(var(--mint-rgb),.25);
+    background: rgba(var(--mint-rgb),.06);
     color: #a9c8c2;
     font-size: var(--font-size-caption);
     line-height: 1.45;

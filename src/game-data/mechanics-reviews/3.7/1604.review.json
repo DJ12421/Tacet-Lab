@@ -792,7 +792,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Umbra Eclipse",
             "name": "Umbra Eclipse - Devastation Damage",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "forte"
             ],
@@ -1378,7 +1378,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Umbra Eclipse",
             "name": "Umbra Eclipse - Umbra: Thwackblade Damage",
-            "damageType": "skill",
+            "damageType": "heavy",
             "tags": [
               "forte"
             ],
@@ -1527,7 +1527,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Umbra Eclipse",
             "name": "Umbra Eclipse - Umbra: Plunging Attack DMG",
-            "damageType": "heavy",
+            "damageType": "basic",
             "tags": [
               "forte",
               "plunge"
@@ -1651,7 +1651,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Umbra Eclipse",
             "name": "Umbra Eclipse - Umbra: Lifetaker Damage",
-            "damageType": "heavy",
+            "damageType": "skill",
             "tags": [
               "forte"
             ],
@@ -2150,11 +2150,21 @@
                   "kind": "toggle"
                 },
                 "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "confidence": "high",
+                "warnings": [],
+                "triggerActionIds": [
+                  "1604:7:5"
                 ],
-                "reviewStatus": "no-mechanic"
+                "triggeredAttacks": [
+                  {
+                    "id": "review-followup",
+                    "name": "Dark Surge Stage 5 extra hit",
+                    "damageType": "basic",
+                    "referenceActionId": "1604:7:5",
+                    "referenceMultiplier": 0.5,
+                    "count": 1
+                  }
+                ]
               }
             ]
           },

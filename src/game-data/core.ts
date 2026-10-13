@@ -1,4 +1,4 @@
-import type { AppSettings, StatKey } from '../domain/types'
+import type { AppSettings, CustomThemeColors, StatKey } from '../domain/types'
 
 export const GAME_DATA_VERSION = 'nanoka-3.7-catalog'
 
@@ -21,8 +21,10 @@ export const statAliases: Array<[RegExp, StatKey]> = [
   [/healing\s*bonus/i, 'healingBonus']
 ]
 
+export const defaultCustomTheme: CustomThemeColors = { accent: '#e8cc72', mint: '#8de4d4', background: '#080b0d', surface: '#151b1c', text: '#edf3ef' }
+
 export const defaultSettings: AppSettings = {
-  displayName: 'Resonator', uid: '', privacyMode: false, background: 'signal', scanIntervalMs: 900,
+  displayName: 'Resonator', uid: '', privacyMode: false, background: 'signal', theme: 'spectro', customTheme: defaultCustomTheme, scanIntervalMs: 900,
   roverGender: 'male',
   liveCharacterArt: true,
   scoreWeights: {},

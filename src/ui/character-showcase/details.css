@@ -96,20 +96,20 @@
 .cs-rich-heading {
   display: inline-block;
   margin-top: 11px;
-  color: #c8b06d;
+  color: color-mix(in srgb, var(--gold) 82%, white);
   font-size: var(--font-size-small);
   font-weight: 800;
 }
 
 .cs-rich-title {
-  color: #c8b06d;
+  color: color-mix(in srgb, var(--gold) 82%, white);
   font-weight: 800;
 }
 
 .cs-rich-highlight {
-  color: #ffd633;
+  color: var(--gold);
   font-weight: 800;
-  text-decoration: underline dotted rgba(255,214,51,.65);
+  text-decoration: underline dotted rgba(var(--gold-rgb),.65);
   text-underline-offset: 3px;
 }
 
@@ -307,17 +307,17 @@
 
 .cs-sequence-rail .cs-skill-tooltip small .cs-rich-heading {
   display: inline-block;
-  color: #c8b06d;
+  color: color-mix(in srgb, var(--gold) 82%, white);
   font-size: var(--font-size-small);
   font-weight: 800;
 }
 
 .cs-sequence-rail .cs-skill-tooltip small .cs-rich-title {
-  color: #c8b06d;
+  color: color-mix(in srgb, var(--gold) 82%, white);
 }
 
 .cs-sequence-rail .cs-skill-tooltip small .cs-rich-highlight {
-  color: #ffd633;
+  color: var(--gold);
 }
 
 .cs-sequence-rail .cs-skill-tooltip small .cs-rich-fire,.cs-sequence-rail .cs-skill-tooltip small .cs-rich-fusion {
@@ -765,98 +765,57 @@
   line-height: .75;
 }
 
-.cs-echo-picker {
-  width: min(1380px,96vw);
+.cs-echo-picker.echo-inventory-view {
+  box-sizing: border-box;
+  width: min(1600px,100%);
+  grid-template-rows: auto auto minmax(0,1fr);
+  gap: 14px;
+  container-type: normal;
 }
 
-.cs-echo-picker > header .cs-picker-close {
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  font-size: 24px;
-  line-height: 1;
+.cs-echo-picker > header > div:last-child {
+  align-items: center;
+  gap: 12px;
+}
+
+.cs-echo-picker > header > div:last-child > button {
+  flex-shrink: 0;
+}
+
+.cs-echo-picker .filter-group .owned-chip-filter .filter-chips {
+  width: 100%;
+}
+
+.cs-echo-picker .filter-group .owned-chip-filter .filter-chips button {
+  flex: 1;
 }
 
 .cs-echo-picker-filters {
-  display: grid;
-  gap: 6px;
-  padding: 8px 12px;
-  border-bottom: 1px solid rgba(var(--cs-accent-rgb),.25);
-  background: #070b0c;
-}
-
-.cs-echo-picker-filters .filter-heading {
-  margin: 0;
-  padding-bottom: 0;
-}
-
-.cs-echo-picker-filter-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.cs-echo-picker-filter-actions .danger {
-  min-height: 32px;
-  padding: 4px 10px;
-}
-
-.cs-echo-picker-filters .filter-body {
-  display: grid;
-  grid-template-columns: repeat(12,minmax(0,1fr));
-  gap: 6px;
-  align-items: end;
-  padding-top: 0;
-}
-
-.cs-echo-picker-filters .filter-group {
   min-width: 0;
-  grid-column: span 6;
-}
-
-.cs-echo-picker-filters .filter-body > label {
-  grid-column: span 2;
-  min-width: 0;
-}
-
-.cs-echo-picker-filters :is(.filter-chips,.filter-body select,.multi-select-trigger) {
-  min-height: 34px;
-}
-
-.cs-echo-picker-filters .filter-body > .check {
-  display: flex;
-  align-items: center;
-  min-height: 34px;
-  gap: 5px;
-  letter-spacing: normal;
-  text-transform: none;
-}
-
-.cs-echo-picker-filters .multi-select-menu {
-  z-index: 120;
 }
 
 .cs-echo-picker .echo-picker-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill,minmax(270px,1fr));
-  gap: 10px;
-  overflow: auto;
+  display: block;
+  min-width: 0;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .cs-echo-picker .echo-picker-list > .echo-pagination {
-  grid-column: 1/-1;
-  margin: 0;
+  margin-bottom: 10px;
 }
 
-.cs-echo-picker .echo-picker-options {
-  display: grid;
-  grid-column: 1/-1;
-  grid-template-columns: subgrid;
-  gap: 10px;
+.cs-echo-picker.echo-inventory-view .echo-grid {
+  grid-template-columns: repeat(4,minmax(0,1fr));
 }
 
-.cs-echo-picker .echo-picker-options>* {
-  min-width: 0;
+@media (max-width:1240px) {
+  .cs-echo-picker.echo-inventory-view .echo-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+}
+
+@media (max-width:950px) {
+  .cs-echo-picker.echo-inventory-view .echo-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
 }
 
 @media (max-width:760px) {
@@ -875,16 +834,5 @@
     width: auto;
     max-height: 65vh;
   }
-  .cs-echo-picker-filters .filter-body {
-    grid-template-columns: 1fr;
-  }
-  .cs-echo-picker-filters .filter-body > :is(.filter-group,label) {
-    grid-column: 1;
-  }
-  .cs-echo-picker .echo-picker-list {
-    grid-template-columns: 1fr;
-  }
-  .cs-echo-picker .echo-picker-options {
-    grid-template-columns: 1fr;
-  }
+  .cs-echo-picker.echo-inventory-view .echo-grid { grid-template-columns: 1fr; }
 }

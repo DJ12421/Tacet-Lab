@@ -45,7 +45,7 @@
   box-shadow: 0 0 20px color-mix(in srgb,var(--cbc-accent) 22%,transparent),inset 0 0 0 1px color-mix(in srgb,var(--cbc-accent) 16%,transparent);
 }
 .cbc-weapon .cbc-stars {
-  color: #edca66;
+  color: color-mix(in srgb, var(--gold) 82%, white);
   font-size: 27px;
   letter-spacing: 4px;
 }

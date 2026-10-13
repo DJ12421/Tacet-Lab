@@ -42,12 +42,12 @@
 }
 
 .cs-substat-preferences b.weight-4 {
-  border-color: rgba(228,187,94,.48);
+  border-color: rgba(var(--gold-rgb),.48);
   color: var(--gold);
 }
 
 .cs-substat-preferences b.weight-3 {
-  border-color: rgba(141,228,212,.38);
+  border-color: rgba(var(--mint-rgb),.38);
   color: var(--mint);
 }
 

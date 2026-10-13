@@ -114,7 +114,7 @@
 }
 
 .echo-search-menu button:hover,.echo-search-menu button.active {
-  background: rgba(228,187,94,.12);
+  background: rgba(var(--gold-rgb),.12);
   color: var(--gold);
 }
 
@@ -143,7 +143,7 @@
 }
 
 .echo-stat-line.secondary-main {
-  border-color: rgba(228,187,94,.25);
+  border-color: rgba(var(--gold-rgb),.25);
 }
 
 .echo-readonly-name {
@@ -163,7 +163,7 @@
   justify-content: space-between;
   gap: 10px;
   padding: 5px 10px;
-  border: 1px solid rgba(228,187,94,.25);
+  border: 1px solid rgba(var(--gold-rgb),.25);
   background: #080c0d;
 }
 
@@ -267,13 +267,13 @@
   min-height: 40px;
   padding: 8px 14px;
   border: 1px solid var(--gold);
-  background: rgba(228,187,94,.06);
+  background: rgba(var(--gold-rgb),.06);
   color: var(--gold);
 }
 
 .review-topbar>div:first-child>.text-button:hover {
-  background: rgba(228,187,94,.14);
-  color: #ffe3a0;
+  background: rgba(var(--gold-rgb),.14);
+  color: color-mix(in srgb, var(--gold) 45%, white);
 }
 
 .review-topbar .review-actions {
@@ -311,7 +311,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 10px;
-  border: 1px solid rgba(228,187,94,.24);
+  border: 1px solid rgba(var(--gold-rgb),.24);
   background: #080c0d;
 }
 
@@ -480,7 +480,7 @@
 
 .scan-character-picker .echo-search-trigger img,.scan-character-picker .echo-search-menu img {
   border-radius: 50%;
-  background: radial-gradient(circle,rgba(228,187,94,.2),transparent 68%);
+  background: radial-gradient(circle,rgba(var(--gold-rgb),.2),transparent 68%);
 }
 
 @media (max-width:720px) {

@@ -8,7 +8,7 @@
   padding: 3px 0;
   border: 0;
   background: transparent;
-  color: #d7c68e;
+  color: color-mix(in srgb, var(--gold) 82%, white);
   font-size: var(--font-size-small);
   font-weight: 700;
   letter-spacing: .02em;
@@ -21,7 +21,7 @@
 }
 
 .roll-quality-help:hover {
-  color: #fff1bd;
+  color: color-mix(in srgb, var(--gold) 45%, white);
 }
 
 .echo-card footer>span {
@@ -156,7 +156,7 @@
   grid-template-rows: auto minmax(0,1fr);
   overflow: hidden;
   padding: 0;
-  border-color: rgba(228,187,94,.55);
+  border-color: rgba(var(--gold-rgb),.55);
   border-radius: 12px;
   box-shadow: 0 32px 100px #000;
 }
@@ -167,8 +167,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 15px 20px;
-  border-bottom: 1px solid rgba(228,187,94,.25);
-  background: linear-gradient(90deg,rgba(228,187,94,.13),rgba(10,15,16,.96));
+  border-bottom: 1px solid rgba(var(--gold-rgb),.25);
+  background: linear-gradient(90deg,rgba(var(--gold-rgb),.13),rgba(10,15,16,.96));
 }
 
 .roll-quality-modal>header .close {
@@ -207,7 +207,7 @@
 
 .roll-quality-modal h3 {
   margin: 0 0 7px;
-  color: #f3e3ad;
+  color: color-mix(in srgb, var(--gold) 45%, white);
   font-size: var(--font-size-body);
 }
 
@@ -261,8 +261,8 @@
   gap: 8px;
   margin: 13px 0;
   padding: 11px;
-  border: 1px solid rgba(141,228,212,.22);
-  background: rgba(141,228,212,.045);
+  border: 1px solid rgba(var(--mint-rgb),.22);
+  background: rgba(var(--mint-rgb),.045);
   font-size: var(--font-size-caption);
   text-align: center;
 }

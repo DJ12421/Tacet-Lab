@@ -1360,7 +1360,7 @@
             "skillType": "Resonance Liberation",
             "skillName": "Cosmos Rave",
             "name": "Cosmos Rave - Cosmos Rampage Damage",
-            "damageType": "basic",
+            "damageType": "skill",
             "skillSource": "liberation",
             "scaling": "atk",
             "expressions": [

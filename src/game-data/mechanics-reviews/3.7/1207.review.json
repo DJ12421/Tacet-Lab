@@ -1132,7 +1132,7 @@
             "skillType": "Normal Attack",
             "skillName": "Flaming Star",
             "name": "Flaming Star - Mid-air Attack - Firestrike DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "mid-air"
             ],
@@ -1215,7 +1215,7 @@
             "skillType": "Normal Attack",
             "skillName": "Flaming Star",
             "name": "Flaming Star - Plunging Attack DMG",
-            "damageType": "heavy",
+            "damageType": "basic",
             "tags": [
               "plunge"
             ],
@@ -1793,7 +1793,7 @@
             "skillType": "Resonance Liberation",
             "skillName": "Fire-Kissed Glory",
             "name": "Fire-Kissed Glory - Foebreaker DMG",
-            "damageType": "liberation",
+            "damageType": "skill",
             "skillSource": "liberation",
             "scaling": "atk",
             "expressions": [
@@ -2488,7 +2488,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Ignis Lupa",
             "name": "Ignis Lupa - Set the Arena Ablaze DMG",
-            "damageType": "liberation",
+            "damageType": "skill",
             "tags": [
               "forte"
             ],
@@ -3225,14 +3225,19 @@
               },
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "toggle",
+                  "key": "lupa-s3-glory"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "modifiers": [
+                  {
+                    "stat": "ResistIgnore:Fusion",
+                    "operation": "addPercent",
+                    "value": 15,
+                    "scope": "team"
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {
@@ -3458,7 +3463,10 @@
                 "kind": "stacks",
                 "minimum": 1,
                 "maximum": 3,
-                "key": "lupa-fusion-team-count"
+                "key": "lupa-fusion-team-count",
+                "suppressedBy": [
+                  "lupa-s3-glory"
+                ]
               },
               "trigger": "Fusion Resonators in the team, including Lupa",
               "modifiers": [

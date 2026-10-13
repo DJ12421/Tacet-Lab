@@ -2684,13 +2684,23 @@
             "text": "When Luuk Herssen's skills directly damage targets affected by Tune Strain - Interfered, every 10 points of Tune Break Boost he has Amplifies this instance of damage by 5%, up to 30%.",
             "parsed": {
               "input": {
-                "kind": "toggle"
+                "kind": "conditional-value",
+                "key": "luuk-uncaused-diagnosis-base",
+                "source": "provider",
+                "stat": "tuneBreakBoost",
+                "minimum": 0,
+                "maximum": 1000,
+                "suppressedBy": [
+                  "luuk-s2-uncaused-diagnosis"
+                ]
               },
+              "trigger": "Direct damage to a target with Tune Strain - Interfered",
               "modifiers": [
                 {
                   "stat": "damageBonus",
                   "operation": "amplifyPercent",
-                  "value": 5
+                  "value": 0.5,
+                  "maximumValue": 30
                 }
               ],
               "confidence": "high",
@@ -3231,14 +3241,20 @@
             "parsedEffects": [
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "always"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "modifiers": [
+                  {
+                    "stat": "motionValue",
+                    "operation": "addPercent",
+                    "value": 60,
+                    "actionIds": [
+                      "1510:3:0"
+                    ]
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {
@@ -3266,14 +3282,20 @@
               },
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "conditional-value",
+                  "key": "luuk-s2-uncaused-diagnosis",
+                  "source": "provider",
+                  "stat": "tuneBreakBoost",
+                  "minimum": 0,
+                  "maximum": 1000
                 },
-                "trigger": "When Luuk Herssen deals damage to targets inflicted with Tune Strain - Interfered",
+                "trigger": "Direct damage to a target with Tune Strain - Interfered",
                 "modifiers": [
                   {
                     "stat": "damageBonus",
                     "operation": "amplifyPercent",
-                    "value": 10
+                    "value": 1,
+                    "maximumValue": 60
                   }
                 ],
                 "confidence": "high",
@@ -3281,18 +3303,14 @@
               },
               {
                 "input": {
-                  "kind": "always"
+                  "kind": "toggle"
                 },
-                "modifiers": [
-                  {
-                    "stat": "damageBonus",
-                    "operation": "amplifyPercent",
-                    "value": 60,
-                    "scope": "self"
-                  }
+                "modifiers": [],
+                "confidence": "review",
+                "warnings": [
+                  "The 60% figure is the cap of the preceding Tune Break Boost conversion, not a separate flat amplification."
                 ],
-                "confidence": "high",
-                "warnings": []
+                "reviewStatus": "no-mechanic"
               }
             ]
           },
@@ -3413,14 +3431,21 @@
             "parsedEffects": [
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "always"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "modifiers": [
+                  {
+                    "stat": "damageBonus",
+                    "operation": "addPercent",
+                    "value": 80,
+                    "actionIds": [
+                      "1510:6:0",
+                      "1510:8:outro"
+                    ]
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {

@@ -711,7 +711,7 @@
             "skillType": "Intro Skill",
             "skillName": "Proof of Existence",
             "name": "Proof of Existence - Enlightenment DMG",
-            "damageType": "liberation",
+            "damageType": "skill",
             "skillSource": "intro",
             "scaling": "hp",
             "expressions": [
@@ -858,7 +858,7 @@
             "skillType": "Intro Skill",
             "skillName": "Proof of Existence",
             "name": "Proof of Existence - Discernment DMG",
-            "damageType": "skill",
+            "damageType": "liberation",
             "skillSource": "intro",
             "scaling": "hp",
             "expressions": [
@@ -1142,7 +1142,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Astral Chord",
             "name": "Astral Chord - Illation DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "forte"
             ],
@@ -1291,7 +1291,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Astral Chord",
             "name": "Astral Chord - Transmutation DMG",
-            "damageType": "heavy",
+            "damageType": "basic",
             "tags": [
               "forte"
             ],
@@ -1840,9 +1840,14 @@
               },
               "modifiers": [
                 {
-                  "stat": "critRate",
-                  "operation": "addPercent",
-                  "value": 0.01,
+                  "stat": "derivedStat",
+                  "targetStat": "critRate",
+                  "sourceStat": "energyRegen",
+                  "threshold": 0,
+                  "sourceOffset": 10,
+                  "mode": "flat",
+                  "value": 0.05,
+                  "maximumValue": 12.5,
                   "scope": "team"
                 }
               ],
@@ -1862,9 +1867,14 @@
               },
               "modifiers": [
                 {
-                  "stat": "critDamage",
-                  "operation": "addPercent",
-                  "value": 0.01,
+                  "stat": "derivedStat",
+                  "targetStat": "critDamage",
+                  "sourceStat": "energyRegen",
+                  "threshold": 0,
+                  "sourceOffset": 10,
+                  "mode": "flat",
+                  "value": 0.1,
+                  "maximumValue": 25,
                   "scope": "team"
                 }
               ],

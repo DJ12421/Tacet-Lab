@@ -73,7 +73,7 @@
   min-width: 0;
   height: 38px;
   padding: 0 9px;
-  border: 1px solid rgba(141,228,212,.28);
+  border: 1px solid rgba(var(--mint-rgb),.28);
   border-radius: 3px;
   background: #071011;
   color: #edf3f1;
@@ -142,7 +142,7 @@
   justify-content: space-between;
   gap: 20px;
   padding: 15px 17px;
-  background: linear-gradient(110deg,rgba(141,228,212,.08),rgba(228,187,94,.035),#080e0f);
+  background: linear-gradient(110deg,rgba(var(--mint-rgb),.08),rgba(var(--gold-rgb),.035),#080e0f);
 }
 
 .tw-settings-intro h1 {
@@ -238,7 +238,7 @@
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: rgba(141,228,212,.1);
+  background: rgba(var(--mint-rgb),.1);
   color: var(--mint);
   font-style: normal;
   transition: transform .16s ease;
@@ -285,8 +285,8 @@
   gap: 7px;
   margin-top: 12px;
   padding: 10px;
-  border: 1px solid rgba(141,228,212,.24);
-  background: rgba(141,228,212,.045);
+  border: 1px solid rgba(var(--mint-rgb),.24);
+  background: rgba(var(--mint-rgb),.045);
 }
 
 .tw-rotation-composer label,.tw-rotation-card-main label {

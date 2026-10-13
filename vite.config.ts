@@ -26,7 +26,7 @@ export default defineConfig(({ command }) => ({
         display: 'standalone',
         categories: ['utilities', 'productivity'],
         icons: [
-          { src: 'icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any maskable' }
+          { src: 'tacet-lab-logo-square-animated.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' }
         ]
       },
       workbox: {

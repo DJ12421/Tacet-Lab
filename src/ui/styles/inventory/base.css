@@ -14,7 +14,7 @@
 
 .echo-inventory-toolbar {
   padding: 10px;
-  border-color: rgba(228,187,94,.27);
+  border-color: rgba(var(--gold-rgb),.27);
   background: linear-gradient(135deg,rgba(16,22,23,.96),rgba(7,10,11,.97));
 }
 
@@ -57,8 +57,8 @@
 }
 
 .echo-quick-filters button.active {
-  background: rgba(228,187,94,.13);
-  color: #f4d78e;
+  background: rgba(var(--gold-rgb),.13);
+  color: color-mix(in srgb, var(--gold) 82%, white);
 }
 
 .echo-quick-filters .icon {
@@ -80,7 +80,7 @@
 }
 
 .echo-filter-toggle:hover,.echo-filter-toggle.active {
-  border-color: rgba(228,187,94,.52);
+  border-color: rgba(var(--gold-rgb),.52);
   color: var(--gold);
 }
 
@@ -98,7 +98,7 @@
 .echo-inventory-toolbar .filter-body {
   margin: 10px -10px -10px;
   padding: 14px 10px 11px;
-  border-top: 1px solid rgba(228,187,94,.18);
+  border-top: 1px solid rgba(var(--gold-rgb),.18);
   background: rgba(0,0,0,.16);
 }
 
@@ -230,8 +230,8 @@
 }
 
 .sonata-picker-menu button:hover,.sonata-picker-menu button.active {
-  background: rgba(228,187,94,.11);
-  color: #fff1c7;
+  background: rgba(var(--gold-rgb),.11);
+  color: color-mix(in srgb, var(--gold) 45%, white);
 }
 
 .sonata-picker-menu b {
@@ -311,7 +311,7 @@
   display: grid;
   grid-template-columns: 125px minmax(0,1fr);
   min-height: 235px;
-  border: 1px solid rgba(228,187,94,.35);
+  border: 1px solid rgba(var(--gold-rgb),.35);
   border-radius: 9px;
   overflow: hidden;
   background: linear-gradient(145deg,#111719,#07090a);
@@ -322,7 +322,7 @@
   display: grid;
   place-items: center;
   overflow: hidden;
-  background: radial-gradient(circle,rgba(228,187,94,.18),transparent 67%);
+  background: radial-gradient(circle,rgba(var(--gold-rgb),.18),transparent 67%);
 }
 
 .owned-art img {
@@ -345,7 +345,7 @@
   position: absolute;
   left: 8px;
   bottom: 8px;
-  color: var(--gold);
+  color: #e4bb5e;
   font-size: var(--font-size-caption);
 }
 
@@ -484,8 +484,8 @@
 }
 
 .echo-page-arrow:hover:not(:disabled) {
-  border-color: rgba(228,187,94,.35);
-  background: rgba(228,187,94,.08);
+  border-color: rgba(var(--gold-rgb),.35);
+  background: rgba(var(--gold-rgb),.08);
 }
 
 @media (max-width:600px) {
@@ -511,7 +511,7 @@
 .echo-card {
   --echo-card-gutter: 14px;
   min-width: 0;
-  border: 1px solid rgba(228,187,94,.45);
+  border: 1px solid rgba(var(--gold-rgb),.45);
   background: #050708;
   border-radius: 10px;
   padding: var(--echo-card-gutter);
@@ -540,7 +540,7 @@
 
 .echo-card.selected {
   border-color: var(--mint);
-  box-shadow: inset 0 0 25px rgba(141,228,212,.08);
+  box-shadow: inset 0 0 25px rgba(var(--mint-rgb),.08);
 }
 
 .echo-card.excluded {
@@ -565,7 +565,7 @@
   display: grid;
   place-items: center;
   overflow: hidden;
-  background: radial-gradient(circle,rgba(228,187,94,.14),#080a0b 70%);
+  background: radial-gradient(circle,rgba(var(--gold-rgb),.14),#080a0b 70%);
 }
 
 .echo-portrait img {
@@ -601,10 +601,10 @@
 .echo-identity>span {
   display: inline-block;
   max-width: 100%;
-  border: 1px solid rgba(228,187,94,.25);
+  border: 1px solid rgba(var(--gold-rgb),.25);
   border-radius: 12px;
   padding: 3px 7px;
-  color: #d6c493;
+  color: color-mix(in srgb, var(--gold) 82%, white);
   font-size: var(--font-size-caption);
   text-transform: uppercase;
   white-space: nowrap;
@@ -691,7 +691,7 @@
 }
 
 .substats b {
-  color: var(--gold);
+  color: #e4bb5e;
   font-weight: 600;
 }
 
@@ -764,8 +764,8 @@
 
 .echo-empty-welcome {
   min-height: 430px;
-  border-color: rgba(228,187,94,.32);
-  background: radial-gradient(circle at 50% 35%,rgba(228,187,94,.1),transparent 30%),linear-gradient(145deg,rgba(18,24,25,.91),rgba(7,10,11,.97));
+  border-color: rgba(var(--gold-rgb),.32);
+  background: radial-gradient(circle at 50% 35%,rgba(var(--gold-rgb),.1),transparent 30%),linear-gradient(145deg,rgba(18,24,25,.91),rgba(7,10,11,.97));
 }
 
 .echo-empty-welcome .empty-glyph {
@@ -773,10 +773,10 @@
   height: 86px;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(228,187,94,.5);
+  border: 1px solid rgba(var(--gold-rgb),.5);
   border-radius: 50%;
-  background: rgba(228,187,94,.06);
-  box-shadow: 0 0 50px rgba(228,187,94,.1);
+  background: rgba(var(--gold-rgb),.06);
+  box-shadow: 0 0 50px rgba(var(--gold-rgb),.1);
 }
 
 .echo-empty-welcome .empty-glyph :is(.icon,img) {

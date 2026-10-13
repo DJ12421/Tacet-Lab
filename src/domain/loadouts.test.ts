@@ -6,6 +6,23 @@ import { changedTheorycraftAxes, createTheorycraftBuild, groupTheorycraftSonatas
 const ownedCharacter: OwnedCharacter = { id: 'character', catalogId: characterCatalog[0].id, level: 90, sequence: 0, locked: false, skillLevels: [10, 10, 10, 10, 10], createdAt: 1 }
 
 describe('loadout resolution', () => {
+  it('starts theorycrafting with a usable Sonata and character element main stat', () => {
+    const build = createTheorycraftBuild(ownedCharacter)
+    const sonata = build.sonatas[0]
+    expect(sonata?.pieces).toBe(5)
+    expect(echoCatalog.find((entry) => entry.name === build.mainEchoName)?.sonatas).toContain(sonata?.name)
+    expect(build.slots[1].mainStatKey).toBe(`${characterCatalog[0].element.toLowerCase()}Damage`)
+    expect(theorycraftWarnings(build)).toEqual([])
+  })
+
+  it('keeps equipped Echoes in their saved slots when a middle slot is empty', () => {
+    const echo: Echo = { id: 'second', name: 'Fusion Warrior', cost: 1, rarity: 5, level: 0, sonata: 'Molten Rift', mainStat: { key: 'atkPercent', value: 18 }, subStats: [], locked: false, excluded: false, createdAt: 1, source: 'manual' }
+    const resolved = resolveLoadout({ type: 'equipped', characterId: ownedCharacter.id }, { characters: [ownedCharacter], weapons: [], echoes: [echo], builds: [], equippedLoadouts: [{ id: 'equipped:character', characterId: ownedCharacter.id, weaponId: '', echoIds: ['', 'second'], updatedAt: 1 }], theorycraftBuilds: [] })
+
+    expect(resolved.build?.echoIds).toEqual(['', 'second'])
+    expect(resolved.echoes).toEqual([echo])
+  })
+
   it('resolves theorycraft equipment ephemerally without creating inventory entities', () => {
     const build = createTheorycraftBuild(ownedCharacter)
     const compatibleWeapon = weaponCatalog.find((entry) => entry.type.toLowerCase() === characterCatalog[0].weaponType.toLowerCase())!

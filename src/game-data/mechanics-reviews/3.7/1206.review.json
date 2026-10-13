@@ -2039,7 +2039,7 @@
             "skillType": "Resonance Skill",
             "skillName": "Anchors Aweigh!",
             "name": "Anchors Aweigh! - Plunging Attack DMG",
-            "damageType": "skill",
+            "damageType": "basic",
             "tags": [
               "plunge"
             ],
@@ -2373,14 +2373,22 @@
               "input": {
                 "kind": "toggle"
               },
-              "modifiers": [],
-              "confidence": "review",
-              "warnings": [
-                "Reviewed: no supported deterministic calculator mechanic."
+              "exclusiveGroup": "brant-energy-conversion",
+              "modifiers": [
+                {
+                  "stat": "derivedStat",
+                  "targetStat": "atk",
+                  "sourceStat": "energyRegen",
+                  "threshold": 150,
+                  "mode": "flat",
+                  "value": 20,
+                  "maximumValue": 2600
+                }
               ],
-              "reviewStatus": "no-mechanic"
+              "confidence": "high",
+              "warnings": []
             },
-            "reviewStatus": "no-mechanic"
+            "reviewStatus": "include"
           },
           {
             "id": "1206:4:effect:0",
@@ -2449,14 +2457,22 @@
               "input": {
                 "kind": "toggle"
               },
-              "modifiers": [],
-              "confidence": "review",
-              "warnings": [
-                "Reviewed: no supported deterministic calculator mechanic."
+              "exclusiveGroup": "brant-energy-conversion",
+              "modifiers": [
+                {
+                  "stat": "derivedStat",
+                  "targetStat": "atk",
+                  "sourceStat": "energyRegen",
+                  "threshold": 150,
+                  "mode": "flat",
+                  "value": 12,
+                  "maximumValue": 1560
+                }
               ],
-              "reviewStatus": "no-mechanic"
+              "confidence": "high",
+              "warnings": []
             },
-            "reviewStatus": "no-mechanic"
+            "reviewStatus": "include"
           },
           {
             "id": "1206:9:effect:0",
@@ -2728,39 +2744,18 @@
                   }
                 ],
                 "confidence": "high",
-                "warnings": [],
-                "triggeredAttacks": [
-                  {
-                    "id": "outro-blast",
-                    "name": "For Smiles and Cheers Blast",
-                    "damageType": "basic",
-                    "element": "fusion",
-                    "scaling": "atk",
-                    "expression": "440%",
-                    "count": 1,
-                    "cooldownSeconds": 1,
-                    "maximumTriggers": 2
-                  }
-                ]
+                "warnings": []
               },
               {
                 "input": {
                   "kind": "toggle"
                 },
                 "modifiers": [],
-                "confidence": "high",
-                "warnings": [],
-                "trigger": "Returned from Ashes cast",
-                "triggeredAttacks": [
-                  {
-                    "id": "triggered-1",
-                    "name": "Returned from Ashes additional strike",
-                    "expression": "440%",
-                    "damageType": "basic",
-                    "scaling": "atk",
-                    "count": 1
-                  }
-                ]
+                "confidence": "review",
+                "warnings": [
+                  "Outro blast is triggered by the incoming Resonator’s skill and requires linked provider and recipient action state."
+                ],
+                "reviewStatus": "no-mechanic"
               },
               {
                 "input": {
@@ -2802,7 +2797,7 @@
                 "modifiers": [],
                 "confidence": "review",
                 "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                  "The Outro blast remains limited to two triggers over 20 seconds on the incoming Resonator’s skill."
                 ],
                 "reviewStatus": "no-mechanic"
               }
@@ -2852,25 +2847,45 @@
             "parsedEffects": [
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "always"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "modifiers": [
+                  {
+                    "stat": "shieldBonus",
+                    "operation": "addPercent",
+                    "value": 20,
+                    "actionIds": [
+                      "1206:review:returned-from-ashes-shield"
+                    ]
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "always"
                 },
+                "trigger": "Returned from Ashes cast",
                 "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "triggerActionIds": [
+                  "1206:review:returned-from-ashes"
                 ],
-                "reviewStatus": "no-mechanic"
+                "triggeredAttacks": [
+                  {
+                    "id": "s4-to-freedom-i-sing-healing",
+                    "name": "To Freedom I Sing team healing",
+                    "damageType": "healing",
+                    "recipient": "team",
+                    "scaling": "energyRegen",
+                    "expression": "66000%",
+                    "count": 1
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [
+                  "The local formula uses rank-one source data."
+                ]
               }
             ]
           },
@@ -2925,14 +2940,26 @@
               },
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "toggle",
+                  "key": "brant-s6-secondary-blast"
                 },
+                "trigger": "Returned from Ashes cast",
                 "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "triggerActionIds": [
+                  "1206:review:returned-from-ashes"
                 ],
-                "reviewStatus": "no-mechanic"
+                "triggeredAttacks": [
+                  {
+                    "id": "brant-s6-secondary-blast",
+                    "name": "Returned from Ashes secondary blast",
+                    "damageType": "basic",
+                    "referenceActionId": "1206:review:returned-from-ashes",
+                    "referenceMultiplier": 0.3,
+                    "count": 1
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
               }
             ]
           }

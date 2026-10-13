@@ -7,6 +7,7 @@ import { fixedSecondaryMainStat, maxLevelByRarity, primaryMainStatValue } from '
 import { generatedSonataIconSources } from '../../game-data/sonatas.generated'
 import type { TheorizerMode, TheorizerRankingRequest, TheorizerRankingResponse } from '../../workers/theorizer.worker'
 import { statIconSource } from '../stat-icons'
+import { TacetMark } from '../TacetLabLogo'
 import { compactAttackLabel, formatWorkspaceStat, TEAM_ROTATION_TARGET_ID, type TeamMemberModel, type TeamWorkspaceModel } from '../team-workspace-model'
 import { EquipmentBuffSettings } from './EquipmentBuffSettings'
 import { useWorkspacePreference } from './useWorkspacePreference'
@@ -229,7 +230,7 @@ function SubstatStepTable({ entries, baselineScore, resultModeLabel, loading }: 
   const tone = (delta: number) => delta > .005 ? 'positive' : delta < -.005 ? 'negative' : 'neutral'
   return <section className="tw-theorizer-substat-steps" aria-labelledby="tw-substat-step-title">
     <header><div><span className="eyebrow">Substat efficiency</span><h3 id="tw-substat-step-title">Per-step change <small>(gain / loss)</small></h3></div><p>One mid-value roll · {resultModeLabel}</p></header>
-    {loading ? <p className="tw-empty-state">Calculating each substat step…</p> : !rows.length ? <p className="tw-empty-state">No substat comparisons are available.</p> : <div className="tw-theorizer-substat-table-wrap"><table>
+    {loading ? <div className="tw-empty-state tw-theorizer-loading" role="status" aria-label="Calculating each substat step"><TacetMark/></div> : !rows.length ? <p className="tw-empty-state">No substat comparisons are available.</p> : <div className="tw-theorizer-substat-table-wrap"><table>
       <thead><tr><th scope="col">Substat</th><th scope="col">+1 DMG</th><th scope="col">+1 DMG %</th><th scope="col">−1 DMG</th><th scope="col">−1 DMG %</th></tr></thead>
       <tbody>{rows.map((entry) => {
         const removed = removals.get(entry.id.slice(addPrefix.length))
@@ -356,7 +357,7 @@ export function TheorizerWorkspace({ member, model, echoes, builds, characters, 
     <div className="tw-theorizer-toolbar"><div className="tw-theorizer-modes" role="tablist" aria-label="Suggestion type">{MODES.map((entry) => <button type="button" role="tab" aria-selected={mode === entry.id} className={mode === entry.id ? 'active' : ''} onClick={() => { setMode(entry.id); setSelectedId('') }} key={entry.id}>{entry.label}</button>)}</div><label><span>Rank for</span><select value={activeTargetId} onChange={(event) => { setTargetId(event.target.value); setSelectedId('') }}>{targetGroups.map(([group, entries]) => <optgroup label={compactAttackLabel(group)} key={group}>{entries.map((target) => <option value={target.id} key={target.id}>{target.label}</option>)}</optgroup>)}</select></label></div>
     {mode === 'substats' ? <>{error ? <p className="tw-empty-state">{error}</p> : <SubstatStepTable entries={ranked} baselineScore={ranking.baselineScore} resultModeLabel={resultModeLabel} loading={loading}/>}</> : <>
     <div className="tw-theorizer-list-heading"><span>{mode === 'sonatas' ? 'Set plans' : modeLabel} ({ranked.length})</span><b>Ranked by {resultModeLabel}</b></div>
-    <div className="tw-theorizer-list">{loading ? <p className="tw-empty-state">Calculating every valid {modeLabel.toLowerCase()} option…</p> : error ? <p className="tw-empty-state">{error}</p> : ranked.length ? ranked.map((entry, index) => {
+    <div className="tw-theorizer-list">{loading ? <div className="tw-empty-state tw-theorizer-loading" role="status" aria-label={`Calculating every valid ${modeLabel.toLowerCase()} option`}><TacetMark/></div> : error ? <p className="tw-empty-state">{error}</p> : ranked.length ? ranked.map((entry, index) => {
       const percent = ranking.baselineScore ? entry.delta / ranking.baselineScore * 100 : 0
       const isBaseline = entry.id.endsWith(':baseline')
       return <button type="button" className={selected?.id === entry.id ? 'active' : ''} aria-haspopup="dialog" onClick={() => setSelectedId(entry.id)} key={entry.id}><span className={`tw-theorizer-rank${isBaseline ? ' is-base' : ''}`}>{entry.rank ?? index + 1}</span><span className={`tw-theorizer-summary mode-${mode}`}>{mode === 'mainStats' ? <MainStatPlan draft={entry.draft}/> : mode === 'sonatas' ? <SonataPlan draft={entry.draft}/> : <><span className="tw-theorizer-art">{entry.image ? <img src={entry.image} alt=""/> : <b>{entry.label.slice(0, 2).toUpperCase()}</b>}</span><span className="tw-theorizer-name"><strong>{entry.label}</strong><small>{entry.detail}</small></span></>}</span><span className="tw-theorizer-score"><strong>{entry.score.toLocaleString('en-US', { maximumFractionDigits: 0 })}</strong><em className={isBaseline ? 'is-base' : entry.delta > 0 ? 'positive' : entry.delta < 0 ? 'negative' : ''}>{isBaseline ? 'base' : `${percent > 0 ? '+' : ''}${percent.toFixed(2)}%`}</em></span></button>

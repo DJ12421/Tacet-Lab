@@ -696,7 +696,7 @@
             "skillType": "Resonance Liberation",
             "skillName": "Cogitation Model",
             "name": "Cogitation Model - Cogitation Model DMG",
-            "damageType": "basic",
+            "damageType": "liberation",
             "skillSource": "liberation",
             "scaling": "atk",
             "expressions": [
@@ -1026,7 +1026,7 @@
             "skillType": "Resonance Liberation",
             "skillName": "Cogitation Model",
             "name": "Cogitation Model - Divergence DMG",
-            "damageType": "basic",
+            "damageType": "skill",
             "skillSource": "liberation",
             "scaling": "atk",
             "expressions": [
@@ -2008,11 +2008,21 @@
                   "kind": "toggle"
                 },
                 "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "confidence": "high",
+                "warnings": [],
+                "triggerActionIds": [
+                  "1305:7:1"
                 ],
-                "reviewStatus": "no-mechanic"
+                "triggeredAttacks": [
+                  {
+                    "id": "review-followup",
+                    "name": "Six Convolution Matrices",
+                    "damageType": "liberation",
+                    "referenceActionId": "1305:7:1",
+                    "referenceMultiplier": 0.08,
+                    "count": 6
+                  }
+                ]
               }
             ]
           },
@@ -2128,14 +2138,20 @@
             "parsedEffects": [
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "always"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "modifiers": [
+                  {
+                    "stat": "motionValue",
+                    "operation": "addPercent",
+                    "value": 222,
+                    "actionIds": [
+                      "1305:8:outro"
+                    ]
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {

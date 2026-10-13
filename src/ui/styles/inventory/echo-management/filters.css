@@ -145,7 +145,7 @@
 }
 
 .multi-select-options button:hover,.multi-select-options button.active {
-  background: rgba(141,228,212,.12);
+  background: rgba(var(--mint-rgb),.12);
   color: #fff;
 }
 
@@ -205,8 +205,8 @@
   flex: none;
   padding: 2px 6px;
   border-radius: 10px;
-  background: rgba(228,187,94,.16);
-  color: #f2d688;
+  background: rgba(var(--gold-rgb),.16);
+  color: color-mix(in srgb, var(--gold) 82%, white);
   font-size: var(--font-size-caption);
   font-style: normal;
 }

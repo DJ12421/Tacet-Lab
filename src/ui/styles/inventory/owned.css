@@ -74,7 +74,7 @@
   overflow: hidden;
   border: 1px solid rgba(255,255,255,.11);
   border-radius: 7px;
-  background: linear-gradient(135deg,rgba(228,187,94,.13),#0b1011);
+  background: linear-gradient(135deg,rgba(var(--gold-rgb),.13),#0b1011);
   color: #fff;
   cursor: pointer;
 }
@@ -88,7 +88,7 @@
   width: 92px;
   height: 100%;
   object-fit: contain;
-  background: radial-gradient(circle,rgba(228,187,94,.18),transparent 68%);
+  background: radial-gradient(circle,rgba(var(--gold-rgb),.18),transparent 68%);
 }
 
 .character-choice img {

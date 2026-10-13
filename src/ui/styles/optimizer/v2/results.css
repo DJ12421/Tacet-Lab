@@ -65,7 +65,7 @@
 }
 
 .optimizer-progress-panel>header>b {
-  color: var(--tw-member-accent,#8de4d4);
+  color: var(--tw-member-accent,var(--mint));
   font-size: var(--font-size-heading-small);
 }
 
@@ -79,7 +79,7 @@
 .optimizer-progress-track i {
   display: block;
   height: 100%;
-  background: linear-gradient(90deg,var(--tw-member-accent,#8de4d4),var(--gold));
+  background: linear-gradient(90deg,var(--tw-member-accent,var(--mint)),var(--gold));
   transition: width .12s linear;
 }
 
@@ -125,7 +125,7 @@
 
 .optimizer-distribution-chart>header button.active {
   border-color: var(--optimizer-strong);
-  color: var(--tw-member-accent,#8de4d4);
+  color: var(--tw-member-accent,var(--mint));
 }
 
 .optimizer-chart-legend {
@@ -151,7 +151,7 @@
 }
 
 .optimizer-chart-legend i.highlighted {
-  background: var(--tw-member-accent,#8de4d4);
+  background: var(--tw-member-accent,var(--mint));
 }
 
 .optimizer-chart-legend i.selected {
@@ -160,7 +160,7 @@
 
 .optimizer-chart-legend i.current {
   border-radius: 0;
-  background: var(--optimizer-current-gold,#e4bb5e);
+  background: var(--optimizer-current-gold,var(--gold));
 }
 
 .optimizer-distribution-chart circle {
@@ -169,7 +169,7 @@
 }
 
 .optimizer-distribution-chart circle.ranked {
-  fill: var(--tw-member-accent,#8de4d4);
+  fill: var(--tw-member-accent,var(--mint));
   opacity: 1;
   cursor: pointer;
 }
@@ -187,7 +187,7 @@
 }
 
 .optimizer-distribution-chart .optimizer-current-point {
-  fill: var(--optimizer-current-gold,#e4bb5e);
+  fill: var(--optimizer-current-gold,var(--gold));
   stroke: #171b1b;
   stroke-width: 2;
 }
@@ -213,7 +213,7 @@
 }
 
 .optimizer-chart-range input {
-  accent-color: var(--tw-member-accent,#8de4d4);
+  accent-color: var(--tw-member-accent,var(--mint));
 }
 
 .optimizer-chart-range b {
@@ -223,8 +223,8 @@
 }
 
 .optimizer-mode-chip.capped {
-  border-color: rgba(228,187,94,.35);
-  background: rgba(228,187,94,.08);
+  border-color: rgba(var(--gold-rgb),.35);
+  background: rgba(var(--gold-rgb),.08);
   color: var(--gold);
 }
 
@@ -252,11 +252,11 @@
 
 .optimizer-result-tags>b {
   border-color: var(--optimizer-strong);
-  color: var(--tw-member-accent,#8de4d4);
+  color: var(--tw-member-accent,var(--mint));
 }
 
 .optimizer-result-tags em {
-  border-color: rgba(228,187,94,.34);
+  border-color: rgba(var(--gold-rgb),.34);
   color: var(--gold);
 }
 
@@ -284,7 +284,7 @@
   top: 4px;
   right: 4px;
   padding: 2px 5px;
-  background: var(--tw-member-accent,#8de4d4);
+  background: var(--tw-member-accent,var(--mint));
   color: #06100e;
   font-size: 9px;
   font-weight: 900;

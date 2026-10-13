@@ -32,7 +32,7 @@
 }
 
 .archive-section-tabs button:hover {
-  border-color: rgba(228,187,94,.38);
+  border-color: rgba(var(--gold-rgb),.38);
   background: #101718;
 }
 
@@ -41,9 +41,9 @@
 }
 
 .archive-section-tabs button.active {
-  border-color: rgba(228,187,94,.65);
-  background: linear-gradient(135deg,rgba(228,187,94,.16),#0d1415 62%);
-  box-shadow: inset 0 0 0 1px rgba(228,187,94,.08);
+  border-color: rgba(var(--gold-rgb),.65);
+  background: linear-gradient(135deg,rgba(var(--gold-rgb),.16),#0d1415 62%);
+  box-shadow: inset 0 0 0 1px rgba(var(--gold-rgb),.08);
 }
 
 .archive-section-tabs i {
@@ -52,7 +52,7 @@
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: rgba(228,187,94,.08);
+  background: rgba(var(--gold-rgb),.08);
   color: var(--gold);
   font-style: normal;
 }
@@ -106,14 +106,14 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid rgba(141,228,212,.22);
+  border: 1px solid rgba(var(--mint-rgb),.22);
   border-radius: 6px;
   background: #070b0c;
 }
 
 .archive-search:focus-within {
   border-color: var(--mint);
-  box-shadow: 0 0 0 2px rgba(141,228,212,.08);
+  box-shadow: 0 0 0 2px rgba(var(--mint-rgb),.08);
 }
 
 .archive-search .icon {
@@ -158,8 +158,8 @@
 
 .archive-sort:focus-within,
 .archive-sort.open {
-  border-color: rgba(141,228,212,.75);
-  box-shadow: 0 0 0 2px rgba(141,228,212,.12),inset 0 0 0 1px rgba(141,228,212,.18);
+  border-color: rgba(var(--mint-rgb),.75);
+  box-shadow: 0 0 0 2px rgba(var(--mint-rgb),.12),inset 0 0 0 1px rgba(var(--mint-rgb),.18);
 }
 
 .archive-sort>span {
@@ -239,7 +239,7 @@
   display: grid;
   grid-template-columns: repeat(1,minmax(0,1fr));
   gap: 3px;
-  border: 1px solid rgba(228,187,94,.48);
+  border: 1px solid rgba(var(--gold-rgb),.48);
   border-radius: 8px;
   background: #070b0c;
   box-shadow: 0 20px 48px rgba(0,0,0,.72);
@@ -263,13 +263,13 @@
 
 .archive-sort-menu button:hover,
 .archive-sort-menu button:focus-visible {
-  background: rgba(141,228,212,.1);
+  background: rgba(var(--mint-rgb),.1);
   color: #fff;
 }
 
 .archive-sort-menu button.active {
-  background: rgba(228,187,94,.14);
-  color: #fff1c7;
+  background: rgba(var(--gold-rgb),.14);
+  color: color-mix(in srgb, var(--gold) 45%, white);
 }
 
 .archive-sort-menu i {
@@ -344,7 +344,7 @@
   width: 100%;
   min-width: 0;
   overflow: hidden;
-  border: 1px solid rgba(228,187,94,.25);
+  border: 1px solid rgba(var(--gold-rgb),.25);
   border-radius: 9px;
   background: var(--archive-card);
   color: inherit;
@@ -363,7 +363,7 @@
 
 .archive-entry-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(228,187,94,.72);
+  border-color: rgba(var(--gold-rgb),.72);
   box-shadow: 0 15px 34px rgba(0,0,0,.4);
 }
 
@@ -378,7 +378,7 @@
   display: grid;
   place-items: center;
   overflow: hidden;
-  background: radial-gradient(circle at 50% 62%,rgba(228,187,94,.13),transparent 58%),#080c0d;
+  background: radial-gradient(circle at 50% 62%,rgba(var(--gold-rgb),.13),transparent 58%),#080c0d;
 }
 
 .archive-entry-art::after {
@@ -429,7 +429,7 @@
   min-width: 0;
   padding: 12px 13px 11px;
   border-radius: 0px;
-  border-top: 1px solid rgba(228,187,94,.18);
+  border-top: 1px solid rgba(var(--gold-rgb),.18);
 }
 
 .archive-entry-copy>div:first-child {
@@ -486,7 +486,7 @@
 
 .archive-entry-copy footer b {
   overflow: hidden;
-  color: var(--gold);
+  color: var(--weapon-accent);
   font-size: var(--font-size-caption);
   white-space: nowrap;
 }
@@ -589,9 +589,9 @@
   display: grid;
   align-content: start;
   gap: 14px;
-  border: 1px solid rgba(228,187,94,.25);
+  border: 1px solid rgba(var(--gold-rgb),.25);
   border-radius: 9px;
-  background: linear-gradient(145deg,rgba(228,187,94,.055),#0a1011 58%);
+  background: linear-gradient(145deg,rgba(var(--gold-rgb),.055),#0a1011 58%);
 }
 
 .archive-sonata-card>header {
@@ -608,9 +608,9 @@
   padding: 6px;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(228,187,94,.3);
+  border: 1px solid rgba(var(--gold-rgb),.3);
   border-radius: 50%;
-  background: radial-gradient(circle,rgba(228,187,94,.14),transparent);
+  background: radial-gradient(circle,rgba(var(--gold-rgb),.14),transparent);
 }
 
 .archive-sonata-card h2 {
@@ -645,7 +645,7 @@
   display: grid;
   place-items: center;
   align-content: center;
-  border: 1px solid rgba(141,228,212,.22);
+  border: 1px solid rgba(var(--mint-rgb),.22);
   border-radius: 50%;
   color: var(--mint);
   font-size: var(--font-size-small);
@@ -671,7 +671,7 @@
   place-items: center;
   align-content: center;
   gap: 9px;
-  border: 1px dashed rgba(228,187,94,.24);
+  border: 1px dashed rgba(var(--gold-rgb),.24);
   border-radius: 9px;
   background: rgba(255,255,255,.015);
   text-align: center;
@@ -855,8 +855,8 @@
 }
 
 .archive-browser .archive-cost.cost-4 {
-  border-color: #e4bb5e;
-  background: #e4bb5e;
+  border-color: var(--gold);
+  background: var(--gold);
   color: #050707;
 }
 
@@ -1008,7 +1008,7 @@
     white-space: nowrap;
   }
 
-  .archive-browser .archive-toolbar-weapons>.owned-chip-filter .filter-chips button:has(>.weapon-type-filter-icon) {
+  .archive-browser .archive-toolbar-row>.owned-chip-filter .filter-chips button:has(>.weapon-type-filter-icon) {
     padding-block: 0;
   }
 
@@ -1058,7 +1058,7 @@
   width: min(720px,100%);
   max-height: min(86dvh,780px) !important;
   overflow-y: auto !important;
-  border: 1px solid rgba(228,187,94,.38);
+  border: 1px solid rgba(var(--gold-rgb),.38);
   border-radius: 9px;
   background: #0a1011;
   box-shadow: 0 28px 90px rgba(0,0,0,.7);
@@ -1074,7 +1074,7 @@
   grid-template-columns: 74px minmax(0,1fr) 38px;
   align-items: center;
   gap: 14px;
-  border-bottom: 1px solid rgba(228,187,94,.22);
+  border-bottom: 1px solid rgba(var(--gold-rgb),.22);
   background: rgba(10,16,17,.96);
   backdrop-filter: blur(12px);
 }
@@ -1085,8 +1085,8 @@
   display: grid;
   place-items: center;
   overflow: hidden;
-  border: 1px solid rgba(228,187,94,.24);
-  background: radial-gradient(circle,rgba(228,187,94,.14),transparent 65%);
+  border: 1px solid rgba(var(--gold-rgb),.24);
+  background: radial-gradient(circle,rgba(var(--gold-rgb),.14),transparent 65%);
 }
 
 .archive-detail-art img {
@@ -1153,7 +1153,7 @@
 }
 
 .archive-detail-facts dd[aria-label$="stars"] {
-  color: var(--gold);
+  color: var(--weapon-accent);
 }
 
 .archive-detail-section {
@@ -1192,7 +1192,7 @@
   min-width: 58px;
   height: 34px;
   padding: 0 7px;
-  border: 1px solid rgba(141,228,212,.25);
+  border: 1px solid rgba(var(--mint-rgb),.25);
   border-radius: 4px;
   background: #070b0c;
   color: #edf3f0;
@@ -1290,7 +1290,7 @@
 .archive-echo-skill {
   margin: 0;
   padding: 11px;
-  background: rgba(141,228,212,.045);
+  background: rgba(var(--mint-rgb),.045);
   color: #aeb9b6;
   line-height: 1.6;
   white-space: pre-line;
@@ -1298,7 +1298,7 @@
 
 .archive-refinement-value {
   padding: 0 2px;
-  background: rgba(228,187,94,.12);
+  background: rgba(var(--gold-rgb),.12);
   color: var(--gold);
   font-weight: 750;
 }
@@ -1334,9 +1334,9 @@
 .archive-sonata-chip {
   flex: 0 0 auto;
   padding: 5px 8px;
-  border: 1px solid rgba(141,228,212,.18);
+  border: 1px solid rgba(var(--mint-rgb),.18);
   border-radius: 5px;
-  background: rgba(141,228,212,.055);
+  background: rgba(var(--mint-rgb),.055);
   font-size: var(--font-size-caption);
   font-weight: 600;
 }
@@ -1391,14 +1391,14 @@
   font-size: .72rem;
   font-weight: 700;
   letter-spacing: .08em;
-  color: #efc989;
+  color: color-mix(in srgb, var(--gold) 70%, white);
 }
 
 .archive-tba-note {
   margin: 0 0 1rem;
   padding: .8rem 1rem;
-  border: 1px solid rgba(239, 201, 137, .35);
+  border: 1px solid rgba(var(--gold-rgb), .35);
   border-radius: .7rem;
-  color: #f2d8ab;
-  background: rgba(105, 75, 30, .2);
+  color: color-mix(in srgb, var(--gold) 45%, white);
+  background: rgba(var(--gold-rgb), .06);
 }

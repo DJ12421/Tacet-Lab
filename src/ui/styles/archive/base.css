@@ -19,9 +19,9 @@
 }
 
 .archive-tabs button.active {
-  color: #fff3ca;
+  color: color-mix(in srgb, var(--gold) 45%, white);
   border-color: var(--gold);
-  background: linear-gradient(180deg,transparent,rgba(228,187,94,.08));
+  background: linear-gradient(180deg,transparent,rgba(var(--gold-rgb),.08));
 }
 
 .archive-tabs b {
@@ -78,7 +78,7 @@
   text-decoration: none;
   min-width: 0;
   overflow: hidden;
-  border: 1px solid rgba(228,187,94,.38);
+  border: 1px solid rgba(var(--gold-rgb),.38);
   border-radius: 9px;
   background: linear-gradient(155deg,#111518,#080a0b 70%);
   transition: transform .16s,border-color .16s,box-shadow .16s;
@@ -87,7 +87,7 @@
 a.catalog-card:hover {
   transform: translateY(-3px);
   border-color: var(--gold);
-  box-shadow: 0 16px 35px rgba(0,0,0,.45),inset 0 0 35px rgba(228,187,94,.045);
+  box-shadow: 0 16px 35px rgba(0,0,0,.45),inset 0 0 35px rgba(var(--gold-rgb),.045);
 }
 
 .catalog-art {
@@ -96,7 +96,7 @@ a.catalog-card:hover {
   display: grid;
   place-items: center;
   overflow: hidden;
-  background: radial-gradient(circle at 50% 60%,rgba(228,187,94,.16),transparent 62%),#090c0d;
+  background: radial-gradient(circle at 50% 60%,rgba(var(--gold-rgb),.16),transparent 62%),#090c0d;
 }
 
 .character .catalog-art {
@@ -138,7 +138,7 @@ a.catalog-card:hover {
   position: relative;
   z-index: 2;
   padding: 11px 12px 10px;
-  border-top: 1px solid rgba(228,187,94,.3);
+  border-top: 1px solid rgba(var(--gold-rgb),.3);
 }
 
 .catalog-copy h2 {
@@ -250,7 +250,7 @@ a.catalog-card:hover {
   align-items: center;
   gap: 12px;
   padding-bottom: 12px;
-  border-bottom: 1px solid rgba(228,187,94,.2);
+  border-bottom: 1px solid rgba(var(--gold-rgb),.2);
 }
 
 .sonata-heading h2 {
@@ -271,15 +271,15 @@ a.catalog-card:hover {
   display: grid;
   place-items: center;
   overflow: hidden;
-  background: radial-gradient(circle,rgba(228,187,94,.14),transparent 68%);
-  box-shadow: inset 0 0 25px rgba(228,187,94,.12);
+  background: radial-gradient(circle,rgba(var(--gold-rgb),.14),transparent 68%);
+  box-shadow: inset 0 0 25px rgba(var(--gold-rgb),.12);
 }
 
 .sonata-mark img {
   width: 45px;
   height: 45px;
   object-fit: contain;
-  filter: drop-shadow(0 0 8px rgba(228,187,94,.3));
+  filter: drop-shadow(0 0 8px rgba(var(--gold-rgb),.3));
 }
 
 .sonata-effects {
@@ -293,8 +293,8 @@ a.catalog-card:hover {
   align-items: center;
   gap: 6px;
   padding: 7px 8px;
-  border: 1px solid rgba(228,187,94,.2);
-  background: rgba(228,187,94,.05);
+  border: 1px solid rgba(var(--gold-rgb),.2);
+  background: rgba(var(--gold-rgb),.05);
   color: var(--gold);
   font-size: var(--font-size-caption);
   cursor: pointer;
@@ -322,7 +322,7 @@ a.catalog-card:hover {
   min-width: 19px;
   height: 19px;
   border-radius: 50%;
-  background: rgba(228,187,94,.12);
+  background: rgba(var(--gold-rgb),.12);
 }
 
 .sonata-effect-list {

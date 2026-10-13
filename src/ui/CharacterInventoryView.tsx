@@ -7,10 +7,13 @@ import { createOwnedCharacterWithDefaultWeapon } from '../storage/loadouts'
 import type { AppSettings, Build, Echo, EquippedLoadout, OwnedCharacter, OwnedWeapon, Team, TheorycraftBuild } from '../domain/types'
 import { ElementFilterIcon, FilterChips, Icon, PageHeader, Panel } from './components'
 import { CharacterShowcase } from './CharacterShowcase'
+import { confirmDiscardChanges, useAnyUnsavedChanges } from './useUnsavedChanges'
+import { weaponTypeIconSource } from './weapon-type-icons'
 
 const SKILLS = ['Basic', 'Skill', 'Forte', 'Liberation', 'Intro']
 const characterElements = [...new Set(characterCatalog.map((item) => item.element))]
 const characterRarities = [5, 4]
+const weaponTypes = [...new Set(weaponCatalog.map((item) => item.type))]
 const weaponCatalogById = new Map(weaponCatalog.map((entry) => [entry.id, entry]))
 const isGenderVariant = (entry: CharacterCatalogEntry) => entry.gender !== null && characterCatalog.some((candidate) => candidate.id !== entry.id && candidate.name === entry.name && candidate.gender !== entry.gender)
 const isSelectedGenderVariant = (entry: CharacterCatalogEntry, gender: 'male' | 'female') => !isGenderVariant(entry) || entry.gender === gender
@@ -48,19 +51,23 @@ export interface CharacterInventoryProps {
   refresh: () => Promise<void>
   characterIdentifier?: string
   onCharacterChange?: (character: { id: string; name: string } | null) => void
+  onGuide?: () => void
 }
 
 const characterRouteKey = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, '')
 
-export function CharacterInventory({ owned, weapons = [], echoes = [], builds = [], equippedLoadouts = [], theorycraftBuilds = [], settings, roverGender, refresh, characterIdentifier, onCharacterChange }: CharacterInventoryProps) {
+export function CharacterInventory({ owned, weapons = [], echoes = [], builds = [], equippedLoadouts = [], theorycraftBuilds = [], settings, roverGender, refresh, characterIdentifier, onCharacterChange, onGuide }: CharacterInventoryProps) {
   const [query, setQuery] = useState('')
   const [elements, setElements] = useState<string[]>(characterElements)
+  const [weaponTypeFilter, setWeaponTypeFilter] = useState<string[]>(weaponTypes)
   const [rarities, setRarities] = useState<number[]>(characterRarities)
   const [pickerOpen, setPickerOpen] = useState(false)
   const [pickerQuery, setPickerQuery] = useState('')
   const [pickerElements, setPickerElements] = useState<string[]>(characterElements)
+  const [pickerWeaponTypes, setPickerWeaponTypes] = useState<string[]>(weaponTypes)
   const [pickerRarities, setPickerRarities] = useState<number[]>(characterRarities)
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const anyUnsavedChanges = useAnyUnsavedChanges()
   const deferred = useDeferredValue(query.toLowerCase())
   const rows = useMemo(() => {
     const seenRovers = new Set<string>()
@@ -93,8 +100,8 @@ export function CharacterInventory({ owned, weapons = [], echoes = [], builds = 
     setSelectedId(match?.item.id ?? null)
   }, [characterIdentifier, rows])
   const visible = useMemo(() => rows
-    .filter(({ catalog }) => elements.includes(catalog.element) && rarities.includes(catalog.rarity) && `${catalog.name} ${catalog.element} ${catalog.weaponType}`.toLowerCase().includes(deferred))
-    .sort((left, right) => Number(Boolean(right.item.favorite)) - Number(Boolean(left.item.favorite)) || left.catalog.name.localeCompare(right.catalog.name)), [deferred, elements, rarities, rows])
+    .filter(({ catalog }) => elements.includes(catalog.element) && weaponTypeFilter.includes(catalog.weaponType) && rarities.includes(catalog.rarity) && `${catalog.name} ${catalog.element} ${catalog.weaponType}`.toLowerCase().includes(deferred))
+    .sort((left, right) => Number(Boolean(right.item.favorite)) - Number(Boolean(left.item.favorite)) || left.catalog.name.localeCompare(right.catalog.name)), [deferred, elements, rarities, rows, weaponTypeFilter])
   const available = useMemo(() => {
     const ownedNames = new Set(owned.flatMap((item) => {
       const catalog = displayCatalog(item.catalogId, roverGender)
@@ -104,9 +111,10 @@ export function CharacterInventory({ owned, weapons = [], echoes = [], builds = 
     return characterCatalog.filter((entry) => isSelectedGenderVariant(entry, roverGender)
       && !ownedNames.has(entry.name)
       && pickerElements.includes(entry.element)
+      && pickerWeaponTypes.includes(entry.weaponType)
       && pickerRarities.includes(entry.rarity)
       && `${entry.name} ${entry.element} ${entry.weaponType}`.toLowerCase().includes(normalizedQuery))
-  }, [owned, pickerElements, pickerQuery, pickerRarities, roverGender])
+  }, [owned, pickerElements, pickerQuery, pickerRarities, pickerWeaponTypes, roverGender])
   const add = async (catalogId: string) => {
     await createOwnedCharacterWithDefaultWeapon(catalogId)
     setPickerOpen(false)
@@ -114,11 +122,11 @@ export function CharacterInventory({ owned, weapons = [], echoes = [], builds = 
   }
   const selected = rows.find(({ item }) => item.id === selectedId)
 
-  if (selected) return <CharacterShowcase character={selected.item} characters={owned} catalog={selected.catalog} weapons={weapons} echoes={echoes} builds={builds} equippedLoadouts={equippedLoadouts} theorycraftBuilds={theorycraftBuilds} settings={settings} refresh={refresh} onBack={() => { setSelectedId(null); onCharacterChange?.(null) }}/>
+  if (selected) return <CharacterShowcase character={selected.item} characters={owned} catalog={selected.catalog} weapons={weapons} echoes={echoes} builds={builds} equippedLoadouts={equippedLoadouts} theorycraftBuilds={theorycraftBuilds} settings={settings} refresh={refresh} onBack={() => { if (onCharacterChange && characterIdentifier) onCharacterChange(null); else if (confirmDiscardChanges(anyUnsavedChanges)) setSelectedId(null) }}/>
 
   return <>
     <PageHeader eyebrow="Your resonators" title="Characters" description="Open a character to inspect their loadout and team links."/>
-    <Panel className="owned-filter chip-toolbar character-roster-toolbar"><label className="search search-field"><Icon name="scan"/><input data-search="" autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search characters..."/><span className="search-count" aria-live="polite">{visible.length}/{owned.length}</span><kbd>Ctrl K</kbd></label><FilterChips label="Element" hideLabel values={characterElements} selected={elements} onChange={setElements} renderValue={(value) => <ElementFilterIcon element={value}/>}/><FilterChips label="Rarity" hideLabel values={characterRarities} selected={rarities} onChange={setRarities} renderValue={(value) => `${value} ★`}/><button type="button" className="primary" onClick={() => setPickerOpen(true)}><Icon name="plus"/>Add character</button></Panel>
+    <Panel className="owned-filter chip-toolbar character-roster-toolbar"><label className="search search-field"><Icon name="scan"/><input data-search="" autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search characters..."/><span className="search-count" aria-live="polite">{visible.length}/{owned.length}</span><kbd>Ctrl K</kbd></label><FilterChips label="Element" hideLabel values={characterElements} selected={elements} onChange={setElements} renderValue={(value) => <ElementFilterIcon element={value}/>}/><FilterChips label="Weapon type" hideLabel values={weaponTypes} selected={weaponTypeFilter} onChange={setWeaponTypeFilter} renderValue={(value) => <img className="weapon-type-filter-icon" src={weaponTypeIconSource(value)} alt={value} title={value}/>}/><FilterChips label="Rarity" hideLabel values={characterRarities} selected={rarities} onChange={setRarities} renderValue={(value) => `${value} ★`}/><button type="button" className="primary" onClick={() => setPickerOpen(true)}><Icon name="plus"/>Add character</button>{onGuide && <button type="button" className="secondary add-guide-button" onClick={onGuide}>Guide</button>}</Panel>
     <div className="character-candy-grid">{visible.map(({ item, catalog, weapon, weaponEntry, equipped }) => {
       const openCharacter = () => { setSelectedId(item.id); onCharacterChange?.({ id: catalog.id, name: catalog.name }) }
       return <article className={`character-candy-card rarity-${catalog.rarity}`} key={item.id} role="button" tabIndex={0} onClick={openCharacter} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') openCharacter() }}>
@@ -128,6 +136,6 @@ export function CharacterInventory({ owned, weapons = [], echoes = [], builds = 
         <div className="candy-loadout"><LoadoutSquare className={weaponEntry ? `rarity-${weaponEntry.rarity}` : ''} label={weaponEntry?.name || 'Weapon'} image={weaponEntry?.iconSourceUrl} topLeft={weapon ? `${weapon.level}/90` : undefined} bottomRight={weapon ? `R${weapon.rank}` : undefined}/>{Array.from({ length: 5 }, (_, index) => { const echo = equipped[index]; const sonataIcon = echo ? generatedSonataIconSources[echo.sonata] : undefined; return <LoadoutSquare key={index} label={echo?.name || `Echo ${index + 1}`} image={echo ? echoCatalog.find((entry) => entry.name === echo.name)?.iconSourceUrl : undefined} topLeft={echo ? `+${echo.level}` : undefined} bottomRight={sonataIcon ? <img className="loadout-sonata-icon" src={sonataIcon} alt={echo?.sonata || ''}/> : undefined}/> })}</div>
       </article>
     })}</div>
-    {pickerOpen && <Picker title="Choose a character" query={pickerQuery} setQuery={setPickerQuery} filters={<div className="catalog-picker-filters"><FilterChips label="Element" values={characterElements} selected={pickerElements} onChange={setPickerElements} renderValue={(value) => <ElementFilterIcon element={value}/>}/><FilterChips label="Rarity" values={characterRarities} selected={pickerRarities} onChange={setPickerRarities} renderValue={(value) => `${value} ★`}/></div>} onClose={() => setPickerOpen(false)}>{available.map((entry) => <button className={`catalog-choice character-choice rarity-${entry.rarity}`} key={entry.id} onClick={() => void add(entry.id)}><img src={entry.iconSourceUrl} alt=""/><span><strong>{entry.name}</strong><small>{entry.element} · {entry.weaponType}</small><Stars rarity={entry.rarity}/></span></button>)}</Picker>}
+    {pickerOpen && <Picker title="Choose a character" query={pickerQuery} setQuery={setPickerQuery} filters={<div className="catalog-picker-filters"><FilterChips label="Element" values={characterElements} selected={pickerElements} onChange={setPickerElements} renderValue={(value) => <ElementFilterIcon element={value}/>}/><FilterChips label="Weapon type" values={weaponTypes} selected={pickerWeaponTypes} onChange={setPickerWeaponTypes} renderValue={(value) => <img className="weapon-type-filter-icon" src={weaponTypeIconSource(value)} alt={value} title={value}/>}/><FilterChips label="Rarity" values={characterRarities} selected={pickerRarities} onChange={setPickerRarities} renderValue={(value) => `${value} ★`}/></div>} onClose={() => setPickerOpen(false)}>{available.map((entry) => <button className={`catalog-choice character-choice rarity-${entry.rarity}`} key={entry.id} onClick={() => void add(entry.id)}><img src={entry.iconSourceUrl} alt=""/><span><strong>{entry.name}</strong><small>{entry.element} · {entry.weaponType}</small><Stars rarity={entry.rarity}/></span></button>)}</Picker>}
   </>
 }

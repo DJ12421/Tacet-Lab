@@ -312,7 +312,7 @@
             "skillType": "Normal Attack",
             "skillName": "Mix-'n'-Match",
             "name": "Mix-'n'-Match - Heavy Attack - Huntress DMG",
-            "damageType": "heavy",
+            "damageType": "basic",
             "skillSource": "basic",
             "scaling": "atk",
             "expressions": [
@@ -2455,7 +2455,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Gloves Are Comin' Off!",
             "name": "Gloves Are Comin' Off! - Rat-tat-tat!: Huntress DMG",
-            "damageType": "skill",
+            "damageType": "basic",
             "tags": [
               "forte"
             ],
@@ -3709,6 +3709,10 @@
                     "scaling": "atk",
                     "count": 1
                   }
+                ],
+                "triggerActionIds": [
+                  "1308:7:1",
+                  "1308:7:2"
                 ]
               },
               {

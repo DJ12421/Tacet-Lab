@@ -1400,16 +1400,23 @@
             "text": "Damage of Resonance Liberation Purification Force Field is increased by 20%.",
             "parsed": {
               "input": {
-                "kind": "toggle"
+                "kind": "always"
               },
-              "modifiers": [],
-              "confidence": "review",
-              "warnings": [
-                "Reviewed: no supported deterministic calculator mechanic."
+              "modifiers": [
+                {
+                  "stat": "motionValue",
+                  "operation": "addPercent",
+                  "value": 20,
+                  "actionIds": [
+                    "1405:3:0",
+                    "1405:3:1"
+                  ]
+                }
               ],
-              "reviewStatus": "no-mechanic"
+              "confidence": "high",
+              "warnings": []
             },
-            "reviewStatus": "no-mechanic"
+            "reviewStatus": "include"
           },
           {
             "id": "1405:5:effect:0",
@@ -1418,16 +1425,24 @@
             "text": "The Shield obtained from Heavy Attack Primordial Chi Spiral is increased by 20%.",
             "parsed": {
               "input": {
-                "kind": "toggle"
+                "kind": "always"
               },
-              "modifiers": [],
-              "confidence": "review",
-              "warnings": [
-                "Reviewed: no supported deterministic calculator mechanic."
+              "modifiers": [
+                {
+                  "stat": "shieldBonus",
+                  "operation": "addPercent",
+                  "value": 20,
+                  "actionIds": [
+                    "1405:7:6"
+                  ]
+                }
               ],
-              "reviewStatus": "no-mechanic"
+              "confidence": "high",
+              "warnings": [
+                "Only the incomplete Minor Zhoutian shield is present in the reviewed action list; other Zhoutian shield forms need actions."
+              ]
             },
-            "reviewStatus": "no-mechanic"
+            "reviewStatus": "include"
           },
           {
             "id": "1405:7:effect:1",
@@ -1888,6 +1903,9 @@
                     "scaling": "atk",
                     "count": 1
                   }
+                ],
+                "triggerActionIds": [
+                  "1405:7:0"
                 ]
               },
               {

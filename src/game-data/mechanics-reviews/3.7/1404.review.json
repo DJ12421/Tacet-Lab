@@ -779,7 +779,7 @@
             "skillType": "Normal Attack",
             "skillName": "Lone Lance",
             "name": "Lone Lance - Windborne Strike Damage",
-            "damageType": "basic",
+            "damageType": "heavy",
             "skillSource": "basic",
             "scaling": "atk",
             "expressions": [
@@ -838,7 +838,7 @@
             "skillType": "Normal Attack",
             "skillName": "Lone Lance",
             "name": "Lone Lance - Abyssal Slash Damage",
-            "damageType": "basic",
+            "damageType": "heavy",
             "skillSource": "basic",
             "scaling": "atk",
             "expressions": [
@@ -2216,17 +2216,25 @@
             "text": "When casting Resonance Skill Windqueller, if Jiyan has 30 or more \"Resolve\", he consumes 30 \"Resolve\" to increase the DMG of this Resonance Skill Windqueller by 20%.",
             "parsed": {
               "input": {
-                "kind": "toggle"
+                "kind": "toggle",
+                "key": "jiyan-windqueller-resolve"
               },
-              "trigger": "Resonance Skill",
-              "modifiers": [],
-              "confidence": "review",
-              "warnings": [
-                "Reviewed: no supported deterministic calculator mechanic."
+              "trigger": "At least 30 Resolve consumed by Windqueller",
+              "modifiers": [
+                {
+                  "stat": "motionValue",
+                  "operation": "addPercent",
+                  "value": 20,
+                  "actionIds": [
+                    "1404:2:0"
+                  ]
+                }
               ],
-              "reviewStatus": "no-mechanic"
+              "exclusiveGroup": "jiyan-windqueller-enhancement",
+              "confidence": "high",
+              "warnings": []
             },
-            "reviewStatus": "no-mechanic"
+            "reviewStatus": "include"
           },
           {
             "id": "1404:7:effect:1",
@@ -2235,17 +2243,25 @@
             "text": "When Jiyan is in Qingloong Mode, DMG of Resonance Skill Windqueller is increased by 20% and no longer consumes \"Resolve\".",
             "parsed": {
               "input": {
-                "kind": "toggle"
+                "kind": "toggle",
+                "key": "jiyan-windqueller-qingloong"
               },
-              "trigger": "When Jiyan is in Qingloong Mode",
-              "modifiers": [],
-              "confidence": "review",
-              "warnings": [
-                "Reviewed: no supported deterministic calculator mechanic."
+              "trigger": "Qingloong Mode active during Windqueller",
+              "modifiers": [
+                {
+                  "stat": "motionValue",
+                  "operation": "addPercent",
+                  "value": 20,
+                  "actionIds": [
+                    "1404:2:0"
+                  ]
+                }
               ],
-              "reviewStatus": "no-mechanic"
+              "exclusiveGroup": "jiyan-windqueller-enhancement",
+              "confidence": "high",
+              "warnings": []
             },
-            "reviewStatus": "no-mechanic"
+            "reviewStatus": "include"
           },
           {
             "id": "1404:7:effect:7",
@@ -2597,14 +2613,20 @@
             "parsedEffects": [
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "always"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "modifiers": [
+                  {
+                    "stat": "motionValue",
+                    "operation": "addPercent",
+                    "value": 120,
+                    "actionIds": [
+                      "1404:8:outro"
+                    ]
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {

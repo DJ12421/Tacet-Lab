@@ -6,5 +6,6 @@ import './ui/step3.css'
 import './ui/site-motion.css'
 import './ui/archive.css'
 import './ui/weapons-view.css'
+import './ui/styles/core/themes.css'
 
 createRoot(document.getElementById('root')!).render(<StrictMode><App/></StrictMode>)

@@ -3,8 +3,9 @@ import type {
   TheorycraftBuild, TheorycraftEchoSlot
 } from './types'
 import { characterCatalog, echoCatalog, sonataCatalog, statLabels, weaponCatalog } from '../game-data'
-import { maxLevelByRarity, maxSubStatsForLevel, primaryMainStatValue } from '../game-data/echo-main-stats'
+import { mainStatKeysByCost, maxLevelByRarity, maxSubStatsForLevel, primaryMainStatValue } from '../game-data/echo-main-stats'
 import { exactTunableRoll, tunableRolls } from '../game-data/tunable-rolls'
+import { trimEmptyEchoSlots } from './echo-slots'
 
 export interface LoadoutCollections {
   characters: OwnedCharacter[]
@@ -195,22 +196,24 @@ export function resolveLoadout(source: LoadoutSourceRef, collections: LoadoutCol
   if (!character) return { source, echoes: [], warnings: ['The owned character for this loadout is missing.'] }
   if (source.type === 'equipped') {
     const loadout = collections.equippedLoadouts.find((entry) => entry.characterId === character.id)
-    const echoes = (loadout?.echoIds ?? []).map((id) => collections.echoes.find((entry) => entry.id === id)).filter((entry): entry is Echo => Boolean(entry))
+    const echoIds = trimEmptyEchoSlots((loadout?.echoIds ?? []).map((id) => collections.echoes.some((entry) => entry.id === id) ? id : ''))
+    const echoes = echoIds.map((id) => collections.echoes.find((entry) => entry.id === id)).filter((entry): entry is Echo => Boolean(entry))
     const weapon = collections.weapons.find((entry) => entry.id === loadout?.weaponId)
     return {
       source, character, weapon, echoes,
-      build: { id: runtimeId, name: 'Equipped Build', characterId: character.id, resonatorId: character.catalogId, weaponId: weapon?.id ?? '', echoIds: echoes.map((entry) => entry.id), level: character.level, skillLevel: character.skillLevels?.[1] ?? 1 },
+      build: { id: runtimeId, name: 'Equipped Build', characterId: character.id, resonatorId: character.catalogId, weaponId: weapon?.id ?? '', echoIds, level: character.level, skillLevel: character.skillLevels?.[1] ?? 1 },
       warnings: [...(!loadout ? ['No equipped loadout has been created.'] : []), ...(echoes.length < 5 ? [`${echoes.length}/5 Echoes equipped.`] : []), ...(echoes.reduce((sum, echo) => sum + echo.cost, 0) > 12 ? ['Echo cost exceeds the 12-cost limit.'] : [])]
     }
   }
   if (source.type === 'saved') {
     const saved = collections.builds.find((entry) => entry.id === source.buildId)
     if (!saved) return { source, character, echoes: [], warnings: ['The saved build is missing.'] }
-    const echoes = saved.echoIds.map((id) => collections.echoes.find((entry) => entry.id === id)).filter((entry): entry is Echo => Boolean(entry))
+    const echoIds = trimEmptyEchoSlots(saved.echoIds.map((id) => collections.echoes.some((entry) => entry.id === id) ? id : ''))
+    const echoes = echoIds.map((id) => collections.echoes.find((entry) => entry.id === id)).filter((entry): entry is Echo => Boolean(entry))
     const weapon = collections.weapons.find((entry) => entry.id === saved.weaponId)
     return {
-      source, character, weapon, echoes, build: { ...saved, id: runtimeId, characterId: character.id, resonatorId: character.catalogId, echoIds: echoes.map((entry) => entry.id), level: character.level, skillLevel: character.skillLevels?.[1] ?? saved.skillLevel },
-      warnings: [...(echoes.length !== saved.echoIds.length ? ['One or more saved Echo references are missing.'] : []), ...(!weapon ? ['The saved weapon reference is missing.'] : []), ...(echoes.length < 5 ? [`${echoes.length}/5 Echoes referenced.`] : []), ...(echoes.reduce((sum, echo) => sum + echo.cost, 0) > 12 ? ['Echo cost exceeds the 12-cost limit.'] : [])]
+      source, character, weapon, echoes, build: { ...saved, id: runtimeId, characterId: character.id, resonatorId: character.catalogId, echoIds, level: character.level, skillLevel: character.skillLevels?.[1] ?? saved.skillLevel },
+      warnings: [...(echoes.length !== saved.echoIds.filter(Boolean).length ? ['One or more saved Echo references are missing.'] : []), ...(!weapon ? ['The saved weapon reference is missing.'] : []), ...(echoes.length < 5 ? [`${echoes.length}/5 Echoes referenced.`] : []), ...(echoes.reduce((sum, echo) => sum + echo.cost, 0) > 12 ? ['Echo cost exceeds the 12-cost limit.'] : [])]
     }
   }
   const theorycraft = collections.theorycraftBuilds.find((entry) => entry.id === source.theorycraftBuildId)
@@ -241,13 +244,16 @@ export function defaultTheorycraftSlots(): TheorycraftEchoSlot[] {
 export function createTheorycraftBuild(character: OwnedCharacter, name = 'Theorycraft build'): TheorycraftBuild {
   const characterEntry = characterCatalog.find((entry) => entry.id === character.catalogId)
   const compatibleWeapon = weaponCatalog.find((entry) => entry.type.toLowerCase() === characterEntry?.weaponType.toLowerCase()) ?? weaponCatalog[0]
-  const mainEcho = echoCatalog.find((entry) => entry.cost === 4) ?? echoCatalog[0]
-  const sonata = mainEcho?.sonatas[0] ?? sonataCatalog[0]?.name ?? ''
+  const sonata = sonataCatalog.find((entry) => entry.effects.some((effect) => effect.pieces === 5) && isSonataAvailableToCharacter(entry.name, character.catalogId) && echoCatalog.some((echo) => echo.cost === 4 && echo.sonatas.includes(entry.name)))?.name ?? ''
+  const mainEcho = echoCatalog.find((entry) => entry.cost === 4 && entry.sonatas.includes(sonata)) ?? echoCatalog.find((entry) => entry.cost === 4) ?? echoCatalog[0]
+  const elementStat = `${characterEntry?.element.toLowerCase()}Damage` as StatKey
+  const slots = defaultTheorycraftSlots()
+  if (mainStatKeysByCost[3].includes(elementStat)) slots[1].mainStatKey = elementStat
   const now = Date.now()
   return {
     id: `theorycraft-${now}-${Math.random().toString(36).slice(2, 8)}`, name, description: '', characterId: character.id,
     weapon: { catalogId: compatibleWeapon?.id ?? '', level: 90, rank: 1 }, mainEchoName: mainEcho?.name ?? '',
-    slots: defaultTheorycraftSlots(), sonatas: sonata ? [{ name: sonata, pieces: 5 }] : [],
+    slots, sonatas: sonata ? [{ name: sonata, pieces: 5 }] : [],
     substats: { mode: 'slots', slots: Array.from({ length: 5 }, () => []) }, createdAt: now, updatedAt: now
   }
 }

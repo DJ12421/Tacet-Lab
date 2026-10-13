@@ -24,7 +24,7 @@
     box-sizing: border-box;
     overflow: hidden;
     padding: 14px 8px;
-    border-right-color: rgba(228,187,94,.34);
+    border-right-color: rgba(var(--gold-rgb),.34);
     background: linear-gradient(180deg,rgba(11,16,17,.985),rgba(6,9,10,.97));
     box-shadow: 8px 0 24px rgba(0,0,0,.18);
     transition: width .22s ease,padding .22s ease,box-shadow .22s ease;
@@ -90,8 +90,8 @@
     stroke-width: 1.25;
   }
   .sidebar-controls button:hover,.sidebar-pin[aria-pressed="true"] {
-    border-color: rgba(228,187,94,.32);
-    background: rgba(228,187,94,.08);
+    border-color: rgba(var(--gold-rgb),.32);
+    background: rgba(var(--gold-rgb),.08);
     color: var(--gold);
   }
   .sidebar .brand {
@@ -238,9 +238,9 @@
   }
 
   .sidebar .mobile-nav button:is(:hover,:focus-visible,.active) {
-    color: #fff2c8;
+    color: color-mix(in srgb, var(--gold) 45%, white);
     border-bottom-color: var(--gold);
-    background: linear-gradient(0deg,rgba(228,187,94,.13),transparent 75%);
+    background: linear-gradient(0deg,rgba(var(--gold-rgb),.13),transparent 75%);
     box-shadow: none;
     transform: none;
   }
@@ -272,10 +272,10 @@
     padding: 8px 12px calc(16px + env(safe-area-inset-bottom));
     overflow-y: auto;
     overscroll-behavior: contain;
-    border: 1px solid rgba(228,187,94,.32);
+    border: 1px solid rgba(var(--gold-rgb),.32);
     border-bottom: 0;
     border-radius: 18px 18px 0 0;
-    background: radial-gradient(circle at 20% 0,rgba(228,187,94,.13),transparent 34%),#0b1112;
+    background: radial-gradient(circle at 20% 0,rgba(var(--gold-rgb),.13),transparent 34%),#0b1112;
     color: #edf3ef;
     box-shadow: 0 -24px 80px rgba(0,0,0,.72);
     animation: mobile-sheet-in .2s ease-out;
@@ -340,9 +340,9 @@
   }
 
   .mobile-more-sheet nav button:is(:hover,:focus-visible,.active) {
-    border-color: rgba(228,187,94,.45);
-    background: rgba(228,187,94,.1);
-    color: #fff2c8;
+    border-color: rgba(var(--gold-rgb),.45);
+    background: rgba(var(--gold-rgb),.1);
+    color: color-mix(in srgb, var(--gold) 45%, white);
   }
 
   .mobile-more-sheet nav :is(.icon,.sidebar-nav-icon) {

@@ -78,6 +78,11 @@ export interface TuneBreakFormula {
   kind: 'tune-break'
 }
 
+export interface TuneAmpFormula {
+  kind: 'tune-amp'
+  amps: readonly number[]
+}
+
 export type NegativeStatus = 'spectro-frazzle' | 'aero-erosion' | 'fusion-burst' | 'electro-flare' | 'glacio-chafe'
 
 export interface NegativeStatusFormula {
@@ -98,7 +103,7 @@ export interface UnsupportedFormula {
   family: string
 }
 
-export type ActionFormula = DamageFormula | FixedDamageFormula | TuneBreakFormula | NegativeStatusFormula | SupportFormula | UnsupportedFormula
+export type ActionFormula = DamageFormula | FixedDamageFormula | TuneBreakFormula | TuneAmpFormula | NegativeStatusFormula | SupportFormula | UnsupportedFormula
 
 export interface EffectFilter {
   actionIds?: readonly string[]
@@ -126,8 +131,13 @@ export type ConditionStat = 'tuneBreakBoost' | 'offTuneBuildupRate' | 'energyReg
 export type EffectOperation = (
   | { kind: 'add-flat-stat'; stat: Stat; value: number }
   | { kind: 'add-percent-stat'; stat: 'hp' | 'atk' | 'def'; value: number }
+  | { kind: 'add-derived-stat'; stat: Stat; mode: 'flat' | 'percent'; sourceStat: ConditionStat; threshold: number; sourceOffset?: number; value: number }
   | { kind: 'add-damage-bonus'; value: number }
   | { kind: 'increase-motion-value'; value: number }
+  | { kind: 'add-special-multiplier'; value: number }
+  | { kind: 'add-tune-break-boost'; value: number }
+  | { kind: 'override-damage-type'; damageType: DamageType }
+  | { kind: 'override-status-crit'; rate: number; damage: number }
   | { kind: 'amplify-damage'; value: number }
   | { kind: 'add-vulnerability'; value: number }
   | { kind: 'add-final-damage'; value: number }
@@ -151,6 +161,8 @@ export interface TriggeredActionMechanics {
   referenceActionId?: string
   referenceMultiplier?: number
   count: number
+  countPerActivation?: number
+  bonusPerActivation?: number
   critMode?: 'normal' | 'never' | 'always'
   cooldownSeconds?: number
   maximumTriggers?: number
@@ -176,6 +188,7 @@ export interface EffectMechanics {
   filter?: EffectFilter
   exclusiveGroup?: string
   minimumSequence?: number
+  maximumSequence?: number
   minimumRank?: number
   maximumRank?: number
   minimumPieces?: number
@@ -192,12 +205,14 @@ export interface ActionMechanics {
   tags?: readonly ActionTag[]
   formula: ActionFormula
   cooldownSeconds?: number
+  maximumUses?: number
 }
 
 export interface CharacterActionMechanics extends Omit<ActionMechanics, 'formula'> {
   name: string
   group: string
   skillLevelIndex: number
+  minimumSequence?: number
   formulas: Readonly<Record<number, ActionFormula>>
 }
 
@@ -413,6 +428,7 @@ export interface TriggeredActionResult {
   id: string
   name: string
   kind: ResultKind
+  recipient?: 'self' | 'team'
   damageType?: DamageType
   totals: DamageValues
   selected: number

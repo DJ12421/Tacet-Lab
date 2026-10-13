@@ -1543,6 +1543,12 @@
                     "operation": "addPercent",
                     "value": 10,
                     "scope": "self"
+                  },
+                  {
+                    "stat": "critDamage",
+                    "operation": "addPercent",
+                    "value": 30,
+                    "scope": "self"
                   }
                 ],
                 "confidence": "high",
@@ -1607,6 +1613,14 @@
                     "operation": "addPercent",
                     "value": 20,
                     "actionIds": [
+                      "1606:3:0"
+                    ]
+                  },
+                  {
+                    "stat": "motionValue",
+                    "operation": "addPercent",
+                    "value": 80,
+                    "actionIds": [
                       "1606:1:4"
                     ]
                   }
@@ -1636,28 +1650,46 @@
               },
               {
                 "input": {
-                  "kind": "always"
+                  "kind": "toggle",
+                  "key": "roccia-s6-reality-beyond-imagination"
                 },
                 "modifiers": [
                   {
                     "stat": "DEFIgnore",
                     "operation": "addPercent",
-                    "value": 60
+                    "value": 60,
+                    "actionIds": [
+                      "1606:7:0",
+                      "1606:7:1",
+                      "1606:7:2"
+                    ]
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "12 seconds after Commedia Improvviso!"
+              },
+              {
+                "input": {
+                  "kind": "toggle",
+                  "key": "roccia-s6-reality-recreation"
+                },
+                "trigger": "Landing after Real Fantasy Stage 3 while Beyond Imagination is active",
+                "modifiers": [],
+                "triggerActionIds": [
+                  "1606:7:2"
+                ],
+                "triggeredAttacks": [
+                  {
+                    "id": "roccia-s6-reality-recreation",
+                    "name": "Reality Recreation",
+                    "damageType": "heavy",
+                    "referenceActionId": "1606:7:2",
+                    "count": 1
                   }
                 ],
                 "confidence": "high",
                 "warnings": []
-              },
-              {
-                "input": {
-                  "kind": "toggle"
-                },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
-                ],
-                "reviewStatus": "no-mechanic"
               },
               {
                 "input": {

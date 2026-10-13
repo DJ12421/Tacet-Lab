@@ -1,4 +1,5 @@
 import { createLocalId } from '../domain/id'
+import { trimEmptyEchoSlots } from '../domain/echo-slots'
 import type { Build, Echo, EquippedLoadout, LoadoutSourceRef, OwnedCharacter, OwnedWeapon, TheorycraftBuild } from '../domain/types'
 import { createTheorycraftBuild } from '../domain/loadouts'
 import { characterCatalog, echoCatalog, weaponCatalog } from '../game-data'
@@ -70,12 +71,14 @@ function validateEchoSelection(echoes: Echo[]) {
 }
 
 export async function setEquippedEchoIds(characterId: string, requestedIds: string[]) {
-  const echoIds = [...new Set(requestedIds)]
+  const echoIds = trimEmptyEchoSlots(requestedIds)
+  const selectedIds = echoIds.filter(Boolean)
+  if (echoIds.length > 5 || new Set(selectedIds).size !== selectedIds.length) throw new Error('A loadout needs at most five distinct Echoes.')
   await db.transaction('rw', [db.characters, db.echoes, db.equippedLoadouts], async () => {
     const character = await db.characters.get(characterId)
     if (!character) throw new Error('The selected character no longer exists.')
-    const selected = echoIds.length ? await db.echoes.where('id').anyOf(echoIds).toArray() : []
-    if (selected.length !== echoIds.length) throw new Error('One or more selected Echoes no longer exist.')
+    const selected = selectedIds.length ? await db.echoes.where('id').anyOf(selectedIds).toArray() : []
+    if (selected.length !== selectedIds.length) throw new Error('One or more selected Echoes no longer exist.')
     validateEchoSelection(selected)
     const current = await db.equippedLoadouts.where('characterId').equals(character.id).first()
     if (current) await db.equippedLoadouts.update(current.id, { echoIds, updatedAt: Date.now() })
@@ -128,8 +131,9 @@ export async function equipSavedBuild(buildId: string) {
   const character = build.characterId ? await db.characters.get(build.characterId) : await db.characters.where('catalogId').equals(build.resonatorId).first()
   if (!character) throw new Error('The saved build character no longer exists.')
   await db.transaction('rw', [db.characters, db.echoes, db.weapons, db.equippedLoadouts], async () => {
-    const selected = build.echoIds.length ? await db.echoes.where('id').anyOf(build.echoIds).toArray() : []
-    if (selected.length !== build.echoIds.length) throw new Error('Replace or remove missing Echo references before equipping this build.')
+    const selectedIds = build.echoIds.filter(Boolean)
+    const selected = selectedIds.length ? await db.echoes.where('id').anyOf(selectedIds).toArray() : []
+    if (selected.length !== selectedIds.length) throw new Error('Replace or remove missing Echo references before equipping this build.')
     validateEchoSelection(selected)
     const weapon = build.weaponId ? await db.weapons.get(build.weaponId) : undefined
     if (build.weaponId && !weapon) throw new Error('Replace the missing weapon reference before equipping this build.')

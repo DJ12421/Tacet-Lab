@@ -4,6 +4,9 @@ import { importAccount, prepareAccountBackup, previewAccountImport, type Account
 import { prepareNativeBuildChoices } from '../storage/import-build-choices'
 import { convertWutheringToolsExport, isWutheringToolsExport, type WutheringToolsCharacterChoice } from '../storage/import-wuthering-tools'
 import { Icon, Panel } from './primitives'
+import { confirmDiscardChanges, useUnsavedChanges } from './useUnsavedChanges'
+
+const emptyFileLabel = 'Choose a Tacet Lab or Wuthering Tools JSON export'
 
 interface ImportDataModalProps {
   onClose: () => void
@@ -17,7 +20,7 @@ function formattedExportDate(value: string) {
 
 export function ImportDataModal({ onClose, onImported }: ImportDataModalProps) {
   const [raw, setRaw] = useState('')
-  const [fileName, setFileName] = useState('Choose a Tacet Lab or Wuthering Tools JSON export')
+  const [fileName, setFileName] = useState(emptyFileLabel)
   const [account, setAccount] = useState<AccountDocument>()
   const [preview, setPreview] = useState<AccountImportPreview>()
   const [repairs, setRepairs] = useState<string[]>([])
@@ -31,12 +34,15 @@ export function ImportDataModal({ onClose, onImported }: ImportDataModalProps) {
   const [importing, setImporting] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
   const analysisRef = useRef(0)
+  const dirty = Boolean(raw.trim() || fileName !== emptyFileLabel)
+  useUnsavedChanges(dirty)
+  const requestClose = () => { if (confirmDiscardChanges(dirty)) onClose() }
 
   useEffect(() => {
-    const closeOnEscape = (event: KeyboardEvent) => { if (event.key === 'Escape' && !importing) onClose() }
+    const closeOnEscape = (event: KeyboardEvent) => { if (event.key === 'Escape' && !importing) requestClose() }
     window.addEventListener('keydown', closeOnEscape)
     return () => window.removeEventListener('keydown', closeOnEscape)
-  }, [importing, onClose])
+  }, [importing, requestClose])
 
   const prepare = async (parsed: unknown, analysisId: number, choices: Record<string, boolean> = {}) => {
     const converted = isWutheringToolsExport(parsed) ? await convertWutheringToolsExport(parsed, choices) : undefined
@@ -123,11 +129,11 @@ export function ImportDataModal({ onClose, onImported }: ImportDataModalProps) {
 
   const hasChanges = Boolean(preview && (preview.added > 0 || preview.updated > 0))
 
-  return <div className="modal-backdrop import-data-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget && !importing) onClose() }}>
+  return <div className="modal-backdrop import-data-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget && !importing) requestClose() }}>
     <Panel className="import-data-modal" role="dialog" aria-modal="true" aria-labelledby="import-data-title">
       <header className="import-data-header">
         <div><span className="eyebrow">Your data · Restore</span><h2 id="import-data-title">Import a backup</h2><p>Choose a Tacet Lab or Wuthering Tools JSON export, then review every change before merging.</p></div>
-        <button className="close" aria-label="Close import" disabled={importing} onClick={onClose}>×</button>
+        <button className="close" aria-label="Close import" disabled={importing} onClick={requestClose}>×</button>
       </header>
 
       <div className="import-data-scroll">
@@ -177,7 +183,7 @@ export function ImportDataModal({ onClose, onImported }: ImportDataModalProps) {
 
       <footer className="import-data-actions">
         <div>{preview && !hasChanges ? <span>Everything in this backup is already present.</span> : sourceCharacters.some((choice) => choice.existing && !choice.addAsNewBuild) ? <span>Equipped will be replaced for characters with the toggle off.</span> : repairs.length ? <span>Review the recovered timing before applying changes.</span> : <span>New records are added; matching records are updated.</span>}</div>
-        <button className="secondary" type="button" disabled={importing} onClick={onClose}>Cancel</button>
+        <button className="secondary" type="button" disabled={importing} onClick={requestClose}>Cancel</button>
         <button className="primary" type="button" disabled={!hasChanges || importing || analyzing} onClick={() => void merge()}><Icon name="upload"/>{importing ? 'Merging…' : `Apply ${(preview?.added ?? 0) + (preview?.updated ?? 0)} changes`}</button>
       </footer>
     </Panel>

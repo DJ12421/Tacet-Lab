@@ -11,7 +11,7 @@
   display: grid;
   grid-template-columns: minmax(0,1fr) 35px;
   gap: 5px;
-  border-top: 1px solid rgba(228,187,94,.17);
+  border-top: 1px solid rgba(var(--gold-rgb),.17);
   background: rgba(255,255,255,.025);
 }
 
@@ -56,7 +56,7 @@
 .echo-equipment button {
   display: grid;
   place-items: center;
-  border: 1px solid rgba(141,228,212,.55);
+  border: 1px solid rgba(var(--mint-rgb),.55);
   border-radius: 4px;
   background: #3a9f94;
   color: #07100f;
@@ -135,7 +135,7 @@
   cursor: pointer;
 }
 .echo-equipment .echo-owner-picker .echo-owner-options button:hover,
-.echo-equipment .echo-owner-picker .echo-owner-options button.active { background: rgba(141,228,212,.12); color: var(--mint); }
+.echo-equipment .echo-owner-picker .echo-owner-options button.active { background: rgba(var(--mint-rgb),.12); color: var(--mint); }
 .echo-owner-empty { width: 29px; height: 29px; display: grid; place-items: center; flex: none; border: 1px dashed rgba(255,255,255,.22); border-radius: 50%; }
 .echo-owner-check { margin-left: auto; color: var(--mint); }
 
@@ -147,7 +147,7 @@
 .echo-edit-modal {
   width: min(1160px,100%);
   padding: 0;
-  border: 1px solid rgba(228,187,94,.35);
+  border: 1px solid rgba(var(--gold-rgb),.35);
   border-radius: 9px;
   background: #0b1112;
   box-shadow: 0 35px 110px #000;
@@ -159,8 +159,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(228,187,94,.2);
-  background: linear-gradient(90deg,rgba(228,187,94,.13),rgba(14,21,22,.98) 38%,rgba(141,228,212,.05));
+  border-bottom: 1px solid rgba(var(--gold-rgb),.2);
+  background: linear-gradient(90deg,rgba(var(--gold-rgb),.13),rgba(14,21,22,.98) 38%,rgba(var(--mint-rgb),.05));
 }
 
 .echo-editor-header h2 {
@@ -245,7 +245,7 @@
 
 .echo-level-editor button.active {
   border-color: var(--gold);
-  background: rgba(228,187,94,.18);
+  background: rgba(var(--gold-rgb),.18);
   color: var(--gold);
 }
 
@@ -261,7 +261,7 @@
 
 .echo-stat-line.main {
   grid-template-columns: 90px minmax(180px,1fr) 110px;
-  border-color: rgba(141,228,212,.28);
+  border-color: rgba(var(--mint-rgb),.28);
 }
 
 .echo-stat-line>span {
@@ -363,7 +363,7 @@
   justify-content: flex-end;
   gap: 10px;
   padding: 12px 18px;
-  border-top: 1px solid rgba(228,187,94,.18);
+  border-top: 1px solid rgba(var(--gold-rgb),.18);
   background: #0a0f10;
 }
 

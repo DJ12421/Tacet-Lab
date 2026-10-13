@@ -49,7 +49,7 @@ export interface CombatInputDefinition {
 
 export interface CombatEffectResult {
   label: string
-  value: number | 'Always' | 'Never'
+  value: number | string
   percent: boolean
   perActivation?: boolean
 }
@@ -280,8 +280,11 @@ const effectStatLabel = (stat: Stat) => ({
 } satisfies Record<Stat, string>)[stat]
 
 const operationLabel = (operation: EffectOperation, effect: EffectMechanics) => {
-  if (operation.kind === 'add-flat-stat' || operation.kind === 'add-percent-stat') return effectStatLabel(operation.stat)
+  if (operation.kind === 'add-flat-stat' || operation.kind === 'add-percent-stat' || operation.kind === 'add-derived-stat') return effectStatLabel(operation.stat)
   if (operation.kind === 'override-crit') return 'Critical Hits'
+  if (operation.kind === 'override-damage-type') return 'Damage Type'
+  if (operation.kind === 'override-status-crit') return 'Fixed Status Crit. Rate / DMG'
+  if (operation.kind === 'add-tune-break-boost') return 'Tune Break Boost'
   if (operation.kind === 'reduce-damage-taken') return 'DMG Reduction'
   if (operation.kind === 'reduce-defense') return 'Enemy DEF Reduction'
   if (operation.kind === 'ignore-defense') return 'Enemy DEF Ignore'
@@ -292,6 +295,7 @@ const operationLabel = (operation: EffectOperation, effect: EffectMechanics) => 
     : filter?.damageTypes?.length === 1 ? `${titleCase(filter.damageTypes[0])}${filter.damageTypes[0] === 'basic' || filter.damageTypes[0] === 'heavy' ? ' Attack' : ''}`
       : filter?.tags?.length === 1 ? titleCase(filter.tags[0]) : ''
   if (operation.kind === 'increase-motion-value') return `${scope ? `${scope} ` : ''}DMG Multiplier`
+  if (operation.kind === 'add-special-multiplier') return `${scope ? `${scope} ` : ''}Special Multiplier`
   if (operation.kind === 'amplify-damage') return `${scope ? `${scope} ` : ''}DMG Amplify`
   if (operation.kind === 'add-vulnerability') return `${scope ? `${scope} ` : ''}DMG Taken Amplify`
   if (operation.kind === 'add-final-damage') return `${scope ? `${scope} ` : ''}Final DMG Bonus`
@@ -301,13 +305,17 @@ const operationLabel = (operation: EffectOperation, effect: EffectMechanics) => 
 const effectResults = (effect: EffectMechanics): CombatEffectResult[] => [
   ...effect.operations.map((operation): CombatEffectResult => operation.kind === 'override-crit'
   ? { label:operationLabel(operation, effect), value:operation.mode === 'always' ? 'Always' : 'Never', percent:false }
+  : operation.kind === 'override-damage-type'
+  ? { label:operationLabel(operation, effect), value:operation.damageType, percent:false }
+  : operation.kind === 'override-status-crit'
+  ? { label:operationLabel(operation, effect), value:`${Math.round(operation.rate * 100)}% / ${Math.round(operation.damage * 100)}%`, percent:false }
   : {
       label:operationLabel(operation, effect),
       value:operation.value,
-      percent:operation.kind !== 'add-flat-stat' || !['atk','hp','def'].includes(operation.stat),
+      percent:operation.kind === 'add-tune-break-boost' ? false : operation.kind === 'add-derived-stat' ? operation.mode === 'percent' || !['atk','hp','def'].includes(operation.stat) : operation.kind !== 'add-flat-stat' || !['atk','hp','def'].includes(operation.stat),
       perActivation:operation.stacking === 'per-stack' || ((effect.activation.kind === 'stacks' || effect.activation.kind === 'value' || effect.activation.kind === 'conditional-value') && operation.stacking !== 'once')
     }),
-  ...(effect.triggeredActions ?? []).map((action) => ({ label:action.name, value:action.count, percent:false })),
+  ...(effect.triggeredActions ?? []).map((action) => ({ label:action.countPerActivation ? `${action.name} per ${action.countPerActivation} stacks` : action.name, value:action.count, percent:false })),
   ...(effect.actionUseAdjustments ?? []).map((adjustment) => ({ label:'Additional action uses', value:adjustment.additionalUses, percent:false }))
 ]
 
@@ -321,7 +329,7 @@ export function combatEffectDefinitions(characterId: string, weaponId: string, s
     return result
   }, {})
   const effects: Array<{ effect: EffectMechanics; sourceKind: CombatEffectDefinition['sourceKind']; sourceLabel: string; sourceBadge: string }> = [
-    ...(character?.effects ?? []).filter((effect) => sequence >= (effect.minimumSequence ?? 0)).map((effect) => ({ effect, sourceKind:'character' as const, sourceLabel:characterCatalog.find((entry) => entry.id === characterId)?.name ?? 'Character', sourceBadge:effect.minimumSequence ? `S${effect.minimumSequence}` : 'Character' })),
+    ...(character?.effects ?? []).filter((effect) => sequence >= (effect.minimumSequence ?? 0) && sequence <= (effect.maximumSequence ?? Number.POSITIVE_INFINITY)).map((effect) => ({ effect, sourceKind:'character' as const, sourceLabel:characterCatalog.find((entry) => entry.id === characterId)?.name ?? 'Character', sourceBadge:effect.minimumSequence ? `S${effect.minimumSequence}` : 'Character' })),
     ...(weapon?.effects ?? []).filter((effect) => rank >= (effect.minimumRank ?? 1) && rank <= (effect.maximumRank ?? Number.POSITIVE_INFINITY)).map((effect) => ({ effect, sourceKind:'weapon' as const, sourceLabel:weaponCatalog.find((entry) => entry.id === weaponId)?.name ?? 'Weapon', sourceBadge:(effect.minimumRank ?? 1) > 1 ? `R${effect.minimumRank}` : 'Weapon' })),
     ...Object.entries(counts).flatMap(([id, pieces]) => (mechanicsRegistry.sonatas?.[id]?.effects ?? []).filter((effect) => pieces >= (effect.minimumPieces ?? 2)).map((effect) => ({ effect, sourceKind:'sonata' as const, sourceLabel:sonataCatalog.find((entry) => String(entry.id) === id)?.name ?? 'Sonata', sourceBadge:`${effect.minimumPieces ?? 2}-Set` }))),
     ...(echoes[0] ? (mechanicsRegistry.echoes?.[echoCatalog.find((entry) => entry.name === echoes[0].name)?.id ?? '']?.effects ?? []).map((effect) => ({ effect, sourceKind:'echo' as const, sourceLabel:echoes[0].name, sourceBadge:'Echo' })) : [])

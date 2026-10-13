@@ -137,9 +137,4 @@
     grid-template-columns: repeat(5,44px);
     gap: 5px;
   }
-
-  .cbc-echo-actions {
-    top: auto;
-    bottom: calc(100% + 5px);
-  }
 }

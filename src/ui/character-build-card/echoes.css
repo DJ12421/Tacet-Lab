@@ -68,6 +68,23 @@
   cursor: pointer;
 }
 
+.cbc-echo-row.is-editable[draggable="true"] {
+  cursor: grab;
+}
+
+.cbc-echo-row.is-editable[draggable="true"]:active {
+  cursor: grabbing;
+}
+
+.cbc-echo-stage.is-dropping-on-0 .cbc-echo-slot-0,
+.cbc-echo-stage.is-dropping-on-1 .cbc-echo-slot-1,
+.cbc-echo-stage.is-dropping-on-2 .cbc-echo-slot-2,
+.cbc-echo-stage.is-dropping-on-3 .cbc-echo-slot-3,
+.cbc-echo-stage.is-dropping-on-4 .cbc-echo-slot-4 {
+  outline: 3px solid var(--cbc-accent);
+  outline-offset: 3px;
+}
+
 .cbc-echo-row.is-editable:hover {
   border-color: color-mix(in srgb,var(--cbc-accent) 66%,white);
   box-shadow: inset 0 1px rgba(255,255,255,.14),inset 2px 0 var(--cbc-accent),0 0 24px color-mix(in srgb,var(--cbc-accent) 13%,transparent),0 18px 34px -19px rgba(0,0,0,.92);
@@ -307,33 +324,6 @@
   font-size: 13px;
   white-space: nowrap;
   text-shadow: 0 0 12px color-mix(in srgb,var(--cbc-accent) 24%,transparent);
-}
-
-.cbc-echo-actions {
-  right: 8px;
-  top: calc(100% + 4px);
-  display: flex;
-  gap: 5px;
-}
-
-.cbc-echo-actions button {
-  height: 34px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 0 9px;
-  border: 1px solid var(--cbc-edge);
-  border-radius: 7px;
-  background: linear-gradient(145deg,rgba(31,49,58,.92),rgba(5,12,17,.94));
-  box-shadow: inset 0 1px rgba(255,255,255,.08);
-  color: #edf4f2;
-  font-size: 11px;
-  cursor: pointer;
-}
-
-.cbc-echo-actions .icon {
-  width: 14px;
-  height: 14px;
 }
 
 .cbc-echo-row.is-empty {

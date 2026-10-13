@@ -1,10 +1,11 @@
 import Dexie, { type EntityTable } from 'dexie'
 import { generatedCharacterSummaries as characterCatalog } from '../game-data/character-summaries.generated'
-import { defaultSettings, GAME_DATA_VERSION, statLabels } from '../game-data/core'
+import { defaultCustomTheme, defaultSettings, GAME_DATA_VERSION, statLabels } from '../game-data/core'
 import { generatedWeaponSummaries as weaponCatalog } from '../game-data/weapon-summaries.generated'
 import { effectiveSubStats, maxSubStatsForLevel, normalizeEchoMainStat } from '../game-data/echo-main-stats'
 import type { AccountDocument, AppSettings, Build, Echo, EquippedLoadout, LoadoutSourceRef, OptimizerProfile, OptimizerRun, OwnedCharacter, OwnedWeapon, Team, TeamMember, TheorycraftBuild } from '../domain/types'
 import { createLocalId } from '../domain/id'
+import { setEchoSlot, trimEmptyEchoSlots } from '../domain/echo-slots'
 import { clearCharacterArtwork } from './character-art-cache'
 import { dedupeBySubstatKey, duplicateSubstatKeys } from '../domain/echo-substats'
 
@@ -161,13 +162,14 @@ const normalizedIdentity = (value: string) => value.toLowerCase().replace(/[^a-z
 let namedEchoAssignmentsRepaired = false
 
 export async function setBuildEchoIds(buildId: string, requestedIds: string[]) {
-  const echoIds = [...new Set(requestedIds)]
-  if (echoIds.length > 5) throw new Error('A build can equip at most five Echoes.')
+  const echoIds = trimEmptyEchoSlots(requestedIds)
+  const selectedIds = echoIds.filter(Boolean)
+  if (echoIds.length > 5 || new Set(selectedIds).size !== selectedIds.length) throw new Error('A build needs at most five distinct Echoes.')
   await db.transaction('rw', [db.echoes, db.builds], async () => {
     const build = await db.builds.get(buildId)
     if (!build) throw new Error('The selected build no longer exists.')
-    const selected = echoIds.length ? await db.echoes.where('id').anyOf(echoIds).toArray() : []
-    if (selected.length !== echoIds.length) throw new Error('One or more selected Echoes no longer exist.')
+    const selected = selectedIds.length ? await db.echoes.where('id').anyOf(selectedIds).toArray() : []
+    if (selected.length !== selectedIds.length) throw new Error('One or more selected Echoes no longer exist.')
     if (selected.reduce((total, echo) => total + echo.cost, 0) > 12) throw new Error('This loadout exceeds the 12-cost limit.')
     await db.builds.update(buildId, { echoIds, updatedAt: Date.now() })
   })
@@ -183,24 +185,14 @@ export async function switchBuildEcho(buildId: string, slot: number, nextEchoId?
 
     const nextEcho = nextEchoId ? await db.echoes.get(nextEchoId) : undefined
     if (nextEchoId && !nextEcho) throw new Error('The selected Echo no longer exists.')
-    if (nextEchoId && build.echoIds.some((id, index) => id === nextEchoId && index !== slot)) {
-      throw new Error('That Echo is already equipped in another slot on this build.')
-    }
-
-    const nextBuildEchoIds = [...build.echoIds]
-    if (nextEchoId) {
-      if (slot < nextBuildEchoIds.length) nextBuildEchoIds[slot] = nextEchoId
-      else nextBuildEchoIds.push(nextEchoId)
-    } else if (oldEchoId) {
-      nextBuildEchoIds.splice(slot, 1)
-    }
+    const echoIds = setEchoSlot(build.echoIds, slot, nextEchoId)
 
     const echoById = new Map((await db.echoes.toArray()).map((echo) => [echo.id, echo]))
     const loadoutCost = (ids: string[]) => ids.reduce((total, id) => total + (echoById.get(id)?.cost ?? 0), 0)
-    if (nextBuildEchoIds.length > 5 || loadoutCost(nextBuildEchoIds) > 12) {
+    if (echoIds.length > 5 || loadoutCost(echoIds) > 12) {
       throw new Error('This switch would make the current build exceed the 12-cost limit.')
     }
-    await db.builds.update(build.id, { echoIds: nextBuildEchoIds, updatedAt: Date.now() })
+    await db.builds.update(build.id, { echoIds, updatedAt: Date.now() })
   })
 }
 
@@ -211,13 +203,16 @@ export async function repairEchoAssignmentConsistency() {
     const claimedBy = new Map<string, string>()
     for (const loadout of loadouts) {
       let cost = 0
-      const echoIds = [...new Set(loadout.echoIds)].filter((id) => {
+      const seen = new Set<string>()
+      const echoIds = trimEmptyEchoSlots(loadout.echoIds.slice(0, 5).map((id) => {
+        if (!id || seen.has(id)) return ''
         const echo = echoById.get(id)
-        if (!echo || cost + echo.cost > 12) return false
+        if (!echo || cost + echo.cost > 12) return ''
+        seen.add(id)
         cost += echo.cost
-        return true
-      }).slice(0, 5)
-      echoIds.forEach((id) => { if (!claimedBy.has(id)) claimedBy.set(id, loadout.characterId) })
+        return id
+      }))
+      echoIds.forEach((id) => { if (id && !claimedBy.has(id)) claimedBy.set(id, loadout.characterId) })
       if (echoIds.length !== loadout.echoIds.length || echoIds.some((id, index) => id !== loadout.echoIds[index])) await db.equippedLoadouts.update(loadout.id, { echoIds, updatedAt: Date.now() })
     }
     const characterById = new Map(characters.map((entry) => [entry.id, entry]))
@@ -350,7 +345,7 @@ export async function repairNamedEchoAssignments() {
         await db.equippedLoadouts.add(loadout)
         loadouts.push(loadout)
       }
-      const availableSlots = Math.max(0, 5 - loadout.echoIds.length)
+      const availableSlots = Math.max(0, 5 - loadout.echoIds.filter(Boolean).length)
       let remainingCost = Math.max(0, 12 - loadout.echoIds.reduce((sum, id) => sum + (echoes.find((echo) => echo.id === id)?.cost ?? 0), 0))
       const additions = unlinked.sort((left, right) => right.createdAt - left.createdAt).filter((echo) => {
         if (echo.cost > remainingCost) return false
@@ -358,7 +353,12 @@ export async function repairNamedEchoAssignments() {
         return true
       }).slice(0, availableSlots).sort((left, right) => left.createdAt - right.createdAt)
       if (!additions.length) continue
-      const echoIds = [...loadout.echoIds, ...additions.map((echo) => echo.id)]
+      const echoIds = [...loadout.echoIds]
+      for (const echo of additions) {
+        const emptySlot = echoIds.indexOf('')
+        if (emptySlot >= 0) echoIds[emptySlot] = echo.id
+        else echoIds.push(echo.id)
+      }
       await db.equippedLoadouts.update(loadout.id, { echoIds, updatedAt: Date.now() })
       await Promise.all(additions.map((echo) => db.echoes.update(echo.id, { equippedBy: character.id, equippedByName: catalog.name })))
       loadout.echoIds = echoIds
@@ -389,7 +389,7 @@ export async function getSettings(): Promise<AppSettings> {
   const row = await db.settings.get('settings')
   if (!row) return structuredClone(defaultSettings)
   const { id: _, ...settings } = row
-  return { ...structuredClone(defaultSettings), ...settings }
+  return { ...structuredClone(defaultSettings), ...settings, theme: ['spectro', 'glacio', 'fusion', 'electro', 'aero', 'havoc', 'light', 'custom'].includes(settings.theme) ? settings.theme : 'spectro', customTheme: validCustomTheme(settings.customTheme) ? settings.customTheme : structuredClone(defaultCustomTheme) }
 }
 
 export async function saveSettings(settings: AppSettings) {
@@ -718,7 +718,7 @@ async function ensureSchemaSevenRelations() {
           + (weapons.some((weapon) => weapon.id === build.weaponId && weapon.equippedBy === character.id) ? 10 : 0)
         return score(right) - score(left) || left.id.localeCompare(right.id)
       })[0]
-      await db.equippedLoadouts.add({ id: `equipped:${character.id}`, characterId: character.id, weaponId: selected?.weaponId ?? '', echoIds: selected?.echoIds.filter((id) => echoes.some((echo) => echo.id === id)) ?? [], updatedAt: Date.now() })
+      await db.equippedLoadouts.add({ id: `equipped:${character.id}`, characterId: character.id, weaponId: selected?.weaponId ?? '', echoIds: trimEmptyEchoSlots(selected?.echoIds.map((id) => echoes.some((echo) => echo.id === id) ? id : '') ?? []), updatedAt: Date.now() })
     }
     const memberIdByBuild = new Map<string, string>()
     for (const team of teams) {
@@ -801,7 +801,7 @@ function isBuild(value: unknown) {
     && (value.description === undefined || typeof value.description === 'string')
     && (value.characterId === undefined || typeof value.characterId === 'string')
     && Array.isArray(value.echoIds) && value.echoIds.length <= 5 && value.echoIds.every((id) => typeof id === 'string')
-    && new Set(value.echoIds).size === value.echoIds.length
+    && new Set(value.echoIds.filter(Boolean)).size === value.echoIds.filter(Boolean).length
     && isFiniteNumber(value.level) && value.level >= 1 && value.level <= 90
     && isFiniteNumber(value.skillLevel) && value.skillLevel >= 1 && value.skillLevel <= 10
 }
@@ -817,7 +817,7 @@ function isLoadoutSource(value: unknown): value is LoadoutSourceRef {
 function isEquippedLoadout(value: unknown) {
   return isRecord(value) && typeof value.id === 'string' && typeof value.characterId === 'string' && typeof value.weaponId === 'string'
     && Array.isArray(value.echoIds) && value.echoIds.length <= 5 && value.echoIds.every((id) => typeof id === 'string')
-    && new Set(value.echoIds).size === value.echoIds.length && isFiniteNumber(value.updatedAt)
+    && new Set(value.echoIds.filter(Boolean)).size === value.echoIds.filter(Boolean).length && isFiniteNumber(value.updatedAt)
 }
 
 function isTheorycraftBuild(value: unknown) {
@@ -941,10 +941,16 @@ function isTeamScenario(value: unknown) {
     && (value.compareBuildId === undefined || typeof value.compareBuildId === 'string')
 }
 
+function validCustomTheme(value: unknown): value is AppSettings['customTheme'] {
+  return isRecord(value) && Object.keys(defaultCustomTheme).every((key) => typeof value[key] === 'string' && /^#[0-9a-f]{6}$/i.test(value[key]))
+}
+
 function isSettings(value: unknown) {
   return isRecord(value) && typeof value.displayName === 'string' && typeof value.privacyMode === 'boolean'
     && (value.uid === undefined || typeof value.uid === 'string')
     && ['signal', 'tacet', 'plain'].includes(String(value.background))
+    && (value.theme === undefined || ['spectro', 'glacio', 'fusion', 'electro', 'aero', 'havoc', 'light', 'custom', 'classic', 'ocean', 'ember'].includes(String(value.theme)))
+    && (value.customTheme === undefined || validCustomTheme(value.customTheme))
     && (value.roverGender === undefined || ['male', 'female'].includes(String(value.roverGender)))
     && isFiniteNumber(value.scanIntervalMs) && value.scanIntervalMs >= 250 && value.scanIntervalMs <= 10_000
     && isRecord(value.scoreWeights) && Object.values(value.scoreWeights).every((weights) => isRecord(weights)

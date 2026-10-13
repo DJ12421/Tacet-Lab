@@ -6021,6 +6021,1517 @@
           }
         ]
       }
+    },
+    "sequences": {
+      "status": "approved",
+      "sourceFingerprint": "a7aad9d54cb8a9fbf2f35a12dff75c6174b2cfaffec46ee43211925dd802ad15",
+      "approvedData": {
+        "entries": [
+          {
+            "sequence": 1,
+            "name": "A Boat to Cross the Rising Tide",
+            "text": "Casting Resonance Liberation - Formshift grants Hsin 2 stacks of Radiance Ward, stacking up to 2 times. Switching to Answering Form clears all stacks. When Hsin takes DMG from an enemy target's attack, 1 stack of Radiance Ward can be consumed to make Her immune to interruption and reduce DMG taken by 60% for 1s. This effect can be triggered once every 1s.\nWhile in Resonance Mode - Unison:\nThe DMG Multipliers of Intro Skill - Answering Form: Manifold Unison and Intro Skill - Illumining Form: Manifold Unison are increased by 15%, and each stack of Unison Boon additionally increases the DMG Multipliers of Intro Skill - Answering Form: Manifold Unison and Intro Skill - Illumining Form: Manifold Unison by 10%, up to a total of 4 stacks.\nWhile in Resonance Mode - Electro Flare:\nWhen Hsin enters combat, if Heart of Thunder is below 50 stacks, it is increased to 50 stacks, triggered once every 12s.\nThe DMG Multiplier of the Electro Flare DMG triggered by Resonance Skill - Heartward by Moon is increased to 42% x (the number of Heart of Thunder stacks on Hsin) x (the Electro Flare DMG Multiplier corresponding to the target's current Electro Flare stacks).",
+            "parsedEffects": [
+              {
+                "input": {
+                  "kind": "toggle",
+                  "key": "hsin-unison-mode"
+                },
+                "modifiers": [
+                  {
+                    "stat": "motionValue",
+                    "operation": "addPercent",
+                    "value": 15,
+                    "actionIds": [
+                      "1311:6:2",
+                      "1311:6:5"
+                    ]
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4,
+                  "key": "hsin-unison-boon",
+                  "requires": [
+                    "hsin-unison-mode"
+                  ]
+                },
+                "modifiers": [
+                  {
+                    "stat": "motionValue",
+                    "operation": "addPercent",
+                    "value": 10,
+                    "actionIds": [
+                      "1311:6:2",
+                      "1311:6:5"
+                    ]
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "review",
+                "warnings": [
+                  "Radiance Ward is defensive; Heart of Thunder resource initialization and Electro Flare stack-dependent damage need combat-state support."
+                ],
+                "reviewStatus": "no-mechanic"
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 100,
+                  "key": "hsin-heart-of-thunder-stacks"
+                },
+                "trigger": "S1 Heart of Thunder stacks consumed after Illumining Form skill",
+                "modifiers": [],
+                "triggerActionIds": [
+                  "1311:2:1"
+                ],
+                "triggeredAttacks": [
+                  {
+                    "id": "delayed-electro-flare-s1",
+                    "name": "Heart of Thunder delayed Electro Flare",
+                    "damageType": "status",
+                    "referenceActionId": "status:electro-flare",
+                    "referenceMultiplier": 0.42,
+                    "count": 1,
+                    "countPerActivation": 1
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [
+                  "Target Electro Flare stacks above the estimated status table limit remain unsupported."
+                ]
+              }
+            ]
+          },
+          {
+            "sequence": 2,
+            "name": "To Wake Is to Wonder What I Am",
+            "text": "The DMG Multipliers of Heavy Attack - Answering Form: Realm Wanderer and Heavy Attack - Answering Form: Realm Protector are increased by 60%.\nThe DMG Multipliers of Heavy Attack - Illumining Form: Beholding All Horizons and Heavy Attack - Illumining Form: Stilling All Horizons are increased by 60%.\nWhen Hsin enters combat, reset the Cooldowns for Hsin to gain Resolution of Wishes and Law of Heaven, and restore 100 additional points of Answering Heart. This effect can be triggered once every 12s.",
+            "parsedEffects": [
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "motionValue",
+                    "operation": "addPercent",
+                    "value": 60,
+                    "actionIds": [
+                      "1311:7:0",
+                      "1311:7:1",
+                      "1311:7:2",
+                      "1311:7:3"
+                    ]
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "review",
+                "warnings": [
+                  "Combat-entry cooldown reset and Answering Heart restoration are resource mechanics."
+                ],
+                "reviewStatus": "no-mechanic"
+              }
+            ]
+          },
+          {
+            "sequence": 3,
+            "name": "A Dream of Return Among the Hills",
+            "text": "The DMG Multiplier of Resonance Liberation - Pillars Across Heaven is increased by 70%.\nWhile in Resonance Mode - Unison:\nThe Crit. DMG of Resonance Liberation - Pillars Across Heaven is increased by 20%, and each stack of Unison Boon additionally increases its Crit. DMG by 15%, up to a total of 4 stacks.\nWhile in Resonance Mode - Electro Flare:\nWhen the last stage of Resonance Liberation - Pillars Across Heaven hits a target inflicted with Electro Flare, it triggers 1 instance of Electro Flare DMG, with its DMG Multiplier equal to 1500% times the Electro Flare DMG Multiplier corresponding to the current Electro Flare stacks on the target.",
+            "parsedEffects": [
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "motionValue",
+                    "operation": "addPercent",
+                    "value": 70,
+                    "actionIds": [
+                      "1311:3:0"
+                    ]
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle",
+                  "key": "hsin-unison-mode"
+                },
+                "modifiers": [
+                  {
+                    "stat": "critDamage",
+                    "operation": "addPercent",
+                    "value": 20,
+                    "actionIds": [
+                      "1311:3:0"
+                    ]
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 4,
+                  "key": "hsin-unison-boon",
+                  "requires": [
+                    "hsin-unison-mode"
+                  ]
+                },
+                "modifiers": [
+                  {
+                    "stat": "critDamage",
+                    "operation": "addPercent",
+                    "value": 15,
+                    "actionIds": [
+                      "1311:3:0"
+                    ]
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle",
+                  "key": "hsin-s3-electro-flare-target"
+                },
+                "trigger": "Final Pillars Across Heaven stage hits a target with Electro Flare in Electro Flare mode",
+                "modifiers": [],
+                "triggerActionIds": [
+                  "1311:3:0"
+                ],
+                "triggeredAttacks": [
+                  {
+                    "id": "hsin-s3-pillars-electro-flare",
+                    "name": "Pillars Across Heaven Electro Flare",
+                    "damageType": "status",
+                    "referenceActionId": "status:electro-flare",
+                    "referenceMultiplier": 15,
+                    "count": 1
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ]
+          },
+          {
+            "sequence": 4,
+            "name": "A River of Lanterns, a River of Wishes",
+            "text": "All Resonators in the team gain 20% All-Attribute DMG Bonus for 30s when a Resonator in the team triggers any of the following actions:\n- Inflict Electro Flare or Electro Rage on a target.\n- Gain Unison while not having the effect.\n- Trigger Unison Response.",
+            "parsedEffects": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [
+                  {
+                    "stat": "AllElementAttributeBonus",
+                    "operation": "addPercent",
+                    "value": 20,
+                    "scope": "team"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "durationSeconds": 30,
+                "trigger": "Electro Flare, Electro Rage, Unison, or Unison Response triggered by a team member"
+              }
+            ]
+          },
+          {
+            "sequence": 5,
+            "name": "Forms Turn as the Heart Wills",
+            "text": "While in Illumining Form, DMG taken by Hsin is reduced by 20%.\nWhen Hsin takes a fatal blow, She will not be knocked out, but instead restores 100% of Max HP and becomes immune to DMG and interruption for 1s. This effect can be triggered once every 10.",
+            "parsedEffects": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "review",
+                "warnings": [
+                  "Damage reduction and fatal-hit prevention are defensive mechanics outside the outgoing damage calculator."
+                ],
+                "reviewStatus": "no-mechanic"
+              }
+            ]
+          },
+          {
+            "sequence": 6,
+            "name": "The Moon Owes Its Light to the Living",
+            "text": "Targets take 40% more Resonance Skill DMG from Hsin.\nResonance Skill DMG dealt by Hsin ignores 20% of the target's DEF.\nWhile in Resonance Mode - Unison:\nThe maximum stacks of the Unison Boon effect on Resonators in the team are additionally increased by 1. When a Resonator in the team triggers Unison Response, all Resonators in the team additionally gain 1 of Unison Boon for 30s. This effect does not stack.\nWhile in Resonance Mode - Electro Flare:\nWhile in combat, Electro Flare DMG taken by targets within a certain range around Hsin can be Critical, with Crit. Rate fixed at 80% and Crit. DMG fixed at 230%.",
+            "parsedEffects": [
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "specialMultiplier",
+                    "operation": "addPercent",
+                    "value": 40,
+                    "actionIds": [
+                      "1311:2:0",
+                      "1311:2:1",
+                      "1311:7:0",
+                      "1311:7:1",
+                      "1311:7:2",
+                      "1311:7:3",
+                      "1311:7:4",
+                      "1311:3:0",
+                      "1311:6:2",
+                      "1311:6:5"
+                    ]
+                  },
+                  {
+                    "stat": "DEFIgnore",
+                    "operation": "addPercent",
+                    "value": 20,
+                    "actionIds": [
+                      "1311:2:0",
+                      "1311:2:1",
+                      "1311:7:0",
+                      "1311:7:1",
+                      "1311:7:2",
+                      "1311:7:3",
+                      "1311:7:4",
+                      "1311:3:0",
+                      "1311:6:2",
+                      "1311:6:5"
+                    ]
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle",
+                  "key": "hsin-s6-electro-flare-range"
+                },
+                "trigger": "Electro Flare mode, Hsin in combat, target within range",
+                "modifiers": [
+                  {
+                    "stat": "fixedStatusCrit",
+                    "operation": "set",
+                    "critRate": 80,
+                    "critDamage": 230,
+                    "actionIds": [
+                      "status:electro-flare"
+                    ]
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "review",
+                "warnings": [
+                  "Unison Boon stack-grant timing and recipient eligibility require team state."
+                ],
+                "reviewStatus": "no-mechanic"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "characterBuffs": {
+      "status": "approved",
+      "sourceFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "1311:2:effect:5",
+            "sourceName": "Heartward by Moon",
+            "sourceType": "Resonance Skill",
+            "text": "- While in the Moon Fox form and out of combat, Hsin gains Dustless Tread.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:2:effect:8",
+            "sourceName": "Heartward by Moon",
+            "sourceType": "Resonance Skill",
+            "text": "- While in the Moon Fox form and out of combat, Hsin restores 6% of Max HP every 3s.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:3:effect:7",
+            "sourceName": "Nexus Alight",
+            "sourceType": "Resonance Liberation",
+            "text": "In Walking Mode, Hsin in Illumining Form can step off a cliff into the air and walk slowly in mid-air, continuously consuming STA in this state.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:3:effect:8",
+            "sourceName": "Nexus Alight",
+            "sourceType": "Resonance Liberation",
+            "text": "Hsin cannot restore STA while in Illumining Form and in mid-air.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:3:effect:15",
+            "sourceName": "Nexus Alight",
+            "sourceType": "Resonance Liberation",
+            "text": "Casting Formshift grants Hsin 21 of Edict for 45s.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:3:effect:16",
+            "sourceName": "Nexus Alight",
+            "sourceType": "Resonance Liberation",
+            "text": "The effect cannot exceed 21 and all stacks are removed when the duration ends.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:3:effect:20",
+            "sourceName": "Nexus Alight",
+            "sourceType": "Resonance Liberation",
+            "text": "- Edict can be automatically consumed up to 1 stack per second.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:3:effect:22",
+            "sourceName": "Nexus Alight",
+            "sourceType": "Resonance Liberation",
+            "text": "- When Hsin is knocked out, all Edict stacks are removed.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:3:effect:24",
+            "sourceName": "Nexus Alight",
+            "sourceType": "Resonance Liberation",
+            "text": "Increases Hsin's resistance to interruption for 45s.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:4:effect:0",
+            "sourceName": "Tides of Succession",
+            "sourceType": "Inherent Skill",
+            "text": "While in Resonance Mode - Unison, when Hsin casts Intro Skill - Answering Form: Manifold Unison or Intro Skill - Illumining Form: Manifold Unison, Her ATK is increased by 50% for 8s.",
+            "parsed": {
+              "input": {
+                "kind": "toggle",
+                "key": "hsin-unison-intro-atk"
+              },
+              "trigger": "Manifold Unison Intro Skill",
+              "durationSeconds": 8,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 50
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "modeId": "unison"
+          },
+          {
+            "id": "1311:4:effect:1",
+            "sourceName": "Tides of Succession",
+            "sourceType": "Inherent Skill",
+            "text": "Switching to another Resonator or Resonance Mode ends this effect.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:4:effect:4",
+            "sourceName": "Tides of Succession",
+            "sourceType": "Inherent Skill",
+            "text": "In addition, if Rover: Electro is in the same team, when Rover: Electro casts Intro Skill - Thunderous Fury, both Hsin and Rover: Electro gain 20% Electro DMG Bonus for 30s.",
+            "parsed": {
+              "input": {
+                "kind": "toggle",
+                "key": "hsin-rover-electro-link"
+              },
+              "trigger": "Rover: Electro Thunderous Fury Intro Skill",
+              "durationSeconds": 7,
+              "modifiers": [
+                {
+                  "stat": "Electro",
+                  "operation": "addPercent",
+                  "value": 20,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [
+                "Rover: Electro recipient requires member-specific recipient routing."
+              ]
+            }
+          },
+          {
+            "id": "1311:4:effect:5",
+            "sourceName": "Tides of Succession",
+            "sourceType": "Inherent Skill",
+            "text": "This effect resets when a Resonator is added to the team or when Hsin switches Resonance Mode.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:5:effect:2",
+            "sourceName": "Gleaning Simple Joys",
+            "sourceType": "Inherent Skill",
+            "text": "This effect does not stack.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:5:effect:4",
+            "sourceName": "Gleaning Simple Joys",
+            "sourceType": "Inherent Skill",
+            "text": "While Hsin is in the Heart Manifest state, when targets within a certain range have 0 stacks of Electro Flare, inflict 1 stack of Electro Flare on the targets.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            },
+            "modeId": "electro-flare"
+          },
+          {
+            "id": "1311:5:effect:5",
+            "sourceName": "Gleaning Simple Joys",
+            "sourceType": "Inherent Skill",
+            "text": "If Thunderglow on Hsin reaches the stack limit, Hsin also inflicts Fleeting Thunder on the targets:",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:5:effect:6",
+            "sourceName": "Gleaning Simple Joys",
+            "sourceType": "Inherent Skill",
+            "text": "- When Hsin inflicts Fleeting Thunder on the target, She also inflicts Electro Flare on the target to the stack limit, up to 16 stacks of Electro Flare.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            },
+            "modeId": "electro-flare"
+          },
+          {
+            "id": "1311:5:effect:7",
+            "sourceName": "Gleaning Simple Joys",
+            "sourceType": "Inherent Skill",
+            "text": "- When Fleeting Thunder is active, if the maximum stacks of Electro Flare on the target is increased, Hsin will inflict Electro Flare on the target to the stack limit again, up to 16 stacks of Electro Flare.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            },
+            "modeId": "electro-flare"
+          },
+          {
+            "id": "1311:5:effect:9",
+            "sourceName": "Gleaning Simple Joys",
+            "sourceType": "Inherent Skill",
+            "text": "Exiting the Heart Manifest state or switching Resonance Mode removes the aforementioned effects.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:6:effect:3",
+            "sourceName": "Glance on a Whim",
+            "sourceType": "Intro Skill",
+            "text": "After casting this skill, Normal Attack within a short time to cast Basic Attack - Answering Form Stage 3 (when in Resonance Mode - Unison) or Basic Attack - Answering Form Stage 4 (when in Resonance Mode - Electro Flare).",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:7:effect:1",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "While in Answering Form, Hsin can gain and consume Answering Heart.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:7:effect:2",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "While in Illumining Form, Hsin can gain and consume Illumining Heart.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:7:effect:7",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "Casting Heavy Attack - Answering Form: Realm Wanderer grants Hsin Resolution of Wishes.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:7:effect:9",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "Resolution of Wishes can only be gained once every 24s.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:7:effect:14",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "Casting Heavy Attack - Illumining Form: Beholding All Horizons grants Hsin Law of Heaven.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:7:effect:16",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "Law of Heaven can only be gained once every 24s.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:7:effect:28",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "Resonance Mode - Unison",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            },
+            "modeId": "unison"
+          },
+          {
+            "id": "1311:7:effect:29",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "While in Resonance Mode - Unison, Hsin gains the following effects:",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            },
+            "modeId": "unison"
+          },
+          {
+            "id": "1311:7:effect:30",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "- Hsin can trigger Unison Response, but not in Co-op Mode.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            },
+            "modeId": "unison"
+          },
+          {
+            "id": "1311:7:effect:31",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "- After casting Intro Skill - Answering Form or Intro Skill - Answering Form: Manifold Unison, the next Resonance Liberation - Formshift grants Hsin Unison for 5s.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            },
+            "modeId": "unison"
+          },
+          {
+            "id": "1311:7:effect:32",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "- When Hsin triggers Unison Response, She gains Source Intent, and this cast of Intro Skill is replaced with Intro Skill - Manifold Unison, dealing greater DMG.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            },
+            "modeId": "unison"
+          },
+          {
+            "id": "1311:7:effect:34",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "- The aforementioned effects are removed when Hsin switches Resonance Mode.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:7:effect:36",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "Resonance Mode - Electro Flare",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            },
+            "modeId": "electro-flare"
+          },
+          {
+            "id": "1311:7:effect:37",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "While in Resonance Mode - Electro Flare, Hsin gains the following effects:",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            },
+            "modeId": "electro-flare"
+          },
+          {
+            "id": "1311:7:effect:38",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "- When Hsin enters combat, targets within a certain range do not lose Electro Flare stacks when it's triggered.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            },
+            "modeId": "electro-flare"
+          },
+          {
+            "id": "1311:7:effect:40",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "Heart of Thunder is removed when Hsin switches Resonance Mode.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:7:effect:42",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "Its DMG Multiplier is equal to 35% x (the number of Heart of Thunder stacks on Hsin) x (the Electro Flare DMG Multiplier corresponding to the target's current Electro Flare stacks).",
+            "parsed": {
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 100,
+                "key": "hsin-heart-of-thunder-stacks"
+              },
+              "maximumSequence": 0,
+              "trigger": "Heart of Thunder stacks consumed after Illumining Form skill",
+              "modifiers": [],
+              "triggerActionIds": [
+                "1311:2:1"
+              ],
+              "triggeredAttacks": [
+                {
+                  "id": "delayed-electro-flare-base",
+                  "name": "Heart of Thunder delayed Electro Flare",
+                  "damageType": "status",
+                  "referenceActionId": "status:electro-flare",
+                  "referenceMultiplier": 0.35,
+                  "count": 1,
+                  "countPerActivation": 1
+                }
+              ],
+              "confidence": "high",
+              "warnings": [
+                "Target Electro Flare stacks above the estimated status table limit remain unsupported."
+              ]
+            },
+            "modeId": "electro-flare"
+          },
+          {
+            "id": "1311:7:effect:44",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "Some time after casting Resonance Skill - Heartward by Moon, Hsin consumes all remaining stacks of Heart of Thunder.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:7:effect:45",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "When Hsin has at least 50 stacks of Heart of Thunder, Resonance Skill - Illumining Form stagnates nearby targets during the action.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:7:effect:48",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "Casting Resonance Liberation - Formshift again resets this count.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:7:effect:49",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "Switching Resonance Mode removes it.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:7:effect:57",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "Hsin can only grant up to 1 of Unison Boon in this way.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            },
+            "modeId": "unison"
+          },
+          {
+            "id": "1311:7:effect:59",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "Only the Resonators who can trigger Unison Response can gain this effect.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            },
+            "modeId": "unison"
+          },
+          {
+            "id": "1311:7:effect:60",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "Each stack of Unison Boon increases the total DMG dealt by Resonators who can trigger Unison Response in the team by 3%, stacking up to 2 times.",
+            "parsed": {
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 4,
+                "key": "hsin-unison-boon"
+              },
+              "modifiers": [
+                {
+                  "stat": "specialMultiplier",
+                  "operation": "addPercent",
+                  "value": 3,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [
+                "Only Unison Response capable team members receive this effect; recipient state is not represented."
+              ]
+            },
+            "modeId": "unison"
+          },
+          {
+            "id": "1311:7:effect:63",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "While in Answering Form, when Normal Attack - Answering Form, Resonance Skill - Answering Form, Intro Skill - Answering Form, or Intro Skill - Answering Form: Manifold Unison hits a target, Hsin gains Answering Heart if She is the active Resonator.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            },
+            "modeId": "unison"
+          },
+          {
+            "id": "1311:7:effect:64",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "Casting Intro Skill - Answering Form or Intro Skill - Answering Form: Manifold Unison grants 60 points of Answering Heart.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            },
+            "modeId": "unison"
+          },
+          {
+            "id": "1311:7:effect:67",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "While in Illumining Form and not in the Mechanism Dominion state, when Normal Attack - Illumining Form, Resonance Skill - Illumining Form, or Intro Skill - Illumining Form hits a target, Hsin gains Illumining Heart if She is the active Resonator.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:7:effect:68",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "- While in Resonance Mode - Unison, casting Intro Skill - Illumining Form or Intro Skill - Illumining Form: Manifold Unison directly sends Hsin into the Mechanism Dominion state and grants 300 points of Illumining Heart.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            },
+            "modeId": "unison"
+          },
+          {
+            "id": "1311:7:effect:69",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "- While in Resonance Mode - Electro Flare, after casting Resonance Liberation - Formshift, when the Modular Heartlock generated by Basic Attack - Illumining Form Stage 1 is collapsed by Basic Attack - Illumining Form Stage 2, Heavy Attack - Illumining Form, Dodge Counter - Illumining Form, or Resonance Skill - Illumining Form, additionally gain 150 points of Illumining Heart if Hsin is the active Resonator in Illumining Form but not in the Mechanism Dominion state.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            },
+            "modeId": "electro-flare"
+          },
+          {
+            "id": "1311:7:effect:70",
+            "sourceName": "Forms Turn, Heart Abides",
+            "sourceType": "Forte Circuit",
+            "text": "This effect can only be triggered once before the next cast of Resonance Liberation - Formshift resets it, and is disabled when switched to the other Resonance Mode.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:8:effect:1",
+            "sourceName": "Herself a Thousand Lanterns",
+            "sourceType": "Outro Skill",
+            "text": "Hsin gains Nightglow upon entering combat or casting Resonance Liberation - Pillars Across Heaven.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:8:effect:2",
+            "sourceName": "Herself a Thousand Lanterns",
+            "sourceType": "Outro Skill",
+            "text": "When Hsin casts Outro Skill, Nightglow is consumed to trigger various effects depending on the Resonance Mode She is in:",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:8:effect:4",
+            "sourceName": "Herself a Thousand Lanterns",
+            "sourceType": "Outro Skill",
+            "text": "After Hsin casts Outro Skill, Resonators with Shared Light gain 20% All DMG Amplification for 30s.",
+            "parsed": {
+              "input": {
+                "kind": "toggle",
+                "key": "hsin-shared-light"
+              },
+              "trigger": "Hsin Outro Skill while Shared Light is active",
+              "durationSeconds": 30,
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "amplifyPercent",
+                  "value": 20,
+                  "scope": "team"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [
+                "Shared Light recipients must be selected with the effect toggle."
+              ]
+            }
+          },
+          {
+            "id": "1311:8:effect:6",
+            "sourceName": "Herself a Thousand Lanterns",
+            "sourceType": "Outro Skill",
+            "text": "The above effects end early when Hsin switches Resonance Mode.",
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "Reviewed: resource, movement, defense, or timing mechanic requires combat-state support."
+              ],
+              "reviewStatus": "no-mechanic"
+            }
+          },
+          {
+            "id": "1311:9:effect:0",
+            "sourceName": "Crit. Rate+",
+            "sourceType": "Skill Bonus",
+            "text": "Crit. Rate increased by 1.20%.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "critRate",
+                  "operation": "addPercent",
+                  "value": 1.2,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            }
+          },
+          {
+            "id": "1311:10:effect:0",
+            "sourceName": "ATK+",
+            "sourceType": "Skill Bonus",
+            "text": "ATK increased by 1.80%.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 1.8,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            }
+          },
+          {
+            "id": "1311:11:effect:0",
+            "sourceName": "ATK+",
+            "sourceType": "Skill Bonus",
+            "text": "ATK increased by 1.80%.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 1.8,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            }
+          },
+          {
+            "id": "1311:12:effect:0",
+            "sourceName": "Crit. Rate+",
+            "sourceType": "Skill Bonus",
+            "text": "Crit. Rate increased by 1.20%.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "critRate",
+                  "operation": "addPercent",
+                  "value": 1.2,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            }
+          },
+          {
+            "id": "1311:13:effect:0",
+            "sourceName": "Crit. Rate+",
+            "sourceType": "Skill Bonus",
+            "text": "Crit. Rate increased by 2.80%.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "critRate",
+                  "operation": "addPercent",
+                  "value": 2.8,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            }
+          },
+          {
+            "id": "1311:14:effect:0",
+            "sourceName": "ATK+",
+            "sourceType": "Skill Bonus",
+            "text": "ATK increased by 4.20%.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 4.2,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            }
+          },
+          {
+            "id": "1311:15:effect:0",
+            "sourceName": "ATK+",
+            "sourceType": "Skill Bonus",
+            "text": "ATK increased by 4.20%.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 4.2,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            }
+          },
+          {
+            "id": "1311:16:effect:0",
+            "sourceName": "Crit. Rate+",
+            "sourceType": "Skill Bonus",
+            "text": "Crit. Rate increased by 2.80%.",
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "critRate",
+                  "operation": "addPercent",
+                  "value": 2.8,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            }
+          }
+        ]
+      }
     }
   }
 }

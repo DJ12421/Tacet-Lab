@@ -887,7 +887,7 @@
             "skillType": "Normal Attack",
             "skillName": "Locked Thread",
             "name": "Locked Thread - Plunging Attack DMG",
-            "damageType": "heavy",
+            "damageType": "basic",
             "tags": [
               "plunge"
             ],
@@ -1307,7 +1307,7 @@
             "skillType": "Normal Attack",
             "skillName": "Locked Thread",
             "name": "Locked Thread - Basic Attack - Thread Shredding Stage 1 DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "normal-chain"
             ],
@@ -1434,7 +1434,7 @@
             "skillType": "Normal Attack",
             "skillName": "Locked Thread",
             "name": "Locked Thread - Basic Attack - Thread Shredding Stage 2 DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "normal-chain"
             ],
@@ -1583,7 +1583,7 @@
             "skillType": "Normal Attack",
             "skillName": "Locked Thread",
             "name": "Locked Thread - Basic Attack - Thread Shredding Stage 3 DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "normal-chain"
             ],
@@ -1732,7 +1732,7 @@
             "skillType": "Normal Attack",
             "skillName": "Locked Thread",
             "name": "Locked Thread - Basic Attack - Thread Shredding Stage 4 DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "normal-chain"
             ],
@@ -2300,7 +2300,7 @@
             "skillType": "Resonance Skill",
             "skillName": "Protocol Breach",
             "name": "Protocol Breach - Resonance Skill - Payload Charge DMG",
-            "damageType": "skill",
+            "damageType": "basic",
             "skillSource": "skill",
             "scaling": "atk",
             "expressions": [
@@ -2381,7 +2381,7 @@
             "skillType": "Resonance Skill",
             "skillName": "Protocol Breach",
             "name": "Protocol Breach - Resonance Skill - Payload Follow-Up Attack DMG",
-            "damageType": "skill",
+            "damageType": "basic",
             "skillSource": "skill",
             "scaling": "atk",
             "expressions": [
@@ -2484,7 +2484,7 @@
             "skillType": "Resonance Skill",
             "skillName": "Protocol Breach",
             "name": "Protocol Breach - Resonance Skill - Pulse Interference DMG",
-            "damageType": "skill",
+            "damageType": "basic",
             "skillSource": "skill",
             "scaling": "atk",
             "expressions": [
@@ -2653,7 +2653,7 @@
             "skillType": "Resonance Skill",
             "skillName": "Protocol Breach",
             "name": "Protocol Breach - Resonance Skill - Deadlock DMG",
-            "damageType": "skill",
+            "damageType": "heavy",
             "skillSource": "skill",
             "scaling": "atk",
             "expressions": [
@@ -2734,7 +2734,7 @@
             "skillType": "Resonance Liberation",
             "skillName": "Netrunner",
             "name": "Netrunner - Resonance Liberation - Netrunner: Override DMG",
-            "damageType": "liberation",
+            "damageType": "heavy",
             "skillSource": "liberation",
             "scaling": "atk",
             "expressions": [
@@ -2852,7 +2852,7 @@
             "skillType": "Resonance Liberation",
             "skillName": "Netrunner",
             "name": "Netrunner - Spoofing Program: Synapse Burnout DMG",
-            "damageType": "liberation",
+            "damageType": "heavy",
             "skillSource": "liberation",
             "scaling": "atk",
             "expressions": [
@@ -2970,7 +2970,7 @@
             "skillType": "Resonance Liberation",
             "skillName": "Netrunner",
             "name": "Netrunner - Resonance Liberation - Old Net Deep Dive: Override DMG",
-            "damageType": "liberation",
+            "damageType": "heavy",
             "skillSource": "liberation",
             "scaling": "atk",
             "expressions": [
@@ -3387,6 +3387,30 @@
               "reviewStatus": "no-mechanic"
             },
             "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "1511:3:review:cyberware-malfunction",
+            "sourceName": "Netrunner",
+            "sourceType": "Resonance Liberation",
+            "text": "Marked targets take 5% more damage for 30s from Spoofing Program: Cyberware Malfunction.",
+            "parsed": {
+              "resolutionId": "local-kit-comparison",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 30,
+              "modifiers": [
+                {
+                  "stat": "specialMultiplier",
+                  "operation": "addPercent",
+                  "value": 5,
+                  "scope": "team"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
           },
           {
             "id": "1511:3:effect:20",
@@ -4290,6 +4314,9 @@
                     "scaling": "atk",
                     "count": 1
                   }
+                ],
+                "triggerActionIds": [
+                  "1511:2:2"
                 ]
               },
               {
@@ -4364,14 +4391,30 @@
             "parsedEffects": [
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "always"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "modifiers": [
+                  {
+                    "stat": "motionValue",
+                    "operation": "addPercent",
+                    "value": 50,
+                    "actionIds": [
+                      "1511:3:0",
+                      "1511:3:4"
+                    ]
+                  },
+                  {
+                    "stat": "critDamage",
+                    "operation": "addPercent",
+                    "value": 100,
+                    "actionIds": [
+                      "1511:3:0",
+                      "1511:3:4"
+                    ]
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {
@@ -4495,28 +4538,42 @@
             "parsedEffects": [
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "toggle",
+                  "key": "lucy-s6-target-hacked"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
-                ],
-                "reviewStatus": "no-mechanic"
-              },
-              {
-                "input": {
-                  "kind": "always"
-                },
+                "trigger": "Target has Hack - Shifting or Hack - Interfered",
                 "modifiers": [
                   {
                     "stat": "damageBonus",
-                    "operation": "addPercent",
-                    "value": 60
+                    "operation": "amplifyPercent",
+                    "value": 40,
+                    "appliesTo": "heavy",
+                    "scope": "self"
                   }
                 ],
                 "confidence": "high",
                 "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle",
+                  "key": "lucy-s6-target-hacked"
+                },
+                "trigger": "Target has Hack - Shifting or Hack - Interfered",
+                "modifiers": [
+                  {
+                    "stat": "specialMultiplier",
+                    "operation": "addPercent",
+                    "value": 60,
+                    "actionIds": [
+                      "1511:7:0"
+                    ]
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [
+                  "Spoofing Program Cripple Movement is absent from the reviewed action list."
+                ]
               },
               {
                 "input": {

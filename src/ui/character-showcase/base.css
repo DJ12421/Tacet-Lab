@@ -1,6 +1,6 @@
 .cs-page {
-  --cs-accent: #e4bb5e;
-  --cs-accent-rgb: 228,187,94;
+  --cs-accent: var(--gold);
+  --cs-accent-rgb: var(--gold-rgb);
   min-width: 0;
   color: #edf3f1;
 }
@@ -366,7 +366,7 @@
 }
 
 .cs-stars {
-  color: #f1cc70;
+  color: #e4bb5e;
   letter-spacing: 1px;
 }
 

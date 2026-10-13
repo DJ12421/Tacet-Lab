@@ -180,8 +180,8 @@
 }
 
 .element-picker-menu button:hover,.element-picker-menu button.active {
-  background: rgba(228,187,94,.11);
-  color: #fff1c7;
+  background: rgba(var(--gold-rgb),.11);
+  color: color-mix(in srgb, var(--gold) 45%, white);
 }
 
 .element-picker-menu b {

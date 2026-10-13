@@ -1,5 +1,6 @@
 import type { PointerEvent } from 'react'
 import { Icon, PageHeader, Panel } from './primitives'
+import { TacetLabLogo } from './TacetLabLogo'
 
 const partners = [
   {
@@ -10,9 +11,15 @@ const partners = [
     links: [{ label: 'Discord', icon: 'discord', url: 'https://discord.gg/ENk8XS38TY' }]
   },
   {
+    name: 'Ultimate Gacha Hub',
+    label: 'Community server',
+    image: 'partners/ultimate-gacha-hub.gif',
+    description: 'An unofficial server made to act as a hub for all popular gacha games! We have the latest news and an enthusiastic community, so come and join the discussions!',
+    links: [{ label: 'Discord', icon: 'discord', url: 'https://discord.gg/nGBjMbwTy9' }]
+  },
+  {
     name: 'Tacet Lab',
     label: 'Featured example',
-    image: 'icon.svg',
     description: 'A local-first Wuthering Waves optimizer for Echoes, builds, and team damage.',
     links: [
       { label: 'Discord', icon: 'discord', url: 'https://discord.gg/fy66NmapWb' },
@@ -33,7 +40,7 @@ export function PartnershipsView() {
     <div className="partnerships-grid">
       {partners.map((partner) => <Panel className="partner-card" onPointerMove={moveCardLight} key={partner.name}>
         <div className="partner-card-head">
-          <img src={`${import.meta.env.BASE_URL}${partner.image}`} alt={`${partner.name} icon`} width="60" height="60"/>
+          {partner.name === 'Tacet Lab' ? <TacetLabLogo className="tacet-lab-logo-static"/> : <img src={`${import.meta.env.BASE_URL}${partner.image}`} alt={`${partner.name} icon`} width="60" height="60"/>}
           <div><span className="eyebrow partner-shiny-text">{partner.label}</span><h2>{partner.name}</h2></div>
         </div>
         <p>{partner.description}</p>

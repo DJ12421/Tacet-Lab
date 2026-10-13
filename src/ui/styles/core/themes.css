@@ -1,0 +1,606 @@
+.settings-theme-choice label:nth-child(1) { --theme-swatch: #e4bb5e; }
+.settings-theme-choice label:nth-child(2) { --theme-swatch: #76cef2; }
+.settings-theme-choice label:nth-child(3) { --theme-swatch: #ee715e; }
+.settings-theme-choice label:nth-child(4) { --theme-swatch: #b581ef; }
+.settings-theme-choice label:nth-child(5) { --theme-swatch: #62d7ae; }
+.settings-theme-choice label:nth-child(6) { --theme-swatch: #d36adf; }
+.settings-theme-choice label:nth-child(7) { --theme-swatch: #fff; }
+.settings-theme-choice label:nth-child(8) { --theme-swatch: var(--gold); }
+.settings-modal .settings-theme-choice label > span { border-top: 3px solid var(--theme-swatch); }
+
+.settings-custom-colors { display: grid; grid-template-columns: repeat(auto-fit,minmax(120px,1fr)); gap: 8px; }
+.settings-modal .settings-custom-colors label { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px; border: 1px solid var(--line); border-radius: 5px; color: var(--theme-text,#edf3ef); }
+.settings-custom-colors input[type='color'] { width: 38px; height: 32px; flex: none; padding: 2px; cursor: pointer; }
+
+:root[data-theme='spectro'] { --theme-gold: #e4bb5e; --gold-rgb: 228, 187, 94; }
+:root[data-theme='spectro'] button.primary { border-color: #f0cd78; background: linear-gradient(135deg,#f0ce7c,#ba8e39); }
+:root[data-theme='glacio'] { --theme-gold: #76cef2; --gold-rgb: 118, 206, 242; }
+:root[data-theme='fusion'] { --theme-gold: #ee715e; --gold-rgb: 238, 113, 94; }
+:root[data-theme='electro'] { --theme-gold: #b581ef; --gold-rgb: 181, 129, 239; }
+:root[data-theme='aero'] { --theme-gold: #62d7ae; --gold-rgb: 98, 215, 174; }
+:root[data-theme='havoc'] { --theme-gold: #d36adf; --gold-rgb: 211, 106, 223; }
+:root[data-theme='light'] {
+  color-scheme: light;
+  color: #1b2925;
+  background: #f0f3f0;
+  --theme-gold: #a5791a;
+  --gold-rgb: 165, 121, 26;
+  --mint: #247968;
+  --site-mint: #247968;
+  --mint-rgb: 36, 121, 104;
+  --bg: #f0f3f0;
+  --surface: #fbfcfa;
+  --surface-2: #e7ece8;
+  --muted: #45564e;
+  --theme-text: #1b2925;
+  --line: rgba(32,50,44,.22);
+}
+:root[data-theme='custom'] { --theme-text: #edf3ef; color: var(--theme-text); background: var(--bg); }
+
+:root[data-theme] { --gold-soft: color-mix(in srgb, var(--gold) 65%, var(--bg)); }
+
+:root:is([data-theme='light'],[data-theme='custom']) body,
+:root:is([data-theme='light'],[data-theme='custom']) .app-shell { background: var(--bg); color: var(--theme-text); }
+:root:is([data-theme='light'],[data-theme='custom']) .sidebar,
+:root:is([data-theme='light'],[data-theme='custom']) .panel,
+:root:is([data-theme='light'],[data-theme='custom']) .settings-section,
+:root:is([data-theme='light'],[data-theme='custom']) .settings-header,
+:root:is([data-theme='light'],[data-theme='custom']) .settings-choice label>span,
+:root:is([data-theme='light'],[data-theme='custom']) .settings-toggle,
+:root:is([data-theme='light'],[data-theme='custom']) .archive-entry-card,
+:root:is([data-theme='light'],[data-theme='custom']) .archive-sonata-card,
+:root:is([data-theme='light'],[data-theme='custom']) .archive-detail-modal,
+:root:is([data-theme='light'],[data-theme='custom']) .catalog-card,
+:root:is([data-theme='light'],[data-theme='custom']) .owned-card,
+:root:is([data-theme='light'],[data-theme='custom']) .scanner-launchpad,
+:root:is([data-theme='light'],[data-theme='custom']) .cs-page .cs-toolbar,
+:root:is([data-theme='light'],[data-theme='custom']) .cs-page .cs-panel,
+:root:is([data-theme='light'],[data-theme='custom']) .wv-detail-hero,
+:root:is([data-theme='light'],[data-theme='custom']) .wv-control-card,
+:root:is([data-theme='light'],[data-theme='custom']) .wv-stats-card,
+:root:is([data-theme='light'],[data-theme='custom']) .wv-passive-card { background: var(--surface); color: var(--theme-text); }
+:root:is([data-theme='light'],[data-theme='custom']) .cs-page .cs-layout { background: var(--bg); }
+:root:is([data-theme='light'],[data-theme='custom']) .cs-page { color: var(--theme-text); }
+:root:is([data-theme='light'],[data-theme='custom']) .cs-page .cs-character-panel { background: #101819; color: #edf3f1; }
+:root:is([data-theme='light'],[data-theme='custom']) :is(input,select,textarea) { color: var(--theme-text); background: var(--surface); }
+:root:is([data-theme='light'],[data-theme='custom']) :is(.settings-choice b,.settings-section-title strong,.archive-entry-copy h2,.archive-detail-modal h2,.page-header h1) { color: var(--theme-text); }
+:root:is([data-theme='light'],[data-theme='custom']) .team-workspace {
+  --tw-canvas: var(--bg);
+  --tw-surface: var(--surface);
+  --tw-surface-raised: var(--surface-2);
+  --tw-surface-hover: var(--surface-2);
+  --tw-text: var(--theme-text);
+  --tw-muted: var(--muted);
+}
+:root[data-theme='light'] .team-workspace:not(.team-gallery-original) {
+  --tw-console: var(--surface);
+  --tw-console-raised: var(--surface-2);
+  --tw-console-line: rgba(35,55,48,.16);
+}
+:root:is([data-theme='light'],[data-theme='custom']) .team-workspace .tw-panel { background: var(--surface); color: var(--theme-text); }
+:root[data-theme='light'] .sidebar nav button,
+:root[data-theme='light'] .side-bottom>button { color: var(--muted); }
+:root[data-theme='light'] .sidebar nav button:hover,
+:root[data-theme='light'] .side-bottom>button:hover { color: var(--theme-text); background: var(--surface-2); }
+:root[data-theme='light'] .sidebar nav button.active,
+:root[data-theme='light'] .side-bottom>button.active { color: var(--theme-gold); }
+:root:is([data-theme='light'],[data-theme='custom']) :is(.archive-entry-copy,.archive-detail-body,.archive-detail-header,.settings-modal,.page-header,.wv-detail) :is(h1,h2,h3,p,dt,dd,small) { color: var(--theme-text); }
+:root:is([data-theme='light'],[data-theme='custom']) .archive-detail-facts dd[aria-label$='stars'] { color: var(--weapon-accent); }
+:root:is([data-theme='light'],[data-theme='custom']) .archive-detail-header,
+:root:is([data-theme='light'],[data-theme='custom']) .archive-entry-copy dl>div,
+:root:is([data-theme='light'],[data-theme='custom']) .archive-entry-art,
+:root:is([data-theme='light'],[data-theme='custom']) .wv-toolbar,
+:root:is([data-theme='light'],[data-theme='custom']) .character-roster-toolbar { background: var(--surface-2); }
+:root:is([data-theme='light'],[data-theme='custom']) :is(.home-start,.home-account-band,.home-discover>button,.home-community) { background: var(--surface); color: var(--theme-text); }
+:root[data-theme='custom'] :is(.echo-card,.home-hero) { background: var(--surface); color: var(--theme-text); }
+:root[data-theme='custom'] .echo-card :is(h1,h2,h3,p,dt,dd,small),
+:root[data-theme='custom'] .echo-card .main-stat strong,
+:root[data-theme='custom'] .home-hero :is(h1,p) { color: var(--theme-text); }
+:root[data-theme='light'] .team-workspace .tw-member-page { --tw-line: rgba(35,55,48,.16); --tw-line-strong: rgba(35,55,48,.3); }
+
+/* Light surfaces need their own foregrounds, including their nested controls. */
+:root[data-theme='light'] :is(.sidebar,.panel,.archive-entry-card,.archive-sonata-card,.home-start,.home-account-band,.home-discover>button,.home-community) {
+  border-color: rgba(32,50,44,.14);
+  box-shadow: 0 4px 16px rgba(24,40,34,.07);
+}
+:root[data-theme='light'] .sidebar-nav-icon,
+:root[data-theme='light'] .sidebar nav button:is(:hover,.active) .sidebar-nav-icon { filter: brightness(0); opacity: .72; }
+:root[data-theme='light'] .icon { stroke: currentColor; }
+:root[data-theme='light'] .sidebar nav button>.icon,
+:root[data-theme='light'] .sidebar .side-bottom>button>.icon,
+:root[data-theme='light'] .topbar button:not(.discord-button) { color: var(--muted); }
+:root[data-theme='light'] .sidebar nav button.active>.icon { color: var(--theme-gold); }
+
+:root[data-theme='light'] .home-step,
+:root[data-theme='light'] .home-discover>button:hover {
+  border-color: rgba(32,50,44,.12);
+  background: var(--surface-2);
+  color: var(--theme-text);
+}
+:root[data-theme='light'] .home-step-copy small,
+:root[data-theme='light'] .home-discover small,
+:root[data-theme='light'] .home-community small,
+:root[data-theme='light'] .home-account-band dt { color: var(--muted); }
+:root[data-theme='light'] .home-account-band dd,
+:root[data-theme='light'] .home-community a,
+:root[data-theme='light'] .home-collection-action { color: var(--theme-text); }
+:root[data-theme='light'] :is(.home-step,.home-discover) .home-nav-icon,
+:root[data-theme='light'] :is(.wv-toolbar,.character-roster-toolbar,.archive-controls) .weapon-type-filter-icon { filter: brightness(0); opacity: .78; }
+:root[data-theme='light'] .home-account-band dl>div { border-color: rgba(32,50,44,.12); }
+:root[data-theme='light'] .home-changelog {
+  border-color: rgba(32,50,44,.14);
+  background: var(--surface);
+  color: var(--theme-text);
+  box-shadow: 0 4px 16px rgba(24,40,34,.07);
+}
+:root[data-theme='light'] .home-changelog-list li,
+:root[data-theme='light'] .home-changelog-toggle { border-color: rgba(32,50,44,.12); }
+:root[data-theme='light'] .home-changelog-list h3,
+:root[data-theme='light'] .home-changelog-header>a { color: var(--theme-text); }
+:root[data-theme='light'] .home-changelog-list a,
+:root[data-theme='light'] .home-changelog-toggle { color: var(--muted); }
+
+:root[data-theme='light'] :is(.search,.filter-chips,.segmented),
+:root[data-theme='light'] .archive-section-tabs button,
+:root[data-theme='light'] .archive-controls,
+:root[data-theme='light'] :is(.archive-search,.archive-sort,.archive-sort-trigger,.archive-sort-menu),
+:root[data-theme='light'] .echo-inventory-view :is(.echo-inventory-toolbar,.echo-toolbar-main>.search,.echo-quick-filters,.echo-filter-toggle,.echo-sort-control,.echo-sort-menu),
+:root[data-theme='light'] .team-gallery-original :is(.tw-gallery-controls.tw-panel,.tw-character-filter summary,.tw-character-filter-menu,.tw-gallery-controls input) {
+  border-color: rgba(32,50,44,.14);
+  background: var(--surface);
+  color: var(--theme-text);
+  box-shadow: 0 4px 16px rgba(24,40,34,.07);
+}
+:root[data-theme='light'] .search-field,
+:root[data-theme='light'] .search.search-field,
+:root[data-theme='light'] .archive-search.search-field { border-color: rgba(32,50,44,.16); background: var(--surface); }
+:root[data-theme='light'] .search-field>.icon { color: var(--muted); }
+:root[data-theme='light'] .search-field>input[data-search],
+:root[data-theme='light'] .tw-gallery-controls .search-field>input[data-search] { background: transparent; color: var(--theme-text); }
+:root[data-theme='light'] .search-field>kbd { border-color: rgba(32,50,44,.14); color: var(--muted); }
+:root[data-theme='light'] select { color-scheme: light; }
+:root[data-theme='light'] select :is(option,optgroup) { background: var(--surface); color: var(--theme-text); }
+:root[data-theme='light'] :is(.filter-chips,.segmented,.echo-quick-filters) { background: var(--surface-2); box-shadow: none; }
+:root[data-theme='light'] .archive-section-tabs button:is(:hover,.active) { background: color-mix(in srgb,var(--theme-gold) 10%,var(--surface)); }
+:root[data-theme='light'] .archive-section-tabs i { border: 1px solid var(--line); background: #fff; }
+:root[data-theme='light'] .archive-section-tabs button:not([data-archive-tab='sonatas']) i img { filter: brightness(0); opacity: .85; }
+:root[data-theme='light'] .archive-section-tabs button[data-archive-tab='sonatas'] i { box-sizing: border-box; overflow: hidden; border: 4px solid #fff; box-shadow: 0 0 0 1px var(--line); }
+:root[data-theme='light'] .archive-section-tabs button[data-archive-tab='sonatas'] i img { max-width: none; flex: none; }
+:root[data-theme='light'] .archive-section-tabs strong,
+:root[data-theme='light'] .archive-search .icon,
+:root[data-theme='light'] .team-gallery-original .tw-gallery-controls>div h1 { color: var(--theme-text); }
+:root[data-theme='light'] .archive-sort-menu button,
+:root[data-theme='light'] .team-gallery-original .tw-character-filter-menu button { color: var(--theme-text); }
+:root[data-theme='light'] .archive-sort-menu button:is(:hover,:focus-visible),
+:root[data-theme='light'] .team-gallery-original .tw-character-filter-menu button:hover { color: var(--theme-text); background: var(--surface-2); }
+:root[data-theme='light'] .team-gallery-original .tw-gallery-controls>div p,
+:root[data-theme='light'] .team-gallery-original .tw-gallery-controls label { color: var(--muted); }
+:root[data-theme='light'] .echo-inventory-view .echo-sort-trigger,
+:root[data-theme='light'] .echo-inventory-view .echo-quick-filters button:not(.active) { color: var(--theme-text); }
+:root[data-theme='light'] .echo-inventory-view .echo-sort-menu button { color: var(--theme-text); }
+:root[data-theme='light'] .echo-inventory-view .echo-sort-menu button:is(:hover,:focus-visible) { background: var(--surface-2); color: var(--theme-text); }
+:root[data-theme='light'] .echo-inventory-view .echo-inventory-toolbar .filter-body { background: var(--surface-2); }
+
+:root[data-theme='light'] .home-hero {
+  background: radial-gradient(circle at 80% 45%,#d4e3e1,transparent 38%),linear-gradient(115deg,var(--surface) 15%,#e2ebe8);
+  color: var(--theme-text);
+  box-shadow: 0 4px 16px rgba(24,40,34,.07);
+}
+:root[data-theme='light'] .home-hero::after { background: linear-gradient(90deg,var(--surface) 0 35%,rgba(251,252,250,.78) 57%,transparent 82%); }
+:root[data-theme='light'] .home-hero h1 { color: var(--theme-text); }
+:root[data-theme='light'] .home-hero h1 em,
+:root[data-theme='light'] .home-kicker { color: #206b82; }
+:root[data-theme='light'] .home-hero p { color: #4d625c; }
+:root[data-theme='light'] .home-hero-actions .secondary { border-color: rgba(32,50,44,.18); background: var(--surface); color: var(--theme-text); }
+:root[data-theme='light'] .home-hero .cs-echo-wave-fill { fill: var(--surface-2); }
+
+:root[data-theme='light'] .echo-card {
+  background: var(--surface);
+  color: var(--theme-text);
+  box-shadow: 0 4px 16px rgba(24,40,34,.09);
+}
+:root[data-theme='light'] .echo-card :is(.main-stat span,.substats span,.secondary-main-stat span),
+:root[data-theme='light'] .echo-card footer { color: var(--muted); }
+:root[data-theme='light'] .echo-card :is(.main-stat strong,.secondary-main-stat strong,.echo-identity h3) { color: var(--theme-text); }
+:root[data-theme='light'] .echo-card :is(.main-stat,.secondary-main-stat) { background: var(--surface-2); }
+:root[data-theme='light'] .echo-card :is(.main-stat,.substats div,.echo-main-stats) { border-color: rgba(32,50,44,.12); }
+:root[data-theme='light'] .echo-card :is(.main-stat i,.substats i,.secondary-main-stat i) { color: var(--muted); }
+:root[data-theme='light'] .echo-card :is(.main-stat,.substats,.secondary-main-stat) .echo-stat-icon { filter: brightness(0); opacity: .76; }
+:root[data-theme='light'] .echo-card .echo-identity>span.echo-sonata { color: var(--theme-gold); }
+:root[data-theme='light'] .echo-card .cs-echo-wave-fill { fill: var(--surface); }
+:root[data-theme='light'] .echo-card>footer { border-color: var(--line); box-shadow: none; }
+:root[data-theme='light'] .echo-card.has-grade-wave footer,
+:root[data-theme='light'] .echo-card .echo-equipment { background: var(--surface); }
+:root[data-theme='light'] .echo-card footer :is(.echo-roll-info,.card-actions button:not(.locked):not(.echo-delete-action)) { color: var(--muted); }
+:root[data-theme='light'] .echo-card footer :is(.echo-roll-info,.card-actions button:not(.locked):not(.echo-delete-action)):hover { color: var(--theme-text); }
+:root[data-theme='light'] .echo-card footer .grade-e { color: var(--theme-text)!important; }
+:root[data-theme='light'] .echo-card .echo-equipment>span,
+:root[data-theme='light'] .echo-card .echo-owner-picker .multi-select-trigger { border-color: rgba(32,50,44,.16); background: var(--surface); color: var(--theme-text); }
+:root[data-theme='light'] .echo-card .echo-owner-picker .multi-select-values em { color: var(--theme-text); }
+
+:root[data-theme='light'] .weapon-owned,
+:root[data-theme='light'] .wv-card,
+:root[data-theme='light'] .character-candy-card {
+  background: linear-gradient(135deg,color-mix(in srgb,var(--weapon-accent) 8%,var(--surface)),var(--surface) 52%);
+  color: var(--theme-text);
+  box-shadow: 0 4px 16px rgba(24,40,34,.09);
+}
+:root[data-theme='light'] .wv-card {
+  border-color: #b8c6bc;
+  background: var(--surface);
+  box-shadow: inset 0 3px var(--weapon-accent),0 4px 16px rgba(24,40,34,.09);
+}
+:root[data-theme='light'] .wv-card:hover {
+  border-color: var(--weapon-accent);
+  box-shadow: inset 0 3px var(--weapon-accent),0 10px 24px rgba(24,40,34,.15);
+}
+:root[data-theme='light'] .weapon-owned .owned-art { background: radial-gradient(circle at 48% 48%,var(--weapon-glow),var(--surface-2) 76%); }
+:root[data-theme='light'] .wv-card-art {
+  border-right: 1px solid var(--line);
+  background: radial-gradient(circle at 50% 42%,color-mix(in srgb,var(--weapon-accent) 14%,#e7eeeb),#dbe5df 78%);
+}
+:root[data-theme='light'] .wv-card-art img {
+  width: 100%;
+  height: 100%;
+  max-width: 148px;
+  max-height: 164px;
+  margin: 0;
+  object-fit: contain;
+  transform: none;
+  filter: drop-shadow(0 5px 8px rgba(27,41,37,.3));
+}
+:root[data-theme='light'] .wv-card:hover .wv-card-art img { transform: scale(1.06); }
+:root[data-theme='light'] .wv-card-art span {
+  padding: 3px 6px;
+  border-radius: 4px;
+  background: rgba(27,41,37,.86);
+  text-shadow: none;
+}
+:root[data-theme='light'] .wv-card-copy h2,
+:root[data-theme='light'] .wv-card-stats b { color: var(--theme-text); }
+:root[data-theme='light'] .wv-card-copy>small,
+:root[data-theme='light'] .wv-card-stats { color: var(--muted); }
+:root[data-theme='light'] .wv-card-level :is(b,span) { color: var(--theme-text); }
+:root[data-theme='light'] .wv-card-stats,
+:root[data-theme='light'] .wv-card-stats span+span { border-color: var(--line); }
+:root[data-theme='light'] .wv-card .weapon-stat-icon { filter: brightness(0); opacity: .78; }
+:root[data-theme='light'] .wv-card-footer { border-color: rgba(32,50,44,.14); background: var(--surface-2); }
+:root[data-theme='light'] .wv-card-footer .character-equip-trigger,
+:root[data-theme='light'] .wv-icon-action { border-color: rgba(32,50,44,.16); background: var(--surface); color: var(--theme-text); }
+:root[data-theme='light'] .wv-icon-action:disabled { opacity: .52; }
+:root[data-theme='light'] .weapon-card-heading,
+:root[data-theme='light'] .weapon-card-stats p,
+:root[data-theme='light'] .candy-level { border-color: rgba(32,50,44,.12); }
+:root[data-theme='light'] .weapon-card-stats span,
+:root[data-theme='light'] .candy-character-copy p,
+:root[data-theme='light'] .candy-skills span { color: var(--muted); }
+:root[data-theme='light'] .weapon-card-stats strong,
+:root[data-theme='light'] .weapon-card-heading h2 { color: var(--theme-text); }
+:root[data-theme='light'] .weapon-owned .character-equip-trigger { border-color: rgba(32,50,44,.16); background: var(--surface-2); color: var(--theme-text); }
+:root[data-theme='light'] .weapon-owned-copy footer button.weapon-action:not(.locked) { background: var(--surface-2); }
+:root[data-theme='light'] .candy-loadout { border-color: rgba(32,50,44,.12); background: var(--surface-2); }
+
+:root[data-theme='light'] .team-gallery-original .tw-gallery-card {
+  --tw-surface: var(--surface);
+  border-color: #b8c6bc;
+  box-shadow: 0 4px 16px rgba(24,40,34,.09);
+}
+:root[data-theme='light'] .team-gallery-original .tw-gallery-card>header,
+:root[data-theme='light'] .team-gallery-original .tw-gallery-card>footer { border-color: var(--line); background: var(--surface-2); color: var(--muted); }
+:root[data-theme='light'] .team-gallery-original .tw-gallery-card>header input { background: transparent; color: var(--theme-text); }
+:root[data-theme='light'] .team-gallery-original .tw-gallery-member {
+  border-bottom-color: var(--line);
+  background: radial-gradient(circle at 16% 50%,color-mix(in srgb,var(--tw-card-element,var(--mint)) 17%,transparent),transparent 48%),var(--surface);
+}
+:root[data-theme='light'] .team-gallery-original .tw-gallery-member::after { background: linear-gradient(90deg,transparent 12%,rgba(251,252,250,.2) 40%,rgba(251,252,250,.92) 75%); }
+:root[data-theme='light'] .team-gallery-original .tw-gallery-member.empty { background: var(--surface); }
+:root[data-theme='light'] .team-gallery-original .tw-gallery-portrait { filter: drop-shadow(0 7px 11px rgba(27,41,37,.22)); }
+:root[data-theme='light'] .team-gallery-original .tw-gallery-character strong,
+:root[data-theme='light'] .team-gallery-original .tw-gallery-sonata b { color: var(--theme-text); }
+:root[data-theme='light'] .team-gallery-original .tw-gallery-character small,
+:root[data-theme='light'] .team-gallery-original .tw-gallery-empty-member { color: var(--muted); }
+:root[data-theme='light'] .team-gallery-original .tw-gallery-character em { color: color-mix(in srgb,var(--tw-card-element) 45%,var(--theme-text)); }
+:root[data-theme='light'] .team-gallery-original .tw-gallery-character .tw-gallery-sonata { border-color: var(--line); background: #f4f8f5; color: var(--theme-text); }
+:root[data-theme='light'] .team-gallery-original .tw-gallery-loadout>span { border-color: #b8c6bc; background: #e7efea; }
+:root[data-theme='light'] .team-gallery-original .tw-gallery-loadout>span.weapon { background: radial-gradient(circle,color-mix(in srgb,var(--tw-card-element) 13%,#e7efea),#dce8e1 80%); }
+:root[data-theme='light'] .team-gallery-original .tw-gallery-loadout>span :is(b,small) { background: rgba(251,252,250,.9); color: var(--theme-text); text-shadow: none; }
+:root[data-theme='light'] .team-gallery-original .tw-gallery-loadout>span small { color: color-mix(in srgb,var(--tw-card-element) 45%,var(--theme-text)); }
+:root[data-theme='light'] .team-gallery-original .tw-gallery-loadout>span:not(:is([data-stat='glacioDamage'],[data-stat='fusionDamage'],[data-stat='electroDamage'],[data-stat='aeroDamage'],[data-stat='spectroDamage'],[data-stat='havocDamage'])) .tw-gallery-stat-icon { filter: brightness(0); opacity: .8; }
+
+/* Shared shell, fields, menus, and dialogs. */
+:root[data-theme='light'] .app-shell::before {
+  background-image: linear-gradient(rgba(32,50,44,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(32,50,44,.04) 1px,transparent 1px);
+}
+:root[data-theme='light'] .topbar-brand small,
+:root[data-theme='light'] .page-header p,
+:root[data-theme='light'] .site-footer { color: var(--muted); }
+:root[data-theme='light'] button.secondary,
+:root[data-theme='light'] .settings-modal .settings-toggle { background: var(--surface); color: var(--theme-gold); border-color: rgba(var(--gold-rgb),.35); }
+:root[data-theme='light'] button.secondary:hover { background: color-mix(in srgb,var(--theme-gold) 10%,var(--surface)); }
+:root[data-theme='light'] button.primary {
+  --gold: #e4bb5e;
+  box-shadow: 0 7px 17px rgba(27,41,37,.12);
+}
+:root[data-theme='light'] button.primary:hover {
+  box-shadow: 0 9px 20px rgba(27,41,37,.15);
+}
+:root[data-theme='light'] button.danger { color: #a53232; }
+:root[data-theme='light'] :is(input,textarea,select)::placeholder { color: var(--muted); opacity: 1; }
+:root[data-theme='light'] :is(.settings-modal,.settings-section,.settings-save,.settings-header,.settings-choice label>span) { color: var(--theme-text); }
+:root[data-theme='light'] :is(.settings-toggle b,.settings-name-field>span) { color: var(--theme-text); }
+:root[data-theme='light'] .settings-choice label>span { border-color: var(--line); }
+:root[data-theme='light'] .mobile-more-sheet[open] { background: var(--surface); color: var(--theme-text); box-shadow: 0 -12px 35px rgba(24,40,34,.15); }
+:root[data-theme='light'] .mobile-more-sheet>header { background: linear-gradient(var(--surface) 75%,transparent); }
+:root[data-theme='light'] .mobile-more-sheet nav button { border-color: var(--line); background: var(--surface-2); color: var(--theme-text); }
+:root[data-theme='light'] .mobile-more-handle { background: #a8b4ae; }
+:root[data-theme='light'] .toast { background: var(--surface); color: var(--theme-text); box-shadow: 0 8px 25px rgba(24,40,34,.14); }
+:root[data-theme='light'] .filter-body>label,
+:root[data-theme='light'] .filter-group,
+:root[data-theme='light'] .owned-chip-filter>span { color: var(--muted); }
+
+/* Archive, weapon, and character detail surfaces. */
+:root[data-theme='light'] .archive-entry-copy :is(dt,footer),
+:root[data-theme='light'] .archive-sonata-card :is(header p,.archive-sonata-effects p),
+:root[data-theme='light'] .archive-detail-modal :is(.archive-detail-description,.archive-detail-header p,.archive-detail-facts dt,.archive-detail-section-header label,.archive-rank-slider) { color: var(--muted); }
+:root[data-theme='light'] .archive-sonata-card h2,
+:root[data-theme='light'] .archive-detail-modal :is(.archive-detail-section h3,.archive-detail-facts dd) { color: var(--theme-text); }
+:root[data-theme='light'] .archive-detail-facts>div,
+:root[data-theme='light'] .archive-skill-guide-instructions article { border-color: var(--line); background: var(--surface-2); }
+:root[data-theme='light'] .archive-skill-guide :is(h4,li,p,strong) { color: var(--theme-text); }
+:root[data-theme='light'] .archive-skill-guide-features li,
+:root[data-theme='light'] .archive-skill-guide-entry p,
+:root[data-theme='light'] .archive-skill-guide-instructions h4 { color: var(--theme-text); }
+:root[data-theme='light'] :is(.archive-skill-guide-features,.archive-skill-guide-instructions)>strong { color: var(--muted); }
+:root[data-theme='light'] .archive-detail-facts dd[aria-label$='stars'] { color: var(--weapon-accent); }
+:root[data-theme='light'] .archive-sort-menu button.active,
+:root[data-theme='light'] .echo-inventory-view .echo-sort-menu button.active { color: var(--theme-gold); }
+
+:root[data-theme='light'] .wv-summary>div,
+:root[data-theme='light'] .wv-detail :is(.wv-detail-hero,.wv-control-card,.wv-stats-card,.wv-passive-card),
+:root[data-theme='light'] .weapon-config-modal.wv-detail { border-color: var(--line); background: var(--surface); color: var(--theme-text); box-shadow: 0 8px 28px rgba(24,40,34,.12); }
+:root[data-theme='light'] .wv-summary strong,
+:root[data-theme='light'] .wv-detail-intro h1 { color: var(--theme-text); }
+:root[data-theme='light'] .wv-detail-intro>p,
+:root[data-theme='light'] .wv-passive-card p,
+:root[data-theme='light'] .wv-control-card .weapon-level-heading { color: var(--muted); }
+:root[data-theme='light'] .wv-stats-card>div { border-color: var(--line); background: var(--surface-2); }
+:root[data-theme='light'] .weapon-config-header { background: color-mix(in srgb,var(--weapon-accent) 7%,var(--surface)); }
+
+:root[data-theme='light'] .character-detail,
+:root[data-theme='light'] .character-detail>header { background: var(--surface); color: var(--theme-text); box-shadow: 0 8px 28px rgba(24,40,34,.12); }
+:root[data-theme='light'] .character-detail-identity,
+:root[data-theme='light'] .character-detail-left { background: var(--surface-2); }
+:root[data-theme='light'] .character-detail :is(.level-buttons button,.sequence-buttons i,.skill-editor button,.detail-equip-list button) { border-color: var(--line); background: var(--surface); color: var(--theme-text); }
+:root[data-theme='light'] .character-detail :is(.character-stat-list p span,.detail-equip-list button small) { color: var(--muted); }
+:root[data-theme='light'] .character-detail .character-stat-list p b { color: var(--theme-text); }
+:root[data-theme='light'] .character-detail .detail-portrait>div { color: #edf3ef; }
+
+/* Teams gallery, workspace, optimizer, rotation, and equipment controls. */
+:root[data-theme='light'] .team-workspace {
+  --mint: #247968;
+  --tw-line: rgba(32,50,44,.14);
+  --tw-line-strong: rgba(32,50,44,.28);
+  --tw-mint-line: rgba(var(--mint-rgb),.24);
+  --tw-subtle: var(--muted);
+  color: var(--theme-text);
+}
+:root[data-theme='light'] .team-workspace .eyebrow { color: var(--theme-gold); }
+:root[data-theme='light'] .team-workspace :is(input,select,textarea) { border-color: var(--tw-line); background: var(--surface); color: var(--theme-text); }
+:root[data-theme='light'] .team-workspace :is(button.primary,button.secondary) { border-color: rgba(var(--gold-rgb),.36); background: color-mix(in srgb,var(--theme-gold) 11%,var(--surface)); color: var(--theme-text); }
+:root[data-theme='light'] .team-workspace :is(button.primary,button.secondary):hover { background: color-mix(in srgb,var(--theme-gold) 18%,var(--surface)); }
+:root[data-theme='light'] .tw-wip-banner { background: repeating-linear-gradient(-45deg,color-mix(in srgb,var(--theme-gold) 12%,var(--surface)) 0 12px,color-mix(in srgb,var(--theme-gold) 5%,var(--surface)) 12px 24px); color: var(--theme-text); }
+:root[data-theme='light'] .tw-wip-banner strong { color: var(--theme-gold); }
+:root[data-theme='light'] .team-workspace:not(.team-gallery-original) :is(
+  .tw-subnav,.tw-subnav button,.tw-primary-tabs,.tw-primary-tabs button,.tw-member-column,
+  .tw-workspace-header,.tw-workspace-status,.tw-overview-sheet,.tw-member-echoes,
+  .tw-sequence-column,.tw-sequence-column>article,.tw-skill-card,.tw-passive-card,.tw-bonus-nodes,
+  .tw-rotation,.tw-rotation-toolbar,.tw-rotation-card,.tw-rotation-kpis,.tw-analysis-card,
+  .tw-action-breakdown,.tw-chart-toggle,.tw-optimizer-heading,.tw-theorizer,
+  .tw-theorizer-header,.optimizer-filter-card,.optimizer-current-build,.optimizer-filter-card>header,
+  .tw-build-management-modal,.equipment-buff-modal,.equipment-buff-group
+) { border-color: var(--tw-line); background: var(--surface); color: var(--theme-text); }
+:root[data-theme='light'] .team-workspace:not(.team-gallery-original) :is(
+  .tw-member-art,.tw-member-showcase,.tw-member-column>header,.tw-rotation-card>header,
+  .tw-rotation-kpis>div,.tw-analysis-card>header,.tw-member-echoes>article,
+  .tw-v2-effect-list>article,.tw-effect-copy,.tw-effect-results>div,
+  .optimizer-toggle-row button,.optimizer-main-stat-card section button,
+  .equipment-buff-tabs,.equipment-buff-filters button,.equipment-buff-group>header
+) { border-color: var(--tw-line); background: var(--surface-2); color: var(--theme-text); }
+:root[data-theme='light'] .team-workspace:not(.team-gallery-original) .tw-member-showcase::after { background: linear-gradient(90deg,transparent 26%,rgba(251,252,250,.62) 52%,var(--surface) 100%); }
+:root[data-theme='light'] .team-workspace:not(.team-gallery-original) :is(.tw-member-showcase,.optimizer-current-hero) :is(h1,h2,h3,strong) { color: var(--theme-text); }
+:root[data-theme='light'] .team-workspace:not(.team-gallery-original) :is(.tw-icon-button,.tw-back-to-gallery,.tw-chart-toggle button,.tw-rotation-toolbar button,.equipment-buff-trigger) { border-color: var(--tw-line); background: var(--surface-2); color: var(--theme-text); }
+:root[data-theme='light'] .team-workspace:not(.team-gallery-original) :is(.tw-gallery-character small,.optimizer-current-hero small,.tw-rotation-card small) { color: var(--muted); }
+:root[data-theme='light'] .team-workspace .optimizer-v2-workspace {
+  --optimizer-panel: var(--surface);
+  --optimizer-raised: var(--surface-2);
+  --optimizer-line: var(--tw-line);
+}
+:root[data-theme='light'] .team-workspace :is(.optimizer-current-hero h2,.optimizer-filter-card h3) { color: var(--theme-text); }
+:root[data-theme='light'] .team-workspace :is(.optimizer-toggle-row button,.optimizer-main-stat-card section button) { background: var(--surface-2); color: var(--theme-text); }
+:root[data-theme='light'] .team-workspace :is(.optimizer-toggle-row button.active,.optimizer-main-stat-card section button.active) { background: color-mix(in srgb,var(--mint) 12%,var(--surface)); color: var(--theme-text); }
+
+/* Scanner and OCR review controls; image and video previews retain their contrast backing. */
+:root[data-theme='light'] .scanner-step>h2,
+:root[data-theme='light'] .scanner-final-step>small,
+:root[data-theme='light'] .scanner-inline-status,
+:root[data-theme='light'] .scanner-advanced>summary { color: var(--theme-text); }
+:root[data-theme='light'] :is(.scanner-source-picker>button,.scanner-format-select select,.scanner-controls,.scanner-controls select,.video-scan-controls select,.calibration-toolbar input,.scanner-layout-picker summary,.scanner-layout-picker>div,.scanner-layout-picker button,.batch-review-toolbar,.batch-review-toolbar>div button,.scanned-loadout-card,.scan-error-card) {
+  border-color: var(--line);
+  background: var(--surface);
+  color: var(--theme-text);
+}
+:root[data-theme='light'] .scanner-source-picker>button:is(:hover,.active),
+:root[data-theme='light'] .scanner-layout-picker button:is(:hover,.active),
+:root[data-theme='light'] .batch-review-toolbar>div button.active { background: color-mix(in srgb,var(--theme-gold) 11%,var(--surface)); }
+:root[data-theme='light'] .scanner-source-icon,
+:root[data-theme='light'] .scanner-image-action-icon { filter: brightness(0); opacity: .7; }
+:root[data-theme='light'] .scanner-drop-overlay { background: rgba(251,252,250,.95); color: var(--theme-text); }
+:root[data-theme='light'] .scanned-weapon-card { background: linear-gradient(145deg,color-mix(in srgb,var(--weapon-accent) 10%,var(--surface)),var(--surface) 72%); }
+:root[data-theme='light'] .scanned-loadout-art { border-color: var(--line); background: radial-gradient(circle,color-mix(in srgb,var(--theme-gold) 13%,var(--surface)),var(--surface-2) 72%); }
+:root[data-theme='light'] .scan-error-card span { color: #a53232; }
+
+/* Echo editor, ownership picker, and scanner review fields. */
+:root[data-theme='light'] :is(.echo-edit-modal,.echo-editor-header,.echo-editor-actions,.echo-editor-previews>div,.echo-level-editor,.echo-stat-line,.echo-substat-row,.echo-readonly-name,.echo-fixed-stat,.scan-readonly-field,.review-card,.review-topbar,.scan-name-field,.scan-level-editor,.echo-state-review,.scan-main-stat-group,.scan-substats) {
+  border-color: var(--line);
+  background: var(--surface);
+  color: var(--theme-text);
+}
+:root[data-theme='light'] :is(.echo-level-editor,.echo-stat-line,.echo-substat-row,.echo-fixed-stat,.scan-readonly-field,.scan-substats) { background: var(--surface-2); }
+:root[data-theme='light'] :is(.echo-editor-fields label,.echo-editor-previews .eyebrow) { color: var(--muted); }
+:root[data-theme='light'] :is(.echo-editor-fields input,.echo-editor-fields select,.echo-level-editor button,.echo-search-trigger,.echo-search-menu,.echo-search-menu button,.multi-select-trigger,.multi-select-menu,.multi-select-options button,.echo-owner-picker .echo-owner-options,.echo-equipment>span) {
+  border-color: var(--line);
+  background: var(--surface);
+  color: var(--theme-text);
+}
+:root[data-theme='light'] :is(.echo-search-menu button,.multi-select-options button):is(:hover,.active),
+:root[data-theme='light'] .echo-level-editor button.active { background: color-mix(in srgb,var(--theme-gold) 11%,var(--surface)); color: var(--theme-text); }
+:root[data-theme='light'] .multi-select-values>em,
+:root[data-theme='light'] .echo-owner-picker .multi-select-values em { color: var(--theme-text); }
+:root[data-theme='light'] .multi-select-chip { background: var(--surface-2); color: var(--theme-text); }
+:root[data-theme='light'] .echo-owner-empty { border-color: var(--line); }
+:root[data-theme='light'] .echo-equipment img { background: var(--surface-2); }
+
+/* Backup and restore dialogs. */
+:root[data-theme='light'] .import-data-modal {
+  --import-ink: var(--theme-text);
+  --import-muted: var(--muted);
+  --import-edge: var(--line);
+  background: var(--surface);
+  color: var(--theme-text);
+  box-shadow: 0 25px 70px rgba(24,40,34,.2);
+}
+:root[data-theme='light'] :is(.import-file-row>div,.import-guardrails>div,.import-json-input textarea,.import-message,.import-build-choices label,.import-summary-strip,.import-collection-grid article,.export-data-intro,.export-data-list>div,.export-data-note:last-child) {
+  border-color: var(--line);
+  background: var(--surface-2);
+  color: var(--theme-text);
+}
+:root[data-theme='light'] .import-build-choices label:focus-within { background: color-mix(in srgb,var(--mint) 10%,var(--surface)); }
+:root[data-theme='light'] .import-data-header .close,
+:root[data-theme='light'] .import-collection-grid dd,
+:root[data-theme='light'] .import-collection-grid .merged dd { color: var(--theme-text); }
+:root[data-theme='light'] .import-json-input,
+:root[data-theme='light'] .import-summary-strip span { color: var(--muted); }
+:root[data-theme='light'] .import-repair-notice { background: #fff7e6; color: var(--theme-text); }
+:root[data-theme='light'] .import-repair-notice strong { color: var(--theme-gold); }
+:root[data-theme='light'] .import-message.error { color: #a53232; }
+
+/* Informational pages. */
+:root[data-theme='light'] .legal-highlights p,
+:root[data-theme='light'] .legal-document>.panel>header p,
+:root[data-theme='light'] .legal-copy :is(p,li),
+:root[data-theme='light'] .legal-aside dt,
+:root[data-theme='light'] .legal-note { color: var(--muted); }
+:root[data-theme='light'] .legal-copy strong,
+:root[data-theme='light'] .legal-aside dd { color: var(--theme-text); }
+:root[data-theme='light'] .legal-aside :is(dl>div,.panel>a) { border-color: var(--line); }
+:root[data-theme='light'] .partner-card {
+  background: radial-gradient(circle at 90% 0,rgba(var(--mint-rgb),.1),transparent 50%) padding-box,
+    linear-gradient(155deg,var(--surface),var(--surface-2) 74%) padding-box,
+    conic-gradient(from var(--partner-glow-angle),rgba(var(--gold-rgb),.35),var(--mint),var(--gold),rgba(var(--mint-rgb),.28),rgba(var(--gold-rgb),.35)) border-box;
+  color: var(--theme-text);
+  box-shadow: 0 8px 24px rgba(24,40,34,.12);
+}
+:root[data-theme='light'] .partner-card:is(:hover,:focus-within) { box-shadow: 0 12px 28px rgba(24,40,34,.18); }
+:root[data-theme='light'] .partner-card h2 { color: var(--theme-gold); }
+:root[data-theme='light'] .partner-card p,
+:root[data-theme='light'] .partner-card nav>span { color: var(--muted); }
+:root[data-theme='light'] .partner-card nav a { color: var(--mint); }
+:root[data-theme='light'] .partner-shiny-text { background-image: linear-gradient(100deg,var(--mint) 25%,var(--theme-gold) 50%,var(--mint) 75%); }
+
+/* Character showcase controls and build panels. The character artwork and exported card keep their art treatment. */
+:root[data-theme='light'] .cs-page :is(.cs-toolbar-title,.cs-view-tabs button) { color: var(--theme-text); }
+:root[data-theme='light'] .cs-page .cs-loadout-source>span,
+:root[data-theme='light'] .cs-export-frame:not(.is-exporting) :is(.cs-weight-grid small,.cs-echo-card>header span) { color: var(--muted); }
+:root[data-theme='light'] .cs-page :is(.cs-back,.cs-favorite,.cs-loadout-source select,.cs-view-tabs,.cs-view-tabs button),
+:root[data-theme='light'] .cs-export-frame:not(.is-exporting) :is(.cs-level-editor button,.cs-weight-grid>label,.cs-weight-grid button,.cs-weight-grid input,.cs-er-requirement input,.cs-echo-picker-filters,.cs-skill-tooltip) {
+  border-color: var(--line);
+  background: var(--surface);
+  color: var(--theme-text);
+  box-shadow: none;
+}
+:root[data-theme='light'] .cs-page :is(.cs-loadout-source select:hover,.cs-view-tabs button:is(:hover,.active)),
+:root[data-theme='light'] .cs-export-frame:not(.is-exporting) .cs-level-editor button.active { background: color-mix(in srgb,var(--cs-accent) 10%,var(--surface)); color: var(--theme-text); }
+:root[data-theme='light'] .cs-page .cs-loadout-source select { color-scheme: light; }
+:root[data-theme='light'] .cs-page .cs-loadout-source option { background: var(--surface); color: var(--theme-text); }
+:root[data-theme='light'] .cs-export-frame:not(.is-exporting) :is(.cs-weight-grid>label>span,.cs-skill-tooltip b) { color: var(--theme-text); }
+:root[data-theme='light'] .cs-export-frame:not(.is-exporting) .cs-skill-tooltip small { color: var(--muted); }
+:root[data-theme='light'] .cs-export-frame:not(.is-exporting) .cs-echo-card {
+  border-color: color-mix(in srgb,var(--cs-accent) 40%,var(--line));
+  background: linear-gradient(150deg,color-mix(in srgb,var(--cs-accent) 9%,var(--surface)),var(--surface) 70%);
+}
+:root[data-theme='light'] .cs-export-frame:not(.is-exporting) .cs-echo-card { color: var(--theme-text); }
+:root[data-theme='light'] .cs-export-frame:not(.is-exporting) .cs-echo-card :is(.cs-echo-primary span,.cs-echo-secondary span,.cs-echo-substats span) { color: var(--muted); }
+:root[data-theme='light'] .cs-export-frame:not(.is-exporting) .cs-echo-card :is(.cs-echo-primary,.cs-echo-secondary,.cs-echo-substats>div) { border-color: var(--line); }
+
+/* Optimizer setup, results, and comparison tray. */
+:root[data-theme='light'] .optimizer-v2-workspace :is(.optimizer-run-bar,.optimizer-progress-panel,.optimizer-comparison-tray,.optimizer-comparison-tray article,.optimizer-result-tags,.optimizer-scales-with,.optimizer-sonata-selection .optimizer-sonata-options button,.optimizer-picker-actions button,.optimizer-requirements>span) {
+  border-color: var(--line);
+  background: var(--surface);
+  color: var(--theme-text);
+  box-shadow: none;
+}
+:root[data-theme='light'] .optimizer-v2-workspace :is(.optimizer-run-bar select,.optimizer-run-bar input,.optimizer-distribution-chart>header select,.optimizer-distribution-chart>header button,.optimizer-comparison-remove) { border-color: var(--line); background: var(--surface-2); color: var(--theme-text); }
+:root[data-theme='light'] .optimizer-v2-workspace :is(.optimizer-run-bar label>span,.optimizer-run-summary small,.optimizer-progress-panel dt,.optimizer-chart-legend,.optimizer-comparison-select small,.optimizer-picker-actions,.optimizer-constraint-list label small) { color: var(--muted); }
+:root[data-theme='light'] .optimizer-v2-workspace :is(.optimizer-progress-panel dd,.optimizer-comparison-select,.optimizer-constraint-list>div>span,.optimizer-scales-with>b) { color: var(--theme-text); }
+:root[data-theme='light'] .optimizer-v2-workspace .optimizer-progress-track { background: var(--surface-2); }
+:root[data-theme='light'] .optimizer-v2-workspace .optimizer-sonata-selection .optimizer-sonata-options button.active { background: color-mix(in srgb,var(--tw-member-accent,var(--mint)) 12%,var(--surface)); color: var(--theme-text); }
+
+/* Teams calculation sheets, traces, rotation controls, and equipment buff dialog. */
+:root[data-theme='light'] :is(.tw-trace,.tw-trace>header,.equipment-buff-modal) { border-color: var(--line); background: var(--surface); color: var(--theme-text); }
+:root[data-theme='light'] .team-workspace:not(.team-gallery-original) :is(.tw-result-modes button,.tw-compare select,.tw-sheet-column,.tw-sheet-column>header,.tw-rotation-mechanics .tw-buff-state,.tw-rotation-level,.tw-donut>div,.tw-team-buff-provider-tools button,.tw-condition-mode button,.tw-loadout-block .tw-weapon-detail,.tw-v2-stance,.tw-chart-toggle,.equipment-buff-tabs,.equipment-buff-tabs button,.equipment-buff-filters button,.equipment-buff-toolbar input,.equipment-buff-group) {
+  border-color: var(--tw-line);
+  background: var(--surface-2);
+  color: var(--theme-text);
+}
+:root[data-theme='light'] :is(.equipment-buff-heading p,.equipment-buff-tabs button,.equipment-buff-filters button) { color: var(--muted); }
+:root[data-theme='light'] :is(.equipment-buff-tabs button.active,.equipment-buff-filters button.active) { background: color-mix(in srgb,var(--buff-accent) 10%,var(--surface)); color: var(--theme-text); }
+:root[data-theme='light'] .team-workspace:not(.team-gallery-original) :is(.tw-sheet-column>button,.tw-trace-section>code,.tw-trace-sources>div) { border-color: var(--tw-line); background: var(--surface); color: var(--theme-text); }
+
+/* Shared pickers, inventory filters, calculation details, and saved builds. */
+:root[data-theme='light'] :is(.catalog-picker,.calculation-box,.theorycraft-editor,.optimizer-build-context,.optimizer-results-heading,.optimizer-result-details>section,.optimizer-echo-strip,.optimizer-result-details,.scanner-calibration,.calibration-field-inspector) {
+  border-color: var(--line);
+  background: var(--surface);
+  color: var(--theme-text);
+  box-shadow: 0 8px 28px rgba(24,40,34,.12);
+}
+:root[data-theme='light'] :is(.catalog-choice,.theorycraft-editor>section,.theorycraft-slots article,.theorycraft-slot-substats>article,.optimizer-command-bar>div,.calculation-term i,.calculation-tooltip,.echo-toolbar-main,.echo-pagination,.sonata-picker-menu,.sonata-picker-trigger,.echo-sort-direction) {
+  border-color: var(--line);
+  background: var(--surface-2);
+  color: var(--theme-text);
+}
+:root[data-theme='light'] :is(.sonata-picker-trigger,.sort-select,.optimizer-command-bar select,.theorycraft-editor :is(input,select,textarea),.review-fields :is(input,select),.settings-modal :is(input,select),.stat-editor :is(input,select),.build-controls :is(input,select),.score-weights input,.buff-editor :is(input,select)) {
+  border-color: var(--line);
+  background: var(--surface);
+  color: var(--theme-text);
+}
+:root[data-theme='light'] :is(.owned-add>div strong,.theorycraft-editor label,.calculation-box>header small,.calculation-formula>span,.calculation-tooltip small) { color: var(--muted); }
+:root[data-theme='light'] :is(.calculation-term b,.calculation-tooltip-expression>span,.calculation-tooltip-expression>span:not(:last-child)::after,.inventory-sort>span b,.optimizer-result-toggle,.optimizer-score-modes b) { color: var(--theme-text); }
+:root[data-theme='light'] .calculation-box>header { background: color-mix(in srgb,var(--theme-gold) 8%,var(--surface)); }
+:root[data-theme='light'] .theorycraft-editor .modal-actions { background: var(--surface); }
+:root[data-theme='light'] .optimizer-build-result>header { border-color: var(--line); background: var(--surface-2); }
+:root[data-theme='light'] .catalog-choice>img { background: color-mix(in srgb,var(--theme-gold) 10%,var(--surface-2)); }
+:root[data-theme='light'] :is(.scanner-calibration,.calibration-field-inspector) :is(input,select) { border-color: var(--line); background: var(--surface); color: var(--theme-text); }
+:root[data-theme='light'] .scanner-calibration .calibration-stage { background: #111819; }
+:root[data-theme='light'] .review-attention small { color: var(--muted); }
+:root[data-theme='light'] .review-attention ul { color: #a53232; }
+:root[data-theme='light'] .settings-header { background: radial-gradient(circle at 15% 0,rgba(var(--gold-rgb),.1),transparent 42%),var(--surface); }
+:root[data-theme='light'] .settings-section { background: var(--surface-2); }
+:root[data-theme='light'] .settings-modal .close { color: var(--theme-text); }
+:root[data-theme='light'] .team-gallery-original .tw-gallery-card { background: var(--surface); }
+:root[data-theme='light'] .team-gallery-original .tw-gallery-card:hover { box-shadow: 0 9px 22px rgba(24,40,34,.15); }
+:root[data-theme='light'] .team-gallery-original .tw-gallery-delete { background: #fff0ef; color: #a53232; }
+:root[data-theme='light'] .echo-inventory-view :is(.echo-single-select-menu,.echo-page-select .multi-select-trigger,.echo-remove-substat) { border-color: var(--line); background: var(--surface); color: var(--theme-text); }
+:root[data-theme='light'] .echo-inventory-view .echo-single-select-menu button { color: var(--theme-text); }
+:root[data-theme='light'] .echo-inventory-view .echo-single-select-menu button:is(:hover,:focus-visible,.active) { background: color-mix(in srgb,var(--mint) 10%,var(--surface)); color: var(--mint); }
+:root[data-theme='light'] .echo-edit-modal .echo-remove-substat { border-color: var(--line); background: var(--surface); color: var(--theme-gold); }
+:root[data-theme='light'] .wv-back:hover { color: var(--theme-text); }
+:root[data-theme='light'] :is(.cs-picker,.cs-weight-editor,.cs-weight-editor>header,.cs-weight-editor>footer) { border-color: var(--line); background: var(--surface); color: var(--theme-text); }
+:root[data-theme='light'] .cs-weight-editor-scroll>p { color: var(--muted); }
+:root[data-theme='light'] .cs-page .cs-export-message { color: var(--theme-text); }
+:root[data-theme='light'] .cs-page .cs-export-message.is-error { color: #a53232; }
+:root[data-theme='light'] .archive-result-bar,
+:root[data-theme='light'] .echo-inventory-view .echo-single-filter { color: var(--muted); }
+:root[data-theme='light'] .archive-result-bar strong { color: var(--theme-text); }
+:root[data-theme='light'] .scanned-loadout-copy dl>div { border-color: var(--line); background: var(--surface-2); }
+:root[data-theme='light'] .scanned-loadout-copy dd { color: var(--theme-text); }
+:root[data-theme='light'] .scan-review-popout { border-color: var(--line); background: var(--surface); color: var(--theme-text); box-shadow: 0 24px 65px rgba(24,40,34,.2); }

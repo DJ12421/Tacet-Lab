@@ -43,4 +43,41 @@ describe('Wuthering Tools build and team imports', () => {
     expect(repeated.document.builds).toHaveLength(0)
     expect(repeated.choices).toHaveLength(0)
   })
+
+  it('uses exported progression for new ownership and preserves it on reimport', async () => {
+    const lucy = characterCatalog.find((entry) => entry.name === 'Lucy')!
+    const weapon = weaponSummaries.find((entry) => entry.type === lucy.weaponType)!
+    const source = {
+      meta: { version: '9', source: 'WutheringTools' },
+      data: { character: JSON.stringify({ characters: { Lucy: {
+        characterLevel: '70', sequence: '2', talents: { basic: '6', skill: '8', forte: '10', liberation: '7', intro: '5' },
+        weapon: weapon.name, weapons: { [weapon.name]: { weaponLevel: '80', refinement: '3' } }
+      } } }) }
+    }
+
+    const converted = await convertWutheringToolsExport(source)
+    expect(converted.document.characters[0]).toMatchObject({ level: 70, sequence: 2, skillLevels: [6, 8, 10, 7, 5] })
+    expect(converted.document.weapons[0]).toMatchObject({ level: 80, rank: 3 })
+
+    await importAccount(converted.document)
+    const changed = JSON.parse(source.data.character)
+    changed.characters.Lucy.characterLevel = '90'
+    changed.characters.Lucy.talents.skill = '10'
+    changed.characters.Lucy.weapons[weapon.name].refinement = '5'
+    const repeated = await convertWutheringToolsExport({ ...source, data: { character: JSON.stringify(changed) } })
+    expect(repeated.document.characters).toHaveLength(0)
+    expect(repeated.document.weapons).toHaveLength(0)
+  })
+
+  it('stops before preview when source characters cannot be accounted for', async () => {
+    const source = {
+      meta: { version: '9', source: 'WutheringTools' },
+      data: { character: JSON.stringify({ characters: {
+        Lucy: { echoes: Array.from({ length: 6 }, () => ({ echo: 'unknown', type: 1 })) },
+        UnknownCharacter: {}
+      } }) }
+    }
+
+    await expect(convertWutheringToolsExport(source)).rejects.toThrow('2 of 2 Wuthering Tools characters: Lucy, UnknownCharacter')
+  })
 })

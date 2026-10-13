@@ -80,11 +80,11 @@
   position: absolute;
   width: 290px;
   height: 290px;
-  border: 1px solid rgba(141,228,212,.13);
+  border: 1px solid rgba(var(--mint-rgb),.13);
   border-radius: 50%;
   right: 6%;
   top: -30%;
-  background: repeating-radial-gradient(circle, transparent 0 34px, rgba(141,228,212,.065) 35px 36px), conic-gradient(from 25deg, transparent 0 87%, rgba(141,228,212,.1));
+  background: repeating-radial-gradient(circle, transparent 0 34px, rgba(var(--mint-rgb),.065) 35px 36px), conic-gradient(from 25deg, transparent 0 87%, rgba(var(--mint-rgb),.1));
 }
 
 .radar::after {
@@ -92,7 +92,7 @@
   position: absolute;
   inset: 50% -30%;
   height: 1px;
-  background: rgba(141,228,212,.14);
+  background: rgba(var(--mint-rgb),.14);
 }
 
 .section-heading {
@@ -325,7 +325,7 @@
 }
 
 .filter-chips button.active {
-  background: rgba(141,228,212,.16);
+  background: rgba(var(--mint-rgb),.16);
   color: var(--mint);
   border-radius: 0px;
 }

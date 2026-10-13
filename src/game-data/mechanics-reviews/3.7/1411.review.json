@@ -432,7 +432,7 @@
             "skillType": "Normal Attack",
             "skillName": "Inkwash",
             "name": "Inkwash - Dodge Counter DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "dodge-counter"
             ],
@@ -662,7 +662,7 @@
             "skillType": "Resonance Skill",
             "skillName": "Through the Groves",
             "name": "Through the Groves - Undaunted Wayfarer DMG",
-            "damageType": "outro",
+            "damageType": "echo",
             "skillSource": "skill",
             "scaling": "atk",
             "expressions": [
@@ -809,7 +809,7 @@
             "skillType": "Resonance Liberation",
             "skillName": "Sundering Strike",
             "name": "Sundering Strike - Skill DMG",
-            "damageType": "outro",
+            "damageType": "echo",
             "skillSource": "liberation",
             "scaling": "atk",
             "expressions": [
@@ -2127,8 +2127,8 @@
               "trigger": "Quietude Within active",
               "modifiers": [
                 {
-                  "stat": "damageBonus",
-                  "operation": "amplifyPercent",
+                  "stat": "specialMultiplier",
+                  "operation": "addPercent",
                   "value": 50,
                   "actionIds": [
                     "1411:7:4",
@@ -2213,14 +2213,20 @@
             "parsedEffects": [
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "always"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "modifiers": [
+                  {
+                    "stat": "motionValue",
+                    "operation": "addPercent",
+                    "value": 500,
+                    "actionIds": [
+                      "1411:3:0"
+                    ]
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {

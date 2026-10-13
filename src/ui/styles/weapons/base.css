@@ -286,11 +286,12 @@
 }
 
 .character-equip-menu button:hover,.character-equip-menu button.active {
-  background: rgba(141,228,212,.12);
+  background: rgba(var(--mint-rgb),.12);
   color: var(--mint);
 }
 
 .wv-toolbar .weapon-type-filter-icon,
+.character-roster-toolbar .weapon-type-filter-icon,
 .catalog-picker-filters .weapon-type-filter-icon {
   width: 25px;
   height: 25px;

@@ -19,6 +19,7 @@ interface NanokaSpinePortraitProps {
   skeletonSourceUrl: string
   atlasSourceUrl: string
   renderScale?: number
+  paused?: boolean
   onReady: () => void
   onFallback: () => void
 }
@@ -48,10 +49,17 @@ function portraitResolution(renderScale: number) {
   return Math.max(.5, Math.min((window.devicePixelRatio || 1) * renderScale, 1.25))
 }
 
-export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaSpinePortraitProps>(function NanokaSpinePortrait({ skeletonSourceUrl, atlasSourceUrl, renderScale = 1, onReady, onFallback }, ref) {
+export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaSpinePortraitProps>(function NanokaSpinePortrait({ skeletonSourceUrl, atlasSourceUrl, renderScale = 1, paused = false, onReady, onFallback }, ref) {
   const hostRef = useRef<HTMLDivElement>(null)
   const appRef = useRef<Application | undefined>(undefined)
+  const pausedRef = useRef(paused)
+  const updatePlaybackRef = useRef<() => void>(() => {})
   const [status, setStatus] = useState<PortraitStatus>('idle')
+
+  useEffect(() => {
+    pausedRef.current = paused
+    updatePlaybackRef.current()
+  }, [paused])
 
   useImperativeHandle(ref, () => ({
     captureFrame: () => {
@@ -94,10 +102,12 @@ export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaS
     let isIntersecting = true
     const updatePlayback = () => {
       if (!app) return
-      if (isIntersecting && document.visibilityState === 'visible' && document.hasFocus()) app.start()
+      if (!pausedRef.current && isIntersecting && document.visibilityState === 'visible' && document.hasFocus()) app.start()
       else app.stop()
     }
+    updatePlaybackRef.current = updatePlayback
     const disposeRuntime = () => {
+      updatePlaybackRef.current = () => {}
       resizeObserver?.disconnect()
       resizeObserver = undefined
       intersectionObserver?.disconnect()

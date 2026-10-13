@@ -1368,22 +1368,42 @@
                   "kind": "toggle"
                 },
                 "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "confidence": "high",
+                "warnings": [],
+                "triggerActionIds": [
+                  "1204:2:0"
                 ],
-                "reviewStatus": "no-mechanic"
+                "triggeredAttacks": [
+                  {
+                    "id": "review-followup",
+                    "name": "Four additional Marcato hits",
+                    "damageType": "liberation",
+                    "referenceActionId": "1204:3:1",
+                    "referenceMultiplier": 0.5,
+                    "count": 4
+                  }
+                ]
               },
               {
                 "input": {
                   "kind": "toggle"
                 },
                 "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "confidence": "high",
+                "warnings": [],
+                "triggerActionIds": [
+                  "1204:7:0"
                 ],
-                "reviewStatus": "no-mechanic"
+                "triggeredAttacks": [
+                  {
+                    "id": "review-followup",
+                    "name": "Four additional Marcato hits after Fury Fugue",
+                    "damageType": "liberation",
+                    "referenceActionId": "1204:3:1",
+                    "referenceMultiplier": 0.5,
+                    "count": 4
+                  }
+                ]
               }
             ]
           },

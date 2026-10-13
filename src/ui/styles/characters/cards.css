@@ -27,7 +27,7 @@
   width: calc(103%);
   height: auto;
   box-sizing: border-box;
-  border: 1px solid var(--gold);
+  border: 1px solid #e4bb5e;
   border-radius: 8px;
   background: radial-gradient(circle,rgba(228,187,94,.18),#0a1012 72%);
   object-fit: cover;
@@ -185,10 +185,10 @@
 .candy-skills i {
   width: 26px;
   height: 26px;
-  border: 1px solid rgba(141,228,212,.34);
-  background: linear-gradient(145deg,rgba(141,228,212,.2),rgba(63,126,116,.14));
+  border: 1px solid rgba(var(--mint-rgb),.34);
+  background: linear-gradient(145deg,rgba(var(--mint-rgb),.2),rgba(63,126,116,.14));
   color: var(--mint);
-  box-shadow: inset 0 0 9px rgba(141,228,212,.08),0 0 8px rgba(141,228,212,.08);
+  box-shadow: inset 0 0 9px rgba(var(--mint-rgb),.08),0 0 8px rgba(var(--mint-rgb),.08);
   font-weight: 700;
 }
 

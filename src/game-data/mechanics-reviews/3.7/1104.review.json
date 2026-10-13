@@ -1360,7 +1360,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Unification of Spirits",
             "name": "Unification of Spirits - Mountain Roamer Damage",
-            "damageType": "basic",
+            "damageType": "skill",
             "tags": [
               "forte"
             ],
@@ -2089,6 +2089,39 @@
               "warnings": []
             },
             "reviewStatus": "include"
+          },
+          {
+            "id": "1104:reviewed:diligent-practice",
+            "sourceName": "Diligent Practice",
+            "sourceType": "Inherent Skill",
+            "text": "After a Basic Attack in Striding Lion, the next Mountain Roamer within three seconds deals an additional Glacio hit equal to 150% of its damage, considered Resonance Skill damage.",
+            "parsed": {
+              "input": {
+                "kind": "toggle",
+                "key": "lingyang-diligent-practice-ready"
+              },
+              "trigger": "Mountain Roamer follows a Basic Attack within 3s in Striding Lion",
+              "modifiers": [],
+              "triggerActionIds": [
+                "1104:7:3"
+              ],
+              "triggeredAttacks": [
+                {
+                  "id": "lingyang-diligent-practice-hit",
+                  "name": "Diligent Practice Mountain Roamer",
+                  "damageType": "skill",
+                  "element": "glacio",
+                  "referenceActionId": "1104:7:3",
+                  "referenceMultiplier": 1.5,
+                  "count": 1
+                }
+              ],
+              "confidence": "high",
+              "warnings": [
+                "The three-second window and one-use consumption are selected manually."
+              ]
+            },
+            "reviewStatus": "include"
           }
         ]
       }
@@ -2207,6 +2240,9 @@
                     "scaling": "atk",
                     "count": 1
                   }
+                ],
+                "triggerActionIds": [
+                  "1104:3:0"
                 ]
               }
             ]

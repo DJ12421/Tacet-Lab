@@ -181,7 +181,7 @@
   height: 100%;
   overflow: hidden;
   flex-direction: column;
-  border: 1px solid rgba(228,187,94,.35);
+  border: 1px solid rgba(var(--gold-rgb),.35);
   border-radius: 9px;
   background: linear-gradient(145deg,#111719,#07090a);
   color: #f4f5f3;
@@ -209,7 +209,7 @@
   overflow: hidden;
   flex: 1 1 auto;
   border-bottom: 1px solid rgba(255,255,255,.08);
-  background: radial-gradient(circle,rgba(228,187,94,.18),transparent 67%);
+  background: radial-gradient(circle,rgba(var(--gold-rgb),.18),transparent 67%);
 }
 
 .scanned-loadout-art>img {
@@ -329,7 +329,7 @@
   padding: 9px 19px;
   border: 1px solid rgba(255,206,91,.72);
   border-radius: 999px;
-  background: linear-gradient(135deg, #f0ce7c, #ba8e39);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--gold) 85%, white), color-mix(in srgb, var(--gold) 75%, black));
   color: #151005!important;
   font-size: var(--font-size-caption);
   font-weight: 800;
@@ -351,7 +351,7 @@
   overflow-y: auto;
   padding: 14px;
   scrollbar-width: none;
-  border-color: rgba(228,187,94,.45);
+  border-color: rgba(var(--gold-rgb),.45);
   box-shadow: 0 30px 100px #000;
 }
 
@@ -408,7 +408,7 @@
 .review-candidate-tabs button.active {
   border-color: var(--gold);
   color: var(--gold);
-  background: rgba(228,187,94,.08);
+  background: rgba(var(--gold-rgb),.08);
 }
 
 .scan-review-popout .review-card {

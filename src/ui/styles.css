@@ -36,6 +36,8 @@
 @import './styles/optimizer/v2.css';
 @import './styles/account-import.css';
 @import './styles/builds/loadouts.css';
+@import './styles/shell/settings.css';
+@import './styles/guides.css';
 
 /* Keep one vertical scroll owner: the page, or the open dialog, never both. */
 html:has(.modal-backdrop,.catalog-picker-backdrop,.weapon-detail-backdrop,.character-detail-backdrop,.weapon-config-backdrop,.calculation-backdrop,.tw-trace-backdrop),
@@ -43,7 +45,7 @@ body:has(.modal-backdrop,.catalog-picker-backdrop,.weapon-detail-backdrop,.chara
   overflow-y: hidden;
 }
 
-.modal-backdrop:not(.scan-review-backdrop):not(.import-data-backdrop):not(.roll-quality-backdrop):not(.echo-editor-backdrop):not(.cs-weight-editor-backdrop):not(.tw-build-management-backdrop):not(.equipment-buff-backdrop)>* {
+.modal-backdrop:not(.scan-review-backdrop):not(.import-data-backdrop):not(.settings-backdrop):not(.roll-quality-backdrop):not(.echo-editor-backdrop):not(.cs-weight-editor-backdrop):not(.tw-build-management-backdrop):not(.equipment-buff-backdrop)>* {
   max-height: none;
   overflow: visible;
 }
@@ -96,7 +98,7 @@ body:has(.modal-backdrop,.catalog-picker-backdrop,.weapon-detail-backdrop,.chara
 :is(.content,.modal-backdrop) :not(.cs-loadout-source) > select:not([multiple]) {
   min-height: 36px;
   padding: 0 9px;
-  border: 1px solid rgba(141,228,212,.25);
+  border: 1px solid rgba(var(--mint-rgb),.25);
   border-radius: 4px;
   background-color: #070b0c;
   color: #e6eeeb;
@@ -106,7 +108,7 @@ body:has(.modal-backdrop,.catalog-picker-backdrop,.weapon-detail-backdrop,.chara
 
 :is(.content,.modal-backdrop) :not(.cs-loadout-source) > select:not([multiple]):hover,
 :is(.content,.modal-backdrop) :not(.cs-loadout-source) > select:not([multiple]):focus-visible {
-  border-color: rgba(141,228,212,.65);
+  border-color: rgba(var(--mint-rgb),.65);
 }
 
 /* Every searchable field uses the Archive search treatment. */
@@ -119,7 +121,7 @@ body:has(.modal-backdrop,.catalog-picker-backdrop,.weapon-detail-backdrop,.chara
   align-items: center;
   gap: 8px;
   padding: 0 10px;
-  border: 1px solid rgba(141,228,212,.22);
+  border: 1px solid rgba(var(--mint-rgb),.22);
   border-radius: 6px;
   background: #070b0c;
   text-transform: none;
@@ -130,7 +132,7 @@ body:has(.modal-backdrop,.catalog-picker-backdrop,.weapon-detail-backdrop,.chara
 .search.search-field:focus-within,
 .archive-search.search-field:focus-within {
   border-color: var(--mint);
-  box-shadow: 0 0 0 2px rgba(141,228,212,.08);
+  box-shadow: 0 0 0 2px rgba(var(--mint-rgb),.08);
 }
 
 .search-field > .icon {

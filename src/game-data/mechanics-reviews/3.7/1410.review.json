@@ -472,7 +472,7 @@
             "skillType": "Normal Attack",
             "skillName": "Moon Steps",
             "name": "Moon Steps - Moonbow - Basic Attack 1 DMG",
-            "damageType": "basic",
+            "damageType": "liberation",
             "skillSource": "basic",
             "scaling": "atk",
             "expressions": [
@@ -531,7 +531,7 @@
             "skillType": "Normal Attack",
             "skillName": "Moon Steps",
             "name": "Moon Steps - Moonbow - Basic Attack 2 DMG",
-            "damageType": "basic",
+            "damageType": "liberation",
             "skillSource": "basic",
             "scaling": "atk",
             "expressions": [
@@ -634,7 +634,7 @@
             "skillType": "Normal Attack",
             "skillName": "Moon Steps",
             "name": "Moon Steps - Moonbow - Basic Attack 3 DMG",
-            "damageType": "basic",
+            "damageType": "liberation",
             "skillSource": "basic",
             "scaling": "atk",
             "expressions": [
@@ -715,7 +715,7 @@
             "skillType": "Normal Attack",
             "skillName": "Moon Steps",
             "name": "Moon Steps - Moonbow - Dodge Counter DMG",
-            "damageType": "basic",
+            "damageType": "liberation",
             "tags": [
               "dodge-counter"
             ],
@@ -820,7 +820,7 @@
             "skillType": "Resonance Skill",
             "skillName": "Foresight Fugue",
             "name": "Foresight Fugue - Pulse of Origins DMG",
-            "damageType": "skill",
+            "damageType": "basic",
             "skillSource": "skill",
             "scaling": "atk",
             "expressions": [
@@ -1033,7 +1033,7 @@
             "skillType": "Resonance Skill",
             "skillName": "Foresight Fugue",
             "name": "Foresight Fugue - Closing Refrain DMG",
-            "damageType": "skill",
+            "damageType": "basic",
             "skillSource": "skill",
             "scaling": "atk",
             "expressions": [
@@ -1596,7 +1596,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Ebb and Flow",
             "name": "Ebb and Flow - Enhanced Moonbow - Basic Attack 1 DMG",
-            "damageType": "basic",
+            "damageType": "liberation",
             "tags": [
               "forte"
             ],
@@ -1657,7 +1657,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Ebb and Flow",
             "name": "Ebb and Flow - Enhanced Moonbow - Basic Attack 2 DMG",
-            "damageType": "basic",
+            "damageType": "liberation",
             "tags": [
               "forte"
             ],
@@ -1762,7 +1762,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Ebb and Flow",
             "name": "Ebb and Flow - Enhanced Moonbow - Basic Attack 3 DMG",
-            "damageType": "basic",
+            "damageType": "liberation",
             "tags": [
               "forte"
             ],
@@ -1845,7 +1845,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Ebb and Flow",
             "name": "Ebb and Flow - Enhanced Moonbow - Dodge Counter DMG",
-            "damageType": "basic",
+            "damageType": "liberation",
             "tags": [
               "forte",
               "dodge-counter"
@@ -2981,13 +2981,24 @@
                 "input": {
                   "kind": "toggle"
                 },
-                "durationSeconds": 30,
                 "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Heavy Attack - Absolute Fullness cast",
+                "triggerActionIds": [
+                  "1410:7:12"
                 ],
-                "reviewStatus": "no-mechanic"
+                "triggeredAttacks": [
+                  {
+                    "id": "absolute-fullness-shield",
+                    "name": "Absolute Fullness team shield",
+                    "damageType": "shield",
+                    "recipient": "team",
+                    "scaling": "atk",
+                    "expression": "160%",
+                    "count": 1
+                  }
+                ]
               }
             ]
           },

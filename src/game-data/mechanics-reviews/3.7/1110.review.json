@@ -2110,7 +2110,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Lambent Gold",
             "name": "Lambent Gold - Illuminating Dew DMG",
-            "damageType": "heavy",
+            "damageType": "basic",
             "tags": [
               "forte"
             ],
@@ -2171,7 +2171,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Lambent Gold",
             "name": "Lambent Gold - Swallow's Cut DMG",
-            "damageType": "heavy",
+            "damageType": "basic",
             "tags": [
               "forte"
             ],
@@ -2389,7 +2389,7 @@
                   "value": 6
                 },
                 {
-                  "stat": "ResistIgnore:Havoc",
+                  "stat": "ResistShred:Havoc",
                   "operation": "addPercent",
                   "value": 12
                 }
@@ -2486,9 +2486,18 @@
                   "stat": "critRate",
                   "operation": "addPercent",
                   "value": 80,
-                  "scope": "self",
                   "actionIds": [
-                    "1110:2:1"
+                    "1110:2:1",
+                    "1110:6:0"
+                  ]
+                },
+                {
+                  "stat": "Glacio",
+                  "operation": "addPercent",
+                  "value": 240,
+                  "actionIds": [
+                    "1110:2:1",
+                    "1110:6:0"
                   ]
                 }
               ],

@@ -1,5 +1,5 @@
 .wv-page,.wv-detail {
-  --wv-accent: #e4bb5e;
+  --wv-accent: var(--gold);
 }
 
 .wv-summary {
@@ -239,9 +239,9 @@
   place-items: center;
   align-content: center;
   gap: 10px;
-  border: 1px dashed rgba(228,187,94,.25);
+  border: 1px dashed rgba(var(--gold-rgb),.25);
   border-radius: 12px;
-  background: radial-gradient(circle at 50% 38%,rgba(228,187,94,.08),transparent 34%),rgba(255,255,255,.012);
+  background: radial-gradient(circle at 50% 38%,rgba(var(--gold-rgb),.08),transparent 34%),rgba(255,255,255,.012);
   text-align: center;
 }
 
@@ -250,9 +250,9 @@
   height: 76px;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(228,187,94,.3);
+  border: 1px solid rgba(var(--gold-rgb),.3);
   border-radius: 50%;
-  background: rgba(228,187,94,.08);
+  background: rgba(var(--gold-rgb),.08);
   color: var(--gold);
 }
 

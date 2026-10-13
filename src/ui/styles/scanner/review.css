@@ -77,8 +77,8 @@
   display: grid;
   gap: 8px;
   padding: 12px 14px;
-  border: 1px solid rgba(141,228,212,.28);
-  background: rgba(141,228,212,.055);
+  border: 1px solid rgba(var(--mint-rgb),.28);
+  background: rgba(var(--mint-rgb),.055);
 }
 
 .review-attention>div {

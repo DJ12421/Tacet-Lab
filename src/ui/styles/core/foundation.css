@@ -20,10 +20,14 @@
   --bg: #080b0d;
   --surface: rgba(15, 20, 21, .9);
   --surface-2: #151b1c;
-  --line: rgba(220, 201, 144, .18);
-  --gold: #e4bb5e;
+  --line: rgba(var(--gold-rgb), .18);
+  --theme-gold: #e4bb5e;
+  --gold: var(--theme-gold);
+  --gold-rgb: 228, 187, 94;
   --gold-soft: #9a7a38;
   --mint: #8de4d4;
+  --site-mint: #8de4d4;
+  --mint-rgb: 141, 228, 212;
   --muted: #7c8987;
   --danger: #ef766e;
   --radius-subtle: 8px;

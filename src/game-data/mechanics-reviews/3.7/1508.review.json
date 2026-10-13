@@ -207,7 +207,7 @@
             "skillType": "Normal Attack",
             "skillName": "Reign of Silence",
             "name": "Reign of Silence - Death Snip DMG",
-            "damageType": "basic",
+            "damageType": "liberation",
             "skillSource": "basic",
             "scaling": "atk",
             "expressions": [
@@ -310,7 +310,7 @@
             "skillType": "Normal Attack",
             "skillName": "Reign of Silence",
             "name": "Reign of Silence - Death Snip Additional DMG",
-            "damageType": "basic",
+            "damageType": "liberation",
             "skillSource": "basic",
             "scaling": "atk",
             "expressions": [
@@ -821,7 +821,7 @@
             "skillType": "Normal Attack",
             "skillName": "Reign of Silence",
             "name": "Reign of Silence - Severed Facet DMG",
-            "damageType": "liberation",
+            "damageType": "heavy",
             "skillSource": "basic",
             "scaling": "atk",
             "expressions": [
@@ -3477,7 +3477,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Sight of Unraveling - Oblivion",
             "name": "Sight of Unraveling - Oblivion - Chainsaw Mode - Dodge Counter DMG",
-            "damageType": "basic",
+            "damageType": "liberation",
             "tags": [
               "forte",
               "dodge-counter"
@@ -3693,7 +3693,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Sight of Unraveling - Oblivion",
             "name": "Sight of Unraveling - Oblivion - Chainsaw Mode - Dodge Counter Hold DMG",
-            "damageType": "basic",
+            "damageType": "liberation",
             "tags": [
               "forte",
               "dodge-counter"
@@ -5055,14 +5055,18 @@
             "parsedEffects": [
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "always"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "modifiers": [
+                  {
+                    "stat": "ResistShred:Havoc",
+                    "operation": "addPercent",
+                    "value": 10,
+                    "scope": "self"
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {
@@ -5209,12 +5213,19 @@
                 "input": {
                   "kind": "toggle"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "modifiers": [
+                  {
+                    "stat": "damageBonus",
+                    "operation": "addPercent",
+                    "value": 100,
+                    "actionIds": [
+                      "1508:3:0"
+                    ]
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": [],
+                "trigger": "Sequence 5 active"
               },
               {
                 "input": {

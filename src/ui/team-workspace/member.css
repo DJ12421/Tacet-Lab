@@ -18,7 +18,7 @@
 
 .tw-subnav button.active {
   border-color: var(--tw-mint-line);
-  background: rgba(141,228,212,.1);
+  background: rgba(var(--mint-rgb),.1);
   color: var(--mint);
 }
 
@@ -32,7 +32,7 @@
   position: relative;
   min-height: 670px;
   overflow: hidden;
-  background: radial-gradient(circle at 55% 36%,rgba(228,187,94,.18),transparent 50%),#071011;
+  background: radial-gradient(circle at 55% 36%,rgba(var(--gold-rgb),.18),transparent 50%),#071011;
 }
 
 .tw-member-art::after {
@@ -394,9 +394,9 @@
 .tw-echo-card {
   min-width: 0;
   padding: 9px;
-  border: 1px solid rgba(228,187,94,.2);
+  border: 1px solid rgba(var(--gold-rgb),.2);
   border-radius: 5px;
-  background: linear-gradient(145deg,rgba(228,187,94,.055),#080d0e 65%);
+  background: linear-gradient(145deg,rgba(var(--gold-rgb),.055),#080d0e 65%);
 }
 
 .tw-echo-card>header {

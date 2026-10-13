@@ -85,7 +85,7 @@
 
 .optimizer-distribution-chart circle.highlighted {
   fill: var(--gold);
-  stroke: #fff1bd;
+  stroke: color-mix(in srgb, var(--gold) 45%, white);
   stroke-width: 2;
   opacity: 1;
   cursor: pointer;

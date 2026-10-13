@@ -334,7 +334,7 @@
             "skillType": "Normal Attack",
             "skillName": "Flaming Sakura Blade Art",
             "name": "Flaming Sakura Blade Art - Heavy Attack - Frost Splinter: Present Self DMG",
-            "damageType": "heavy",
+            "damageType": "liberation",
             "skillSource": "basic",
             "scaling": "atk",
             "expressions": [
@@ -559,7 +559,7 @@
             "skillType": "Normal Attack",
             "skillName": "Flaming Sakura Blade Art",
             "name": "Flaming Sakura Blade Art - Basic Attack - Foreclaimed Self Stage 1 DMG",
-            "damageType": "basic",
+            "damageType": "liberation",
             "tags": [
               "normal-chain"
             ],
@@ -620,7 +620,7 @@
             "skillType": "Normal Attack",
             "skillName": "Flaming Sakura Blade Art",
             "name": "Flaming Sakura Blade Art - Basic Attack - Foreclaimed Self Stage 2 DMG",
-            "damageType": "basic",
+            "damageType": "liberation",
             "tags": [
               "normal-chain"
             ],
@@ -703,7 +703,7 @@
             "skillType": "Normal Attack",
             "skillName": "Flaming Sakura Blade Art",
             "name": "Flaming Sakura Blade Art - Basic Attack - Foreclaimed Self Stage 3 DMG",
-            "damageType": "basic",
+            "damageType": "liberation",
             "tags": [
               "normal-chain"
             ],
@@ -852,7 +852,7 @@
             "skillType": "Normal Attack",
             "skillName": "Flaming Sakura Blade Art",
             "name": "Flaming Sakura Blade Art - Basic Attack - Foreclaimed Self Stage 4 DMG",
-            "damageType": "basic",
+            "damageType": "liberation",
             "tags": [
               "normal-chain"
             ],
@@ -1001,7 +1001,7 @@
             "skillType": "Normal Attack",
             "skillName": "Flaming Sakura Blade Art",
             "name": "Flaming Sakura Blade Art - Basic Attack - Foreclaimed Self Stage 5 DMG",
-            "damageType": "basic",
+            "damageType": "liberation",
             "tags": [
               "normal-chain"
             ],
@@ -1084,7 +1084,7 @@
             "skillType": "Normal Attack",
             "skillName": "Flaming Sakura Blade Art",
             "name": "Flaming Sakura Blade Art - Heavy Attack - Foreclaimed Self DMG",
-            "damageType": "heavy",
+            "damageType": "liberation",
             "skillSource": "basic",
             "scaling": "atk",
             "expressions": [
@@ -1143,7 +1143,7 @@
             "skillType": "Normal Attack",
             "skillName": "Flaming Sakura Blade Art",
             "name": "Flaming Sakura Blade Art - Heavy Attack - Bitterfrost: Foreclaimed Self DMG",
-            "damageType": "heavy",
+            "damageType": "liberation",
             "skillSource": "basic",
             "scaling": "atk",
             "expressions": [
@@ -1378,7 +1378,7 @@
             "skillType": "Normal Attack",
             "skillName": "Flaming Sakura Blade Art",
             "name": "Flaming Sakura Blade Art - Mid-air Attack - Foreclaimed Self Stage 1 DMG",
-            "damageType": "basic",
+            "damageType": "liberation",
             "tags": [
               "normal-chain",
               "mid-air"
@@ -1484,7 +1484,7 @@
             "skillType": "Normal Attack",
             "skillName": "Flaming Sakura Blade Art",
             "name": "Flaming Sakura Blade Art - Mid-air Attack - Foreclaimed Self Stage 2 DMG",
-            "damageType": "basic",
+            "damageType": "liberation",
             "tags": [
               "normal-chain",
               "mid-air"
@@ -1674,7 +1674,7 @@
             "skillType": "Normal Attack",
             "skillName": "Flaming Sakura Blade Art",
             "name": "Flaming Sakura Blade Art - Dodge Counter - Foreclaimed Self DMG",
-            "damageType": "basic",
+            "damageType": "liberation",
             "tags": [
               "dodge-counter"
             ],
@@ -2434,7 +2434,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Everfrost Dominion",
             "name": "Everfrost Dominion - Basic Attack - Iai DMG",
-            "damageType": "basic",
+            "damageType": "liberation",
             "tags": [
               "forte"
             ],
@@ -3776,7 +3776,11 @@
                 "warnings": [
                   "Reviewed: no supported deterministic calculator mechanic."
                 ],
-                "reviewStatus": "no-mechanic"
+                "reviewStatus": "no-mechanic",
+                "triggerActionIds": [
+                  "1108:2:1",
+                  "1108:2:2"
+                ]
               }
             ]
           },
@@ -3826,14 +3830,21 @@
             "parsedEffects": [
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "always"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "modifiers": [
+                  {
+                    "stat": "critDamage",
+                    "operation": "addPercent",
+                    "value": 500,
+                    "actionIds": [
+                      "1108:3:0",
+                      "1108:3:1"
+                    ]
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {

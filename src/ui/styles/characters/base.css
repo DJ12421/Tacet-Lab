@@ -13,7 +13,7 @@
 }
 
 .character-candy-card {
-  --character-accent: var(--weapon-accent,var(--gold));
+  --character-accent: var(--weapon-accent,#e4bb5e);
   position: relative;
   display: grid;
   grid-template-columns: 145px minmax(0,1fr);
@@ -181,7 +181,7 @@
 .candy-level b {
   padding: 2px 3px 0px 6px;
   border-radius: 4px;
-  background: rgba(141,228,212,.2);
+  background: rgba(var(--mint-rgb),.2);
   color: var(--mint);
   font-size: var(--font-size-heading-small);
   margin-bottom: 4px;
@@ -280,7 +280,7 @@
 }
 
 .character-choice {
-  border-color: color-mix(in srgb,var(--weapon-accent,var(--gold)) 42%,transparent);
+  border-color: color-mix(in srgb,var(--weapon-accent,#e4bb5e) 42%,transparent);
   background: linear-gradient(135deg,var(--weapon-glow,rgba(228,187,94,.1)),#0b1011);
 }
 
@@ -293,7 +293,7 @@
   width: min(1420px,100%);
   height: min(930px,96vh);
   grid-template-columns: 350px minmax(0,1fr);
-  border-color: color-mix(in srgb,var(--weapon-accent,var(--gold)) 55%,transparent);
+  border-color: color-mix(in srgb,var(--weapon-accent,#e4bb5e) 55%,transparent);
 }
 
 .detail-header-actions {
@@ -387,7 +387,7 @@
 
 .level-buttons button.active {
   border-color: var(--mint);
-  background: rgba(141,228,212,.16);
+  background: rgba(var(--mint-rgb),.16);
   color: var(--mint);
 }
 
@@ -428,8 +428,8 @@
 }
 
 .sequence-buttons button.active i {
-  background: rgba(228,187,94,.17);
-  box-shadow: 0 0 12px rgba(228,187,94,.25);
+  background: rgba(var(--gold-rgb),.17);
+  box-shadow: 0 0 12px rgba(var(--gold-rgb),.25);
 }
 
 .character-stat-list {
@@ -517,11 +517,11 @@
   grid-column: 2;
   grid-row: 1;
   cursor: pointer;
-  border-color: color-mix(in srgb,var(--weapon-accent,var(--gold)) 40%,transparent);
+  border-color: color-mix(in srgb,var(--weapon-accent,#e4bb5e) 40%,transparent);
 }
 
 .equip-subcard:hover {
-  border-color: var(--weapon-accent,var(--gold));
+  border-color: var(--weapon-accent,#e4bb5e);
 }
 
 .equip-subcard .section-heading>b {

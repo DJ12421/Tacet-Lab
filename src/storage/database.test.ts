@@ -106,6 +106,21 @@ describe('local account persistence', () => {
     expect((await db.echoes.get('shared-echo'))?.equippedBy).toBe(second.id)
   })
 
+  it('keeps an empty Echo slot through repair and account export', async () => {
+    const catalog = characterCatalog.find((entry) => entry.name === 'Lucy')!
+    const character = await createOwnedCharacterWithDefaultWeapon(catalog.id)
+    await db.echoes.bulkAdd(['first', 'second'].map((id) => ({ id, name: 'Fusion Warrior', cost: 1 as const, rarity: 5 as const, level: 0, sonata: 'Molten Rift', mainStat: { key: 'atkPercent' as const, value: 18 }, subStats: [], locked: false, excluded: false, createdAt: 1, source: 'manual' as const })))
+
+    await setEquippedEchoIds(character.id, ['first', '', 'second'])
+
+    expect((await db.equippedLoadouts.where('characterId').equals(character.id).first())?.echoIds).toEqual(['first', '', 'second'])
+    const backup = await exportAccount()
+    expect(validateAccount(backup)).toBe(true)
+    expect(backup.equippedLoadouts?.[0]?.echoIds).toEqual(['first', '', 'second'])
+    await importAccount(backup)
+    expect((await db.equippedLoadouts.where('characterId').equals(character.id).first())?.echoIds).toEqual(['first', '', 'second'])
+  })
+
   it('keeps optimizer profiles and runs out of backups and ignores them in older imports', async () => {
     await ensureSeedData()
     const profile = defaultOptimizerProfile('saved-build')

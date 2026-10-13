@@ -328,8 +328,8 @@
   position: absolute;
   z-index: 6;
   border: 1px solid var(--mint);
-  background: rgba(141,228,212,.12);
-  box-shadow: 0 0 0 1px rgba(141,228,212,.12);
+  background: rgba(var(--mint-rgb),.12);
+  box-shadow: 0 0 0 1px rgba(var(--mint-rgb),.12);
   pointer-events: none;
 }
 
@@ -469,9 +469,9 @@
   align-items: center;
   justify-items: center;
   gap: 0;
-  border: 1px solid rgba(228,187,94,.52);
+  border: 1px solid rgba(var(--gold-rgb),.52);
   border-radius: 50%;
-  background: radial-gradient(circle,rgba(228,187,94,.13),rgba(8,13,14,.96));
+  background: radial-gradient(circle,rgba(var(--gold-rgb),.13),rgba(8,13,14,.96));
   color: var(--gold);
   cursor: text;
 }

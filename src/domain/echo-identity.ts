@@ -13,6 +13,6 @@ export function buildEquipmentIdentity(weaponId: string, echoIds: string[], weap
   const echoById = new Map(echoes.map((echo) => [echo.id, echo]))
   return JSON.stringify([
     weapon?.catalogId ?? weaponId,
-    echoIds.map((id) => echoById.has(id) ? echoStatIdentity(echoById.get(id)!) : `missing:${id}`)
+    echoIds.map((id) => !id ? '' : echoById.has(id) ? echoStatIdentity(echoById.get(id)!) : `missing:${id}`)
   ])
 }

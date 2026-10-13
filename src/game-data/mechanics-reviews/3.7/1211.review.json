@@ -1638,7 +1638,7 @@
             "skillType": "Resonance Skill",
             "skillName": "Bubbles and Baits",
             "name": "Bubbles and Baits - Beckon - Breakdown Form DMG",
-            "damageType": "liberation",
+            "damageType": "skill",
             "skillSource": "skill",
             "scaling": "atk",
             "expressions": [
@@ -1807,7 +1807,7 @@
             "skillType": "Resonance Skill",
             "skillName": "Bubbles and Baits",
             "name": "Bubbles and Baits - Banish - Breakdown Form Stage 1 DMG",
-            "damageType": "skill",
+            "damageType": "liberation",
             "tags": [],
             "skillSource": "skill",
             "scaling": "atk",
@@ -1910,7 +1910,7 @@
             "skillType": "Resonance Skill",
             "skillName": "Bubbles and Baits",
             "name": "Bubbles and Baits - Banish - Breakdown Form Stage 2 DMG",
-            "damageType": "skill",
+            "damageType": "liberation",
             "tags": [],
             "skillSource": "skill",
             "scaling": "atk",
@@ -2522,7 +2522,10 @@
             "text": "When a Resonator in the team has an Off-Tune Buildup Rate over 100%, every 10% that runs over increases the Resonator's Tune Break Boost by 8, up to 40.",
             "parsed": {
               "input": {
-                "kind": "toggle"
+                "kind": "stacks",
+                "key": "denia-oftune-excess-tens",
+                "minimum": 0,
+                "maximum": 5
               },
               "trigger": "When a Resonator in the team has an Off-Tune Buildup Rate over 100%",
               "modifiers": [
@@ -2583,7 +2586,7 @@
             "text": "- The skill DMG is considered Resonance Liberation DMG and the DMG Multiplier is increased by 50%.",
             "parsed": {
               "input": {
-                "kind": "always"
+                "kind": "toggle"
               },
               "modifiers": [
                 {
@@ -2592,7 +2595,36 @@
                   "value": 50,
                   "scope": "self",
                   "actionIds": [
-                    "1211:7:0"
+                    "1211:1:7",
+                    "1211:1:8",
+                    "1211:1:9",
+                    "1211:1:10",
+                    "1211:1:11",
+                    "1211:1:12",
+                    "1211:1:13",
+                    "1211:1:14",
+                    "1211:1:15",
+                    "1211:1:16",
+                    "1211:1:17"
+                  ]
+                },
+                {
+                  "stat": "damageTypeOverride",
+                  "damageType": "liberation",
+                  "actionIds": [
+                    "1211:1:7",
+                    "1211:1:8",
+                    "1211:1:9",
+                    "1211:1:10",
+                    "1211:1:11",
+                    "1211:1:12",
+                    "1211:1:13",
+                    "1211:1:14",
+                    "1211:1:15",
+                    "1211:1:16",
+                    "1211:1:17",
+                    "1211:2:2",
+                    "1211:2:3"
                   ]
                 }
               ],
@@ -3225,12 +3257,16 @@
                 },
                 "trigger": "After Fusion Burst is triggered on enemies near the active Resonator in the team",
                 "durationSeconds": 15,
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "modifiers": [
+                  {
+                    "stat": "ResistIgnore:Fusion",
+                    "operation": "addPercent",
+                    "value": 1,
+                    "scope": "self"
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {
@@ -3258,7 +3294,10 @@
               },
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "toggle",
+                  "requires": [
+                    "denia-tune-strain-mode"
+                  ]
                 },
                 "trigger": "When Denia is in Resonance Mode - Tune Strain",
                 "durationSeconds": 15,
@@ -3562,14 +3601,29 @@
               },
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "toggle",
+                  "key": "denia-s6-fusion-burst-mode"
                 },
+                "trigger": "Erosion Field damages the target in Fusion Burst mode",
                 "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "triggerActionIds": [
+                  "1211:7:0"
                 ],
-                "reviewStatus": "no-mechanic"
+                "triggeredAttacks": [
+                  {
+                    "id": "denia-s6-erosion-fusion-burst",
+                    "name": "Erosion Field Fusion Burst",
+                    "damageType": "status",
+                    "referenceActionId": "status:fusion-burst",
+                    "referenceMultiplier": 3,
+                    "count": 1,
+                    "maximumTriggers": 1
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [
+                  "Per-target trigger reset after Breakdown Form and the two-second reset lockout require target event state."
+                ]
               },
               {
                 "input": {
@@ -3658,8 +3712,10 @@
             "text": "- Resonance Mode - Fusion Burst: All Resonators in the team gain 30% Fusion DMG Bonus.",
             "parsed": {
               "input": {
-                "kind": "always"
+                "kind": "toggle",
+                "key": "denia-fusion-burst-mode"
               },
+              "exclusiveGroup": "denia-resonance-mode",
               "modifiers": [
                 {
                   "stat": "Fusion",
@@ -3681,8 +3737,10 @@
             "text": "- Resonance Mode - Tune Strain: All Resonators in the team gain 10 Tune Break Boost.",
             "parsed": {
               "input": {
-                "kind": "always"
+                "kind": "toggle",
+                "key": "denia-tune-strain-mode"
               },
+              "exclusiveGroup": "denia-resonance-mode",
               "modifiers": [
                 {
                   "stat": "tuneBreakBoost",

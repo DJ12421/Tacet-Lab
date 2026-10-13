@@ -415,7 +415,7 @@
             "skillType": "Normal Attack",
             "skillName": "Movement of Life and Death",
             "name": "Movement of Life and Death - Scarlet Coda DMG",
-            "damageType": "basic",
+            "damageType": "skill",
             "skillSource": "basic",
             "scaling": "atk",
             "expressions": [
@@ -956,7 +956,7 @@
             "skillType": "Resonance Liberation",
             "skillName": "Waltz of Forsaken Depths",
             "name": "Waltz of Forsaken Depths - Basic Attack - Hecate Stage 1 DMG",
-            "damageType": "basic",
+            "damageType": "echo",
             "tags": [
               "normal-chain"
             ],
@@ -1017,7 +1017,7 @@
             "skillType": "Resonance Liberation",
             "skillName": "Waltz of Forsaken Depths",
             "name": "Waltz of Forsaken Depths - Basic Attack - Hecate Stage 2 DMG",
-            "damageType": "basic",
+            "damageType": "echo",
             "tags": [
               "normal-chain"
             ],
@@ -1100,7 +1100,7 @@
             "skillType": "Resonance Liberation",
             "skillName": "Waltz of Forsaken Depths",
             "name": "Waltz of Forsaken Depths - Enhanced Attack - Hecate: Strings DMG",
-            "damageType": "outro",
+            "damageType": "echo",
             "skillSource": "liberation",
             "scaling": "atk",
             "expressions": [
@@ -1181,7 +1181,7 @@
             "skillType": "Resonance Liberation",
             "skillName": "Waltz of Forsaken Depths",
             "name": "Waltz of Forsaken Depths - Enhanced Attack - Hecate: Winds DMG",
-            "damageType": "outro",
+            "damageType": "echo",
             "skillSource": "liberation",
             "scaling": "atk",
             "expressions": [
@@ -1262,7 +1262,7 @@
             "skillType": "Resonance Liberation",
             "skillName": "Waltz of Forsaken Depths",
             "name": "Waltz of Forsaken Depths - Enhanced Attack - Hecate: Cadenza DMG",
-            "damageType": "outro",
+            "damageType": "echo",
             "skillSource": "liberation",
             "scaling": "atk",
             "expressions": [
@@ -2645,14 +2645,22 @@
             "parsedEffects": [
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "always"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "modifiers": [
+                  {
+                    "stat": "motionValue",
+                    "operation": "addPercent",
+                    "value": 24,
+                    "actionIds": [
+                      "1608:3:2",
+                      "1608:3:3",
+                      "1608:3:4"
+                    ]
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {
@@ -2671,6 +2679,10 @@
                     "scaling": "atk",
                     "count": 1
                   }
+                ],
+                "triggerActionIds": [
+                  "1608:7:0",
+                  "1608:7:1"
                 ]
               },
               {
@@ -2678,18 +2690,30 @@
                   "kind": "toggle"
                 },
                 "trigger": "If Phrolova is not the active Resonator during the Maestro state",
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "exclusiveGroup": "phrolova-s6-maestro-position",
+                "modifiers": [
+                  {
+                    "stat": "specialMultiplier",
+                    "operation": "addPercent",
+                    "value": 40,
+                    "actionIds": [
+                      "1608:3:0",
+                      "1608:3:1",
+                      "1608:3:2",
+                      "1608:3:3",
+                      "1608:3:4"
+                    ]
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {
                   "kind": "toggle"
                 },
                 "trigger": "If Phrolova is the active Resonator during the Maestro state",
+                "exclusiveGroup": "phrolova-s6-maestro-position",
                 "modifiers": [
                   {
                     "stat": "Havoc",

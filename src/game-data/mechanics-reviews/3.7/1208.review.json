@@ -19,7 +19,7 @@
             "skillType": "Normal Attack",
             "skillName": "Slayer's Trigger",
             "name": "Slayer's Trigger - Basic Attack Stage 1 DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "normal-chain"
             ],
@@ -80,7 +80,7 @@
             "skillType": "Normal Attack",
             "skillName": "Slayer's Trigger",
             "name": "Slayer's Trigger - Basic Attack Stage 2 DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "normal-chain"
             ],
@@ -185,7 +185,7 @@
             "skillType": "Normal Attack",
             "skillName": "Slayer's Trigger",
             "name": "Slayer's Trigger - Basic Attack Stage 3 DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "normal-chain"
             ],
@@ -312,7 +312,7 @@
             "skillType": "Normal Attack",
             "skillName": "Slayer's Trigger",
             "name": "Slayer's Trigger - Basic Attack Stage 4 DMG",
-            "damageType": "basic",
+            "damageType": "echo",
             "tags": [
               "normal-chain"
             ],
@@ -373,7 +373,7 @@
             "skillType": "Normal Attack",
             "skillName": "Slayer's Trigger",
             "name": "Slayer's Trigger - Dodge Counter - Blood for Blood DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "dodge-counter"
             ],
@@ -500,7 +500,7 @@
             "skillType": "Normal Attack",
             "skillName": "Slayer's Trigger",
             "name": "Slayer's Trigger - Mid-air Attack - Ashfall Barrage Plunging Attack DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "mid-air",
               "plunge"
@@ -562,7 +562,7 @@
             "skillType": "Normal Attack",
             "skillName": "Slayer's Trigger",
             "name": "Slayer's Trigger - Mid-air Attack - Ashfall Barrage Sustained Fire DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "mid-air"
             ],
@@ -623,7 +623,7 @@
             "skillType": "Normal Attack",
             "skillName": "Slayer's Trigger",
             "name": "Slayer's Trigger - Heavy Attack - Volley of Death Stage 1 DMG",
-            "damageType": "heavy",
+            "damageType": "echo",
             "tags": [],
             "skillSource": "basic",
             "scaling": "atk",
@@ -704,7 +704,7 @@
             "skillType": "Normal Attack",
             "skillName": "Slayer's Trigger",
             "name": "Slayer's Trigger - Heavy Attack - Volley of Death Stage 2 DMG",
-            "damageType": "heavy",
+            "damageType": "echo",
             "tags": [],
             "skillSource": "basic",
             "scaling": "atk",
@@ -785,7 +785,7 @@
             "skillType": "Normal Attack",
             "skillName": "Slayer's Trigger",
             "name": "Slayer's Trigger - Heavy Attack - Volley of Death Stage 3 DMG",
-            "damageType": "heavy",
+            "damageType": "echo",
             "tags": [],
             "skillSource": "basic",
             "scaling": "atk",
@@ -910,7 +910,7 @@
             "skillType": "Resonance Skill",
             "skillName": "Edge Transcended",
             "name": "Edge Transcended - Resonance Skill - Encroach DMG",
-            "damageType": "skill",
+            "damageType": "heavy",
             "skillSource": "skill",
             "scaling": "atk",
             "expressions": [
@@ -991,7 +991,7 @@
             "skillType": "Resonance Skill",
             "skillName": "Edge Transcended",
             "name": "Edge Transcended - Resonance Skill - Ascent of Malice DMG",
-            "damageType": "skill",
+            "damageType": "heavy",
             "skillSource": "skill",
             "scaling": "atk",
             "expressions": [
@@ -1072,7 +1072,7 @@
             "skillType": "Resonance Liberation",
             "skillName": "Hellfire Absolution",
             "name": "Hellfire Absolution - Resonance Liberation - Hellfire Absolution DMG",
-            "damageType": "liberation",
+            "damageType": "echo",
             "skillSource": "liberation",
             "scaling": "atk",
             "expressions": [
@@ -1432,7 +1432,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Beyond Threshold",
             "name": "Beyond Threshold - Basic Attack - Seraphic Execution Stage 1 DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "forte",
               "normal-chain"
@@ -1494,7 +1494,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Beyond Threshold",
             "name": "Beyond Threshold - Basic Attack - Seraphic Execution Stage 2 DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "forte",
               "normal-chain"
@@ -1600,7 +1600,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Beyond Threshold",
             "name": "Beyond Threshold - Basic Attack - Seraphic Execution Stage 3 DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "forte",
               "normal-chain"
@@ -1728,7 +1728,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Beyond Threshold",
             "name": "Beyond Threshold - Basic Attack - Seraphic Execution Stage 4 DMG",
-            "damageType": "basic",
+            "damageType": "echo",
             "tags": [
               "forte",
               "normal-chain"
@@ -1856,7 +1856,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Beyond Threshold",
             "name": "Beyond Threshold - Basic Attack - Seraphic Execution Stage 5 DMG",
-            "damageType": "basic",
+            "damageType": "echo",
             "tags": [
               "forte",
               "normal-chain"
@@ -2106,7 +2106,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Beyond Threshold",
             "name": "Beyond Threshold - Heavy Attack - Flamewing Verdict Stage 3 DMG",
-            "damageType": "heavy",
+            "damageType": "echo",
             "tags": [
               "forte"
             ],
@@ -2362,7 +2362,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Beyond Threshold",
             "name": "Beyond Threshold - Mid-air Attack - Hellsent Barrage Plunging Attack DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "forte",
               "mid-air",
@@ -2425,7 +2425,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Beyond Threshold",
             "name": "Beyond Threshold - Mid-air Attack - Hellsent Barrage Sustained Fire DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "forte",
               "mid-air"
@@ -2487,7 +2487,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Beyond Threshold",
             "name": "Beyond Threshold - Resonance Skill - Ravage DMG",
-            "damageType": "skill",
+            "damageType": "heavy",
             "tags": [
               "forte"
             ],
@@ -2820,18 +2820,16 @@
             "text": "While in Demon Hypostasis, every point of Afterflame increases the DMG of Basic Attack - Seraphic Execution, Heavy Attack - Flamewing Verdict, Mid-air Attack - Hellsent Barrage, Resonance Skill - Ravage, and Dodge Counter - Purgatory Scourge by 1.5%, up to 60%, which is removed upon exiting Demon Hypostasis.",
             "parsed": {
               "input": {
-                "kind": "toggle"
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 40
               },
               "modifiers": [
                 {
-                  "stat": "damageBonus",
+                  "stat": "specialMultiplier",
                   "operation": "addPercent",
                   "value": 1.5,
                   "actionIds": [
-                    "1208:1:0",
-                    "1208:1:1",
-                    "1208:1:2",
-                    "1208:1:3",
                     "1208:7:0",
                     "1208:7:1",
                     "1208:7:2",
@@ -2841,6 +2839,8 @@
                     "1208:7:6",
                     "1208:7:7",
                     "1208:7:8",
+                    "1208:7:9",
+                    "1208:7:10",
                     "1208:7:11"
                   ]
                 }
@@ -3266,12 +3266,28 @@
                 "input": {
                   "kind": "toggle"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "modifiers": [
+                  {
+                    "stat": "motionValue",
+                    "operation": "addPercent",
+                    "value": 60,
+                    "actionIds": [
+                      "1208:7:0",
+                      "1208:7:1",
+                      "1208:7:2",
+                      "1208:7:3",
+                      "1208:7:4",
+                      "1208:7:5",
+                      "1208:7:6",
+                      "1208:7:7",
+                      "1208:7:8",
+                      "1208:7:9",
+                      "1208:7:10"
+                    ]
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {

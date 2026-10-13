@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { calibrationExportProfiles, createCalibrationProfile, deleteCalibrationProfile, parseCalibrationProfiles, saveCalibrationProfile } from '../scanner/calibration'
 import type { CalibrationProfile, ScanRect } from '../scanner/types'
 import { defaultPanelRectForLayout, regionColor } from '../scanner/regions'
+import { BoundedNumberInput } from './BoundedNumberInput'
 
 const clampPanelRect = (rect: ScanRect): ScanRect => ({
   x: Math.max(0, Math.min(.96, rect.x)), y: Math.max(0, Math.min(.96, rect.y)),
@@ -14,8 +15,8 @@ const clampFieldRect = (rect: ScanRect, minimumSize = .02): ScanRect => {
 }
 const minimumFieldSize = (regionId: string) => /^echo-\d+-cost$/.test(regionId) ? .004 : .02
 
-export function ScannerCalibration({ imageDataUrl, profile, showScanBoxes, onChange, onShowScanBoxesChange, onSaved }: {
-  imageDataUrl: string; profile: CalibrationProfile; showScanBoxes: boolean; onChange: (profile: CalibrationProfile) => void; onShowScanBoxesChange: (visible: boolean) => void; onSaved?: (profile: CalibrationProfile) => void
+export function ScannerCalibration({ imageDataUrl, profile, showScanBoxes, onChange, onShowScanBoxesChange, onSaved, onPersisted }: {
+  imageDataUrl: string; profile: CalibrationProfile; showScanBoxes: boolean; onChange: (profile: CalibrationProfile) => void; onShowScanBoxesChange: (visible: boolean) => void; onSaved?: (profile: CalibrationProfile) => void; onPersisted?: (profile: CalibrationProfile) => void
 }) {
   const stageRef = useRef<HTMLDivElement>(null), panelRef = useRef<HTMLDivElement>(null), importRef = useRef<HTMLInputElement>(null)
   const [selectedRegionId, setSelectedRegionId] = useState(profile.regions[0]?.id ?? '')
@@ -74,7 +75,7 @@ export function ScannerCalibration({ imageDataUrl, profile, showScanBoxes, onCha
       const imported = parseCalibrationProfiles(await file.text()).map(saveCalibrationProfile)
       const active = imported.find((entry) => entry.layout === profile.layout
         && (entry.layout !== 'build-card' || entry.buildCardFormat === profile.buildCardFormat)) ?? imported[0]
-      setSelectedRegionId(active.regions[0]?.id ?? ''); onChange(active); setProfileMessage(`${imported.length} calibration profile${imported.length === 1 ? '' : 's'} imported and saved`)
+      setSelectedRegionId(active.regions[0]?.id ?? ''); onPersisted?.(active); onChange(active); setProfileMessage(`${imported.length} calibration profile${imported.length === 1 ? '' : 's'} imported and saved`)
     } catch (error) {
       setProfileMessage(error instanceof Error ? error.message : 'Calibration import failed.')
     }
@@ -83,7 +84,7 @@ export function ScannerCalibration({ imageDataUrl, profile, showScanBoxes, onCha
   const deleteProfile = () => {
     deleteCalibrationProfile(profile)
     const reset = createCalibrationProfile(profile.sourceWidth, profile.sourceHeight, defaultPanelRectForLayout(profile.layout), profile.layout, profile.uiScale, profile.buildCardFormat)
-    setSelectedRegionId(reset.regions[0]?.id ?? ''); onChange(reset); setProfileMessage('Saved profile deleted; defaults restored')
+    setSelectedRegionId(reset.regions[0]?.id ?? ''); onPersisted?.(reset); onChange(reset); setProfileMessage('Saved profile deleted; defaults restored')
   }
 
   return <div className="scanner-calibration">
@@ -104,7 +105,11 @@ export function ScannerCalibration({ imageDataUrl, profile, showScanBoxes, onCha
       </div>
       <aside className="calibration-field-inspector">
         <span className="eyebrow">Selected field</span><h3>{selectedRegion?.label ?? 'None'}</h3><p>Drag the field box to move it. Drag its lower-right square to resize it.</p>
-        {selectedRegion && <div>{(['x', 'y', 'width', 'height'] as Array<keyof ScanRect>).map((key) => <label key={key}>{key}<input type="number" min="0" max="1" step=".001" value={Number(selectedRegion.rect[key].toFixed(4))} onChange={(event) => setCoordinate(key, Number(event.target.value))}/></label>)}</div>}
+        {selectedRegion && <div>{(['x', 'y', 'width', 'height'] as Array<keyof ScanRect>).map((key) => {
+          const minimum = key === 'width' ? minimumFieldSize(selectedRegion.id) : key === 'height' ? .02 : 0
+          const maximum = key === 'x' ? Math.min(.98, 1 - selectedRegion.rect.width) : key === 'y' ? Math.min(.98, 1 - selectedRegion.rect.height) : key === 'width' ? 1 - selectedRegion.rect.x : 1 - selectedRegion.rect.y
+          return <label key={key}>{key}<BoundedNumberInput min={minimum} max={maximum} step="any" value={Number(selectedRegion.rect[key].toFixed(4))} onChange={(value) => setCoordinate(key, value)}/></label>
+        })}</div>}
         <small>Coordinates are normalized from 0 to 1 and relative to the calibrated panel.</small>
       </aside>
     </div>

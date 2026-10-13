@@ -84,10 +84,10 @@
   padding: 0!important;
   transform: translateY(-50%);
   overflow: hidden;
-  border: 1px solid rgba(228,187,94,.8);
+  border: 1px solid rgba(var(--gold-rgb),.8);
   border-radius: 50%;
   background: linear-gradient(145deg,#2a2518,#111716 72%);
-  box-shadow: 0 4px 12px rgba(0,0,0,.72),inset 0 0 0 1px rgba(228,187,94,.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,.72),inset 0 0 0 1px rgba(var(--gold-rgb),.08);
 }
 
 .tw-action-multiplier>span {
@@ -448,15 +448,15 @@
 
 .tw-member-build-picker>button:hover {
   border-color: var(--mint);
-  background: rgba(141,228,212,.11);
+  background: rgba(var(--mint-rgb),.11);
 }
 
 .tw-build-management-backdrop {
   --tw-line: rgba(255,255,255,.12);
   --tw-line-strong: rgba(255,255,255,.2);
-  --tw-mint-line: rgba(141,228,212,.3);
+  --tw-mint-line: rgba(var(--mint-rgb),.3);
   --tw-muted: #87928f;
-  --mint: #8de4d4;
+  --mint: var(--site-mint);
   z-index: 120;
   padding: 18px;
 }
@@ -524,7 +524,7 @@
   gap: 12px;
   margin: 16px 16px 0;
   padding: 14px 16px;
-  border: 1px solid rgba(141,228,212,.16);
+  border: 1px solid rgba(var(--mint-rgb),.16);
   border-radius: 4px;
   background: #031315;
   color: #aee5df;

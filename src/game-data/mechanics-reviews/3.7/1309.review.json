@@ -2420,7 +2420,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Myriad Omens' Mandate",
             "name": "Myriad Omens' Mandate - Thrum of All Sounds: Havoc Mid-air Attack Stage 1 DMG",
-            "damageType": "basic",
+            "damageType": "skill",
             "tags": [
               "forte",
               "normal-chain",
@@ -2483,7 +2483,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Myriad Omens' Mandate",
             "name": "Myriad Omens' Mandate - Thrum of All Sounds: Havoc Mid-air Attack Stage 2 DMG",
-            "damageType": "basic",
+            "damageType": "skill",
             "tags": [
               "forte",
               "normal-chain",
@@ -2546,7 +2546,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Myriad Omens' Mandate",
             "name": "Myriad Omens' Mandate - Thrum of All Sounds: Havoc Mid-air Attack Stage 3 DMG",
-            "damageType": "basic",
+            "damageType": "skill",
             "tags": [
               "forte",
               "normal-chain",
@@ -2653,7 +2653,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Myriad Omens' Mandate",
             "name": "Myriad Omens' Mandate - Thrum of All Sounds: Aero Mid-air Attack Stage 1 DMG",
-            "damageType": "basic",
+            "damageType": "skill",
             "tags": [
               "forte",
               "normal-chain",
@@ -2716,7 +2716,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Myriad Omens' Mandate",
             "name": "Myriad Omens' Mandate - Thrum of All Sounds: Aero Mid-air Attack Stage 2 DMG",
-            "damageType": "basic",
+            "damageType": "skill",
             "tags": [
               "forte",
               "normal-chain",

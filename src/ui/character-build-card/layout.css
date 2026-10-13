@@ -97,7 +97,7 @@
 }
 
 .cbc-rich-title,.cbc-rich-highlight {
-  color: #f3d16e;
+  color: color-mix(in srgb, var(--gold) 82%, white);
 }
 
 .cbc-rich-fire,.cbc-rich-fusion {
@@ -150,6 +150,23 @@
   border-color: color-mix(in srgb,var(--cbc-accent) 55%,white);
   background: color-mix(in srgb,var(--cbc-accent) 18%,rgba(255,255,255,.05));
   color: color-mix(in srgb,var(--cbc-accent) 72%,white);
+  transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+
+.cbc-debug-layout-actions .is-primary:hover {
+  transform: translateY(-2px);
+  background: color-mix(in srgb,var(--cbc-accent) 30%,rgba(255,255,255,.05));
+  box-shadow: 0 5px 16px color-mix(in srgb,var(--cbc-accent) 26%,transparent);
+}
+
+.cbc-debug-layout-actions .is-primary:active {
+  transform: translateY(1px) scale(.96);
+  box-shadow: 0 0 0 2px color-mix(in srgb,var(--cbc-accent) 38%,transparent);
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .cbc-debug-layout-actions .is-primary { transition: none; }
+  .cbc-debug-layout-actions .is-primary:hover,.cbc-debug-layout-actions .is-primary:active { transform: none; }
 }
 
 .cbc-debug-layout-transfer {

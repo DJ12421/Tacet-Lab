@@ -2756,6 +2756,13 @@
                   "operation": "addPercent",
                   "value": 15,
                   "scope": "self"
+                },
+                {
+                  "stat": "damageTypeOverride",
+                  "damageType": "basic",
+                  "actionIds": [
+                    "1603:1:5"
+                  ]
                 }
               ],
               "confidence": "high",
@@ -3267,12 +3274,19 @@
                 "input": {
                   "kind": "toggle"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "modifiers": [
+                  {
+                    "stat": "motionValue",
+                    "operation": "addPercent",
+                    "value": 50,
+                    "scope": "self",
+                    "actionIds": [
+                      "1603:3:0"
+                    ]
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {
@@ -3378,39 +3392,36 @@
             "text": "The DMG Multiplier of Forte Circuit's Sweet Dream is additionally increased by 150%.\nForte Circuit Perennial: Within 15s after casting Ephemeral, if Concerto Energy is full and Perennial is not on cooldown, Resonance Skill is replaced with Perennial.\nCasting Perennial consumes 50 Concerto Energy and recovers 50 Crimson Pistils, dealing Havoc DMG equal to 100% of Ephemeral DMG, considered Basic Attack DMG. This skill can be cast once every 25s.\nCamellya enters Budding Mode after casting Perennial and removes all Crimson Buds. The bonus DMG Multiplier granted by Forte Circuit's Sweet Dream is increased to 250%.\nImmune to interruptions when casting Perennial.",
             "parsedEffects": [
               {
-                "resolutionId": "character-review-resolution",
                 "input": {
-                  "kind": "toggle"
+                  "kind": "always"
                 },
-                "trigger": "Sequence 6 active",
                 "modifiers": [
                   {
                     "stat": "motionValue",
                     "operation": "addPercent",
                     "value": 150,
                     "actionIds": [
-                      "1603:1:0",
-                      "1603:1:1",
-                      "1603:1:2",
-                      "1603:1:3",
-                      "1603:1:4",
-                      "1603:1:6",
                       "1603:1:7",
-                      "1603:2:1",
-                      "1603:2:2",
-                      "1603:2:3",
-                      "1603:2:4",
-                      "1603:2:7",
-                      "1603:2:5",
-                      "1603:2:8",
                       "1603:2:0",
+                      "1603:2:5",
                       "1603:2:6",
-                      "1603:1:5"
+                      "1603:2:7",
+                      "1603:2:8"
                     ]
                   }
                 ],
                 "confidence": "high",
-                "warnings": [],
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Perennial available after Ephemeral",
+                "modifiers": [],
+                "triggerActionIds": [
+                  "1603:7:0"
+                ],
                 "triggeredAttacks": [
                   {
                     "id": "perennial",
@@ -3422,6 +3433,10 @@
                     "count": 1,
                     "cooldownSeconds": 25
                   }
+                ],
+                "confidence": "high",
+                "warnings": [
+                  "Perennial can be cast within 15s after Ephemeral; the action filter approximates its availability."
                 ]
               },
               {
@@ -3475,20 +3490,33 @@
                 "modifiers": [],
                 "confidence": "review",
                 "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                  "Budding Mode and Crimson Bud removal require resource state."
                 ],
                 "reviewStatus": "no-mechanic"
               },
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "toggle",
+                  "key": "camellya-s6-post-perennial-sweet-dream"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "trigger": "Budding Mode after casting Perennial",
+                "modifiers": [
+                  {
+                    "stat": "motionValue",
+                    "operation": "addPercent",
+                    "value": 50,
+                    "actionIds": [
+                      "1603:1:7",
+                      "1603:2:0",
+                      "1603:2:5",
+                      "1603:2:6",
+                      "1603:2:7",
+                      "1603:2:8"
+                    ]
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {

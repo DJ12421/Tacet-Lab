@@ -36,7 +36,7 @@
 
 .loadout-library>aside button.active {
   border-color: var(--gold);
-  background: rgba(228,187,94,.1);
+  background: rgba(var(--gold-rgb),.1);
 }
 
 .loadout-library>aside small {

@@ -189,7 +189,7 @@
 }
 
 .cbc-stars {
-  color: #edca66;
+  color: color-mix(in srgb, var(--gold) 82%, white);
   font-size: 20px;
   letter-spacing: 3px;
   text-shadow: 0 0 10px rgba(237,202,102,.25);

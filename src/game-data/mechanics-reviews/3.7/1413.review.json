@@ -2650,7 +2650,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Formless Heart Sword",
             "name": "Formless Heart Sword - Heaven's Reckoning: Ephemeral Transcendence DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "forte"
             ],
@@ -3710,15 +3710,40 @@
                 "input": {
                   "kind": "stacks",
                   "minimum": 0,
-                  "maximum": 1
+                  "maximum": 25,
+                  "key": "qingxiao-exorcising-seal-removed"
                 },
-                "trigger": "After Basic Attack - Stringblade",
+                "trigger": "A Stringblade or Ephemeral Transcendence hit consumes Exorcising Seal",
                 "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "triggerActionIds": [
+                  "1413:1:0",
+                  "1413:1:1",
+                  "1413:1:2",
+                  "1413:1:3",
+                  "1413:1:5",
+                  "1413:1:6",
+                  "1413:1:7",
+                  "1413:7:0",
+                  "1413:7:1",
+                  "1413:7:2",
+                  "1413:7:3"
                 ],
-                "reviewStatus": "no-mechanic"
+                "triggeredAttacks": [
+                  {
+                    "id": "qingxiao-s1-juque-perdition",
+                    "name": "Juque Perdition",
+                    "damageType": "basic",
+                    "element": "aero",
+                    "scaling": "atk",
+                    "expression": "400%",
+                    "count": 1,
+                    "bonusPerActivation": 0.04,
+                    "cooldownSeconds": 1
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "maximumSequence": 5
               },
               {
                 "input": {
@@ -3848,14 +3873,20 @@
             "parsedEffects": [
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "always"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "modifiers": [
+                  {
+                    "stat": "critDamage",
+                    "operation": "addPercent",
+                    "value": 100,
+                    "actionIds": [
+                      "1413:3:0"
+                    ]
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {
@@ -3984,59 +4015,57 @@
             "parsedEffects": [
               {
                 "input": {
-                  "kind": "toggle"
-                },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
-                ],
-                "reviewStatus": "no-mechanic"
-              },
-              {
-                "input": {
-                  "kind": "stacks",
-                  "minimum": 0,
-                  "maximum": 1
-                },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
-                ],
-                "reviewStatus": "no-mechanic"
-              },
-              {
-                "input": {
-                  "kind": "stacks",
-                  "minimum": 0,
-                  "maximum": 1
-                },
-                "modifiers": [
-                  {
-                    "stat": "damageBonus",
-                    "operation": "amplifyPercent",
-                    "value": 2,
-                    "scope": "self"
-                  }
-                ],
-                "confidence": "high",
-                "warnings": []
-              },
-              {
-                "input": {
                   "kind": "always"
                 },
                 "modifiers": [
                   {
                     "stat": "damageBonus",
                     "operation": "amplifyPercent",
-                    "value": 5,
-                    "scope": "self"
+                    "value": 40,
+                    "actionIds": [
+                      "1413:1:4",
+                      "1413:7:5",
+                      "1413:3:0"
+                    ]
                   }
                 ],
                 "confidence": "high",
                 "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "modifiers": [],
+                "confidence": "review",
+                "warnings": [
+                  "Reviewed: no supported deterministic calculator mechanic."
+                ],
+                "reviewStatus": "no-mechanic"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "review",
+                "warnings": [
+                  "Juque Perdition target Mindlock amplification needs a target-specific stack input on the triggered hit."
+                ],
+                "reviewStatus": "no-mechanic"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "review",
+                "warnings": [
+                  "Juque Perdition target Mindlock amplification needs a target-specific stack input on the triggered hit."
+                ],
+                "reviewStatus": "no-mechanic"
               },
               {
                 "input": {
@@ -4054,29 +4083,55 @@
               },
               {
                 "input": {
-                  "kind": "always"
-                },
-                "modifiers": [
-                  {
-                    "stat": "damageBonus",
-                    "operation": "addPercent",
-                    "value": 5,
-                    "scope": "self"
-                  }
-                ],
-                "confidence": "high",
-                "warnings": []
-              },
-              {
-                "input": {
                   "kind": "toggle"
                 },
                 "modifiers": [],
                 "confidence": "review",
                 "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                  "Juque Perdition target Mindlock amplification needs a target-specific stack input on the triggered hit."
                 ],
                 "reviewStatus": "no-mechanic"
+              },
+              {
+                "input": {
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 25,
+                  "key": "qingxiao-exorcising-seal-removed"
+                },
+                "trigger": "A Stringblade or Ephemeral Transcendence hit consumes Exorcising Seal",
+                "modifiers": [],
+                "triggerActionIds": [
+                  "1413:1:0",
+                  "1413:1:1",
+                  "1413:1:2",
+                  "1413:1:3",
+                  "1413:1:5",
+                  "1413:1:6",
+                  "1413:1:7",
+                  "1413:7:0",
+                  "1413:7:1",
+                  "1413:7:2",
+                  "1413:7:3"
+                ],
+                "triggeredAttacks": [
+                  {
+                    "id": "qingxiao-s6-juque-perdition",
+                    "name": "Juque Perdition",
+                    "damageType": "basic",
+                    "element": "aero",
+                    "scaling": "atk",
+                    "expression": "400%",
+                    "count": 1,
+                    "bonusPerActivation": 0.04,
+                    "cooldownSeconds": 1,
+                    "referenceMultiplier": 1.4
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [
+                  "Mindlock stacks add further target-specific amplification not included in this triggered hit."
+                ]
               }
             ]
           }

@@ -17,7 +17,7 @@
   position: relative;
   height: 455px;
   overflow: hidden;
-  background: radial-gradient(circle at 50% 32%,rgba(228,187,94,.23),transparent 48%),#071011;
+  background: radial-gradient(circle at 50% 32%,rgba(var(--gold-rgb),.23),transparent 48%),#071011;
 }
 
 .tw-overview-art::after {
@@ -229,7 +229,7 @@
   align-items: center;
   gap: 8px;
   padding: 7px;
-  border: 1px solid rgba(228,187,94,.2);
+  border: 1px solid rgba(var(--gold-rgb),.2);
   background: linear-gradient(135deg,rgba(164,115,194,.2),#091112 44%);
   color: inherit;
   text-decoration: none;
@@ -279,9 +279,9 @@
   display: grid;
   grid-template-columns: minmax(76px,.8fr) minmax(0,1.2fr);
   overflow: hidden;
-  border: 1px solid rgba(228,187,94,.28);
+  border: 1px solid rgba(var(--gold-rgb),.28);
   border-radius: 6px;
-  background: linear-gradient(145deg,rgba(228,187,94,.12),rgba(15,24,25,.98) 44%,#070c0d);
+  background: linear-gradient(145deg,rgba(var(--gold-rgb),.12),rgba(15,24,25,.98) 44%,#070c0d);
   box-shadow: inset 0 1px rgba(255,255,255,.045),0 8px 18px rgba(0,0,0,.2);
   color: inherit;
   text-decoration: none;
@@ -311,8 +311,8 @@
   display: grid;
   place-items: center;
   overflow: hidden;
-  border-right: 1px solid rgba(228,187,94,.15);
-  background: radial-gradient(circle at 50% 48%,rgba(228,187,94,.19),transparent 67%);
+  border-right: 1px solid rgba(var(--gold-rgb),.15);
+  background: radial-gradient(circle at 50% 48%,rgba(var(--gold-rgb),.19),transparent 67%);
 }
 
 .tw-overview-top-echo-art img {
@@ -331,7 +331,7 @@
   place-items: center;
   width: 24px;
   height: 24px;
-  border: 1px solid rgba(228,187,94,.7);
+  border: 1px solid rgba(var(--gold-rgb),.7);
   border-radius: 50%;
   background: rgba(4,8,9,.92);
   color: var(--gold);
@@ -436,7 +436,7 @@
   place-items: center;
   width: 34px;
   height: 34px;
-  border: 1px solid rgba(228,187,94,.3);
+  border: 1px solid rgba(var(--gold-rgb),.3);
   border-radius: 50%;
   color: var(--gold);
   font-size: var(--font-size-heading);
@@ -626,7 +626,7 @@
 .tw-overview-gear-card {
   min-width: 0;
   overflow: hidden;
-  border: 1px solid rgba(228,187,94,.2);
+  border: 1px solid rgba(var(--gold-rgb),.2);
   border-radius: 5px;
   background: linear-gradient(180deg,rgba(164,115,194,.2),#0a1112 44%);
 }

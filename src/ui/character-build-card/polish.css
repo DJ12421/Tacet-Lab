@@ -22,6 +22,10 @@
   background: color-mix(in srgb,var(--cbc-accent) 13%,rgba(4,13,20,.78));
   box-shadow: inset 3px 0 var(--cbc-accent),0 0 18px color-mix(in srgb,var(--cbc-accent) 12%,transparent);
 }
+.cbc-stat-row.is-unweighted,.cbc-echo-row .cbc-stat-source.is-unweighted {
+  opacity: .4;
+  filter: grayscale(1);
+}
 .cbc-stat-source {
   transition: opacity .17s ease,filter .17s ease,border-color .17s ease,background .17s ease,box-shadow .17s ease;
 }
@@ -201,7 +205,13 @@
   letter-spacing: .08em;
   text-transform: uppercase;
 }
-.cbc-accent-picker label {
+.cbc-accent-heading {
+  grid-column: 1/-1;
+  color: #aebfba;
+  font-size: 11px;
+  font-weight: 700;
+}
+.cbc-accent-picker>.cbc-accent-control {
   min-width: 0;
   height: 36px;
   display: grid;
@@ -236,7 +246,7 @@
   font-weight: 800;
   letter-spacing: .06em;
 }
-.cbc-accent-picker label::after {
+.cbc-accent-picker>.cbc-accent-control::after {
   content:"Choose custom color";
   grid-column: 2;
   color: #899896;
@@ -245,4 +255,13 @@
 .cbc-accent-picker>button {
   min-height: 36px;
   padding: 0 10px;
+}
+.cbc-accent-picker>.cbc-grade-color-option {
+  grid-column: 1/-1;
+  margin: 0;
+  padding: 10px 0 0;
+  border: 0;
+  border-top: 1px solid rgba(255,255,255,.13);
+  border-radius: 0;
+  background: none;
 }

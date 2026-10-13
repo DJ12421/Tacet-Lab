@@ -1609,6 +1609,9 @@
                     "count": 5,
                     "recipient": "team"
                   }
+                ],
+                "triggerActionIds": [
+                  "1501:3:0"
                 ]
               }
             ]

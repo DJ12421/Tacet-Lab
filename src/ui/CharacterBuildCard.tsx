@@ -12,6 +12,8 @@ import { NanokaSpinePortrait, type NanokaSpinePortraitHandle } from './NanokaSpi
 import { Icon } from './components'
 import { statIconSource, weaponStatIconSource } from './stat-icons'
 import { inherentSkillBonusId, skillTreeBonusId, type CharacterShowcaseModel } from './character-showcase-model'
+import { confirmDiscardChanges, useUnsavedChanges } from './useUnsavedChanges'
+import { BoundedNumberInput } from './BoundedNumberInput'
 import './character-build-card.css'
 
 const CARD_WIDTH = 1920
@@ -167,18 +169,8 @@ const parseImportedLayout = (value: unknown): SavedDebugLayout | null => {
 }
 
 function DebugCoordinateInput({ section, property, rect, onChange }: { section: DebugSectionKey; property: keyof DebugSectionRect; rect: DebugSectionRect; onChange: (rect: DebugSectionRect) => void }) {
-  const [draft, setDraft] = useState(String(Math.round(rect[property])))
-  useEffect(() => setDraft(String(Math.round(rect[property]))), [section, property, rect, rect[property]])
-  const minimum = section === 'art' && property === 'x' ? -(ART_CANVAS_WIDTH - CARD_WIDTH) / 2
-    : section === 'art' && property === 'y' ? -(ART_CANVAS_HEIGHT - CARD_HEIGHT) / 2
-      : property === 'width' ? (section === 'art' ? CARD_WIDTH / 100 : 60)
-        : property === 'height' ? (section === 'art' ? CARD_HEIGHT / 100 : 30) : 0
-  return <input type="number" min={minimum} step="1" value={draft} onChange={(event) => {
-    const nextDraft = event.target.value
-    setDraft(nextDraft)
-    const value = Number(nextDraft)
-    if (nextDraft.trim() && Number.isFinite(value)) onChange({ ...rect, [property]: value })
-  }}/>
+  const { minimum, maximum } = debugCoordinateRange(section, property, rect)
+  return <BoundedNumberInput min={minimum} max={maximum} step="1" value={Math.round(rect[property])} onChange={(value) => onChange({ ...rect, [property]: value })}/>
 }
 
 function debugCoordinateRange(section: DebugSectionKey, property: keyof DebugSectionRect, rect: DebugSectionRect) {
@@ -208,6 +200,7 @@ const PRIORITY_DISPLAY_KEYS: Partial<Record<StatKey, BuildCardStatKey>> = {
 }
 
 const contributingStatKeys = (key: BuildCardStatKey): StatKey[] => key === 'hp' ? ['hp', 'hpPercent'] : key === 'atk' ? ['atk', 'atkPercent'] : key === 'def' ? ['def', 'defPercent'] : key === 'tuneBreakBoost' ? [] : [key]
+const isUnweightedStat = (key: BuildCardStatKey, value: number, profile: CharacterSubstatProfile) => key !== 'energyRegen' && !(value !== 0 && /^(spectro|fusion|glacio|electro|aero|havoc)Damage$/.test(key)) && !contributingStatKeys(key).some((source) => profile.weights[source])
 const contributesToStat = (source: StatKey, target: BuildCardStatKey | null) => Boolean(target && contributingStatKeys(target).includes(source))
 const displayedStatKey = (source: StatKey): BuildCardStatKey => source === 'hpPercent' ? 'hp' : source === 'atkPercent' ? 'atk' : source === 'defPercent' ? 'def' : source
 
@@ -312,9 +305,8 @@ function echoRollGradeClass(stat: { key: StatKey; value: number }) {
   return quality === 1 ? 'roll-color-red' : quality >= .75 ? 'roll-color-gold' : quality >= .5 ? 'roll-color-purple' : quality >= .375 ? 'roll-color-blue' : quality >= .25 ? 'roll-color-green' : 'roll-color-white'
 }
 
-function EchoRow({ echo, index, profile, editable, onOpen, onEdit, debugSection, debugClassName, debugStyle, highlightedStat, setHighlightedStat, colorGrades }: { echo?: Echo; index: number; profile: CharacterSubstatProfile; editable: boolean; onOpen: () => void; onEdit: (echo: Echo) => void; debugSection: DebugSectionKey; debugClassName: string; debugStyle?: CSSProperties; highlightedStat: BuildCardStatKey | null; setHighlightedStat: (stat: BuildCardStatKey | null) => void; colorGrades: boolean }) {
-  const [actionsOpen, setActionsOpen] = useState(false)
-  if (!echo) return <button type="button" className={`cbc-echo-row cbc-echo-slot-${index} is-empty ${editable ? 'is-editable' : ''} ${debugClassName}`} data-debug-section={debugSection} style={debugStyle} disabled={!editable} onClick={editable ? onOpen : undefined}>
+function EchoRow({ echo, index, profile, editable, onOpen, debugSection, debugClassName, debugStyle, highlightedStat, setHighlightedStat, colorGrades }: { echo?: Echo; index: number; profile: CharacterSubstatProfile; editable: boolean; onOpen: () => void; debugSection: DebugSectionKey; debugClassName: string; debugStyle?: CSSProperties; highlightedStat: BuildCardStatKey | null; setHighlightedStat: (stat: BuildCardStatKey | null) => void; colorGrades: boolean }) {
+  if (!echo) return <button type="button" className={`cbc-echo-row cbc-echo-slot-${index} is-empty ${editable ? 'is-editable' : ''} ${debugClassName}`} data-debug-section={debugSection} data-echo-slot={index} style={debugStyle} disabled={!editable} onClick={editable ? onOpen : undefined}>
     <span>+</span><strong>Empty Echo slot</strong><small>{index === 0 ? 'Main Echo' : `Echo ${index + 1}`}</small>
   </button>
   const catalog = echoCatalogByName.get(echo.name)
@@ -324,18 +316,17 @@ function EchoRow({ echo, index, profile, editable, onOpen, onEdit, debugSection,
   const sonataIconSourceUrl = generatedSonataIconSources[echo.sonata]
   const scoreText = score.valid && score.grade ? `${score.grade} · ${score.percentage.toFixed(1)}%${score.provisional ? '*' : ''}` : profile.maximum > 0 ? 'Unverified' : 'Unconfigured'
   const scoreGradeClass = score.valid && score.grade ? `cbc-score-grade-${score.grade.toLowerCase()}` : ''
-  return <article className={`cbc-echo-row cbc-echo-slot-${index} ${index === 0 ? 'is-main' : ''} ${editable ? 'is-editable' : ''} ${colorGrades ? 'is-grade-colored' : ''} ${debugClassName}`} data-debug-section={debugSection} style={debugStyle} role={editable ? 'button' : undefined} aria-label={editable ? `Edit ${echo.name}` : `${echo.name} Echo`} tabIndex={0} onMouseLeave={() => setActionsOpen(false)} onClick={editable ? () => setActionsOpen((open) => !open) : undefined} onKeyDown={editable ? (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setActionsOpen((open) => !open) } } : undefined}>
+  return <article className={`cbc-echo-row cbc-echo-slot-${index} ${index === 0 ? 'is-main' : ''} ${editable ? 'is-editable' : ''} ${colorGrades ? 'is-grade-colored' : ''} ${debugClassName}`} data-debug-section={debugSection} data-echo-slot={index} draggable={editable} style={debugStyle} role={editable ? 'button' : undefined} aria-label={editable ? `Switch ${echo.name}` : `${echo.name} Echo`} tabIndex={0} onClick={editable ? onOpen : undefined} onKeyDown={editable ? (event) => { if (event.target === event.currentTarget && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); onOpen() } } : undefined}>
     <div className="cbc-echo-visual">
       <span className="cbc-echo-art">{catalog?.iconSourceUrl ? <img src={catalog.iconSourceUrl} alt=""/> : <b>◆</b>}</span>
       {sonataIconSourceUrl && <img className="cbc-echo-sonata-icon" src={sonataIconSourceUrl} alt="" title={echo.sonata}/>} 
       <i className="cbc-echo-cost">{echo.cost}</i>
     </div>
     <div className="cbc-echo-main-stats">
-      {[echo.mainStat, secondary].map((stat, statIndex) => <span className={`cbc-stat-source ${contributesToStat(stat.key, highlightedStat) ? 'is-contributing' : ''}`} tabIndex={0} onMouseEnter={() => setHighlightedStat(displayedStatKey(stat.key))} onMouseLeave={() => setHighlightedStat(null)} onFocus={() => setHighlightedStat(displayedStatKey(stat.key))} onBlur={() => setHighlightedStat(null)} key={`${stat.key}-${statIndex}`}><small><img src={statIconSource(stat.key)} alt="" aria-hidden="true"/>{statLabels[stat.key]}</small><b>{formatStat(stat.key, stat.value)}</b></span>)}
+      {[echo.mainStat, secondary].map((stat, statIndex) => <span className={`cbc-stat-source${isUnweightedStat(stat.key, stat.value, profile) ? ' is-unweighted' : ''}${contributesToStat(stat.key, highlightedStat) ? ' is-contributing' : ''}`} tabIndex={0} onMouseEnter={() => setHighlightedStat(displayedStatKey(stat.key))} onMouseLeave={() => setHighlightedStat(null)} onFocus={() => setHighlightedStat(displayedStatKey(stat.key))} onBlur={() => setHighlightedStat(null)} key={`${stat.key}-${statIndex}`}><small><img src={statIconSource(stat.key)} alt="" aria-hidden="true"/>{statLabels[stat.key]}</small><b>{formatStat(stat.key, stat.value)}</b></span>)}
     </div>
-    <div className="cbc-echo-substats">{substats.map((stat, statIndex) => <span className={`cbc-stat-source ${contributesToStat(stat.key, highlightedStat) ? 'is-contributing' : ''}`} tabIndex={0} onMouseEnter={() => setHighlightedStat(displayedStatKey(stat.key))} onMouseLeave={() => setHighlightedStat(null)} onFocus={() => setHighlightedStat(displayedStatKey(stat.key))} onBlur={() => setHighlightedStat(null)} key={`${stat.key}-${statIndex}`}><small><img src={statIconSource(stat.key)} alt="" aria-hidden="true"/>{statLabels[stat.key]}</small><b className={colorGrades ? echoRollGradeClass(stat) : ''}>{formatStat(stat.key, stat.value)}</b><RollBreakdown stat={stat}/></span>)}</div>
+    <div className="cbc-echo-substats">{substats.map((stat, statIndex) => <span className={`cbc-stat-source${isUnweightedStat(stat.key, stat.value, profile) ? ' is-unweighted' : ''}${contributesToStat(stat.key, highlightedStat) ? ' is-contributing' : ''}`} tabIndex={0} onMouseEnter={() => setHighlightedStat(displayedStatKey(stat.key))} onMouseLeave={() => setHighlightedStat(null)} onFocus={() => setHighlightedStat(displayedStatKey(stat.key))} onBlur={() => setHighlightedStat(null)} key={`${stat.key}-${statIndex}`}><small><img src={statIconSource(stat.key)} alt="" aria-hidden="true"/>{statLabels[stat.key]}</small><b className={colorGrades ? echoRollGradeClass(stat) : ''}>{formatStat(stat.key, stat.value)}</b><RollBreakdown stat={stat}/></span>)}</div>
     <div className="cbc-echo-score"><small>Substat score</small><strong className={scoreGradeClass}>{scoreText}</strong></div>
-    {actionsOpen && editable && <div className="cbc-edit-popover cbc-echo-actions" onClick={(event) => event.stopPropagation()}><button type="button" onClick={() => { setActionsOpen(false); onEdit(echo) }}><Icon name="edit"/>Edit Echo</button><button type="button" onClick={() => { setActionsOpen(false); onOpen() }}>↔ Switch Echo</button></div>}
   </article>
 }
 
@@ -352,6 +343,7 @@ interface CharacterBuildCardProps {
   livePortraitRef: RefObject<NanokaSpinePortraitHandle | null>
   portraitFailed: boolean
   animatedPortraitReady: boolean
+  pauseLivePortrait?: boolean
   enabledSkillTreeNodeIds: string[]
   onPortraitError: () => void
   onLiveReady: () => void
@@ -362,7 +354,7 @@ interface CharacterBuildCardProps {
   onToggleSkillTreeNode: (id: string) => void
   onOpenWeapon: () => void
   onOpenEcho: (index: number) => void
-  onEditEcho: (echo: Echo) => void
+  onMoveEcho?: (from: number, to: number) => void
   onEditPriorities: () => void
   onShowScoreInfo: () => void
   customArtworkUrl?: string
@@ -376,15 +368,17 @@ interface CharacterBuildCardProps {
 export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardProps>(function CharacterBuildCard(props, forwardedRef) {
   const {
     character, catalog, model, settings, profile, statRows, statDetail, editable,
-    portraitRef, livePortraitRef, portraitFailed, animatedPortraitReady, enabledSkillTreeNodeIds,
+    portraitRef, livePortraitRef, portraitFailed, animatedPortraitReady, pauseLivePortrait = false, enabledSkillTreeNodeIds,
     onPortraitError, onLiveReady, onLiveFallback, onSetLevel, onSetSequence, onSetSkillLevel,
-    onToggleSkillTreeNode, onOpenWeapon, onOpenEcho, onEditEcho, onEditPriorities, onShowScoreInfo,
+    onToggleSkillTreeNode, onOpenWeapon, onOpenEcho, onMoveEcho, onEditPriorities, onShowScoreInfo,
     customArtworkUrl, onUploadArtwork, onRestoreArtwork, onAccentChange, layoutControlsHost, layoutPanelHost
   } = props
   const viewportRef = useRef<HTMLDivElement>(null)
   const [scale, setScale] = useState(1)
   const [levelOpen, setLevelOpen] = useState(false)
   const [skillLevelOpen, setSkillLevelOpen] = useState<number | null>(null)
+  const [draggedEchoSlot, setDraggedEchoSlot] = useState<number | null>(null)
+  const [dropEchoSlot, setDropEchoSlot] = useState<number | null>(null)
   const savedDebugLayoutRef = useRef<SavedDebugLayout | null>(null)
   if (!savedDebugLayoutRef.current) savedDebugLayoutRef.current = loadSavedDebugLayout(catalog.id)
   const [hiddenDebugSections, setHiddenDebugSections] = useState<Set<DebugSectionKey>>(() => new Set(savedDebugLayoutRef.current?.hidden ?? []))
@@ -393,12 +387,14 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
   const [customAccent, setCustomAccent] = useState<string | null>(() => savedDebugLayoutRef.current?.accentColor ?? null)
   const [colorEchoGrades, setColorEchoGrades] = useState(() => savedDebugLayoutRef.current?.colorEchoGrades ?? true)
   const [highlightedStat, setHighlightedStat] = useState<BuildCardStatKey | null>(null)
+  const [customizeOpen, setCustomizeOpen] = useState(true)
   const [debugCalibrationEnabled, setDebugCalibrationEnabled] = useState(false)
   const [selectedDebugSection, setSelectedDebugSection] = useState<DebugSectionKey>('identity')
   const [debugSectionRects, setDebugSectionRects] = useState<Partial<Record<DebugSectionKey, DebugSectionRect>>>({})
   const debugSectionOriginRectsRef = useRef<Partial<Record<DebugSectionKey, DebugSectionRect>>>({})
   const defaultDebugSectionRectsRef = useRef<Partial<Record<DebugSectionKey, DebugSectionRect>>>({})
   const debugLayoutSnapshotRef = useRef<SavedDebugLayout | null>(null)
+  const savedLayoutBaselineRef = useRef<SavedDebugLayout | null>(null)
   const layoutImportRef = useRef<HTMLInputElement>(null)
   const artworkInputRef = useRef<HTMLInputElement>(null)
   const [layoutTransferStatus, setLayoutTransferStatus] = useState<string | null>(null)
@@ -442,6 +438,8 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
     const saved = loadSavedDebugLayout(catalog.id)
     savedDebugLayoutRef.current = saved
     debugLayoutSnapshotRef.current = null
+    savedLayoutBaselineRef.current = null
+    setCustomizeOpen(true)
     setDebugCalibrationEnabled(false)
     setHiddenDebugSections(new Set(saved.hidden))
     setEchoLayoutPreset(saved.echoLayout)
@@ -492,6 +490,10 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
           const presetRect = (savedPreset === 'curved' ? DEFAULT_CURVED_SECTION_RECTS : DEFAULT_STRAIGHT_SECTION_RECTS)[section]
           if (presetRect) restored[section] = { ...presetRect }
         })
+        if (savedDebugLayoutRef.current) {
+          if (!debugLayoutSnapshotRef.current) debugLayoutSnapshotRef.current = { ...savedDebugLayoutRef.current, rects: restored }
+          savedLayoutBaselineRef.current = { ...savedDebugLayoutRef.current, layoutVersion: 3, rects: restored }
+        }
         setDebugSectionRects(restored)
       })
     })
@@ -549,10 +551,11 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
       accentColor: customAccent,
       colorEchoGrades
     }
-    setDebugCalibrationEnabled(true)
+    setCustomizeOpen(true)
   }
   const cancelDebugPositioning = () => {
-    const snapshot = debugLayoutSnapshotRef.current
+    if (!confirmDiscardChanges(layoutDirty)) return false
+    const snapshot = savedLayoutBaselineRef.current
     if (snapshot) {
       setDebugSectionRects(Object.fromEntries(Object.entries(snapshot.rects).map(([key, rect]) => [key, { ...rect }])) as Partial<Record<DebugSectionKey, DebugSectionRect>>)
       setHiddenDebugSections(new Set(snapshot.hidden))
@@ -560,16 +563,19 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
       setCustomAccent(snapshot.accentColor)
       setColorEchoGrades(snapshot.colorEchoGrades)
     }
-    setDebugCalibrationEnabled(false)
+    return true
   }
   const saveDebugPositioning = () => {
     const saved = { layoutVersion: 3 as const, rects: debugSectionRects, hidden: [...hiddenDebugSections], echoLayout: echoLayoutPreset, accentColor: customAccent, colorEchoGrades }
-    try { saveCharacterDebugLayout(catalog.id, saved) } catch { /* Keep the calibrated layout in memory when browser storage is unavailable. */ }
+    try { saveCharacterDebugLayout(catalog.id, saved) } catch { setLayoutTransferStatus('Could not save layout. Your changes are still pending.'); return }
     savedDebugLayoutRef.current = saved
-    debugLayoutSnapshotRef.current = null
-    setDebugCalibrationEnabled(false)
+    savedLayoutBaselineRef.current = saved
+    debugLayoutSnapshotRef.current = { ...saved, rects: { ...saved.rects } }
+    setLayoutTransferStatus('Layout saved.')
   }
   const currentDebugLayout = (): SavedDebugLayout => ({ layoutVersion: 3, rects: debugSectionRects, hidden: [...hiddenDebugSections], echoLayout: echoLayoutPreset, accentColor: customAccent, colorEchoGrades })
+  const layoutDirty = Boolean(savedLayoutBaselineRef.current) && JSON.stringify(currentDebugLayout()) !== JSON.stringify(savedLayoutBaselineRef.current)
+  useUnsavedChanges(layoutDirty)
   const exportDebugLayout = () => {
     const blob = new Blob([JSON.stringify(exportedLayout(currentDebugLayout()), null, 2)], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
@@ -655,6 +661,34 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
     const nodes = index === 2 ? [...regular, ...catalog.skillTreeExtras.inherentSkills.map((bonus, sourceIndex) => ({ bonus, id: inherentSkillBonusId(sourceIndex) }))] : regular
     return nodes.some(({ bonus, id }) => enabledSkillTreeNodeIds.includes(id) && Boolean(skillTreeStatLine(bonus.name, bonus.description)?.key && contributesToStat(skillTreeStatLine(bonus.name, bonus.description)!.key, highlightedStat)))
   }))
+  const dragSlot = (target: EventTarget) => {
+    const value = (target as HTMLElement).closest('[data-echo-slot]')?.getAttribute('data-echo-slot')
+    return value === undefined || value === null ? null : Number(value)
+  }
+  const endEchoDrag = () => { setDraggedEchoSlot(null); setDropEchoSlot(null) }
+  const startEchoDrag = (event: React.DragEvent<HTMLElement>) => {
+    const slot = dragSlot(event.target)
+    const echo = slot === null ? undefined : model.echoSlots[slot]
+    if (!editable || !echo) { event.preventDefault(); return }
+    event.dataTransfer.effectAllowed = 'move'
+    event.dataTransfer.setData('text/plain', echo.id)
+    setDraggedEchoSlot(slot)
+  }
+  const overEchoSlot = (event: React.DragEvent<HTMLElement>) => {
+    const slot = dragSlot(event.target)
+    if (draggedEchoSlot === null || slot === null) return
+    event.preventDefault()
+    event.dataTransfer.dropEffect = 'move'
+    setDropEchoSlot(slot)
+  }
+  const dropEcho = (event: React.DragEvent<HTMLElement>) => {
+    const slot = dragSlot(event.target)
+    if (draggedEchoSlot !== null && slot !== null) {
+      event.preventDefault()
+      if (draggedEchoSlot !== slot) onMoveEcho?.(draggedEchoSlot, slot)
+    }
+    endEchoDrag()
+  }
 
   return <div className="cbc-card-layout" style={accentStyle}>
     <div className="cbc-viewport" ref={viewportRef} style={{ height: CARD_HEIGHT * scale }}>
@@ -663,7 +697,7 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
         <div className={debugSectionClass('art', 'cbc-art-positioner')} data-debug-section="art" style={debugSectionStyle('art')}>
           <img ref={portraitRef} className={`cbc-character-art ${portraitFailed && !customArtworkUrl ? 'is-fallback' : ''} ${settings.liveCharacterArt && animatedPortraitReady && !customArtworkUrl ? 'is-live-hidden' : ''}`} src={customArtworkUrl ?? (portraitFailed ? catalog.iconSourceUrl : (catalog.portraitSourceUrl || catalog.iconSourceUrl))} alt={catalog.name} onError={onPortraitError}/>
           {settings.liveCharacterArt && <img className="cbc-live-portrait-snapshot" alt="" aria-hidden="true"/>}
-          {settings.liveCharacterArt && !customArtworkUrl && catalog.spineSkeletonSourceUrl && catalog.spineAtlasSourceUrl && <NanokaSpinePortrait ref={livePortraitRef} skeletonSourceUrl={catalog.spineSkeletonSourceUrl} atlasSourceUrl={catalog.spineAtlasSourceUrl} renderScale={scale} onReady={onLiveReady} onFallback={onLiveFallback}/>}
+          {settings.liveCharacterArt && !customArtworkUrl && catalog.spineSkeletonSourceUrl && catalog.spineAtlasSourceUrl && <NanokaSpinePortrait ref={livePortraitRef} skeletonSourceUrl={catalog.spineSkeletonSourceUrl} atlasSourceUrl={catalog.spineAtlasSourceUrl} renderScale={scale} paused={pauseLivePortrait || levelOpen || skillLevelOpen !== null} onReady={onLiveReady} onFallback={onLiveFallback}/>}
         </div>
       </section>
 
@@ -686,7 +720,7 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
               <div className="cbc-skill-bonus-nodes">{bonuses.map(({ bonus, id }) => { const nodeStat = skillTreeStatLine(bonus.name, bonus.description); const contributes = enabledSkillTreeNodeIds.includes(id) && Boolean(nodeStat && contributesToStat(nodeStat.key, highlightedStat)); return <button type="button" aria-label={bonus.name} aria-disabled={!editable} className={`${enabledSkillTreeNodeIds.includes(id) ? 'is-enabled' : 'is-disabled'} cbc-stat-source${contributes ? ' is-contributing' : ''}`} onMouseEnter={() => nodeStat && setHighlightedStat(displayedStatKey(nodeStat.key))} onMouseLeave={() => setHighlightedStat(null)} onFocus={() => nodeStat && setHighlightedStat(displayedStatKey(nodeStat.key))} onBlur={() => setHighlightedStat(null)} onClick={() => { if (editable) onToggleSkillTreeNode(id) }} key={id}><span><img src={bonus.iconSourceUrl} alt=""/></span></button> })}</div>
             </div>
             <button type="button" className="cbc-main-skill" aria-label={`${skill.name}, level ${model.skillLevels[index]}`} aria-disabled={!editable} onClick={() => { if (editable) setSkillLevelOpen(skillLevelOpen === index ? null : index) }}><span><img src={skill.iconSourceUrl} alt=""/></span><small>Lv. {model.skillLevels[index]}</small></button>
-            {skillLevelOpen === index && editable && <div className="cbc-edit-popover cbc-skill-level-popover"><strong className="cbc-skill-level-title">{label}</strong><div><button type="button" disabled={model.skillLevels[index] <= 1} onClick={() => onSetSkillLevel(index, model.skillLevels[index] - 1)}>−</button><input type="number" aria-label={`${label} level`} min="1" max="10" step="1" value={model.skillLevels[index]} onChange={(event) => onSetSkillLevel(index, Math.max(1, Math.min(10, Number(event.target.value) || 1)))}/><button type="button" disabled={model.skillLevels[index] >= 10} onClick={() => onSetSkillLevel(index, model.skillLevels[index] + 1)}>+</button></div></div>}
+            {skillLevelOpen === index && editable && <div className="cbc-edit-popover cbc-skill-level-popover"><strong className="cbc-skill-level-title">{label}</strong><div><button type="button" disabled={model.skillLevels[index] <= 1} onClick={() => onSetSkillLevel(index, model.skillLevels[index] - 1)}>−</button><BoundedNumberInput aria-label={`${label} level`} min={1} max={10} step="1" value={model.skillLevels[index]} onChange={(level) => onSetSkillLevel(index, level)}/><button type="button" disabled={model.skillLevels[index] >= 10} onClick={() => onSetSkillLevel(index, model.skillLevels[index] + 1)}>+</button></div></div>}
           </div>
         })}</div>
         <div className="cbc-extra-skills">{[catalog.skillTreeExtras.outroSkill, catalog.skillTreeExtras.tuneBreakSkill].map((skill, index) => skill?.iconSourceUrl && <button type="button" aria-label={skill.name} key={`${skill.name}-${index}`}><span><img src={skill.iconSourceUrl} alt=""/></span></button>)}</div>
@@ -706,7 +740,7 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
           <div>{statRows.map(({ key, label }) => {
             const detail = statDetail(key, label)
             const value = key === 'tuneBreakBoost' ? Number(detail.value) : model.finalStats[key as keyof typeof model.finalStats] ?? 0
-            return <div className={`cbc-stat-row${highlightedStat === key ? ' is-active' : ''}`} key={key} tabIndex={0} onMouseEnter={() => setHighlightedStat(key)} onMouseLeave={() => setHighlightedStat(null)} onFocus={() => setHighlightedStat(key)} onBlur={() => setHighlightedStat(null)}><StatIcon stat={key}/><span>{label}</span><b>{key === 'tuneBreakBoost' ? Number(value).toFixed(1) : formatStat(key as StatKey, Number(value))}</b></div>
+            return <div className={`cbc-stat-row${isUnweightedStat(key, Number(value), profile) ? ' is-unweighted' : ''}${highlightedStat === key ? ' is-active' : ''}`} key={key} tabIndex={0} onMouseEnter={() => setHighlightedStat(key)} onMouseLeave={() => setHighlightedStat(null)} onFocus={() => setHighlightedStat(key)} onBlur={() => setHighlightedStat(null)}><StatIcon stat={key}/><span>{label}</span><b>{key === 'tuneBreakBoost' ? Number(value).toFixed(1) : formatStat(key as StatKey, Number(value))}</b></div>
           })}</div>
         </section>
 
@@ -723,9 +757,9 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
 
       <div className="cbc-right-column">
         <header className={debugSectionClass('echoHeader', 'cbc-build-score cbc-glass')} data-debug-section="echoHeader" style={debugSectionStyle('echoHeader')}><span>Build score</span><div><strong>{buildScore.grade ?? '—'}</strong><b title={buildScore.energyRequirementMet ? undefined : `Below ${energyRegenMinimum}% Energy Regen`}>{buildScore.label}</b><button type="button" className="cbc-build-score-info" aria-label="How Substat Score works" title="How Substat Score works" onClick={onShowScoreInfo}>?</button></div></header>
-        <section className="cbc-echo-stage">{model.echoSlots.map((echo, index) => {
+        <section className={`cbc-echo-stage${dropEchoSlot !== null ? ` is-dropping-on-${dropEchoSlot}` : ''}`} onDragStart={startEchoDrag} onDragOver={overEchoSlot} onDrop={dropEcho} onDragEnd={endEchoDrag}>{model.echoSlots.map((echo, index) => {
           const debugSection = `echo${index}` as DebugSectionKey
-          return <EchoRow echo={echo} index={index} profile={profile} editable={editable} onOpen={() => onOpenEcho(index)} onEdit={onEditEcho} debugSection={debugSection} debugClassName={debugSectionClass(debugSection, '')} debugStyle={debugSectionStyle(debugSection)} highlightedStat={highlightedStat} setHighlightedStat={setHighlightedStat} colorGrades={colorEchoGrades} key={echo?.id ?? `empty-${index}`}/>
+          return <EchoRow echo={echo} index={index} profile={profile} editable={editable} onOpen={() => onOpenEcho(index)} debugSection={debugSection} debugClassName={debugSectionClass(debugSection, '')} debugStyle={debugSectionStyle(debugSection)} highlightedStat={highlightedStat} setHighlightedStat={setHighlightedStat} colorGrades={colorEchoGrades} key={echo?.id ?? `empty-${index}`}/>
         })}</section>
         <section className="cbc-sonatas"><div className={debugSectionClass('sonatas', 'cbc-sonata-content')} data-debug-section="sonatas" style={debugSectionStyle('sonatas')}>{sonataDetails.length ? sonataDetails.map((sonata) => { const source = model.statBonusSources.find((entry) => entry.id.startsWith('sonata-') && entry.label.startsWith(`${sonata.name} `)); const sourceStat = source?.lines[0]?.key; return <button type="button" className={`cbc-stat-source${highlightedStat && source?.lines.some((line) => contributesToStat(line.key, highlightedStat)) ? ' is-contributing' : ''}`} onMouseEnter={() => sourceStat && setHighlightedStat(displayedStatKey(sourceStat))} onMouseLeave={() => setHighlightedStat(null)} onFocus={() => sourceStat && setHighlightedStat(displayedStatKey(sourceStat))} onBlur={() => setHighlightedStat(null)} key={sonata.name}><img src={sonata.iconSourceUrl || generatedSonataIconSources[sonata.name]} alt=""/><strong>{sonata.name}</strong><small>{sonata.count}</small><CardTooltip title={sonata.name}>{sonata.effects.length ? sonata.effects.map((effect) => <span key={effect.pieces}><b>{effect.pieces}-piece</b> {richDescription(effect.description)}</span>) : <>No active set threshold.</>}</CardTooltip></button> }) : <em>No active Sonata</em>}</div></section>
       </div>
@@ -742,21 +776,23 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
       </div>}
     </div>
     </div>
-    {layoutControlsHost && createPortal(<details className="cbc-debug-controls" style={accentStyle} open={debugCalibrationEnabled}>
-      <summary aria-expanded={debugCalibrationEnabled} onClick={(event) => { event.preventDefault(); if (debugCalibrationEnabled) cancelDebugPositioning(); else beginDebugPositioning() }}>Customize</summary>
+    {layoutControlsHost && createPortal(<details className="cbc-debug-controls" style={accentStyle} open={customizeOpen}>
+      <summary aria-expanded={customizeOpen} onClick={(event) => { event.preventDefault(); if (customizeOpen) { if (cancelDebugPositioning()) { setCustomizeOpen(false); setDebugCalibrationEnabled(false) } } else beginDebugPositioning() }}>Customize</summary>
     </details>, layoutControlsHost)}
-    {debugCalibrationEnabled && layoutPanelHost && createPortal(<div className="cbc-debug-controls cbc-debug-sidebar-controls" style={accentStyle}>
+    {customizeOpen && layoutPanelHost && createPortal(<div className="cbc-debug-controls cbc-debug-sidebar-controls" style={accentStyle}>
       <div className="cbc-debug-menu">
       <div className="cbc-debug-layout-actions"><button type="button" onClick={cancelDebugPositioning}>Cancel changes</button><button type="button" className="is-primary" onClick={saveDebugPositioning}>Save changes</button></div>
       <div className="cbc-debug-layout-transfer"><button type="button" onClick={() => layoutImportRef.current?.click()}><Icon name="upload"/>Import layout</button><button type="button" onClick={exportDebugLayout}><Icon name="download"/>Export layout</button><input ref={layoutImportRef} type="file" accept="application/json,.json" onChange={(event) => void importDebugLayout(event)}/></div>
       {layoutTransferStatus && <p className="cbc-layout-transfer-status" role="status">{layoutTransferStatus}</p>}
-      <fieldset className="cbc-accent-picker"><legend>Card accent</legend><label><span className="cbc-accent-swatch" style={{ background: customAccent ?? elementAccent }}/><input type="color" aria-label="Custom card accent" value={customAccent ?? elementAccent} onChange={(event) => setCustomAccent(event.target.value)}/><output>{(customAccent ?? elementAccent).toUpperCase()}</output></label><button type="button" disabled={!customAccent} onClick={() => setCustomAccent(null)}>Use element color</button></fieldset>
-      <label className="cbc-grade-color-option"><input type="checkbox" checked={colorEchoGrades} onChange={(event) => setColorEchoGrades(event.target.checked)}/><span><b>Color Echo rolls</b><small>Color each substat value by its individual roll quality.</small></span></label>
+      <fieldset className="cbc-accent-picker"><legend>Card appearance</legend><span className="cbc-accent-heading">Card accent</span><label className="cbc-accent-control"><span className="cbc-accent-swatch" style={{ background: customAccent ?? elementAccent }}/><input type="color" aria-label="Custom card accent" value={customAccent ?? elementAccent} onChange={(event) => setCustomAccent(event.target.value)}/><output>{(customAccent ?? elementAccent).toUpperCase()}</output></label><button type="button" disabled={!customAccent} onClick={() => setCustomAccent(null)}>Use element color</button>
+        <label className="cbc-grade-color-option"><input type="checkbox" checked={colorEchoGrades} onChange={(event) => setColorEchoGrades(event.target.checked)}/><span><b>Color Echo rolls</b><small>Color each substat value by its individual roll quality.</small></span></label>
+        <label className="cbc-grade-color-option"><input type="checkbox" checked={debugCalibrationEnabled} onChange={(event) => setDebugCalibrationEnabled(event.target.checked)}/><span><b>Customize layout</b><small>Move and resize card sections.</small></span></label>
+      </fieldset>
       <fieldset className="cbc-echo-layout-options"><legend>Echo layout</legend><button type="button" className={echoLayoutPreset === 'curved' ? 'is-active' : ''} aria-pressed={echoLayoutPreset === 'curved'} onClick={() => applyEchoLayoutPreset('curved')}>Curved</button><button type="button" className={echoLayoutPreset === 'straight' ? 'is-active' : ''} aria-pressed={echoLayoutPreset === 'straight'} onClick={() => applyEchoLayoutPreset('straight')}>Straight</button></fieldset>
       <div className="cbc-debug-section-list">
         {DEBUG_SECTIONS.map(([key, label]) => <button type="button" className={hiddenDebugSections.has(key) ? 'is-hidden' : ''} aria-pressed={!hiddenDebugSections.has(key)} onClick={() => toggleDebugSection(key)} key={key}><span/>{label}</button>)}
       </div>
-      {debugSectionRects[selectedDebugSection] && <section className="cbc-debug-inspector">
+      {debugCalibrationEnabled && debugSectionRects[selectedDebugSection] && <section className="cbc-debug-inspector">
         <strong>{DEBUG_SECTIONS.find(([key]) => key === selectedDebugSection)?.[1]}</strong>
         <div>{(['x', 'y', 'width', 'height'] as Array<keyof DebugSectionRect>).map((property) => {
           const rect = debugSectionRects[selectedDebugSection]!

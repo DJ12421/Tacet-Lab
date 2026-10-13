@@ -6895,6 +6895,33 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
       },
       "effects": [
         {
+          "id": "character:1103:1103:reviewed:stimulus-feedback",
+          "name": "Stimulus Feedback",
+          "description": "Baizhi's Heavy Attack heals the nearby teammate with the lowest HP for 0.25% of Baizhi's Max HP on hit.",
+          "sourceId": "character:1103:1103:reviewed:stimulus-feedback",
+          "reviewFingerprint": "f53a670b47708773fa1bb4327bbe3338d963f1355f0a606fee167e1201c9e48a",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1103:1:4"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1103:reviewed:stimulus-feedback:healing",
+              "name": "Stimulus Feedback Healing",
+              "kind": "healing",
+              "recipient": "team",
+              "scaling": "hp",
+              "expression": "0.25%",
+              "count": 1
+            }
+          ]
+        },
+        {
           "id": "character:1103:1103:4:effect:2",
           "name": "Harmonic Range",
           "description": "ATK of the Resonators who pick up Euphonia is increased by 15% for 20s.",
@@ -7136,6 +7163,12 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
               }
             }
           ],
+          "filter": {
+            "actionIds": [
+              "1103:3:0",
+              "1103:3:1"
+            ]
+          },
           "triggeredActions": [
             {
               "id": "1103:sequence:4:0:remnant-entity-glacio",
@@ -10975,7 +11008,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1104:1104:7:3",
           "reviewFingerprint": "b0c16b9210752483fa909e1b57589bfa839c7984aba45de1e7d21300c1ef1cc2",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "skill",
           "element": "glacio",
           "tags": [
             "forte"
@@ -11992,6 +12025,35 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           ]
         },
         {
+          "id": "character:1104:1104:reviewed:diligent-practice",
+          "name": "Diligent Practice",
+          "description": "After a Basic Attack in Striding Lion, the next Mountain Roamer within three seconds deals an additional Glacio hit equal to 150% of its damage, considered Resonance Skill damage.",
+          "sourceId": "character:1104:1104:reviewed:diligent-practice",
+          "reviewFingerprint": "ea2d3c2d0b7b8b3ad15322fc3a1031f053d2d7a7e130f0703ede5da84afe5d4f",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1104:lingyang-diligent-practice-ready"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1104:7:3"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1104:reviewed:diligent-practice:lingyang-diligent-practice-hit",
+              "name": "Diligent Practice Mountain Roamer",
+              "kind": "damage",
+              "damageType": "skill",
+              "element": "glacio",
+              "referenceActionId": "1104:7:3",
+              "referenceMultiplier": 1.5,
+              "count": 1
+            }
+          ]
+        },
+        {
           "id": "character:1104:1104:sequence:3:0",
           "name": "Jaw-Dropping Feats, \nLoud and Wide",
           "description": "During Resonance Liberation Lion's Vigor, Lingyang's Basic Attack DMG Bonus is increased by 20%, and Resonance Skill DMG Bonus increased by 10%.",
@@ -12058,6 +12120,11 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             "input": "character:1104:1104:sequence:5:0"
           },
           "operations": [],
+          "filter": {
+            "actionIds": [
+              "1104:3:0"
+            ]
+          },
           "triggeredActions": [
             {
               "id": "1104:sequence:5:0:triggered-1",
@@ -15021,7 +15088,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1105:1105:7:1",
           "reviewFingerprint": "435dc4e1c4e0480c121aacde0dd56764c0e5df0c84d5e26f7eb2891dacbcad7d",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "basic",
           "element": "glacio",
           "tags": [
             "forte"
@@ -15739,6 +15806,68 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             }
           ],
           "minimumSequence": 4
+        },
+        {
+          "id": "character:1105:1105:sequence:5:0",
+          "name": "Composition's Clue",
+          "description": "For every 3 Inklit Spirits summoned by Resonance Liberation Living Canvas, 1 extra Inklit Spirit is summoned to perform a Coordinated Attack, dealing DMG equal to 140% of Inklit Spirit's DMG, considered as Basic Attack DMG. This damage dealt will not further summon Inklit Spirit.",
+          "sourceId": "character:1105:1105:sequence:5:0",
+          "reviewFingerprint": "356ec3333f134a75e23fee2fc22743c0d1857d9bb7e6c5bb297e44c09a788554",
+          "activation": {
+            "kind": "stacks",
+            "input": "character:1105:zhezhi-s5-inklit-spirits-summoned",
+            "minimum": 0,
+            "maximum": 30
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1105:3:0"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1105:sequence:5:0:extra-inklit-spirit",
+              "name": "Additional Inklit Spirit",
+              "kind": "damage",
+              "damageType": "basic",
+              "referenceActionId": "1105:3:0",
+              "referenceMultiplier": 1.4,
+              "count": 1,
+              "countPerActivation": 3
+            }
+          ],
+          "minimumSequence": 5
+        },
+        {
+          "id": "character:1105:1105:sequence:6:0",
+          "name": "Infinite Legacy",
+          "description": "Casting Resonance Skill Stroke of Genius or Resonance Skill Creation's Zenith summons an extra Ivory Herald to deal DMG equal to 120% of Resonance Skill Stroke of Genius's DMG, considered as Basic Attack DMG.",
+          "sourceId": "character:1105:1105:sequence:6:0",
+          "reviewFingerprint": "356ec3333f134a75e23fee2fc22743c0d1857d9bb7e6c5bb297e44c09a788554",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1105:1105:sequence:6:0"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1105:7:1",
+              "1105:7:2"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1105:sequence:6:0:review-followup",
+              "name": "Ivory Herald extra attack",
+              "kind": "damage",
+              "damageType": "basic",
+              "referenceActionId": "1105:7:1",
+              "referenceMultiplier": 1.2,
+              "count": 1
+            }
+          ],
+          "minimumSequence": 6
         }
       ]
     },
@@ -22179,7 +22308,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1107:1107:1:6",
           "reviewFingerprint": "7a19fa429f4561cf445d055686cded80d6de9ceb11e9809537fe71c7b3beb6f2",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "glacio",
           "skillLevelIndex": 0,
           "formulas": {
@@ -25152,6 +25281,11 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             "input": "character:1107:1107:sequence:3:0"
           },
           "operations": [],
+          "filter": {
+            "actionIds": [
+              "1107:8:outro"
+            ]
+          },
           "triggeredActions": [
             {
               "id": "1107:sequence:3:0:triggered-1",
@@ -26038,7 +26172,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1108:1108:1:3",
           "reviewFingerprint": "3ec7274c4b06fcec84dbbbcdff173b9642fa449bb8b29f6194c5c3eb835fb9ed",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "liberation",
           "element": "glacio",
           "skillLevelIndex": 0,
           "formulas": {
@@ -26723,7 +26857,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1108:1108:1:6",
           "reviewFingerprint": "3ec7274c4b06fcec84dbbbcdff173b9642fa449bb8b29f6194c5c3eb835fb9ed",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "liberation",
           "element": "glacio",
           "tags": [
             "normal-chain"
@@ -26939,7 +27073,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1108:1108:1:7",
           "reviewFingerprint": "3ec7274c4b06fcec84dbbbcdff173b9642fa449bb8b29f6194c5c3eb835fb9ed",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "liberation",
           "element": "glacio",
           "tags": [
             "normal-chain"
@@ -27175,7 +27309,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1108:1108:1:8",
           "reviewFingerprint": "3ec7274c4b06fcec84dbbbcdff173b9642fa449bb8b29f6194c5c3eb835fb9ed",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "liberation",
           "element": "glacio",
           "tags": [
             "normal-chain"
@@ -27471,7 +27605,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1108:1108:1:9",
           "reviewFingerprint": "3ec7274c4b06fcec84dbbbcdff173b9642fa449bb8b29f6194c5c3eb835fb9ed",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "liberation",
           "element": "glacio",
           "tags": [
             "normal-chain"
@@ -27767,7 +27901,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1108:1108:1:10",
           "reviewFingerprint": "3ec7274c4b06fcec84dbbbcdff173b9642fa449bb8b29f6194c5c3eb835fb9ed",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "liberation",
           "element": "glacio",
           "tags": [
             "normal-chain"
@@ -28003,7 +28137,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1108:1108:1:11",
           "reviewFingerprint": "3ec7274c4b06fcec84dbbbcdff173b9642fa449bb8b29f6194c5c3eb835fb9ed",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "liberation",
           "element": "glacio",
           "skillLevelIndex": 0,
           "formulas": {
@@ -28216,7 +28350,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1108:1108:1:12",
           "reviewFingerprint": "3ec7274c4b06fcec84dbbbcdff173b9642fa449bb8b29f6194c5c3eb835fb9ed",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "liberation",
           "element": "glacio",
           "skillLevelIndex": 0,
           "formulas": {
@@ -28589,7 +28723,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1108:1108:1:13",
           "reviewFingerprint": "3ec7274c4b06fcec84dbbbcdff173b9642fa449bb8b29f6194c5c3eb835fb9ed",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "liberation",
           "element": "glacio",
           "tags": [
             "normal-chain",
@@ -28846,7 +28980,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1108:1108:1:14",
           "reviewFingerprint": "3ec7274c4b06fcec84dbbbcdff173b9642fa449bb8b29f6194c5c3eb835fb9ed",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "liberation",
           "element": "glacio",
           "tags": [
             "normal-chain",
@@ -29340,7 +29474,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1108:1108:1:16",
           "reviewFingerprint": "3ec7274c4b06fcec84dbbbcdff173b9642fa449bb8b29f6194c5c3eb835fb9ed",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "liberation",
           "element": "glacio",
           "tags": [
             "dodge-counter"
@@ -31307,7 +31441,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1108:1108:7:0",
           "reviewFingerprint": "3ec7274c4b06fcec84dbbbcdff173b9642fa449bb8b29f6194c5c3eb835fb9ed",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "liberation",
           "element": "glacio",
           "tags": [
             "forte"
@@ -31937,8 +32071,32 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1108:1108:sequence:6:0",
           "reviewFingerprint": "7c196f43e82c268a20cbcfd4dfef4ac3521016cadf220fddbe7826e0ca6342e5",
           "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-flat-stat",
+              "stat": "critDamage",
+              "value": 5,
+              "filter": {
+                "actionIds": [
+                  "1108:3:0",
+                  "1108:3:1"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 6
+        },
+        {
+          "id": "character:1108:1108:sequence:6:1",
+          "name": "Into a Night Without End",
+          "description": "The Crit. DMG of Foreclaiming: Inward Vision and Foreclaiming: Blade Liberation is increased by 500%.\nAt 2 stacks of Snow Rust, the effect \"While Hiyuki is the active Resonator in the team, each time she applies Glacio Chafe, she additionally deals an instance of Glacio Bite DMG with a fixed DMG Multiplier\" changes to \"While Hiyuki is the active Resonator in the team, each time a Resonator in the team applies Glacio Chafe, she additionally deals an instance of Glacio Bite DMG with a fixed DMG Multiplier.\"\nAt 2 stacks of Snow Rust, Hiyuki's Crit. DMG is increased by 40%.\nAt 3 stacks of Snow Rust, the total Glacio Bite DMG taken by targets within a certain range of the active Resonator in the team is increased by 25%.",
+          "sourceId": "character:1108:1108:sequence:6:1",
+          "reviewFingerprint": "7c196f43e82c268a20cbcfd4dfef4ac3521016cadf220fddbe7826e0ca6342e5",
+          "activation": {
             "kind": "stacks",
-            "input": "character:1108:1108:sequence:6:0",
+            "input": "character:1108:1108:sequence:6:1",
             "minimum": 0,
             "maximum": 2
           },
@@ -36439,6 +36597,30 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
       },
       "effects": [
         {
+          "id": "character:1109:1109:reviewed:echo-mode-damage-type",
+          "name": "Resonance Mode - Echo",
+          "description": "In Echo mode, Clear As Day, Letting It Go, and Oblivion count as Echo Skill DMG.",
+          "sourceId": "character:1109:1109:reviewed:echo-mode-damage-type",
+          "reviewFingerprint": "435469b59b50f6e01d489ecb4f0a8acaf62473dd7e3ebf1dbfeb117fd7fb8962",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1109:1109:reviewed:echo-mode-damage-type"
+          },
+          "operations": [
+            {
+              "kind": "override-damage-type",
+              "damageType": "echo",
+              "filter": {
+                "actionIds": [
+                  "1109:3:0",
+                  "1109:3:4",
+                  "1109:7:0"
+                ]
+              }
+            }
+          ]
+        },
+        {
           "id": "character:1109:1109:3:effect:6",
           "name": "Clear As Day",
           "description": "Casting this skill grants Lucilla 30% Basic Attack DMG Bonus for 10s.",
@@ -36481,6 +36663,30 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
               }
             }
           ]
+        },
+        {
+          "id": "character:1109:1109:4:effect:2",
+          "name": "Slow Motion",
+          "description": "- When in Resonance Mode - Glacio Chafe, Glacio RES of targets within a certain range around the active Resonator is reduced by 8% for 30s.",
+          "sourceId": "character:1109:1109:4:effect:2",
+          "reviewFingerprint": "435469b59b50f6e01d489ecb4f0a8acaf62473dd7e3ebf1dbfeb117fd7fb8962",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1109:1109:4:effect:2"
+          },
+          "operations": [
+            {
+              "kind": "reduce-resistance",
+              "value": 0.08,
+              "recipient": "team",
+              "filter": {
+                "elements": [
+                  "glacio"
+                ]
+              }
+            }
+          ],
+          "exclusiveGroup": "lucilla-resonance-mode"
         },
         {
           "id": "character:1109:1109:7:effect:11",
@@ -36682,7 +36888,8 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
                 ]
               }
             }
-          ]
+          ],
+          "exclusiveGroup": "lucilla-resonance-mode"
         },
         {
           "id": "character:1109:1109:8:effect:2",
@@ -41304,7 +41511,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1110:1110:7:5",
           "reviewFingerprint": "29d94e0e4a81f33ce165539e5efecaecdd2597478d9284160630f16cd0103f07",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "basic",
           "element": "glacio",
           "tags": [
             "forte"
@@ -41520,7 +41727,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1110:1110:7:6",
           "reviewFingerprint": "29d94e0e4a81f33ce165539e5efecaecdd2597478d9284160630f16cd0103f07",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "basic",
           "element": "glacio",
           "tags": [
             "forte"
@@ -41755,7 +41962,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
               }
             },
             {
-              "kind": "ignore-resistance",
+              "kind": "reduce-resistance",
               "value": 0.12,
               "stacking": "per-stack",
               "filter": {
@@ -41783,7 +41990,21 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
               "value": 0.8,
               "filter": {
                 "actionIds": [
-                  "1110:2:1"
+                  "1110:2:1",
+                  "1110:6:0"
+                ]
+              }
+            },
+            {
+              "kind": "add-damage-bonus",
+              "value": 2.4,
+              "filter": {
+                "actionIds": [
+                  "1110:2:1",
+                  "1110:6:0"
+                ],
+                "elements": [
+                  "glacio"
                 ]
               }
             }
@@ -49317,7 +49538,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1203:1203:3:5",
           "reviewFingerprint": "181c1ae7f5d9a99bd4cb8d45c35f770e6be335c7a15b8a3f1ac2f1891d8a0b86",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "skill",
           "element": "fusion",
           "skillLevelIndex": 3,
           "formulas": {
@@ -54281,6 +54502,64 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             }
           ],
           "minimumSequence": 3
+        },
+        {
+          "id": "character:1204:1204:sequence:5:0",
+          "name": "Funerary Quartet",
+          "description": "When Resonance Skill Passionate Variation or Resonance Skill Fury Fugue hits a target, Coordinated Attacks will be triggered to fire 4 Resonance Liberation's Marcato hit(s), dealing Fusion Damage. DMG of Resonance Liberation's Marcato fired in this way is reduced by 50%.",
+          "sourceId": "character:1204:1204:sequence:5:0",
+          "reviewFingerprint": "761b121aae2547a9ad9a11ae5a80ecf9d7993403116dae567a2c4dbf934a1bcd",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1204:1204:sequence:5:0"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1204:2:0"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1204:sequence:5:0:review-followup",
+              "name": "Four additional Marcato hits",
+              "kind": "damage",
+              "damageType": "liberation",
+              "referenceActionId": "1204:3:1",
+              "referenceMultiplier": 0.5,
+              "count": 4
+            }
+          ],
+          "minimumSequence": 5
+        },
+        {
+          "id": "character:1204:1204:sequence:5:1",
+          "name": "Funerary Quartet",
+          "description": "When Resonance Skill Passionate Variation or Resonance Skill Fury Fugue hits a target, Coordinated Attacks will be triggered to fire 4 Resonance Liberation's Marcato hit(s), dealing Fusion Damage. DMG of Resonance Liberation's Marcato fired in this way is reduced by 50%.",
+          "sourceId": "character:1204:1204:sequence:5:1",
+          "reviewFingerprint": "761b121aae2547a9ad9a11ae5a80ecf9d7993403116dae567a2c4dbf934a1bcd",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1204:1204:sequence:5:1"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1204:7:0"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1204:sequence:5:1:review-followup",
+              "name": "Four additional Marcato hits after Fury Fugue",
+              "kind": "damage",
+              "damageType": "liberation",
+              "referenceActionId": "1204:3:1",
+              "referenceMultiplier": 0.5,
+              "count": 4
+            }
+          ],
+          "minimumSequence": 5
         },
         {
           "id": "character:1204:1204:sequence:6:0",
@@ -63579,7 +63858,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1206:1206:2:1",
           "reviewFingerprint": "8f818221b00301e86fc41a45b377a4cacc21fc58a3ab7d5f07a0a8eca489ba41",
           "kind": "damage",
-          "damageType": "skill",
+          "damageType": "basic",
           "element": "fusion",
           "tags": [
             "plunge"
@@ -64317,6 +64596,29 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
       },
       "effects": [
         {
+          "id": "character:1206:1206:3:effect:6",
+          "name": "To the Horizon",
+          "description": "Brant gains additional ATK based on his Energy Regen: For every 1% of his Energy Regen over 150%, Brant gains additional 20 points of ATK, up to 2600.",
+          "sourceId": "character:1206:1206:3:effect:6",
+          "reviewFingerprint": "48d333808a13bea999a5bf5ac92274147495e4b9bfa18d4dc6f84de2ea9cfa6d",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1206:1206:3:effect:6"
+          },
+          "operations": [
+            {
+              "kind": "add-derived-stat",
+              "stat": "atk",
+              "mode": "flat",
+              "sourceStat": "energyRegen",
+              "threshold": 150,
+              "value": 20,
+              "maximumValue": 2600
+            }
+          ],
+          "exclusiveGroup": "brant-energy-conversion"
+        },
+        {
           "id": "character:1206:1206:5:effect:0",
           "name": "Trial by Fire and Tide",
           "description": "Brant's resistance to interruption is increased during Mid-air Attacks and gains 15% Fusion DMG Bonus.",
@@ -64337,6 +64639,29 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
               }
             }
           ]
+        },
+        {
+          "id": "character:1206:1206:7:effect:1",
+          "name": "Ocean Odyssey",
+          "description": "Brant gains additional ATK based on his Energy Regen: For every 1% of his Energy Regen over 150%, Brant gains additional 12 points of ATK, up to 1560.",
+          "sourceId": "character:1206:1206:7:effect:1",
+          "reviewFingerprint": "48d333808a13bea999a5bf5ac92274147495e4b9bfa18d4dc6f84de2ea9cfa6d",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1206:1206:7:effect:1"
+          },
+          "operations": [
+            {
+              "kind": "add-derived-stat",
+              "stat": "atk",
+              "mode": "flat",
+              "sourceStat": "energyRegen",
+              "threshold": 150,
+              "value": 12,
+              "maximumValue": 1560
+            }
+          ],
+          "exclusiveGroup": "brant-energy-conversion"
         },
         {
           "id": "character:1206:1206:9:effect:0",
@@ -64568,44 +64893,6 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
               }
             }
           ],
-          "triggeredActions": [
-            {
-              "id": "1206:sequence:2:0:outro-blast",
-              "name": "For Smiles and Cheers Blast",
-              "kind": "damage",
-              "damageType": "basic",
-              "element": "fusion",
-              "scaling": "atk",
-              "expression": "440%",
-              "count": 1,
-              "cooldownSeconds": 1,
-              "maximumTriggers": 2
-            }
-          ],
-          "minimumSequence": 2
-        },
-        {
-          "id": "character:1206:1206:sequence:2:1",
-          "name": "For Smiles and Cheers",
-          "description": "Casting Mid-air Attack and Returned from Ashes increases Brant's Crit. Rate by 30%.\nBrant's Outro Skill The Course is Set! gains a new enhancement:\nWhen Resonance Skill cast by the incoming Resonator (or nearby Resonators who activate Brant's Outro Skill) hits a target within 20s after Brant's Outro Skill, Brant blasts the hit target, dealing Fusion DMG equal to 440% of Brant's ATK (considered Basic Attack DMG). This explosion can be triggered 1 per second, up to 2 explosions in total.\n- This effect remains active when Brant is switched off the field.",
-          "sourceId": "character:1206:1206:sequence:2:1",
-          "reviewFingerprint": "4521642b72ebed58db3e79b773069bf95375f64792e93f2fd39b7fea2e3a9f1b",
-          "activation": {
-            "kind": "toggle",
-            "input": "character:1206:1206:sequence:2:1"
-          },
-          "operations": [],
-          "triggeredActions": [
-            {
-              "id": "1206:sequence:2:1:triggered-1",
-              "name": "Returned from Ashes additional strike",
-              "kind": "damage",
-              "damageType": "basic",
-              "scaling": "atk",
-              "expression": "440%",
-              "count": 1
-            }
-          ],
           "minimumSequence": 2
         },
         {
@@ -64630,6 +64917,57 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             }
           ],
           "minimumSequence": 3
+        },
+        {
+          "id": "character:1206:1206:sequence:4:0",
+          "name": "To Freedom I Sing",
+          "description": "The Shield obtained from Returned from Ashes is increased by 20%. Casting Returned from Ashes restores HP for all nearby Resonators in the team (6.60 HP for every 1% Energy Regen).",
+          "sourceId": "character:1206:1206:sequence:4:0",
+          "reviewFingerprint": "4521642b72ebed58db3e79b773069bf95375f64792e93f2fd39b7fea2e3a9f1b",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-flat-stat",
+              "stat": "shieldBonus",
+              "value": 0.2,
+              "filter": {
+                "actionIds": [
+                  "1206:review:returned-from-ashes-shield"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 4
+        },
+        {
+          "id": "character:1206:1206:sequence:4:1",
+          "name": "To Freedom I Sing",
+          "description": "The Shield obtained from Returned from Ashes is increased by 20%. Casting Returned from Ashes restores HP for all nearby Resonators in the team (6.60 HP for every 1% Energy Regen).",
+          "sourceId": "character:1206:1206:sequence:4:1",
+          "reviewFingerprint": "4521642b72ebed58db3e79b773069bf95375f64792e93f2fd39b7fea2e3a9f1b",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1206:review:returned-from-ashes"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1206:sequence:4:1:s4-to-freedom-i-sing-healing",
+              "name": "To Freedom I Sing team healing",
+              "kind": "healing",
+              "recipient": "team",
+              "scaling": "energyRegen",
+              "expression": "66000%",
+              "count": 1
+            }
+          ],
+          "minimumSequence": 4
         },
         {
           "id": "character:1206:1206:sequence:5:0",
@@ -64675,6 +65013,35 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
                   "1206:1:15"
                 ]
               }
+            }
+          ],
+          "minimumSequence": 6
+        },
+        {
+          "id": "character:1206:1206:sequence:6:1",
+          "name": "All the World's a Captain's Carnevale",
+          "description": "Mid-air Attack's DMG Multiplier is increased by 30%. Casting Returned from Ashes causes a secondary blast, dealing Fusion DMG equal to 30% of the DMG dealt by Returned from Ashes, considered Basic Attack DMG.",
+          "sourceId": "character:1206:1206:sequence:6:1",
+          "reviewFingerprint": "4521642b72ebed58db3e79b773069bf95375f64792e93f2fd39b7fea2e3a9f1b",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1206:brant-s6-secondary-blast"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1206:review:returned-from-ashes"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1206:sequence:6:1:brant-s6-secondary-blast",
+              "name": "Returned from Ashes secondary blast",
+              "kind": "damage",
+              "damageType": "basic",
+              "referenceActionId": "1206:review:returned-from-ashes",
+              "referenceMultiplier": 0.3,
+              "count": 1
             }
           ],
           "minimumSequence": 6
@@ -67307,7 +67674,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1207:1207:1:10",
           "reviewFingerprint": "f7304233c75203df5e6313c931d19f65f072e2619493d7be9823739087954cf7",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "fusion",
           "tags": [
             "mid-air"
@@ -67543,7 +67910,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1207:1207:1:11",
           "reviewFingerprint": "f7304233c75203df5e6313c931d19f65f072e2619493d7be9823739087954cf7",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "basic",
           "element": "fusion",
           "tags": [
             "plunge"
@@ -69027,7 +69394,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1207:1207:3:1",
           "reviewFingerprint": "f7304233c75203df5e6313c931d19f65f072e2619493d7be9823739087954cf7",
           "kind": "damage",
-          "damageType": "liberation",
+          "damageType": "skill",
           "element": "fusion",
           "skillLevelIndex": 3,
           "formulas": {
@@ -70458,7 +70825,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1207:1207:7:2",
           "reviewFingerprint": "f7304233c75203df5e6313c931d19f65f072e2619493d7be9823739087954cf7",
           "kind": "damage",
-          "damageType": "liberation",
+          "damageType": "skill",
           "element": "fusion",
           "tags": [
             "forte"
@@ -70927,7 +71294,10 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             "kind": "stacks",
             "input": "character:1207:lupa-fusion-team-count",
             "minimum": 1,
-            "maximum": 3
+            "maximum": 3,
+            "suppressedBy": [
+              "character:1207:lupa-s3-glory"
+            ]
           },
           "operations": [
             {
@@ -71046,6 +71416,30 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "minimumSequence": 3
         },
         {
+          "id": "character:1207:1207:sequence:3:1",
+          "name": "Wolflame Howls in Her Wake",
+          "description": "The DMG Multiplier of Intro Skill Nowhere to Run! increases by 100%.\n- The Pack Hunt effect of Resonance Liberation now no longer requires 3 Fusion Resonators.\n- The Glory effect of Resonance Liberation is now modified as:\nCasting Resonance Liberation Fire-Kissed Glory additionally grants Glory: Resonators in the team ignore 15% Fusion RES of targets for 35s.",
+          "sourceId": "character:1207:1207:sequence:3:1",
+          "reviewFingerprint": "42b126b34d04418b070358aacab490eba071f562c3a83bdabb9fb73f15bbbd00",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1207:lupa-s3-glory"
+          },
+          "operations": [
+            {
+              "kind": "ignore-resistance",
+              "value": 0.15,
+              "recipient": "team",
+              "filter": {
+                "elements": [
+                  "fusion"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 3
+        },
+        {
           "id": "character:1207:1207:sequence:4:0",
           "name": "High and Aflame Is Her Banner",
           "description": "The DMG Multiplier of Dance With the Wolf: Climax increases by 125%.",
@@ -71129,7 +71523,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1208:1208:1:0",
           "reviewFingerprint": "a7a1bab1dba8a5ada6099bdec1ce847e2c79ce2732c8fd19278870aa4def4d40",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "fusion",
           "tags": [
             "normal-chain"
@@ -71345,7 +71739,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1208:1208:1:1",
           "reviewFingerprint": "a7a1bab1dba8a5ada6099bdec1ce847e2c79ce2732c8fd19278870aa4def4d40",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "fusion",
           "tags": [
             "normal-chain"
@@ -71601,7 +71995,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1208:1208:1:2",
           "reviewFingerprint": "a7a1bab1dba8a5ada6099bdec1ce847e2c79ce2732c8fd19278870aa4def4d40",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "fusion",
           "tags": [
             "normal-chain"
@@ -71877,7 +72271,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1208:1208:1:3",
           "reviewFingerprint": "a7a1bab1dba8a5ada6099bdec1ce847e2c79ce2732c8fd19278870aa4def4d40",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "echo",
           "element": "fusion",
           "tags": [
             "normal-chain"
@@ -72093,7 +72487,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1208:1208:1:4",
           "reviewFingerprint": "a7a1bab1dba8a5ada6099bdec1ce847e2c79ce2732c8fd19278870aa4def4d40",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "fusion",
           "tags": [
             "dodge-counter"
@@ -72369,7 +72763,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1208:1208:1:5",
           "reviewFingerprint": "a7a1bab1dba8a5ada6099bdec1ce847e2c79ce2732c8fd19278870aa4def4d40",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "fusion",
           "tags": [
             "mid-air",
@@ -72586,7 +72980,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1208:1208:1:6",
           "reviewFingerprint": "a7a1bab1dba8a5ada6099bdec1ce847e2c79ce2732c8fd19278870aa4def4d40",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "fusion",
           "tags": [
             "mid-air"
@@ -72802,7 +73196,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1208:1208:1:7",
           "reviewFingerprint": "a7a1bab1dba8a5ada6099bdec1ce847e2c79ce2732c8fd19278870aa4def4d40",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "echo",
           "element": "fusion",
           "skillLevelIndex": 0,
           "formulas": {
@@ -73035,7 +73429,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1208:1208:1:8",
           "reviewFingerprint": "a7a1bab1dba8a5ada6099bdec1ce847e2c79ce2732c8fd19278870aa4def4d40",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "echo",
           "element": "fusion",
           "skillLevelIndex": 0,
           "formulas": {
@@ -73268,7 +73662,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1208:1208:1:9",
           "reviewFingerprint": "a7a1bab1dba8a5ada6099bdec1ce847e2c79ce2732c8fd19278870aa4def4d40",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "echo",
           "element": "fusion",
           "skillLevelIndex": 0,
           "formulas": {
@@ -73541,7 +73935,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1208:1208:2:0",
           "reviewFingerprint": "a7a1bab1dba8a5ada6099bdec1ce847e2c79ce2732c8fd19278870aa4def4d40",
           "kind": "damage",
-          "damageType": "skill",
+          "damageType": "heavy",
           "element": "fusion",
           "skillLevelIndex": 1,
           "formulas": {
@@ -73774,7 +74168,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1208:1208:2:1",
           "reviewFingerprint": "a7a1bab1dba8a5ada6099bdec1ce847e2c79ce2732c8fd19278870aa4def4d40",
           "kind": "damage",
-          "damageType": "skill",
+          "damageType": "heavy",
           "element": "fusion",
           "skillLevelIndex": 1,
           "formulas": {
@@ -74007,7 +74401,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1208:1208:3:0",
           "reviewFingerprint": "a7a1bab1dba8a5ada6099bdec1ce847e2c79ce2732c8fd19278870aa4def4d40",
           "kind": "damage",
-          "damageType": "liberation",
+          "damageType": "echo",
           "element": "fusion",
           "skillLevelIndex": 3,
           "formulas": {
@@ -74653,7 +75047,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1208:1208:7:0",
           "reviewFingerprint": "a7a1bab1dba8a5ada6099bdec1ce847e2c79ce2732c8fd19278870aa4def4d40",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "fusion",
           "tags": [
             "forte",
@@ -74870,7 +75264,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1208:1208:7:1",
           "reviewFingerprint": "a7a1bab1dba8a5ada6099bdec1ce847e2c79ce2732c8fd19278870aa4def4d40",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "fusion",
           "tags": [
             "forte",
@@ -75127,7 +75521,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1208:1208:7:2",
           "reviewFingerprint": "a7a1bab1dba8a5ada6099bdec1ce847e2c79ce2732c8fd19278870aa4def4d40",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "fusion",
           "tags": [
             "forte",
@@ -75404,7 +75798,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1208:1208:7:3",
           "reviewFingerprint": "a7a1bab1dba8a5ada6099bdec1ce847e2c79ce2732c8fd19278870aa4def4d40",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "echo",
           "element": "fusion",
           "tags": [
             "forte",
@@ -75681,7 +76075,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1208:1208:7:4",
           "reviewFingerprint": "a7a1bab1dba8a5ada6099bdec1ce847e2c79ce2732c8fd19278870aa4def4d40",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "echo",
           "element": "fusion",
           "tags": [
             "forte",
@@ -76390,7 +76784,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1208:1208:7:7",
           "reviewFingerprint": "a7a1bab1dba8a5ada6099bdec1ce847e2c79ce2732c8fd19278870aa4def4d40",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "echo",
           "element": "fusion",
           "tags": [
             "forte"
@@ -76841,7 +77235,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1208:1208:7:9",
           "reviewFingerprint": "a7a1bab1dba8a5ada6099bdec1ce847e2c79ce2732c8fd19278870aa4def4d40",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "fusion",
           "tags": [
             "forte",
@@ -77059,7 +77453,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1208:1208:7:10",
           "reviewFingerprint": "a7a1bab1dba8a5ada6099bdec1ce847e2c79ce2732c8fd19278870aa4def4d40",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "fusion",
           "tags": [
             "forte",
@@ -77276,7 +77670,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1208:1208:7:11",
           "reviewFingerprint": "a7a1bab1dba8a5ada6099bdec1ce847e2c79ce2732c8fd19278870aa4def4d40",
           "kind": "damage",
-          "damageType": "skill",
+          "damageType": "heavy",
           "element": "fusion",
           "tags": [
             "forte"
@@ -77841,19 +78235,18 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1208:1208:7:effect:4",
           "reviewFingerprint": "c0fb1b020f6458be6f1601db4b4fe12f50b83adcc4919908b941eb9f938d61cf",
           "activation": {
-            "kind": "toggle",
-            "input": "character:1208:1208:7:effect:4"
+            "kind": "stacks",
+            "input": "character:1208:1208:7:effect:4",
+            "minimum": 0,
+            "maximum": 40
           },
           "operations": [
             {
-              "kind": "add-damage-bonus",
+              "kind": "add-special-multiplier",
               "value": 0.015,
+              "stacking": "per-stack",
               "filter": {
                 "actionIds": [
-                  "1208:1:0",
-                  "1208:1:1",
-                  "1208:1:2",
-                  "1208:1:3",
                   "1208:7:0",
                   "1208:7:1",
                   "1208:7:2",
@@ -77863,6 +78256,8 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
                   "1208:7:6",
                   "1208:7:7",
                   "1208:7:8",
+                  "1208:7:9",
+                  "1208:7:10",
                   "1208:7:11"
                 ]
               }
@@ -78155,6 +78550,39 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "activation": {
             "kind": "toggle",
             "input": "character:1208:1208:sequence:6:0"
+          },
+          "operations": [
+            {
+              "kind": "increase-motion-value",
+              "value": 0.6,
+              "filter": {
+                "actionIds": [
+                  "1208:7:0",
+                  "1208:7:1",
+                  "1208:7:2",
+                  "1208:7:3",
+                  "1208:7:4",
+                  "1208:7:5",
+                  "1208:7:6",
+                  "1208:7:7",
+                  "1208:7:8",
+                  "1208:7:9",
+                  "1208:7:10"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 6
+        },
+        {
+          "id": "character:1208:1208:sequence:6:1",
+          "name": "I Remain Who I am, Eternal My Flame",
+          "description": "Demon Hypostasis becomes Eternal Hypostasis. Eternal Hypostasis retains all effects of Demon Hypostasis.\nAdditionally, Eternal Hypostasis lasts, the DMG Multipliers of Basic Attack - Seraphic Execution, Heavy Attack - Flamewing Verdict, Mid-air Attack - Hellsent Barrage, and Dodge Counter -Purgatory Scourge are additionally increased by 60%.\nWhen casting Resonance Skill - Ascent of Malice, for every 1 point of Afterflame consumed, Galbrena's Basic Attack - Seraphic Execution, Heavy Attack - Flamewing Verdict, Mid-air Attack - Hellsent Barrage, Resonance Skill - Ravage, and Dodge Counter -Purgatory Scourge gain 0.875% Fusion DMG Amplification, up to 35%, which is removed upon exiting Eternal Hypostasis.",
+          "sourceId": "character:1208:1208:sequence:6:1",
+          "reviewFingerprint": "1b9ba6eca1adc8e87c56eae1681ca63782a1ca63a09d1b408019dc67172dc9e9",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1208:1208:sequence:6:1"
           },
           "operations": [
             {
@@ -83320,204 +83748,124 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "skillLevelIndex": 2,
           "formulas": {
             "1": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 1.5
-              ],
-              "canCrit": true
+              ]
             },
             "2": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 1.6230000000000002
-              ],
-              "canCrit": true
+              ]
             },
             "3": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 1.746
-              ],
-              "canCrit": true
+              ]
             },
             "4": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 1.9182
-              ],
-              "canCrit": true
+              ]
             },
             "5": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 2.0412
-              ],
-              "canCrit": true
+              ]
             },
             "6": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 2.1827
-              ],
-              "canCrit": true
+              ]
             },
             "7": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 2.3794999999999997
-              ],
-              "canCrit": true
+              ]
             },
             "8": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 2.5763
-              ],
-              "canCrit": true
+              ]
             },
             "9": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 2.7731
-              ],
-              "canCrit": true
+              ]
             },
             "10": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 2.9822
-              ],
-              "canCrit": true
+              ]
             },
             "11": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 3.2281999999999997
-              ],
-              "canCrit": true
+              ]
             },
             "12": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 3.4742
-              ],
-              "canCrit": true
+              ]
             },
             "13": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 3.7201999999999997
-              ],
-              "canCrit": true
+              ]
             },
             "14": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 3.9662
-              ],
-              "canCrit": true
+              ]
             },
             "15": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 4.2122
-              ],
-              "canCrit": true
+              ]
             },
             "16": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 4.4582
-              ],
-              "canCrit": true
+              ]
             },
             "17": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 4.7042
-              ],
-              "canCrit": true
+              ]
             },
             "18": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 4.9502
-              ],
-              "canCrit": true
+              ]
             },
             "19": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 5.1962
-              ],
-              "canCrit": true
+              ]
             },
             "20": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 5.442200000000001
-              ],
-              "canCrit": true
+              ]
             }
           }
         }
@@ -83535,9 +83883,56 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           },
           "operations": [
             {
-              "kind": "add-flat-stat",
+              "kind": "add-derived-stat",
               "stat": "critRate",
-              "value": 0.005
+              "mode": "flat",
+              "sourceStat": "energyRegen",
+              "threshold": 100,
+              "sourceOffset": 10,
+              "value": 0.5,
+              "filter": {
+                "actionIds": [
+                  "1209:3:0"
+                ]
+              },
+              "maximumValue": 80
+            },
+            {
+              "kind": "add-derived-stat",
+              "stat": "critDamage",
+              "mode": "flat",
+              "sourceStat": "energyRegen",
+              "threshold": 100,
+              "sourceOffset": 10,
+              "value": 1,
+              "filter": {
+                "actionIds": [
+                  "1209:3:0"
+                ]
+              },
+              "maximumValue": 160
+            }
+          ]
+        },
+        {
+          "id": "character:1209:1209:3:effect:8",
+          "name": "Critical Protocol",
+          "description": "- Inherits the Syntony Field's healing effect and increases the Healing Multiplier by 40%.",
+          "sourceId": "character:1209:1209:3:effect:8",
+          "reviewFingerprint": "19b6106730fb7e15b59a15489fbf265255f8e6453895e9da7d8201177d76ebcf",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1209:mornye-high-syntony-field"
+          },
+          "operations": [
+            {
+              "kind": "increase-motion-value",
+              "value": 0.4,
+              "filter": {
+                "actionIds": [
+                  "1209:7:0"
+                ]
+              }
             }
           ]
         },
@@ -83722,13 +84117,8 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           },
           "operations": [
             {
-              "kind": "add-damage-bonus",
-              "value": 0.0012,
-              "filter": {
-                "damageTypes": [
-                  "tune-break"
-                ]
-              }
+              "kind": "add-tune-break-boost",
+              "value": 0.12
             },
             {
               "kind": "add-damage-bonus",
@@ -83750,6 +84140,25 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             {
               "kind": "reduce-damage-taken",
               "value": 1
+            }
+          ]
+        },
+        {
+          "id": "character:1209:1209:3:effect:6",
+          "name": "Critical Protocol",
+          "description": "- Increases the DEF of all nearby Resonators in the team within the High Syntony Field by 20%.",
+          "sourceId": "character:1209:1209:3:effect:6",
+          "reviewFingerprint": "3dda8df17c6a65170652c1282ad9a7794b7de2f87c165a7ffd1f88b6ce879be2",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1209:mornye-high-syntony-field"
+          },
+          "operations": [
+            {
+              "kind": "add-percent-stat",
+              "stat": "def",
+              "value": 0.2,
+              "recipient": "team"
             }
           ]
         },
@@ -83826,6 +84235,28 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "operations": [
             {
               "kind": "increase-motion-value",
+              "value": 0.4,
+              "filter": {
+                "actionIds": [
+                  "1209:3:0"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 5
+        },
+        {
+          "id": "character:1209:1209:sequence:5:1",
+          "name": "Time Dilation Effect",
+          "description": "The DMG Multiplier of Resonance Liberation - Critical Protocol is increased by 40%.\nThe DMG Multiplier of Tune Rupture Response - Particle Jet is increased by 160%.",
+          "sourceId": "character:1209:1209:sequence:5:1",
+          "reviewFingerprint": "c20ac53949f50f48f4e6642390179887c7acdaa8026a03a54577a495e64d925c",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "increase-motion-value",
               "value": 1.6,
               "filter": {
                 "actionIds": [
@@ -83843,19 +84274,17 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1209:1209:sequence:6:0",
           "reviewFingerprint": "c20ac53949f50f48f4e6642390179887c7acdaa8026a03a54577a495e64d925c",
           "activation": {
-            "kind": "toggle",
-            "input": "character:1209:1209:sequence:6:0"
+            "kind": "always"
           },
-          "operations": [],
-          "triggeredActions": [
+          "operations": [
             {
-              "id": "1209:sequence:6:0:triggered-1",
-              "name": "Sequence 6 additional damage",
-              "kind": "damage",
-              "damageType": "skill",
-              "scaling": "atk",
-              "expression": "400%",
-              "count": 1
+              "kind": "increase-motion-value",
+              "value": 4,
+              "filter": {
+                "actionIds": [
+                  "1209:3:0"
+                ]
+              }
             }
           ],
           "minimumSequence": 6
@@ -90456,204 +90885,124 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "skillLevelIndex": 2,
           "formulas": {
             "1": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 3
-              ],
-              "canCrit": true
+              ]
             },
             "2": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 3.2460000000000004
-              ],
-              "canCrit": true
+              ]
             },
             "3": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 3.492
-              ],
-              "canCrit": true
+              ]
             },
             "4": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 3.8364
-              ],
-              "canCrit": true
+              ]
             },
             "5": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 4.0824
-              ],
-              "canCrit": true
+              ]
             },
             "6": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 4.3652999999999995
-              ],
-              "canCrit": true
+              ]
             },
             "7": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 4.7589
-              ],
-              "canCrit": true
+              ]
             },
             "8": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 5.1525
-              ],
-              "canCrit": true
+              ]
             },
             "9": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 5.5461
-              ],
-              "canCrit": true
+              ]
             },
             "10": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 5.9643
-              ],
-              "canCrit": true
+              ]
             },
             "11": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 6.4563
-              ],
-              "canCrit": true
+              ]
             },
             "12": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 6.948300000000001
-              ],
-              "canCrit": true
+              ]
             },
             "13": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 7.4403
-              ],
-              "canCrit": true
+              ]
             },
             "14": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 7.932300000000001
-              ],
-              "canCrit": true
+              ]
             },
             "15": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 8.424299999999999
-              ],
-              "canCrit": true
+              ]
             },
             "16": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 8.9163
-              ],
-              "canCrit": true
+              ]
             },
             "17": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 9.4083
-              ],
-              "canCrit": true
+              ]
             },
             "18": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 9.9003
-              ],
-              "canCrit": true
+              ]
             },
             "19": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 10.3923
-              ],
-              "canCrit": true
+              ]
             },
             "20": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 10.884300000000001
-              ],
-              "canCrit": true
+              ]
             }
           }
         },
@@ -90672,204 +91021,124 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "skillLevelIndex": 2,
           "formulas": {
             "1": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 0.55
-              ],
-              "canCrit": true
+              ]
             },
             "2": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 0.5951
-              ],
-              "canCrit": true
+              ]
             },
             "3": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 0.6402
-              ],
-              "canCrit": true
+              ]
             },
             "4": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 0.7034
-              ],
-              "canCrit": true
+              ]
             },
             "5": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 0.7484999999999999
-              ],
-              "canCrit": true
+              ]
             },
             "6": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 0.8004000000000001
-              ],
-              "canCrit": true
+              ]
             },
             "7": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 0.8725
-              ],
-              "canCrit": true
+              ]
             },
             "8": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 0.9447
-              ],
-              "canCrit": true
+              ]
             },
             "9": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 1.0168000000000001
-              ],
-              "canCrit": true
+              ]
             },
             "10": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 1.0935
-              ],
-              "canCrit": true
+              ]
             },
             "11": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 1.1837
-              ],
-              "canCrit": true
+              ]
             },
             "12": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 1.2739
-              ],
-              "canCrit": true
+              ]
             },
             "13": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 1.3640999999999999
-              ],
-              "canCrit": true
+              ]
             },
             "14": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 1.4543000000000001
-              ],
-              "canCrit": true
+              ]
             },
             "15": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 1.5445
-              ],
-              "canCrit": true
+              ]
             },
             "16": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 1.6347
-              ],
-              "canCrit": true
+              ]
             },
             "17": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 1.7249
-              ],
-              "canCrit": true
+              ]
             },
             "18": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 1.8151
-              ],
-              "canCrit": true
+              ]
             },
             "19": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 1.9053
-              ],
-              "canCrit": true
+              ]
             },
             "20": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 1.9955
-              ],
-              "canCrit": true
+              ]
             }
           }
         }
@@ -90945,6 +91214,170 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             }
           ],
           "exclusiveGroup": "aemeath-between-stars-finale"
+        },
+        {
+          "id": "character:1210:1210:7:effect:21",
+          "name": "To Sculpt the Silence",
+          "description": "- When in Resonance Mode - Tune Rupture, Resonance Skill Seraphic Duet removes Rupturous Trail stacks on nearby targets and additionally deals 5 instances of Tune Rupture DMG, each time to a random target within range.",
+          "sourceId": "character:1210:1210:7:effect:21",
+          "reviewFingerprint": "cc23b84ecc8d5916d52689799083bd8372cdddc76a522caa45be1757eaa03f02",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1210:aemeath-seraphic-duet-tune-rupture",
+            "suppressedBy": [
+              "character:1210:aemeath-stardust-tune-rupture"
+            ]
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1210:7:0",
+              "1210:7:1"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1210:7:effect:21:seraphic-duet-tune-rupture",
+              "name": "Seraphic Duet Tune Rupture instances",
+              "kind": "damage",
+              "damageType": "tune-break",
+              "referenceActionId": "1210:7:3",
+              "referenceMultiplier": 1,
+              "count": 5
+            }
+          ]
+        },
+        {
+          "id": "character:1210:1210:7:effect:22",
+          "name": "To Sculpt the Silence",
+          "description": "For each stack of Rupturous Trail removed from a target, the DMG Multiplier of the additional instances of Tune Rupture DMG triggered by Seraphic Duet against the target is increased by 4%.",
+          "sourceId": "character:1210:1210:7:effect:22",
+          "reviewFingerprint": "cc23b84ecc8d5916d52689799083bd8372cdddc76a522caa45be1757eaa03f02",
+          "activation": {
+            "kind": "stacks",
+            "input": "character:1210:aemeath-rupturous-trail-removed",
+            "minimum": 0,
+            "maximum": 60
+          },
+          "operations": [
+            {
+              "kind": "add-special-multiplier",
+              "value": 0.04,
+              "stacking": "per-stack",
+              "filter": {
+                "actionIds": [
+                  "1210:7:3"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "character:1210:1210:7:effect:25",
+          "name": "To Sculpt the Silence",
+          "description": "- When in Resonance Mode - Fusion Burst, Resonance Skill Seraphic Duet removes the Fusion Trail stacks on targets if they are inflicted with Fusion Trail, and trigger the Fusion Burst on the target based on its max stack limit without removing its stacks.",
+          "sourceId": "character:1210:1210:7:effect:25",
+          "reviewFingerprint": "cc23b84ecc8d5916d52689799083bd8372cdddc76a522caa45be1757eaa03f02",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1210:aemeath-seraphic-duet-fusion-burst"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1210:7:0",
+              "1210:7:1"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1210:7:effect:25:seraphic-duet-fusion-burst",
+              "name": "Seraphic Duet Fusion Burst",
+              "kind": "damage",
+              "damageType": "status",
+              "referenceActionId": "status:fusion-burst",
+              "referenceMultiplier": 1,
+              "count": 1
+            }
+          ]
+        },
+        {
+          "id": "character:1210:1210:7:effect:26",
+          "name": "To Sculpt the Silence",
+          "description": "Each stack of Fusion Trail removed from the target increases the DMG Multiplier of Fusion Burst on the main target by 10%.",
+          "sourceId": "character:1210:1210:7:effect:26",
+          "reviewFingerprint": "cc23b84ecc8d5916d52689799083bd8372cdddc76a522caa45be1757eaa03f02",
+          "activation": {
+            "kind": "stacks",
+            "input": "character:1210:aemeath-fusion-trail-removed",
+            "minimum": 0,
+            "maximum": 30
+          },
+          "operations": [
+            {
+              "kind": "add-special-multiplier",
+              "value": 0.1,
+              "stacking": "per-stack",
+              "filter": {
+                "actionIds": [
+                  "status:fusion-burst"
+                ]
+              }
+            }
+          ],
+          "maximumSequence": 1
+        },
+        {
+          "id": "character:1210:1210:7:effect:28",
+          "name": "To Sculpt the Silence",
+          "description": "- In Resonance Mode - Tune Rupture, casting Resonance Skill Seraphic Duet additionally deal 10 instances of Tune Rupture DMG.",
+          "sourceId": "character:1210:1210:7:effect:28",
+          "reviewFingerprint": "cc23b84ecc8d5916d52689799083bd8372cdddc76a522caa45be1757eaa03f02",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1210:aemeath-stardust-tune-rupture"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1210:7:0",
+              "1210:7:1"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1210:7:effect:28:seraphic-duet-stardust-tune-rupture",
+              "name": "Stardust Seraphic Duet Tune Rupture instances",
+              "kind": "damage",
+              "damageType": "tune-break",
+              "referenceActionId": "1210:7:3",
+              "referenceMultiplier": 1,
+              "count": 10
+            }
+          ]
+        },
+        {
+          "id": "character:1210:1210:7:effect:29",
+          "name": "To Sculpt the Silence",
+          "description": "- In Resonance Mode - Fusion Burst, the DMG Multiplier of Fusion Burst triggered by Resonance Skill Seraphic Duet on the main target is additionally increased by 200%.",
+          "sourceId": "character:1210:1210:7:effect:29",
+          "reviewFingerprint": "cc23b84ecc8d5916d52689799083bd8372cdddc76a522caa45be1757eaa03f02",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1210:aemeath-stardust-fusion-burst"
+          },
+          "operations": [
+            {
+              "kind": "add-special-multiplier",
+              "value": 2,
+              "filter": {
+                "actionIds": [
+                  "status:fusion-burst"
+                ]
+              }
+            }
+          ],
+          "maximumSequence": 1
         },
         {
           "id": "character:1210:1210:8:effect:2",
@@ -91326,6 +91759,104 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "minimumSequence": 2
         },
         {
+          "id": "character:1210:1210:sequence:2:2",
+          "name": "Downy Notes of Snowfluff",
+          "description": "The DMG Multiplier of Resonance Skill Seraphic Duet: Overture is increased by 100%.\nThe DMG Multiplier of Resonance Skill Seraphic Duet: Encore is increased by 100%.\nWhile in Resonance Mode - Tune Rupture, when the additional instances Tune Rupture DMG triggered by Resonance Skill Seraphic Duet hit the same target, the DMG Multiplier of the Tune Rupture DMG triggered by Resonance Skill Seraphic Duet against this target is increased by 20% for 1s, stacking up to 5 times.\nWhile in Resonance Mode - Fusion Burst, gain the following effects:\n- In the Stardust Resonance state, the DMG Multiplier of Fusion Burst triggered by Resonance Skill Seraphic Duet is further increased to 400% against the main target of the Fusion Burst.\n- Fusion Trail now additionally increases the DMG Multiplier of Fusion Trail triggered by Resonance Skill Seraphic Duet. Each stack of Fusion Trail removed now provides a 15% DMG Multiplier increase to Fusion Burst on the main target.\n- In combat state, when a target near the active Resonator in the team is defeated, immediately trigger Fusion Burst based on the target's current stack limit of Fusion Burst.",
+          "sourceId": "character:1210:1210:sequence:2:2",
+          "reviewFingerprint": "c0d4f548d1f77b7f7da4a419837170d358b4a8cbcb683bae036bb613ae83f712",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1210:aemeath-s2-same-target"
+          },
+          "operations": [
+            {
+              "kind": "add-special-multiplier",
+              "value": 0.4,
+              "filter": {
+                "actionIds": [
+                  "1210:7:3"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 2
+        },
+        {
+          "id": "character:1210:1210:sequence:2:3",
+          "name": "Downy Notes of Snowfluff",
+          "description": "The DMG Multiplier of Resonance Skill Seraphic Duet: Overture is increased by 100%.\nThe DMG Multiplier of Resonance Skill Seraphic Duet: Encore is increased by 100%.\nWhile in Resonance Mode - Tune Rupture, when the additional instances Tune Rupture DMG triggered by Resonance Skill Seraphic Duet hit the same target, the DMG Multiplier of the Tune Rupture DMG triggered by Resonance Skill Seraphic Duet against this target is increased by 20% for 1s, stacking up to 5 times.\nWhile in Resonance Mode - Fusion Burst, gain the following effects:\n- In the Stardust Resonance state, the DMG Multiplier of Fusion Burst triggered by Resonance Skill Seraphic Duet is further increased to 400% against the main target of the Fusion Burst.\n- Fusion Trail now additionally increases the DMG Multiplier of Fusion Trail triggered by Resonance Skill Seraphic Duet. Each stack of Fusion Trail removed now provides a 15% DMG Multiplier increase to Fusion Burst on the main target.\n- In combat state, when a target near the active Resonator in the team is defeated, immediately trigger Fusion Burst based on the target's current stack limit of Fusion Burst.",
+          "sourceId": "character:1210:1210:sequence:2:3",
+          "reviewFingerprint": "c0d4f548d1f77b7f7da4a419837170d358b4a8cbcb683bae036bb613ae83f712",
+          "activation": {
+            "kind": "all",
+            "inputs": [
+              "character:1210:aemeath-s2-same-target",
+              "character:1210:aemeath-stardust-tune-rupture"
+            ]
+          },
+          "operations": [
+            {
+              "kind": "add-special-multiplier",
+              "value": 0.3,
+              "filter": {
+                "actionIds": [
+                  "1210:7:3"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 2
+        },
+        {
+          "id": "character:1210:1210:sequence:2:4",
+          "name": "Downy Notes of Snowfluff",
+          "description": "The DMG Multiplier of Resonance Skill Seraphic Duet: Overture is increased by 100%.\nThe DMG Multiplier of Resonance Skill Seraphic Duet: Encore is increased by 100%.\nWhile in Resonance Mode - Tune Rupture, when the additional instances Tune Rupture DMG triggered by Resonance Skill Seraphic Duet hit the same target, the DMG Multiplier of the Tune Rupture DMG triggered by Resonance Skill Seraphic Duet against this target is increased by 20% for 1s, stacking up to 5 times.\nWhile in Resonance Mode - Fusion Burst, gain the following effects:\n- In the Stardust Resonance state, the DMG Multiplier of Fusion Burst triggered by Resonance Skill Seraphic Duet is further increased to 400% against the main target of the Fusion Burst.\n- Fusion Trail now additionally increases the DMG Multiplier of Fusion Trail triggered by Resonance Skill Seraphic Duet. Each stack of Fusion Trail removed now provides a 15% DMG Multiplier increase to Fusion Burst on the main target.\n- In combat state, when a target near the active Resonator in the team is defeated, immediately trigger Fusion Burst based on the target's current stack limit of Fusion Burst.",
+          "sourceId": "character:1210:1210:sequence:2:4",
+          "reviewFingerprint": "c0d4f548d1f77b7f7da4a419837170d358b4a8cbcb683bae036bb613ae83f712",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1210:aemeath-stardust-fusion-burst"
+          },
+          "operations": [
+            {
+              "kind": "add-special-multiplier",
+              "value": 4,
+              "filter": {
+                "actionIds": [
+                  "status:fusion-burst"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 2
+        },
+        {
+          "id": "character:1210:1210:sequence:2:5",
+          "name": "Downy Notes of Snowfluff",
+          "description": "The DMG Multiplier of Resonance Skill Seraphic Duet: Overture is increased by 100%.\nThe DMG Multiplier of Resonance Skill Seraphic Duet: Encore is increased by 100%.\nWhile in Resonance Mode - Tune Rupture, when the additional instances Tune Rupture DMG triggered by Resonance Skill Seraphic Duet hit the same target, the DMG Multiplier of the Tune Rupture DMG triggered by Resonance Skill Seraphic Duet against this target is increased by 20% for 1s, stacking up to 5 times.\nWhile in Resonance Mode - Fusion Burst, gain the following effects:\n- In the Stardust Resonance state, the DMG Multiplier of Fusion Burst triggered by Resonance Skill Seraphic Duet is further increased to 400% against the main target of the Fusion Burst.\n- Fusion Trail now additionally increases the DMG Multiplier of Fusion Trail triggered by Resonance Skill Seraphic Duet. Each stack of Fusion Trail removed now provides a 15% DMG Multiplier increase to Fusion Burst on the main target.\n- In combat state, when a target near the active Resonator in the team is defeated, immediately trigger Fusion Burst based on the target's current stack limit of Fusion Burst.",
+          "sourceId": "character:1210:1210:sequence:2:5",
+          "reviewFingerprint": "c0d4f548d1f77b7f7da4a419837170d358b4a8cbcb683bae036bb613ae83f712",
+          "activation": {
+            "kind": "stacks",
+            "input": "character:1210:aemeath-fusion-trail-removed",
+            "minimum": 0,
+            "maximum": 30
+          },
+          "operations": [
+            {
+              "kind": "add-special-multiplier",
+              "value": 0.15,
+              "stacking": "per-stack",
+              "filter": {
+                "actionIds": [
+                  "status:fusion-burst"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 2
+        },
+        {
           "id": "character:1210:1210:sequence:3:0",
           "name": "Fervor Sightly Burns Bright as New",
           "description": "Resonance Liberation Heavenfall Edict: Finale's DMG Multiplier is increased by 100%.\nResonance Liberation Heavenfall Edict: Overdrive's DMG Multiplier is increased by 40%.\nIn Instant Response, Aemeath now inflicts Tune Rupture - Shifting or Fusion Burst on nearby targets while casting Heavy Attack - Aemeath or Heavy Attack - Mech, based on her current Resonance Mode.\nInherent Skill Between the Stars is replaced with the following effects:\n- In Resonance Mode - Tune Rupture, when Resonators in the team inflict Tune Rupture - Shifting or deal Tune Rupture DMG, Aemeath's Crit. DMG is increased by 60%, and Resonance Liberation Heavenfall Edict: Finale DMG is now Amplified by 25%.\nResonators joining the team or switching Resonance Mode resets this effect.\n- In Resonance Mode - Fusion Burst, when Resonators in the team inflict Fusion Burst, Aemeath's Crit. DMG is increased by 60%, and Resonance Liberation Heavenfall Edict: Finale DMG is now Amplified by 25%.\nResonators joining the team or switching Resonance Mode resets this effect.",
@@ -91461,16 +91992,63 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1210:1210:sequence:6:0",
           "reviewFingerprint": "c0d4f548d1f77b7f7da4a419837170d358b4a8cbcb683bae036bb613ae83f712",
           "activation": {
-            "kind": "toggle",
-            "input": "character:1210:1210:sequence:6:0"
+            "kind": "always"
           },
           "operations": [
             {
-              "kind": "add-damage-bonus",
-              "value": 0.8,
+              "kind": "amplify-damage",
+              "value": 0.4,
               "filter": {
-                "tags": [
-                  "fusion-burst"
+                "damageTypes": [
+                  "liberation"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 6
+        },
+        {
+          "id": "character:1210:1210:sequence:6:1",
+          "name": "A Zephyr-Kissed Journey to You",
+          "description": "Targets take 40% more Resonance Liberation DMG from Aemeath.\nWhen in Resonance Mode - Tune Rupture, Aemeath's Tune Rupture DMG can critically hit, with a fixed Crit. Rate of 80%, and fixed Crit. DMG of 275%.\nWhen in Resonance Mode - Fusion Burst and in combat state, Fusion Burst DMG triggered on targets near the active Resonator in the team can critically hit, with a fixed Crit. Rate of 80%, and fixed Crit. DMG of 275%.\nThe stacks of Rupturous Trail and Fusion Trail inflicted on the target through Forte Circuit To Sculpt the Silence is doubled.\nIn Resonance Mode - Tune Rupture/Resonance Mode - Fusion Burst and in combat, the max stack limit of Rupturous Trail/Fusion Trail on the targets near the active Resonator in the team is increased to 60. While casting Resonance Skill Seraphic Duet, inflict 10 stacks of Rupturous Trail/Fusion Trail on targets within range for 30s.",
+          "sourceId": "character:1210:1210:sequence:6:1",
+          "reviewFingerprint": "c0d4f548d1f77b7f7da4a419837170d358b4a8cbcb683bae036bb613ae83f712",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1210:aemeath-s6-tune-rupture-crit"
+          },
+          "operations": [
+            {
+              "kind": "override-status-crit",
+              "rate": 0.8,
+              "damage": 2.75,
+              "filter": {
+                "actionIds": [
+                  "1210:7:3"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 6
+        },
+        {
+          "id": "character:1210:1210:sequence:6:2",
+          "name": "A Zephyr-Kissed Journey to You",
+          "description": "Targets take 40% more Resonance Liberation DMG from Aemeath.\nWhen in Resonance Mode - Tune Rupture, Aemeath's Tune Rupture DMG can critically hit, with a fixed Crit. Rate of 80%, and fixed Crit. DMG of 275%.\nWhen in Resonance Mode - Fusion Burst and in combat state, Fusion Burst DMG triggered on targets near the active Resonator in the team can critically hit, with a fixed Crit. Rate of 80%, and fixed Crit. DMG of 275%.\nThe stacks of Rupturous Trail and Fusion Trail inflicted on the target through Forte Circuit To Sculpt the Silence is doubled.\nIn Resonance Mode - Tune Rupture/Resonance Mode - Fusion Burst and in combat, the max stack limit of Rupturous Trail/Fusion Trail on the targets near the active Resonator in the team is increased to 60. While casting Resonance Skill Seraphic Duet, inflict 10 stacks of Rupturous Trail/Fusion Trail on targets within range for 30s.",
+          "sourceId": "character:1210:1210:sequence:6:2",
+          "reviewFingerprint": "c0d4f548d1f77b7f7da4a419837170d358b4a8cbcb683bae036bb613ae83f712",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1210:aemeath-s6-fusion-burst-crit"
+          },
+          "operations": [
+            {
+              "kind": "override-status-crit",
+              "rate": 0.8,
+              "damage": 2.75,
+              "filter": {
+                "actionIds": [
+                  "status:fusion-burst"
                 ]
               }
             }
@@ -96010,7 +96588,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1211:1211:2:1",
           "reviewFingerprint": "589eb0668e11579cd6e2120f6cea792f7d602fc02df67ec782c5c4476e046567",
           "kind": "damage",
-          "damageType": "liberation",
+          "damageType": "skill",
           "element": "fusion",
           "skillLevelIndex": 1,
           "formulas": {
@@ -96323,7 +96901,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1211:1211:2:2",
           "reviewFingerprint": "589eb0668e11579cd6e2120f6cea792f7d602fc02df67ec782c5c4476e046567",
           "kind": "damage",
-          "damageType": "skill",
+          "damageType": "liberation",
           "element": "fusion",
           "skillLevelIndex": 1,
           "formulas": {
@@ -96576,7 +97154,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1211:1211:2:3",
           "reviewFingerprint": "589eb0668e11579cd6e2120f6cea792f7d602fc02df67ec782c5c4476e046567",
           "kind": "damage",
-          "damageType": "skill",
+          "damageType": "liberation",
           "element": "fusion",
           "skillLevelIndex": 1,
           "formulas": {
@@ -98001,18 +98579,16 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1211:1211:5:effect:3",
           "reviewFingerprint": "e2edf2b8abfb9e51b441179f28c57cc0b58753d1768258c10469e31ef4568c74",
           "activation": {
-            "kind": "toggle",
-            "input": "character:1211:1211:5:effect:3"
+            "kind": "stacks",
+            "input": "character:1211:denia-oftune-excess-tens",
+            "minimum": 0,
+            "maximum": 5
           },
           "operations": [
             {
-              "kind": "add-damage-bonus",
-              "value": 0.08,
-              "filter": {
-                "damageTypes": [
-                  "tune-break"
-                ]
-              }
+              "kind": "add-tune-break-boost",
+              "value": 8,
+              "stacking": "per-stack"
             }
           ]
         },
@@ -98023,7 +98599,8 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1211:1211:7:effect:6",
           "reviewFingerprint": "e2edf2b8abfb9e51b441179f28c57cc0b58753d1768258c10469e31ef4568c74",
           "activation": {
-            "kind": "always"
+            "kind": "toggle",
+            "input": "character:1211:1211:7:effect:6"
           },
           "operations": [
             {
@@ -98031,7 +98608,38 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
               "value": 0.5,
               "filter": {
                 "actionIds": [
-                  "1211:7:0"
+                  "1211:1:7",
+                  "1211:1:8",
+                  "1211:1:9",
+                  "1211:1:10",
+                  "1211:1:11",
+                  "1211:1:12",
+                  "1211:1:13",
+                  "1211:1:14",
+                  "1211:1:15",
+                  "1211:1:16",
+                  "1211:1:17"
+                ]
+              }
+            },
+            {
+              "kind": "override-damage-type",
+              "damageType": "liberation",
+              "filter": {
+                "actionIds": [
+                  "1211:1:7",
+                  "1211:1:8",
+                  "1211:1:9",
+                  "1211:1:10",
+                  "1211:1:11",
+                  "1211:1:12",
+                  "1211:1:13",
+                  "1211:1:14",
+                  "1211:1:15",
+                  "1211:1:16",
+                  "1211:1:17",
+                  "1211:2:2",
+                  "1211:2:3"
                 ]
               }
             }
@@ -98239,7 +98847,8 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1211:1211:5:effect:1",
           "reviewFingerprint": "269e60f17a438922f0764c895b1b4f053f4045247ecbfedc21fcdb543174c2ea",
           "activation": {
-            "kind": "always"
+            "kind": "toggle",
+            "input": "character:1211:denia-fusion-burst-mode"
           },
           "operations": [
             {
@@ -98252,7 +98861,8 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
                 ]
               }
             }
-          ]
+          ],
+          "exclusiveGroup": "denia-resonance-mode"
         },
         {
           "id": "character:1211:1211:5:effect:2",
@@ -98261,20 +98871,17 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1211:1211:5:effect:2",
           "reviewFingerprint": "269e60f17a438922f0764c895b1b4f053f4045247ecbfedc21fcdb543174c2ea",
           "activation": {
-            "kind": "always"
+            "kind": "toggle",
+            "input": "character:1211:denia-tune-strain-mode"
           },
           "operations": [
             {
-              "kind": "add-damage-bonus",
-              "value": 0.1,
-              "recipient": "team",
-              "filter": {
-                "damageTypes": [
-                  "tune-break"
-                ]
-              }
+              "kind": "add-tune-break-boost",
+              "value": 10,
+              "recipient": "team"
             }
-          ]
+          ],
+          "exclusiveGroup": "denia-resonance-mode"
         },
         {
           "id": "character:1211:1211:8:effect:2",
@@ -98342,16 +98949,19 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1211:1211:sequence:2:1",
           "reviewFingerprint": "e912ff4720bbcb7b01cc8eb03bf40e0dd8f91fde8cdbeaf1af867961ebd8d19e",
           "activation": {
-            "kind": "toggle",
-            "input": "character:1211:1211:sequence:2:1"
+            "kind": "stacks",
+            "input": "character:1211:1211:sequence:2:1",
+            "minimum": 0,
+            "maximum": 10
           },
           "operations": [
             {
-              "kind": "add-damage-bonus",
-              "value": 0.2,
+              "kind": "ignore-resistance",
+              "value": 0.01,
+              "stacking": "per-stack",
               "filter": {
-                "damageTypes": [
-                  "tune-break"
+                "elements": [
+                  "fusion"
                 ]
               }
             }
@@ -98363,6 +98973,29 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "name": "Tossed in the Tides of Reality",
           "description": "When Denia is in Resonance Mode - Fusion Burst, after a Resonator in the team inflicts Fusion Burst on the target, they gain 50% Fusion DMG Bonus for 15s. After Fusion Burst is triggered on enemies near the active Resonator in the team, Denia gains 1 of Degenerate Voidmatter for 15s, up to 10 stacks. Each stack of Degenerate Voidmatter causes Denia to ignore 1% of the target's Fusion RES.\nThis effect ends when Denia switches modes.\nWhen Denia is in Resonance Mode - Tune Strain, her Forte Circuit effect is enhanced: After a Resonator in the team inflicts Tune Strain - Shifting on the target, their Tune Break Boost is increased by 20 for 15s, and the target's Off-Tune Level is increased by 100% of the max. This effect can only be triggered once per 300s on the same target.\nThis effect ends when Denia switches forms.\nThe DMG Multiplier of Resonance Skill Banish - Breakdown Form is increased by 40%.",
           "sourceId": "character:1211:1211:sequence:2:2",
+          "reviewFingerprint": "e912ff4720bbcb7b01cc8eb03bf40e0dd8f91fde8cdbeaf1af867961ebd8d19e",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1211:1211:sequence:2:2",
+            "requires": [
+              {
+                "input": "character:1211:denia-tune-strain-mode"
+              }
+            ]
+          },
+          "operations": [
+            {
+              "kind": "add-tune-break-boost",
+              "value": 20
+            }
+          ],
+          "minimumSequence": 2
+        },
+        {
+          "id": "character:1211:1211:sequence:2:3",
+          "name": "Tossed in the Tides of Reality",
+          "description": "When Denia is in Resonance Mode - Fusion Burst, after a Resonator in the team inflicts Fusion Burst on the target, they gain 50% Fusion DMG Bonus for 15s. After Fusion Burst is triggered on enemies near the active Resonator in the team, Denia gains 1 of Degenerate Voidmatter for 15s, up to 10 stacks. Each stack of Degenerate Voidmatter causes Denia to ignore 1% of the target's Fusion RES.\nThis effect ends when Denia switches modes.\nWhen Denia is in Resonance Mode - Tune Strain, her Forte Circuit effect is enhanced: After a Resonator in the team inflicts Tune Strain - Shifting on the target, their Tune Break Boost is increased by 20 for 15s, and the target's Off-Tune Level is increased by 100% of the max. This effect can only be triggered once per 300s on the same target.\nThis effect ends when Denia switches forms.\nThe DMG Multiplier of Resonance Skill Banish - Breakdown Form is increased by 40%.",
+          "sourceId": "character:1211:1211:sequence:2:3",
           "reviewFingerprint": "e912ff4720bbcb7b01cc8eb03bf40e0dd8f91fde8cdbeaf1af867961ebd8d19e",
           "activation": {
             "kind": "always"
@@ -98518,6 +99151,36 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
               "kind": "add-percent-stat",
               "stat": "atk",
               "value": 0.6
+            }
+          ],
+          "minimumSequence": 6
+        },
+        {
+          "id": "character:1211:1211:sequence:6:1",
+          "name": "May You Find Your Sun in the Silence",
+          "description": "While in Entropy Shift states, gain 60% ATK increase and 60% Fusion DMG Bonus.\nWhile Denia is in Resonance Mode - Fusion Burst, after Erosion Field deals damage, trigger Fusion Burst on the target based on its max limit. The Fusion Burst DMG triggered gains a 200% DMG Multiplier increase against the main target and does not remove the Fusion Burst stacks on the targets hit. The effect can be triggered on the same target up to 1. When the target is damaged by Resonance Liberation Final Act: Breakdown Form, the effect's trigger count is reset. The trigger count can be reset for the same target once every 2s.\nWhile Denia is in Resonance Mode - Tune Strain, when Resonators in the team deal Tune Break DMG to Mistuned enemies in Tune Strain - Shifting, they additionally inflict 1 of Tune Strain - Interfered on the target. This effect can only be triggered on the same target once every 3s.",
+          "sourceId": "character:1211:1211:sequence:6:1",
+          "reviewFingerprint": "e912ff4720bbcb7b01cc8eb03bf40e0dd8f91fde8cdbeaf1af867961ebd8d19e",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1211:denia-s6-fusion-burst-mode"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1211:7:0"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1211:sequence:6:1:denia-s6-erosion-fusion-burst",
+              "name": "Erosion Field Fusion Burst",
+              "kind": "damage",
+              "damageType": "status",
+              "referenceActionId": "status:fusion-burst",
+              "referenceMultiplier": 3,
+              "count": 1,
+              "maximumTriggers": 1
             }
           ],
           "minimumSequence": 6
@@ -98988,7 +99651,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1212:1212:1:2",
           "reviewFingerprint": "89d29f4ccfb824ac05dc1213f8b157d7887506fb44243adc7b3526119c854872",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "fusion",
           "tags": [
             "normal-chain"
@@ -99264,7 +99927,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1212:1212:1:3",
           "reviewFingerprint": "89d29f4ccfb824ac05dc1213f8b157d7887506fb44243adc7b3526119c854872",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "fusion",
           "tags": [
             "normal-chain"
@@ -99992,7 +100655,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1212:1212:1:6",
           "reviewFingerprint": "89d29f4ccfb824ac05dc1213f8b157d7887506fb44243adc7b3526119c854872",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "fusion",
           "tags": [
             "normal-chain"
@@ -100248,7 +100911,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1212:1212:1:7",
           "reviewFingerprint": "89d29f4ccfb824ac05dc1213f8b157d7887506fb44243adc7b3526119c854872",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "fusion",
           "tags": [
             "normal-chain"
@@ -100740,7 +101403,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1212:1212:1:9",
           "reviewFingerprint": "89d29f4ccfb824ac05dc1213f8b157d7887506fb44243adc7b3526119c854872",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "fusion",
           "tags": [
             "dodge-counter"
@@ -101016,7 +101679,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1212:1212:1:10",
           "reviewFingerprint": "89d29f4ccfb824ac05dc1213f8b157d7887506fb44243adc7b3526119c854872",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "fusion",
           "tags": [
             "dodge-counter"
@@ -102151,7 +102814,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1212:1212:2:3",
           "reviewFingerprint": "89d29f4ccfb824ac05dc1213f8b157d7887506fb44243adc7b3526119c854872",
           "kind": "damage",
-          "damageType": "skill",
+          "damageType": "heavy",
           "element": "fusion",
           "skillLevelIndex": 1,
           "formulas": {
@@ -104369,10 +105032,10 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1212:1212:6:effect:7",
           "reviewFingerprint": "d80ccc17bd5d60f325586e6dd180d6ae9a8b494d7926c30a36568aa391cc5c4e",
           "activation": {
-            "kind": "stacks",
-            "input": "character:1212:1212:6:effect:7",
+            "kind": "value",
+            "input": "character:1212:jingran-fortune-hp-thousands-times-stacks",
             "minimum": 0,
-            "maximum": 1
+            "maximum": 2500
           },
           "operations": [
             {
@@ -104383,7 +105046,8 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
                 "elements": [
                   "fusion"
                 ]
-              }
+              },
+              "maximumValue": 1.25
             }
           ]
         },
@@ -104394,18 +105058,47 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1212:1212:7:effect:26",
           "reviewFingerprint": "d80ccc17bd5d60f325586e6dd180d6ae9a8b494d7926c30a36568aa391cc5c4e",
           "activation": {
-            "kind": "toggle",
-            "input": "character:1212:1212:7:effect:26"
+            "kind": "value",
+            "input": "character:1212:jingran-hp-thousands-fusion",
+            "minimum": 0,
+            "maximum": 50
           },
           "operations": [
             {
               "kind": "add-damage-bonus",
               "value": 0.015,
+              "stacking": "per-stack",
               "filter": {
                 "elements": [
                   "fusion"
                 ]
-              }
+              },
+              "maximumValue": 0.75
+            }
+          ]
+        },
+        {
+          "id": "character:1212:1212:7:effect:28",
+          "name": "Upstream Along Santu",
+          "description": "Jingran gains additional ATK based on Max HP: For every 1000 of Max HP, Jingran gains 36 additional ATK, up to 1800.",
+          "sourceId": "character:1212:1212:7:effect:28",
+          "reviewFingerprint": "d80ccc17bd5d60f325586e6dd180d6ae9a8b494d7926c30a36568aa391cc5c4e",
+          "activation": {
+            "kind": "value",
+            "input": "character:1212:jingran-base-yinyang-hp-thousands",
+            "minimum": 0,
+            "maximum": 50,
+            "suppressedBy": [
+              "character:1212:jingran-s3-yinyang-everflow-hp-thousands"
+            ]
+          },
+          "operations": [
+            {
+              "kind": "add-flat-stat",
+              "stat": "atk",
+              "value": 36,
+              "stacking": "per-stack",
+              "maximumValue": 1800
             }
           ]
         },
@@ -104583,6 +105276,30 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           },
           "operations": [
             {
+              "kind": "amplify-damage",
+              "value": 1.8,
+              "filter": {
+                "actionIds": [
+                  "1212:7:2",
+                  "1212:7:3"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 2
+        },
+        {
+          "id": "character:1212:1212:sequence:2:1",
+          "name": "A Solitary Lantern, Across Lands Shade-Trodden",
+          "description": "The DMG Multipliers of Heavy Attack - Soul Raid and Heavy Attack - Stardome Meander are increased by 46%. While in the Yinghuo state, the DMG Multiplier increase effect via Fire of Life on Heavy Attack - Soul Raid and Heavy Attack - Stardome Meander is increased by 46%.\nUpon entering combat, Jingran gains the following effects, triggered once every 4s:\n- Gains 300 of Qi.\n- Gains Netherworld's Boon.\nNetherworld's Boon\nCasting Heavy Attack - Soul Raid or Heavy Attack - Stardome Meander restores 25% of Max Resonance Energy and grants Heavy Attack - Soul Raid and Heavy Attack - Stardome Meander 180% DMG Amplification for 4s.",
+          "sourceId": "character:1212:1212:sequence:2:1",
+          "reviewFingerprint": "b132ad00be5b874e67f978b77983fc38ec454ab3a4d8d71363a18f295e4470fa",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1212:1212:sequence:2:1"
+          },
+          "operations": [
+            {
               "kind": "increase-motion-value",
               "value": 0.46,
               "filter": {
@@ -104603,7 +105320,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "reviewFingerprint": "b132ad00be5b874e67f978b77983fc38ec454ab3a4d8d71363a18f295e4470fa",
           "activation": {
             "kind": "value",
-            "input": "character:1212:1212:sequence:3:0",
+            "input": "character:1212:jingran-s3-yinyang-everflow-hp-thousands",
             "minimum": 0,
             "maximum": 50
           },
@@ -104642,6 +105359,28 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "name": "As Favors and Feuds Fade, New Stories Await",
           "description": "Targets take 40% more Heavy Attack DMG from Jingran.\nThe DMG Multiplier of Chimei Wangliang is increased by 80%.\nUpon entering the Yinghuo state, Jingran gains the Parade of Thousand Souls effect for 15s. During this effect, if Jingran is the active Resonator in the team, upon dealing damage, Jingran summons Chimei Wangliang to attack the targets, dealing Fusion DMG, considered Heavy Attack DMG.\nChimei Wangliang can be summoned this way at an interval of 1s for up to 8 times. Parade of Thousand Souls ends and the available summon charges of Chimei Wangliang reset when either of the following conditions is met:\n- Cast Resonance Liberation - Burial of Thousand Souls.\n- Yinghuo ends or is removed.",
           "sourceId": "character:1212:1212:sequence:6:0",
+          "reviewFingerprint": "b132ad00be5b874e67f978b77983fc38ec454ab3a4d8d71363a18f295e4470fa",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "amplify-damage",
+              "value": 0.4,
+              "filter": {
+                "damageTypes": [
+                  "heavy"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 6
+        },
+        {
+          "id": "character:1212:1212:sequence:6:1",
+          "name": "As Favors and Feuds Fade, New Stories Await",
+          "description": "Targets take 40% more Heavy Attack DMG from Jingran.\nThe DMG Multiplier of Chimei Wangliang is increased by 80%.\nUpon entering the Yinghuo state, Jingran gains the Parade of Thousand Souls effect for 15s. During this effect, if Jingran is the active Resonator in the team, upon dealing damage, Jingran summons Chimei Wangliang to attack the targets, dealing Fusion DMG, considered Heavy Attack DMG.\nChimei Wangliang can be summoned this way at an interval of 1s for up to 8 times. Parade of Thousand Souls ends and the available summon charges of Chimei Wangliang reset when either of the following conditions is met:\n- Cast Resonance Liberation - Burial of Thousand Souls.\n- Yinghuo ends or is removed.",
+          "sourceId": "character:1212:1212:sequence:6:1",
           "reviewFingerprint": "b132ad00be5b874e67f978b77983fc38ec454ab3a4d8d71363a18f295e4470fa",
           "activation": {
             "kind": "always"
@@ -107394,7 +108133,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1301:1301:3:1",
           "reviewFingerprint": "0ecb5eff66bdb3ff3988dae77b0ab6eadde67d0a5b96ba6b5cca32207067e97f",
           "kind": "damage",
-          "damageType": "liberation",
+          "damageType": "intro",
           "element": "electro",
           "skillLevelIndex": 3,
           "formulas": {
@@ -109180,7 +109919,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1301:1301:3:8",
           "reviewFingerprint": "0ecb5eff66bdb3ff3988dae77b0ab6eadde67d0a5b96ba6b5cca32207067e97f",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "liberation",
           "element": "electro",
           "tags": [
             "dodge-counter"
@@ -110145,7 +110884,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1301:1301:7:1",
           "reviewFingerprint": "0ecb5eff66bdb3ff3988dae77b0ab6eadde67d0a5b96ba6b5cca32207067e97f",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "liberation",
           "element": "electro",
           "tags": [
             "forte"
@@ -110796,6 +111535,11 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             "input": "character:1301:1301:sequence:6:0"
           },
           "operations": [],
+          "filter": {
+            "actionIds": [
+              "1301:7:1"
+            ]
+          },
           "triggeredActions": [
             {
               "id": "1301:sequence:6:0:triggered-1",
@@ -114313,7 +115057,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1302:1302:7:1",
           "reviewFingerprint": "9668e15b433c2a651f9fb121ff3ebda8943d4991e46e523badc34b232337c8e2",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "skill",
           "element": "electro",
           "tags": [
             "forte"
@@ -114744,6 +115488,30 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           ]
         },
         {
+          "id": "character:1302:1302:sequence:1:0",
+          "name": "Morality's Crossroads",
+          "description": "Resonance Skill Magnetic Roar and Lightning Execution deal 70% more DMG.",
+          "sourceId": "character:1302:1302:sequence:1:0",
+          "reviewFingerprint": "df5a9539bf53793276712ccd5c28d0477e8c5c31e610ac679c79803d200d59ff",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1302:1302:sequence:1:0"
+          },
+          "operations": [
+            {
+              "kind": "increase-motion-value",
+              "value": 0.7,
+              "filter": {
+                "actionIds": [
+                  "1302:2:0",
+                  "1302:2:1"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 1
+        },
+        {
           "id": "character:1302:1302:sequence:3:0",
           "name": "Unyielding Verdict",
           "description": "Forte Circuit Judgment Strike's DMG multiplier is increased by 55%.",
@@ -114786,6 +115554,29 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "minimumSequence": 4
         },
         {
+          "id": "character:1302:1302:sequence:5:0",
+          "name": "Resounding Will",
+          "description": "Resonance Liberation Thundering Wrath deals 100% extra DMG to targets with Forte Circuit's Sinner's Mark or Punishment Mark.",
+          "sourceId": "character:1302:1302:sequence:5:0",
+          "reviewFingerprint": "df5a9539bf53793276712ccd5c28d0477e8c5c31e610ac679c79803d200d59ff",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1302:1302:sequence:5:0"
+          },
+          "operations": [
+            {
+              "kind": "increase-motion-value",
+              "value": 1,
+              "filter": {
+                "actionIds": [
+                  "1302:3:0"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 5
+        },
+        {
           "id": "character:1302:1302:sequence:6:0",
           "name": "Pursuit of Justice",
           "description": "In the first 30s after casting Resonance Liberation Thundering Wrath, when Yinlin's Basic Attack hits a target, Furious Thunder will be triggered, dealing Electro DMG equal to 419.59% of Yinlin's ATK. Every Basic Attack hit can trigger Furious Thunder 1 time, up to 4 times. This is considered Resonance Skill DMG.",
@@ -114796,6 +115587,16 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             "input": "character:1302:1302:sequence:6:0"
           },
           "operations": [],
+          "filter": {
+            "actionIds": [
+              "1302:1:0",
+              "1302:1:1",
+              "1302:1:2",
+              "1302:1:3",
+              "1302:1:5",
+              "1302:1:6"
+            ]
+          },
           "triggeredActions": [
             {
               "id": "1302:sequence:6:0:triggered-1",
@@ -118009,7 +118810,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1303:1303:7:0",
           "reviewFingerprint": "c9e613756aec766129ce4a07367538934d489d395abb749fcdff13410f78f0cd",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "skill",
           "element": "electro",
           "tags": [
             "forte"
@@ -120426,6 +121227,64 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
               }
             }
           ]
+        },
+        {
+          "id": "character:1303:1303:sequence:3:0",
+          "name": "Upholder of Integrity",
+          "description": "When the Coordinated Attacks of Resonance Skill's Thunder Wedge hits a target, the damage is additionally increased by 20% of Yuanwu's DEF.",
+          "sourceId": "character:1303:1303:sequence:3:0",
+          "reviewFingerprint": "26bddd76e5c410c001b45b9baa1f681f74368339e83dc47e2e112f9e076f2e14",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1303:1303:sequence:3:0"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1303:2:1"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1303:sequence:3:0:thunder-wedge-def-followup",
+              "name": "Thunder Wedge additional DEF damage",
+              "kind": "damage",
+              "damageType": "skill",
+              "element": "electro",
+              "scaling": "def",
+              "expression": "20%",
+              "count": 1
+            }
+          ],
+          "minimumSequence": 3
+        },
+        {
+          "id": "character:1303:1303:sequence:4:0",
+          "name": "Retributive Knuckles",
+          "description": "When casting Resonance Liberation Blazing Might, the on-field character will gain a Shield equal to 200% of Yuanwu's DEF for 10s.",
+          "sourceId": "character:1303:1303:sequence:4:0",
+          "reviewFingerprint": "26bddd76e5c410c001b45b9baa1f681f74368339e83dc47e2e112f9e076f2e14",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1303:3:0"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1303:sequence:4:0:retributive-knuckles-shield",
+              "name": "Retributive Knuckles shield",
+              "kind": "shield",
+              "recipient": "self",
+              "scaling": "def",
+              "expression": "200%",
+              "count": 1
+            }
+          ],
+          "minimumSequence": 4
         },
         {
           "id": "character:1303:1303:sequence:5:0",
@@ -123476,7 +124335,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1304:1304:7:0",
           "reviewFingerprint": "f2d30e8e4955123ad6eae32c3b9954d5f973abb8cc18756503c5b3123b9b68d5",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "skill",
           "element": "spectro",
           "tags": [
             "forte"
@@ -123682,7 +124541,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1304:1304:7:1",
           "reviewFingerprint": "f2d30e8e4955123ad6eae32c3b9954d5f973abb8cc18756503c5b3123b9b68d5",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "skill",
           "element": "spectro",
           "tags": [
             "forte"
@@ -123926,7 +124785,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1304:1304:7:2",
           "reviewFingerprint": "f2d30e8e4955123ad6eae32c3b9954d5f973abb8cc18756503c5b3123b9b68d5",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "skill",
           "element": "spectro",
           "tags": [
             "forte"
@@ -124151,7 +125010,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1304:1304:7:3",
           "reviewFingerprint": "f2d30e8e4955123ad6eae32c3b9954d5f973abb8cc18756503c5b3123b9b68d5",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "skill",
           "element": "spectro",
           "tags": [
             "forte"
@@ -125524,7 +126383,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1304:1304:7:8",
           "reviewFingerprint": "f2d30e8e4955123ad6eae32c3b9954d5f973abb8cc18756503c5b3123b9b68d5",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "skill",
           "element": "spectro",
           "tags": [
             "forte"
@@ -126108,6 +126967,33 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
               "value": 0.027999999999999997
             }
           ]
+        },
+        {
+          "id": "character:1304:1304:sequence:1:0",
+          "name": "Abyssal Ascension",
+          "description": "When casting Basic Attack \"Incarnation - Basic Attack\" or Resonance Skill Crescent Divinity, Jinhsi gains one stack of Herald of Revival, stacking up to 4 times and lasting for 6s. When casting Resonance Skill Illuminous Epiphany, Jinhsi consumes all stacks of Herald of Revival. Each stack increases the damage of Resonance Skill Illuminous Epiphany by 20%.",
+          "sourceId": "character:1304:1304:sequence:1:0",
+          "reviewFingerprint": "db474462da820772df8e73fd9da67dfb8706c4069a07ee81b70202eec7811b89",
+          "activation": {
+            "kind": "stacks",
+            "input": "character:1304:1304:sequence:1:0",
+            "minimum": 0,
+            "maximum": 4
+          },
+          "operations": [
+            {
+              "kind": "add-damage-bonus",
+              "value": 0.2,
+              "stacking": "per-stack",
+              "filter": {
+                "actionIds": [
+                  "1304:7:7",
+                  "1304:7:8"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 1
         },
         {
           "id": "character:1304:1304:sequence:3:0",
@@ -128269,7 +129155,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1305:1305:3:0",
           "reviewFingerprint": "933196aaca7bc16382b5690a5c2c3ea9fccb95a8b0accae0594b42b7ca54ad4b",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "liberation",
           "element": "electro",
           "skillLevelIndex": 3,
           "formulas": {
@@ -129210,7 +130096,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1305:1305:3:4",
           "reviewFingerprint": "933196aaca7bc16382b5690a5c2c3ea9fccb95a8b0accae0594b42b7ca54ad4b",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "skill",
           "element": "electro",
           "skillLevelIndex": 3,
           "formulas": {
@@ -130974,6 +131860,35 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           ]
         },
         {
+          "id": "character:1305:1305:sequence:1:0",
+          "name": "Prodigy of Protégés",
+          "description": "Resonance Skill Law of Reigns additionally launches 6 Convolution Matrices at enemies, each dealing Resonance Liberation DMG equal to 8% of the skill's DMG Multiplier.",
+          "sourceId": "character:1305:1305:sequence:1:0",
+          "reviewFingerprint": "08be619972e1750f12160dab83132d2fd84e081d2d72ea3e2c6ed3d81451e010",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1305:1305:sequence:1:0"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1305:7:1"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1305:sequence:1:0:review-followup",
+              "name": "Six Convolution Matrices",
+              "kind": "damage",
+              "damageType": "liberation",
+              "referenceActionId": "1305:7:1",
+              "referenceMultiplier": 0.08,
+              "count": 6
+            }
+          ],
+          "minimumSequence": 1
+        },
+        {
           "id": "character:1305:1305:sequence:2:0",
           "name": "Traces of Predecessors",
           "description": "Casting Resonance Skill or Resonance Liberation Cogitation Model increases Crit. DMG by 30% for 8s.",
@@ -131049,6 +131964,28 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "name": "End of Stars",
           "description": "The DMG Multiplier of Outro Skill Chain Rule is increased by 222%. The DMG Multiplier of Resonance Liberation Cogitation Model is increased by 100%.",
           "sourceId": "character:1305:1305:sequence:5:0",
+          "reviewFingerprint": "08be619972e1750f12160dab83132d2fd84e081d2d72ea3e2c6ed3d81451e010",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "increase-motion-value",
+              "value": 2.22,
+              "filter": {
+                "actionIds": [
+                  "1305:8:outro"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 5
+        },
+        {
+          "id": "character:1305:1305:sequence:5:1",
+          "name": "End of Stars",
+          "description": "The DMG Multiplier of Outro Skill Chain Rule is increased by 222%. The DMG Multiplier of Resonance Liberation Cogitation Model is increased by 100%.",
+          "sourceId": "character:1305:1305:sequence:5:1",
           "reviewFingerprint": "08be619972e1750f12160dab83132d2fd84e081d2d72ea3e2c6ed3d81451e010",
           "activation": {
             "kind": "always"
@@ -133984,7 +134921,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1306:1306:1:12",
           "reviewFingerprint": "f427668372d973994a1e9dedd15131331988f13d355f744ade1d710d8e97ff43",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "electro",
           "tags": [
             "dodge-counter"
@@ -134453,7 +135390,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1306:1306:3:0",
           "reviewFingerprint": "f427668372d973994a1e9dedd15131331988f13d355f744ade1d710d8e97ff43",
           "kind": "damage",
-          "damageType": "liberation",
+          "damageType": "heavy",
           "element": "electro",
           "skillLevelIndex": 3,
           "formulas": {
@@ -136177,7 +137114,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1306:1306:7:2",
           "reviewFingerprint": "f427668372d973994a1e9dedd15131331988f13d355f744ade1d710d8e97ff43",
           "kind": "damage",
-          "damageType": "skill",
+          "damageType": "heavy",
           "element": "electro",
           "tags": [
             "forte",
@@ -136414,7 +137351,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1306:1306:7:3",
           "reviewFingerprint": "f427668372d973994a1e9dedd15131331988f13d355f744ade1d710d8e97ff43",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "skill",
           "element": "electro",
           "tags": [
             "forte",
@@ -136994,6 +137931,12 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             "input": "character:1306:1306:sequence:6:1"
           },
           "operations": [],
+          "filter": {
+            "actionIds": [
+              "1306:1:9",
+              "1306:1:10"
+            ]
+          },
           "triggeredActions": [
             {
               "id": "1306:sequence:6:1:thunder-rage",
@@ -137001,30 +137944,6 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
               "kind": "damage",
               "damageType": "heavy",
               "element": "electro",
-              "scaling": "atk",
-              "expression": "100%",
-              "count": 2
-            }
-          ],
-          "minimumSequence": 6
-        },
-        {
-          "id": "character:1306:1306:sequence:6:2",
-          "name": "Engraved in Radiant Light",
-          "description": "- Augusta can now hold up to 4 stacks of Crown of Wills.\n- For every 1% of Crit. Rate over 150%, Augusta gains 2% Crit. DMG increase, up to 50%.\n- When Augusta performs Heavy Attack - Thunderoar: Spinslash or Heavy Attack - Thunderoar: Uppercut, she obtains 2 of Crown of Wills. Augusta can only obtain 2 of Crown of Wills every 1s via Engraved in Radiant Light.\n- While casting Heavy Attack - Thunderoar: Spinslash or Heavy Attack - Thunderoar: Uppercut, Thunder Rage is triggered at the spot, dealing two instances of Electro DMG, with each instance equal to 100% of Augusta's ATK, considered as Heavy Attack DMG.",
-          "sourceId": "character:1306:1306:sequence:6:2",
-          "reviewFingerprint": "ca1872c5807e442b47e24abd522eb411d17aad79413e7289f6cb934a49646267",
-          "activation": {
-            "kind": "toggle",
-            "input": "character:1306:1306:sequence:6:2"
-          },
-          "operations": [],
-          "triggeredActions": [
-            {
-              "id": "1306:sequence:6:2:triggered-1",
-              "name": "Thunder Rage",
-              "kind": "damage",
-              "damageType": "heavy",
               "scaling": "atk",
               "expression": "100%",
               "count": 2
@@ -141891,7 +142810,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1308:1308:1:3",
           "reviewFingerprint": "e9225a57f3de7cfbb2e3275e749dd46fa6c81018b3c6e9dbf86f1ee0fffeb177",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "basic",
           "element": "electro",
           "skillLevelIndex": 0,
           "formulas": {
@@ -147306,204 +148225,124 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "skillLevelIndex": 2,
           "formulas": {
             "1": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 11.865
-              ],
-              "canCrit": true
+              ]
             },
             "2": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 12.838
-              ],
-              "canCrit": true
+              ]
             },
             "3": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 13.810899999999998
-              ],
-              "canCrit": true
+              ]
             },
             "4": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 15.173
-              ],
-              "canCrit": true
+              ]
             },
             "5": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 16.145899999999997
-              ],
-              "canCrit": true
+              ]
             },
             "6": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 17.2648
-              ],
-              "canCrit": true
+              ]
             },
             "7": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 18.8215
-              ],
-              "canCrit": true
+              ]
             },
             "8": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 20.3782
-              ],
-              "canCrit": true
+              ]
             },
             "9": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 21.9349
-              ],
-              "canCrit": true
+              ]
             },
             "10": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 23.5889
-              ],
-              "canCrit": true
+              ]
             },
             "11": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 25.534699999999997
-              ],
-              "canCrit": true
+              ]
             },
             "12": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 27.4806
-              ],
-              "canCrit": true
+              ]
             },
             "13": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 29.426399999999997
-              ],
-              "canCrit": true
+              ]
             },
             "14": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 31.3723
-              ],
-              "canCrit": true
+              ]
             },
             "15": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 33.318200000000004
-              ],
-              "canCrit": true
+              ]
             },
             "16": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 35.264
-              ],
-              "canCrit": true
+              ]
             },
             "17": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 37.2099
-              ],
-              "canCrit": true
+              ]
             },
             "18": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 39.1557
-              ],
-              "canCrit": true
+              ]
             },
             "19": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 41.1016
-              ],
-              "canCrit": true
+              ]
             },
             "20": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 43.0475
-              ],
-              "canCrit": true
+              ]
             }
           }
         },
@@ -147514,7 +148353,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1308:1308:7:1",
           "reviewFingerprint": "e9225a57f3de7cfbb2e3275e749dd46fa6c81018b3c6e9dbf86f1ee0fffeb177",
           "kind": "damage",
-          "damageType": "skill",
+          "damageType": "basic",
           "element": "electro",
           "tags": [
             "forte"
@@ -148074,13 +148913,8 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           },
           "operations": [
             {
-              "kind": "add-damage-bonus",
-              "value": 0.3,
-              "filter": {
-                "damageTypes": [
-                  "tune-break"
-                ]
-              }
+              "kind": "add-tune-break-boost",
+              "value": 30
             }
           ]
         },
@@ -148420,6 +149254,12 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             "input": "character:1308:1308:sequence:6:0"
           },
           "operations": [],
+          "filter": {
+            "actionIds": [
+              "1308:7:1",
+              "1308:7:2"
+            ]
+          },
           "triggeredActions": [
             {
               "id": "1308:sequence:6:0:triggered-1",
@@ -154476,7 +155316,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1309:1309:7:9",
           "reviewFingerprint": "ae89216ecf5ea19c1892adcd9724a33b7f3b864374faa9208021d65eb0e1488f",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "skill",
           "element": "electro",
           "tags": [
             "forte",
@@ -154694,7 +155534,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1309:1309:7:10",
           "reviewFingerprint": "ae89216ecf5ea19c1892adcd9724a33b7f3b864374faa9208021d65eb0e1488f",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "skill",
           "element": "electro",
           "tags": [
             "forte",
@@ -154912,7 +155752,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1309:1309:7:11",
           "reviewFingerprint": "ae89216ecf5ea19c1892adcd9724a33b7f3b864374faa9208021d65eb0e1488f",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "skill",
           "element": "electro",
           "tags": [
             "forte",
@@ -155170,7 +156010,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1309:1309:7:12",
           "reviewFingerprint": "ae89216ecf5ea19c1892adcd9724a33b7f3b864374faa9208021d65eb0e1488f",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "skill",
           "element": "electro",
           "tags": [
             "forte",
@@ -155388,7 +156228,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1309:1309:7:13",
           "reviewFingerprint": "ae89216ecf5ea19c1892adcd9724a33b7f3b864374faa9208021d65eb0e1488f",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "skill",
           "element": "electro",
           "tags": [
             "forte",
@@ -162532,7 +163372,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1310:1310:7:9",
           "reviewFingerprint": "674feda9bd602ddfa2a5582a9dcd4d5e106652af0bac1ca400bd71fc989e31e2",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "skill",
           "element": "electro",
           "tags": [
             "forte",
@@ -162750,7 +163590,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1310:1310:7:10",
           "reviewFingerprint": "674feda9bd602ddfa2a5582a9dcd4d5e106652af0bac1ca400bd71fc989e31e2",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "skill",
           "element": "electro",
           "tags": [
             "forte",
@@ -162968,7 +163808,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1310:1310:7:11",
           "reviewFingerprint": "674feda9bd602ddfa2a5582a9dcd4d5e106652af0bac1ca400bd71fc989e31e2",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "skill",
           "element": "electro",
           "tags": [
             "forte",
@@ -163226,7 +164066,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1310:1310:7:12",
           "reviewFingerprint": "674feda9bd602ddfa2a5582a9dcd4d5e106652af0bac1ca400bd71fc989e31e2",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "skill",
           "element": "electro",
           "tags": [
             "forte",
@@ -163444,7 +164284,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1310:1310:7:13",
           "reviewFingerprint": "674feda9bd602ddfa2a5582a9dcd4d5e106652af0bac1ca400bd71fc989e31e2",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "skill",
           "element": "electro",
           "tags": [
             "forte",
@@ -164550,7 +165390,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
     "1311": {
       "id": "1311",
       "sourceId": "character:1311",
-      "reviewFingerprint": "ed8dcf09c339453bfaa7ebee6b3233272a4e676f83720365051d4980fd146572:32596886b791088ba8727f0878f3686311d2183833c6f798296ab6c0aa091e8e:b7020a4476c4b2a6746510e8ed89bd3c8ca1313c840ee860737d0c4cfcb93ecf:eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a:a7aad9d54cb8a9fbf2f35a12dff75c6174b2cfaffec46ee43211925dd802ad15",
+      "reviewFingerprint": "ed8dcf09c339453bfaa7ebee6b3233272a4e676f83720365051d4980fd146572:32596886b791088ba8727f0878f3686311d2183833c6f798296ab6c0aa091e8e:b7020a4476c4b2a6746510e8ed89bd3c8ca1313c840ee860737d0c4cfcb93ecf:a7aad9d54cb8a9fbf2f35a12dff75c6174b2cfaffec46ee43211925dd802ad15:eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
       "actions": {
         "1311:1:0": {
           "id": "1311:1:0",
@@ -175895,6 +176735,840 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
       },
       "effects": [
         {
+          "id": "character:1311:1311:2:effect:5",
+          "name": "Heartward by Moon",
+          "description": "- While in the Moon Fox form and out of combat, Hsin gains Dustless Tread.",
+          "sourceId": "character:1311:1311:2:effect:5",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:2:effect:5"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:2:effect:8",
+          "name": "Heartward by Moon",
+          "description": "- While in the Moon Fox form and out of combat, Hsin restores 6% of Max HP every 3s.",
+          "sourceId": "character:1311:1311:2:effect:8",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:2:effect:8"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:3:effect:7",
+          "name": "Nexus Alight",
+          "description": "In Walking Mode, Hsin in Illumining Form can step off a cliff into the air and walk slowly in mid-air, continuously consuming STA in this state.",
+          "sourceId": "character:1311:1311:3:effect:7",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:3:effect:7"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:3:effect:8",
+          "name": "Nexus Alight",
+          "description": "Hsin cannot restore STA while in Illumining Form and in mid-air.",
+          "sourceId": "character:1311:1311:3:effect:8",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:3:effect:8"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:3:effect:15",
+          "name": "Nexus Alight",
+          "description": "Casting Formshift grants Hsin 21 of Edict for 45s.",
+          "sourceId": "character:1311:1311:3:effect:15",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:3:effect:15"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:3:effect:16",
+          "name": "Nexus Alight",
+          "description": "The effect cannot exceed 21 and all stacks are removed when the duration ends.",
+          "sourceId": "character:1311:1311:3:effect:16",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:3:effect:16"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:3:effect:20",
+          "name": "Nexus Alight",
+          "description": "- Edict can be automatically consumed up to 1 stack per second.",
+          "sourceId": "character:1311:1311:3:effect:20",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:3:effect:20"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:3:effect:22",
+          "name": "Nexus Alight",
+          "description": "- When Hsin is knocked out, all Edict stacks are removed.",
+          "sourceId": "character:1311:1311:3:effect:22",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:3:effect:22"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:3:effect:24",
+          "name": "Nexus Alight",
+          "description": "Increases Hsin's resistance to interruption for 45s.",
+          "sourceId": "character:1311:1311:3:effect:24",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:3:effect:24"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:4:effect:0",
+          "name": "Tides of Succession",
+          "description": "While in Resonance Mode - Unison, when Hsin casts Intro Skill - Answering Form: Manifold Unison or Intro Skill - Illumining Form: Manifold Unison, Her ATK is increased by 50% for 8s.",
+          "sourceId": "character:1311:1311:4:effect:0",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:hsin-unison-intro-atk"
+          },
+          "operations": [
+            {
+              "kind": "add-percent-stat",
+              "stat": "atk",
+              "value": 0.5
+            }
+          ]
+        },
+        {
+          "id": "character:1311:1311:4:effect:1",
+          "name": "Tides of Succession",
+          "description": "Switching to another Resonator or Resonance Mode ends this effect.",
+          "sourceId": "character:1311:1311:4:effect:1",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:4:effect:1"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:4:effect:4",
+          "name": "Tides of Succession",
+          "description": "In addition, if Rover: Electro is in the same team, when Rover: Electro casts Intro Skill - Thunderous Fury, both Hsin and Rover: Electro gain 20% Electro DMG Bonus for 30s.",
+          "sourceId": "character:1311:1311:4:effect:4",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:hsin-rover-electro-link"
+          },
+          "operations": [
+            {
+              "kind": "add-damage-bonus",
+              "value": 0.2,
+              "filter": {
+                "elements": [
+                  "electro"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "character:1311:1311:4:effect:5",
+          "name": "Tides of Succession",
+          "description": "This effect resets when a Resonator is added to the team or when Hsin switches Resonance Mode.",
+          "sourceId": "character:1311:1311:4:effect:5",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:4:effect:5"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:5:effect:2",
+          "name": "Gleaning Simple Joys",
+          "description": "This effect does not stack.",
+          "sourceId": "character:1311:1311:5:effect:2",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:5:effect:2"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:5:effect:4",
+          "name": "Gleaning Simple Joys",
+          "description": "While Hsin is in the Heart Manifest state, when targets within a certain range have 0 stacks of Electro Flare, inflict 1 stack of Electro Flare on the targets.",
+          "sourceId": "character:1311:1311:5:effect:4",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:5:effect:4"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:5:effect:5",
+          "name": "Gleaning Simple Joys",
+          "description": "If Thunderglow on Hsin reaches the stack limit, Hsin also inflicts Fleeting Thunder on the targets:",
+          "sourceId": "character:1311:1311:5:effect:5",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:5:effect:5"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:5:effect:6",
+          "name": "Gleaning Simple Joys",
+          "description": "- When Hsin inflicts Fleeting Thunder on the target, She also inflicts Electro Flare on the target to the stack limit, up to 16 stacks of Electro Flare.",
+          "sourceId": "character:1311:1311:5:effect:6",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:5:effect:6"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:5:effect:7",
+          "name": "Gleaning Simple Joys",
+          "description": "- When Fleeting Thunder is active, if the maximum stacks of Electro Flare on the target is increased, Hsin will inflict Electro Flare on the target to the stack limit again, up to 16 stacks of Electro Flare.",
+          "sourceId": "character:1311:1311:5:effect:7",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:5:effect:7"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:5:effect:9",
+          "name": "Gleaning Simple Joys",
+          "description": "Exiting the Heart Manifest state or switching Resonance Mode removes the aforementioned effects.",
+          "sourceId": "character:1311:1311:5:effect:9",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:5:effect:9"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:6:effect:3",
+          "name": "Glance on a Whim",
+          "description": "After casting this skill, Normal Attack within a short time to cast Basic Attack - Answering Form Stage 3 (when in Resonance Mode - Unison) or Basic Attack - Answering Form Stage 4 (when in Resonance Mode - Electro Flare).",
+          "sourceId": "character:1311:1311:6:effect:3",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:6:effect:3"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:1",
+          "name": "Forms Turn, Heart Abides",
+          "description": "While in Answering Form, Hsin can gain and consume Answering Heart.",
+          "sourceId": "character:1311:1311:7:effect:1",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:1"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:2",
+          "name": "Forms Turn, Heart Abides",
+          "description": "While in Illumining Form, Hsin can gain and consume Illumining Heart.",
+          "sourceId": "character:1311:1311:7:effect:2",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:2"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:7",
+          "name": "Forms Turn, Heart Abides",
+          "description": "Casting Heavy Attack - Answering Form: Realm Wanderer grants Hsin Resolution of Wishes.",
+          "sourceId": "character:1311:1311:7:effect:7",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:7"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:9",
+          "name": "Forms Turn, Heart Abides",
+          "description": "Resolution of Wishes can only be gained once every 24s.",
+          "sourceId": "character:1311:1311:7:effect:9",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:9"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:14",
+          "name": "Forms Turn, Heart Abides",
+          "description": "Casting Heavy Attack - Illumining Form: Beholding All Horizons grants Hsin Law of Heaven.",
+          "sourceId": "character:1311:1311:7:effect:14",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:14"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:16",
+          "name": "Forms Turn, Heart Abides",
+          "description": "Law of Heaven can only be gained once every 24s.",
+          "sourceId": "character:1311:1311:7:effect:16",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:16"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:28",
+          "name": "Forms Turn, Heart Abides",
+          "description": "Resonance Mode - Unison",
+          "sourceId": "character:1311:1311:7:effect:28",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:28"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:29",
+          "name": "Forms Turn, Heart Abides",
+          "description": "While in Resonance Mode - Unison, Hsin gains the following effects:",
+          "sourceId": "character:1311:1311:7:effect:29",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:29"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:30",
+          "name": "Forms Turn, Heart Abides",
+          "description": "- Hsin can trigger Unison Response, but not in Co-op Mode.",
+          "sourceId": "character:1311:1311:7:effect:30",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:30"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:31",
+          "name": "Forms Turn, Heart Abides",
+          "description": "- After casting Intro Skill - Answering Form or Intro Skill - Answering Form: Manifold Unison, the next Resonance Liberation - Formshift grants Hsin Unison for 5s.",
+          "sourceId": "character:1311:1311:7:effect:31",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:31"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:32",
+          "name": "Forms Turn, Heart Abides",
+          "description": "- When Hsin triggers Unison Response, She gains Source Intent, and this cast of Intro Skill is replaced with Intro Skill - Manifold Unison, dealing greater DMG.",
+          "sourceId": "character:1311:1311:7:effect:32",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:32"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:34",
+          "name": "Forms Turn, Heart Abides",
+          "description": "- The aforementioned effects are removed when Hsin switches Resonance Mode.",
+          "sourceId": "character:1311:1311:7:effect:34",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:34"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:36",
+          "name": "Forms Turn, Heart Abides",
+          "description": "Resonance Mode - Electro Flare",
+          "sourceId": "character:1311:1311:7:effect:36",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:36"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:37",
+          "name": "Forms Turn, Heart Abides",
+          "description": "While in Resonance Mode - Electro Flare, Hsin gains the following effects:",
+          "sourceId": "character:1311:1311:7:effect:37",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:37"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:38",
+          "name": "Forms Turn, Heart Abides",
+          "description": "- When Hsin enters combat, targets within a certain range do not lose Electro Flare stacks when it's triggered.",
+          "sourceId": "character:1311:1311:7:effect:38",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:38"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:40",
+          "name": "Forms Turn, Heart Abides",
+          "description": "Heart of Thunder is removed when Hsin switches Resonance Mode.",
+          "sourceId": "character:1311:1311:7:effect:40",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:40"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:42",
+          "name": "Forms Turn, Heart Abides",
+          "description": "Its DMG Multiplier is equal to 35% x (the number of Heart of Thunder stacks on Hsin) x (the Electro Flare DMG Multiplier corresponding to the target's current Electro Flare stacks).",
+          "sourceId": "character:1311:1311:7:effect:42",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "stacks",
+            "input": "character:1311:hsin-heart-of-thunder-stacks",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1311:2:1"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1311:7:effect:42:delayed-electro-flare-base",
+              "name": "Heart of Thunder delayed Electro Flare",
+              "kind": "damage",
+              "damageType": "status",
+              "referenceActionId": "status:electro-flare",
+              "referenceMultiplier": 0.35,
+              "count": 1,
+              "countPerActivation": 1
+            }
+          ],
+          "maximumSequence": 0
+        },
+        {
+          "id": "character:1311:1311:7:effect:44",
+          "name": "Forms Turn, Heart Abides",
+          "description": "Some time after casting Resonance Skill - Heartward by Moon, Hsin consumes all remaining stacks of Heart of Thunder.",
+          "sourceId": "character:1311:1311:7:effect:44",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:44"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:45",
+          "name": "Forms Turn, Heart Abides",
+          "description": "When Hsin has at least 50 stacks of Heart of Thunder, Resonance Skill - Illumining Form stagnates nearby targets during the action.",
+          "sourceId": "character:1311:1311:7:effect:45",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:45"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:48",
+          "name": "Forms Turn, Heart Abides",
+          "description": "Casting Resonance Liberation - Formshift again resets this count.",
+          "sourceId": "character:1311:1311:7:effect:48",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:48"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:49",
+          "name": "Forms Turn, Heart Abides",
+          "description": "Switching Resonance Mode removes it.",
+          "sourceId": "character:1311:1311:7:effect:49",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:49"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:57",
+          "name": "Forms Turn, Heart Abides",
+          "description": "Hsin can only grant up to 1 of Unison Boon in this way.",
+          "sourceId": "character:1311:1311:7:effect:57",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:57"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:59",
+          "name": "Forms Turn, Heart Abides",
+          "description": "Only the Resonators who can trigger Unison Response can gain this effect.",
+          "sourceId": "character:1311:1311:7:effect:59",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:59"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:60",
+          "name": "Forms Turn, Heart Abides",
+          "description": "Each stack of Unison Boon increases the total DMG dealt by Resonators who can trigger Unison Response in the team by 3%, stacking up to 2 times.",
+          "sourceId": "character:1311:1311:7:effect:60",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "stacks",
+            "input": "character:1311:hsin-unison-boon",
+            "minimum": 0,
+            "maximum": 4
+          },
+          "operations": [
+            {
+              "kind": "add-special-multiplier",
+              "value": 0.03,
+              "stacking": "per-stack"
+            }
+          ]
+        },
+        {
+          "id": "character:1311:1311:7:effect:63",
+          "name": "Forms Turn, Heart Abides",
+          "description": "While in Answering Form, when Normal Attack - Answering Form, Resonance Skill - Answering Form, Intro Skill - Answering Form, or Intro Skill - Answering Form: Manifold Unison hits a target, Hsin gains Answering Heart if She is the active Resonator.",
+          "sourceId": "character:1311:1311:7:effect:63",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:63"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:64",
+          "name": "Forms Turn, Heart Abides",
+          "description": "Casting Intro Skill - Answering Form or Intro Skill - Answering Form: Manifold Unison grants 60 points of Answering Heart.",
+          "sourceId": "character:1311:1311:7:effect:64",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:64"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:67",
+          "name": "Forms Turn, Heart Abides",
+          "description": "While in Illumining Form and not in the Mechanism Dominion state, when Normal Attack - Illumining Form, Resonance Skill - Illumining Form, or Intro Skill - Illumining Form hits a target, Hsin gains Illumining Heart if She is the active Resonator.",
+          "sourceId": "character:1311:1311:7:effect:67",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:67"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:68",
+          "name": "Forms Turn, Heart Abides",
+          "description": "- While in Resonance Mode - Unison, casting Intro Skill - Illumining Form or Intro Skill - Illumining Form: Manifold Unison directly sends Hsin into the Mechanism Dominion state and grants 300 points of Illumining Heart.",
+          "sourceId": "character:1311:1311:7:effect:68",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:68"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:69",
+          "name": "Forms Turn, Heart Abides",
+          "description": "- While in Resonance Mode - Electro Flare, after casting Resonance Liberation - Formshift, when the Modular Heartlock generated by Basic Attack - Illumining Form Stage 1 is collapsed by Basic Attack - Illumining Form Stage 2, Heavy Attack - Illumining Form, Dodge Counter - Illumining Form, or Resonance Skill - Illumining Form, additionally gain 150 points of Illumining Heart if Hsin is the active Resonator in Illumining Form but not in the Mechanism Dominion state.",
+          "sourceId": "character:1311:1311:7:effect:69",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:69"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:7:effect:70",
+          "name": "Forms Turn, Heart Abides",
+          "description": "This effect can only be triggered once before the next cast of Resonance Liberation - Formshift resets it, and is disabled when switched to the other Resonance Mode.",
+          "sourceId": "character:1311:1311:7:effect:70",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:7:effect:70"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:8:effect:1",
+          "name": "Herself a Thousand Lanterns",
+          "description": "Hsin gains Nightglow upon entering combat or casting Resonance Liberation - Pillars Across Heaven.",
+          "sourceId": "character:1311:1311:8:effect:1",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:8:effect:1"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:8:effect:2",
+          "name": "Herself a Thousand Lanterns",
+          "description": "When Hsin casts Outro Skill, Nightglow is consumed to trigger various effects depending on the Resonance Mode She is in:",
+          "sourceId": "character:1311:1311:8:effect:2",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:8:effect:2"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:8:effect:4",
+          "name": "Herself a Thousand Lanterns",
+          "description": "After Hsin casts Outro Skill, Resonators with Shared Light gain 20% All DMG Amplification for 30s.",
+          "sourceId": "character:1311:1311:8:effect:4",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:hsin-shared-light"
+          },
+          "operations": [
+            {
+              "kind": "amplify-damage",
+              "value": 0.2,
+              "recipient": "team"
+            }
+          ]
+        },
+        {
+          "id": "character:1311:1311:8:effect:6",
+          "name": "Herself a Thousand Lanterns",
+          "description": "The above effects end early when Hsin switches Resonance Mode.",
+          "sourceId": "character:1311:1311:8:effect:6",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:8:effect:6"
+          },
+          "operations": []
+        },
+        {
+          "id": "character:1311:1311:9:effect:0",
+          "name": "Crit. Rate+",
+          "description": "Crit. Rate increased by 1.20%.",
+          "sourceId": "character:1311:1311:9:effect:0",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-flat-stat",
+              "stat": "critRate",
+              "value": 0.012
+            }
+          ]
+        },
+        {
+          "id": "character:1311:1311:10:effect:0",
+          "name": "ATK+",
+          "description": "ATK increased by 1.80%.",
+          "sourceId": "character:1311:1311:10:effect:0",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-percent-stat",
+              "stat": "atk",
+              "value": 0.018000000000000002
+            }
+          ]
+        },
+        {
+          "id": "character:1311:1311:11:effect:0",
+          "name": "ATK+",
+          "description": "ATK increased by 1.80%.",
+          "sourceId": "character:1311:1311:11:effect:0",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-percent-stat",
+              "stat": "atk",
+              "value": 0.018000000000000002
+            }
+          ]
+        },
+        {
+          "id": "character:1311:1311:12:effect:0",
+          "name": "Crit. Rate+",
+          "description": "Crit. Rate increased by 1.20%.",
+          "sourceId": "character:1311:1311:12:effect:0",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-flat-stat",
+              "stat": "critRate",
+              "value": 0.012
+            }
+          ]
+        },
+        {
+          "id": "character:1311:1311:13:effect:0",
+          "name": "Crit. Rate+",
+          "description": "Crit. Rate increased by 2.80%.",
+          "sourceId": "character:1311:1311:13:effect:0",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-flat-stat",
+              "stat": "critRate",
+              "value": 0.027999999999999997
+            }
+          ]
+        },
+        {
+          "id": "character:1311:1311:14:effect:0",
+          "name": "ATK+",
+          "description": "ATK increased by 4.20%.",
+          "sourceId": "character:1311:1311:14:effect:0",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-percent-stat",
+              "stat": "atk",
+              "value": 0.042
+            }
+          ]
+        },
+        {
+          "id": "character:1311:1311:15:effect:0",
+          "name": "ATK+",
+          "description": "ATK increased by 4.20%.",
+          "sourceId": "character:1311:1311:15:effect:0",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-percent-stat",
+              "stat": "atk",
+              "value": 0.042
+            }
+          ]
+        },
+        {
+          "id": "character:1311:1311:16:effect:0",
+          "name": "Crit. Rate+",
+          "description": "Crit. Rate increased by 2.80%.",
+          "sourceId": "character:1311:1311:16:effect:0",
+          "reviewFingerprint": "eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-flat-stat",
+              "stat": "critRate",
+              "value": 0.027999999999999997
+            }
+          ]
+        },
+        {
           "id": "character:1311:1311:4:effect:2",
           "name": "Tides of Succession",
           "description": "While in Resonance Mode - Electro Flare, after Resonators in the team inflict Electro Flare, Hsin gains 25% Electro DMG Bonus, stacking up to 2 times.",
@@ -175918,6 +177592,318 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
               }
             }
           ]
+        },
+        {
+          "id": "character:1311:1311:sequence:1:0",
+          "name": "A Boat to Cross the Rising Tide",
+          "description": "Casting Resonance Liberation - Formshift grants Hsin 2 stacks of Radiance Ward, stacking up to 2 times. Switching to Answering Form clears all stacks. When Hsin takes DMG from an enemy target's attack, 1 stack of Radiance Ward can be consumed to make Her immune to interruption and reduce DMG taken by 60% for 1s. This effect can be triggered once every 1s.\nWhile in Resonance Mode - Unison:\nThe DMG Multipliers of Intro Skill - Answering Form: Manifold Unison and Intro Skill - Illumining Form: Manifold Unison are increased by 15%, and each stack of Unison Boon additionally increases the DMG Multipliers of Intro Skill - Answering Form: Manifold Unison and Intro Skill - Illumining Form: Manifold Unison by 10%, up to a total of 4 stacks.\nWhile in Resonance Mode - Electro Flare:\nWhen Hsin enters combat, if Heart of Thunder is below 50 stacks, it is increased to 50 stacks, triggered once every 12s.\nThe DMG Multiplier of the Electro Flare DMG triggered by Resonance Skill - Heartward by Moon is increased to 42% x (the number of Heart of Thunder stacks on Hsin) x (the Electro Flare DMG Multiplier corresponding to the target's current Electro Flare stacks).",
+          "sourceId": "character:1311:1311:sequence:1:0",
+          "reviewFingerprint": "a7aad9d54cb8a9fbf2f35a12dff75c6174b2cfaffec46ee43211925dd802ad15",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:hsin-unison-mode"
+          },
+          "operations": [
+            {
+              "kind": "increase-motion-value",
+              "value": 0.15,
+              "filter": {
+                "actionIds": [
+                  "1311:6:2",
+                  "1311:6:5"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 1
+        },
+        {
+          "id": "character:1311:1311:sequence:1:1",
+          "name": "A Boat to Cross the Rising Tide",
+          "description": "Casting Resonance Liberation - Formshift grants Hsin 2 stacks of Radiance Ward, stacking up to 2 times. Switching to Answering Form clears all stacks. When Hsin takes DMG from an enemy target's attack, 1 stack of Radiance Ward can be consumed to make Her immune to interruption and reduce DMG taken by 60% for 1s. This effect can be triggered once every 1s.\nWhile in Resonance Mode - Unison:\nThe DMG Multipliers of Intro Skill - Answering Form: Manifold Unison and Intro Skill - Illumining Form: Manifold Unison are increased by 15%, and each stack of Unison Boon additionally increases the DMG Multipliers of Intro Skill - Answering Form: Manifold Unison and Intro Skill - Illumining Form: Manifold Unison by 10%, up to a total of 4 stacks.\nWhile in Resonance Mode - Electro Flare:\nWhen Hsin enters combat, if Heart of Thunder is below 50 stacks, it is increased to 50 stacks, triggered once every 12s.\nThe DMG Multiplier of the Electro Flare DMG triggered by Resonance Skill - Heartward by Moon is increased to 42% x (the number of Heart of Thunder stacks on Hsin) x (the Electro Flare DMG Multiplier corresponding to the target's current Electro Flare stacks).",
+          "sourceId": "character:1311:1311:sequence:1:1",
+          "reviewFingerprint": "a7aad9d54cb8a9fbf2f35a12dff75c6174b2cfaffec46ee43211925dd802ad15",
+          "activation": {
+            "kind": "stacks",
+            "input": "character:1311:hsin-unison-boon",
+            "minimum": 0,
+            "maximum": 4,
+            "requires": [
+              {
+                "input": "character:1311:hsin-unison-mode"
+              }
+            ]
+          },
+          "operations": [
+            {
+              "kind": "increase-motion-value",
+              "value": 0.1,
+              "stacking": "per-stack",
+              "filter": {
+                "actionIds": [
+                  "1311:6:2",
+                  "1311:6:5"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 1
+        },
+        {
+          "id": "character:1311:1311:sequence:1:2",
+          "name": "A Boat to Cross the Rising Tide",
+          "description": "Casting Resonance Liberation - Formshift grants Hsin 2 stacks of Radiance Ward, stacking up to 2 times. Switching to Answering Form clears all stacks. When Hsin takes DMG from an enemy target's attack, 1 stack of Radiance Ward can be consumed to make Her immune to interruption and reduce DMG taken by 60% for 1s. This effect can be triggered once every 1s.\nWhile in Resonance Mode - Unison:\nThe DMG Multipliers of Intro Skill - Answering Form: Manifold Unison and Intro Skill - Illumining Form: Manifold Unison are increased by 15%, and each stack of Unison Boon additionally increases the DMG Multipliers of Intro Skill - Answering Form: Manifold Unison and Intro Skill - Illumining Form: Manifold Unison by 10%, up to a total of 4 stacks.\nWhile in Resonance Mode - Electro Flare:\nWhen Hsin enters combat, if Heart of Thunder is below 50 stacks, it is increased to 50 stacks, triggered once every 12s.\nThe DMG Multiplier of the Electro Flare DMG triggered by Resonance Skill - Heartward by Moon is increased to 42% x (the number of Heart of Thunder stacks on Hsin) x (the Electro Flare DMG Multiplier corresponding to the target's current Electro Flare stacks).",
+          "sourceId": "character:1311:1311:sequence:1:2",
+          "reviewFingerprint": "a7aad9d54cb8a9fbf2f35a12dff75c6174b2cfaffec46ee43211925dd802ad15",
+          "activation": {
+            "kind": "stacks",
+            "input": "character:1311:hsin-heart-of-thunder-stacks",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1311:2:1"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1311:sequence:1:2:delayed-electro-flare-s1",
+              "name": "Heart of Thunder delayed Electro Flare",
+              "kind": "damage",
+              "damageType": "status",
+              "referenceActionId": "status:electro-flare",
+              "referenceMultiplier": 0.42,
+              "count": 1,
+              "countPerActivation": 1
+            }
+          ],
+          "minimumSequence": 1
+        },
+        {
+          "id": "character:1311:1311:sequence:2:0",
+          "name": "To Wake Is to Wonder What I Am",
+          "description": "The DMG Multipliers of Heavy Attack - Answering Form: Realm Wanderer and Heavy Attack - Answering Form: Realm Protector are increased by 60%.\nThe DMG Multipliers of Heavy Attack - Illumining Form: Beholding All Horizons and Heavy Attack - Illumining Form: Stilling All Horizons are increased by 60%.\nWhen Hsin enters combat, reset the Cooldowns for Hsin to gain Resolution of Wishes and Law of Heaven, and restore 100 additional points of Answering Heart. This effect can be triggered once every 12s.",
+          "sourceId": "character:1311:1311:sequence:2:0",
+          "reviewFingerprint": "a7aad9d54cb8a9fbf2f35a12dff75c6174b2cfaffec46ee43211925dd802ad15",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "increase-motion-value",
+              "value": 0.6,
+              "filter": {
+                "actionIds": [
+                  "1311:7:0",
+                  "1311:7:1",
+                  "1311:7:2",
+                  "1311:7:3"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 2
+        },
+        {
+          "id": "character:1311:1311:sequence:3:0",
+          "name": "A Dream of Return Among the Hills",
+          "description": "The DMG Multiplier of Resonance Liberation - Pillars Across Heaven is increased by 70%.\nWhile in Resonance Mode - Unison:\nThe Crit. DMG of Resonance Liberation - Pillars Across Heaven is increased by 20%, and each stack of Unison Boon additionally increases its Crit. DMG by 15%, up to a total of 4 stacks.\nWhile in Resonance Mode - Electro Flare:\nWhen the last stage of Resonance Liberation - Pillars Across Heaven hits a target inflicted with Electro Flare, it triggers 1 instance of Electro Flare DMG, with its DMG Multiplier equal to 1500% times the Electro Flare DMG Multiplier corresponding to the current Electro Flare stacks on the target.",
+          "sourceId": "character:1311:1311:sequence:3:0",
+          "reviewFingerprint": "a7aad9d54cb8a9fbf2f35a12dff75c6174b2cfaffec46ee43211925dd802ad15",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "increase-motion-value",
+              "value": 0.7,
+              "filter": {
+                "actionIds": [
+                  "1311:3:0"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 3
+        },
+        {
+          "id": "character:1311:1311:sequence:3:1",
+          "name": "A Dream of Return Among the Hills",
+          "description": "The DMG Multiplier of Resonance Liberation - Pillars Across Heaven is increased by 70%.\nWhile in Resonance Mode - Unison:\nThe Crit. DMG of Resonance Liberation - Pillars Across Heaven is increased by 20%, and each stack of Unison Boon additionally increases its Crit. DMG by 15%, up to a total of 4 stacks.\nWhile in Resonance Mode - Electro Flare:\nWhen the last stage of Resonance Liberation - Pillars Across Heaven hits a target inflicted with Electro Flare, it triggers 1 instance of Electro Flare DMG, with its DMG Multiplier equal to 1500% times the Electro Flare DMG Multiplier corresponding to the current Electro Flare stacks on the target.",
+          "sourceId": "character:1311:1311:sequence:3:1",
+          "reviewFingerprint": "a7aad9d54cb8a9fbf2f35a12dff75c6174b2cfaffec46ee43211925dd802ad15",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:hsin-unison-mode"
+          },
+          "operations": [
+            {
+              "kind": "add-flat-stat",
+              "stat": "critDamage",
+              "value": 0.2,
+              "filter": {
+                "actionIds": [
+                  "1311:3:0"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 3
+        },
+        {
+          "id": "character:1311:1311:sequence:3:2",
+          "name": "A Dream of Return Among the Hills",
+          "description": "The DMG Multiplier of Resonance Liberation - Pillars Across Heaven is increased by 70%.\nWhile in Resonance Mode - Unison:\nThe Crit. DMG of Resonance Liberation - Pillars Across Heaven is increased by 20%, and each stack of Unison Boon additionally increases its Crit. DMG by 15%, up to a total of 4 stacks.\nWhile in Resonance Mode - Electro Flare:\nWhen the last stage of Resonance Liberation - Pillars Across Heaven hits a target inflicted with Electro Flare, it triggers 1 instance of Electro Flare DMG, with its DMG Multiplier equal to 1500% times the Electro Flare DMG Multiplier corresponding to the current Electro Flare stacks on the target.",
+          "sourceId": "character:1311:1311:sequence:3:2",
+          "reviewFingerprint": "a7aad9d54cb8a9fbf2f35a12dff75c6174b2cfaffec46ee43211925dd802ad15",
+          "activation": {
+            "kind": "stacks",
+            "input": "character:1311:hsin-unison-boon",
+            "minimum": 0,
+            "maximum": 4,
+            "requires": [
+              {
+                "input": "character:1311:hsin-unison-mode"
+              }
+            ]
+          },
+          "operations": [
+            {
+              "kind": "add-flat-stat",
+              "stat": "critDamage",
+              "value": 0.15,
+              "stacking": "per-stack",
+              "filter": {
+                "actionIds": [
+                  "1311:3:0"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 3
+        },
+        {
+          "id": "character:1311:1311:sequence:3:3",
+          "name": "A Dream of Return Among the Hills",
+          "description": "The DMG Multiplier of Resonance Liberation - Pillars Across Heaven is increased by 70%.\nWhile in Resonance Mode - Unison:\nThe Crit. DMG of Resonance Liberation - Pillars Across Heaven is increased by 20%, and each stack of Unison Boon additionally increases its Crit. DMG by 15%, up to a total of 4 stacks.\nWhile in Resonance Mode - Electro Flare:\nWhen the last stage of Resonance Liberation - Pillars Across Heaven hits a target inflicted with Electro Flare, it triggers 1 instance of Electro Flare DMG, with its DMG Multiplier equal to 1500% times the Electro Flare DMG Multiplier corresponding to the current Electro Flare stacks on the target.",
+          "sourceId": "character:1311:1311:sequence:3:3",
+          "reviewFingerprint": "a7aad9d54cb8a9fbf2f35a12dff75c6174b2cfaffec46ee43211925dd802ad15",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:hsin-s3-electro-flare-target"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1311:3:0"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1311:sequence:3:3:hsin-s3-pillars-electro-flare",
+              "name": "Pillars Across Heaven Electro Flare",
+              "kind": "damage",
+              "damageType": "status",
+              "referenceActionId": "status:electro-flare",
+              "referenceMultiplier": 15,
+              "count": 1
+            }
+          ],
+          "minimumSequence": 3
+        },
+        {
+          "id": "character:1311:1311:sequence:4:0",
+          "name": "A River of Lanterns, a River of Wishes",
+          "description": "All Resonators in the team gain 20% All-Attribute DMG Bonus for 30s when a Resonator in the team triggers any of the following actions:\n- Inflict Electro Flare or Electro Rage on a target.\n- Gain Unison while not having the effect.\n- Trigger Unison Response.",
+          "sourceId": "character:1311:1311:sequence:4:0",
+          "reviewFingerprint": "a7aad9d54cb8a9fbf2f35a12dff75c6174b2cfaffec46ee43211925dd802ad15",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:1311:sequence:4:0"
+          },
+          "operations": [
+            {
+              "kind": "add-damage-bonus",
+              "value": 0.2,
+              "recipient": "team"
+            }
+          ],
+          "minimumSequence": 4
+        },
+        {
+          "id": "character:1311:1311:sequence:6:0",
+          "name": "The Moon Owes Its Light to the Living",
+          "description": "Targets take 40% more Resonance Skill DMG from Hsin.\nResonance Skill DMG dealt by Hsin ignores 20% of the target's DEF.\nWhile in Resonance Mode - Unison:\nThe maximum stacks of the Unison Boon effect on Resonators in the team are additionally increased by 1. When a Resonator in the team triggers Unison Response, all Resonators in the team additionally gain 1 of Unison Boon for 30s. This effect does not stack.\nWhile in Resonance Mode - Electro Flare:\nWhile in combat, Electro Flare DMG taken by targets within a certain range around Hsin can be Critical, with Crit. Rate fixed at 80% and Crit. DMG fixed at 230%.",
+          "sourceId": "character:1311:1311:sequence:6:0",
+          "reviewFingerprint": "a7aad9d54cb8a9fbf2f35a12dff75c6174b2cfaffec46ee43211925dd802ad15",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-special-multiplier",
+              "value": 0.4,
+              "filter": {
+                "actionIds": [
+                  "1311:2:0",
+                  "1311:2:1",
+                  "1311:7:0",
+                  "1311:7:1",
+                  "1311:7:2",
+                  "1311:7:3",
+                  "1311:7:4",
+                  "1311:3:0",
+                  "1311:6:2",
+                  "1311:6:5"
+                ]
+              }
+            },
+            {
+              "kind": "ignore-defense",
+              "value": 0.2,
+              "filter": {
+                "actionIds": [
+                  "1311:2:0",
+                  "1311:2:1",
+                  "1311:7:0",
+                  "1311:7:1",
+                  "1311:7:2",
+                  "1311:7:3",
+                  "1311:7:4",
+                  "1311:3:0",
+                  "1311:6:2",
+                  "1311:6:5"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 6
+        },
+        {
+          "id": "character:1311:1311:sequence:6:1",
+          "name": "The Moon Owes Its Light to the Living",
+          "description": "Targets take 40% more Resonance Skill DMG from Hsin.\nResonance Skill DMG dealt by Hsin ignores 20% of the target's DEF.\nWhile in Resonance Mode - Unison:\nThe maximum stacks of the Unison Boon effect on Resonators in the team are additionally increased by 1. When a Resonator in the team triggers Unison Response, all Resonators in the team additionally gain 1 of Unison Boon for 30s. This effect does not stack.\nWhile in Resonance Mode - Electro Flare:\nWhile in combat, Electro Flare DMG taken by targets within a certain range around Hsin can be Critical, with Crit. Rate fixed at 80% and Crit. DMG fixed at 230%.",
+          "sourceId": "character:1311:1311:sequence:6:1",
+          "reviewFingerprint": "a7aad9d54cb8a9fbf2f35a12dff75c6174b2cfaffec46ee43211925dd802ad15",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1311:hsin-s6-electro-flare-range"
+          },
+          "operations": [
+            {
+              "kind": "override-status-crit",
+              "rate": 0.8,
+              "damage": 2.3,
+              "filter": {
+                "actionIds": [
+                  "status:electro-flare"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 6
         }
       ]
     },
@@ -184644,7 +186630,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1402:1402:1:6",
           "reviewFingerprint": "ab23d27790bf43ca955a09e3c0f9eb13c973c74dc76fc2bc93aaa61949329d6d",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "basic",
           "element": "aero",
           "skillLevelIndex": 0,
           "formulas": {
@@ -189791,6 +191777,47 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
       },
       "effects": [
         {
+          "id": "character:1403:1403:reviewed:gate-of-quandary",
+          "name": "Gate of Quandary",
+          "description": "Bullets passing through Gate of Quandary grant Aalto 10% ATK for 10s.",
+          "sourceId": "character:1403:1403:reviewed:gate-of-quandary",
+          "reviewFingerprint": "9974918e0f977b6aaf4b1c64d0d62e2c54ed5e21b9b4b295bf9ffa66c82c5081",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1403:1403:reviewed:gate-of-quandary"
+          },
+          "operations": [
+            {
+              "kind": "add-percent-stat",
+              "stat": "atk",
+              "value": 0.1
+            }
+          ]
+        },
+        {
+          "id": "character:1403:1403:reviewed:perfect-performance",
+          "name": "Perfect Performance",
+          "description": "Aalto's aimed Heavy Attack is guaranteed to critically hit when the effect is available, once every 30s.",
+          "sourceId": "character:1403:1403:reviewed:perfect-performance",
+          "reviewFingerprint": "9974918e0f977b6aaf4b1c64d0d62e2c54ed5e21b9b4b295bf9ffa66c82c5081",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1403:1403:reviewed:perfect-performance"
+          },
+          "operations": [
+            {
+              "kind": "override-crit",
+              "mode": "always",
+              "filter": {
+                "actionIds": [
+                  "1403:1:6",
+                  "1403:1:7"
+                ]
+              }
+            }
+          ]
+        },
+        {
           "id": "character:1403:1403:9:effect:0",
           "name": "Aero DMG Bonus+",
           "description": "Aero DMG Bonus increased by 1.80%.",
@@ -189983,6 +192010,180 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             }
           ],
           "minimumSequence": 2
+        },
+        {
+          "id": "character:1403:1403:sequence:3:0",
+          "name": "Hazey Transition",
+          "description": "When Aalto's Basic Attack or Mid-air Attack passes through the Mist, 2 more bullets will be generated, dealing 50% of the DMG of Basic Attack or Mid-air Attack.",
+          "sourceId": "character:1403:1403:sequence:3:0",
+          "reviewFingerprint": "3cacef2a82740ba650e85a5cc07bc9908d7d0f37d533c619aa93025ee9edd720",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1403:1403:sequence:3:0"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1403:1:0"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1403:sequence:3:0:review-followup",
+              "name": "Hazey Transition additional bullets",
+              "kind": "damage",
+              "damageType": "basic",
+              "referenceActionId": "1403:1:0",
+              "referenceMultiplier": 0.5,
+              "count": 2
+            }
+          ],
+          "minimumSequence": 3
+        },
+        {
+          "id": "character:1403:1403:sequence:3:1",
+          "name": "Hazey Transition",
+          "description": "When Aalto's Basic Attack or Mid-air Attack passes through the Mist, 2 more bullets will be generated, dealing 50% of the DMG of Basic Attack or Mid-air Attack.",
+          "sourceId": "character:1403:1403:sequence:3:1",
+          "reviewFingerprint": "3cacef2a82740ba650e85a5cc07bc9908d7d0f37d533c619aa93025ee9edd720",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1403:1403:sequence:3:1"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1403:1:1"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1403:sequence:3:1:review-followup",
+              "name": "Hazey Transition additional bullets",
+              "kind": "damage",
+              "damageType": "basic",
+              "referenceActionId": "1403:1:1",
+              "referenceMultiplier": 0.5,
+              "count": 2
+            }
+          ],
+          "minimumSequence": 3
+        },
+        {
+          "id": "character:1403:1403:sequence:3:2",
+          "name": "Hazey Transition",
+          "description": "When Aalto's Basic Attack or Mid-air Attack passes through the Mist, 2 more bullets will be generated, dealing 50% of the DMG of Basic Attack or Mid-air Attack.",
+          "sourceId": "character:1403:1403:sequence:3:2",
+          "reviewFingerprint": "3cacef2a82740ba650e85a5cc07bc9908d7d0f37d533c619aa93025ee9edd720",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1403:1403:sequence:3:2"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1403:1:2"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1403:sequence:3:2:review-followup",
+              "name": "Hazey Transition additional bullets",
+              "kind": "damage",
+              "damageType": "basic",
+              "referenceActionId": "1403:1:2",
+              "referenceMultiplier": 0.5,
+              "count": 2
+            }
+          ],
+          "minimumSequence": 3
+        },
+        {
+          "id": "character:1403:1403:sequence:3:3",
+          "name": "Hazey Transition",
+          "description": "When Aalto's Basic Attack or Mid-air Attack passes through the Mist, 2 more bullets will be generated, dealing 50% of the DMG of Basic Attack or Mid-air Attack.",
+          "sourceId": "character:1403:1403:sequence:3:3",
+          "reviewFingerprint": "3cacef2a82740ba650e85a5cc07bc9908d7d0f37d533c619aa93025ee9edd720",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1403:1403:sequence:3:3"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1403:1:3"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1403:sequence:3:3:review-followup",
+              "name": "Hazey Transition additional bullets",
+              "kind": "damage",
+              "damageType": "basic",
+              "referenceActionId": "1403:1:3",
+              "referenceMultiplier": 0.5,
+              "count": 2
+            }
+          ],
+          "minimumSequence": 3
+        },
+        {
+          "id": "character:1403:1403:sequence:3:4",
+          "name": "Hazey Transition",
+          "description": "When Aalto's Basic Attack or Mid-air Attack passes through the Mist, 2 more bullets will be generated, dealing 50% of the DMG of Basic Attack or Mid-air Attack.",
+          "sourceId": "character:1403:1403:sequence:3:4",
+          "reviewFingerprint": "3cacef2a82740ba650e85a5cc07bc9908d7d0f37d533c619aa93025ee9edd720",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1403:1403:sequence:3:4"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1403:1:4"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1403:sequence:3:4:review-followup",
+              "name": "Hazey Transition additional bullets",
+              "kind": "damage",
+              "damageType": "basic",
+              "referenceActionId": "1403:1:4",
+              "referenceMultiplier": 0.5,
+              "count": 2
+            }
+          ],
+          "minimumSequence": 3
+        },
+        {
+          "id": "character:1403:1403:sequence:3:5",
+          "name": "Hazey Transition",
+          "description": "When Aalto's Basic Attack or Mid-air Attack passes through the Mist, 2 more bullets will be generated, dealing 50% of the DMG of Basic Attack or Mid-air Attack.",
+          "sourceId": "character:1403:1403:sequence:3:5",
+          "reviewFingerprint": "3cacef2a82740ba650e85a5cc07bc9908d7d0f37d533c619aa93025ee9edd720",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1403:1403:sequence:3:5"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1403:1:5"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1403:sequence:3:5:review-followup",
+              "name": "Hazey Transition additional bullets",
+              "kind": "damage",
+              "damageType": "basic",
+              "referenceActionId": "1403:1:5",
+              "referenceMultiplier": 0.5,
+              "count": 2
+            }
+          ],
+          "minimumSequence": 3
         },
         {
           "id": "character:1403:1403:sequence:4:0",
@@ -191758,7 +193959,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1404:1404:1:6",
           "reviewFingerprint": "7d549f13e6ac1918e0aaa8fcfd9a0767b33d8842b907675a130f72044c7cd8c9",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "aero",
           "skillLevelIndex": 0,
           "formulas": {
@@ -191971,7 +194172,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1404:1404:1:7",
           "reviewFingerprint": "7d549f13e6ac1918e0aaa8fcfd9a0767b33d8842b907675a130f72044c7cd8c9",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "aero",
           "skillLevelIndex": 0,
           "formulas": {
@@ -194898,6 +197099,52 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           ]
         },
         {
+          "id": "character:1404:1404:7:effect:0",
+          "name": "Qingloong at War",
+          "description": "When casting Resonance Skill Windqueller, if Jiyan has 30 or more \"Resolve\", he consumes 30 \"Resolve\" to increase the DMG of this Resonance Skill Windqueller by 20%.",
+          "sourceId": "character:1404:1404:7:effect:0",
+          "reviewFingerprint": "6f968fddb0155663b5c8c7b34d6266a654d95ed7c2dc48eb0b100f41364a647e",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1404:jiyan-windqueller-resolve"
+          },
+          "operations": [
+            {
+              "kind": "increase-motion-value",
+              "value": 0.2,
+              "filter": {
+                "actionIds": [
+                  "1404:2:0"
+                ]
+              }
+            }
+          ],
+          "exclusiveGroup": "jiyan-windqueller-enhancement"
+        },
+        {
+          "id": "character:1404:1404:7:effect:1",
+          "name": "Qingloong at War",
+          "description": "When Jiyan is in Qingloong Mode, DMG of Resonance Skill Windqueller is increased by 20% and no longer consumes \"Resolve\".",
+          "sourceId": "character:1404:1404:7:effect:1",
+          "reviewFingerprint": "6f968fddb0155663b5c8c7b34d6266a654d95ed7c2dc48eb0b100f41364a647e",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1404:jiyan-windqueller-qingloong"
+          },
+          "operations": [
+            {
+              "kind": "increase-motion-value",
+              "value": 0.2,
+              "filter": {
+                "actionIds": [
+                  "1404:2:0"
+                ]
+              }
+            }
+          ],
+          "exclusiveGroup": "jiyan-windqueller-enhancement"
+        },
+        {
           "id": "character:1404:1404:9:effect:0",
           "name": "Crit. Rate+",
           "description": "Crit. Rate increased by 1.20%.",
@@ -195117,8 +197364,30 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1404:1404:sequence:5:0",
           "reviewFingerprint": "bf97d8c027af4a3500d3fc3f14748e3abce15327606a015fe86a68d5862f0ce6",
           "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "increase-motion-value",
+              "value": 1.2,
+              "filter": {
+                "actionIds": [
+                  "1404:8:outro"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 5
+        },
+        {
+          "id": "character:1404:1404:sequence:5:1",
+          "name": "Resolution",
+          "description": "Outro Skill Discipline gains an additional DMG Multiplier of 120%.\nWhen Jiyan's attacks hit a target, his ATK is increased by 3% for 8s, stacking up to 15 times; this effect is immediately maxed after he casts Intro Skill Tactical Strike.",
+          "sourceId": "character:1404:1404:sequence:5:1",
+          "reviewFingerprint": "bf97d8c027af4a3500d3fc3f14748e3abce15327606a015fe86a68d5862f0ce6",
+          "activation": {
             "kind": "stacks",
-            "input": "character:1404:1404:sequence:5:0",
+            "input": "character:1404:1404:sequence:5:1",
             "minimum": 0,
             "maximum": 15
           },
@@ -199277,6 +201546,50 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
       },
       "effects": [
         {
+          "id": "character:1405:1405:4:effect:0",
+          "name": "Formless Release",
+          "description": "Damage of Resonance Liberation Purification Force Field is increased by 20%.",
+          "sourceId": "character:1405:1405:4:effect:0",
+          "reviewFingerprint": "6b323ad9ffdde8f0ca57cd505314659d3075fa58dd56f5d96c80a6e373e07783",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "increase-motion-value",
+              "value": 0.2,
+              "filter": {
+                "actionIds": [
+                  "1405:3:0",
+                  "1405:3:1"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "character:1405:1405:5:effect:0",
+          "name": "Reflection",
+          "description": "The Shield obtained from Heavy Attack Primordial Chi Spiral is increased by 20%.",
+          "sourceId": "character:1405:1405:5:effect:0",
+          "reviewFingerprint": "6b323ad9ffdde8f0ca57cd505314659d3075fa58dd56f5d96c80a6e373e07783",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-flat-stat",
+              "stat": "shieldBonus",
+              "value": 0.2,
+              "filter": {
+                "actionIds": [
+                  "1405:7:6"
+                ]
+              }
+            }
+          ]
+        },
+        {
           "id": "character:1405:1405:7:effect:3",
           "name": "Primordial Chi Spiral",
           "description": "Jianxin's resistance to interruption is increased, and her the damage taken is reduced by 50%:",
@@ -199485,6 +201798,11 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             "input": "character:1405:1405:sequence:6:0"
           },
           "operations": [],
+          "filter": {
+            "actionIds": [
+              "1405:7:0"
+            ]
+          },
           "triggeredActions": [
             {
               "id": "1405:sequence:6:0:triggered-1",
@@ -200933,7 +203251,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1406:1406:1:4",
           "reviewFingerprint": "d7fbcce18d3f3e3994210974826fb920680228178b16651fb607b7d363efcb47",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "aero",
           "skillLevelIndex": 0,
           "formulas": {
@@ -204522,6 +206840,12 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             "input": "character:1406:1406:sequence:2:0"
           },
           "operations": [],
+          "filter": {
+            "actionIds": [
+              "1406:7:3",
+              "1406:7:4"
+            ]
+          },
           "triggeredActions": [
             {
               "id": "1406:sequence:2:0:triggered-1",
@@ -206110,7 +208434,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1407:1407:1:6",
           "reviewFingerprint": "dd7dc133e9d7feeab33b80777abcdbdf911c93e4544747f129f62d9015e29df5",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "basic",
           "element": "aero",
           "skillLevelIndex": 0,
           "formulas": {
@@ -208817,6 +211141,34 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
       },
       "effects": [
         {
+          "id": "character:1407:1407:4:effect:0",
+          "name": "Interlude Tune",
+          "description": "Casting Resonance Liberation Singer's Triple Cadenza grants Ciaccona a Shield equal to 100% of her Max HP for 4s.",
+          "sourceId": "character:1407:1407:4:effect:0",
+          "reviewFingerprint": "23877e47339d91b5f1450ba959ce8d31ddb25a5d65c8c63d83b78c35e508c6c7",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1407:ciaccona-interlude-tune-shield"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1407:3:0"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1407:4:effect:0:ciaccona-interlude-tune-shield",
+              "name": "Interlude Tune shield",
+              "kind": "shield",
+              "recipient": "self",
+              "scaling": "hp",
+              "expression": "100%",
+              "count": 1
+            }
+          ]
+        },
+        {
           "id": "character:1407:1407:5:effect:0",
           "name": "Winds of Rinascita",
           "description": "Increase Heavy Attack - Quadruple Downbeat's DMG by 30%.",
@@ -210594,7 +212946,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1408:1408:1:4",
           "reviewFingerprint": "42712b92462d0bb354ec2257756f0e23bfbfca98b92183571e4be382de3abec8",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "aero",
           "skillLevelIndex": 0,
           "formulas": {
@@ -214183,6 +216535,12 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             "input": "character:1408:1408:sequence:2:0"
           },
           "operations": [],
+          "filter": {
+            "actionIds": [
+              "1408:7:3",
+              "1408:7:4"
+            ]
+          },
           "triggeredActions": [
             {
               "id": "1408:sequence:2:0:triggered-1",
@@ -215601,7 +217959,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1409:1409:1:5",
           "reviewFingerprint": "9c44a6718558ef02e303ef5b261f66e3b02897e13c01ab7b2b56fa0bbe2d1673",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "basic",
           "element": "aero",
           "skillLevelIndex": 0,
           "formulas": {
@@ -219984,7 +222342,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1409:1409:7:8",
           "reviewFingerprint": "9c44a6718558ef02e303ef5b261f66e3b02897e13c01ab7b2b56fa0bbe2d1673",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "basic",
           "element": "aero",
           "tags": [
             "forte"
@@ -221776,16 +224134,25 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
               "value": 0.5,
               "filter": {
                 "actionIds": [
+                  "1409:1:0",
+                  "1409:1:1",
+                  "1409:1:2",
+                  "1409:1:3",
                   "1409:1:4",
                   "1409:1:5",
+                  "1409:6:0"
+                ]
+              }
+            },
+            {
+              "kind": "increase-motion-value",
+              "value": 2,
+              "filter": {
+                "actionIds": [
                   "1409:1:6",
-                  "1409:7:0",
-                  "1409:7:1",
-                  "1409:7:2",
-                  "1409:7:3",
-                  "1409:7:4",
-                  "1409:7:5",
-                  "1409:7:7"
+                  "1409:1:7",
+                  "1409:1:8",
+                  "1409:1:9"
                 ]
               }
             }
@@ -221845,7 +224212,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           },
           "operations": [
             {
-              "kind": "amplify-damage",
+              "kind": "add-special-multiplier",
               "value": 0.4,
               "filter": {
                 "actionIds": [
@@ -221869,6 +224236,11 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
               }
             }
           ],
+          "filter": {
+            "actionIds": [
+              "1409:3:0"
+            ]
+          },
           "triggeredActions": [
             {
               "id": "1409:sequence:6:0:forced-aero-erosion",
@@ -223108,7 +225480,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1410:1410:1:5",
           "reviewFingerprint": "a9d344baf68c9733af57f49423fbaafcb3be47cca7860f91ee21a5732bf3aaf1",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "liberation",
           "element": "aero",
           "skillLevelIndex": 0,
           "formulas": {
@@ -223321,7 +225693,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1410:1410:1:6",
           "reviewFingerprint": "a9d344baf68c9733af57f49423fbaafcb3be47cca7860f91ee21a5732bf3aaf1",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "liberation",
           "element": "aero",
           "skillLevelIndex": 0,
           "formulas": {
@@ -223574,7 +225946,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1410:1410:1:7",
           "reviewFingerprint": "a9d344baf68c9733af57f49423fbaafcb3be47cca7860f91ee21a5732bf3aaf1",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "liberation",
           "element": "aero",
           "skillLevelIndex": 0,
           "formulas": {
@@ -223807,7 +226179,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1410:1410:1:8",
           "reviewFingerprint": "a9d344baf68c9733af57f49423fbaafcb3be47cca7860f91ee21a5732bf3aaf1",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "liberation",
           "element": "aero",
           "tags": [
             "dodge-counter"
@@ -224063,7 +226435,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1410:1410:2:0",
           "reviewFingerprint": "a9d344baf68c9733af57f49423fbaafcb3be47cca7860f91ee21a5732bf3aaf1",
           "kind": "damage",
-          "damageType": "skill",
+          "damageType": "basic",
           "element": "aero",
           "skillLevelIndex": 1,
           "formulas": {
@@ -224416,7 +226788,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1410:1410:2:1",
           "reviewFingerprint": "a9d344baf68c9733af57f49423fbaafcb3be47cca7860f91ee21a5732bf3aaf1",
           "kind": "damage",
-          "damageType": "skill",
+          "damageType": "basic",
           "element": "aero",
           "skillLevelIndex": 1,
           "formulas": {
@@ -225727,7 +228099,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1410:1410:7:2",
           "reviewFingerprint": "a9d344baf68c9733af57f49423fbaafcb3be47cca7860f91ee21a5732bf3aaf1",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "liberation",
           "element": "aero",
           "tags": [
             "forte"
@@ -225943,7 +228315,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1410:1410:7:3",
           "reviewFingerprint": "a9d344baf68c9733af57f49423fbaafcb3be47cca7860f91ee21a5732bf3aaf1",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "liberation",
           "element": "aero",
           "tags": [
             "forte"
@@ -226199,7 +228571,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1410:1410:7:4",
           "reviewFingerprint": "a9d344baf68c9733af57f49423fbaafcb3be47cca7860f91ee21a5732bf3aaf1",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "liberation",
           "element": "aero",
           "tags": [
             "forte"
@@ -226435,7 +228807,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1410:1410:7:5",
           "reviewFingerprint": "a9d344baf68c9733af57f49423fbaafcb3be47cca7860f91ee21a5732bf3aaf1",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "liberation",
           "element": "aero",
           "tags": [
             "forte",
@@ -228263,6 +230635,35 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "minimumSequence": 3
         },
         {
+          "id": "character:1410:1410:sequence:4:0",
+          "name": "Rainy Season Dwell in My Eyes",
+          "description": "Casting Heavy Attack - Absolute Fullness grants a Shield equal to 160% of Iuno's ATK to all Resonators in the team for 30s, which cannot be passed on to the incoming Resonator.",
+          "sourceId": "character:1410:1410:sequence:4:0",
+          "reviewFingerprint": "cfd6676b40cbaf99f5d7a5a26a2b28a0866ef0c8e9eeee74d040e799182519e4",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1410:1410:sequence:4:0"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1410:7:12"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1410:sequence:4:0:absolute-fullness-shield",
+              "name": "Absolute Fullness team shield",
+              "kind": "shield",
+              "recipient": "team",
+              "scaling": "atk",
+              "expression": "160%",
+              "count": 1
+            }
+          ],
+          "minimumSequence": 4
+        },
+        {
           "id": "character:1410:1410:sequence:5:0",
           "name": "A Thousand Futile Glimpses",
           "description": "Iuno gains 20% Resonance Liberation DMG Bonus.",
@@ -229497,7 +231898,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1411:1411:1:5",
           "reviewFingerprint": "7d012d9a29fd8ea7cebe52adf907e00493061ba2e01904fa6481efd29d3dcaf9",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "aero",
           "tags": [
             "dodge-counter"
@@ -230026,7 +232427,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1411:1411:2:1",
           "reviewFingerprint": "7d012d9a29fd8ea7cebe52adf907e00493061ba2e01904fa6481efd29d3dcaf9",
           "kind": "damage",
-          "damageType": "outro",
+          "damageType": "echo",
           "element": "aero",
           "skillLevelIndex": 1,
           "formulas": {
@@ -230319,7 +232720,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1411:1411:3:0",
           "reviewFingerprint": "7d012d9a29fd8ea7cebe52adf907e00493061ba2e01904fa6481efd29d3dcaf9",
           "kind": "damage",
-          "damageType": "outro",
+          "damageType": "echo",
           "element": "aero",
           "skillLevelIndex": 3,
           "formulas": {
@@ -232878,7 +235279,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           },
           "operations": [
             {
-              "kind": "amplify-damage",
+              "kind": "add-special-multiplier",
               "value": 0.5,
               "filter": {
                 "actionIds": [
@@ -233005,6 +235406,28 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "name": "O Blade, I, Who Save No More",
           "description": "The DMG Multiplier of Resonance Liberation Sundering Strike is increased by 500%.\nIf Concerto Energy is full when not in the Inksplash of Mind state, Qiuyuan's Resonance Skill is replaced with Resonance Skill Straw Cape in Drizzly Rain, available once every 20s.\nUpon casting Straw Cape in Drizzly Rain, the Quietude Within effect immediately ends and 60 Concerto Energy is consumed to deal Aero DMG equal to 500% of Qiuyuan's ATK, considered Echo Skill DMG, and restore 400 points of Swordster's Soliloquy. The next Basic Attack is replaced with Thus Spoke the Blade: Inkwash Stage 3.\nUpon casting Straw Cape in Drizzly Rain, Qiuyuan cannot gain the Quietude Within effect the next time he enters Inksplash of Mind. Thus Spoke the Blade: To Teach, Thus Spoke the Blade: To Save, and Thus Spoke the Blade: To Sacrifice gain 600% DMG Multiplier increase and additionally restore 30 of Concerto Energy on hit.\nWhen not in Co-op mode, upon casting Straw Cape in Drizzly Rain, the next Outro Skill is replaced with Outro Skill Sheath Fallen, New Shoots Revealed, which deals Aero DMG equal to 500% of Qiuyuan's ATK, considered Echo Skill DMG.",
           "sourceId": "character:1411:1411:sequence:3:0",
+          "reviewFingerprint": "1ff27e6bde9aa849aac86b4a62f026652f8fc7be37d73e6decd5e652570ba803",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "increase-motion-value",
+              "value": 5,
+              "filter": {
+                "actionIds": [
+                  "1411:3:0"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 3
+        },
+        {
+          "id": "character:1411:1411:sequence:3:1",
+          "name": "O Blade, I, Who Save No More",
+          "description": "The DMG Multiplier of Resonance Liberation Sundering Strike is increased by 500%.\nIf Concerto Energy is full when not in the Inksplash of Mind state, Qiuyuan's Resonance Skill is replaced with Resonance Skill Straw Cape in Drizzly Rain, available once every 20s.\nUpon casting Straw Cape in Drizzly Rain, the Quietude Within effect immediately ends and 60 Concerto Energy is consumed to deal Aero DMG equal to 500% of Qiuyuan's ATK, considered Echo Skill DMG, and restore 400 points of Swordster's Soliloquy. The next Basic Attack is replaced with Thus Spoke the Blade: Inkwash Stage 3.\nUpon casting Straw Cape in Drizzly Rain, Qiuyuan cannot gain the Quietude Within effect the next time he enters Inksplash of Mind. Thus Spoke the Blade: To Teach, Thus Spoke the Blade: To Save, and Thus Spoke the Blade: To Sacrifice gain 600% DMG Multiplier increase and additionally restore 30 of Concerto Energy on hit.\nWhen not in Co-op mode, upon casting Straw Cape in Drizzly Rain, the next Outro Skill is replaced with Outro Skill Sheath Fallen, New Shoots Revealed, which deals Aero DMG equal to 500% of Qiuyuan's ATK, considered Echo Skill DMG.",
+          "sourceId": "character:1411:1411:sequence:3:1",
           "reviewFingerprint": "1ff27e6bde9aa849aac86b4a62f026652f8fc7be37d73e6decd5e652570ba803",
           "activation": {
             "kind": "always"
@@ -234077,7 +236500,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1412:1412:1:4",
           "reviewFingerprint": "6d0ddc10cf090b4afbb9cdf46ebd8f04c7ed166ff6582d10ceb50e7ffaa1a7b0",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "echo",
           "element": "aero",
           "skillLevelIndex": 0,
           "formulas": {
@@ -235272,7 +237695,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1412:1412:1:9",
           "reviewFingerprint": "6d0ddc10cf090b4afbb9cdf46ebd8f04c7ed166ff6582d10ceb50e7ffaa1a7b0",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "echo",
           "element": "aero",
           "tags": [
             "dodge-counter"
@@ -235821,7 +238244,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1412:1412:2:1",
           "reviewFingerprint": "6d0ddc10cf090b4afbb9cdf46ebd8f04c7ed166ff6582d10ceb50e7ffaa1a7b0",
           "kind": "damage",
-          "damageType": "outro",
+          "damageType": "echo",
           "element": "aero",
           "skillLevelIndex": 1,
           "formulas": {
@@ -236114,7 +238537,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1412:1412:2:2",
           "reviewFingerprint": "6d0ddc10cf090b4afbb9cdf46ebd8f04c7ed166ff6582d10ceb50e7ffaa1a7b0",
           "kind": "damage",
-          "damageType": "outro",
+          "damageType": "echo",
           "element": "aero",
           "skillLevelIndex": 1,
           "formulas": {
@@ -236813,7 +239236,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1412:1412:7:0",
           "reviewFingerprint": "6d0ddc10cf090b4afbb9cdf46ebd8f04c7ed166ff6582d10ceb50e7ffaa1a7b0",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "echo",
           "element": "aero",
           "tags": [
             "forte"
@@ -237029,7 +239452,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1412:1412:7:1",
           "reviewFingerprint": "6d0ddc10cf090b4afbb9cdf46ebd8f04c7ed166ff6582d10ceb50e7ffaa1a7b0",
           "kind": "damage",
-          "damageType": "outro",
+          "damageType": "echo",
           "element": "aero",
           "tags": [
             "forte"
@@ -237285,7 +239708,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1412:1412:7:2",
           "reviewFingerprint": "6d0ddc10cf090b4afbb9cdf46ebd8f04c7ed166ff6582d10ceb50e7ffaa1a7b0",
           "kind": "damage",
-          "damageType": "outro",
+          "damageType": "echo",
           "element": "aero",
           "tags": [
             "forte"
@@ -237621,7 +240044,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1412:1412:7:3",
           "reviewFingerprint": "6d0ddc10cf090b4afbb9cdf46ebd8f04c7ed166ff6582d10ceb50e7ffaa1a7b0",
           "kind": "damage",
-          "damageType": "outro",
+          "damageType": "echo",
           "element": "aero",
           "tags": [
             "forte"
@@ -237937,7 +240360,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1412:1412:7:4",
           "reviewFingerprint": "6d0ddc10cf090b4afbb9cdf46ebd8f04c7ed166ff6582d10ceb50e7ffaa1a7b0",
           "kind": "damage",
-          "damageType": "outro",
+          "damageType": "echo",
           "element": "aero",
           "tags": [
             "forte"
@@ -238285,6 +240708,33 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           ]
         },
         {
+          "id": "character:1412:1412:7:effect:9",
+          "name": "Within Infinity's Embrace",
+          "description": "Every 10 of Soliskin Vitality consumed grants the current Runic Outburst, Runic Chain Whip, and Runic Soliskin 15% DMG Amplification.",
+          "sourceId": "character:1412:1412:7:effect:9",
+          "reviewFingerprint": "e71d33a5fce69931af658e85aa945eca63b81cf856cca2747a349345b4c75bdb",
+          "activation": {
+            "kind": "stacks",
+            "input": "character:1412:sigrika-vitality-consumed-tens",
+            "minimum": 0,
+            "maximum": 6
+          },
+          "operations": [
+            {
+              "kind": "amplify-damage",
+              "value": 0.15,
+              "stacking": "per-stack",
+              "filter": {
+                "actionIds": [
+                  "1412:7:1",
+                  "1412:7:2",
+                  "1412:7:3"
+                ]
+              }
+            }
+          ]
+        },
+        {
           "id": "character:1412:1412:9:effect:0",
           "name": "Crit. Rate+",
           "description": "Crit. Rate increased by 1.20%.",
@@ -238518,10 +240968,56 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1412:1412:sequence:6:0",
           "reviewFingerprint": "abf454dc70549c92325bad742f46df275ce4b3440db17ac0ee2bed0bb06502a2",
           "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-special-multiplier",
+              "value": 0.3
+            }
+          ],
+          "minimumSequence": 6
+        },
+        {
+          "id": "character:1412:1412:sequence:6:1",
+          "name": "True Names Resurfaced, Rising in Light",
+          "description": "Targets take 30% more DMG from Sigrika.\nInnate Gift? gains following effects:\n- Each stack additionally grants Runic Outburst, Runic Chain Whip, Runic Soliskin, and Forte Circuit - Learn My True Name 15% DMG Amplification, up to 60%.\n- Each stack causes Runic Outburst, Runic Chain Whip, Runic Soliskin, and Forte Circuit - Learn My True Name to ignore 7.5% of the target's DEF when dealing damage, up to 30%.",
+          "sourceId": "character:1412:1412:sequence:6:1",
+          "reviewFingerprint": "abf454dc70549c92325bad742f46df275ce4b3440db17ac0ee2bed0bb06502a2",
+          "activation": {
             "kind": "stacks",
-            "input": "character:1412:1412:sequence:6:0",
+            "input": "character:1412:sigrika-s6-innate-gift",
             "minimum": 0,
-            "maximum": 1
+            "maximum": 4
+          },
+          "operations": [
+            {
+              "kind": "amplify-damage",
+              "value": 0.15,
+              "stacking": "per-stack",
+              "filter": {
+                "actionIds": [
+                  "1412:7:1",
+                  "1412:7:2",
+                  "1412:7:3",
+                  "1412:7:4"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 6
+        },
+        {
+          "id": "character:1412:1412:sequence:6:2",
+          "name": "True Names Resurfaced, Rising in Light",
+          "description": "Targets take 30% more DMG from Sigrika.\nInnate Gift? gains following effects:\n- Each stack additionally grants Runic Outburst, Runic Chain Whip, Runic Soliskin, and Forte Circuit - Learn My True Name 15% DMG Amplification, up to 60%.\n- Each stack causes Runic Outburst, Runic Chain Whip, Runic Soliskin, and Forte Circuit - Learn My True Name to ignore 7.5% of the target's DEF when dealing damage, up to 30%.",
+          "sourceId": "character:1412:1412:sequence:6:2",
+          "reviewFingerprint": "abf454dc70549c92325bad742f46df275ce4b3440db17ac0ee2bed0bb06502a2",
+          "activation": {
+            "kind": "stacks",
+            "input": "character:1412:sigrika-s6-innate-gift",
+            "minimum": 0,
+            "maximum": 4
           },
           "operations": [
             {
@@ -243991,7 +246487,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1413:1413:7:5",
           "reviewFingerprint": "b0128d4db68eb0d0929dea69138ec72f5e915a906b86893881e5f3ec6c0f39b2",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "aero",
           "tags": [
             "forte"
@@ -244675,6 +247171,51 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "minimumSequence": 1
         },
         {
+          "id": "character:1413:1413:sequence:1:1",
+          "name": "Like Clouds That Meet and Drift Apart",
+          "description": "Crit. Rate is increased by 16%.\nThe max stack limit of Swordlight Ward is increased to 2. Casting Heavy Attack - Stringblade additionally grants 1 of Swordlight Ward.\nUpon entering combat, gain 25 of Exorcising Seal.\nAfter Basic Attack - Stringblade, Mid-air Attack - Stringblade, or Basic Attack - Ephemeral Transcendence deals damage, if Qingxiao has Exorcising Seal, remove all Exorcising Seal stacks and trigger Juque Perdition, dealing Aero DMG equal to 400% of Qingxiao's ATK, considered Basic Attack DMG. This effect can be triggered up to once per second. For each stack of Exorcising Seal removed, the target takes 4% more DMG from Juque Perdition for 2s.\nExorcising Seal stacks up to 25 times.",
+          "sourceId": "character:1413:1413:sequence:1:1",
+          "reviewFingerprint": "56808f50630815d587ead377cf8d0dd277f3c41e8c1e9fd499fea69d3a4d5c36",
+          "activation": {
+            "kind": "stacks",
+            "input": "character:1413:qingxiao-exorcising-seal-removed",
+            "minimum": 0,
+            "maximum": 25
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1413:1:0",
+              "1413:1:1",
+              "1413:1:2",
+              "1413:1:3",
+              "1413:1:5",
+              "1413:1:6",
+              "1413:1:7",
+              "1413:7:0",
+              "1413:7:1",
+              "1413:7:2",
+              "1413:7:3"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1413:sequence:1:1:qingxiao-s1-juque-perdition",
+              "name": "Juque Perdition",
+              "kind": "damage",
+              "damageType": "basic",
+              "element": "aero",
+              "scaling": "atk",
+              "expression": "400%",
+              "count": 1,
+              "bonusPerActivation": 0.04,
+              "cooldownSeconds": 1
+            }
+          ],
+          "minimumSequence": 1,
+          "maximumSequence": 5
+        },
+        {
           "id": "character:1413:1413:sequence:2:0",
           "name": "Like Petals That Fall Without a Sound",
           "description": "The DMG Multiplier of Heavy Attack - Stringblade is increased by 40%.\nAfter entering combat, the max stack limit of Mindlock on nearby enemies is increased to 25.\nThe max stack limit of Gathered Mind from Inherent Skill - Sea of Thought, World of Dust is increased to 25.\nHeaven's Clarity is enhanced:\nCasting Heavy Attack - Stringblade now inflicts 6 of Mindlock on nearby targets.",
@@ -244711,8 +247252,31 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1413:1413:sequence:3:0",
           "reviewFingerprint": "56808f50630815d587ead377cf8d0dd277f3c41e8c1e9fd499fea69d3a4d5c36",
           "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-flat-stat",
+              "stat": "critDamage",
+              "value": 1,
+              "filter": {
+                "actionIds": [
+                  "1413:3:0"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 3
+        },
+        {
+          "id": "character:1413:1413:sequence:3:1",
+          "name": "Dreams Fade, Sword Abides",
+          "description": "The Crit. DMG of Resonance Liberation - Billows Beneath Heaven is increased by 100%.\nDuring Heavy Attack - Stringblade, gain World in Chorus stacks equal to the highest Mindlock stack count present among nearby enemies.\nWorld in Chorus: Each stack increases the DMG Multiplier of Heavy Attack - Heaven's Reckoning: Ephemeral Transcendence by 3%. World in Chorus is removed after casting Heavy Attack - Heaven's Reckoning: Ephemeral Transcendence.\nThe Gathered Mind effect of Inherent Skill - Sea of Thought, World of Dust now inflicts 2 of Tune Strain - Interfered.",
+          "sourceId": "character:1413:1413:sequence:3:1",
+          "reviewFingerprint": "56808f50630815d587ead377cf8d0dd277f3c41e8c1e9fd499fea69d3a4d5c36",
+          "activation": {
             "kind": "stacks",
-            "input": "character:1413:1413:sequence:3:0",
+            "input": "character:1413:1413:sequence:3:1",
             "minimum": 0,
             "maximum": 1
           },
@@ -244783,16 +247347,19 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1413:1413:sequence:6:0",
           "reviewFingerprint": "56808f50630815d587ead377cf8d0dd277f3c41e8c1e9fd499fea69d3a4d5c36",
           "activation": {
-            "kind": "stacks",
-            "input": "character:1413:1413:sequence:6:0",
-            "minimum": 0,
-            "maximum": 1
+            "kind": "always"
           },
           "operations": [
             {
               "kind": "amplify-damage",
-              "value": 0.02,
-              "stacking": "per-stack"
+              "value": 0.4,
+              "filter": {
+                "actionIds": [
+                  "1413:1:4",
+                  "1413:7:5",
+                  "1413:3:0"
+                ]
+              }
             }
           ],
           "minimumSequence": 6
@@ -244804,29 +247371,39 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1413:1413:sequence:6:1",
           "reviewFingerprint": "56808f50630815d587ead377cf8d0dd277f3c41e8c1e9fd499fea69d3a4d5c36",
           "activation": {
-            "kind": "always"
+            "kind": "stacks",
+            "input": "character:1413:qingxiao-exorcising-seal-removed",
+            "minimum": 0,
+            "maximum": 25
           },
-          "operations": [
-            {
-              "kind": "amplify-damage",
-              "value": 0.05
-            }
-          ],
-          "minimumSequence": 6
-        },
-        {
-          "id": "character:1413:1413:sequence:6:2",
-          "name": "Cleanse This Tarnished Age, Till All Runs Clear",
-          "description": "Targets take 40% more DMG from Qingxiao's Heavy Attack - Stringblade, Heavy Attack - Heaven's Reckoning: Ephemeral Transcendence, Resonance Liberation - Billows Beneath Heaven, and Juque Perdition.\nDuring Heavy Attack - Stringblade, gain Exorcising Seal stacks equal to the highest Mindlock stack count present among nearby enemies.\nFor each stack of Mindlock on the target, the DMG of Juque Perdition taken by the target is Amplified by 2%. The first 7 additionally grant 5% DMG Amplification.\nWhen Inherent Skill - To Know, To Banish is unlocked, the DMG of Juque Perdition on targets with Mindlock is increased by 2% for each stack of Mindlock. The first 7 additionally grant 5% DMG increase.\nThe effect of Qingxiao's response to Tune Strain - Interfered is increased by 20%.",
-          "sourceId": "character:1413:1413:sequence:6:2",
-          "reviewFingerprint": "56808f50630815d587ead377cf8d0dd277f3c41e8c1e9fd499fea69d3a4d5c36",
-          "activation": {
-            "kind": "always"
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1413:1:0",
+              "1413:1:1",
+              "1413:1:2",
+              "1413:1:3",
+              "1413:1:5",
+              "1413:1:6",
+              "1413:1:7",
+              "1413:7:0",
+              "1413:7:1",
+              "1413:7:2",
+              "1413:7:3"
+            ]
           },
-          "operations": [
+          "triggeredActions": [
             {
-              "kind": "add-damage-bonus",
-              "value": 0.05
+              "id": "1413:sequence:6:1:qingxiao-s6-juque-perdition",
+              "name": "Juque Perdition",
+              "kind": "damage",
+              "damageType": "basic",
+              "element": "aero",
+              "scaling": "atk",
+              "expression": "400%",
+              "count": 1,
+              "bonusPerActivation": 0.04,
+              "cooldownSeconds": 1
             }
           ],
           "minimumSequence": 6
@@ -248746,6 +251323,11 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             "input": "character:1501:1501:sequence:4:0"
           },
           "operations": [],
+          "filter": {
+            "actionIds": [
+              "1501:3:0"
+            ]
+          },
           "triggeredActions": [
             {
               "id": "1501:sequence:4:0:triggered-1",
@@ -252719,6 +255301,11 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             "input": "character:1502:1502:sequence:4:0"
           },
           "operations": [],
+          "filter": {
+            "actionIds": [
+              "1502:3:0"
+            ]
+          },
           "triggeredActions": [
             {
               "id": "1502:sequence:4:0:triggered-1",
@@ -257760,6 +260347,29 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           ]
         },
         {
+          "id": "character:1503:1503:sequence:3:0",
+          "name": "The Choice to Flourish",
+          "description": "Healing of Resonance Liberation's Photosynthesis Mark is increased by 12%.",
+          "sourceId": "character:1503:1503:sequence:3:0",
+          "reviewFingerprint": "a2d08a18caa3ec7eb44676f6663a2da044dd1756356fd5186dc8e346719c16c3",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1503:1503:sequence:3:0"
+          },
+          "operations": [
+            {
+              "kind": "increase-motion-value",
+              "value": 0.12,
+              "filter": {
+                "actionIds": [
+                  "1503:3:3"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 3
+        },
+        {
           "id": "character:1503:1503:sequence:4:0",
           "name": "Blossoming Embrace",
           "description": "Heavy Attack Starflower Blooms, Mid-Air Attack Starflower Blooms, Resonance Liberation Arboreal Flourish and Outro Skill Blossom increases the Spectro DMG Bonus of all team members by 15% for 24s.",
@@ -257801,6 +260411,96 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             }
           ],
           "minimumSequence": 5
+        },
+        {
+          "id": "character:1503:1503:sequence:6:0",
+          "name": "Joyous Harvest",
+          "description": "Heavy Attack Starflower Blooms and Mid-air Attack Starflower Blooms deal 20% more DMG. They will trigger Coordinated Attack 1 time and heal all characters nearby. The damage of this Coordinated Attack and the Healing are equal to those of the Resonance Liberation's Photosynthesis Mark.",
+          "sourceId": "character:1503:1503:sequence:6:0",
+          "reviewFingerprint": "a2d08a18caa3ec7eb44676f6663a2da044dd1756356fd5186dc8e346719c16c3",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1503:1503:sequence:6:0"
+          },
+          "operations": [
+            {
+              "kind": "increase-motion-value",
+              "value": 0.2,
+              "filter": {
+                "actionIds": [
+                  "1503:7:0",
+                  "1503:7:1",
+                  "1503:7:2",
+                  "1503:7:3"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 6
+        },
+        {
+          "id": "character:1503:1503:sequence:6:1",
+          "name": "Joyous Harvest",
+          "description": "Heavy Attack Starflower Blooms and Mid-air Attack Starflower Blooms deal 20% more DMG. They will trigger Coordinated Attack 1 time and heal all characters nearby. The damage of this Coordinated Attack and the Healing are equal to those of the Resonance Liberation's Photosynthesis Mark.",
+          "sourceId": "character:1503:1503:sequence:6:1",
+          "reviewFingerprint": "a2d08a18caa3ec7eb44676f6663a2da044dd1756356fd5186dc8e346719c16c3",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1503:verina-s6-starflower-coordinate"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1503:7:0",
+              "1503:7:1",
+              "1503:7:2",
+              "1503:7:3"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1503:sequence:6:1:verina-s6-photosynthesis-hit",
+              "name": "Starflower Photosynthesis Mark coordinated hit",
+              "kind": "damage",
+              "damageType": "liberation",
+              "referenceActionId": "1503:3:2",
+              "referenceMultiplier": 1,
+              "count": 1
+            }
+          ],
+          "minimumSequence": 6
+        },
+        {
+          "id": "character:1503:1503:sequence:6:2",
+          "name": "Joyous Harvest",
+          "description": "Heavy Attack Starflower Blooms and Mid-air Attack Starflower Blooms deal 20% more DMG. They will trigger Coordinated Attack 1 time and heal all characters nearby. The damage of this Coordinated Attack and the Healing are equal to those of the Resonance Liberation's Photosynthesis Mark.",
+          "sourceId": "character:1503:1503:sequence:6:2",
+          "reviewFingerprint": "a2d08a18caa3ec7eb44676f6663a2da044dd1756356fd5186dc8e346719c16c3",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1503:verina-s6-starflower-heal"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1503:7:0",
+              "1503:7:1",
+              "1503:7:2",
+              "1503:7:3"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1503:sequence:6:2:verina-s6-photosynthesis-heal",
+              "name": "Starflower Photosynthesis Mark heal",
+              "kind": "healing",
+              "recipient": "team",
+              "referenceActionId": "1503:3:3",
+              "referenceMultiplier": 1,
+              "count": 1
+            }
+          ],
+          "minimumSequence": 6
         }
       ]
     },
@@ -259269,7 +261969,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1504:1504:1:6",
           "reviewFingerprint": "9b74c48551fad3fcb59aa95d455eb47cff40740f8bd82fa1bb1ba5b3482b7c92",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "basic",
           "element": "electro",
           "skillLevelIndex": 0,
           "formulas": {
@@ -261913,7 +264613,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1504:1504:7:4",
           "reviewFingerprint": "9b74c48551fad3fcb59aa95d455eb47cff40740f8bd82fa1bb1ba5b3482b7c92",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "basic",
           "element": "electro",
           "tags": [
             "forte"
@@ -265279,7 +267979,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1505:1505:6:0",
           "reviewFingerprint": "25b6f51c9c382c7aabb14b8c039f2d0ddbf54c7cc6669739b6bf301f72b9cf35",
           "kind": "damage",
-          "damageType": "liberation",
+          "damageType": "skill",
           "element": "spectro",
           "skillLevelIndex": 4,
           "formulas": {
@@ -265572,7 +268272,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1505:1505:6:1",
           "reviewFingerprint": "25b6f51c9c382c7aabb14b8c039f2d0ddbf54c7cc6669739b6bf301f72b9cf35",
           "kind": "damage",
-          "damageType": "skill",
+          "damageType": "liberation",
           "element": "spectro",
           "skillLevelIndex": 4,
           "formulas": {
@@ -266383,7 +269083,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1505:1505:7:1",
           "reviewFingerprint": "25b6f51c9c382c7aabb14b8c039f2d0ddbf54c7cc6669739b6bf301f72b9cf35",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "spectro",
           "tags": [
             "forte"
@@ -266679,7 +269379,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1505:1505:7:2",
           "reviewFingerprint": "25b6f51c9c382c7aabb14b8c039f2d0ddbf54c7cc6669739b6bf301f72b9cf35",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "basic",
           "element": "spectro",
           "tags": [
             "forte"
@@ -267056,10 +269756,15 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           },
           "operations": [
             {
-              "kind": "add-flat-stat",
+              "kind": "add-derived-stat",
               "stat": "critRate",
-              "value": 0.0001,
-              "recipient": "team"
+              "mode": "flat",
+              "sourceStat": "energyRegen",
+              "threshold": 0,
+              "sourceOffset": 10,
+              "value": 0.05,
+              "recipient": "team",
+              "maximumValue": 12.5
             }
           ]
         },
@@ -267075,10 +269780,15 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           },
           "operations": [
             {
-              "kind": "add-flat-stat",
+              "kind": "add-derived-stat",
               "stat": "critDamage",
-              "value": 0.0001,
-              "recipient": "team"
+              "mode": "flat",
+              "sourceStat": "energyRegen",
+              "threshold": 0,
+              "sourceOffset": 10,
+              "value": 0.1,
+              "recipient": "team",
+              "maximumValue": 25
             }
           ]
         },
@@ -271061,7 +273771,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1506:1506:7:1",
           "reviewFingerprint": "2c4e532131ba967c333020a76c00c84b7e031a89f535e17ca02ed6bb1833742c",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "skill",
           "element": "spectro",
           "tags": [
             "forte"
@@ -271595,15 +274305,27 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1506:1506:8:effect:2",
           "reviewFingerprint": "aeaa2547c547febef6f68e1b7abff4f0e022c5b397abb02d1abb4fbbd86d2547",
           "activation": {
-            "kind": "always"
+            "kind": "toggle",
+            "input": "character:1506:phoebe-confession-silent-prayer"
           },
           "operations": [
             {
               "kind": "amplify-damage",
               "value": 1,
+              "recipient": "team",
               "filter": {
                 "tags": [
                   "spectro-frazzle"
+                ]
+              }
+            },
+            {
+              "kind": "reduce-resistance",
+              "value": 0.1,
+              "recipient": "team",
+              "filter": {
+                "elements": [
+                  "spectro"
                 ]
               }
             }
@@ -277969,7 +280691,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1508:1508:1:2",
           "reviewFingerprint": "7d0ae5604e3a1a99fce8b706c26604dc7bb9218734e2a907e729517bbd9672b0",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "liberation",
           "element": "havoc",
           "skillLevelIndex": 0,
           "formulas": {
@@ -278222,7 +280944,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1508:1508:1:3",
           "reviewFingerprint": "7d0ae5604e3a1a99fce8b706c26604dc7bb9218734e2a907e729517bbd9672b0",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "liberation",
           "element": "havoc",
           "skillLevelIndex": 0,
           "formulas": {
@@ -279601,7 +282323,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1508:1508:1:9",
           "reviewFingerprint": "7d0ae5604e3a1a99fce8b706c26604dc7bb9218734e2a907e729517bbd9672b0",
           "kind": "damage",
-          "damageType": "liberation",
+          "damageType": "heavy",
           "element": "havoc",
           "skillLevelIndex": 0,
           "formulas": {
@@ -285130,7 +287852,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1508:1508:7:10",
           "reviewFingerprint": "7d0ae5604e3a1a99fce8b706c26604dc7bb9218734e2a907e729517bbd9672b0",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "liberation",
           "element": "havoc",
           "tags": [
             "forte",
@@ -285487,7 +288209,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1508:1508:7:11",
           "reviewFingerprint": "7d0ae5604e3a1a99fce8b706c26604dc7bb9218734e2a907e729517bbd9672b0",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "liberation",
           "element": "havoc",
           "tags": [
             "forte",
@@ -286133,6 +288855,28 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           },
           "operations": [
             {
+              "kind": "reduce-resistance",
+              "value": 0.1,
+              "filter": {
+                "elements": [
+                  "havoc"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 2
+        },
+        {
+          "id": "character:1508:1508:sequence:2:1",
+          "name": "Into the Web of Endless Bonds",
+          "description": "Ignore 10% of the target's Havoc RES when dealing damage.\nNearby Resonators in the team with Thread of Bane gain 50% All-Attribute DMG Bonus.",
+          "sourceId": "character:1508:1508:sequence:2:1",
+          "reviewFingerprint": "8f73db1f021881def972499ae392b64ce1016b807e28c8383392a6898d302d08",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
               "kind": "add-damage-bonus",
               "value": 0.5,
               "recipient": "team"
@@ -286168,6 +288912,29 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             }
           ],
           "minimumSequence": 3
+        },
+        {
+          "id": "character:1508:1508:sequence:5:0",
+          "name": "Thousands of Lights to Guide the Way Home",
+          "description": "Resonance Liberation Moment of Nihility gains 100% DMG Bonus.\nLifethread - Glide costs 50% less Lifethread - Jetstream.",
+          "sourceId": "character:1508:1508:sequence:5:0",
+          "reviewFingerprint": "8f73db1f021881def972499ae392b64ce1016b807e28c8383392a6898d302d08",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1508:1508:sequence:5:0"
+          },
+          "operations": [
+            {
+              "kind": "add-damage-bonus",
+              "value": 1,
+              "filter": {
+                "actionIds": [
+                  "1508:3:0"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 5
         },
         {
           "id": "character:1508:1508:sequence:6:0",
@@ -289592,7 +292359,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1509:1509:1:14",
           "reviewFingerprint": "2e5a3c796c1a1dbbad54dae7faecfcbeca1d2af05ee009279fcf029ab9115ef8",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "basic",
           "element": "spectro",
           "skillLevelIndex": 0,
           "formulas": {
@@ -290374,7 +293141,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1509:1509:1:17",
           "reviewFingerprint": "2e5a3c796c1a1dbbad54dae7faecfcbeca1d2af05ee009279fcf029ab9115ef8",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "basic",
           "element": "spectro",
           "tags": [
             "mid-air"
@@ -291216,7 +293983,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1509:1509:3:0",
           "reviewFingerprint": "2e5a3c796c1a1dbbad54dae7faecfcbeca1d2af05ee009279fcf029ab9115ef8",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "liberation",
           "element": "spectro",
           "skillLevelIndex": 3,
           "formulas": {
@@ -294003,204 +296770,124 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "skillLevelIndex": 2,
           "formulas": {
             "1": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 9.46
-              ],
-              "canCrit": true
+              ]
             },
             "2": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 10.235800000000001
-              ],
-              "canCrit": true
+              ]
             },
             "3": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 11.011500000000002
-              ],
-              "canCrit": true
+              ]
             },
             "4": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 12.0975
-              ],
-              "canCrit": true
+              ]
             },
             "5": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 12.873199999999999
-              ],
-              "canCrit": true
+              ]
             },
             "6": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 13.7653
-              ],
-              "canCrit": true
+              ]
             },
             "7": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 15.006400000000001
-              ],
-              "canCrit": true
+              ]
             },
             "8": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 16.2476
-              ],
-              "canCrit": true
+              ]
             },
             "9": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 17.4888
-              ],
-              "canCrit": true
+              ]
             },
             "10": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 18.8075
-              ],
-              "canCrit": true
+              ]
             },
             "11": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 20.358900000000002
-              ],
-              "canCrit": true
+              ]
             },
             "12": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 21.9104
-              ],
-              "canCrit": true
+              ]
             },
             "13": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 23.461799999999997
-              ],
-              "canCrit": true
+              ]
             },
             "14": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 25.0132
-              ],
-              "canCrit": true
+              ]
             },
             "15": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 26.5647
-              ],
-              "canCrit": true
+              ]
             },
             "16": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 28.116100000000003
-              ],
-              "canCrit": true
+              ]
             },
             "17": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 29.667600000000004
-              ],
-              "canCrit": true
+              ]
             },
             "18": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 31.219
-              ],
-              "canCrit": true
+              ]
             },
             "19": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 32.7704
-              ],
-              "canCrit": true
+              ]
             },
             "20": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 34.3219
-              ],
-              "canCrit": true
+              ]
             }
           }
         }
@@ -294398,6 +297085,24 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             {
               "kind": "add-damage-bonus",
               "value": 0.24,
+              "recipient": "team"
+            }
+          ]
+        },
+        {
+          "id": "character:1509:1509:7:effect:23",
+          "name": "Chromaticity Modeling",
+          "description": "This skill consumes 3 points of True Color and grants all nearby Resonators in the team 40 points of Tune Break Boost for 30s.",
+          "sourceId": "character:1509:1509:7:effect:23",
+          "reviewFingerprint": "f0287769e720367e60fd553636949962e4f7f7ebca88c3f543588ccde17bea07",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1509:lynae-visual-impact-team-tune-break-boost"
+          },
+          "operations": [
+            {
+              "kind": "add-tune-break-boost",
+              "value": 40,
               "recipient": "team"
             }
           ]
@@ -300466,13 +303171,22 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1510:1510:5:effect:0",
           "reviewFingerprint": "c5ffdfd55e8b2e135b9a834d5a130a3ffa2bfef4e3331e232d861f9d1035f921",
           "activation": {
-            "kind": "toggle",
-            "input": "character:1510:1510:5:effect:0"
+            "kind": "conditional-value",
+            "toggleInput": "character:1510:luuk-uncaused-diagnosis-base",
+            "source": "provider",
+            "stat": "tuneBreakBoost",
+            "minimum": 0,
+            "maximum": 1000,
+            "suppressedBy": [
+              "character:1510:luuk-s2-uncaused-diagnosis"
+            ]
           },
           "operations": [
             {
               "kind": "amplify-damage",
-              "value": 0.05
+              "value": 0.005,
+              "stacking": "per-stack",
+              "maximumValue": 0.3
             }
           ]
         },
@@ -300743,13 +303457,17 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1510:1510:sequence:2:0",
           "reviewFingerprint": "a7dad7d98ecda36e32dd6a165f9da5fcee3c954511dbdbc34354cf1977bf4439",
           "activation": {
-            "kind": "toggle",
-            "input": "character:1510:1510:sequence:2:0"
+            "kind": "always"
           },
           "operations": [
             {
-              "kind": "amplify-damage",
-              "value": 0.1
+              "kind": "increase-motion-value",
+              "value": 0.6,
+              "filter": {
+                "actionIds": [
+                  "1510:3:0"
+                ]
+              }
             }
           ],
           "minimumSequence": 2
@@ -300761,12 +303479,19 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1510:1510:sequence:2:1",
           "reviewFingerprint": "a7dad7d98ecda36e32dd6a165f9da5fcee3c954511dbdbc34354cf1977bf4439",
           "activation": {
-            "kind": "always"
+            "kind": "conditional-value",
+            "toggleInput": "character:1510:luuk-s2-uncaused-diagnosis",
+            "source": "provider",
+            "stat": "tuneBreakBoost",
+            "minimum": 0,
+            "maximum": 1000
           },
           "operations": [
             {
               "kind": "amplify-damage",
-              "value": 0.6
+              "value": 0.01,
+              "stacking": "per-stack",
+              "maximumValue": 0.6
             }
           ],
           "minimumSequence": 2
@@ -300819,6 +303544,29 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "name": "Through the Stillness of Snowstorm",
           "description": "Intro Skill Before Injection of Dawn and Outro Skill Bow to the Last Light gain 80% DMG Bonus.\nResonance Skill Golden Reflux has its DMG Multiplier increased by 50% and Cooldown reduced by 2s, and gains 1 more charge.",
           "sourceId": "character:1510:1510:sequence:5:0",
+          "reviewFingerprint": "a7dad7d98ecda36e32dd6a165f9da5fcee3c954511dbdbc34354cf1977bf4439",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-damage-bonus",
+              "value": 0.8,
+              "filter": {
+                "actionIds": [
+                  "1510:6:0",
+                  "1510:8:outro"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 5
+        },
+        {
+          "id": "character:1510:1510:sequence:5:1",
+          "name": "Through the Stillness of Snowstorm",
+          "description": "Intro Skill Before Injection of Dawn and Outro Skill Bow to the Last Light gain 80% DMG Bonus.\nResonance Skill Golden Reflux has its DMG Multiplier increased by 50% and Cooldown reduced by 2s, and gains 1 more charge.",
+          "sourceId": "character:1510:1510:sequence:5:1",
           "reviewFingerprint": "a7dad7d98ecda36e32dd6a165f9da5fcee3c954511dbdbc34354cf1977bf4439",
           "activation": {
             "kind": "always"
@@ -302657,7 +305405,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1511:1511:1:6",
           "reviewFingerprint": "959b50baeeca55e493e2831efc60d5c74bc8e1fb9c71bb4c1e9bd787099c8ec1",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "basic",
           "element": "spectro",
           "tags": [
             "plunge"
@@ -303681,7 +306429,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1511:1511:1:10",
           "reviewFingerprint": "959b50baeeca55e493e2831efc60d5c74bc8e1fb9c71bb4c1e9bd787099c8ec1",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "spectro",
           "tags": [
             "normal-chain"
@@ -303957,7 +306705,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1511:1511:1:11",
           "reviewFingerprint": "959b50baeeca55e493e2831efc60d5c74bc8e1fb9c71bb4c1e9bd787099c8ec1",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "spectro",
           "tags": [
             "normal-chain"
@@ -304253,7 +307001,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1511:1511:1:12",
           "reviewFingerprint": "959b50baeeca55e493e2831efc60d5c74bc8e1fb9c71bb4c1e9bd787099c8ec1",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "spectro",
           "tags": [
             "normal-chain"
@@ -304549,7 +307297,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1511:1511:1:13",
           "reviewFingerprint": "959b50baeeca55e493e2831efc60d5c74bc8e1fb9c71bb4c1e9bd787099c8ec1",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "spectro",
           "tags": [
             "normal-chain"
@@ -305704,7 +308452,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1511:1511:2:0",
           "reviewFingerprint": "959b50baeeca55e493e2831efc60d5c74bc8e1fb9c71bb4c1e9bd787099c8ec1",
           "kind": "damage",
-          "damageType": "skill",
+          "damageType": "basic",
           "element": "spectro",
           "skillLevelIndex": 1,
           "formulas": {
@@ -305937,7 +308685,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1511:1511:2:1",
           "reviewFingerprint": "959b50baeeca55e493e2831efc60d5c74bc8e1fb9c71bb4c1e9bd787099c8ec1",
           "kind": "damage",
-          "damageType": "skill",
+          "damageType": "basic",
           "element": "spectro",
           "skillLevelIndex": 1,
           "formulas": {
@@ -306190,7 +308938,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1511:1511:2:2",
           "reviewFingerprint": "959b50baeeca55e493e2831efc60d5c74bc8e1fb9c71bb4c1e9bd787099c8ec1",
           "kind": "damage",
-          "damageType": "skill",
+          "damageType": "basic",
           "element": "spectro",
           "skillLevelIndex": 1,
           "formulas": {
@@ -306503,7 +309251,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1511:1511:2:3",
           "reviewFingerprint": "959b50baeeca55e493e2831efc60d5c74bc8e1fb9c71bb4c1e9bd787099c8ec1",
           "kind": "damage",
-          "damageType": "skill",
+          "damageType": "heavy",
           "element": "spectro",
           "skillLevelIndex": 1,
           "formulas": {
@@ -306736,7 +309484,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1511:1511:3:0",
           "reviewFingerprint": "959b50baeeca55e493e2831efc60d5c74bc8e1fb9c71bb4c1e9bd787099c8ec1",
           "kind": "damage",
-          "damageType": "liberation",
+          "damageType": "heavy",
           "element": "spectro",
           "skillLevelIndex": 3,
           "formulas": {
@@ -307162,7 +309910,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1511:1511:3:2",
           "reviewFingerprint": "959b50baeeca55e493e2831efc60d5c74bc8e1fb9c71bb4c1e9bd787099c8ec1",
           "kind": "damage",
-          "damageType": "liberation",
+          "damageType": "heavy",
           "element": "spectro",
           "skillLevelIndex": 3,
           "formulas": {
@@ -307380,204 +310128,124 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "skillLevelIndex": 3,
           "formulas": {
             "1": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 4.5864
-              ],
-              "canCrit": true
+              ]
             },
             "2": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 4.9625
-              ],
-              "canCrit": true
+              ]
             },
             "3": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 5.3386000000000005
-              ],
-              "canCrit": true
+              ]
             },
             "4": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 5.8651
-              ],
-              "canCrit": true
+              ]
             },
             "5": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 6.2412
-              ],
-              "canCrit": true
+              ]
             },
             "6": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 6.6737
-              ],
-              "canCrit": true
+              ]
             },
             "7": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 7.275499999999999
-              ],
-              "canCrit": true
+              ]
             },
             "8": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 7.8772
-              ],
-              "canCrit": true
+              ]
             },
             "9": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 8.4789
-              ],
-              "canCrit": true
+              ]
             },
             "10": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 9.1183
-              ],
-              "canCrit": true
+              ]
             },
             "11": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 9.8704
-              ],
-              "canCrit": true
+              ]
             },
             "12": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 10.6226
-              ],
-              "canCrit": true
+              ]
             },
             "13": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 11.3748
-              ],
-              "canCrit": true
+              ]
             },
             "14": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 12.127
-              ],
-              "canCrit": true
+              ]
             },
             "15": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 12.879100000000001
-              ],
-              "canCrit": true
+              ]
             },
             "16": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 13.631300000000001
-              ],
-              "canCrit": true
+              ]
             },
             "17": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 14.3835
-              ],
-              "canCrit": true
+              ]
             },
             "18": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 15.1356
-              ],
-              "canCrit": true
+              ]
             },
             "19": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 15.8878
-              ],
-              "canCrit": true
+              ]
             },
             "20": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 16.64
-              ],
-              "canCrit": true
+              ]
             }
           }
         },
@@ -307588,7 +310256,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1511:1511:3:4",
           "reviewFingerprint": "959b50baeeca55e493e2831efc60d5c74bc8e1fb9c71bb4c1e9bd787099c8ec1",
           "kind": "damage",
-          "damageType": "liberation",
+          "damageType": "heavy",
           "element": "spectro",
           "skillLevelIndex": 3,
           "formulas": {
@@ -308042,289 +310710,227 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "skillLevelIndex": 2,
           "formulas": {
             "1": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 5.5037,
                 0.344,
                 0.344,
                 0.344,
                 0.344
-              ],
-              "canCrit": true
+              ]
             },
             "2": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 5.955,
                 0.3722,
                 0.3722,
                 0.3722,
                 0.3722
-              ],
-              "canCrit": true
+              ]
             },
             "3": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 6.4063,
                 0.4004,
                 0.4004,
                 0.4004,
                 0.4004
-              ],
-              "canCrit": true
+              ]
             },
             "4": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 7.038200000000001,
                 0.4399,
                 0.4399,
                 0.4399,
                 0.4399
-              ],
-              "canCrit": true
+              ]
             },
             "5": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 7.4895000000000005,
                 0.4681,
                 0.4681,
                 0.4681,
                 0.4681
-              ],
-              "canCrit": true
+              ]
             },
             "6": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 8.0085,
                 0.5006,
                 0.5006,
                 0.5006,
                 0.5006
-              ],
-              "canCrit": true
+              ]
             },
             "7": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 8.7305,
                 0.5457,
                 0.5457,
                 0.5457,
                 0.5457
-              ],
-              "canCrit": true
+              ]
             },
             "8": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 9.4526,
                 0.5908,
                 0.5908,
                 0.5908,
                 0.5908
-              ],
-              "canCrit": true
+              ]
             },
             "9": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 10.1747,
                 0.636,
                 0.636,
                 0.636,
                 0.636
-              ],
-              "canCrit": true
+              ]
             },
             "10": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 10.9419,
                 0.6839,
                 0.6839,
                 0.6839,
                 0.6839
-              ],
-              "canCrit": true
+              ]
             },
             "11": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 11.8445,
                 0.7403,
                 0.7403,
                 0.7403,
                 0.7403
-              ],
-              "canCrit": true
+              ]
             },
             "12": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 12.7471,
                 0.7967,
                 0.7967,
                 0.7967,
                 0.7967
-              ],
-              "canCrit": true
+              ]
             },
             "13": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 13.649700000000001,
                 0.8532,
                 0.8532,
                 0.8532,
                 0.8532
-              ],
-              "canCrit": true
+              ]
             },
             "14": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 14.5523,
                 0.9096,
                 0.9096,
                 0.9096,
                 0.9096
-              ],
-              "canCrit": true
+              ]
             },
             "15": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 15.4549,
                 0.966,
                 0.966,
                 0.966,
                 0.966
-              ],
-              "canCrit": true
+              ]
             },
             "16": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 16.3575,
                 1.0224,
                 1.0224,
                 1.0224,
                 1.0224
-              ],
-              "canCrit": true
+              ]
             },
             "17": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 17.2601,
                 1.0788,
                 1.0788,
                 1.0788,
                 1.0788
-              ],
-              "canCrit": true
+              ]
             },
             "18": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 18.1627,
                 1.1352,
                 1.1352,
                 1.1352,
                 1.1352
-              ],
-              "canCrit": true
+              ]
             },
             "19": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 19.0653,
                 1.1916,
                 1.1916,
                 1.1916,
                 1.1916
-              ],
-              "canCrit": true
+              ]
             },
             "20": {
-              "kind": "damage",
-              "scaling": {
-                "atk": 1
-              },
-              "hits": [
+              "kind": "tune-amp",
+              "amps": [
                 19.968,
                 1.248,
                 1.248,
                 1.248,
                 1.248
-              ],
-              "canCrit": true
+              ]
             }
           }
         }
       },
       "effects": [
+        {
+          "id": "character:1511:1511:3:review:cyberware-malfunction",
+          "name": "Netrunner",
+          "description": "Marked targets take 5% more damage for 30s from Spoofing Program: Cyberware Malfunction.",
+          "sourceId": "character:1511:1511:3:review:cyberware-malfunction",
+          "reviewFingerprint": "b0aff2057d997ab5ce32eef073211662a764a7df0cf0edf2124a1d99aee24819",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1511:1511:3:review:cyberware-malfunction"
+          },
+          "operations": [
+            {
+              "kind": "add-special-multiplier",
+              "value": 0.05,
+              "recipient": "team"
+            }
+          ]
+        },
         {
           "id": "character:1511:1511:3:effect:20",
           "name": "Netrunner",
@@ -308663,6 +311269,11 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             "input": "character:1511:1511:sequence:2:0"
           },
           "operations": [],
+          "filter": {
+            "actionIds": [
+              "1511:2:2"
+            ]
+          },
           "triggeredActions": [
             {
               "id": "1511:sequence:2:0:triggered-1",
@@ -308711,10 +311322,22 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "operations": [
             {
               "kind": "increase-motion-value",
-              "value": 0.65,
+              "value": 0.5,
               "filter": {
                 "actionIds": [
-                  "1511:3:3"
+                  "1511:3:0",
+                  "1511:3:4"
+                ]
+              }
+            },
+            {
+              "kind": "add-flat-stat",
+              "stat": "critDamage",
+              "value": 1,
+              "filter": {
+                "actionIds": [
+                  "1511:3:0",
+                  "1511:3:4"
                 ]
               }
             }
@@ -308726,6 +311349,28 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "name": "Cyberpunk",
           "description": "The DMG Multiplier of Override from Resonance Liberation - Netrunner and Resonance Liberation - Old Net Deep Dive is increased by 50%, and its Crit. DMG is increased by 100%.\nThe DMG Multiplier of Spoofing Program: Cripple Movement is increased by 65%.\nThe DMG Multiplier of Hack Response - Data Crash is increased by 65%.",
           "sourceId": "character:1511:1511:sequence:3:1",
+          "reviewFingerprint": "8957d8d0b210050680f72458aaa91509c1a2dfdeb614835c1c7bf2131d48c1d6",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "increase-motion-value",
+              "value": 0.65,
+              "filter": {
+                "actionIds": [
+                  "1511:3:3"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 3
+        },
+        {
+          "id": "character:1511:1511:sequence:3:2",
+          "name": "Cyberpunk",
+          "description": "The DMG Multiplier of Override from Resonance Liberation - Netrunner and Resonance Liberation - Old Net Deep Dive is increased by 50%, and its Crit. DMG is increased by 100%.\nThe DMG Multiplier of Spoofing Program: Cripple Movement is increased by 65%.\nThe DMG Multiplier of Hack Response - Data Crash is increased by 65%.",
+          "sourceId": "character:1511:1511:sequence:3:2",
           "reviewFingerprint": "8957d8d0b210050680f72458aaa91509c1a2dfdeb614835c1c7bf2131d48c1d6",
           "activation": {
             "kind": "always"
@@ -308769,12 +311414,41 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1511:1511:sequence:6:0",
           "reviewFingerprint": "8957d8d0b210050680f72458aaa91509c1a2dfdeb614835c1c7bf2131d48c1d6",
           "activation": {
-            "kind": "always"
+            "kind": "toggle",
+            "input": "character:1511:lucy-s6-target-hacked"
           },
           "operations": [
             {
-              "kind": "add-damage-bonus",
-              "value": 0.6
+              "kind": "amplify-damage",
+              "value": 0.4,
+              "filter": {
+                "damageTypes": [
+                  "heavy"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 6
+        },
+        {
+          "id": "character:1511:1511:sequence:6:1",
+          "name": "I Really Want to Stay At Your House",
+          "description": "Targets with Hack - Shifting or in the Hack - Interfered state take 40% increased Heavy Attack DMG from Lucy.\nTargets with Hack - Shifting or in the Hack - Interfered state take 60% increased Hack DMG from Lucy.\nThe Stagnation triggered by Hack Response - Data Crash now lasts for 1.5s.",
+          "sourceId": "character:1511:1511:sequence:6:1",
+          "reviewFingerprint": "8957d8d0b210050680f72458aaa91509c1a2dfdeb614835c1c7bf2131d48c1d6",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1511:lucy-s6-target-hacked"
+          },
+          "operations": [
+            {
+              "kind": "add-special-multiplier",
+              "value": 0.6,
+              "filter": {
+                "actionIds": [
+                  "1511:7:0"
+                ]
+              }
             }
           ],
           "minimumSequence": 6
@@ -312704,6 +315378,32 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           ]
         },
         {
+          "id": "character:1601:1601:sequence:1:0",
+          "name": "Essense of Tranquility",
+          "description": "Forte Circuit Power Shift's Shield is increased by 40%.",
+          "sourceId": "character:1601:1601:sequence:1:0",
+          "reviewFingerprint": "fbecc41746e48326f6e97260d4f65d2aff5861ecff9f3b3b82cb5dfa458829c7",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1601:1601:sequence:1:0"
+          },
+          "operations": [
+            {
+              "kind": "add-flat-stat",
+              "stat": "shieldBonus",
+              "value": 0.4,
+              "filter": {
+                "actionIds": [
+                  "1601:7:3",
+                  "1601:7:4",
+                  "1601:7:5"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 1
+        },
+        {
           "id": "character:1601:1601:sequence:2:0",
           "name": "Silent Strength",
           "description": "The Crit. Rate and Crit. DMG of Resonance Liberation Unmovable is increased by 20% and 20%, respectively.",
@@ -312753,6 +315453,11 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
               "value": 0.5
             }
           ],
+          "filter": {
+            "actionIds": [
+              "1601:1:6"
+            ]
+          },
           "triggeredActions": [
             {
               "id": "1601:sequence:4:0:triggered-1",
@@ -323701,6 +326406,15 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
                   "havoc"
                 ]
               }
+            },
+            {
+              "kind": "override-damage-type",
+              "damageType": "basic",
+              "filter": {
+                "actionIds": [
+                  "1603:1:5"
+                ]
+              }
             }
           ]
         },
@@ -323960,6 +326674,29 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           },
           "operations": [
             {
+              "kind": "increase-motion-value",
+              "value": 0.5,
+              "filter": {
+                "actionIds": [
+                  "1603:3:0"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 3
+        },
+        {
+          "id": "character:1603:1603:sequence:3:1",
+          "name": "A Bud Adorned by Thorns",
+          "description": "The DMG Multiplier of Resonance Liberation Fervor Efflorescent is increased by 50%. When in Budding Mode, Camellya's ATK is increased by 58%.",
+          "sourceId": "character:1603:1603:sequence:3:1",
+          "reviewFingerprint": "8a6f781a0db7d794ea5ea8a8eed00298d6619c4004d86f695133ba51dbd19371",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1603:1603:sequence:3:1"
+          },
+          "operations": [
+            {
               "kind": "add-percent-stat",
               "stat": "atk",
               "value": 0.58
@@ -324045,8 +326782,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1603:1603:sequence:6:0",
           "reviewFingerprint": "8a6f781a0db7d794ea5ea8a8eed00298d6619c4004d86f695133ba51dbd19371",
           "activation": {
-            "kind": "toggle",
-            "input": "character:1603:1603:sequence:6:0"
+            "kind": "always"
           },
           "operations": [
             {
@@ -324054,30 +326790,37 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
               "value": 1.5,
               "filter": {
                 "actionIds": [
-                  "1603:1:0",
-                  "1603:1:1",
-                  "1603:1:2",
-                  "1603:1:3",
-                  "1603:1:4",
-                  "1603:1:6",
                   "1603:1:7",
-                  "1603:2:1",
-                  "1603:2:2",
-                  "1603:2:3",
-                  "1603:2:4",
-                  "1603:2:7",
-                  "1603:2:5",
-                  "1603:2:8",
                   "1603:2:0",
+                  "1603:2:5",
                   "1603:2:6",
-                  "1603:1:5"
+                  "1603:2:7",
+                  "1603:2:8"
                 ]
               }
             }
           ],
+          "minimumSequence": 6
+        },
+        {
+          "id": "character:1603:1603:sequence:6:1",
+          "name": "Bloom For You Thousand Times Over",
+          "description": "The DMG Multiplier of Forte Circuit's Sweet Dream is additionally increased by 150%.\nForte Circuit Perennial: Within 15s after casting Ephemeral, if Concerto Energy is full and Perennial is not on cooldown, Resonance Skill is replaced with Perennial.\nCasting Perennial consumes 50 Concerto Energy and recovers 50 Crimson Pistils, dealing Havoc DMG equal to 100% of Ephemeral DMG, considered Basic Attack DMG. This skill can be cast once every 25s.\nCamellya enters Budding Mode after casting Perennial and removes all Crimson Buds. The bonus DMG Multiplier granted by Forte Circuit's Sweet Dream is increased to 250%.\nImmune to interruptions when casting Perennial.",
+          "sourceId": "character:1603:1603:sequence:6:1",
+          "reviewFingerprint": "8a6f781a0db7d794ea5ea8a8eed00298d6619c4004d86f695133ba51dbd19371",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1603:1603:sequence:6:1"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1603:7:0"
+            ]
+          },
           "triggeredActions": [
             {
-              "id": "1603:sequence:6:0:perennial",
+              "id": "1603:sequence:6:1:perennial",
               "name": "Perennial",
               "kind": "damage",
               "damageType": "basic",
@@ -324086,6 +326829,34 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
               "referenceMultiplier": 1,
               "count": 1,
               "cooldownSeconds": 25
+            }
+          ],
+          "minimumSequence": 6
+        },
+        {
+          "id": "character:1603:1603:sequence:6:2",
+          "name": "Bloom For You Thousand Times Over",
+          "description": "The DMG Multiplier of Forte Circuit's Sweet Dream is additionally increased by 150%.\nForte Circuit Perennial: Within 15s after casting Ephemeral, if Concerto Energy is full and Perennial is not on cooldown, Resonance Skill is replaced with Perennial.\nCasting Perennial consumes 50 Concerto Energy and recovers 50 Crimson Pistils, dealing Havoc DMG equal to 100% of Ephemeral DMG, considered Basic Attack DMG. This skill can be cast once every 25s.\nCamellya enters Budding Mode after casting Perennial and removes all Crimson Buds. The bonus DMG Multiplier granted by Forte Circuit's Sweet Dream is increased to 250%.\nImmune to interruptions when casting Perennial.",
+          "sourceId": "character:1603:1603:sequence:6:2",
+          "reviewFingerprint": "8a6f781a0db7d794ea5ea8a8eed00298d6619c4004d86f695133ba51dbd19371",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1603:camellya-s6-post-perennial-sweet-dream"
+          },
+          "operations": [
+            {
+              "kind": "increase-motion-value",
+              "value": 0.5,
+              "filter": {
+                "actionIds": [
+                  "1603:1:7",
+                  "1603:2:0",
+                  "1603:2:5",
+                  "1603:2:6",
+                  "1603:2:7",
+                  "1603:2:8"
+                ]
+              }
             }
           ],
           "minimumSequence": 6
@@ -326568,7 +329339,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1604:1604:7:0",
           "reviewFingerprint": "f62ce9d44501c76d826ad8875875ac7bfe0581701064daeb12de6974cf0aaa8b",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "havoc",
           "tags": [
             "forte"
@@ -328225,7 +330996,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1604:1604:7:7",
           "reviewFingerprint": "f62ce9d44501c76d826ad8875875ac7bfe0581701064daeb12de6974cf0aaa8b",
           "kind": "damage",
-          "damageType": "skill",
+          "damageType": "heavy",
           "element": "havoc",
           "tags": [
             "forte"
@@ -328521,7 +331292,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1604:1604:7:8",
           "reviewFingerprint": "f62ce9d44501c76d826ad8875875ac7bfe0581701064daeb12de6974cf0aaa8b",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "basic",
           "element": "havoc",
           "tags": [
             "forte",
@@ -328955,7 +331726,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1604:1604:7:10",
           "reviewFingerprint": "f62ce9d44501c76d826ad8875875ac7bfe0581701064daeb12de6974cf0aaa8b",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "skill",
           "element": "havoc",
           "tags": [
             "forte"
@@ -329483,6 +332254,35 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             }
           ],
           "minimumSequence": 4
+        },
+        {
+          "id": "character:1604:1604:sequence:5:0",
+          "name": "Aeon Symphony",
+          "description": "In the Dark Surge state, Basic Attack 5 deals an additional Havoc DMG equal to 50% of Basic Attack 5 DMG.",
+          "sourceId": "character:1604:1604:sequence:5:0",
+          "reviewFingerprint": "7edbc4ffc270d25124579ba738e205706ee4bb4cdb7955946e395f57f44acbe3",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1604:1604:sequence:5:0"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1604:7:5"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1604:sequence:5:0:review-followup",
+              "name": "Dark Surge Stage 5 extra hit",
+              "kind": "damage",
+              "damageType": "basic",
+              "referenceActionId": "1604:7:5",
+              "referenceMultiplier": 0.5,
+              "count": 1
+            }
+          ],
+          "minimumSequence": 5
         },
         {
           "id": "character:1604:1604:sequence:6:0",
@@ -331980,7 +334780,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1605:1605:7:0",
           "reviewFingerprint": "a3211ce9a42c8041a0cf5df5743d230c5d17cbbea5865f034dc5ac62b7ac7972",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "havoc",
           "tags": [
             "forte"
@@ -333637,7 +336437,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1605:1605:7:7",
           "reviewFingerprint": "a3211ce9a42c8041a0cf5df5743d230c5d17cbbea5865f034dc5ac62b7ac7972",
           "kind": "damage",
-          "damageType": "skill",
+          "damageType": "heavy",
           "element": "havoc",
           "tags": [
             "forte"
@@ -333933,7 +336733,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1605:1605:7:8",
           "reviewFingerprint": "a3211ce9a42c8041a0cf5df5743d230c5d17cbbea5865f034dc5ac62b7ac7972",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "basic",
           "element": "havoc",
           "tags": [
             "forte",
@@ -334367,7 +337167,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1605:1605:7:10",
           "reviewFingerprint": "a3211ce9a42c8041a0cf5df5743d230c5d17cbbea5865f034dc5ac62b7ac7972",
           "kind": "damage",
-          "damageType": "heavy",
+          "damageType": "skill",
           "element": "havoc",
           "tags": [
             "forte"
@@ -334895,6 +337695,35 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             }
           ],
           "minimumSequence": 4
+        },
+        {
+          "id": "character:1605:1605:sequence:5:0",
+          "name": "Aeon Symphony",
+          "description": "In the Dark Surge state, Basic Attack 5 deals an additional Havoc DMG equal to 50% of Basic Attack 5 DMG.",
+          "sourceId": "character:1605:1605:sequence:5:0",
+          "reviewFingerprint": "7edbc4ffc270d25124579ba738e205706ee4bb4cdb7955946e395f57f44acbe3",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1605:1605:sequence:5:0"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1605:7:5"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1605:sequence:5:0:review-followup",
+              "name": "Dark Surge Stage 5 extra hit",
+              "kind": "damage",
+              "damageType": "basic",
+              "referenceActionId": "1605:7:5",
+              "referenceMultiplier": 0.5,
+              "count": 1
+            }
+          ],
+          "minimumSequence": 5
         },
         {
           "id": "character:1605:1605:sequence:6:0",
@@ -338318,6 +341147,11 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
               "kind": "add-flat-stat",
               "stat": "critRate",
               "value": 0.1
+            },
+            {
+              "kind": "add-flat-stat",
+              "stat": "critDamage",
+              "value": 0.3
             }
           ],
           "minimumSequence": 3
@@ -338362,6 +341196,15 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
               "value": 0.2,
               "filter": {
                 "actionIds": [
+                  "1606:3:0"
+                ]
+              }
+            },
+            {
+              "kind": "increase-motion-value",
+              "value": 0.8,
+              "filter": {
+                "actionIds": [
                   "1606:1:4"
                 ]
               }
@@ -338376,12 +341219,49 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1606:1606:sequence:6:0",
           "reviewFingerprint": "f62cf2e76ef574d1e3406948027a40701a3a786cbaea8967a72bce5fe00c262a",
           "activation": {
-            "kind": "always"
+            "kind": "toggle",
+            "input": "character:1606:roccia-s6-reality-beyond-imagination"
           },
           "operations": [
             {
               "kind": "ignore-defense",
-              "value": 0.6
+              "value": 0.6,
+              "filter": {
+                "actionIds": [
+                  "1606:7:0",
+                  "1606:7:1",
+                  "1606:7:2"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 6
+        },
+        {
+          "id": "character:1606:1606:sequence:6:1",
+          "name": "When the Golden Wings Fly",
+          "description": "Casting Resonance Liberation Commedia Improvviso! grants the following effects for 12s:\n- Basic Attack Real Fantasy ignores enemies' DEF by 60%.\n- When Roccia lands after performing Basic Attack Real Fantasy Stage 3, she is launched into mid-air, activating Beyond Imagination. In this state, Basic Attack becomes Basic Attack Reality Recreation, dealing DMG equal to 100% of Basic Attack Real Fantasy Stage 3 DMG, considered Heavy Attack DMG. Roccia is immune to interruptions while casting Basic Attack Reality Recreation.\n- When Roccia lands after performing Basic Attack Reality Recreation, she is launched into mid-air, activating Beyond Imagination. Basic Attack Reality Recreation is only available in the Beyond Imagination state.",
+          "sourceId": "character:1606:1606:sequence:6:1",
+          "reviewFingerprint": "f62cf2e76ef574d1e3406948027a40701a3a786cbaea8967a72bce5fe00c262a",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1606:roccia-s6-reality-recreation"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1606:7:2"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1606:sequence:6:1:roccia-s6-reality-recreation",
+              "name": "Reality Recreation",
+              "kind": "damage",
+              "damageType": "heavy",
+              "referenceActionId": "1606:7:2",
+              "referenceMultiplier": 1,
+              "count": 1
             }
           ],
           "minimumSequence": 6
@@ -339361,7 +342241,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1607:1607:1:4",
           "reviewFingerprint": "ef245efe7ab76065f64b08c45ef13f282308be184e04963ac1d45f5199853432",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "havoc",
           "skillLevelIndex": 0,
           "formulas": {
@@ -344280,6 +347160,34 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "minimumSequence": 4
         },
         {
+          "id": "character:1607:1607:sequence:5:0",
+          "name": "Rest in Your Reflection",
+          "description": "The maximum number of Dreamweavers Cantarella can summon through Resonance Liberation Diffusion is increased by 5.",
+          "sourceId": "character:1607:1607:sequence:5:0",
+          "reviewFingerprint": "68155996ef818316a684c21df498748018f06283f80e104bc8b552997a9fd182",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1607:3:1"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1607:sequence:5:0:five-extra-dreamweavers",
+              "name": "Five additional Dreamweavers",
+              "kind": "damage",
+              "damageType": "liberation",
+              "referenceActionId": "1607:3:1",
+              "referenceMultiplier": 0.23809523809523808,
+              "count": 1
+            }
+          ],
+          "minimumSequence": 5
+        },
+        {
           "id": "character:1607:1607:sequence:6:0",
           "name": "Fall, Fall... and Fall Deeper into the Dream",
           "description": "Increase the DMG Multiplier of Basic Attack Phantom Sting by 80%. Casting Resonance Liberation Flowing Suffocation makes Cantarella's DMG ignore 30% of the target's DEF for 10s.\nFor the first 1.2s of Hazy Dream, when the target takes an instance of DMG that does not inflict Hazy Dream, Jolt will not be triggered on the target.",
@@ -345341,7 +348249,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1608:1608:1:4",
           "reviewFingerprint": "9d2ca7feafa7206bdfa14d37ddc780ee3d2c512a16205c79bb95912afc2d7f49",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "skill",
           "element": "havoc",
           "skillLevelIndex": 0,
           "formulas": {
@@ -346632,7 +349540,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1608:1608:3:0",
           "reviewFingerprint": "9d2ca7feafa7206bdfa14d37ddc780ee3d2c512a16205c79bb95912afc2d7f49",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "echo",
           "element": "havoc",
           "tags": [
             "normal-chain"
@@ -346848,7 +349756,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1608:1608:3:1",
           "reviewFingerprint": "9d2ca7feafa7206bdfa14d37ddc780ee3d2c512a16205c79bb95912afc2d7f49",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "echo",
           "element": "havoc",
           "tags": [
             "normal-chain"
@@ -347084,7 +349992,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1608:1608:3:2",
           "reviewFingerprint": "9d2ca7feafa7206bdfa14d37ddc780ee3d2c512a16205c79bb95912afc2d7f49",
           "kind": "damage",
-          "damageType": "outro",
+          "damageType": "echo",
           "element": "havoc",
           "skillLevelIndex": 3,
           "formulas": {
@@ -347317,7 +350225,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1608:1608:3:3",
           "reviewFingerprint": "9d2ca7feafa7206bdfa14d37ddc780ee3d2c512a16205c79bb95912afc2d7f49",
           "kind": "damage",
-          "damageType": "outro",
+          "damageType": "echo",
           "element": "havoc",
           "skillLevelIndex": 3,
           "formulas": {
@@ -347550,7 +350458,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1608:1608:3:4",
           "reviewFingerprint": "9d2ca7feafa7206bdfa14d37ddc780ee3d2c512a16205c79bb95912afc2d7f49",
           "kind": "damage",
-          "damageType": "outro",
+          "damageType": "echo",
           "element": "havoc",
           "skillLevelIndex": 3,
           "formulas": {
@@ -349493,19 +352401,19 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1608:1608:sequence:6:0",
           "reviewFingerprint": "a8f39e5992c9dbd4f60dd5917136cfc22760492d40bd6d451ba0f3c7c31cc32e",
           "activation": {
-            "kind": "toggle",
-            "input": "character:1608:1608:sequence:6:0"
+            "kind": "always"
           },
-          "operations": [],
-          "triggeredActions": [
+          "operations": [
             {
-              "id": "1608:sequence:6:0:triggered-1",
-              "name": "Hecate additional attack",
-              "kind": "damage",
-              "damageType": "echo",
-              "scaling": "atk",
-              "expression": "216.42%",
-              "count": 1
+              "kind": "increase-motion-value",
+              "value": 0.24,
+              "filter": {
+                "actionIds": [
+                  "1608:3:2",
+                  "1608:3:3",
+                  "1608:3:4"
+                ]
+              }
             }
           ],
           "minimumSequence": 6
@@ -349520,6 +352428,64 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             "kind": "toggle",
             "input": "character:1608:1608:sequence:6:1"
           },
+          "operations": [],
+          "filter": {
+            "actionIds": [
+              "1608:7:0",
+              "1608:7:1"
+            ]
+          },
+          "triggeredActions": [
+            {
+              "id": "1608:sequence:6:1:triggered-1",
+              "name": "Hecate additional attack",
+              "kind": "damage",
+              "damageType": "echo",
+              "scaling": "atk",
+              "expression": "216.42%",
+              "count": 1
+            }
+          ],
+          "minimumSequence": 6
+        },
+        {
+          "id": "character:1608:1608:sequence:6:2",
+          "name": "A Night to Depart From Eternal Rest",
+          "description": "The DMG Multiplier of Enhanced Attack - Hecate is increased by 24%.\nDuring Movement of Fate and Finality and Murmurs in a Haunting Dream, command Hecate to cast 1 Apparition of Beyond - Hecate, dealing Havoc DMG equal to 216.42% of Phrolova's ATK (considered Echo Skill DMG) and granting 8 of Aftersound on hit.\nIf Phrolova is not the active Resonator during the Maestro state, targets take 40% more DMG from Hecate and Phrolova. If Phrolova is the active Resonator during the Maestro state, gain 60% Havoc DMG Bonus.",
+          "sourceId": "character:1608:1608:sequence:6:2",
+          "reviewFingerprint": "a8f39e5992c9dbd4f60dd5917136cfc22760492d40bd6d451ba0f3c7c31cc32e",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1608:1608:sequence:6:2"
+          },
+          "operations": [
+            {
+              "kind": "add-special-multiplier",
+              "value": 0.4,
+              "filter": {
+                "actionIds": [
+                  "1608:3:0",
+                  "1608:3:1",
+                  "1608:3:2",
+                  "1608:3:3",
+                  "1608:3:4"
+                ]
+              }
+            }
+          ],
+          "exclusiveGroup": "phrolova-s6-maestro-position",
+          "minimumSequence": 6
+        },
+        {
+          "id": "character:1608:1608:sequence:6:3",
+          "name": "A Night to Depart From Eternal Rest",
+          "description": "The DMG Multiplier of Enhanced Attack - Hecate is increased by 24%.\nDuring Movement of Fate and Finality and Murmurs in a Haunting Dream, command Hecate to cast 1 Apparition of Beyond - Hecate, dealing Havoc DMG equal to 216.42% of Phrolova's ATK (considered Echo Skill DMG) and granting 8 of Aftersound on hit.\nIf Phrolova is not the active Resonator during the Maestro state, targets take 40% more DMG from Hecate and Phrolova. If Phrolova is the active Resonator during the Maestro state, gain 60% Havoc DMG Bonus.",
+          "sourceId": "character:1608:1608:sequence:6:3",
+          "reviewFingerprint": "a8f39e5992c9dbd4f60dd5917136cfc22760492d40bd6d451ba0f3c7c31cc32e",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1608:1608:sequence:6:3"
+          },
           "operations": [
             {
               "kind": "add-damage-bonus",
@@ -349531,6 +352497,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
               }
             }
           ],
+          "exclusiveGroup": "phrolova-s6-maestro-position",
           "minimumSequence": 6
         }
       ]
@@ -353664,7 +356631,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1610:1610:7:0",
           "reviewFingerprint": "31733e29f9fa264d2fc496000dd83cfae6d02491dc5a0611a06a878e0b260253",
           "kind": "damage",
-          "damageType": "skill",
+          "damageType": "heavy",
           "element": "havoc",
           "tags": [
             "forte"
@@ -353940,7 +356907,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1610:1610:7:1",
           "reviewFingerprint": "31733e29f9fa264d2fc496000dd83cfae6d02491dc5a0611a06a878e0b260253",
           "kind": "damage",
-          "damageType": "skill",
+          "damageType": "heavy",
           "element": "havoc",
           "tags": [
             "forte"
@@ -354688,7 +357655,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1610:1610:7:4",
           "reviewFingerprint": "31733e29f9fa264d2fc496000dd83cfae6d02491dc5a0611a06a878e0b260253",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "havoc",
           "tags": [
             "forte",
@@ -354965,7 +357932,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1610:1610:7:5",
           "reviewFingerprint": "31733e29f9fa264d2fc496000dd83cfae6d02491dc5a0611a06a878e0b260253",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "havoc",
           "tags": [
             "forte",
@@ -355222,7 +358189,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1610:1610:7:6",
           "reviewFingerprint": "31733e29f9fa264d2fc496000dd83cfae6d02491dc5a0611a06a878e0b260253",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "havoc",
           "tags": [
             "forte",
@@ -355479,7 +358446,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1610:1610:7:7",
           "reviewFingerprint": "31733e29f9fa264d2fc496000dd83cfae6d02491dc5a0611a06a878e0b260253",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "havoc",
           "tags": [
             "forte",
@@ -355796,7 +358763,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1610:1610:7:8",
           "reviewFingerprint": "31733e29f9fa264d2fc496000dd83cfae6d02491dc5a0611a06a878e0b260253",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "havoc",
           "tags": [
             "forte",
@@ -356054,7 +359021,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1610:1610:7:9",
           "reviewFingerprint": "31733e29f9fa264d2fc496000dd83cfae6d02491dc5a0611a06a878e0b260253",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "havoc",
           "tags": [
             "forte",
@@ -356312,7 +359279,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1610:1610:7:10",
           "reviewFingerprint": "31733e29f9fa264d2fc496000dd83cfae6d02491dc5a0611a06a878e0b260253",
           "kind": "damage",
-          "damageType": "basic",
+          "damageType": "heavy",
           "element": "havoc",
           "tags": [
             "forte",
@@ -356899,6 +359866,12 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             "input": "character:1610:1610:sequence:1:0"
           },
           "operations": [],
+          "filter": {
+            "actionIds": [
+              "1610:7:0",
+              "1610:7:1"
+            ]
+          },
           "triggeredActions": [
             {
               "id": "1610:sequence:1:0:triggered-1",
@@ -356919,16 +359892,59 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "sourceId": "character:1610:1610:sequence:2:0",
           "reviewFingerprint": "95ed44953e6e72354fd4068e6b4aeb12c2be19b0abdb0ffcf93c48e1823f6d3d",
           "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "amplify-damage",
+              "value": 1,
+              "filter": {
+                "actionIds": [
+                  "1610:7:2",
+                  "1610:7:3",
+                  "1610:7:4",
+                  "1610:7:5",
+                  "1610:7:6",
+                  "1610:7:7",
+                  "1610:7:8",
+                  "1610:7:9",
+                  "1610:7:10"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 2
+        },
+        {
+          "id": "character:1610:1610:sequence:2:1",
+          "name": "River Carries Her Song Away",
+          "description": "The DMG dealt by Heavy Attack - Azure Sword Stance, Heavy Attack - Feather Sword Stance, Mid-air Attack - Feather Fall, Basic Attack - Havoc in Bloom, and Dodge Counter - Havoc in Bloom is increased by 100%.\nEvery time Yangyang: Xuanling remains out of combat for more than 4s after she leaves the combat state or revives, she gains the following effects once:\n- Gain Strung Notes, up to 1 stack. Casting Basic Attack - Azure Sword Stance or Basic Attack - Feather Sword Stance summons Shadow of Xuanling: Strung Notes to attack the target, dealing Havoc DMG equal to 337.98% of Yangyang: Xuanling's ATK, considered Heavy Attack DMG. Strung Notes is removed after Shadow of Xuanling: Strung Notes is summoned.\n- Restore 2 points of Azure Plume.\n- Reset the Cooldown of gaining Bated Breath and Streaming Storm.",
+          "sourceId": "character:1610:1610:sequence:2:1",
+          "reviewFingerprint": "95ed44953e6e72354fd4068e6b4aeb12c2be19b0abdb0ffcf93c48e1823f6d3d",
+          "activation": {
             "kind": "toggle",
-            "input": "character:1610:1610:sequence:2:0"
+            "input": "character:1610:xuanling-s2-strung-notes"
           },
           "operations": [],
+          "filter": {
+            "actionIds": [
+              "1610:1:0",
+              "1610:1:1",
+              "1610:1:2",
+              "1610:1:3",
+              "1610:1:4",
+              "1610:1:5",
+              "1610:1:6",
+              "1610:1:7"
+            ]
+          },
           "triggeredActions": [
             {
-              "id": "1610:sequence:2:0:triggered-1",
-              "name": "Xuanling additional strike",
+              "id": "1610:sequence:2:1:xuanling-s2-shadow-strung-notes",
+              "name": "Shadow of Xuanling: Strung Notes",
               "kind": "damage",
-              "damageType": "skill",
+              "damageType": "heavy",
+              "element": "havoc",
               "scaling": "atk",
               "expression": "337.98%",
               "count": 1
@@ -356999,6 +360015,12 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
               }
             }
           ],
+          "filter": {
+            "actionIds": [
+              "1610:7:0",
+              "1610:7:1"
+            ]
+          },
           "triggeredActions": [
             {
               "id": "1610:sequence:6:0:still-as-withered-wood",
@@ -357027,6 +360049,12 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
             "input": "character:1610:1610:sequence:6:1"
           },
           "operations": [],
+          "filter": {
+            "actionIds": [
+              "1610:7:0",
+              "1610:7:1"
+            ]
+          },
           "triggeredActions": [
             {
               "id": "1610:sequence:6:1:triggered-1",
@@ -402805,14 +405833,9 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           },
           "operations": [
             {
-              "kind": "add-damage-bonus",
-              "value": 0.2,
-              "recipient": "team",
-              "filter": {
-                "damageTypes": [
-                  "tune-break"
-                ]
-              }
+              "kind": "add-tune-break-boost",
+              "value": 20,
+              "recipient": "team"
             }
           ],
           "minimumPieces": 5

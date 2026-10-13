@@ -1960,15 +1960,22 @@
             "text": "Healing of Resonance Liberation's Photosynthesis Mark is increased by 12%.",
             "parsedEffects": [
               {
+                "resolutionId": "character-review-resolution",
                 "input": {
                   "kind": "toggle"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "modifiers": [
+                  {
+                    "stat": "motionValue",
+                    "operation": "addPercent",
+                    "value": 12,
+                    "actionIds": [
+                      "1503:3:3"
+                    ]
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               }
             ]
           },
@@ -2036,37 +2043,76 @@
             "text": "Heavy Attack Starflower Blooms and Mid-air Attack Starflower Blooms deal 20% more DMG. They will trigger Coordinated Attack 1 time and heal all characters nearby. The damage of this Coordinated Attack and the Healing are equal to those of the Resonance Liberation's Photosynthesis Mark.",
             "parsedEffects": [
               {
+                "resolutionId": "character-review-resolution",
                 "input": {
                   "kind": "toggle"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "modifiers": [
+                  {
+                    "stat": "motionValue",
+                    "operation": "addPercent",
+                    "value": 20,
+                    "actionIds": [
+                      "1503:7:0",
+                      "1503:7:1",
+                      "1503:7:2",
+                      "1503:7:3"
+                    ]
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "toggle",
+                  "key": "verina-s6-starflower-coordinate"
                 },
+                "trigger": "Heavy or Mid-air Starflower Blooms deals damage",
                 "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "triggerActionIds": [
+                  "1503:7:0",
+                  "1503:7:1",
+                  "1503:7:2",
+                  "1503:7:3"
                 ],
-                "reviewStatus": "no-mechanic"
+                "triggeredAttacks": [
+                  {
+                    "id": "verina-s6-photosynthesis-hit",
+                    "name": "Starflower Photosynthesis Mark coordinated hit",
+                    "damageType": "liberation",
+                    "referenceActionId": "1503:3:2",
+                    "count": 1
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "toggle",
+                  "key": "verina-s6-starflower-heal"
                 },
+                "trigger": "Heavy or Mid-air Starflower Blooms deals damage",
                 "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "triggerActionIds": [
+                  "1503:7:0",
+                  "1503:7:1",
+                  "1503:7:2",
+                  "1503:7:3"
                 ],
-                "reviewStatus": "no-mechanic"
+                "triggeredAttacks": [
+                  {
+                    "id": "verina-s6-photosynthesis-heal",
+                    "name": "Starflower Photosynthesis Mark heal",
+                    "damageType": "healing",
+                    "recipient": "team",
+                    "referenceActionId": "1503:3:3",
+                    "count": 1
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
               }
             ]
           }

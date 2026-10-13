@@ -1221,7 +1221,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Ink and Wash",
             "name": "Ink and Wash - Stroke of Genius DMG",
-            "damageType": "heavy",
+            "damageType": "basic",
             "tags": [
               "forte"
             ],
@@ -1851,25 +1851,31 @@
             "parsedEffects": [
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 30,
+                  "key": "zhezhi-s5-inklit-spirits-summoned"
                 },
+                "trigger": "Number of Inklit Spirits summoned by Living Canvas",
                 "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "triggerActionIds": [
+                  "1105:3:0"
                 ],
-                "reviewStatus": "no-mechanic"
-              },
-              {
-                "input": {
-                  "kind": "toggle"
-                },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "triggeredAttacks": [
+                  {
+                    "id": "extra-inklit-spirit",
+                    "name": "Additional Inklit Spirit",
+                    "damageType": "basic",
+                    "referenceActionId": "1105:3:0",
+                    "referenceMultiplier": 1.4,
+                    "count": 1,
+                    "countPerActivation": 3
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": [
+                  "Enter the total Inklit Spirits summoned for this Living Canvas calculation."
+                ]
               }
             ]
           },
@@ -1882,13 +1888,23 @@
                 "input": {
                   "kind": "toggle"
                 },
-                "trigger": "Resonance Skill",
                 "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "confidence": "high",
+                "warnings": [],
+                "triggerActionIds": [
+                  "1105:7:1",
+                  "1105:7:2"
                 ],
-                "reviewStatus": "no-mechanic"
+                "triggeredAttacks": [
+                  {
+                    "id": "review-followup",
+                    "name": "Ivory Herald extra attack",
+                    "damageType": "basic",
+                    "referenceActionId": "1105:7:1",
+                    "referenceMultiplier": 1.2,
+                    "count": 1
+                  }
+                ]
               }
             ]
           }

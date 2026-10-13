@@ -395,7 +395,7 @@
             "skillType": "Normal Attack",
             "skillName": "One, Two, Three",
             "name": "One, Two, Three - Basic Attack - Elucidated DMG",
-            "damageType": "basic",
+            "damageType": "echo",
             "skillSource": "basic",
             "scaling": "atk",
             "expressions": [
@@ -829,7 +829,7 @@
             "skillType": "Normal Attack",
             "skillName": "One, Two, Three",
             "name": "One, Two, Three - Dodge Counter - Decipher DMG",
-            "damageType": "basic",
+            "damageType": "echo",
             "tags": [
               "dodge-counter"
             ],
@@ -1081,7 +1081,7 @@
             "skillType": "Resonance Skill",
             "skillName": "Royan Close Quarters Combat",
             "name": "Royan Close Quarters Combat - BIG BOOMY BOOM! DMG",
-            "damageType": "outro",
+            "damageType": "echo",
             "skillSource": "skill",
             "scaling": "atk",
             "expressions": [
@@ -1228,7 +1228,7 @@
             "skillType": "Resonance Skill",
             "skillName": "Royan Close Quarters Combat",
             "name": "Royan Close Quarters Combat - Soliskin to the Aid DMG",
-            "damageType": "outro",
+            "damageType": "echo",
             "skillSource": "skill",
             "scaling": "atk",
             "expressions": [
@@ -1471,7 +1471,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Within Infinity's Embrace",
             "name": "Within Infinity's Embrace - Heavy Attack - Schemata of Runes DMG",
-            "damageType": "heavy",
+            "damageType": "echo",
             "tags": [
               "forte"
             ],
@@ -1532,7 +1532,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Within Infinity's Embrace",
             "name": "Within Infinity's Embrace - Runic Outburst DMG",
-            "damageType": "outro",
+            "damageType": "echo",
             "tags": [
               "forte"
             ],
@@ -1637,7 +1637,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Within Infinity's Embrace",
             "name": "Within Infinity's Embrace - Runic Chain Whip DMG",
-            "damageType": "outro",
+            "damageType": "echo",
             "tags": [
               "forte"
             ],
@@ -1830,7 +1830,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Within Infinity's Embrace",
             "name": "Within Infinity's Embrace - Runic Soliskin DMG",
-            "damageType": "outro",
+            "damageType": "echo",
             "tags": [
               "forte"
             ],
@@ -2001,7 +2001,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Within Infinity's Embrace",
             "name": "Within Infinity's Embrace - Forte Circuit - Learn My True Name DMG",
-            "damageType": "outro",
+            "damageType": "echo",
             "tags": [
               "forte"
             ],
@@ -2350,16 +2350,28 @@
             "text": "Every 10 of Soliskin Vitality consumed grants the current Runic Outburst, Runic Chain Whip, and Runic Soliskin 15% DMG Amplification.",
             "parsed": {
               "input": {
-                "kind": "toggle"
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 6,
+                "key": "sigrika-vitality-consumed-tens"
               },
-              "modifiers": [],
-              "confidence": "review",
-              "warnings": [
-                "Reviewed: no supported deterministic calculator mechanic."
+              "trigger": "Each stack represents 10 Soliskin Vitality consumed for this Runic attack",
+              "modifiers": [
+                {
+                  "stat": "damageBonus",
+                  "operation": "amplifyPercent",
+                  "value": 15,
+                  "actionIds": [
+                    "1412:7:1",
+                    "1412:7:2",
+                    "1412:7:3"
+                  ]
+                }
               ],
-              "reviewStatus": "no-mechanic"
+              "confidence": "high",
+              "warnings": []
             },
-            "reviewStatus": "no-mechanic"
+            "reviewStatus": "include"
           },
           {
             "id": "1412:7:effect:22",
@@ -2923,14 +2935,17 @@
             "parsedEffects": [
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "always"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "modifiers": [
+                  {
+                    "stat": "specialMultiplier",
+                    "operation": "addPercent",
+                    "value": 30
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {
@@ -2947,20 +2962,31 @@
                 "input": {
                   "kind": "stacks",
                   "minimum": 0,
-                  "maximum": 1
+                  "maximum": 4,
+                  "key": "sigrika-s6-innate-gift"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "modifiers": [
+                  {
+                    "stat": "damageBonus",
+                    "operation": "amplifyPercent",
+                    "value": 15,
+                    "actionIds": [
+                      "1412:7:1",
+                      "1412:7:2",
+                      "1412:7:3",
+                      "1412:7:4"
+                    ]
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {
                   "kind": "stacks",
                   "minimum": 0,
-                  "maximum": 1
+                  "maximum": 4,
+                  "key": "sigrika-s6-innate-gift"
                 },
                 "modifiers": [
                   {

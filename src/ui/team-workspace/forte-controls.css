@@ -17,8 +17,8 @@
 
 .tw-nav-result-modes button.active {
   border-color: var(--gold);
-  background: rgba(228,187,94,.12);
-  color: #f4d684;
+  background: rgba(var(--gold-rgb),.12);
+  color: color-mix(in srgb, var(--gold) 82%, white);
 }
 
 .tw-formula-toolbar {
@@ -302,7 +302,7 @@
   gap: 9px;
   padding: 9px;
   border-bottom: 1px solid var(--tw-line);
-  background: linear-gradient(90deg,rgba(228,187,94,.09),transparent);
+  background: linear-gradient(90deg,rgba(var(--gold-rgb),.09),transparent);
 }
 
 .tw-member-open {
@@ -312,7 +312,7 @@
 
 .tw-member-open:hover,.tw-member-open:focus-visible,.tw-empty-member-picker:hover {
   border-bottom-color: var(--tw-mint-line);
-  background: linear-gradient(90deg,rgba(141,228,212,.13),rgba(228,187,94,.04));
+  background: linear-gradient(90deg,rgba(var(--mint-rgb),.13),rgba(var(--gold-rgb),.04));
 }
 
 .tw-member-open:focus-visible {
@@ -374,8 +374,8 @@
 .tw-weapon-passive {
   min-width: 0;
   padding: 10px 12px;
-  border: 1px solid rgba(228,187,94,.18);
-  background: rgba(228,187,94,.035);
+  border: 1px solid rgba(var(--gold-rgb),.18);
+  background: rgba(var(--gold-rgb),.035);
 }
 
 .tw-weapon-passive h3 {
@@ -423,7 +423,7 @@
   grid-template-columns: minmax(190px,.28fr) minmax(0,1fr);
   gap: 12px;
   padding: 12px;
-  border-color: rgba(228,187,94,.32);
+  border-color: rgba(var(--gold-rgb),.32);
   background: linear-gradient(120deg,rgba(111,72,23,.18),rgba(18,15,10,.72));
 }
 
@@ -440,9 +440,9 @@
   place-items: center;
   width: 32px;
   height: 32px;
-  border: 1px solid rgba(228,187,94,.55);
+  border: 1px solid rgba(var(--gold-rgb),.55);
   border-radius: 50%;
-  background: rgba(228,187,94,.09);
+  background: rgba(var(--gold-rgb),.09);
   color: var(--gold);
   font-size: var(--font-size-body);
   font-weight: 800;

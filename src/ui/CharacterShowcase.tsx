@@ -9,13 +9,14 @@ import { generatedSonataIconSources } from '../game-data/sonatas.generated'
 import { effectiveSubStats } from '../game-data/echo-main-stats'
 import { echoRollRating } from '../domain/echo-grade'
 import { resolveCharacterSubstatProfile, scoreCharacterSubstats } from '../domain/character-substat-score'
+import { setEchoSlot as assignEchoSlot } from '../domain/echo-slots'
 import { createLocalId } from '../domain/id'
 import { resolveLoadout, type LoadoutCollections } from '../domain/loadouts'
 import { db, repairEchoAssignmentConsistency, saveSettings, setOwnedWeaponOwner } from '../storage/database'
 import { deleteCharacterArtwork, loadCharacterArtwork, saveCharacterArtwork } from '../storage/character-art-cache'
 import { setEquippedEchoIds } from '../storage/loadouts'
 import type { AppSettings, Build, Echo, EquippedLoadout, LoadoutSourceRef, OwnedCharacter, OwnedWeapon, StatKey, TheorycraftBuild } from '../domain/types'
-import { CharacterSubstatProfileContext, EchoMiniCard, Icon, Panel } from './components'
+import { CharacterSubstatProfileContext, EchoMiniCard, FilterChips, Icon, Panel } from './components'
 import { EchoEditModal } from './EchoEditModal'
 import type { NanokaSpinePortraitHandle } from './NanokaSpinePortrait'
 import type { CalculationDetail } from './CalculationDetails'
@@ -23,7 +24,10 @@ import { showcaseStatDetail } from './calculation-detail-model'
 import { CharacterBuildCard, prioritizedBuildCardStats, type BuildCardStatKey } from './CharacterBuildCard'
 import { defaultEnabledSkillTreeBonusIds, inherentSkillBonusId, resolveCharacterShowcaseModel, skillTreeBonusId } from './character-showcase-model'
 import { WeaponInventoryCard } from './WeaponInventoryCard'
-import { useDismissableLayer } from './useDismissableLayer'
+import { MultiSelect, SingleSelect } from './InventoryView'
+import { statIconSource } from './stat-icons'
+import { confirmDiscardChanges, useUnsavedChanges } from './useUnsavedChanges'
+import { BoundedNumberInput } from './BoundedNumberInput'
 import './character-showcase.css'
 
 function customAccentStyle(color: string | null): CSSProperties | undefined {
@@ -162,22 +166,42 @@ export function richSkillDescription(description: string) {
   return nodes
 }
 
-function EchoFilterSelect({ label, values, options, emptyLabel, onChange, icon }: { label: string; values: string[]; options: Array<{ value: string; label: string }>; emptyLabel: string; onChange: (values: string[]) => void; icon?: (value: string) => ReactNode }) {
-  const [open, setOpen] = useState(false)
-  const ref = useRef<HTMLDivElement>(null)
-  const close = useCallback(() => setOpen(false), [])
-  useDismissableLayer(open, ref, close)
-  const toggle = (value: string) => onChange(values.includes(value) ? values.filter((item) => item !== value) : [...values, value])
-  return <label className="multi-filter"><span className="sr-only">{label}</span><div className="multi-select" ref={ref}><button type="button" className="multi-select-trigger" aria-expanded={open} onClick={() => setOpen((current) => !current)}><span className="multi-select-values">{values.length ? values.map((value) => <span className="multi-select-chip" key={value}>{icon?.(value)}<b>{options.find((option) => option.value === value)?.label ?? value}</b></span>) : <em>{emptyLabel}</em>}</span><strong>⌄</strong></button>{open && <div className="multi-select-menu"><div className="multi-select-options">{options.map((option) => <button type="button" className={values.includes(option.value) ? 'active' : ''} onClick={() => toggle(option.value)} key={option.value}>{icon?.(option.value)}<span>{option.label}</span><i>{values.includes(option.value) ? '✓' : ''}</i></button>)}</div><footer><button type="button" className="multi-select-clear" disabled={!values.length} onClick={() => onChange([])}>Clear selections</button></footer></div>}</div></label>
+const pickerPreferencesKey = (characterId: string) => `tacet-lab-character-card-pickers:${characterId}`
+const weaponRarities = [5, 4, 3, 2, 1]
+
+function readPickerPreferences(characterId: string, menu: 'weapon' | 'echo'): Record<string, unknown> {
+  try {
+    const value = JSON.parse(window.localStorage.getItem(pickerPreferencesKey(characterId)) ?? 'null')
+    return value && typeof value === 'object' && value[menu] && typeof value[menu] === 'object' ? value[menu] : {}
+  } catch { return {} }
+}
+
+function savePickerPreferences(characterId: string, menu: 'weapon' | 'echo', preferences: Record<string, unknown>) {
+  try {
+    const value = JSON.parse(window.localStorage.getItem(pickerPreferencesKey(characterId)) ?? 'null')
+    const current = value && typeof value === 'object' ? value : {}
+    window.localStorage.setItem(pickerPreferencesKey(characterId), JSON.stringify({ ...current, [menu]: preferences }))
+  } catch { /* Storage may be unavailable; the current menu remains usable. */ }
+}
+
+function savedSelection<T extends string | number>(value: unknown, allowed: readonly T[], fallback: T[]): T[] {
+  return Array.isArray(value) ? value.filter((item): item is T => allowed.includes(item as T)) : fallback
 }
 
 function WeaponPicker({ character, characters, catalog, weapons, refresh, onClose }: { character: OwnedCharacter; characters: OwnedCharacter[]; catalog: CharacterCatalogEntry; weapons: OwnedWeapon[]; refresh: () => Promise<void>; onClose: () => void }) {
+  const preferences = useMemo(() => readPickerPreferences(character.id, 'weapon'), [character.id])
   const [adding, setAdding] = useState(false)
+  const [query, setQuery] = useState(() => typeof preferences.query === 'string' ? preferences.query : '')
+  const [rarities, setRarities] = useState(() => savedSelection(preferences.rarities, weaponRarities, weaponRarities))
+  useEffect(() => savePickerPreferences(character.id, 'weapon', { query, rarities }), [character.id, query, rarities])
   const eligibleOwned = weapons.flatMap((owned) => {
     const entry = weaponCatalog.find((candidate) => candidate.id === owned.catalogId)
     return entry?.type.toLowerCase() === catalog.weaponType.toLowerCase() ? [{ owned, entry }] : []
   })
   const eligibleCatalog = weaponCatalog.filter((entry) => entry.type.toLowerCase() === catalog.weaponType.toLowerCase())
+  const matches = (entry: WeaponCatalogEntry) => rarities.includes(entry.rarity) && entry.name.toLowerCase().includes(query.trim().toLowerCase())
+  const visibleOwned = eligibleOwned.filter(({ entry }) => matches(entry)).sort((left, right) => right.entry.rarity - left.entry.rarity || left.entry.name.localeCompare(right.entry.name))
+  const visibleCatalog = eligibleCatalog.filter(matches).sort((left, right) => right.rarity - left.rarity || left.name.localeCompare(right.name))
   const equip = async (weapon: OwnedWeapon) => {
     await setOwnedWeaponOwner(weapon.id, character.id)
     await refresh()
@@ -188,33 +212,44 @@ function WeaponPicker({ character, characters, catalog, weapons, refresh, onClos
     await db.weapons.add(weapon)
     await equip(weapon)
   }
-  return createPortal(<div className={`catalog-picker-backdrop cs-picker-backdrop cs-element-${catalog.element.toLowerCase()}`} onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}><section className="catalog-picker cs-picker" role="dialog" aria-modal="true" aria-label="Equip weapon"><header><div><span className="eyebrow">{catalog.weaponType} inventory</span><h2>{adding ? 'Add and equip weapon' : 'Equip weapon'}</h2></div><div>{adding && <button className="secondary" onClick={() => setAdding(false)}>Owned</button>}<button className="text-button" onClick={onClose}>Close</button></div></header><div className="catalog-picker-grid">
-    {!adding && eligibleOwned.map(({ owned, entry }) => { const owner = characters.find((candidate) => candidate.id === owned.equippedBy); const ownerCatalog = characterCatalog.find((candidate) => candidate.id === owner?.catalogId); return <WeaponInventoryCard weapon={owned} catalog={entry} className="cs-weapon-picker-card" ariaLabel={`Equip ${entry.name}`} onClick={() => void equip(owned)} footer={<button type="button" className="character-equip-trigger cs-weapon-picker-owner" onClick={() => void equip(owned)}>{ownerCatalog ? <img src={ownerCatalog.iconSourceUrl} alt=""/> : <span className="equip-empty">—</span>}<b>{ownerCatalog?.name ?? 'Unequipped'}</b><i>Equip</i></button>} key={owned.id}/> })}
-    {!adding && <button className="catalog-choice add-owned-choice" onClick={() => setAdding(true)}><span className="add-glyph">+</span><span><strong>Add weapon</strong><small>Create a local copy and equip it.</small></span></button>}
-    {adding && eligibleCatalog.map((entry) => <button className={`catalog-choice weapon-choice rarity-${entry.rarity}`} key={entry.id} onClick={() => void add(entry)}><img src={entry.iconSourceUrl} alt=""/><span><strong>{entry.name}</strong><small>{entry.type}</small><Stars rarity={entry.rarity}/></span></button>)}
+  return createPortal(<div className={`catalog-picker-backdrop cs-picker-backdrop cs-element-${catalog.element.toLowerCase()}`} onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}><section className="catalog-picker cs-picker cs-weapon-picker" role="dialog" aria-modal="true" aria-label="Equip weapon"><header><div><span className="eyebrow">{catalog.weaponType} inventory</span><h2>{adding ? 'Add and equip weapon' : 'Equip weapon'}</h2></div><button type="button" className="close" aria-label="Close weapon picker" onClick={onClose}>×</button></header>
+    <div className="cs-weapon-picker-toolbar wv-toolbar"><label className="search search-field"><Icon name="scan"/><input data-search="" autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Find a weapon"/><span className="search-count" aria-live="polite">{adding ? visibleCatalog.length : visibleOwned.length}/{adding ? eligibleCatalog.length : eligibleOwned.length}</span><kbd>Ctrl K</kbd></label><FilterChips label="Rarity" hideLabel values={weaponRarities} selected={rarities} onChange={setRarities} renderValue={(value) => `${value} ★`}/>{adding ? <button type="button" className="secondary" onClick={() => setAdding(false)}>← Owned weapons</button> : <button type="button" className="primary" onClick={() => setAdding(true)}><Icon name="plus"/>Add weapon</button>}</div>
+    <div className={adding ? 'catalog-picker-grid cs-weapon-picker-grid' : 'wv-grid cs-weapon-picker-grid'}>
+    {!adding && visibleOwned.map(({ owned, entry }) => { const owner = characters.find((candidate) => candidate.id === owned.equippedBy); const ownerCatalog = characterCatalog.find((candidate) => candidate.id === owner?.catalogId); return <WeaponInventoryCard weapon={owned} catalog={entry} className="cs-weapon-picker-card" ariaLabel={`Equip ${entry.name}`} onClick={() => void equip(owned)} footer={<button type="button" className="character-equip-trigger cs-weapon-picker-owner" onClick={() => void equip(owned)}>{ownerCatalog ? <img src={ownerCatalog.iconSourceUrl} alt=""/> : <span className="equip-empty">—</span>}<b>{ownerCatalog?.name ?? 'Unequipped'}</b><i>Equip</i></button>} key={owned.id}/> })}
+    {adding && visibleCatalog.map((entry) => <button className={`catalog-choice weapon-choice rarity-${entry.rarity}`} key={entry.id} onClick={() => void add(entry)}><img src={entry.iconSourceUrl} alt=""/><span><strong>{entry.name}</strong><small>{entry.type}</small><Stars rarity={entry.rarity}/></span></button>)}
+    {(adding ? visibleCatalog.length : visibleOwned.length) === 0 && <div className="wv-empty compact"><h3>No matching weapons</h3><button type="button" className="text-button" onClick={() => { setQuery(''); setRarities(weaponRarities) }}>Clear filters</button></div>}
   </div></section></div>, document.body)
 }
 
+const echoCostOptions = [1, 3, 4]
+const echoRarityOptions = [5, 4, 3, 2]
+
 export function EchoPicker({ slot, characterId, currentIds, echoes, accentClass, refresh, onClose, onSelect }: { slot: number; characterId: string; currentIds: string[]; echoes: Echo[]; accentClass: string; refresh: () => Promise<void>; onClose: () => void; onSelect?: (echoIds: string[], next?: Echo) => Promise<boolean | void> }) {
   const pageSize = 30
+  const preferences = useMemo(() => readPickerPreferences(characterId, 'echo'), [characterId])
+  const statKeys = Object.keys(statLabels) as StatKey[]
+  const [editingEcho, setEditingEcho] = useState<Echo | null>(null)
   const characterSubstatProfile = useContext(CharacterSubstatProfileContext)
   const currentId = currentIds[slot]
-  const [query, setQuery] = useState('')
-  const [costs, setCosts] = useState<number[]>([])
-  const [rarities, setRarities] = useState<number[]>([])
-  const [sonatas, setSonatas] = useState<string[]>([])
-  const [mainStats, setMainStats] = useState<string[]>([])
-  const [subStats, setSubStats] = useState<string[]>([])
-  const [lockState, setLockState] = useState<'all' | 'locked' | 'unlocked'>('all')
-  const [assignment, setAssignment] = useState<'all' | 'equipped' | 'unequipped'>('all')
-  const [showExcluded, setShowExcluded] = useState(false)
+  const [query, setQuery] = useState(() => typeof preferences.query === 'string' ? preferences.query : '')
+  const [costs, setCosts] = useState(() => savedSelection(preferences.costs, echoCostOptions, echoCostOptions))
+  const [rarities, setRarities] = useState(() => savedSelection(preferences.rarities, echoRarityOptions, echoRarityOptions))
+  const [sonatas, setSonatas] = useState(() => savedSelection(preferences.sonatas, sonataNames, []))
+  const [mainStats, setMainStats] = useState(() => savedSelection(preferences.mainStats, statKeys, []))
+  const [subStats, setSubStats] = useState(() => savedSelection(preferences.subStats, statKeys, []))
+  const [lockState, setLockState] = useState<'all' | 'locked' | 'unlocked'>(() => preferences.lockState === 'locked' || preferences.lockState === 'unlocked' ? preferences.lockState : 'all')
+  const [assignment, setAssignment] = useState<'all' | 'equipped' | 'unequipped'>(() => preferences.assignment === 'equipped' || preferences.assignment === 'unequipped' ? preferences.assignment : 'all')
+  const [showExcluded, setShowExcluded] = useState(preferences.showExcluded === true)
+  const [filtersOpen, setFiltersOpen] = useState(true)
+  const [openMultiFilter, setOpenMultiFilter] = useState<'sonata' | 'mainStat' | 'subStat' | null>(null)
   const [error, setError] = useState('')
   const [page, setPage] = useState(1)
   const listRef = useRef<HTMLDivElement>(null)
   const deferredQuery = useDeferredValue(query.trim().toLowerCase())
-  const statKeys = Object.keys(statLabels) as StatKey[]
-  const toggleNumber = (values: number[], value: number, change: (next: number[]) => void) => change(values.includes(value) ? values.filter((item) => item !== value) : [...values, value])
-  const resetFilters = () => { setQuery(''); setCosts([]); setRarities([]); setSonatas([]); setMainStats([]); setSubStats([]); setLockState('all'); setAssignment('all'); setShowExcluded(false) }
+  useEffect(() => savePickerPreferences(characterId, 'echo', { query, costs, rarities, sonatas, mainStats, subStats, lockState, assignment, showExcluded }), [characterId, query, costs, rarities, sonatas, mainStats, subStats, lockState, assignment, showExcluded])
+  const statIcon = (value: string) => <img src={statIconSource(value as StatKey)} alt=""/>
+  const activeFilterCount = Number(costs.length !== echoCostOptions.length) + Number(rarities.length !== echoRarityOptions.length) + Number(sonatas.length > 0) + Number(mainStats.length > 0) + Number(subStats.length > 0) + Number(lockState !== 'all') + Number(assignment !== 'all') + Number(showExcluded)
+  const resetFilters = () => { setQuery(''); setCosts(echoCostOptions); setRarities(echoRarityOptions); setSonatas([]); setMainStats([]); setSubStats([]); setLockState('all'); setAssignment('all'); setShowExcluded(false) }
   const echoMeta = useMemo(() => new Map(echoes.map((echo) => {
     const substats = effectiveSubStats(echo)
     return [echo.id, {
@@ -226,8 +261,8 @@ export function EchoPicker({ slot, characterId, currentIds, echoes, accentClass,
   })), [characterSubstatProfile, echoes])
   const options = useMemo(() => echoes.filter((echo) =>
     (showExcluded || !echo.excluded) &&
-    (!costs.length || costs.includes(echo.cost)) &&
-    (!rarities.length || rarities.includes(echo.rarity)) &&
+    costs.includes(echo.cost) &&
+    rarities.includes(echo.rarity) &&
     (!sonatas.length || sonatas.includes(echo.sonata)) &&
     (!mainStats.length || mainStats.includes(echo.mainStat.key)) &&
     (!subStats.length || subStats.every((key) => echoMeta.get(echo.id)?.substats.some((stat) => stat.key === key))) &&
@@ -250,47 +285,50 @@ export function EchoPicker({ slot, characterId, currentIds, echoes, accentClass,
   const choose = async (next?: Echo) => {
     setError('')
     try {
-      const nextIds = [...currentIds]
-      if (next) nextIds[slot] = next.id
-      else nextIds.splice(slot, 1)
+      const selectedIds = assignEchoSlot(currentIds, slot, next?.id)
       if (onSelect) {
-        if (await onSelect(nextIds.filter(Boolean), next) === false) return
-      } else await setEquippedEchoIds(characterId, nextIds.filter(Boolean))
+        if (await onSelect(selectedIds, next) === false) return
+      } else await setEquippedEchoIds(characterId, selectedIds)
       await refresh()
       onClose()
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'The Echo could not be switched.')
     }
   }
-  return createPortal(<div className={`catalog-picker-backdrop cs-picker-backdrop ${accentClass}`} onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}>
-    <section className="catalog-picker cs-picker cs-echo-picker" role="dialog" aria-modal="true" aria-label={`Equip Echo slot ${slot + 1}`}>
-      <header><div><span className="eyebrow">Echo slot {slot + 1}</span><h2>Equip Echo</h2></div><button type="button" className="text-button cs-picker-close" aria-label="Close Echo picker" title="Close" onClick={onClose}>×</button></header>
-      <div className="cs-echo-picker-filters">
-        <div className="filter-heading"><div><strong>Echo filters</strong><span>{options.length} / {echoes.length} shown</span></div><div className="cs-echo-picker-filter-actions"><button type="button" className="text-button" onClick={resetFilters}>Reset</button>{currentId && <button type="button" className="danger" onClick={() => void choose()}>Unequip current Echo</button>}</div></div>
-        <label className="search search-field"><Icon name="scan"/><input data-search="" autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search Echo, Sonata, or stat..."/><kbd>Ctrl K</kbd></label>
-        <div className="filter-body">
-          <div className="filter-group" aria-label="Cost"><div className="filter-chips">{[1,3,4].map((value) => <button className={costs.includes(value) ? 'active' : ''} onClick={() => toggleNumber(costs, value, setCosts)} key={value}>{value} cost</button>)}</div></div>
-          <div className="filter-group" aria-label="Rarity"><div className="filter-chips">{[5,4,3,2].map((value) => <button className={rarities.includes(value) ? 'active' : ''} onClick={() => toggleNumber(rarities, value, setRarities)} key={value}>{value} ★</button>)}</div></div>
-          <EchoFilterSelect label="Sonata" values={sonatas} options={sonataNames.map((name) => ({ value: name, label: name }))} emptyLabel="All Sonatas" onChange={setSonatas} icon={(name) => <img src={generatedSonataIconSources[name]} alt=""/>}/>
-          <EchoFilterSelect label="Main stat" values={mainStats} options={statKeys.map((key) => ({ value: key, label: statLabels[key] }))} emptyLabel="Any main stat" onChange={setMainStats}/>
-          <EchoFilterSelect label="Substat" values={subStats} options={statKeys.map((key) => ({ value: key, label: statLabels[key] }))} emptyLabel="Any substat" onChange={setSubStats}/>
-          <label><span className="sr-only">Lock state</span><select value={lockState} onChange={(event) => setLockState(event.target.value as typeof lockState)}><option value="all">Any lock state</option><option value="locked">Locked</option><option value="unlocked">Unlocked</option></select></label>
-          <label><span className="sr-only">Equipped</span><select value={assignment} onChange={(event) => setAssignment(event.target.value as typeof assignment)}><option value="all">Any owner</option><option value="equipped">Equipped anywhere</option><option value="unequipped">Unequipped</option></select></label>
-          <label className="check"><input type="checkbox" checked={showExcluded} onChange={(event) => setShowExcluded(event.target.checked)}/>Include discarded</label>
+  return <>{createPortal(<div className={`catalog-picker-backdrop cs-picker-backdrop ${accentClass}`} onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}>
+    <section className="catalog-picker cs-picker cs-echo-picker echo-inventory-view" role="dialog" aria-modal="true" aria-label={`Equip Echo slot ${slot + 1}`}>
+      <header><div><span className="eyebrow">Echo slot {slot + 1}</span><h2>Equip Echo</h2></div><div>{currentId && <button type="button" className="danger" onClick={() => void choose()}>Unequip current Echo</button>}<button type="button" className="close" aria-label="Close Echo picker" onClick={onClose}>×</button></div></header>
+      <Panel className="inventory-filter echo-inventory-toolbar cs-echo-picker-filters">
+        <div className="echo-toolbar-main">
+          <label className="search search-field"><Icon name="scan"/><input data-search="" autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search Echo, Sonata, or stat..."/><kbd>Ctrl K</kbd></label>
+          <div className="echo-quick-filters" aria-label="Quick filters"><button type="button" className={activeFilterCount === 0 && !query ? 'active' : ''} onClick={resetFilters}>All</button><button type="button" className={assignment === 'equipped' ? 'active' : ''} onClick={() => { setAssignment(assignment === 'equipped' ? 'all' : 'equipped'); setLockState('all'); setShowExcluded(false) }}>Equipped</button><button type="button" className={lockState === 'locked' ? 'active' : ''} onClick={() => { setLockState(lockState === 'locked' ? 'all' : 'locked'); setAssignment('all'); setShowExcluded(false) }}><Icon name="lock"/>Locked</button></div>
+          <button type="button" className={`echo-filter-toggle${filtersOpen ? ' active' : ''}`} aria-expanded={filtersOpen} onClick={() => { setOpenMultiFilter(null); setFiltersOpen((open) => !open) }}><Icon name="settings"/>Filters{activeFilterCount > 0 && <b>{activeFilterCount}</b>}</button>
         </div>
-      </div>
+        {filtersOpen && <div className="filter-body echo-filter-drawer">
+          <div className="filter-group echo-cost-filter" role="group" aria-label="Cost"><FilterChips label="Cost" hideLabel values={echoCostOptions} selected={costs} onChange={setCosts} renderValue={(value) => `${value} cost`}/></div>
+          <div className="filter-group echo-rarity-filter" role="group" aria-label="Rarity"><FilterChips label="Rarity" hideLabel values={echoRarityOptions} selected={rarities} onChange={setRarities} renderValue={(value) => `${value} ★`}/></div>
+          <MultiSelect label="Sonata" hideLabel values={sonatas} options={sonataNames.map((name) => ({ value: name, label: name }))} emptyLabel="All Sonatas" onChange={setSonatas} icon={(name) => <img src={generatedSonataIconSources[name]} alt=""/>} open={openMultiFilter === 'sonata'} onToggle={() => setOpenMultiFilter((current) => current === 'sonata' ? null : 'sonata')}/>
+          <MultiSelect label="Main stat" hideLabel values={mainStats} options={statKeys.map((key) => ({ value: key, label: statLabels[key] }))} emptyLabel="Any main stat" onChange={setMainStats} icon={statIcon} open={openMultiFilter === 'mainStat'} onToggle={() => setOpenMultiFilter((current) => current === 'mainStat' ? null : 'mainStat')}/>
+          <MultiSelect label="Substat" hideLabel values={subStats} options={statKeys.map((key) => ({ value: key, label: statLabels[key] }))} emptyLabel="Any substat" onChange={setSubStats} icon={statIcon} open={openMultiFilter === 'subStat'} onToggle={() => setOpenMultiFilter((current) => current === 'subStat' ? null : 'subStat')}/>
+          <div className="echo-single-filter"><SingleSelect label="Lock state" value={lockState} options={[{ value: 'all', label: 'All' }, { value: 'locked', label: 'Locked' }, { value: 'unlocked', label: 'Unlocked' }]} onChange={(value) => setLockState(value as typeof lockState)}/></div>
+          <div className="echo-single-filter"><SingleSelect label="Equipped" value={assignment} options={[{ value: 'all', label: 'All' }, { value: 'equipped', label: 'Equipped' }, { value: 'unequipped', label: 'Unequipped' }]} onChange={(value) => setAssignment(value as typeof assignment)}/></div>
+          <label className="check"><input type="checkbox" checked={showExcluded} onChange={(event) => setShowExcluded(event.target.checked)}/>Include discarded</label>
+          <div className="echo-filter-footer"><button type="button" className="text-button" disabled={activeFilterCount === 0 && !query} onClick={resetFilters}>Clear all</button></div>
+        </div>}
+      </Panel>
       <div className="echo-picker-list" ref={listRef}>
         {error && <div className="notice error">{error}</div>}
         {pagination}
-        <div className="echo-picker-options">{pageOptions.map((echo) => <EchoMiniCard key={echo.id} echo={echo} selected={echo.id === currentId} rollRating={echoMeta.get(echo.id)?.rollRating} onClick={() => void choose(echo)}/>)}</div>
+        <div className="echo-grid">{pageOptions.map((echo) => <EchoMiniCard key={echo.id} echo={echo} selected={echo.id === currentId} rollRating={echoMeta.get(echo.id)?.rollRating} onClick={() => void choose(echo)} equipment={<button type="button" aria-label={`Edit ${echo.name}`} title="Edit Echo" onClick={(event) => { event.stopPropagation(); setEditingEcho(echo) }} onKeyDown={(event) => event.stopPropagation()}><Icon name="edit"/></button>}/>)}</div>
         {pageCount > 1 && pagination}
       </div>
     </section>
-  </div>, document.body)
+  </div>, document.body)}{editingEcho && <EchoEditModal echo={editingEcho} onClose={() => setEditingEcho(null)} onSave={async (updated) => { await db.echoes.put(updated); setEditingEcho(null); await refresh() }}/>}</>
 }
 
-function SubstatWeightEditor({ characterName, accentClass, initialWeights, recommendedWeights, initialEnergyRegenMinimum, onSave, onReset, onClose }: {
+function SubstatWeightEditor({ characterName, characterIconSourceUrl, accentClass, initialWeights, recommendedWeights, initialEnergyRegenMinimum, onSave, onReset, onClose }: {
   characterName: string
+  characterIconSourceUrl: string
   accentClass: string
   initialWeights: Partial<Record<StatKey, number>>
   recommendedWeights: Partial<Record<StatKey, number>>
@@ -302,6 +340,9 @@ function SubstatWeightEditor({ characterName, accentClass, initialWeights, recom
   const [weights, setWeights] = useState<Partial<Record<StatKey, number>>>(() => ({ ...initialWeights }))
   const [energyRegenMinimum, setEnergyRegenMinimum] = useState(initialEnergyRegenMinimum)
   const [saving, setSaving] = useState(false)
+  const dirty = energyRegenMinimum !== initialEnergyRegenMinimum || characterSubstatScoreKeys.some((key) => (weights[key] ?? 0) !== (initialWeights[key] ?? 0))
+  useUnsavedChanges(dirty)
+  const requestClose = () => { if (confirmDiscardChanges(dirty)) onClose() }
   const setWeight = (key: StatKey, value: number) => setWeights((current) => ({
     ...current,
     [key]: Math.min(4, Math.max(0, Math.round(value * 2) / 2))
@@ -312,7 +353,7 @@ function SubstatWeightEditor({ characterName, accentClass, initialWeights, recom
       await onSave(Object.fromEntries(characterSubstatScoreKeys.filter((key) => key !== 'energyRegen').flatMap((key) => {
         const weight = Math.round((weights[key] ?? 0) * 2) / 2
         return weight > 0 ? [[key, weight]] : []
-      })), Math.max(0, Math.min(300, energyRegenMinimum)))
+      })), energyRegenMinimum)
       onClose()
     } finally {
       setSaving(false)
@@ -327,24 +368,25 @@ function SubstatWeightEditor({ characterName, accentClass, initialWeights, recom
       setSaving(false)
     }
   }
-  return createPortal(<div className={`modal-backdrop cs-weight-editor-backdrop ${accentClass}`} onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}><Panel className="cs-weight-editor" role="dialog" aria-modal="true" aria-labelledby="substat-weight-editor-title">
-    <header><div><span className="eyebrow">Character substat priorities</span><h2 id="substat-weight-editor-title">Configure {characterName}</h2></div><button type="button" className="close" aria-label="Close substat priority editor" onClick={onClose}>×</button></header>
-    <div className="cs-weight-editor-scroll"><p>Set a priority from 0 to 4 in 0.5 intervals. Energy Regen is handled separately as a build requirement and does not add Substat Score.</p>
-    <label className="cs-er-requirement"><span><strong>Minimum Energy Regen</strong><small>Falling below this value lowers the final build grade by one tier. Use 0 to disable.</small></span><span><input aria-label="Minimum Energy Regen" type="number" min="0" max="300" step="0.1" value={energyRegenMinimum} onChange={(event) => setEnergyRegenMinimum(Number(event.target.value) ||0)}/><b>%</b></span></label>
-    <div className="cs-weight-grid">{characterSubstatScoreKeys.filter((key) => key !== 'energyRegen').map((key) => <label key={key}><span>{statLabels[key]}<small>Recommended: {recommendedWeights[key] ?? 0}</small></span><div><button type="button" aria-label={`Decrease ${statLabels[key]} priority`} disabled={(weights[key] ?? 0) <= 0} onClick={() => setWeight(key, (weights[key] ?? 0) - 0.5)}>−</button><input aria-label={`${statLabels[key]} priority`} type="number" min="0" max="4" step="0.5" value={weights[key] ?? 0} onChange={(event) => setWeight(key, Number(event.target.value) || 0)}/><button type="button" aria-label={`Increase ${statLabels[key]} priority`} disabled={(weights[key] ?? 0) >= 4} onClick={() => setWeight(key, (weights[key] ?? 0) + 0.5)}>+</button></div></label>)}</div></div>
-    <footer><button type="button" className="secondary" disabled={saving} onClick={() => void reset()}>Reset to recommended</button><div><button type="button" className="text-button" disabled={saving} onClick={onClose}>Cancel</button><button type="button" className="primary" disabled={saving} onClick={() => void submit()}>{saving ? 'Saving...' : 'Save priorities'}</button></div></footer>
+  return createPortal(<div className={`modal-backdrop cs-weight-editor-backdrop ${accentClass}`} onMouseDown={(event) => { if (event.target === event.currentTarget) requestClose() }}><Panel className="cs-weight-editor" role="dialog" aria-modal="true" aria-labelledby="substat-weight-editor-title">
+    <header><div className="cs-weight-editor-heading"><img src={characterIconSourceUrl} alt=""/><div><span className="eyebrow">Build preferences · {characterName}</span><h2 id="substat-weight-editor-title">Substat priorities</h2><small>Choose which Echo rolls matter most for this character.</small></div></div><button type="button" className="close" aria-label="Close substat priority editor" onClick={requestClose}>×</button></header>
+    <div className="cs-weight-editor-scroll"><p>Set priorities from 0 to 4 in steps of 0.5. Energy Regen is a separate build requirement.</p>
+    <label className="cs-er-requirement"><span><strong>Minimum Energy Regen</strong><small>Falling below this value lowers the final build grade by one tier. Use 0 to disable.</small></span><span><BoundedNumberInput aria-label="Minimum Energy Regen" min={0} max={300} step="0.1" value={energyRegenMinimum} onChange={setEnergyRegenMinimum}/><b>%</b></span></label>
+    <div className="cs-weight-section-heading"><span className="eyebrow">Echo roll weights</span><small>0 = ignored · 4 = highest priority</small></div>
+    <div className="cs-weight-grid">{characterSubstatScoreKeys.filter((key) => key !== 'energyRegen').map((key) => <label key={key}><img src={statIconSource(key)} alt=""/><span>{statLabels[key]}<small>Recommended {recommendedWeights[key] ?? 0}</small></span><div><button type="button" aria-label={`Decrease ${statLabels[key]} priority`} disabled={(weights[key] ?? 0) <= 0} onClick={() => setWeight(key, (weights[key] ?? 0) - 0.5)}>−</button><BoundedNumberInput aria-label={`${statLabels[key]} priority`} min={0} max={4} step="0.5" value={weights[key] ?? 0} onChange={(value) => setWeights((current) => ({ ...current, [key]: value }))}/><button type="button" aria-label={`Increase ${statLabels[key]} priority`} disabled={(weights[key] ?? 0) >= 4} onClick={() => setWeight(key, (weights[key] ?? 0) + 0.5)}>+</button></div></label>)}</div></div>
+    <footer><button type="button" className="secondary" disabled={saving} onClick={() => void reset()}>Reset to recommended</button><div><button type="button" className="text-button" disabled={saving} onClick={requestClose}>Cancel</button><button type="button" className="primary" disabled={saving} onClick={() => void submit()}>{saving ? 'Saving...' : 'Save priorities'}</button></div></footer>
   </Panel></div>, document.body)
 }
 
 export function CharacterShowcase({ character, characters, catalog, weapons, echoes, builds, equippedLoadouts, theorycraftBuilds, settings, refresh, onBack }: CharacterShowcaseProps) {
   const [exporting, setExporting] = useState(false)
   const [exportMessage, setExportMessage] = useState('')
+  const [echoMoveError, setEchoMoveError] = useState('')
   const [weaponPickerOpen, setWeaponPickerOpen] = useState(false)
   const [echoSlot, setEchoSlot] = useState<number | null>(null)
   const [deleteArmed, setDeleteArmed] = useState(false)
   const [portraitFailed, setPortraitFailed] = useState(false)
   const [animatedPortraitReady, setAnimatedPortraitReady] = useState(false)
-  const [editingEcho, setEditingEcho] = useState<Echo | null>(null)
   const [scoreInfoOpen, setScoreInfoOpen] = useState(false)
   const [scoreEditorOpen, setScoreEditorOpen] = useState(false)
   const [layoutControlsHost, setLayoutControlsHost] = useState<HTMLDivElement | null>(null)
@@ -554,6 +596,7 @@ export function CharacterShowcase({ character, characters, catalog, weapons, ech
   return <CharacterSubstatProfileContext.Provider value={characterSubstatProfile}><section className={`cs-page cs-element-${catalog.element.toLowerCase()}`} style={customAccentStyle(cardAccent)}>
     <header className="cs-toolbar"><button className="cs-back" onClick={onBack}>← Characters</button><div className="cs-toolbar-identity"><strong>{catalog.name}</strong><small>{loadoutSource.type === 'equipped' ? 'Tap a card section to edit' : 'Build preview'}</small></div><label className="cs-loadout-source"><select aria-label="Build" value={loadoutSource.type === 'equipped' ? `equipped:${loadoutSource.characterId}` : loadoutSource.type === 'saved' ? `saved:${loadoutSource.buildId}` : `theorycraft:${loadoutSource.theorycraftBuildId}`} onChange={(event) => { const separator = event.target.value.indexOf(':'); const type = event.target.value.slice(0, separator); const id = event.target.value.slice(separator + 1); setLoadoutSource(type === 'equipped' ? { type, characterId: id } : type === 'saved' ? { type, buildId: id } : { type: 'theorycraft', theorycraftBuildId: id }) }}>{loadoutSources.map(({ source, label }) => { const value = source.type === 'equipped' ? `equipped:${source.characterId}` : source.type === 'saved' ? `saved:${source.buildId}` : `theorycraft:${source.theorycraftBuildId}`; return <option value={value} key={value}>{label}</option> })}</select></label><div className="cs-layout-controls-host" ref={setLayoutControlsHost}/><div className="cs-toolbar-actions"><button aria-label={character.favorite ? 'Remove from favorites' : 'Add to favorites'} className={character.favorite ? 'cs-favorite active' : 'cs-favorite'} onClick={() => void updateCharacter({ favorite: !character.favorite })}>{character.favorite ? '♥ Favorited' : '♡ Favorite'}</button><button aria-label={deleteArmed ? 'Confirm character deletion' : 'Delete character'} className={`danger ${deleteArmed ? 'is-armed' : ''}`} onClick={() => void removeCharacter()}><Icon name="trash"/><span>{deleteArmed ? 'Confirm delete' : 'Delete'}</span></button><button aria-label="Export character card" className="secondary cs-export-button" disabled={exporting} onClick={() => void exportCharacterCard()}><Icon name="download"/><span>{exporting ? 'Rendering...' : 'Export'}</span></button></div></header>
     {exportMessage && <div className={`cs-export-message ${exportMessage.startsWith('Image export failed') ? 'is-error' : ''}`} role="status">{exportMessage}</div>}
+    {echoMoveError && <div className="notice error" role="alert">{echoMoveError}</div>}
     {tbaSources.length > 0 && <div className="notice">TBA mechanics for {tbaSources.join(', ')} are omitted from calculated stats and damage.</div>}
 
     <div className="cs-card-workspace"><CharacterBuildCard
@@ -570,6 +613,7 @@ export function CharacterShowcase({ character, characters, catalog, weapons, ech
       livePortraitRef={livePortraitRef}
       portraitFailed={portraitFailed}
       animatedPortraitReady={animatedPortraitReady}
+      pauseLivePortrait={weaponPickerOpen || echoSlot !== null || scoreEditorOpen || scoreInfoOpen}
       enabledSkillTreeNodeIds={enabledSkillTreeNodeIds}
       onPortraitError={() => { if (!portraitFailed && catalog.portraitSourceUrl && catalog.portraitSourceUrl !== catalog.iconSourceUrl) setPortraitFailed(true) }}
       onLiveReady={showAnimatedPortrait}
@@ -580,7 +624,7 @@ export function CharacterShowcase({ character, characters, catalog, weapons, ech
       onToggleSkillTreeNode={(id) => void toggleSkillTreeNode(id)}
       onOpenWeapon={() => setWeaponPickerOpen(true)}
       onOpenEcho={(index) => void openEchoPicker(index)}
-      onEditEcho={setEditingEcho}
+      onMoveEcho={(from, to) => { const ids = resolvedLoadout.build?.echoIds ?? []; if (loadoutSource.type !== 'equipped' || !ids[from]) return; setEchoMoveError(''); void setEquippedEchoIds(character.id, assignEchoSlot(ids, to, ids[from])).then(refresh).catch(() => setEchoMoveError('The Echo could not be moved. Please try again.')) }}
       onEditPriorities={() => setScoreEditorOpen(true)}
       onShowScoreInfo={() => setScoreInfoOpen(true)}
       customArtworkUrl={customArtworkUrl}
@@ -592,8 +636,9 @@ export function CharacterShowcase({ character, characters, catalog, weapons, ech
     />
     <div className="cs-layout-panel-host" ref={setLayoutPanelHost}/></div>
 
-    {weaponPickerOpen && <WeaponPicker character={character} characters={characters} catalog={catalog} weapons={weapons} refresh={refresh} onClose={() => setWeaponPickerOpen(false)}/>}
+    {weaponPickerOpen && <WeaponPicker key={character.id} character={character} characters={characters} catalog={catalog} weapons={weapons} refresh={refresh} onClose={() => setWeaponPickerOpen(false)}/>}
     {echoSlot !== null && loadoutSource.type === 'equipped' && <EchoPicker
+      key={character.id}
       slot={echoSlot}
       characterId={character.id}
       currentIds={resolvedLoadout.build?.echoIds ?? []}
@@ -602,8 +647,7 @@ export function CharacterShowcase({ character, characters, catalog, weapons, ech
       refresh={refresh}
       onClose={() => setEchoSlot(null)}
     />}
-    {editingEcho && <EchoEditModal echo={editingEcho} onClose={() => setEditingEcho(null)} onSave={async (updated) => { await db.echoes.put(updated); setEditingEcho(null); await refresh() }}/>}
-    {scoreEditorOpen && <SubstatWeightEditor characterName={catalog.name} accentClass={`cs-element-${catalog.element.toLowerCase()}`} initialWeights={characterSubstatProfile.weights} recommendedWeights={recommendedSubstatProfile.weights} initialEnergyRegenMinimum={settings.characterEnergyRegenMinimums[catalog.id] ?? 0} onSave={saveSubstatWeights} onReset={resetSubstatWeights} onClose={() => setScoreEditorOpen(false)}/>}
+    {scoreEditorOpen && <SubstatWeightEditor characterName={catalog.name} characterIconSourceUrl={catalog.iconSourceUrl} accentClass={`cs-element-${catalog.element.toLowerCase()}`} initialWeights={characterSubstatProfile.weights} recommendedWeights={recommendedSubstatProfile.weights} initialEnergyRegenMinimum={settings.characterEnergyRegenMinimums[catalog.id] ?? 0} onSave={saveSubstatWeights} onReset={resetSubstatWeights} onClose={() => setScoreEditorOpen(false)}/>}
     {scoreInfoOpen && createPortal(<div className={`modal-backdrop roll-quality-backdrop cs-element-${catalog.element.toLowerCase()}`} onMouseDown={() => setScoreInfoOpen(false)}><Panel className="roll-quality-modal cs-score-info-modal" role="dialog" aria-modal="true" aria-labelledby="substat-score-info-title" onMouseDown={(event) => event.stopPropagation()}>
       <header><div><span className="eyebrow">Character-specific Echo evaluation</span><h2 id="substat-score-info-title">How Substat Score works</h2></div><button className="close" aria-label="Close Substat Score information" onClick={() => setScoreInfoOpen(false)}>×</button></header>
       <div className="roll-quality-scroll">

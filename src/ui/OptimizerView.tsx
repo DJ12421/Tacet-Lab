@@ -34,6 +34,7 @@ import { runtimeStatDetail } from './calculation-detail-model'
 import { resolveCharacterShowcaseModel } from './character-showcase-model'
 import { OptimizerDistributionChart } from './OptimizerDistributionChart'
 import { OptimizerSetup } from './OptimizerSetup'
+import { TacetMark } from './TacetLabLogo'
 import { resolveTeamWorkspace, rotationDamageByMode, TEAM_ROTATION_TARGET_ID, type TeamWorkspaceInput, type TeamWorkspaceModel } from './team-workspace-model'
 import { EquipmentBuffSettings } from './team-workspace/EquipmentBuffSettings'
 import { useWorkspacePreference } from './team-workspace/useWorkspacePreference'
@@ -484,7 +485,7 @@ export function OptimizerView({
       objectiveLabel={selectedObjectiveLabel} targetId={targetId} targets={targets}
       onTargetChange={(id) => { setTargetId(id); updateProfile((current) => ({ ...current, targetId: id, updatedAt: Date.now() })) }} scalesWith={scalesWith} scalesWithTitle={rotationTarget ? 'Rotation includes' : undefined} running={running} onRun={run} onCancel={cancel}
     />}
-    {!profileReady && <Panel className="searching"><div className="orbit"><i/><i/><i/></div><h2>Loading optimizer profile</h2><p>Your saved filters stay on this device. Search results are only kept for the current session.</p></Panel>}
+    {!profileReady && <Panel className="searching" role="status" aria-label="Loading optimizer profile"><TacetMark/><p>Your saved filters stay on this device. Search results are only kept for the current session.</p></Panel>}
     {error && <div className="notice error">{error}</div>}
     {pendingSources.length > 0 && <div className="notice">TBA mechanics for {pendingSources.join(', ')} are omitted from calculated scores.</div>}
     {message && <div className="notice success">{message}</div>}

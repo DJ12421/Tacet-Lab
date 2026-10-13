@@ -3461,19 +3461,33 @@
             "text": "- When in Resonance Mode - Tune Rupture, Resonance Skill Seraphic Duet removes Rupturous Trail stacks on nearby targets and additionally deals 5 instances of Tune Rupture DMG, each time to a random target within range.",
             "parsed": {
               "input": {
-                "kind": "mixed",
-                "minimum": 0,
-                "maximum": 1
+                "kind": "toggle",
+                "key": "aemeath-seraphic-duet-tune-rupture",
+                "suppressedBy": [
+                  "aemeath-stardust-tune-rupture"
+                ]
               },
               "modifiers": [],
-              "confidence": "review",
-              "warnings": [
-                "Reviewed: no supported deterministic calculator mechanic."
+              "triggerActionIds": [
+                "1210:7:0",
+                "1210:7:1"
               ],
-              "reviewStatus": "no-mechanic"
+              "triggeredAttacks": [
+                {
+                  "id": "seraphic-duet-tune-rupture",
+                  "name": "Seraphic Duet Tune Rupture instances",
+                  "damageType": "tune-break",
+                  "referenceActionId": "1210:7:3",
+                  "count": 5
+                }
+              ],
+              "confidence": "high",
+              "warnings": [
+                "Five instances are aggregated on the selected target; random target allocation is manual."
+              ]
             },
             "modeId": "tune-rupture",
-            "reviewStatus": "no-mechanic"
+            "reviewStatus": "include"
           },
           {
             "id": "1210:7:effect:22",
@@ -3484,17 +3498,26 @@
               "input": {
                 "kind": "stacks",
                 "minimum": 0,
-                "maximum": 1
+                "maximum": 60,
+                "key": "aemeath-rupturous-trail-removed"
               },
-              "modifiers": [],
-              "confidence": "review",
-              "warnings": [
-                "Reviewed: no supported deterministic calculator mechanic."
+              "modifiers": [
+                {
+                  "stat": "specialMultiplier",
+                  "operation": "addPercent",
+                  "value": 4,
+                  "actionIds": [
+                    "1210:7:3"
+                  ]
+                }
               ],
-              "reviewStatus": "no-mechanic"
+              "confidence": "high",
+              "warnings": [
+                "Enter only stacks removed from the selected target; the normal cap is 30 and S6 raises it to 60."
+              ]
             },
             "modeId": "tune-rupture",
-            "reviewStatus": "no-mechanic"
+            "reviewStatus": "include"
           },
           {
             "id": "1210:7:effect:25",
@@ -3503,19 +3526,29 @@
             "text": "- When in Resonance Mode - Fusion Burst, Resonance Skill Seraphic Duet removes the Fusion Trail stacks on targets if they are inflicted with Fusion Trail, and trigger the Fusion Burst on the target based on its max stack limit without removing its stacks.",
             "parsed": {
               "input": {
-                "kind": "mixed",
-                "minimum": 0,
-                "maximum": 1
+                "kind": "toggle",
+                "key": "aemeath-seraphic-duet-fusion-burst"
               },
               "modifiers": [],
-              "confidence": "review",
-              "warnings": [
-                "Reviewed: no supported deterministic calculator mechanic."
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Seraphic Duet in Fusion Burst mode, target has Fusion Trail",
+              "triggerActionIds": [
+                "1210:7:0",
+                "1210:7:1"
               ],
-              "reviewStatus": "no-mechanic"
+              "triggeredAttacks": [
+                {
+                  "id": "seraphic-duet-fusion-burst",
+                  "name": "Seraphic Duet Fusion Burst",
+                  "damageType": "status",
+                  "referenceActionId": "status:fusion-burst",
+                  "count": 1
+                }
+              ]
             },
             "modeId": "fusion-burst",
-            "reviewStatus": "no-mechanic"
+            "reviewStatus": "include"
           },
           {
             "id": "1210:7:effect:26",
@@ -3526,17 +3559,26 @@
               "input": {
                 "kind": "stacks",
                 "minimum": 0,
-                "maximum": 1
+                "maximum": 30,
+                "key": "aemeath-fusion-trail-removed"
               },
-              "modifiers": [],
-              "confidence": "review",
-              "warnings": [
-                "Reviewed: no supported deterministic calculator mechanic."
+              "modifiers": [
+                {
+                  "stat": "specialMultiplier",
+                  "operation": "addPercent",
+                  "value": 10,
+                  "actionIds": [
+                    "status:fusion-burst"
+                  ]
+                }
               ],
-              "reviewStatus": "no-mechanic"
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Fusion Trail stacks removed from the main target by Seraphic Duet",
+              "maximumSequence": 1
             },
             "modeId": "fusion-burst",
-            "reviewStatus": "no-mechanic"
+            "reviewStatus": "include"
           },
           {
             "id": "1210:7:effect:27",
@@ -3564,18 +3606,31 @@
             "text": "- In Resonance Mode - Tune Rupture, casting Resonance Skill Seraphic Duet additionally deal 10 instances of Tune Rupture DMG.",
             "parsed": {
               "input": {
-                "kind": "toggle"
+                "kind": "toggle",
+                "key": "aemeath-stardust-tune-rupture"
               },
               "trigger": "Resonance Skill",
               "modifiers": [],
-              "confidence": "review",
-              "warnings": [
-                "Reviewed: no supported deterministic calculator mechanic."
+              "triggerActionIds": [
+                "1210:7:0",
+                "1210:7:1"
               ],
-              "reviewStatus": "no-mechanic"
+              "triggeredAttacks": [
+                {
+                  "id": "seraphic-duet-stardust-tune-rupture",
+                  "name": "Stardust Seraphic Duet Tune Rupture instances",
+                  "damageType": "tune-break",
+                  "referenceActionId": "1210:7:3",
+                  "count": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": [
+                "Ten instances are aggregated on the selected target; random target allocation is manual."
+              ]
             },
             "modeId": "tune-rupture",
-            "reviewStatus": "no-mechanic"
+            "reviewStatus": "include"
           },
           {
             "id": "1210:7:effect:29",
@@ -3584,17 +3639,26 @@
             "text": "- In Resonance Mode - Fusion Burst, the DMG Multiplier of Fusion Burst triggered by Resonance Skill Seraphic Duet on the main target is additionally increased by 200%.",
             "parsed": {
               "input": {
-                "kind": "toggle"
+                "kind": "toggle",
+                "key": "aemeath-stardust-fusion-burst"
               },
-              "modifiers": [],
-              "confidence": "review",
-              "warnings": [
-                "Reviewed: no supported deterministic calculator mechanic."
+              "modifiers": [
+                {
+                  "stat": "specialMultiplier",
+                  "operation": "addPercent",
+                  "value": 200,
+                  "actionIds": [
+                    "status:fusion-burst"
+                  ]
+                }
               ],
-              "reviewStatus": "no-mechanic"
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Stardust Resonance in Fusion Burst mode",
+              "maximumSequence": 1
             },
             "modeId": "fusion-burst",
-            "reviewStatus": "no-mechanic"
+            "reviewStatus": "include"
           },
           {
             "id": "1210:7:effect:30",
@@ -4069,17 +4133,47 @@
               },
               {
                 "input": {
-                  "kind": "mixed",
-                  "minimum": 0,
-                  "maximum": 5
+                  "kind": "toggle",
+                  "key": "aemeath-s2-same-target"
                 },
                 "durationSeconds": 1,
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "modifiers": [
+                  {
+                    "stat": "specialMultiplier",
+                    "operation": "addPercent",
+                    "value": 40,
+                    "actionIds": [
+                      "1210:7:3"
+                    ]
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": [
+                  "Average of the five-instance ramp when every hit reaches the same target within one second; disable if hits split across targets."
+                ]
+              },
+              {
+                "input": {
+                  "kind": "all",
+                  "keys": [
+                    "aemeath-s2-same-target",
+                    "aemeath-stardust-tune-rupture"
+                  ]
+                },
+                "modifiers": [
+                  {
+                    "stat": "specialMultiplier",
+                    "operation": "addPercent",
+                    "value": 30,
+                    "actionIds": [
+                      "1210:7:3"
+                    ]
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [
+                  "Adds the remaining average ramp for ten same-target Stardust instances."
+                ]
               },
               {
                 "input": {
@@ -4094,25 +4188,43 @@
               },
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "toggle",
+                  "key": "aemeath-stardust-fusion-burst"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "trigger": "Stardust Resonance in Fusion Burst mode",
+                "modifiers": [
+                  {
+                    "stat": "specialMultiplier",
+                    "operation": "addPercent",
+                    "value": 400,
+                    "actionIds": [
+                      "status:fusion-burst"
+                    ]
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "stacks",
+                  "minimum": 0,
+                  "maximum": 30,
+                  "key": "aemeath-fusion-trail-removed"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "trigger": "Fusion Trail stacks removed from the main target by Seraphic Duet",
+                "modifiers": [
+                  {
+                    "stat": "specialMultiplier",
+                    "operation": "addPercent",
+                    "value": 15,
+                    "actionIds": [
+                      "status:fusion-burst"
+                    ]
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {
@@ -4401,38 +4513,55 @@
             "parsedEffects": [
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "always"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
-                ],
-                "reviewStatus": "no-mechanic"
-              },
-              {
-                "input": {
-                  "kind": "toggle"
-                },
-                "trigger": "When in Resonance Mode - Tune Rupture",
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
-                ],
-                "reviewStatus": "no-mechanic"
-              },
-              {
-                "input": {
-                  "kind": "toggle"
-                },
-                "trigger": "When in Resonance Mode - Fusion Burst and in combat state",
                 "modifiers": [
                   {
-                    "stat": "fusionBurstDamage",
-                    "operation": "addPercent",
-                    "value": 80,
+                    "stat": "damageBonus",
+                    "operation": "amplifyPercent",
+                    "value": 40,
+                    "appliesTo": "liberation",
                     "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle",
+                  "key": "aemeath-s6-tune-rupture-crit"
+                },
+                "trigger": "When in Resonance Mode - Tune Rupture",
+                "modifiers": [
+                  {
+                    "stat": "fixedStatusCrit",
+                    "operation": "set",
+                    "critRate": 80,
+                    "critDamage": 275,
+                    "actionIds": [
+                      "1210:7:3"
+                    ]
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle",
+                  "key": "aemeath-s6-fusion-burst-crit"
+                },
+                "trigger": "Fusion Burst mode, target in range",
+                "modifiers": [
+                  {
+                    "stat": "fixedStatusCrit",
+                    "operation": "set",
+                    "critRate": 80,
+                    "critDamage": 275,
+                    "actionIds": [
+                      "status:fusion-burst"
+                    ]
                   }
                 ],
                 "confidence": "high",

@@ -1076,7 +1076,7 @@
             "skillType": "Resonance Liberation",
             "skillName": "Phantom Etching",
             "name": "Phantom Etching - \"Necessary Means\" Damage",
-            "damageType": "liberation",
+            "damageType": "intro",
             "skillSource": "liberation",
             "scaling": "atk",
             "expressions": [
@@ -1807,7 +1807,7 @@
             "skillType": "Resonance Liberation",
             "skillName": "Phantom Etching",
             "name": "Phantom Etching - Dodge Counter DMG",
-            "damageType": "basic",
+            "damageType": "liberation",
             "tags": [
               "dodge-counter"
             ],
@@ -2340,7 +2340,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Hunting Mission",
             "name": "Hunting Mission - \"Death Messenger\" Damage",
-            "damageType": "heavy",
+            "damageType": "liberation",
             "tags": [
               "forte"
             ],
@@ -3094,6 +3094,9 @@
                     "scaling": "atk",
                     "count": 3
                   }
+                ],
+                "triggerActionIds": [
+                  "1301:7:1"
                 ]
               },
               {

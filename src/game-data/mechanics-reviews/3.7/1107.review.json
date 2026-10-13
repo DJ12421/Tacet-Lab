@@ -621,7 +621,7 @@
             "skillType": "Normal Attack",
             "skillName": "Silent Execution",
             "name": "Silent Execution - Containment Tactics DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "skillSource": "basic",
             "scaling": "atk",
             "expressions": [
@@ -2356,6 +2356,9 @@
                     "scaling": "atk",
                     "count": 1
                   }
+                ],
+                "triggerActionIds": [
+                  "1107:8:outro"
                 ]
               },
               {

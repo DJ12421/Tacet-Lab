@@ -909,6 +909,56 @@
       "approvedData": {
         "entries": [
           {
+            "id": "1403:reviewed:gate-of-quandary",
+            "sourceName": "Gate of Quandary",
+            "sourceType": "Resonance Liberation",
+            "text": "Bullets passing through Gate of Quandary grant Aalto 10% ATK for 10s.",
+            "parsed": {
+              "resolutionId": "local-kit-comparison",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 10,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 10,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          },
+          {
+            "id": "1403:reviewed:perfect-performance",
+            "sourceName": "Perfect Performance",
+            "sourceType": "Inherent Skill",
+            "text": "Aalto's aimed Heavy Attack is guaranteed to critically hit when the effect is available, once every 30s.",
+            "parsed": {
+              "resolutionId": "local-kit-comparison",
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [
+                {
+                  "stat": "forceCrit",
+                  "operation": "addPercent",
+                  "value": 100,
+                  "actionIds": [
+                    "1403:1:6",
+                    "1403:1:7"
+                  ]
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "reviewStatus": "include"
+          },
+          {
             "id": "1403:3:effect:1",
             "sourceName": "Flower in the Mist",
             "sourceType": "Resonance Liberation",
@@ -1191,11 +1241,126 @@
                   "kind": "toggle"
                 },
                 "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "confidence": "high",
+                "warnings": [],
+                "triggerActionIds": [
+                  "1403:1:0"
                 ],
-                "reviewStatus": "no-mechanic"
+                "triggeredAttacks": [
+                  {
+                    "id": "review-followup",
+                    "name": "Hazey Transition additional bullets",
+                    "damageType": "basic",
+                    "referenceActionId": "1403:1:0",
+                    "referenceMultiplier": 0.5,
+                    "count": 2
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "triggerActionIds": [
+                  "1403:1:1"
+                ],
+                "triggeredAttacks": [
+                  {
+                    "id": "review-followup",
+                    "name": "Hazey Transition additional bullets",
+                    "damageType": "basic",
+                    "referenceActionId": "1403:1:1",
+                    "referenceMultiplier": 0.5,
+                    "count": 2
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "triggerActionIds": [
+                  "1403:1:2"
+                ],
+                "triggeredAttacks": [
+                  {
+                    "id": "review-followup",
+                    "name": "Hazey Transition additional bullets",
+                    "damageType": "basic",
+                    "referenceActionId": "1403:1:2",
+                    "referenceMultiplier": 0.5,
+                    "count": 2
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "triggerActionIds": [
+                  "1403:1:3"
+                ],
+                "triggeredAttacks": [
+                  {
+                    "id": "review-followup",
+                    "name": "Hazey Transition additional bullets",
+                    "damageType": "basic",
+                    "referenceActionId": "1403:1:3",
+                    "referenceMultiplier": 0.5,
+                    "count": 2
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "triggerActionIds": [
+                  "1403:1:4"
+                ],
+                "triggeredAttacks": [
+                  {
+                    "id": "review-followup",
+                    "name": "Hazey Transition additional bullets",
+                    "damageType": "basic",
+                    "referenceActionId": "1403:1:4",
+                    "referenceMultiplier": 0.5,
+                    "count": 2
+                  }
+                ]
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "modifiers": [],
+                "confidence": "high",
+                "warnings": [],
+                "triggerActionIds": [
+                  "1403:1:5"
+                ],
+                "triggeredAttacks": [
+                  {
+                    "id": "review-followup",
+                    "name": "Hazey Transition additional bullets",
+                    "damageType": "basic",
+                    "referenceActionId": "1403:1:5",
+                    "referenceMultiplier": 0.5,
+                    "count": 2
+                  }
+                ]
               }
             ]
           },

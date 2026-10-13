@@ -2,8 +2,8 @@
 
 .team-workspace {
   --mint: #c8d0ce;
-  --gold: #c8d0ce;
-  --gold-soft: #77817f;
+  --gold: var(--theme-gold);
+  --gold-soft: color-mix(in srgb,var(--theme-gold) 65%,#101718);
   --tw-canvas: #050809;
   --tw-surface: #080b0d;
   --tw-surface-raised: #0f1415;
@@ -25,15 +25,15 @@
   align-items: center;
   justify-content: center;
   gap: 18px;
-  border: 3px solid #f0c75e;
-  background: repeating-linear-gradient(-45deg, #241d0b 0 12px, #151207 12px 24px);
-  color: #fff3c4;
+  border: 3px solid color-mix(in srgb, var(--gold) 82%, white);
+  background: repeating-linear-gradient(-45deg, color-mix(in srgb, var(--gold) 12%, #080b0d) 0 12px, color-mix(in srgb, var(--gold) 5%, #080b0d) 12px 24px);
+  color: color-mix(in srgb, var(--gold) 45%, white);
   text-align: center;
-  box-shadow: inset 0 0 28px rgba(240,199,94,.15), 0 8px 24px rgba(0,0,0,.35);
+  box-shadow: inset 0 0 28px rgba(var(--gold-rgb),.15), 0 8px 24px rgba(0,0,0,.35);
 }
 
 .tw-wip-banner strong {
-  color: #ffd96f;
+  color: color-mix(in srgb, var(--gold) 82%, white);
   font-size: clamp(1.6rem, 3vw, 3rem);
   line-height: .9;
   letter-spacing: .08em;
@@ -245,15 +245,15 @@
 /* Keep the gallery visually aligned with the Archive without changing its layout. */
 
 .team-workspace.team-gallery-original {
-  --mint: #8de4d4;
-  --gold: #e4bb5e;
-  --gold-soft: #9d8754;
+  --mint: var(--site-mint);
+  --gold: var(--theme-gold);
+  --gold-soft: color-mix(in srgb, var(--theme-gold) 65%, #101718);
   --tw-surface: #0c1213;
   --tw-surface-raised: #0a0f10;
   --tw-surface-hover: #101718;
-  --tw-line: rgba(228,187,94,.25);
-  --tw-line-strong: rgba(228,187,94,.72);
-  --tw-mint-line: rgba(141,228,212,.22);
+  --tw-line: rgba(var(--gold-rgb),.25);
+  --tw-line-strong: rgba(var(--gold-rgb),.72);
+  --tw-mint-line: rgba(var(--mint-rgb),.22);
   --tw-text: #edf2f0;
   --tw-muted: #899693;
   --tw-subtle: #75827f;
@@ -285,7 +285,7 @@
 
 .team-gallery-original .tw-gallery-controls input,
 .team-gallery-original .tw-character-filter summary {
-  border-color: rgba(141,228,212,.22);
+  border-color: rgba(var(--mint-rgb),.22);
   border-radius: 6px;
   background: #070b0c;
   color: #edf3ef;
@@ -295,9 +295,9 @@
 .team-gallery-original .tw-gallery-controls input:focus,
 .team-gallery-original .tw-character-filter summary:hover,
 .team-gallery-original .tw-character-filter[open] summary {
-  border-color: rgba(141,228,212,.75);
+  border-color: rgba(var(--mint-rgb),.75);
   background: #070b0c;
-  box-shadow: 0 0 0 2px rgba(141,228,212,.12),inset 0 0 0 1px rgba(141,228,212,.18);
+  box-shadow: 0 0 0 2px rgba(var(--mint-rgb),.12),inset 0 0 0 1px rgba(var(--mint-rgb),.18);
 }
 
 .team-gallery-original .tw-character-filter summary i {
@@ -331,8 +331,8 @@
 .team-gallery-original .tw-character-filter summary img,
 .team-gallery-original .tw-character-filter-menu img,
 .team-gallery-original .tw-character-filter-all {
-  border-color: rgba(228,187,94,.34);
-  background: rgba(228,187,94,.08);
+  border-color: rgba(var(--gold-rgb),.34);
+  background: rgba(var(--gold-rgb),.08);
 }
 
 .team-gallery-original .tw-character-filter-all {
@@ -340,7 +340,7 @@
 }
 
 .team-gallery-original .tw-character-filter-menu {
-  border-color: rgba(228,187,94,.48);
+  border-color: rgba(var(--gold-rgb),.48);
   border-radius: 8px;
   background: #070b0c;
   box-shadow: 0 20px 48px rgba(0,0,0,.72);
@@ -352,27 +352,27 @@
 }
 
 .team-gallery-original .tw-character-filter-menu button:hover {
-  background: rgba(141,228,212,.1);
+  background: rgba(var(--mint-rgb),.1);
   color: #fff;
   box-shadow: none;
 }
 
 .team-gallery-original .tw-character-filter-menu button.active {
-  background: rgba(228,187,94,.14);
-  color: #fff1c7;
+  background: rgba(var(--gold-rgb),.14);
+  color: color-mix(in srgb, var(--gold) 45%, white);
   box-shadow: none;
 }
 
 .team-gallery-original .tw-gallery-create.primary {
-  border-color: #f0cd78;
-  background: linear-gradient(135deg,#f0ce7c,#ba8e39);
+  border-color: var(--gold);
+  background: linear-gradient(135deg,color-mix(in srgb, var(--gold) 85%, white),color-mix(in srgb, var(--gold) 75%, black));
   color: #16140d;
 }
 
 .team-gallery-original .tw-gallery-create.primary:hover {
-  border-color: #f0cd78;
-  background: linear-gradient(135deg,#f0ce7c,#ba8e39);
-  box-shadow: 0 0 25px rgba(228,187,94,.18);
+  border-color: var(--gold);
+  background: linear-gradient(135deg,color-mix(in srgb, var(--gold) 85%, white),color-mix(in srgb, var(--gold) 75%, black));
+  box-shadow: 0 0 25px rgba(var(--gold-rgb),.18);
   filter: brightness(1.08);
 }
 
@@ -387,7 +387,7 @@
 }
 
 .team-gallery-original .tw-gallery-empty.tw-panel {
-  border-color: rgba(228,187,94,.25);
+  border-color: rgba(var(--gold-rgb),.25);
   border-radius: 9px;
   background: var(--tw-surface);
 }
@@ -398,7 +398,7 @@
 }
 
 .team-gallery-original .tw-gallery-card>header {
-  border-bottom-color: rgba(228,187,94,.18);
+  border-bottom-color: rgba(var(--gold-rgb),.18);
   background: #0a0f10;
 }
 
@@ -408,7 +408,7 @@
 
 .team-gallery-original .tw-gallery-card>header input:hover,
 .team-gallery-original .tw-gallery-card>header input:focus {
-  background: rgba(228,187,94,.08);
+  background: rgba(var(--gold-rgb),.08);
 }
 
 .team-gallery-original .tw-gallery-delete {
@@ -429,9 +429,9 @@
 }
 
 .team-gallery-original .tw-gallery-member {
-  border-bottom-color: rgba(228,187,94,.18);
-  border-left-color: color-mix(in srgb,var(--tw-card-element,#e4bb5e) 52%,transparent);
-  background: radial-gradient(circle at 16% 50%,color-mix(in srgb,var(--tw-card-element,#e4bb5e) 20%,transparent),transparent 48%),#080c0d;
+  border-bottom-color: rgba(var(--gold-rgb),.18);
+  border-left-color: color-mix(in srgb,var(--tw-card-element,var(--gold)) 52%,transparent);
+  background: radial-gradient(circle at 16% 50%,color-mix(in srgb,var(--tw-card-element,var(--gold)) 20%,transparent),transparent 48%),#080c0d;
 }
 
 .team-gallery-original .tw-gallery-member::after {
@@ -505,12 +505,12 @@
 }
 
 .team-gallery-original .tw-gallery-loadout>span {
-  border-color: rgba(228,187,94,.18);
+  border-color: rgba(var(--gold-rgb),.18);
   background: #070b0c;
 }
 
 .team-gallery-original .tw-gallery-loadout>span:hover {
-  border-color: color-mix(in srgb,var(--tw-card-element,#e4bb5e) 52%,transparent);
+  border-color: color-mix(in srgb,var(--tw-card-element,var(--gold)) 52%,transparent);
 }
 
 .team-gallery-original .tw-gallery-count {
@@ -522,7 +522,7 @@
 }
 
 .team-gallery-original .tw-gallery-count {
-  border-top-color: rgba(228,187,94,.18);
+  border-top-color: rgba(var(--gold-rgb),.18);
 }
 
 /* Sticky workspace chrome and settings. */
@@ -808,9 +808,9 @@
 /* Member workspaces share the same black system with one restrained element token. */
 
 .tw-member-page {
-  --gold: var(--tw-member-accent,#c8d0ce);
+  --gold: var(--theme-gold);
   --mint: var(--tw-member-accent,#c8d0ce);
-  --gold-soft: color-mix(in srgb,var(--tw-member-accent,#c8d0ce) 42%,transparent);
+  --gold-soft: color-mix(in srgb,var(--theme-gold) 42%,transparent);
   --tw-line: rgba(255,255,255,.085);
   --tw-line-strong: color-mix(in srgb,var(--tw-member-accent,#c8d0ce) 44%,transparent);
   --tw-mint-line: rgba(255,255,255,.13);

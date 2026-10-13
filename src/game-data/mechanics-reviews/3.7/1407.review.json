@@ -579,7 +579,7 @@
             "skillType": "Normal Attack",
             "skillName": "Quadruple Time Steps",
             "name": "Quadruple Time Steps - Fully Charged Aimed Shot DMG",
-            "damageType": "heavy",
+            "damageType": "basic",
             "skillSource": "basic",
             "scaling": "atk",
             "expressions": [
@@ -2157,18 +2157,32 @@
             "text": "Casting Resonance Liberation Singer's Triple Cadenza grants Ciaccona a Shield equal to 100% of her Max HP for 4s.",
             "parsed": {
               "input": {
-                "kind": "toggle"
+                "kind": "toggle",
+                "key": "ciaccona-interlude-tune-shield"
               },
-              "trigger": "Resonance Liberation",
+              "trigger": "Singer’s Triple Cadenza is cast",
               "durationSeconds": 4,
               "modifiers": [],
-              "confidence": "review",
-              "warnings": [
-                "Reviewed: no supported deterministic calculator mechanic."
+              "triggerActionIds": [
+                "1407:3:0"
               ],
-              "reviewStatus": "no-mechanic"
+              "triggeredAttacks": [
+                {
+                  "id": "ciaccona-interlude-tune-shield",
+                  "name": "Interlude Tune shield",
+                  "damageType": "shield",
+                  "recipient": "self",
+                  "scaling": "hp",
+                  "expression": "100%",
+                  "count": 1
+                }
+              ],
+              "confidence": "high",
+              "warnings": [
+                "Switching out removes the shield; shield lifetime is outside single-action calculation."
+              ]
             },
-            "reviewStatus": "no-mechanic"
+            "reviewStatus": "include"
           },
           {
             "id": "1407:5:effect:0",

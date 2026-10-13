@@ -2301,10 +2301,30 @@
               },
               "modifiers": [
                 {
-                  "stat": "critRate",
-                  "operation": "addPercent",
+                  "stat": "derivedStat",
+                  "targetStat": "critRate",
+                  "sourceStat": "energyRegen",
+                  "threshold": 100,
+                  "sourceOffset": 10,
+                  "mode": "flat",
                   "value": 0.5,
-                  "scope": "self"
+                  "maximumValue": 80,
+                  "actionIds": [
+                    "1209:3:0"
+                  ]
+                },
+                {
+                  "stat": "derivedStat",
+                  "targetStat": "critDamage",
+                  "sourceStat": "energyRegen",
+                  "threshold": 100,
+                  "sourceOffset": 10,
+                  "mode": "flat",
+                  "value": 1,
+                  "maximumValue": 160,
+                  "actionIds": [
+                    "1209:3:0"
+                  ]
                 }
               ],
               "confidence": "high",
@@ -2319,16 +2339,23 @@
             "text": "- Inherits the Syntony Field's healing effect and increases the Healing Multiplier by 40%.",
             "parsed": {
               "input": {
-                "kind": "toggle"
+                "kind": "toggle",
+                "key": "mornye-high-syntony-field"
               },
-              "modifiers": [],
-              "confidence": "review",
-              "warnings": [
-                "Reviewed: no supported deterministic calculator mechanic."
+              "modifiers": [
+                {
+                  "stat": "motionValue",
+                  "operation": "addPercent",
+                  "value": 40,
+                  "actionIds": [
+                    "1209:7:0"
+                  ]
+                }
               ],
-              "reviewStatus": "no-mechanic"
+              "confidence": "high",
+              "warnings": []
             },
-            "reviewStatus": "no-mechanic"
+            "reviewStatus": "include"
           },
           {
             "id": "1209:4:effect:0",
@@ -3240,14 +3267,20 @@
             "parsedEffects": [
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "always"
                 },
-                "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "modifiers": [
+                  {
+                    "stat": "motionValue",
+                    "operation": "addPercent",
+                    "value": 40,
+                    "actionIds": [
+                      "1209:3:0"
+                    ]
+                  }
                 ],
-                "reviewStatus": "no-mechanic"
+                "confidence": "high",
+                "warnings": []
               },
               {
                 "input": {
@@ -3275,22 +3308,21 @@
             "parsedEffects": [
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "always"
                 },
-                "modifiers": [],
+                "modifiers": [
+                  {
+                    "stat": "motionValue",
+                    "operation": "addPercent",
+                    "value": 400,
+                    "actionIds": [
+                      "1209:3:0"
+                    ]
+                  }
+                ],
                 "confidence": "high",
                 "warnings": [],
-                "trigger": "Sequence Node 6 condition met",
-                "triggeredAttacks": [
-                  {
-                    "id": "triggered-1",
-                    "name": "Sequence 6 additional damage",
-                    "expression": "400%",
-                    "damageType": "skill",
-                    "scaling": "atk",
-                    "count": 1
-                  }
-                ]
+                "trigger": "Sequence 6 active"
               },
               {
                 "input": {
@@ -3342,16 +3374,21 @@
             "text": "- Increases the DEF of all nearby Resonators in the team within the High Syntony Field by 20%.",
             "parsed": {
               "input": {
-                "kind": "toggle"
+                "kind": "toggle",
+                "key": "mornye-high-syntony-field"
               },
-              "modifiers": [],
-              "confidence": "review",
-              "warnings": [
-                "Reviewed: no supported deterministic calculator mechanic."
+              "modifiers": [
+                {
+                  "stat": "defPercent",
+                  "operation": "addPercent",
+                  "value": 20,
+                  "scope": "team"
+                }
               ],
-              "reviewStatus": "no-mechanic"
+              "confidence": "high",
+              "warnings": []
             },
-            "reviewStatus": "no-mechanic"
+            "reviewStatus": "include"
           },
           {
             "id": "1209:5:effect:0",

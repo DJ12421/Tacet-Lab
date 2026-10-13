@@ -51,6 +51,7 @@ export type {
   StatValue,
   SonataMechanics,
   SupportFormula,
+  TuneAmpFormula,
   TriggeredActionMechanics,
   TriggeredActionResult,
   UnsupportedFormula,

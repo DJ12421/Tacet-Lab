@@ -68,6 +68,7 @@
 }
 .tw-theorizer-list-heading::after { content: ''; height: 1px; flex: 1; background: var(--tw-line); }
 .tw-theorizer-list-heading b { order: 2; color: var(--tw-member-accent,var(--mint)); }
+.tw-theorizer-loading .tacet-mark { display: block; width: min(320px,100%); height: auto; margin: auto; }
 .tw-theorizer-list {
   display: grid;
   gap: 7px;
@@ -331,8 +332,8 @@
   cursor: pointer;
 }
 .tw-member-build-picker>div>button:hover,.tw-member-build-picker>div>button.active {
-  border-color: rgba(141,228,212,.34);
-  background: rgba(141,228,212,.09);
+  border-color: rgba(var(--mint-rgb),.34);
+  background: rgba(var(--mint-rgb),.09);
 }
 .tw-member-build-picker>div>button.manage {
   margin-top: 3px;
@@ -353,7 +354,7 @@
 }
 .tw-build-management-info {
   background: #071516;
-  border-color: rgba(141,228,212,.22);
+  border-color: rgba(var(--mint-rgb),.22);
   color: #a8d8d2;
 }
 .tw-build-management-body {
@@ -372,7 +373,7 @@
 }
 .build-management-card.equipped {
   border-color: var(--mint);
-  box-shadow: 0 0 0 1px rgba(141,228,212,.12);
+  box-shadow: 0 0 0 1px rgba(var(--mint-rgb),.12);
 }
 .build-management-card>header {
   display: flex;
@@ -387,7 +388,7 @@
 }
 .build-management-card>header span {
   padding: 3px 7px;
-  border: 1px solid rgba(141,228,212,.3);
+  border: 1px solid rgba(var(--mint-rgb),.3);
   border-radius: 10px;
   color: var(--mint);
   font-size: var(--font-size-caption);
@@ -406,9 +407,9 @@
   display: grid;
   place-items: center;
   overflow: hidden;
-  border: 1px solid rgba(228,187,94,.25);
+  border: 1px solid rgba(var(--gold-rgb),.25);
   border-radius: 4px;
-  background: linear-gradient(145deg,rgba(228,187,94,.2),#0b1213);
+  background: linear-gradient(145deg,rgba(var(--gold-rgb),.2),#0b1213);
 }
 .build-management-gear img {
   width: 100%;
@@ -465,8 +466,8 @@
   cursor: pointer;
 }
 .build-management-card>footer button:hover {
-  border-color: rgba(141,228,212,.3);
-  background: rgba(141,228,212,.08);
+  border-color: rgba(var(--mint-rgb),.3);
+  background: rgba(var(--mint-rgb),.08);
   color: var(--mint);
 }
 .build-management-group {
@@ -510,7 +511,7 @@
   gap: 10px;
   margin: 0;
   padding: 12px 14px;
-  border: 1px solid rgba(141,228,212,.15);
+  border: 1px solid rgba(var(--mint-rgb),.15);
   border-radius: 4px;
   background: #061314;
   color: #9fcfca;

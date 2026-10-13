@@ -199,7 +199,7 @@
   padding: 0 0 0 19px;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(228,187,94,.34);
+  border: 1px solid rgba(var(--gold-rgb),.34);
   background: linear-gradient(145deg,rgba(164,115,194,.22),#091112);
 }
 
@@ -245,8 +245,8 @@
 
 .tw-member-loadout-row>.tw-echo-thumbs>span {
   overflow: hidden;
-  border-color: rgba(228,187,94,.34);
-  background: linear-gradient(145deg,rgba(228,187,94,.12),#091112);
+  border-color: rgba(var(--gold-rgb),.34);
+  background: linear-gradient(145deg,rgba(var(--gold-rgb),.12),#091112);
 }
 
 .tw-member-loadout-row .tw-echo-thumbs .tw-echo-artwork {
@@ -310,7 +310,7 @@
   min-width: 25px;
   height: 25px;
   padding: 0 6px;
-  border: 1px solid rgba(228,187,94,.3);
+  border: 1px solid rgba(var(--gold-rgb),.3);
   border-radius: 14px;
   color: var(--gold);
   font-size: var(--font-size-caption);
@@ -328,7 +328,7 @@
   gap: 8px;
   margin: 0;
   padding: 9px 11px;
-  border: 1px solid rgba(228,187,94,.16);
+  border: 1px solid rgba(var(--gold-rgb),.16);
   border-radius: 4px;
   background: rgba(4,8,9,.48);
   color: #d8c3aa;

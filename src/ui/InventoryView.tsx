@@ -6,6 +6,7 @@ import { generatedSonataIconSources } from '../game-data/sonatas.generated'
 import { generatedCharacterSummaries as characterCatalog } from '../game-data/character-summaries.generated'
 import { echoRollRating } from '../domain/echo-grade'
 import { echoStatIdentity } from '../domain/echo-identity'
+import { clearEchoId } from '../domain/echo-slots'
 import { effectiveSubStats } from '../game-data/echo-main-stats'
 import { db } from '../storage/database'
 import type { Build, Echo, EquippedLoadout, OwnedCharacter, StatKey } from '../domain/types'
@@ -32,7 +33,7 @@ const echoCosts = [1, 3, 4]
 const echoRarities = [5, 4, 3, 2]
 const ECHOES_PER_PAGE = 30
 
-function SingleSelect({ label, value, options, onChange }: { label: string; value: string; options: Array<{ value: string; label: string; icon?: string }>; onChange: (value: string) => void }) {
+export function SingleSelect({ label, value, options, onChange }: { label: string; value: string; options: Array<{ value: string; label: string; icon?: string }>; onChange: (value: string) => void }) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const selectedOption = options.find((option) => option.value === value)
@@ -62,9 +63,9 @@ function EchoPagination({ page, pageCount, total, onChange }: { page: number; pa
   </nav>
 }
 
-function MultiSelect({ label, values, options, emptyLabel, onChange, icon, open, onToggle }: { label: string; values: string[]; options: Array<{ value: string; label: string }>; emptyLabel: string; onChange: (values: string[]) => void; icon?: (value: string) => ReactNode; open: boolean; onToggle: () => void }) {
+export function MultiSelect({ label, values, options, emptyLabel, onChange, icon, open, onToggle, hideLabel = false }: { label: string; values: string[]; options: Array<{ value: string; label: string }>; emptyLabel: string; onChange: (values: string[]) => void; icon?: (value: string) => ReactNode; open: boolean; onToggle: () => void; hideLabel?: boolean }) {
   const toggle = (value: string) => onChange(values.includes(value) ? values.filter((item) => item !== value) : [...values, value])
-  return <label className="multi-filter">{label}<div className="multi-select">
+  return <label className="multi-filter"><span className={hideLabel ? 'sr-only' : undefined}>{label}</span><div className="multi-select">
     <button type="button" className="multi-select-trigger" aria-expanded={open} onClick={onToggle}>
       <span className="multi-select-values">{values.length ? <span className="multi-select-summary">{icon?.(values[0])}<b>{options.find((option) => option.value === values[0])?.label ?? values[0]}</b>{values.length > 1 && <i>+{values.length - 1}</i>}</span> : <em>{emptyLabel}</em>}</span><strong>⌄</strong>
     </button>
@@ -75,7 +76,7 @@ function MultiSelect({ label, values, options, emptyLabel, onChange, icon, open,
   </div></label>
 }
 
-export function InventoryView({ echoes, builds = [], equippedLoadouts = [], characters = [], refresh, openScanner, embedded = false }: { echoes: Echo[]; builds?: Build[]; equippedLoadouts?: EquippedLoadout[]; characters?: OwnedCharacter[]; refresh: (scope?: 'all' | 'echoes' | 'echoes-builds') => Promise<void>; openScanner: () => void; embedded?: boolean }) {
+export function InventoryView({ echoes, builds = [], equippedLoadouts = [], characters = [], refresh, openScanner, onGuide, embedded = false }: { echoes: Echo[]; builds?: Build[]; equippedLoadouts?: EquippedLoadout[]; characters?: OwnedCharacter[]; refresh: (scope?: 'all' | 'echoes' | 'echoes-builds') => Promise<void>; openScanner: () => void; onGuide?: () => void; embedded?: boolean }) {
   const [query, setQuery] = useState('')
   const [costs, setCosts] = useState<number[]>(echoCosts)
   const [rarities, setRarities] = useState<number[]>(echoRarities)
@@ -114,7 +115,7 @@ export function InventoryView({ echoes, builds = [], equippedLoadouts = [], char
   const characterNames = useMemo(() => new Map(characterOptions.map(({ item, catalog }) => [item.id, catalog.name.toLowerCase()])), [characterOptions])
   const equippedOwners = useMemo(() => {
     const owners = new Map<string, string[]>()
-    for (const loadout of equippedLoadouts) for (const id of loadout.echoIds) owners.set(id, [...(owners.get(id) ?? []), loadout.characterId])
+    for (const loadout of equippedLoadouts) for (const id of loadout.echoIds) if (id) owners.set(id, [...(owners.get(id) ?? []), loadout.characterId])
     return owners
   }, [equippedLoadouts])
   const echoCharacters = useMemo(() => {
@@ -174,7 +175,7 @@ export function InventoryView({ echoes, builds = [], equippedLoadouts = [], char
     if (echo.locked) return
     if (!confirm(`Delete ${echo.name}? This cannot be undone.`)) return
     await db.transaction('rw', db.echoes, db.equippedLoadouts, async () => {
-      await db.equippedLoadouts.toCollection().modify((loadout) => { loadout.echoIds = loadout.echoIds.filter((id) => id !== echo.id) })
+      await db.equippedLoadouts.toCollection().modify((loadout) => { loadout.echoIds = clearEchoId(loadout.echoIds, echo.id) })
       await db.echoes.delete(echo.id)
     })
     await refresh('echoes-builds')
@@ -199,6 +200,7 @@ export function InventoryView({ echoes, builds = [], equippedLoadouts = [], char
           <button type="button" className="echo-sort-direction" aria-label={descending ? 'Sort descending' : 'Sort ascending'} title={descending ? 'Descending' : 'Ascending'} onClick={() => setDescending((value) => !value)}>{descending ? '↓' : '↑'}</button>
         </div>
         <button type="button" className="primary echo-toolbar-add" onClick={openScanner}><Icon name="plus"/>Add Echo</button>
+        {onGuide && <button type="button" className="secondary add-guide-button" onClick={onGuide}>Guide</button>}
       </div>
       {filtersOpen && <div className="filter-body echo-filter-drawer">
         <div className="filter-group echo-cost-filter"><span>Cost</span><div className="filter-chips">{echoCosts.map((value) => <button type="button" aria-pressed={costs.includes(value)} className={costs.includes(value) ? 'active' : ''} onClick={() => toggle(echoCosts, costs, value, setCosts)} key={value}>{value} cost</button>)}</div></div>
@@ -216,7 +218,7 @@ export function InventoryView({ echoes, builds = [], equippedLoadouts = [], char
       <div className="echo-results-anchor"><EchoPagination page={currentPage} pageCount={pageCount} total={filtered.length} onChange={changePage}/></div>
       <div className="echo-grid">{pageEchoes.map((echo) => <EchoMiniCard key={echo.id} echo={echo} onClick={() => setEditing(echo)} rollRating={echoMeta.get(echo.id)?.rollRating} scoreLabel={<button type="button" className="echo-roll-info" aria-label="Open Roll Grade guide" title="How Roll Grade works" onClick={(event) => { event.stopPropagation(); setRollInfoOpen(true) }} onKeyDown={(event) => event.stopPropagation()}><Icon name="info"/></button>} equipment={<button type="button" title="Edit Echo" aria-label={`Edit ${echo.name}`} onClick={(event) => { event.stopPropagation(); setEditing(echo) }}><Icon name="edit"/></button>} actions={<div className="card-actions"><button className={`echo-lock-action ${echo.locked ? 'locked' : 'unlocked'}`} aria-label={echo.locked ? `Unlock ${echo.name}` : `Lock ${echo.name}`} title={echo.locked ? 'Unlock' : 'Lock'} onClick={(event) => { event.stopPropagation(); void patchEcho(echo, { locked: !echo.locked }) }}><Icon name={echo.locked ? 'lock' : 'unlock'}/></button><button className="echo-discard-action" aria-label={echo.excluded ? `Restore ${echo.name}` : `Discard ${echo.name}`} title={echo.locked ? 'Unlock before discarding' : echo.excluded ? 'Restore discarded Echo' : 'Mark as discarded'} disabled={echo.locked} onClick={(event) => { event.stopPropagation(); void patchEcho(echo, { excluded: !echo.excluded }) }}><Icon name="discard"/></button><button className="echo-delete-action" aria-label={`Delete ${echo.name}`} title={echo.locked ? 'Unlock before deleting' : 'Delete'} disabled={echo.locked} onClick={(event) => { event.stopPropagation(); void removeEcho(echo) }}><Icon name="trash"/></button></div>} />)}</div>
       {pageCount > 1 && <EchoPagination page={currentPage} pageCount={pageCount} total={filtered.length} onChange={changePage}/>}
-    </> : echoes.length === 0 ? <Panel className="empty-state echo-empty-welcome"><div className="empty-glyph"><img src={`${import.meta.env.BASE_URL}sidebar-icons/echoes.svg`} alt=""/></div><h2>Add your first Echo</h2><p>Scan it or enter it by hand.</p><button className="primary" onClick={openScanner}><Icon name="plus"/>Add Echo</button></Panel> : <Panel className="empty-state echo-empty-filtered"><div className="empty-glyph">⌕</div><h2>No matches</h2><button className="secondary" onClick={reset}>Clear filters</button></Panel>}
+    </> : echoes.length === 0 ? <Panel className="empty-state echo-empty-welcome"><div className="empty-glyph"><img src={`${import.meta.env.BASE_URL}sidebar-icons/echoes.svg`} alt=""/></div><h2>Add your first Echo</h2><p>Scan it or enter it by hand.</p><button className="primary" onClick={openScanner}><Icon name="plus"/>Add Echo</button>{onGuide && <button type="button" className="secondary add-guide-button" onClick={onGuide}>Guide</button>}</Panel> : <Panel className="empty-state echo-empty-filtered"><div className="empty-glyph">⌕</div><h2>No matches</h2><button className="secondary" onClick={reset}>Clear filters</button></Panel>}
     {rollInfoOpen && createPortal(<div className="modal-backdrop roll-quality-backdrop" onMouseDown={() => setRollInfoOpen(false)}><Panel className="roll-quality-modal" role="dialog" aria-modal="true" aria-labelledby="roll-quality-title" onMouseDown={(event) => event.stopPropagation()}>
       <header><div><span className="eyebrow">Echo evaluation</span><h2 id="roll-quality-title">How Roll Grade works</h2></div><button className="close" aria-label="Close Roll Grade information" onClick={() => setRollInfoOpen(false)}>×</button></header>
       <div className="roll-quality-scroll">

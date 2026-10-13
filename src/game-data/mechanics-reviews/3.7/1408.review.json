@@ -877,7 +877,7 @@
             "skillType": "Normal Attack",
             "skillName": "Wind Cutter",
             "name": "Wind Cutter - Razor Wind DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "skillSource": "basic",
             "scaling": "atk",
             "expressions": [
@@ -2840,6 +2840,10 @@
                     "count": 10,
                     "recipient": "team"
                   }
+                ],
+                "triggerActionIds": [
+                  "1408:7:3",
+                  "1408:7:4"
                 ]
               },
               {

@@ -1552,7 +1552,7 @@
             "skillType": "Forte Circuit",
             "skillName": "The Way of Ten Thousand Voices",
             "name": "The Way of Ten Thousand Voices - Resonance Skill - Sword Stance Flow: Azure DMG",
-            "damageType": "skill",
+            "damageType": "heavy",
             "tags": [
               "forte"
             ],
@@ -1679,7 +1679,7 @@
             "skillType": "Forte Circuit",
             "skillName": "The Way of Ten Thousand Voices",
             "name": "The Way of Ten Thousand Voices - Resonance Skill - Sword Stance Flow: Feather DMG",
-            "damageType": "skill",
+            "damageType": "heavy",
             "tags": [
               "forte"
             ],
@@ -1972,7 +1972,7 @@
             "skillType": "Forte Circuit",
             "skillName": "The Way of Ten Thousand Voices",
             "name": "The Way of Ten Thousand Voices - Mid-air Attack - Feather Sword Stance: Feather Fall DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "forte",
               "mid-air"
@@ -2100,7 +2100,7 @@
             "skillType": "Forte Circuit",
             "skillName": "The Way of Ten Thousand Voices",
             "name": "The Way of Ten Thousand Voices - Basic Attack - Havoc in Bloom Stage 1 DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "forte",
               "normal-chain"
@@ -2206,7 +2206,7 @@
             "skillType": "Forte Circuit",
             "skillName": "The Way of Ten Thousand Voices",
             "name": "The Way of Ten Thousand Voices - Basic Attack - Havoc in Bloom Stage 2 DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "forte",
               "normal-chain"
@@ -2312,7 +2312,7 @@
             "skillType": "Forte Circuit",
             "skillName": "The Way of Ten Thousand Voices",
             "name": "The Way of Ten Thousand Voices - Basic Attack - Havoc in Bloom Stage 3 DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "forte",
               "normal-chain"
@@ -2484,7 +2484,7 @@
             "skillType": "Forte Circuit",
             "skillName": "The Way of Ten Thousand Voices",
             "name": "The Way of Ten Thousand Voices - Dodge Counter - Havoc in Bloom Stage 1 DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "forte",
               "normal-chain",
@@ -2591,7 +2591,7 @@
             "skillType": "Forte Circuit",
             "skillName": "The Way of Ten Thousand Voices",
             "name": "The Way of Ten Thousand Voices - Dodge Counter - Havoc in Bloom Stage 2 DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "forte",
               "normal-chain",
@@ -2698,7 +2698,7 @@
             "skillType": "Forte Circuit",
             "skillName": "The Way of Ten Thousand Voices",
             "name": "The Way of Ten Thousand Voices - Dodge Counter - Havoc in Bloom Stage 3 DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "tags": [
               "forte",
               "normal-chain",
@@ -3428,14 +3428,31 @@
               "input": {
                 "kind": "stacks",
                 "minimum": 0,
-                "maximum": 1
+                "maximum": 6,
+                "key": "xuanling-feathered-oath"
               },
-              "modifiers": [],
-              "confidence": "review",
-              "warnings": [
-                "Reviewed: no supported deterministic calculator mechanic."
+              "trigger": "Feathered Oath stacks while Yangyang: Xuanling is on field",
+              "durationSeconds": 8,
+              "modifiers": [
+                {
+                  "stat": "critDamage",
+                  "operation": "addPercent",
+                  "value": 25,
+                  "actionIds": [
+                    "1610:7:2",
+                    "1610:7:3",
+                    "1610:7:4",
+                    "1610:7:5",
+                    "1610:7:6",
+                    "1610:7:7",
+                    "1610:7:8",
+                    "1610:7:9",
+                    "1610:7:10"
+                  ]
+                }
               ],
-              "reviewStatus": "no-mechanic"
+              "confidence": "high",
+              "warnings": []
             },
             "reviewStatus": "no-mechanic"
           },
@@ -3763,6 +3780,10 @@
                     "scaling": "atk",
                     "count": 1
                   }
+                ],
+                "triggerActionIds": [
+                  "1610:7:0",
+                  "1610:7:1"
                 ]
               },
               {
@@ -3808,21 +3829,29 @@
             "parsedEffects": [
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "always"
                 },
-                "modifiers": [],
-                "confidence": "high",
-                "warnings": [],
-                "trigger": "Sequence Node 2 condition met",
-                "triggeredAttacks": [
+                "modifiers": [
                   {
-                    "id": "triggered-1",
-                    "name": "Xuanling additional strike",
-                    "expression": "337.98%",
-                    "damageType": "skill",
-                    "scaling": "atk",
-                    "count": 1
+                    "stat": "damageBonus",
+                    "operation": "amplifyPercent",
+                    "value": 100,
+                    "actionIds": [
+                      "1610:7:2",
+                      "1610:7:3",
+                      "1610:7:4",
+                      "1610:7:5",
+                      "1610:7:6",
+                      "1610:7:7",
+                      "1610:7:8",
+                      "1610:7:9",
+                      "1610:7:10"
+                    ]
                   }
+                ],
+                "confidence": "high",
+                "warnings": [
+                  "The local WutheringTools modifier targets eight Azure/Feather Basic Attack stages instead of the five attack groups named in its own sequence text. This follows the sequence text."
                 ]
               },
               {
@@ -3838,16 +3867,36 @@
               },
               {
                 "input": {
-                  "kind": "stacks",
-                  "minimum": 0,
-                  "maximum": 1
+                  "kind": "toggle",
+                  "key": "xuanling-s2-strung-notes"
                 },
+                "trigger": "One Strung Notes stack available after leaving combat",
                 "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "triggerActionIds": [
+                  "1610:1:0",
+                  "1610:1:1",
+                  "1610:1:2",
+                  "1610:1:3",
+                  "1610:1:4",
+                  "1610:1:5",
+                  "1610:1:6",
+                  "1610:1:7"
                 ],
-                "reviewStatus": "no-mechanic"
+                "triggeredAttacks": [
+                  {
+                    "id": "xuanling-s2-shadow-strung-notes",
+                    "name": "Shadow of Xuanling: Strung Notes",
+                    "damageType": "heavy",
+                    "element": "havoc",
+                    "scaling": "atk",
+                    "expression": "337.98%",
+                    "count": 1
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [
+                  "One-time Strung Notes consumption is represented by a manual toggle; rotations do not consume it automatically."
+                ]
               },
               {
                 "input": {
@@ -4061,6 +4110,10 @@
                     "cooldownSeconds": 1,
                     "maximumTriggers": 5
                   }
+                ],
+                "triggerActionIds": [
+                  "1610:7:0",
+                  "1610:7:1"
                 ]
               },
               {
@@ -4093,6 +4146,10 @@
                     "scaling": "atk",
                     "count": 1
                   }
+                ],
+                "triggerActionIds": [
+                  "1610:7:0",
+                  "1610:7:1"
                 ]
               },
               {

@@ -1635,6 +1635,23 @@
       "approvedData": {
         "entries": [
           {
+            "id": "1109:reviewed:echo-mode-damage-type",
+            "sourceName": "Resonance Mode - Echo",
+            "sourceType": "Forte Circuit",
+            "text": "In Echo mode, Clear As Day, Letting It Go, and Oblivion count as Echo Skill DMG.",
+            "parsed": {
+              "resolutionId": "local-kit-comparison",
+              "input": { "kind": "toggle" },
+              "modifiers": [
+                { "stat": "damageTypeOverride", "damageType": "echo", "actionIds": ["1109:3:0", "1109:3:4", "1109:7:0"] }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "modeId": "echo",
+            "reviewStatus": "include"
+          },
+          {
             "id": "1109:1:effect:5",
             "sourceName": "Snapshot",
             "sourceType": "Normal Attack",
@@ -1860,15 +1877,15 @@
                 "kind": "toggle"
               },
               "durationSeconds": 30,
-              "modifiers": [],
-              "confidence": "review",
-              "warnings": [
-                "Reviewed: no supported deterministic calculator mechanic."
+              "exclusiveGroup": "lucilla-resonance-mode",
+              "modifiers": [
+                { "stat": "ResistShred:Glacio", "operation": "addPercent", "value": 8, "scope": "team" }
               ],
-              "reviewStatus": "no-mechanic"
+              "confidence": "high",
+              "warnings": []
             },
             "modeId": "glacio-chafe",
-            "reviewStatus": "no-mechanic"
+            "reviewStatus": "include"
           },
           {
             "id": "1109:4:effect:5",
@@ -2777,6 +2794,7 @@
                 "kind": "toggle"
               },
               "durationSeconds": 30,
+              "exclusiveGroup": "lucilla-resonance-mode",
               "modifiers": [
                 {
                   "stat": "echoDamage",

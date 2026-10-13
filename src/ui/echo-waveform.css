@@ -1,5 +1,5 @@
 .cs-echo-waveform {
-  --wave-color: var(--wave-accent,var(--cs-accent,#d1aa4c));
+  --wave-color: var(--wave-accent,var(--cs-accent,var(--gold)));
   position: absolute;
   z-index: 3;
   left: 0;

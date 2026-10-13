@@ -371,7 +371,7 @@
             "skillType": "Normal Attack",
             "skillName": "Illusion Collapse",
             "name": "Illusion Collapse - Delusive Dive DMG",
-            "damageType": "basic",
+            "damageType": "heavy",
             "skillSource": "basic",
             "scaling": "atk",
             "expressions": [
@@ -2882,14 +2882,26 @@
             "parsedEffects": [
               {
                 "input": {
-                  "kind": "toggle"
+                  "kind": "always"
                 },
                 "modifiers": [],
-                "confidence": "review",
-                "warnings": [
-                  "Reviewed: no supported deterministic calculator mechanic."
+                "triggerActionIds": [
+                  "1607:3:1"
                 ],
-                "reviewStatus": "no-mechanic"
+                "triggeredAttacks": [
+                  {
+                    "id": "five-extra-dreamweavers",
+                    "name": "Five additional Dreamweavers",
+                    "damageType": "liberation",
+                    "referenceActionId": "1607:3:1",
+                    "referenceMultiplier": 0.23809523809523808,
+                    "count": 1
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [
+                  "The five identical additional hits are grouped into one result; the damage calculation uses the full Diffusion action divided by its 21 base hits."
+                ]
               }
             ]
           },

@@ -21,6 +21,7 @@ import type {
   ScalingStat,
   StatValue,
   SupportFormula,
+  TuneAmpFormula,
   TriggeredActionMechanics,
   TriggeredActionResult
 } from './contract'
@@ -280,7 +281,7 @@ function calculateDamage(
   const vulnerabilityFactor = Math.max(0, 1 + sum(formula.vulnerabilities, 'Vulnerability') + sum(effects.vulnerabilities, 'Effect vulnerability'))
   const strainStacks = nonNegativeInteger(enemy.strainStacks ?? 0, 'Tune Strain stacks')
   if (strainStacks > 4) throw new CombatFailure({ code:'invalid-input', message:'Tune Strain supports at most 4 stacks.' })
-  const strainBonus = action.damageType === 'status' ? 0 : strainStacks * finite(member.conditionStats?.tuneBreakBoost ?? 0, 'Tune Break Boost') / 100 * 0.12
+  const strainBonus = action.damageType === 'status' ? 0 : strainStacks * (finite(member.conditionStats?.tuneBreakBoost ?? 0, 'Tune Break Boost') + effects.tuneBreakBoost) / 100 * 0.12
   const finalDamageFactor = Math.max(0, 1 + sum(formula.finalDamageBonuses, 'Final damage bonus') + sum(effects.finalDamageBonuses, 'Effect final damage bonus') + strainBonus)
   const baneReduction = havocBaneReduction(enemy)
   const coreOfCollapseFactor = action.id === 'echo:6000167:skill:2' && baneReduction > 0 ? 2 : 1
@@ -379,12 +380,13 @@ function resolveAction(registry: MechanicsRegistry, member: CombatMember, action
   const characterAction = character?.actions[actionId]
   if (characterAction) {
     requireReviewed(characterAction.sourceId, characterAction.reviewFingerprint, member.memberId, actionId)
+    if ('minimumSequence' in characterAction && characterAction.minimumSequence !== undefined && member.character.sequence < characterAction.minimumSequence) throw new CombatFailure({ code:'invalid-input', message:`${characterAction.name} requires sequence ${characterAction.minimumSequence}.`, sourceId:characterAction.sourceId, actorId:member.memberId, actionId })
     if (!('formulas' in characterAction)) return characterAction
     const requestedLevel = member.character.skillLevels[characterAction.skillLevelIndex] ?? 1
     const formula = characterAction.formulas[requestedLevel]
       ?? (Object.keys(characterAction.formulas).length === 1 ? Object.values(characterAction.formulas)[0] : undefined)
     if (!formula) throw new CombatFailure({ code:'missing-mechanic', message:`${characterAction.name} has no reviewed skill level ${requestedLevel} formula.`, sourceId:characterAction.sourceId, actorId:member.memberId, actionId })
-    const { formulas: _formulas, name: _name, group: _group, skillLevelIndex: _skillLevelIndex, ...action } = characterAction
+    const { formulas: _formulas, name: _name, group: _group, skillLevelIndex: _skillLevelIndex, minimumSequence: _minimumSequence, ...action } = characterAction
     return { ...action, formula }
   }
   if (!member.mainEchoId) throw new CombatFailure({ code: 'missing-mechanic', message: `Action ${actionId} is not in the registry.`, sourceId: character?.sourceId, actorId: member.memberId, actionId })
@@ -416,7 +418,7 @@ function calculateTuneBreak(request: ActionRequest, member: CombatMember, stats:
   const levelBase = tuneBreakLevelBases[member.character.level]
   if (levelBase === undefined) unsupported(`Tune Break has no reviewed level value for character level ${member.character.level}.`, 'tune-break', request.actorId, request.actionId)
   const base = levelBase * (cost === 1 ? 1 : cost === 3 ? 3 : 14)
-  const boost = finite(member.conditionStats?.tuneBreakBoost ?? 0, 'Tune Break Boost')
+  const boost = finite(member.conditionStats?.tuneBreakBoost ?? 0, 'Tune Break Boost') + effects.tuneBreakBoost
   const enemy = request.setup.enemy
   const defense = defenseMultiplier(member.character.level, enemy, finite(enemy.defenseReduction ?? 0, 'Defence reduction') + effects.defenseReduction + havocBaneReduction(enemy), finite(enemy.defenseIgnore ?? 0, 'Defence ignore') + effects.defenseIgnore)
   const resistance = resistanceMultiplier(finite(enemy.resistance.physical ?? 0, 'Physical resistance'), 0, 0)
@@ -446,6 +448,36 @@ function calculateTuneBreak(request: ActionRequest, member: CombatMember, stats:
   }
 }
 
+function calculateTuneAmp(request: ActionRequest, member: CombatMember, action: ActionMechanics, formula: TuneAmpFormula, stats: AggregatedStats, effects: ResolvedEffects) {
+  const cost = request.setup.enemy.cost
+  if (cost !== 1 && cost !== 3 && cost !== 4) throw new CombatFailure({ code:'invalid-input', message:'Tune AMP requires enemy Cost 1, 3, or 4.', actorId:request.actorId, actionId:request.actionId })
+  const levelBase = tuneBreakLevelBases[member.character.level]
+  if (levelBase === undefined) unsupported(`Tune AMP has no reviewed level value for character level ${member.character.level}.`, action.sourceId, request.actorId, request.actionId)
+  if (!formula.amps.length) throw new CombatFailure({ code:'invalid-input', message:'Tune AMP needs at least one hit.', sourceId:action.sourceId, actorId:request.actorId, actionId:request.actionId })
+  const amp = sum(formula.amps, 'Tune AMP')
+  if (amp < 0) throw new CombatFailure({ code:'invalid-input', message:'Tune AMP cannot be negative.', sourceId:action.sourceId, actorId:request.actorId, actionId:request.actionId })
+  const enemy = request.setup.enemy
+  const defense = defenseMultiplier(member.character.level, enemy, finite(enemy.defenseReduction ?? 0, 'Defence reduction') + effects.defenseReduction + havocBaneReduction(enemy), finite(enemy.defenseIgnore ?? 0, 'Defence ignore') + effects.defenseIgnore)
+  const resistance = resistanceMultiplier(finite(enemy.resistance[action.element ?? 'physical'] ?? 0, 'Tune AMP resistance'), finite(enemy.resistanceReduction ?? 0, 'Resistance reduction') + effects.resistanceReduction, finite(enemy.resistanceIgnore ?? 0, 'Resistance ignore') + effects.resistanceIgnore)
+  const boost = finite(member.conditionStats?.tuneBreakBoost ?? 0, 'Tune Break Boost') + effects.tuneBreakBoost
+  const bonus = Math.max(0, 1 + stats.tuneBreakDamage + sum(effects.damageBonuses, 'Tune Break damage bonus'))
+  const special = Math.max(0, 1 + sum(effects.specialMultipliers, 'Tune AMP special multiplier'))
+  const motion = Math.max(0, 1 + sum(effects.motionValueBonuses, 'Tune AMP motion increase'))
+  const vulnerability = Math.max(0, 1 + sum(effects.vulnerabilities, 'Vulnerability'))
+  const finalDamage = Math.max(0, 1 + sum(effects.finalDamageBonuses, 'Final damage bonus'))
+  const reduction = Math.max(0, 1 - finite(enemy.damageReduction, 'Damage reduction'))
+  const value = Math.max(0, finite(levelBase * (cost === 1 ? 1 : cost === 3 ? 3 : 14) * amp * motion * (1 + boost / 100) * bonus * special * defense * resistance * vulnerability * finalDamage * reduction, 'Tune AMP damage'))
+  const critical = effects.statusCrit ? finite(value * effects.statusCrit.damage, 'Critical Tune AMP damage') : value
+  const expected = effects.statusCrit ? finite(value * (1 + effects.statusCrit.rate * (effects.statusCrit.damage - 1)), 'Expected Tune AMP damage') : value
+  return { hitValues:[{ normal:value, critical, expected }], trace:{ stage:'tune-amp', children:[
+    { stage:'number:Enemy Cost', value:cost, children:[] }, { stage:'number:Tune level value', value:levelBase, children:[] },
+    { stage:'motion-value', value:amp * motion, children:[] }, { stage:'percent:Tune Break Boost', value:boost / 100, children:[] },
+    { stage:'bonus-factor', value:bonus, children:[] }, { stage:'special-multiplier', value:special, children:[] },
+    { stage:'defence-multiplier', value:defense, children:[] }, { stage:'resistance-multiplier', value:resistance, children:[] },
+    { stage:'result', value, children:[] }
+  ] } satisfies CalculationTrace }
+}
+
 function calculateNegativeStatus(request: ActionRequest, member: CombatMember, action: ActionMechanics, formula: NegativeStatusFormula, effects: ResolvedEffects) {
   const enemy = request.setup.enemy
   if (!action.element || action.element === 'none' || action.element === 'physical') throw new CombatFailure({ code:'invalid-input', message:'Negative status damage requires an elemental type.', sourceId:action.sourceId, actorId:request.actorId, actionId:request.actionId })
@@ -461,17 +493,22 @@ function calculateNegativeStatus(request: ActionRequest, member: CombatMember, a
   const resistance = resistanceMultiplier(finite(enemy.resistance[action.element ?? 'none'] ?? 0, 'Status resistance'), finite(enemy.resistanceReduction ?? 0, 'Resistance reduction') + effects.resistanceReduction, 0)
   const motionValue = stacks > 0 ? (table[stacks] + (formula.status === 'electro-flare' ? negativeStatusMotionValues['electro-flare'][rage] : 0)) / 10000 : 0
   const amplify = Math.max(0, 1 + sum(effects.amplifications, 'Status amplification'))
-  const value = Math.max(0, finite((levelValue ?? 0) * motionValue * defense * resistance * amplify, 'Negative status damage'))
+  const special = Math.max(0, 1 + sum(effects.specialMultipliers, 'Status special multiplier'))
+  const value = Math.max(0, finite((levelValue ?? 0) * motionValue * special * defense * resistance * amplify, 'Negative status damage'))
+  const critical = effects.statusCrit ? finite(value * effects.statusCrit.damage, 'Critical status damage') : value
+  const expected = effects.statusCrit ? finite(value * (1 + effects.statusCrit.rate * (effects.statusCrit.damage - 1)), 'Expected status damage') : value
   return {
-    hitValues:[{ normal:value, critical:value, expected:value }],
+    hitValues:[{ normal:value, critical, expected }],
     trace:{ stage:'negative-status', children:[
       { stage:'number:Status stacks', value:stacks, children:[] },
       ...(formula.status === 'electro-flare' ? [{ stage:'number:Electro Rage stacks', value:rage, children:[] }] : []),
       { stage:'number:Level constant', value:levelValue ?? 0, children:[] },
       { stage:'motion-value', value:motionValue, children:[] },
+      { stage:'special-multiplier', value:special, children:[] },
       { stage:'defence-multiplier', value:defense, children:[] },
       { stage:'resistance-multiplier', value:resistance, children:[] },
       { stage:'amplification-factor', value:amplify, children:[] },
+      ...(effects.statusCrit ? [{ stage:'fixed-status-crit-rate', value:effects.statusCrit.rate, children:[] }, { stage:'fixed-status-crit-damage', value:effects.statusCrit.damage, children:[] }] : []),
       { stage:'result', value, children:[] }
     ] } satisfies CalculationTrace
   }
@@ -524,7 +561,8 @@ function calculateTriggeredActions(registry: MechanicsRegistry, request: ActionR
       if (referenced.formula.kind === 'unsupported') unsupported(`Triggered action ${trigger.name} references an unsupported formula.`, referenced.sourceId, request.actorId, request.actionId)
       if (referenced.formula.kind === 'damage') calculated = calculateDamage(registry, request, member, referenced, referenced.formula, stats, member.character.level, effects)
       else if (referenced.formula.kind === 'tune-break') calculated = calculateTuneBreak(request, member, stats, effects)
-      else if (referenced.formula.kind === 'negative-status') calculated = calculateNegativeStatus(request, member, referenced, referenced.formula, effects)
+      else if (referenced.formula.kind === 'tune-amp') calculated = calculateTuneAmp(request, member, referenced, referenced.formula, stats, resolveEffects(registry, { ...request, actionId:referenced.id }, referenced))
+      else if (referenced.formula.kind === 'negative-status') calculated = calculateNegativeStatus(request, member, referenced, referenced.formula, resolveEffects(registry, { ...request, actionId:referenced.id }, referenced))
       else if (referenced.formula.kind === 'fixed-damage') calculated = { hitValues:referenced.formula.hits.map((value) => ({ normal:value, critical:value, expected:value })) }
       else calculated = calculateSupport(referenced.formula, stats, effects)
     } else {
@@ -538,7 +576,7 @@ function calculateTriggeredActions(registry: MechanicsRegistry, request: ActionR
     const multiplier = (trigger.referenceMultiplier ?? 1) * repetitions
     const totals = totalHitValues(calculated.hitValues)
     const scaled = { normal:totals.normal * multiplier, critical:totals.critical * multiplier, expected:totals.expected * multiplier }
-    return { id:trigger.id, name:trigger.name, kind:trigger.kind, damageType:trigger.damageType, totals:scaled, selected:scaled[request.resultMode] }
+    return { id:trigger.id, name:trigger.name, kind:trigger.kind, recipient:trigger.recipient, damageType:trigger.damageType, totals:scaled, selected:scaled[request.resultMode] }
   })
 }
 
@@ -566,10 +604,11 @@ function calculateAction(registry: MechanicsRegistry, request: ActionRequest): C
     const member = members[0]
     const character = registry.characters[member.character.id]
     if (!character) throw new CombatFailure({ code: 'missing-mechanic', message: `Character ${member.character.id} is not in the registry.`, actorId: member.memberId, actionId: request.actionId })
-    const action = resolveAction(registry, member, request.actionId)
+    let action = resolveAction(registry, member, request.actionId)
     requireReviewed(action.sourceId, action.reviewFingerprint, member.memberId, request.actionId)
     if (action.id !== request.actionId) throw new CombatFailure({ code: 'invalid-input', message: `Action registry key ${request.actionId} does not match ${action.id}.`, sourceId: action.sourceId, actorId: member.memberId, actionId: request.actionId })
     const resolvedEffects = resolveEffects(registry, request, action)
+    if (resolvedEffects.damageTypeOverride) action = { ...action, damageType:resolvedEffects.damageTypeOverride }
     const runtimeBonuses = request.setup.memberBonuses?.[request.actorId]
     const effects: ResolvedEffects = runtimeBonuses ? {
       ...resolvedEffects,
@@ -595,6 +634,9 @@ function calculateAction(registry: MechanicsRegistry, request: ActionRequest): C
     } else if (action.formula.kind === 'tune-break') {
       if (action.kind !== 'damage' || action.damageType !== 'tune-break') throw new CombatFailure({ code:'invalid-input', message:'Tune Break formula/result kind mismatch.', sourceId:action.sourceId, actorId:request.actorId, actionId:request.actionId })
       calculated = calculateTuneBreak(request, member, stats, effects)
+    } else if (action.formula.kind === 'tune-amp') {
+      if (action.kind !== 'damage' || action.damageType !== 'tune-break') throw new CombatFailure({ code:'invalid-input', message:'Tune AMP formula/result kind mismatch.', sourceId:action.sourceId, actorId:request.actorId, actionId:request.actionId })
+      calculated = calculateTuneAmp(request, member, action, action.formula, stats, effects)
     } else if (action.formula.kind === 'negative-status') {
       if (action.kind !== 'damage' || action.damageType !== 'status') throw new CombatFailure({ code:'invalid-input', message:'Negative status formula/result kind mismatch.', sourceId:action.sourceId, actorId:request.actorId, actionId:request.actionId })
       calculated = calculateNegativeStatus(request, member, action, action.formula, effects)
@@ -640,8 +682,9 @@ function calculateAction(registry: MechanicsRegistry, request: ActionRequest): C
         ]
       } } : {})
     }
-    return action.formula.kind === 'tune-break' || (action.formula.kind === 'negative-status' && (request.setup.enemy.statusStacks?.[action.formula.status] ?? 0) > 0)
-      ? { ok:true, value:result, warnings:[{ code:'unverified-data', message:`${action.formula.kind === 'tune-break' ? 'Base Tune Break' : 'Negative status'} damage is an unverified estimate; confirm it against the current English in-game UI.`, sourceId:action.sourceId, actorId:request.actorId, actionId:request.actionId }] }
+    const triggeredTuneAmp = effects.triggeredActions.some((trigger) => trigger.referenceActionId && resolveAction(registry, member, trigger.referenceActionId).formula.kind === 'tune-amp')
+    return action.formula.kind === 'tune-break' || action.formula.kind === 'tune-amp' || triggeredTuneAmp || (action.formula.kind === 'negative-status' && (request.setup.enemy.statusStacks?.[action.formula.status] ?? 0) > 0)
+      ? { ok:true, value:result, warnings:[{ code:'unverified-data', message:`${action.formula.kind === 'tune-break' ? 'Base Tune Break' : action.formula.kind === 'tune-amp' || triggeredTuneAmp ? 'Tune AMP' : 'Negative status'} damage is an unverified estimate; confirm it against the current English in-game UI.`, sourceId:action.sourceId, actorId:request.actorId, actionId:request.actionId }] }
       : success(result)
   } catch (error) {
     if (error instanceof CombatFailure) return failure(error.diagnostic)
@@ -709,12 +752,21 @@ function calculateRotation(registry: MechanicsRegistry, request: RotationRequest
     const warnings: CalculationDiagnostic[] = []
     const traceChildren: CalculationTrace[] = []
     const lastUse = new Map<string, number>()
+    const uses = new Map<string, number>()
     let total = 0
 
     for (const { command, repetitions } of ordered) {
       const member = request.setup.members.find((entry) => entry.memberId === command.actorId)
       if (!member) throw new CombatFailure({ code: 'invalid-rotation', message: `Actor ${command.actorId} is not in the combat setup.`, actorId: command.actorId, actionId: command.actionId })
       const action = resolveAction(registry, member, command.actionId)
+      if (action.maximumUses !== undefined) {
+        const maximum = action.maximumUses
+        if (!Number.isInteger(maximum) || maximum < 1) throw new CombatFailure({ code:'invalid-rotation', message:`${command.actionId} needs a positive maximum use count.`, actorId:command.actorId, actionId:command.actionId })
+        const key = `${command.actorId}:${command.actionId}`
+        const next = (uses.get(key) ?? 0) + repetitions
+        if (next > maximum) throw new CombatFailure({ code:'invalid-rotation', message:`${command.actionId} exceeds its ${maximum}-use limit.`, actorId:command.actorId, actionId:command.actionId })
+        uses.set(key, next)
+      }
       if (action.cooldownSeconds !== undefined) {
         const cooldown = finite(action.cooldownSeconds, `Cooldown for ${command.actionId}`)
         if (cooldown < 0) throw new CombatFailure({ code: 'invalid-rotation', message: `Cooldown for ${command.actionId} cannot be negative.`, actorId:command.actorId, actionId:command.actionId })

@@ -559,7 +559,7 @@
             "skillType": "Normal Attack",
             "skillName": "Navigation Support",
             "name": "Navigation Support - Red Light: Heavy Attack DMG",
-            "damageType": "heavy",
+            "damageType": "basic",
             "skillSource": "basic",
             "scaling": "atk",
             "expressions": [
@@ -1531,7 +1531,7 @@
             "skillType": "Forte Circuit",
             "skillName": "Signal Light",
             "name": "Signal Light - Red Spotlight: Heavy Attack DMG",
-            "damageType": "heavy",
+            "damageType": "basic",
             "tags": [
               "forte"
             ],

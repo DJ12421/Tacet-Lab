@@ -22,6 +22,7 @@ import { weaponStatIconSource } from './stat-icons'
 import { ScanReviewCard } from './ScanReviewCard'
 import { ScannerDebugOverlay } from './ScannerDebugOverlay'
 import { ScannerCalibration } from './ScannerCalibration'
+import { confirmDiscardChanges, useUnsavedChanges } from './useUnsavedChanges'
 import { ScanSessionSummary } from './ScanSessionSummary'
 import { defaultPanelRectForLayout } from '../scanner/regions'
 import { echoRollRating } from '../domain/echo-grade'
@@ -89,6 +90,10 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onScanIntervalCha
   const [calibrationNotice, setCalibrationNotice] = useState('')
   const [workerPreference, setWorkerPreference] = useState<OcrWorkerPreference>('auto'), [debugVisible, setDebugVisible] = useState(true)
   const [profile, setProfile] = useState<CalibrationProfile | undefined>(() => loadLatestCalibrationProfile()), [calibrationImage, setCalibrationImage] = useState(''), [calibrating, setCalibrating] = useState(false)
+  const calibrationBaseline = useRef('')
+  const calibrationDraft = (value: CalibrationProfile) => JSON.stringify([value.name, value.panelRect, value.regions])
+  const calibrationDirty = Boolean(calibrating && profile && calibrationBaseline.current && calibrationDraft(profile) !== calibrationBaseline.current)
+  useUnsavedChanges(calibrationDirty)
   const [selectedLayout, setSelectedLayout] = useState<CalibrationProfile['layout']>('echo-management')
   const [audioFeedback, setAudioFeedback] = useState(true)
   const [videoTrim, setVideoTrim] = useState<VideoTrim>({ start: 0, end: 0, fps: 2 }), [videoDuration, setVideoDuration] = useState(0)
@@ -169,6 +174,7 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onScanIntervalCha
 
   const prepareCalibration = async (dataUrl: string, source: ScanSource, preferredProfile = profile, formatPreference = buildCardFormatPreference) => {
     const prepared = await prepareScanFrame(dataUrl, source, controllerRef.current?.session.id ?? createLocalId(), 0, preferredProfile, selectedLayout, formatPreference)
+    calibrationBaseline.current = calibrationDraft(prepared.profile)
     setCalibrationImage(dataUrl); setProfile(prepared.profile); setSelectedLayout(prepared.profile.layout)
     setCalibrationNotice(prepared.needsCalibration ? `Scan used detected defaults because no saved ${prepared.frame.width}x${prepared.frame.height} ${prepared.frame.layout} calibration matched. Review and save the panel if any fields are misplaced.` : '')
     return prepared.profile
@@ -353,11 +359,14 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onScanIntervalCha
 
   const activeReview = candidates.find((candidate) => candidate.id === activeReviewId) ?? candidates[0]
   const selectLayout = (layout: CalibrationProfile['layout']) => {
+    if (!confirmDiscardChanges(calibrationDirty)) return
     setSelectedLayout(layout)
     if (!profile) return
     const format = layout === 'build-card' ? buildCardFormatPreference === 'auto' ? profile.buildCardFormat ?? 'discord-bot' : buildCardFormatPreference : undefined
-    setProfile(findCompatibleProfile(profile.sourceWidth, profile.sourceHeight, layout, profile.uiScale, format)
-      ?? createCalibrationProfile(profile.sourceWidth, profile.sourceHeight, defaultPanelRectForLayout(layout), layout, profile.uiScale, format))
+    const next = findCompatibleProfile(profile.sourceWidth, profile.sourceHeight, layout, profile.uiScale, format)
+      ?? createCalibrationProfile(profile.sourceWidth, profile.sourceHeight, defaultPanelRectForLayout(layout), layout, profile.uiScale, format)
+    calibrationBaseline.current = calibrationDraft(next)
+    setProfile(next)
   }
   const toggleCalibration = () => {
     if (!profile || !calibrationImage) {
@@ -365,7 +374,9 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onScanIntervalCha
       setError('Share the game window or upload a screenshot or build card before calibrating the scanner.')
       return
     }
+    if (calibrating && !confirmDiscardChanges(calibrationDirty)) return
     setError('')
+    if (!calibrating) calibrationBaseline.current = calibrationDraft(profile)
     setCalibrating((value) => !value)
   }
 
@@ -393,7 +404,7 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onScanIntervalCha
         <div className="scanner-source-picker" role="group" aria-label="Scan source layout">
           {([['echo-management', 'Inventory', 'Echo backpack', `${sidebarIconRoot}backpack.webp`], ['build-card', 'Build cards', 'Six supported formats', `${import.meta.env.BASE_URL}build-cards.webp`], ['echo-detail', 'Character menu', 'Equipped Echo details', `${sidebarIconRoot}echoes.svg`]] as const).map(([layout, label, hint, iconSource]) => <button type="button" className={selectedLayout === layout ? 'active' : ''} aria-pressed={selectedLayout === layout} key={layout} onClick={() => selectLayout(layout)}><img className="scanner-source-icon" src={iconSource} alt=""/><span><strong>{label}{layout === 'echo-detail' && <em className="scanner-beta-tag">Beta</em>}</strong><small>{hint}</small></span><i>{selectedLayout === layout ? '✓' : ''}</i></button>)}
         </div>
-        {selectedLayout === 'build-card' && <label className="scanner-format-select">Build card format<select value={buildCardFormatPreference} onChange={(event) => { const value = event.target.value as BuildCardFormatPreference; setBuildCardFormatPreference(value); controllerRef.current?.setBuildCardFormatPreference(value); if (calibrationImage) void prepareCalibration(calibrationImage, 'screenshot', profile, value) }}><option value="auto">Auto detect</option>{buildCardFormats.map((format) => <option value={format.id} key={format.id}>{format.label}</option>)}</select></label>}
+        {selectedLayout === 'build-card' && <label className="scanner-format-select">Build card format<select value={buildCardFormatPreference} onChange={(event) => { if (!confirmDiscardChanges(calibrationDirty)) return; const value = event.target.value as BuildCardFormatPreference; setBuildCardFormatPreference(value); controllerRef.current?.setBuildCardFormatPreference(value); if (calibrationImage) void prepareCalibration(calibrationImage, 'screenshot', profile, value) }}><option value="auto">Auto detect</option>{buildCardFormats.map((format) => <option value={format.id} key={format.id}>{format.label}</option>)}</select></label>}
       </div>
       <div className="scanner-step">
         <h2><b>2</b><span>Choose how to scan</span></h2>
@@ -425,7 +436,8 @@ export function ScannerView({ echoes, refresh, scanIntervalMs, onScanIntervalCha
       showScanBoxes={debugVisible}
       onChange={(next) => { setProfile(next); setSelectedLayout(next.layout) }}
       onShowScanBoxesChange={setDebugVisible}
-      onSaved={(saved) => { setProfile(saved); setSelectedLayout(saved.layout); setError(''); setCalibrationNotice(''); setCalibrating(false); setStatus('Calibration profile saved locally') }}
+      onPersisted={(saved) => { calibrationBaseline.current = calibrationDraft(saved) }}
+      onSaved={(saved) => { calibrationBaseline.current = calibrationDraft(saved); setProfile(saved); setSelectedLayout(saved.layout); setError(''); setCalibrationNotice(''); setCalibrating(false); setStatus('Calibration profile saved locally') }}
     />}
     {streaming && <div className="scanner-layout scanner-layout-wide"><Panel className="capture-panel"><div className="capture-head"><div><span className="live-dot on"/><strong>Scanning live</strong></div><span>{status}</span></div><div className="video-stage active"><video ref={videoRef} muted playsInline autoPlay/>{profile && <div className="live-panel-overlay" style={{ left: `${profile.panelRect.x * 100}%`, top: `${profile.panelRect.y * 100}%`, width: `${profile.panelRect.width * 100}%`, height: `${profile.panelRect.height * 100}%` }}><ScannerDebugOverlay regions={profile.regions} visible={debugVisible}/></div>}</div><div className="capture-status"><div className="progress"><i style={{ width: `${progress * 100}%` }}/></div><span>{Math.round(progress * 100)}%</span><button className="text-button" onClick={() => void scanCurrentFrame()}>Scan now</button></div><div className="privacy-strip"><strong>Local only</strong><span>No frames leave this device.</span></div></Panel></div>}
     {videoDuration > 0 && <Panel className="video-scan-controls"><header><div><span className="eyebrow">Local video scan</span><h3>Trim and sample</h3></div><span>{videoEta}</span></header><div className="video-trim"><label>Start {videoTrim.start.toFixed(1)}s<input type="range" min="0" max={videoDuration} step=".1" value={videoTrim.start} onChange={(event) => setVideoTrim((value) => ({ ...value, start: Math.min(Number(event.target.value), value.end) }))}/></label><label>End {videoTrim.end.toFixed(1)}s<input type="range" min="0" max={videoDuration} step=".1" value={videoTrim.end} onChange={(event) => setVideoTrim((value) => ({ ...value, end: Math.max(Number(event.target.value), value.start) }))}/></label><label>Sampling<select value={videoTrim.fps} onChange={(event) => setVideoTrim((value) => ({ ...value, fps: Number(event.target.value) as VideoTrim['fps'] }))}>{[1, 2, 5, 10].map((fps) => <option value={fps} key={fps}>{fps} fps</option>)}</select></label>{videoScanning ? <button className="danger" onClick={cancelVideo}>Cancel immediately</button> : <button className="primary" onClick={() => void scanVideo()}>Scan video</button>}</div></Panel>}

@@ -14,6 +14,7 @@ interface HomeViewProps {
   weapons: OwnedWeapon[]
   builds: Build[]
   teams: Team[]
+  roverGender: AppSettings['roverGender']
   navigate: (view: AppView) => void
 }
 
@@ -131,17 +132,21 @@ const changelogEntries = [
   { hash: '88384ae', date: 'Jul 12, 2026', title: 'Initial Tacet Lab implementation' }
 ]
 
-export function HomeView({ echoes, characters, builds, teams, navigate }: HomeViewProps) {
+export function HomeView({ echoes, characters, builds, teams, roverGender, navigate }: HomeViewProps) {
   const [showAllChanges, setShowAllChanges] = useState(false)
   const [heroPickerOpen, setHeroPickerOpen] = useState(false)
   const [heroControlDismissed, setHeroControlDismissed] = useState(false)
   const [featuredCharacterId, setFeaturedCharacterId] = useState('1506')
   useEffect(() => { void getSettings().then((settings) => setFeaturedCharacterId((settings as HomeSettings).homeFeaturedCharacterId ?? '1506')) }, [])
-  const featured = characterCatalog.find((entry) => entry.id === featuredCharacterId)
+  const selectedFeatured = characterCatalog.find((entry) => entry.id === featuredCharacterId)
+  const featured = (selectedFeatured?.name.startsWith('Rover:')
+    ? characterCatalog.find((entry) => entry.name === selectedFeatured.name && entry.gender === roverGender)
+    : selectedFeatured)
     ?? characterCatalog.find((entry) => entry.name === 'Phoebe')
     ?? characterCatalog[0]
+  const heroOptions = characterCatalog.filter((entry) => !entry.name.startsWith('Rover:') || entry.gender === roverGender)
   const hasStarted = characters.length + echoes.length + builds.length + teams.length > 0
-  const completeBuilds = builds.filter((build) => build.echoIds.length === 5).length
+  const completeBuilds = builds.filter((build) => build.echoIds.filter(Boolean).length === 5).length
   const primaryView: AppView = hasStarted ? 'characters' : 'scanner'
   const changeFeaturedCharacter = async (characterId: string) => {
     const previous = featuredCharacterId
@@ -168,7 +173,7 @@ export function HomeView({ echoes, characters, builds, teams, navigate }: HomeVi
       <div className="home-hero-art-zone" onMouseEnter={() => setHeroControlDismissed(false)} onMouseLeave={dismissHeroPicker}>
         <div className={`home-hero-character-control${heroPickerOpen ? ' is-open' : ''}${heroControlDismissed ? ' is-dismissed' : ''}`}>
           <div className="home-hero-character-pill"><span>{featured.name}</span><b aria-hidden="true">⌄</b></div>
-          {heroPickerOpen && <div className="home-hero-character-menu" role="listbox" aria-label="Home hero character">{characterCatalog.map((entry) => <button type="button" role="option" aria-selected={entry.id === featured.id} className={entry.id === featured.id ? 'is-selected' : ''} key={entry.id} onClick={() => { closeHeroPicker(); void changeFeaturedCharacter(entry.id) }}><img src={entry.iconSourceUrl} alt=""/><span>{entry.name}</span></button>)}</div>}
+          {heroPickerOpen && <div className="home-hero-character-menu" role="listbox" aria-label="Home hero character">{heroOptions.map((entry) => <button type="button" role="option" aria-selected={entry.id === featured.id} className={entry.id === featured.id ? 'is-selected' : ''} key={entry.id} onClick={() => { closeHeroPicker(); void changeFeaturedCharacter(entry.id) }}><img src={entry.iconSourceUrl} alt=""/><span>{entry.name}</span></button>)}</div>}
           <button type="button" aria-label="Change home character" title="Change home character" aria-expanded={heroPickerOpen} onClick={() => { if (heroPickerOpen) closeHeroPicker(); else setHeroPickerOpen(true) }}><Icon name="settings"/></button>
         </div>
       </div>

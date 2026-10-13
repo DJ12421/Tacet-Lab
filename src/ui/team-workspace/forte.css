@@ -32,8 +32,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 12px;
-  border: 1px solid rgba(141,228,212,.35);
-  background: linear-gradient(90deg,rgba(141,228,212,.2),rgba(141,228,212,.07));
+  border: 1px solid rgba(var(--mint-rgb),.35);
+  background: linear-gradient(90deg,rgba(var(--mint-rgb),.2),rgba(var(--mint-rgb),.07));
   font-size: var(--font-size-small);
 }
 
@@ -53,8 +53,8 @@
 }
 
 .tw-sequence-column>article.unlocked {
-  border-color: rgba(228,187,94,.34);
-  background: linear-gradient(135deg,rgba(228,187,94,.08),#0b1314);
+  border-color: rgba(var(--gold-rgb),.34);
+  background: linear-gradient(135deg,rgba(var(--gold-rgb),.08),#0b1314);
   color: #edf3f1;
 }
 
@@ -110,7 +110,7 @@
 
 .tw-skill-card,.tw-passive-card,.tw-bonus-nodes {
   min-width: 0;
-  border: 1px solid rgba(141,228,212,.15);
+  border: 1px solid rgba(var(--mint-rgb),.15);
   background: #101a1b;
 }
 
@@ -119,8 +119,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 1px solid rgba(141,228,212,.28);
-  background: linear-gradient(90deg,rgba(141,228,212,.22),rgba(55,118,112,.24));
+  border-bottom: 1px solid rgba(var(--mint-rgb),.28);
+  background: linear-gradient(90deg,rgba(var(--mint-rgb),.22),rgba(55,118,112,.24));
   color: #effffc;
   font-size: var(--font-size-small);
   font-weight: 700;
@@ -192,7 +192,7 @@
 }
 
 .tw-skill-card dt small {
-  color: #d6b763;
+  color: color-mix(in srgb, var(--gold) 82%, white);
   font-size: var(--font-size-caption);
   text-transform: capitalize;
 }

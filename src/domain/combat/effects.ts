@@ -1,5 +1,6 @@
 import type {
   ActionMechanics,
+  DamageType,
   ActionRequest,
   CalculationDiagnostic,
   CombatMember,
@@ -25,12 +26,15 @@ export interface ResolvedEffects {
   vulnerabilities: readonly number[]
   finalDamageBonuses: readonly number[]
   specialMultipliers: readonly number[]
+  tuneBreakBoost: number
   damageTakenReduction: number
   defenseReduction: number
   defenseIgnore: number
   resistanceReduction: number
   resistanceIgnore: number
   critOverride?: 'never' | 'always'
+  damageTypeOverride?: DamageType
+  statusCrit?: { rate: number; damage: number }
   appliedEffects: readonly string[]
   triggeredActions: readonly TriggeredActionMechanics[]
   actionUseAdjustments: readonly ActionUseAdjustment[]
@@ -88,7 +92,7 @@ function candidateEffects(registry: MechanicsRegistry, request: ActionRequest): 
     for (const effect of character.effects ?? []) candidates.push({
       effect,
       provider,
-      eligible: provider.character.sequence >= (effect.minimumSequence ?? 0)
+      eligible: provider.character.sequence >= (effect.minimumSequence ?? 0) && provider.character.sequence <= (effect.maximumSequence ?? Number.POSITIVE_INFINITY)
     })
     for (const effect of weapon.effects ?? []) candidates.push({
       effect,
@@ -209,9 +213,25 @@ export function resolveEffects(registry: MechanicsRegistry, request: ActionReque
   const knownScopedInputs = new Set(candidates.flatMap(({ effect, provider }) => activationInputs(effect).map((input) => `${provider.memberId}:${input}`)))
   for (const key of Object.keys(values)) if (!knownInputs.has(key) && !knownScopedInputs.has(key)) fail({ code: 'missing-mechanic', message: `Input ${key} does not match a reviewed effect.`, sourceId: key, actorId: request.actorId, actionId: request.actionId })
 
+  let damageTypeOverride: DamageType | undefined
+  for (const { effect, provider, eligible } of candidates) {
+    if (!eligible || provider.memberId !== request.actorId || !matchesFilter(effect.filter, action)) continue
+    if (!effect.operations.some((operation) => operation.kind === 'override-damage-type' && matchesFilter(operation.filter, action))) continue
+    if (activationFactor(effect, values, request, provider) === 0) continue
+    for (const operation of effect.operations) {
+      if (operation.kind !== 'override-damage-type' || !matchesFilter(operation.filter, action)) continue
+      if (damageTypeOverride && damageTypeOverride !== operation.damageType) fail({ code:'invalid-input', message:'Active damage-type overrides conflict.', sourceId:effect.sourceId, actorId:request.actorId, actionId:request.actionId })
+      damageTypeOverride = operation.damageType
+    }
+  }
+  const effectiveAction = damageTypeOverride ? { ...action, damageType:damageTypeOverride } : action
+
   const statLines: StatValue[] = []
   const damageBonuses: number[] = []
   const motionValueBonuses: number[] = []
+  const specialMultipliers: number[] = []
+  let tuneBreakBoost = 0
+  let statusCrit: { rate: number; damage: number } | undefined
   const amplifications: number[] = []
   const vulnerabilities: number[] = []
   const finalDamageBonuses: number[] = []
@@ -242,10 +262,10 @@ export function resolveEffects(registry: MechanicsRegistry, request: ActionReque
 
   for (const { effect, provider, eligible } of candidates) {
     reviewed(effect.sourceId, effect.reviewFingerprint, request.actorId, request.actionId)
-    if (!eligible || !matchesFilter(effect.filter, action)) continue
+    if (!eligible || !matchesFilter(effect.filter, effectiveAction)) continue
     const matchingOperations = effect.operations.filter((operation) => {
       const recipient = operation.recipient ?? effect.recipient ?? 'self'
-      return (recipient === 'team' || recipient === 'next' || provider.memberId === request.actorId) && matchesOperation(effect, operation, action)
+      return (recipient === 'team' || recipient === 'next' || provider.memberId === request.actorId) && (operation.kind === 'override-damage-type' ? matchesFilter(operation.filter, action) : matchesOperation(effect, operation, effectiveAction))
     })
     const payloadEligible = provider.memberId === request.actorId && Boolean(effect.triggeredActions?.length || effect.actionUseAdjustments?.length)
     if (matchingOperations.length === 0 && !payloadEligible) continue
@@ -262,7 +282,15 @@ export function resolveEffects(registry: MechanicsRegistry, request: ActionReque
     }
     appliedEffects.push(effect.id)
     if (payloadEligible) {
-      triggeredActions.push(...(effect.triggeredActions ?? []))
+      for (const triggered of effect.triggeredActions ?? []) {
+        if (triggered.bonusPerActivation !== undefined && (!Number.isFinite(triggered.bonusPerActivation) || triggered.bonusPerActivation < 0)) fail({ code:'invalid-input', message:`Triggered action ${triggered.name} has an invalid activation bonus.`, sourceId:effect.sourceId, actorId:request.actorId, actionId:request.actionId })
+        const scaled = triggered.bonusPerActivation === undefined ? triggered : { ...triggered, referenceMultiplier:(triggered.referenceMultiplier ?? 1) * (1 + factor * triggered.bonusPerActivation) }
+        if (triggered.countPerActivation !== undefined) {
+          if (!Number.isInteger(triggered.countPerActivation) || triggered.countPerActivation < 1) fail({ code:'invalid-input', message:`Triggered action ${triggered.name} needs a positive activation divisor.`, sourceId:effect.sourceId, actorId:request.actorId, actionId:request.actionId })
+          const count = triggered.count * Math.floor(factor / triggered.countPerActivation)
+          if (count > 0) triggeredActions.push({ ...scaled, count })
+        } else triggeredActions.push(scaled)
+      }
       actionUseAdjustments.push(...(effect.actionUseAdjustments ?? []))
     }
 
@@ -274,12 +302,32 @@ export function resolveEffects(registry: MechanicsRegistry, request: ActionReque
         critOverride = operation.mode
         continue
       }
+      if (operation.kind === 'override-damage-type') continue
+      if (operation.kind === 'override-status-crit') {
+        if (effectiveAction.damageType !== 'status' && effectiveAction.formula.kind !== 'tune-amp') fail({ code:'invalid-input', message:'Fixed special critical values require a status or Tune AMP action.', sourceId:effect.sourceId, actorId:request.actorId, actionId:request.actionId })
+        if (!Number.isFinite(operation.rate) || operation.rate < 0 || operation.rate > 1 || !Number.isFinite(operation.damage) || operation.damage < 1) fail({ code:'invalid-input', message:'Fixed status critical values are invalid.', sourceId:effect.sourceId, actorId:request.actorId, actionId:request.actionId })
+        if (statusCrit && (statusCrit.rate !== operation.rate || statusCrit.damage !== operation.damage)) fail({ code:'invalid-input', message:'Active fixed status critical values conflict.', sourceId:effect.sourceId, actorId:request.actorId, actionId:request.actionId })
+        statusCrit = { rate:operation.rate, damage:operation.damage }
+        continue
+      }
+      if (operation.kind === 'add-derived-stat') {
+        // shortcut: sourceOffset covers fixed reviewed ER buffs; derive from active provider effects when conditional ER sources need to feed this value.
+        const sourceValue = provider.conditionStats?.[operation.sourceStat]
+        if (typeof sourceValue !== 'number') fail({ code:'invalid-input', message:`${operation.sourceStat} is required for ${effect.id}.`, sourceId:effect.sourceId, actorId:request.actorId, actionId:request.actionId })
+        const amount = Math.min(Math.max(0, finite(sourceValue, operation.sourceStat, effect, request) + (operation.sourceOffset ?? 0) - operation.threshold) * finite(operation.value, 'Derived stat rate', effect, request), operation.maximumValue ?? Number.POSITIVE_INFINITY)
+        const line = { stat:operation.stat, mode:operation.mode, value:amount }
+        statLines.push(line)
+        contributions.statLines.push({ label, value:line })
+        continue
+      }
       const operationFactor = (effect.activation.kind === 'stacks' || effect.activation.kind === 'value' || effect.activation.kind === 'conditional-value') && operation.stacking !== 'once' ? factor : 1
       const value = Math.min(finite(operation.value, `${operation.kind} value`, effect, request) * operationFactor, operation.maximumValue ?? Number.POSITIVE_INFINITY)
       if (operation.kind === 'add-flat-stat') { const line = { stat: operation.stat, mode: 'flat' as const, value }; statLines.push(line); contributions.statLines.push({ label, value:line }) }
       else if (operation.kind === 'add-percent-stat') { const line = { stat: operation.stat, mode: 'percent' as const, value }; statLines.push(line); contributions.statLines.push({ label, value:line }) }
       else if (operation.kind === 'add-damage-bonus') { damageBonuses.push(value); contributions.damageBonuses.push({ label, value }) }
       else if (operation.kind === 'increase-motion-value') { motionValueBonuses.push(value); contributions.motionValueBonuses.push({ label, value }) }
+      else if (operation.kind === 'add-special-multiplier') { specialMultipliers.push(value); contributions.specialMultipliers.push({ label, value }) }
+      else if (operation.kind === 'add-tune-break-boost') tuneBreakBoost += value
       else if (operation.kind === 'amplify-damage') { amplifications.push(value); contributions.amplifications.push({ label, value }) }
       else if (operation.kind === 'add-vulnerability') { vulnerabilities.push(value); contributions.vulnerabilities.push({ label, value }) }
       else if (operation.kind === 'add-final-damage') { finalDamageBonuses.push(value); contributions.finalDamageBonuses.push({ label, value }) }
@@ -298,13 +346,16 @@ export function resolveEffects(registry: MechanicsRegistry, request: ActionReque
     amplifications,
     vulnerabilities,
     finalDamageBonuses,
-    specialMultipliers:[],
+    specialMultipliers,
+    tuneBreakBoost,
     damageTakenReduction,
     defenseReduction,
     defenseIgnore,
     resistanceReduction,
     resistanceIgnore,
     critOverride,
+    damageTypeOverride,
+    statusCrit,
     appliedEffects,
     triggeredActions,
     actionUseAdjustments,
