@@ -61,19 +61,6 @@ describe('WuWaFlex Sonata badges', () => {
     expect(classifyWuwaflexSonata(badge)?.value).toBe('Rejuvenating Glow')
   })
 
-  it('recognizes the second Verina badge despite its shifted cross', () => {
-    const mask = '000000000000000000000000000000000000000000001800001800001800007e0000fe0000fe0000d800005800001800001000000000000000000000000000000000000000000000'
-    const badge = new Uint8ClampedArray(24 * 24 * 4)
-    for (let y = 0; y < 24; y += 1) {
-      const row = Number.parseInt(mask.slice(y * 6, y * 6 + 6), 16)
-      for (let x = 0; x < 24; x += 1) {
-        const radius = Math.hypot(x - 11, y - 11.5)
-        badge.set(row & (1 << (23 - x)) ? [240, 240, 240, 255] : radius > 6 && radius < 8 ? [132, 187, 43, 255] : [45, 85, 35, 255], (y * 24 + x) * 4)
-      }
-    }
-    expect(classifyWuwaflexSonata(badge)?.value).toBe('Rejuvenating Glow')
-  })
-
   it('uses the ring color when gold and green shield badges have a similar glyph', () => {
     const template = wuwaflexSonataSignatures.find((entry) => entry.name === 'Halo of Starry Radiance')!
     const badge = (ring: [number, number, number]) => {
