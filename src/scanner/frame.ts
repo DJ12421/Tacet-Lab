@@ -13,10 +13,20 @@ function panelFingerprint(context: CanvasRenderingContext2D) {
   if (!sampleContext) return []
   sampleContext.drawImage(context.canvas, 0, 0, context.canvas.width, context.canvas.height, 0, 0, 32, 16)
   const pixels = sampleContext.getImageData(0, 0, 32, 16).data
-  return Array.from({ length: 512 }, (_, index) => {
+  const coarse = Array.from({ length: 512 }, (_, index) => {
     const offset = index * 4
     return Math.round((pixels[offset] * .2126 + pixels[offset + 1] * .7152 + pixels[offset + 2] * .0722) / 16)
   })
+  sample.width = 64; sample.height = 48
+  sampleContext.drawImage(context.canvas,
+    context.canvas.width * .1, context.canvas.height * .21,
+    context.canvas.width * .85, context.canvas.height * .25,
+    0, 0, 64, 48)
+  const statPixels = sampleContext.getImageData(0, 0, 64, 48).data
+  return [...coarse, ...Array.from({ length: 64 * 48 }, (_, index) => {
+    const offset = index * 4
+    return Math.round((statPixels[offset] * .2126 + statPixels[offset + 1] * .7152 + statPixels[offset + 2] * .0722) / 16)
+  })]
 }
 
 export interface PreparedFrame { frame: ScanFrame; profile: CalibrationProfile; detectionConfidence: number; needsCalibration: boolean }
@@ -33,12 +43,12 @@ export async function prepareScanFrame(
   const image = await loadImage(sourceDataUrl)
   const width = image.naturalWidth, height = image.naturalHeight
   const detected = detectRightPanel(image, width, height)
-  const dimensionCompatiblePreferred = preferredProfile && Math.abs(preferredProfile.sourceWidth - width) <= 2 && Math.abs(preferredProfile.sourceHeight - height) <= 2 ? preferredProfile : undefined
+  const dimensionCompatiblePreferred = preferredProfile && (source === 'screenshot' || preferredProfile.layout !== 'build-card') && Math.abs(preferredProfile.sourceWidth - width) <= 2 && Math.abs(preferredProfile.sourceHeight - height) <= 2 ? preferredProfile : undefined
   const formatDetection = source === 'screenshot'
     ? detectBuildCardFormat(image, preferredBuildCardFormat)
     : { id: 'discord-bot' as const, confidence: 0, certain: false }
   const buildCard = source === 'screenshot' && (preferredLayout === 'build-card' || formatDetection.certain)
-  const layout: Exclude<ScanLayout, 'unknown'> = buildCard ? 'build-card' : preferredLayout ?? dimensionCompatiblePreferred?.layout ?? (detected.layout === 'unknown' ? 'echo-detail' : detected.layout)
+  const layout: Exclude<ScanLayout, 'unknown'> = buildCard ? 'build-card' : (source !== 'screenshot' && preferredLayout === 'build-card' ? undefined : preferredLayout) ?? dimensionCompatiblePreferred?.layout ?? (detected.layout === 'unknown' ? 'echo-detail' : detected.layout)
   const format = buildCard ? formatDetection.id : undefined
   const compatiblePreferred = dimensionCompatiblePreferred?.layout === layout
     && (layout !== 'build-card' || (dimensionCompatiblePreferred.buildCardFormat ?? 'discord-bot') === format)

@@ -101,7 +101,7 @@ export class ScanSessionController {
       } catch (error) {
         this.session.metrics.failures += 1
         item.reject(error instanceof Error ? error : new Error('Frame recognition failed.'))
-      } finally { this.emit() }
+      } finally { this.preprocess.release(item.prepared.frame.panelImageDataUrl); this.emit() }
     }
     this.active = false
     if (!this.cancelled && this.session.status === 'stopping') this.finish('completed')
@@ -115,9 +115,11 @@ export class ScanSessionController {
   async rerunField(candidate: DiagnosticScanCandidate, regionId: string) {
     const prepared = [...this.frameCache.values()].find((entry) => entry.frame.sequence === candidate.frameSequence)
     if (!prepared || this.cancelled) throw new Error('The source frame is no longer available in this session.')
-    const rescanned = await rerunRegion(prepared.frame, prepared.profile, candidate, regionId, this.pool, this.preprocess, this.callbacks.onProgress)
-    this.markCorrected()
-    return rescanned
+    try {
+      const rescanned = await rerunRegion(prepared.frame, prepared.profile, candidate, regionId, this.pool, this.preprocess, this.callbacks.onProgress)
+      this.markCorrected()
+      return rescanned
+    } finally { this.preprocess.release(prepared.frame.panelImageDataUrl) }
   }
 
   requestCompletion() { this.session.status = this.active || this.queue.length ? 'stopping' : 'completed'; if (this.session.status === 'completed') this.session.metrics.completedAt = Date.now(); this.emit() }

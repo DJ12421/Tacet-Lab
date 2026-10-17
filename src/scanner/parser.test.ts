@@ -9,6 +9,8 @@ describe('English Echo OCR parser', () => {
 
   it('parses percent and flat English stat labels', () => {
     expect(parseStatLine('Crit. DMG 18.6%')).toEqual({ key: 'critDamage', value: 18.6 })
+    expect(parseStatLine('Crit. Rate 10.5%,')).toEqual({ key: 'critRate', value: 10.5 })
+    expect(parseStatLine('Crit. BMG 15%')).toEqual({ key: 'critDamage', value: 15 })
     expect(parseStatLine('ATK 40')).toEqual({ key: 'atk', value: 40 })
     expect(parseStatLine('ATK % 18.0%')).toEqual({ key: 'atkPercent', value: 18 })
     expect(parseStatLine('Resonance Skill DMG 8.6%')).toEqual({ key: 'skillDamage', value: 8.6 })
@@ -16,6 +18,17 @@ describe('English Echo OCR parser', () => {
     expect(parseStatLine('Crit. DMG 186%')).toEqual({ key: 'critDamage', value: 18.6 })
     expect(parseStatLine('Crit. Rate 63%')).toEqual({ key: 'critRate', value: 6.3 })
     expect(parseStatLine('DEF 50')).toEqual({ key: 'def', value: 50 })
+  })
+
+  it('recovers a partial stat label only when its exact roll identifies one stat', () => {
+    expect(parseStatLine('DEF Co 50')).toEqual({ key: 'def', value: 50 })
+    expect(parseStatLine('ATK oo 8.6%')).toEqual({ key: 'atkPercent', value: 8.6 })
+    expect(parseStatLine('Crit noise 15%')).toEqual({ key: 'critDamage', value: 15 })
+    expect(parseStatLine('DEF Co 55')).toBeUndefined()
+    expect(parseStatLine('Res noise 8.6%')).toBeUndefined()
+    expect(parseStatLine('noise 50')).toBeUndefined()
+    expect(parseStatLine('ATK and DEF 50')).toBeUndefined()
+    expect(parseStatLine('ATK DEF 50')).toBeUndefined()
   })
 
   it('returns low confidence defaults instead of silently inventing missing fields', async () => {
@@ -78,6 +91,13 @@ describe('English Echo OCR parser', () => {
     expect(candidate.fields.sonata).toMatchObject({ value: 'Sierra Gale', confidence: 0.91 })
   })
 
+  it('requires review when a recognized Echo and Sonata cannot occur together', async () => {
+    const candidate = await parseEchoText('Frostbite Coleoid\nCost 3\nLv. 25\nGlacio DMG Bonus 30.0%', 'data:image/png;base64,mismatch', 'screenshot', { sonata: { value: 'Pact of Neonlight Leap', confidence: .9 } })
+    expect(candidate.fields.sonata.value).not.toBe('Pact of Neonlight Leap')
+    candidate.fields.sonata = { value: 'Pact of Neonlight Leap', confidence: .9 }
+    expect(candidateErrors(candidate)).toContain('Frostbite Coleoid cannot use Pact of Neonlight Leap. Choose one of its available Sonata sets.')
+  })
+
   it('snaps plausible OCR drift to exact tunable rolls and rejects impossible values', async () => {
     const candidate = await parseEchoText('Hooscamp\nCost 1\nLv. 25\nLingering Tunes\nATK % 18.0%\nCrit. Rate 6.2%\nATK 39', 'data:image/png;base64,rolls', 'screenshot')
     expect(candidate.fields.subStats.map((field) => field.value.value)).toEqual([6.3, 40])
@@ -87,13 +107,14 @@ describe('English Echo OCR parser', () => {
     expect(tunableRolls.critRate?.find((roll) => roll.value === 6.3)?.probability).toBe(23.33)
   })
 
-  it('resolves an OCR-confused 1 or 7 only when the swap produces one exact roll', async () => {
+  it('leaves an ambiguous dropped leading digit for review', async () => {
     const candidate = await parseEchoText('Hooscamp\nCost 1\nLv. 25\nLingering Tunes\nATK % 18.0%\nEnergy Regen 1.6%\nCrit. DMG 11.4%', 'data:image/png;base64,ambiguous-digits', 'screenshot')
     expect(candidate.fields.subStats.map((field) => field.value)).toEqual([
-      { key: 'energyRegen', value: 7.6 },
+      { key: 'energyRegen', value: 1.6 },
       { key: 'critDamage', value: 17.4 }
     ])
     expect(candidate.fields.subStats.map((field) => field.raw)).toEqual(['1.6', '11.4'])
-    expect(candidate.fields.subStats.map((field) => field.confidence)).toEqual([0.84, 0.84])
+    expect(candidate.fields.subStats.map((field) => field.confidence)).toEqual([0.52, 0.84])
+    expect(candidateErrors(candidate)).toContain('Each tunable substat must match an exact in-game roll value.')
   })
 })

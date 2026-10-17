@@ -45,19 +45,83 @@ export function profileKey(width: number, height: number, layout: ScanLayout, ui
   return `${width}x${height}:${layout}:${uiScale.toFixed(2)}${layout === 'build-card' ? `:${buildCardFormat ?? 'discord-bot'}` : ''}`
 }
 
-function inferredBuildCardFormat(profile: Pick<CalibrationProfile, 'layout' | 'name' | 'buildCardFormat'>): BuildCardFormatId | undefined {
+function inferredBuildCardFormat(profile: Pick<CalibrationProfile, 'layout' | 'name' | 'buildCardFormat'> & Partial<Pick<CalibrationProfile, 'sourceWidth' | 'sourceHeight'>>): BuildCardFormatId | undefined {
   if (profile.layout !== 'build-card') return undefined
+  if (profile.sourceWidth === 3416 && profile.sourceHeight === 1580
+    && (profile.buildCardFormat === 'wuwaflex' || (!profile.buildCardFormat && profile.name.includes('WuWaFlex')))) return 'wuwaflex-1580'
+  if (!profile.buildCardFormat && profile.name.includes('(2724×1272)')) return 'wuwaflex-1272'
+  if (!profile.buildCardFormat && profile.name.includes('(2724×1377)')) return 'wuwaflex-1377'
   return profile.buildCardFormat ?? buildCardFormats.find((format) => profile.name.endsWith(`${format.label} build card`))?.id ?? 'discord-bot'
 }
 
 function normalizedProfileRegions(layout: ScanLayout, input: CalibrationProfile['regions'], buildCardFormat?: BuildCardFormatId) {
   const normalized = (layout === 'build-card' ? input.map((region) => ({ ...region, rect: { ...region.rect } })) : normalizeSubstatRegions(input))
-    .filter((region) => layout !== 'build-card' || (region.id !== 'sequence'
-      && !/^echo-\d+-main-stat$/.test(region.id)
-      && !(buildCardFormat === 'wuwaflex' && /^echo-\d+-art$/.test(region.id))))
+    .filter((region) => layout !== 'build-card' || (!/^echo-\d+-main-stat$/.test(region.id)
+      && !(buildCardFormat?.startsWith('wuwaflex') && /^echo-\d+-art$/.test(region.id))))
   if (layout !== 'build-card') return normalized
   const defaults = buildCardFormat && buildCardFormat !== 'discord-bot' ? buildCardFormatRegions(buildCardFormat) : regionsForLayout('build-card')
-  return [...normalized, ...defaults.filter((fallback) => !normalized.some((region) => region.id === fallback.id))]
+  const updated = buildCardFormat === 'wuwaflex' ? normalized.map((region) => {
+    const fallback = defaults.find((entry) => entry.id === region.id)
+    if (!fallback) return region
+    const skill = region.id.match(/^skill-(\d)$/)
+    const previous = skill
+      ? [{ x: [.69, .76, .815, .87, .94][Number(skill[1])], y: [.425, .425, .395, .425, .425][Number(skill[1])], width: .055, height: .05 }]
+      : /^echo-\d+-main-stat-label$/.test(region.id)
+        ? [{ ...fallback.rect, x: fallback.rect.x + .008, width: fallback.rect.width - .008 }]
+        : /^echo-\d+-main-stat-value$/.test(region.id)
+        ? [{ x: fallback.rect.x + .008, y: .72, width: .035, height: .037 },
+          { x: fallback.rect.x + .01, y: .688, width: .032, height: .03 }]
+        : /^echo-\d+-stats$/.test(region.id)
+          ? [
+            { x: fallback.rect.x - .02, y: .755, width: .14, height: .235 },
+            { x: fallback.rect.x, y: .77, width: fallback.rect.width, height: .20 }
+          ]
+        : []
+    return previous.some((rect) => Object.keys(rect).every((key) => Math.abs(region.rect[key as keyof ScanRect] - rect[key as keyof ScanRect]) < 1e-6))
+      ? { ...region, rect: { ...fallback.rect } }
+      : region
+  }) : normalized
+  const current = buildCardFormat === 'wuwaflex-1272' || buildCardFormat === 'wuwaflex-1377' ? updated.map((region) => {
+    const scale = buildCardFormat === 'wuwaflex-1377' ? 1272 / 1377 : 1
+    const skill = region.id.match(/^skill-([0-4])$/)
+    if (skill) {
+      const fallback = defaults.find((entry) => entry.id === region.id)
+      const previous = { x: [.74, .79, .84, .89, .94][Number(skill[1])], y: .42 * scale, width: .05, height: .08 * scale }
+      return fallback && Object.keys(previous).every((key) => Math.abs(region.rect[key as keyof ScanRect] - previous[key as keyof ScanRect]) < 1e-6)
+        ? { ...region, rect: { ...fallback.rect } } : region
+    }
+    if (region.id === 'sequence') {
+      const fallback = defaults.find((entry) => entry.id === region.id)
+      const previous = { x: .278, y: .13 * scale, width: .028, height: .372 * scale }
+      return fallback && Object.keys(previous).every((key) => Math.abs(region.rect[key as keyof ScanRect] - previous[key as keyof ScanRect]) < 1e-6)
+        ? { ...region, rect: { ...fallback.rect } } : region
+    }
+    if (!/^echo-\d+-stats$/.test(region.id)) return region
+    const fallback = defaults.find((entry) => entry.id === region.id)
+    if (!fallback) return region
+    const previous = { ...fallback.rect, x: fallback.rect.x - .017, width: fallback.rect.width + .017 }
+    return Object.keys(previous).every((key) => Math.abs(region.rect[key as keyof ScanRect] - previous[key as keyof ScanRect]) < 1e-6)
+      ? { ...region, rect: { ...fallback.rect } }
+      : region
+  }) : updated
+  const oldDefaults = buildCardFormat === 'wuwaflex-1580' ? buildCardFormatRegions('wuwaflex') : []
+  const heightAdjusted = buildCardFormat === 'wuwaflex-1580' ? current.map((region) => {
+    const oldDefault = oldDefaults.find((entry) => entry.id === region.id)?.rect
+    const fallback = defaults.find((entry) => entry.id === region.id)
+    const tallStats = /^echo-\d+-stats$/.test(region.id) && oldDefault && fallback
+      ? [{ ...fallback.rect, height: Math.min(.225 * 1600 / 1580, .995 - fallback.rect.y) }]
+      : []
+    const oldMain = fallback && /^echo-\d+-main-stat-label$/.test(region.id)
+      ? [{ ...fallback.rect, x: fallback.rect.x + .008, width: fallback.rect.width - .008 }]
+      : []
+    const old1600Main = oldDefault && /^echo-\d+-main-stat-label$/.test(region.id)
+      ? [{ ...oldDefault, x: oldDefault.x + .008, width: oldDefault.width - .008 }]
+      : []
+    const previous = oldDefault ? [oldDefault, ...tallStats, ...oldMain, ...old1600Main] : [...tallStats, ...oldMain]
+    return fallback && previous.some((rect) => Object.keys(rect).every((key) => Math.abs(region.rect[key as keyof ScanRect] - rect[key as keyof ScanRect]) < 1e-6))
+      ? { ...region, rect: { ...fallback.rect } } : region
+  }) : current
+  return [...heightAdjusted, ...defaults.filter((fallback) => !heightAdjusted.some((region) => region.id === fallback.id))]
 }
 
 function normalizedStoredProfile(profile: CalibrationProfile): CalibrationProfile {
@@ -117,7 +181,7 @@ function normalizeImportedProfile(input: unknown): CalibrationProfile {
     throw new Error('This file is not a valid Tacet Lab calibration profile.')
   }
   const now = Date.now()
-  const buildCardFormat = inferredBuildCardFormat({ layout: value.layout, name: typeof value.name === 'string' ? value.name : '', buildCardFormat: value.buildCardFormat })
+  const buildCardFormat = inferredBuildCardFormat({ layout: value.layout, name: typeof value.name === 'string' ? value.name : '', buildCardFormat: value.buildCardFormat, sourceWidth: value.sourceWidth, sourceHeight: value.sourceHeight })
   return {
     ...value,
     buildCardFormat,

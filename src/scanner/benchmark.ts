@@ -10,7 +10,7 @@ export interface ScannerBenchmarkSample {
 }
 
 export interface ScannerBenchmarkResult {
-  workers: 1 | 2 | 4
+  workers: 1 | 2 | 4 | 6 | 8
   samples: ScannerBenchmarkSample[]
   fieldAccuracy: number
   completeEchoAccuracy: number
@@ -28,7 +28,7 @@ export async function benchmarkWorkerCounts(
   onResult?: (result: ScannerBenchmarkResult) => void
 ) {
   const reports: ScannerBenchmarkResult[] = []
-  for (const workers of [1, 2, 4] as const) {
+  for (const workers of [1, 2, 4, 6, 8] as const) {
     const memoryBefore = memoryUsage(), started = performance.now(), samples: ScannerBenchmarkSample[] = []
     for (const fixture of fixtures) samples.push(await run(fixture, workers))
     const elapsed = performance.now() - started

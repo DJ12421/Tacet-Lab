@@ -29,8 +29,27 @@
 
 .scan-build-card-fields {
   display: grid;
-  grid-template-columns: 1.4fr .7fr .7fr 1.4fr .7fr;
+  grid-template-columns: 1.4fr .7fr .7fr;
   gap: 10px;
+}
+
+.scan-build-card-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.scan-build-card-tabs button {
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted);
+}
+
+.scan-build-card-tabs button.active {
+  border-color: var(--gold);
+  color: var(--gold);
 }
 
 .scan-build-card-skills {

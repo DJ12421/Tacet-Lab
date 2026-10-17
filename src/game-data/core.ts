@@ -24,7 +24,7 @@ export const statAliases: Array<[RegExp, StatKey]> = [
 export const defaultCustomTheme: CustomThemeColors = { accent: '#e8cc72', mint: '#8de4d4', background: '#080b0d', surface: '#151b1c', text: '#edf3ef' }
 
 export const defaultSettings: AppSettings = {
-  displayName: 'Resonator', uid: '', privacyMode: false, background: 'signal', theme: 'spectro', customTheme: defaultCustomTheme, scanIntervalMs: 900,
+  displayName: 'Resonator', uid: '', privacyMode: false, background: 'signal', theme: 'spectro', customTheme: defaultCustomTheme, scanIntervalMs: 500,
   roverGender: 'male',
   liveCharacterArt: true,
   scoreWeights: {},

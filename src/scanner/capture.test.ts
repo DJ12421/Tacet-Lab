@@ -13,4 +13,10 @@ describe('capture fingerprints', () => {
     expect(fingerprintDistance([0, 0], [16, 16])).toBe(1)
     expect(fingerprintDistance([0], [0, 0])).toBe(1)
   })
+  it('detects a stat-area digit change hidden by the coarse panel sample', () => {
+    const first = Array(512 + 64 * 48).fill(0)
+    const second = [...first]
+    for (let index = 512; index < 520; index += 1) second[index] = 16
+    expect(fingerprintDistance(first, second)).toBeGreaterThan(.035)
+  })
 })

@@ -15,9 +15,11 @@ export class LocalVideoSource {
 
   async open(file: File) {
     if (!file.type.startsWith('video/')) throw new Error('Choose a local video file.')
-    this.close(); this.objectUrl = URL.createObjectURL(file); this.video.src = this.objectUrl; this.video.muted = true; this.video.preload = 'metadata'
+    this.close(); this.objectUrl = URL.createObjectURL(file); this.video.src = this.objectUrl; this.video.muted = true; this.video.preload = 'auto'
     await waitFor(this.video, 'loadedmetadata')
     if (this.video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) await waitFor(this.video, 'loadeddata')
+    if (!Number.isFinite(this.video.duration) || this.video.duration <= 0 || !this.video.videoWidth || !this.video.videoHeight) throw new Error('The local video has no scannable frames.')
+    this.resetCancellation()
     return { duration: this.video.duration, width: this.video.videoWidth, height: this.video.videoHeight }
   }
 
@@ -25,8 +27,9 @@ export class LocalVideoSource {
     if (this.cancelled) throw new Error('Video scan cancelled.')
     if (Math.abs(this.video.currentTime - time) > .002) { this.video.currentTime = Math.max(0, Math.min(this.video.duration, time)); await waitFor(this.video, 'seeked') }
     if (this.cancelled) throw new Error('Video scan cancelled.')
-    return captureSourceDataUrl(this.video, this.video.videoWidth, this.video.videoHeight, .9)
   }
+
+  capture() { return captureSourceDataUrl(this.video, this.video.videoWidth, this.video.videoHeight, .9) }
 
   cancel() { this.cancelled = true; this.video.pause() }
   resetCancellation() { this.cancelled = false }

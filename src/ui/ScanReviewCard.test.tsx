@@ -42,4 +42,65 @@ describe('scan review checkpoint', () => {
     render(<Harness initial={candidate(true)} onSave={vi.fn()}/>)
     expect(screen.getByRole('button', { name: 'Approve & save' })).toBeEnabled()
   })
+
+  it('shows the selected build-card fields and keeps the other sections available', () => {
+    const buildCard = {
+      ...candidate(true),
+      buildCard: {
+        id: 'card', character: { value: 'Jinhsi', confidence: 1 }, characterLevel: { value: 90, confidence: 1 },
+        sequence: { value: 1, confidence: 1 }, skillLevels: Array.from({ length: 5 }, () => ({ value: 10, confidence: 1 })),
+        weapon: { value: 'Ages of Harvest', confidence: 1 }, weaponLevel: { value: 90, confidence: 1 },
+        weaponRank: { value: 2, confidence: 1 }, sourceImageDataUrl: 'data:image/png;base64,abc'
+      }
+    }
+    const onReviewSectionChange = vi.fn()
+    const view = render(<ScanReviewCard candidate={buildCard} reviewSection="character" onReviewSectionChange={onReviewSectionChange} onChange={vi.fn()} onDiscard={vi.fn()} onSave={vi.fn()}/>)
+    expect(screen.getByText('Character level')).toBeInTheDocument()
+    expect(screen.getByText('Skills')).toBeInTheDocument()
+    expect(screen.queryByText('Weapon rank')).not.toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Weapon', pressed: false }))
+    expect(onReviewSectionChange).toHaveBeenCalledWith('weapon')
+    view.rerender(<ScanReviewCard candidate={buildCard} reviewSection="weapon" onReviewSectionChange={onReviewSectionChange} onChange={vi.fn()} onDiscard={vi.fn()} onSave={vi.fn()}/>)
+    expect(screen.getByText('Weapon rank')).toBeInTheDocument()
+    expect(screen.queryByText('Character level')).not.toBeInTheDocument()
+    expect(screen.queryByText('Skills')).not.toBeInTheDocument()
+  })
+
+  it('shows the Echo name crop in build-card field evidence', () => {
+    const buildCard = {
+      ...candidate(true),
+      buildCard: {
+        id: 'card', character: { value: 'Jinhsi', confidence: 1 }, characterLevel: { value: 90, confidence: 1 },
+        sequence: { value: 0, confidence: 1 }, skillLevels: Array.from({ length: 5 }, () => ({ value: 10, confidence: 1 })),
+        weapon: { value: 'Ages of Harvest', confidence: 1 }, weaponLevel: { value: 90, confidence: 1 },
+        weaponRank: { value: 1, confidence: 1 }, sourceImageDataUrl: 'data:image/png;base64,abc'
+      },
+      evidence: {
+        'echo-0-art': {
+          region: { id: 'echo-0-art', kind: 'name' as const, label: 'Echo 1 art', rect: { x: .27, y: .6, width: .1, height: .1 }, recognition: 'visual' as const },
+          originalCrop: 'data:image/png;base64,abc', processedCrop: 'data:image/png;base64,abc', rawOcr: '',
+          confidence: .9, parsedValue: 'Hooscamp', validation: { valid: true, messages: [] },
+          workerId: 'visual-classifier', jobId: 'art', processingMs: 0, preprocessing: 'visual'
+        },
+        'echo-0-name': {
+          region: { id: 'echo-0-name', kind: 'name' as const, label: 'WuWaFlex Echo 1 name', rect: { x: .27, y: .6, width: .14, height: .03 }, recognition: 'text' as const },
+          originalCrop: 'data:image/png;base64,abc', processedCrop: 'data:image/png;base64,abc', rawOcr: 'Hooscamp',
+          confidence: .9, parsedValue: 'Hooscamp', validation: { valid: true, messages: [] },
+          workerId: 'ocr-1', jobId: 'name', processingMs: 1, preprocessing: 'name'
+        },
+        'echo-0-sonata': {
+          region: { id: 'echo-0-sonata', kind: 'sonata' as const, label: 'Echo 1 Sonata', rect: { x: .8, y: .6, width: .03, height: .04 }, recognition: 'visual' as const },
+          originalCrop: 'data:image/png;base64,abc', processedCrop: 'data:image/png;base64,abc', rawOcr: '',
+          confidence: .9, parsedValue: 'Sierra Gale', validation: { valid: true, messages: [] },
+          workerId: 'visual-classifier', jobId: 'sonata', processingMs: 0, preprocessing: 'visual'
+        }
+      }
+    }
+    render(<ScanReviewCard candidate={buildCard} onChange={vi.fn()} onDiscard={vi.fn()} onSave={vi.fn()}/> )
+    fireEvent.click(screen.getByRole('button', { name: 'Show field evidence' }))
+    expect(screen.getByText('WuWaFlex Echo 1 name')).toBeInTheDocument()
+    expect(screen.getByAltText('WuWaFlex Echo 1 name original crop')).toBeInTheDocument()
+    expect(screen.getByText('Echo 1 art').closest('article')?.querySelector('code')).toHaveTextContent('Hooscamp')
+    expect(screen.getByText('Echo 1 Sonata').closest('article')?.querySelector('code')).toHaveTextContent('Sierra Gale')
+  })
 })

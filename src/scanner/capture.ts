@@ -63,10 +63,21 @@ export function probeEchoPanel(video: HTMLVideoElement): PanelProbe | undefined 
   // The header and stat block change immediately when another Echo is selected.
   context.drawImage(video, video.videoWidth * crop.x, video.videoHeight * crop.y, video.videoWidth * crop.width, video.videoHeight * crop.height * 0.46, 0, 0, 32, 16)
   const pixels = context.getImageData(0, 0, 32, 16).data
-  const fingerprint = Array.from({ length: 512 }, (_, index) => {
+  const coarse = Array.from({ length: 512 }, (_, index) => {
     const offset = index * 4
     return Math.round((pixels[offset] * 0.2126 + pixels[offset + 1] * 0.7152 + pixels[offset + 2] * 0.0722) / 16)
   })
+  sample.width = 64; sample.height = 48
+  context.drawImage(video,
+    video.videoWidth * (crop.x + crop.width * .1), video.videoHeight * (crop.y + crop.height * .21),
+    video.videoWidth * crop.width * .85, video.videoHeight * crop.height * .25,
+    0, 0, 64, 48)
+  const statPixels = context.getImageData(0, 0, 64, 48).data
+  const fine = Array.from({ length: 64 * 48 }, (_, index) => {
+    const offset = index * 4
+    return Math.round((statPixels[offset] * .2126 + statPixels[offset + 1] * .7152 + statPixels[offset + 2] * .0722) / 16)
+  })
+  const fingerprint = [...coarse, ...fine]
   return { fingerprint, sourceWidth: video.videoWidth, sourceHeight: video.videoHeight, calibrated }
 }
 
@@ -95,6 +106,10 @@ export function captureEchoPanel(video: HTMLVideoElement): CapturedPanel | undef
 
 export function fingerprintDistance(left: number[], right: number[]) {
   if (left.length !== right.length) return 1
+  if (left.length === 512 + 64 * 48) {
+    const distance = (start: number, end: number) => left.slice(start, end).reduce((sum, value, index) => sum + Math.abs(value - right[start + index]), 0) / ((end - start) * 16)
+    return Math.min(1, Math.max(distance(0, 512), distance(512, left.length) * 24))
+  }
   return left.reduce((sum, value, index) => sum + Math.abs(value - right[index]), 0) / (left.length * 16)
 }
 

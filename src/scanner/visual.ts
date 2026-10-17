@@ -2,6 +2,8 @@ import type { Echo } from '../domain/types'
 import type { VisualRecognition } from './parser'
 import type { ScanRect } from './types'
 import { generatedSonataSignatures } from '../game-data/scanner-signatures.generated'
+import { wuwaflexSonataSignatures } from './wuwaflex-sonata-signatures'
+import { iconColor, iconColorDistance, type IconColor } from './icon-color'
 
 const DETAIL_VISUAL_CROPS = {
   sonata: { x: 0.54, y: 0.035, width: 0.13, height: 0.085 },
@@ -126,16 +128,115 @@ export function classifySonataSignatures(captured: number[], templates: Array<{ 
   return { value: best.name, confidence: Math.min(.96, .62 + best.score * .34) }
 }
 
-function loadSonataSignatures() {
-  return generatedSonataSignatures.map((entry) => ({
-    name: entry.name,
-    signature: Array.from(entry.signature, (value) => value / 32)
-  }))
+const sonataSignatureTemplates = generatedSonataSignatures.map((entry) => ({
+  name: entry.name,
+  signature: Array.from(entry.signature, (value) => value / 32)
+}))
+
+export async function recognizeSonataAt(image: HTMLImageElement, rect: ScanRect, allowedNames?: string[]) {
+  return classifySonataCandidates(sonataSignaturesInBox(image, rect), sonataSignatureTemplates, allowedNames)
 }
 
-export async function recognizeSonataAt(imageDataUrl: string, rect: ScanRect, allowedNames?: string[]) {
-  const image = new Image(); image.src = imageDataUrl; await image.decode()
-  return classifySonataCandidates(sonataSignaturesInBox(image, rect), await loadSonataSignatures(), allowedNames)
+function centeredGlyph(mask: boolean[]) {
+  const points = mask.flatMap((visible, index) => visible ? [index] : [])
+  if (!points.length) return mask
+  const xs = points.map((index) => index % 24), ys = points.map((index) => Math.floor(index / 24))
+  const dx = 12 - Math.round((Math.min(...xs) + Math.max(...xs)) / 2)
+  const dy = 12 - Math.round((Math.min(...ys) + Math.max(...ys)) / 2)
+  const centered = Array<boolean>(24 * 24).fill(false)
+  for (const index of points) {
+    const x = index % 24 + dx, y = Math.floor(index / 24) + dy
+    if (x >= 0 && x < 24 && y >= 0 && y < 24) centered[y * 24 + x] = true
+  }
+  return centered
+}
+
+export function classifyWuwaflexSonata(pixels: Uint8ClampedArray, allowedNames?: string[]): VisualRecognition['sonata'] {
+  if (pixels.length !== 24 * 24 * 4) return
+  const allowed = allowedNames?.length ? new Set(allowedNames) : undefined
+  const captured = Array.from({ length: 24 * 24 }, (_, index) => {
+    const offset = index * 4
+    const channels = [pixels[offset], pixels[offset + 1], pixels[offset + 2]]
+    return pixels[offset + 3] > 80 && Math.min(...channels) >= 130 && Math.max(...channels) - Math.min(...channels) <= 35
+  })
+  const whiteRing = captured.reduce((count, visible, index) => {
+    const x = index % 24 - 11.5, y = Math.floor(index / 24) - 11.5
+    const radius = x * x + y * y
+    return count + Number(visible && radius >= 36 && radius <= 100)
+  }, 0) >= 35
+  // A white ring reveals the card background, which is not the Sonata's color.
+  const corners = [0, 23, 24 * 23, 24 * 24 - 1]
+  const background = [0, 1, 2].map((channel) => corners.reduce((sum, index) => sum + pixels[index * 4 + channel], 0) / corners.length)
+  const ringPixels = pixels.slice()
+  for (let index = 0; index < 24 * 24; index += 1) {
+    const offset = index * 4
+    const contrast = background.reduce((sum, channel, color) => sum + Math.abs(ringPixels[offset + color] - channel), 0)
+    if (contrast < 90) ringPixels[offset + 3] = 0
+  }
+  const badgeColor = whiteRing ? undefined : iconColor(ringPixels, 140)
+  if (badgeColor && allowed && allowed.size > 1) {
+    const colors = [...allowed].map((name) => {
+      const references: IconColor[] = wuwaflexSonataSignatures.filter((entry) => entry.name === name).map((entry) => entry.color)
+      const catalog = generatedSonataSignatures.find((entry) => entry.name === name)
+      if (!references.length && catalog && 'color' in catalog) references.push(catalog.color)
+      return references.length ? { name, distance: Math.min(...references.map((color) => iconColorDistance(badgeColor, color))) } : undefined
+    })
+    if (colors.every((entry) => entry !== undefined)) {
+      const [best, runnerUp] = colors.sort((left, right) => left!.distance - right!.distance)
+      if (best && runnerUp && best.distance < .18 && runnerUp.distance - best.distance >= .04)
+        return { value: best.name, confidence: Math.min(.95, .65 + (runnerUp.distance - best.distance)) }
+    }
+  }
+  const colorMatched = badgeColor && wuwaflexSonataSignatures.some((template) => iconColorDistance(badgeColor, template.color) < .12)
+  const overlap = (left: boolean[], right: boolean[]) => {
+    let intersection = 0, union = 0
+    for (let index = 0; index < left.length; index += 1) {
+      if (left[index] && right[index]) intersection += 1
+      if (left[index] || right[index]) union += 1
+    }
+    return union ? intersection / union : 0
+  }
+  const ranked = new Map<string, number>(), allowedRanked = new Map<string, number>(), centeredRanked = new Map<string, number>()
+  const centeredCaptured = (allowed || colorMatched) ? centeredGlyph(captured) : undefined
+  for (const template of wuwaflexSonataSignatures) {
+    const expected: boolean[] = []
+    for (let y = 0; y < 24; y += 1) {
+      const row = Number.parseInt(template.mask.slice(y * 6, y * 6 + 6), 16)
+      for (let x = 0; x < 24; x += 1) expected.push(Boolean(row & (1 << (23 - x))))
+    }
+    const score = overlap(captured, expected)
+    const colorCompatible = !badgeColor || !colorMatched || iconColorDistance(badgeColor, template.color) < .12
+    if (colorCompatible) ranked.set(template.name, Math.max(ranked.get(template.name) ?? 0, score))
+    if (allowed ? allowed.has(template.name) : colorCompatible) {
+      allowedRanked.set(template.name, Math.max(allowedRanked.get(template.name) ?? 0, score))
+      if (centeredCaptured) centeredRanked.set(template.name, Math.max(centeredRanked.get(template.name) ?? 0, overlap(centeredCaptured, centeredGlyph(expected))))
+    }
+  }
+  const select = (scores: Map<string, number>, minimum: number, margin: number) => {
+    const [best, runnerUp] = [...scores].sort((left, right) => right[1] - left[1])
+    return best && best[1] >= minimum && (!runnerUp || best[1] - runnerUp[1] >= margin)
+      ? { value: best[0], confidence: Math.min(.96, .55 + best[1] * .4) } : undefined
+  }
+  const visual = select(ranked, .62, .1)
+  if (visual && (!allowed || allowed.has(visual.value))) return visual
+  // A conflicting badge is rechecked by shape against only the Echo's possible sets.
+  return select(allowedRanked, allowed ? .55 : .4, allowed ? .05 : .035)
+    ?? (centeredCaptured ? select(centeredRanked, .55, .05) : undefined)
+}
+
+export async function recognizeWuwaflexSonataAt(image: HTMLImageElement, rect: ScanRect, allowedNames?: string[]) {
+  const canvas = document.createElement('canvas'); canvas.width = 24; canvas.height = 24
+  const context = canvas.getContext('2d', { willReadFrequently: true }); if (!context) return
+  let best: VisualRecognition['sonata']
+  for (const yOffset of [0, -.2]) {
+    context.clearRect(0, 0, 24, 24)
+    context.drawImage(image, image.naturalWidth * rect.x, image.naturalHeight * (rect.y + rect.height * yOffset), image.naturalWidth * rect.width, image.naturalHeight * rect.height, 0, 0, 24, 24)
+    const candidate = classifyWuwaflexSonata(context.getImageData(0, 0, 24, 24).data, allowedNames)
+    if (candidate && (!best || candidate.confidence > best.confidence)) best = candidate
+  }
+  if (best || !allowedNames?.length) return best
+  const catalogMatch = classifySonataCandidates(sonataSignaturesInBox(image, rect), sonataSignatureTemplates, allowedNames)
+  return catalogMatch && catalogMatch.confidence >= .85 ? catalogMatch : undefined
 }
 
 export async function recognizeVisualFields(imageDataUrl: string, sonataRect?: ScanRect, allowedSonatas?: string[]): Promise<VisualRecognition> {
@@ -147,7 +248,7 @@ export async function recognizeVisualFields(imageDataUrl: string, sonataRect?: S
   if (!context) return {}
   const crops = image.naturalWidth / image.naturalHeight > .58 ? INVENTORY_VISUAL_CROPS : DETAIL_VISUAL_CROPS
   const state = classifyEchoState(cropPixels(image, crops.discard), cropPixels(image, crops.lock))
-  const sonata = classifySonataCandidates(sonataSignaturesInBox(image, sonataRect ?? crops.sonata), await loadSonataSignatures(), allowedSonatas)
+  const sonata = classifySonataCandidates(sonataSignaturesInBox(image, sonataRect ?? crops.sonata), sonataSignatureTemplates, allowedSonatas)
   const rarityCanvas = document.createElement('canvas'); rarityCanvas.width = Math.max(1, Math.round(image.naturalWidth * .72)); rarityCanvas.height = Math.max(1, Math.round(image.naturalHeight * .075))
   const rarityContext = rarityCanvas.getContext('2d', { willReadFrequently: true }); if (!rarityContext) return { sonata, ...state }
   rarityContext.drawImage(image, 0, 0, rarityCanvas.width, rarityCanvas.height, 0, 0, rarityCanvas.width, rarityCanvas.height)

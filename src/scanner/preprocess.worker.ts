@@ -1,8 +1,13 @@
 /// <reference lib="webworker" />
 import type { ScanRect } from './types'
+import { brightSubstatThreshold } from './bright-substat'
+import { wuwaflexNameThreshold } from './wuwaflex-name'
 
-type Strategy = 'name' | 'label' | 'text' | 'substat' | 'visual' | 'plain'
-interface Request { id: string; bitmap: ImageBitmap; rect: ScanRect; strategy: Strategy }
+type Strategy = 'name' | 'label' | 'text' | 'substat' | 'bright-substat' | 'wuwaflex-name' | 'visual' | 'plain' | 'contrast'
+type Request =
+  | { type: 'source'; sourceId: string; bitmap: ImageBitmap }
+  | { type: 'release'; sourceId: string }
+  | { type: 'crop'; id: string; sourceId?: string; bitmap?: ImageBitmap; rect: ScanRect; strategy: Strategy }
 
 function percentile(values: Uint8Array, ratio: number) {
   const histogram = new Uint32Array(256)
@@ -231,9 +236,16 @@ function renderBinary(context: OffscreenCanvasRenderingContext2D, values: Uint8A
   context.fillRect(0, 0, border, height); context.fillRect(width - border, 0, border, height)
 }
 
+const sources = new Map<string, ImageBitmap>()
+
 self.onmessage = async (event: MessageEvent<Request>) => {
-  const { id, bitmap, rect, strategy } = event.data
+  const request = event.data
+  if (request.type === 'source') { sources.set(request.sourceId, request.bitmap); return }
+  if (request.type === 'release') { sources.get(request.sourceId)?.close(); sources.delete(request.sourceId); return }
+  const { id, rect, strategy } = request
+  const bitmap = request.bitmap ?? (request.sourceId ? sources.get(request.sourceId) : undefined)
   try {
+    if (!bitmap) throw new Error('The source image is unavailable for preprocessing.')
     const paddingX = 0, paddingY = 0
     const expanded: ScanRect = {
       x: Math.max(0, rect.x - rect.width * paddingX), y: Math.max(0, rect.y - rect.height * paddingY),
@@ -243,7 +255,7 @@ self.onmessage = async (event: MessageEvent<Request>) => {
     const sourceX = Math.max(0, Math.round(expanded.x * bitmap.width)), sourceY = Math.max(0, Math.round(expanded.y * bitmap.height))
     const sourceWidth = Math.max(1, Math.min(bitmap.width - sourceX, Math.round(expanded.width * bitmap.width)))
     const sourceHeight = Math.max(1, Math.min(bitmap.height - sourceY, Math.round(expanded.height * bitmap.height)))
-    const scale = strategy === 'name' || strategy === 'label' || strategy === 'text' || strategy === 'substat' ? 3 : 1
+    const scale = strategy === 'visual' ? 1 : 3
     const canvas = new OffscreenCanvas(Math.max(1, Math.round(sourceWidth * scale)), Math.max(1, Math.round(sourceHeight * scale)))
     const context = canvas.getContext('2d', { willReadFrequently: true })
     if (!context) throw new Error('Offscreen preprocessing canvas is unavailable.')
@@ -251,8 +263,14 @@ self.onmessage = async (event: MessageEvent<Request>) => {
     context.drawImage(bitmap, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, canvas.width, canvas.height)
     if (strategy !== 'visual' && strategy !== 'plain') {
       const source = context.getImageData(0, 0, canvas.width, canvas.height)
-      const normalized = ensureLightBackground(normalize(grayscale(source.data)), canvas.width, canvas.height)
-      let binary = globalThreshold(normalized)
+      const gray = grayscale(source.data)
+      let binary = strategy === 'contrast'
+        ? ensureLightBackground(normalize(gray), canvas.width, canvas.height)
+        : strategy === 'wuwaflex-name'
+        ? wuwaflexNameThreshold(source.data, canvas.width, canvas.height)
+        : strategy === 'bright-substat'
+        ? brightSubstatThreshold(gray, canvas.width, canvas.height)
+        : globalThreshold(ensureLightBackground(normalize(gray), canvas.width, canvas.height))
       if (strategy === 'name') binary = removeLargeNameArtwork(binary, canvas.width, canvas.height)
       if (strategy === 'label') binary = removeSmallLabelNoise(binary, canvas.width, canvas.height)
       if (strategy === 'substat') {
@@ -262,10 +280,10 @@ self.onmessage = async (event: MessageEvent<Request>) => {
       renderBinary(context, binary, canvas.width, canvas.height)
     }
     const blob = await canvas.convertToBlob({ type: 'image/png' }), bytes = await blob.arrayBuffer()
-    bitmap.close()
+    request.bitmap?.close()
     self.postMessage({ id, ok: true, bytes, width: canvas.width, height: canvas.height, strategy }, [bytes])
   } catch (error) {
-    bitmap.close()
+    request.bitmap?.close()
     self.postMessage({ id, ok: false, error: error instanceof Error ? error.message : 'Preprocessing failed.' })
   }
 }

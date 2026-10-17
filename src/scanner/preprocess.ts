@@ -1,12 +1,13 @@
 import type { ScanRect, ScanRegion } from './types'
 import { createLocalId } from '../domain/id'
 
-type Strategy = 'name' | 'label' | 'text' | 'substat' | 'visual' | 'plain'
+type Strategy = 'name' | 'label' | 'text' | 'substat' | 'bright-substat' | 'wuwaflex-name' | 'visual' | 'plain' | 'contrast'
 type Pending = { resolve: (value: PreprocessedImage) => void; reject: (reason: Error) => void }
 export interface PreprocessedImage { dataUrl: string; blob: Blob; width: number; height: number; strategy: Strategy }
 
 const strategyFor = (region: ScanRegion): Strategy => {
   if (region.recognition === 'visual') return 'visual'
+  if (region.id === 'character-level' && region.recognition === 'text') return 'plain'
   if (region.kind === 'name') return 'name'
   if (region.kind === 'main-stat-label') return 'label'
   if (region.kind === 'substats-block' || region.kind === 'substat-row') return 'substat'
@@ -20,6 +21,8 @@ const blobToDataUrl = (blob: Blob) => new Promise<string>((resolve, reject) => {
 export class PreprocessClient {
   private worker?: Worker
   private pending = new Map<string, Pending>()
+  private sources = new Map<string, Promise<string>>()
+  private generation = 0
 
   private ensureWorker() {
     if (this.worker) return this.worker
@@ -39,22 +42,63 @@ export class PreprocessClient {
     return this.worker
   }
 
-  async process(imageDataUrl: string, region: ScanRegion) {
-    const response = await fetch(imageDataUrl)
-    const bitmap = await createImageBitmap(await response.blob())
+  private sourceId(imageDataUrl: string) {
+    let source = this.sources.get(imageDataUrl)
+    if (!source) {
+      const generation = this.generation
+      source = (async () => {
+        const response = await fetch(imageDataUrl)
+        const bitmap = await createImageBitmap(await response.blob())
+        if (generation !== this.generation) { bitmap.close(); throw new Error('Preprocessing cancelled.') }
+        const sourceId = createLocalId()
+        this.ensureWorker().postMessage({ type: 'source', sourceId, bitmap }, [bitmap])
+        return sourceId
+      })()
+      this.sources.set(imageDataUrl, source)
+      void source.catch(() => { if (this.sources.get(imageDataUrl) === source) this.sources.delete(imageDataUrl) })
+    }
+    return source
+  }
+
+  async process(imageDataUrl: string, region: ScanRegion, strategy = strategyFor(region), reuseSource = true) {
+    const generation = this.generation
+    let sourceId: string | undefined
+    let bitmap: ImageBitmap | undefined
+    if (reuseSource) sourceId = await this.sourceId(imageDataUrl)
+    else {
+      const response = await fetch(imageDataUrl)
+      bitmap = await createImageBitmap(await response.blob())
+    }
+    if (generation !== this.generation) { bitmap?.close(); throw new Error('Preprocessing cancelled.') }
     const id = createLocalId()
     const result = new Promise<PreprocessedImage>((resolve, reject) => this.pending.set(id, { resolve, reject }))
-    this.ensureWorker().postMessage({ id, bitmap, rect: region.rect, strategy: strategyFor(region) }, [bitmap])
+    try {
+      this.ensureWorker().postMessage({ type: 'crop', id, sourceId, bitmap, rect: region.rect, strategy }, bitmap ? [bitmap] : [])
+    } catch (error) {
+      const pending = this.pending.get(id)
+      this.pending.delete(id)
+      bitmap?.close()
+      pending?.reject(error instanceof Error ? error : new Error('Preprocessing failed.'))
+    }
     return result
   }
 
-  async crop(imageDataUrl: string, rect: ScanRect) {
+  async crop(imageDataUrl: string, rect: ScanRect, reuseSource = true) {
     const region: ScanRegion = { id: 'crop', kind: 'name', label: 'Crop', rect, recognition: 'visual' }
-    return this.process(imageDataUrl, region)
+    return this.process(imageDataUrl, region, 'visual', reuseSource)
+  }
+
+  release(imageDataUrl: string) {
+    const source = this.sources.get(imageDataUrl)
+    if (!source) return
+    this.sources.delete(imageDataUrl)
+    void source.then((sourceId) => this.worker?.postMessage({ type: 'release', sourceId })).catch(() => {})
   }
 
   terminate() {
+    this.generation += 1
     this.worker?.terminate(); this.worker = undefined
+    this.sources.clear()
     const error = new Error('Preprocessing cancelled.')
     this.pending.forEach(({ reject }) => reject(error)); this.pending.clear()
   }

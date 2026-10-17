@@ -9,7 +9,7 @@ import { tunableRolls } from '../game-data/tunable-rolls'
 import { fixedSecondaryMainStat, mainStatKeysByCost, maxLevelByRarity, maxSubStatsForLevel, normalizeEchoMainStat } from '../game-data/echo-main-stats'
 import { Confidence, formatStat, Icon, Panel } from './components'
 import { SonataPicker } from './SonataPicker'
-import type { DiagnosticScanCandidate } from '../scanner/types'
+import type { DiagnosticScanCandidate, ScanEvidence } from '../scanner/types'
 import { useDismissableLayer } from './useDismissableLayer'
 import { availableSubstatKeys } from '../domain/echo-substats'
 import { buildCardFormat, type BuildCardFormatId } from '../scanner/build-card-formats'
@@ -17,6 +17,11 @@ import { BoundedNumberInput } from './BoundedNumberInput'
 
 const subStatKeys = Object.keys(tunableRolls) as StatKey[]
 const levelStops = [0, 5, 10, 15, 20, 25]
+
+function evidenceText(evidence: ScanEvidence) {
+  const parsed = evidence.parsedValue
+  return evidence.rawOcr.trim() || (typeof parsed === 'string' || typeof parsed === 'number' ? String(parsed) : '') || 'Visual classifier'
+}
 
 function EchoPicker({ value, onChange }: { value: string; onChange: (value: string) => void }) {
   const [open, setOpen] = useState(false)
@@ -48,8 +53,10 @@ function CharacterPicker({ value, onChange }: { value: string; onChange: (value:
   </div>
 }
 
-export function ScanReviewCard({ candidate, onChange, onDiscard, onSave, selected, onSelect, onRerunField, onCopyDiagnostic }: {
+export function ScanReviewCard({ candidate, reviewSection = 'echo', onReviewSectionChange, onChange, onDiscard, onSave, selected, onSelect, onRerunField, onCopyDiagnostic }: {
   candidate: DiagnosticScanCandidate
+  reviewSection?: 'character' | 'weapon' | 'echo'
+  onReviewSectionChange?: (section: 'character' | 'weapon' | 'echo') => void
   onChange: (candidate: DiagnosticScanCandidate) => void
   onDiscard: () => void
   onSave: () => void
@@ -103,6 +110,7 @@ export function ScanReviewCard({ candidate, onChange, onDiscard, onSave, selecte
   const lowConfidenceCount = Object.values(candidate.evidence ?? {}).filter((entry) => entry.confidence < .55 || !entry.validation.valid).length
   const [evidenceOpen, setEvidenceOpen] = useState(false)
   const sonataMissing = !candidate.fields.sonata.value.trim() || candidate.fields.sonata.value === 'Unknown Sonata'
+  const sonataMismatch = Boolean(selectedEcho && !sonataMissing && !selectedEcho.sonatas.includes(candidate.fields.sonata.value))
 
   return <Panel className={`review-card ${candidate.buildCard ? 'build-card-review ' : ''}${errors.length === 0 && !lowConfidence && !evidenceOpen ? 'valid-compact' : ''}`}>
     <div className="review-topbar">
@@ -116,19 +124,23 @@ export function ScanReviewCard({ candidate, onChange, onDiscard, onSave, selecte
     </section>
     <div className="review-fields">
       {candidate.buildCard && <section className="scan-build-card-summary">
-        <header><div><span className="eyebrow">{buildCardFormat((candidate.buildCard.formatId ?? 'discord-bot') as BuildCardFormatId).label} build card</span><h3>Character loadout</h3></div><img src={candidate.buildCard.sourceImageDataUrl} alt="Scanned build card"/></header>
-        <div className="scan-build-card-fields">
+        <header><div><span className="eyebrow">{buildCardFormat((candidate.buildCard.formatId ?? 'discord-bot') as BuildCardFormatId).label} build card</span><h3>{reviewSection === 'character' ? 'Character details' : reviewSection === 'weapon' ? 'Weapon details' : 'Echo details'}</h3></div><img src={candidate.buildCard.sourceImageDataUrl} alt="Scanned build card"/></header>
+        <div className="scan-build-card-tabs" role="group" aria-label="Review build card fields">{(['character', 'weapon', 'echo'] as const).map((section) => <button type="button" key={section} className={reviewSection === section ? 'active' : ''} aria-pressed={reviewSection === section} onClick={() => onReviewSectionChange?.(section)}>{section === 'echo' ? candidate.fields.name.value : section === 'character' ? 'Character' : 'Weapon'}</button>)}</div>
+        {reviewSection === 'character' && <div className="scan-build-card-fields">
           <label>Character <Confidence value={candidate.buildCard.character.confidence}/><select value={candidate.buildCard.characterCatalogId ?? ''} onChange={(event) => { const entry = characterCatalog.find((item) => item.id === event.target.value); if (entry) updateBuildCard({ characterCatalogId: entry.id, character: { value: entry.name, confidence: 1 } }) }}><option value="">Choose character</option>{characterCatalog.map((entry) => <option value={entry.id} key={entry.id}>{entry.name}</option>)}</select></label>
           <label>Character level <Confidence value={candidate.buildCard.characterLevel.confidence}/><BoundedNumberInput min={1} max={90} value={candidate.buildCard.characterLevel.value} onChange={(value) => updateBuildCard({ characterLevel: { value, confidence: 1 } })}/></label>
           <label>Sequence <Confidence value={candidate.buildCard.sequence.confidence}/><select value={candidate.buildCard.sequence.value} onChange={(event) => updateBuildCard({ sequence: { value: Number(event.target.value), confidence: 1 } })}>{[0, 1, 2, 3, 4, 5, 6].map((value) => <option value={value} key={value}>S{value}</option>)}</select></label>
+        </div>}
+        {reviewSection === 'weapon' && <div className="scan-build-card-fields">
           <label>Weapon <Confidence value={candidate.buildCard.weapon.confidence}/><select value={candidate.buildCard.weaponCatalogId ?? ''} onChange={(event) => { const entry = weaponCatalog.find((item) => item.id === event.target.value); if (entry) updateBuildCard({ weaponCatalogId: entry.id, weapon: { value: entry.name, confidence: 1 } }) }}><option value="">Choose weapon</option>{weaponCatalog.map((entry) => <option value={entry.id} key={entry.id}>{entry.name}</option>)}</select></label>
           <label>Weapon level <Confidence value={candidate.buildCard.weaponLevel.confidence}/><BoundedNumberInput min={1} max={90} value={candidate.buildCard.weaponLevel.value} onChange={(value) => updateBuildCard({ weaponLevel: { value, confidence: 1 } })}/></label>
           <label>Weapon rank <Confidence value={candidate.buildCard.weaponRank.confidence}/><select value={candidate.buildCard.weaponRank.value} onChange={(event) => updateBuildCard({ weaponRank: { value: Number(event.target.value), confidence: 1 } })}>{[1, 2, 3, 4, 5].map((value) => <option value={value} key={value}>R{value}</option>)}</select></label>
-        </div>
-        <div className="scan-build-card-skills"><span>Skills</span>{['Normal', 'Skill', 'Forte', 'Liberation', 'Intro'].map((label, index) => <label key={label}>{label}<Confidence value={candidate.buildCard!.skillLevels[index]?.confidence ?? 0}/><BoundedNumberInput min={1} max={10} value={candidate.buildCard!.skillLevels[index]?.value ?? 1} onChange={(value) => updateBuildCard({ skillLevels: candidate.buildCard!.skillLevels.map((field, fieldIndex) => fieldIndex === index ? { value, confidence: 1 } : field) })}/></label>)}</div>
+        </div>}
+        {reviewSection === 'character' && <div className="scan-build-card-skills"><span>Skills</span>{['Normal', 'Skill', 'Forte', 'Liberation', 'Intro'].map((label, index) => <label key={label}>{label}<Confidence value={candidate.buildCard!.skillLevels[index]?.confidence ?? 0}/><BoundedNumberInput min={1} max={10} value={candidate.buildCard!.skillLevels[index]?.value ?? 1} onChange={(value) => updateBuildCard({ skillLevels: candidate.buildCard!.skillLevels.map((field, fieldIndex) => fieldIndex === index ? { value, confidence: 1 } : field) })}/></label>)}</div>}
       </section>}
+      {(!candidate.buildCard || reviewSection === 'echo') && <>
       <label className="scan-name-field">Name <Confidence value={candidate.fields.name.confidence}/><EchoPicker value={candidate.fields.name.value} onChange={selectEcho}/></label>
-      <label className={sonataMissing ? 'field-needs-attention' : ''}>Sonata {sonataMissing && <b className="required-field-badge">Required</b>}<Confidence value={candidate.fields.sonata.confidence}/><SonataPicker id={`sonata-options-${candidate.id}`} value={candidate.fields.sonata.value} allowedNames={selectedEcho?.sonatas} onChange={(value) => updateFields({ sonata: { value, confidence: 1 } })}/></label>
+      <label className={sonataMissing || sonataMismatch ? 'field-needs-attention' : ''}>Sonata {(sonataMissing || sonataMismatch) && <b className="required-field-badge">{sonataMismatch ? 'Mismatch' : 'Required'}</b>}<Confidence value={candidate.fields.sonata.confidence}/><SonataPicker id={`sonata-options-${candidate.id}`} value={candidate.fields.sonata.value} allowedNames={selectedEcho?.sonatas} onChange={(value) => updateFields({ sonata: { value, confidence: 1 } })}/></label>
       <label>Rarity <Confidence value={candidate.fields.rarity.confidence}/><select value={candidate.fields.rarity.value} onChange={(event) => setRarity(Number(event.target.value) as Echo['rarity'])}>{rarityOptions.map((value) => <option key={value} value={value}>{value} star</option>)}</select></label>
       <label>Cost <Confidence value={candidate.fields.cost.confidence}/><div className="scan-readonly-field"><b>{candidate.fields.cost.value}</b><small>From Echo catalog</small></div></label>
       <label>Equipped by <Confidence value={candidate.fields.equippedBy.confidence}/><CharacterPicker value={candidate.fields.equippedBy.value} onChange={(value) => updateFields({ equippedBy: { value, confidence: 1 } })}/></label>
@@ -141,7 +153,8 @@ export function ScanReviewCard({ candidate, onChange, onDiscard, onSave, selecte
       <div className="echo-editor-substats scan-substats"><header><div><span className="eyebrow">Fixed roll values</span><h3>Substats</h3></div><b>{candidate.fields.subStats.length}/{maxSubStats}</b></header>{candidate.fields.subStats.map((field, index) => { const rolls = tunableRolls[field.value.key] ?? []; const rollIndex = Math.max(0, rolls.findIndex((roll) => Math.abs(roll.value - field.value.value) < .001)); const keys = availableSubstatKeys(subStatKeys, candidate.fields.subStats.map((entry) => entry.value), index); return <div className="echo-substat-row" key={`${candidate.id}-${index}`}><div className="echo-stat-line"><span>#{index + 1} <Confidence value={field.confidence}/></span><select value={field.value.key} onChange={(event) => setSubStat(index, event.target.value as StatKey, 0)}>{keys.map((key) => <option key={key} value={key}>{statLabels[key]}</option>)}</select><strong>{formatStat(field.value.key, rolls[rollIndex]?.value ?? field.value.value)}</strong><button type="button" className="text-button" onClick={() => updateFields({ subStats: candidate.fields.subStats.filter((_, fieldIndex) => fieldIndex !== index) })}>Remove</button></div><div className="echo-roll-slider"><input aria-label={`Substat ${index + 1} roll`} type="range" min="0" max={Math.max(0, rolls.length - 1)} step="1" value={rollIndex} onChange={(event) => setSubStat(index, field.value.key, Number(event.target.value))}/><div>{rolls.map((roll, point) => <i className={point === rollIndex ? 'active' : ''} key={roll.value}>{roll.value}</i>)}</div></div></div> })}{(() => { const keys = availableSubstatKeys(subStatKeys, candidate.fields.subStats.map((entry) => entry.value)); const key = keys[0]; return <button type="button" className="secondary add-substat" disabled={candidate.fields.subStats.length >= maxSubStats || !key} onClick={() => key && updateFields({ subStats: [...candidate.fields.subStats, { value: { key, value: tunableRolls[key]?.[0].value ?? 0 }, confidence: 1 }] })}>+ Add substat</button> })()}</div>
       {candidate.duplicateOf && <div className="notice warning">Possible duplicate. Saving creates a separate inventory item.</div>}
       {errors.length > 0 && <div className="notice error">{errors.join(' ')}</div>}
-      {evidenceOpen && candidate.evidence && <div className="scan-evidence-drawer"><header><div><span className="eyebrow">Local diagnostics</span><h3>Field evidence</h3></div><div>{onCopyDiagnostic && <><button type="button" className="text-button" onClick={() => onCopyDiagnostic(false)}>Copy report</button><button type="button" className="text-button" onClick={() => onCopyDiagnostic(true)}>Copy with images</button></>}</div></header><div className="scan-evidence-grid">{Object.values(candidate.evidence).map((evidence) => <article className={evidence.validation.valid ? '' : 'invalid'} key={evidence.region.id}><header><b>{evidence.region.label}</b><span>{Math.round(evidence.confidence * 100)}%</span></header><div><figure><img src={evidence.originalCrop} alt={`${evidence.region.label} original crop`}/><figcaption>Original</figcaption></figure><figure><img src={evidence.processedCrop} alt={`${evidence.region.label} processed crop`}/><figcaption>{evidence.preprocessing}</figcaption></figure></div><code>{evidence.rawOcr.trim() || 'Visual classifier'}</code><small>{evidence.workerId} · {Math.round(evidence.processingMs)} ms</small>{evidence.validation.messages.map((message) => <p key={message}>{message}</p>)}{onRerunField && !candidate.buildCard && <footer><button type="button" className="text-button" onClick={() => onRerunField(evidence.region.id)}>Re-run field</button></footer>}</article>)}</div></div>}
+      </>}
+      {evidenceOpen && candidate.evidence && <div className="scan-evidence-drawer"><header><div><span className="eyebrow">Local diagnostics</span><h3>Field evidence</h3></div><div>{onCopyDiagnostic && <><button type="button" className="text-button" onClick={() => onCopyDiagnostic(false)}>Copy report</button><button type="button" className="text-button" onClick={() => onCopyDiagnostic(true)}>Copy with images</button></>}</div></header><div className="scan-evidence-grid">{Object.values(candidate.evidence).map((evidence) => <article className={evidence.validation.valid ? '' : 'invalid'} key={evidence.region.id}><header><b>{evidence.region.label}</b><span>{Math.round(evidence.confidence * 100)}%</span></header><div><figure><img src={evidence.originalCrop} alt={`${evidence.region.label} original crop`}/><figcaption>Original</figcaption></figure><figure><img src={evidence.processedCrop} alt={`${evidence.region.label} processed crop`}/><figcaption>{evidence.preprocessing}</figcaption></figure></div><code>{evidenceText(evidence)}</code><small>{evidence.workerId} · {Math.round(evidence.processingMs)} ms</small>{evidence.validation.messages.map((message) => <p key={message}>{message}</p>)}{onRerunField && !candidate.buildCard && <footer><button type="button" className="text-button" onClick={() => onRerunField(evidence.region.id)}>Re-run field</button></footer>}</article>)}</div></div>}
     </div>
   </Panel>
 }

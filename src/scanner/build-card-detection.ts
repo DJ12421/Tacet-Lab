@@ -19,7 +19,13 @@ function regionMetrics(image: HTMLImageElement, x: number, y: number, width: num
 }
 
 export function detectBuildCardFormat(image: HTMLImageElement, preference: BuildCardFormatPreference = 'auto'): BuildCardFormatDetection {
+  const wuwaflexSize: BuildCardFormatId | undefined = image.naturalWidth === 3416 && image.naturalHeight === 1580 ? 'wuwaflex-1580'
+    : image.naturalWidth === 2724 && image.naturalHeight === 1272 ? 'wuwaflex-1272'
+      : image.naturalWidth === 2724 && image.naturalHeight === 1377 ? 'wuwaflex-1377' : undefined
+  if (preference === 'wuwaflex') return { id: wuwaflexSize ?? 'wuwaflex', confidence: 1, certain: true }
   if (preference !== 'auto') return { id: preference, confidence: 1, certain: true }
+  // shortcut: exact-size exports only; use a visual signature if resized WuWaFlex cards need auto-detection.
+  if (wuwaflexSize) return { id: wuwaflexSize, confidence: .99, certain: true }
   const ratio = image.naturalWidth / image.naturalHeight
   const aspectScore = (target: number) => Math.max(0, 1 - Math.abs(ratio - target) / .16)
   const scores = new Map<BuildCardFormatId, number>(buildCardFormats.map((format) => [format.id, aspectScore(format.aspectRatio)]))

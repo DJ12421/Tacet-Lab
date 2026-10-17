@@ -132,4 +132,4 @@ export interface RecognizedFields {
   excluded?: ScanField<boolean>
 }
 
-export type OcrWorkerPreference = 'auto' | 1 | 2 | 4
+export type OcrWorkerPreference = 'auto' | 1 | 2 | 4 | 6 | 8

@@ -1,4 +1,4 @@
-import { useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import { useDeferredValue, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { statLabels } from '../game-data/core'
 import { generatedSonataCatalog } from '../game-data/sonatas.generated'
@@ -10,11 +10,10 @@ import { clearEchoId } from '../domain/echo-slots'
 import { effectiveSubStats } from '../game-data/echo-main-stats'
 import { db } from '../storage/database'
 import type { Build, Echo, EquippedLoadout, OwnedCharacter, StatKey } from '../domain/types'
-import { EchoMiniCard, Icon, PageHeader, Panel } from './components'
+import { EchoMiniCard, Icon, PageHeader, Panel, SingleSelect } from './components'
 import { EchoEditModal } from './EchoEditModal'
 import type { CompatibleCharacter } from './OwnedInventoryView'
 import { statIconSource } from './stat-icons'
-import { useDismissableLayer } from './useDismissableLayer'
 import './echo-inventory.css'
 
 type SortKey = 'score' | 'newest' | 'name' | 'cost' | 'level'
@@ -32,23 +31,6 @@ const sonataNames = generatedSonataCatalog.map((sonata) => sonata.name)
 const echoCosts = [1, 3, 4]
 const echoRarities = [5, 4, 3, 2]
 const ECHOES_PER_PAGE = 30
-
-export function SingleSelect({ label, value, options, onChange }: { label: string; value: string; options: Array<{ value: string; label: string; icon?: string }>; onChange: (value: string) => void }) {
-  const [open, setOpen] = useState(false)
-  const ref = useRef<HTMLDivElement>(null)
-  const selectedOption = options.find((option) => option.value === value)
-  useDismissableLayer(open, ref, () => setOpen(false))
-  useEffect(() => {
-    if (!open) return
-    const menu = ref.current?.querySelector<HTMLElement>('.echo-single-select-menu')
-    const selected = menu?.querySelector<HTMLElement>('.active')
-    if (menu && selected) menu.scrollTop = selected.offsetTop - (menu.clientHeight - selected.clientHeight) / 2
-  }, [open])
-  return <div className="echo-single-select" ref={ref} onClick={(event) => event.stopPropagation()} onKeyDown={(event) => { event.stopPropagation(); if (event.key === 'Escape' && open) { setOpen(false); ref.current?.querySelector<HTMLButtonElement>('.multi-select-trigger')?.focus() } }}>
-    <button type="button" className="multi-select-trigger" aria-label={label} aria-haspopup="true" aria-expanded={open} onClick={() => setOpen((current) => !current)}><span className="multi-select-values">{selectedOption?.icon && <img src={selectedOption.icon} alt=""/>}<em>{selectedOption?.label ?? value}</em></span><strong aria-hidden="true">⌄</strong></button>
-    {open && <div className="echo-single-select-menu" aria-label={label}>{options.map((option) => <button type="button" className={option.value === value ? 'active' : ''} aria-pressed={option.value === value} onClick={() => { onChange(option.value); setOpen(false); ref.current?.querySelector<HTMLButtonElement>('.multi-select-trigger')?.focus() }} key={option.value}>{option.icon && <img src={option.icon} alt=""/>}<span>{option.label}</span></button>)}</div>}
-  </div>
-}
 
 function EchoPagination({ page, pageCount, total, onChange }: { page: number; pageCount: number; total: number; onChange: (page: number) => void }) {
   const start = total ? (page - 1) * ECHOES_PER_PAGE + 1 : 0

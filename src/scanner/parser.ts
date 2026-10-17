@@ -1,5 +1,5 @@
 ﻿import { generatedCharacterSummaries as characterCatalog } from '../game-data/character-summaries.generated'
-import { statAliases } from '../game-data/core'
+import { statAliases, statLabels } from '../game-data/core'
 import { echoCatalog, type EchoCatalogEntry } from '../game-data/echoes'
 import { generatedSonataCatalog } from '../game-data/sonatas.generated'
 import { generatedWeaponSummaries as weaponCatalog } from '../game-data/weapon-summaries.generated'
@@ -40,9 +40,12 @@ function restoreDroppedDecimal(key: StatKey, value: number) {
   return normalized
 }
 
-function exactRollAfterAmbiguousDigitSwap(key: StatKey, value: number) {
+function exactRollAfterOcrDigitError(key: StatKey, value: number) {
   const text = String(value)
   const matches = new Map<number, NonNullable<ReturnType<typeof exactTunableRoll>>>()
+  if (value < 10 && /^\d\.\d+$/.test(text)) {
+    for (const roll of tunableRolls[key] ?? []) if (String(roll.value).slice(1) === text) matches.set(roll.value, roll)
+  }
   for (let index = 0; index < text.length; index += 1) {
     if (text[index] !== '1' && text[index] !== '7') continue
     const swapped = `${text.slice(0, index)}${text[index] === '1' ? '7' : '1'}${text.slice(index + 1)}`
@@ -50,22 +53,38 @@ function exactRollAfterAmbiguousDigitSwap(key: StatKey, value: number) {
     const roll = exactTunableRoll(key, normalized)
     if (roll) matches.set(roll.value, roll)
   }
-  return matches.size === 1 ? [...matches.values()][0] : undefined
+  return matches.size === 1 ? matches.values().next().value : undefined
 }
 
 export function resolveTunableRoll(key: StatKey, value: number) {
-  return closestTunableRoll(key, value) ?? exactRollAfterAmbiguousDigitSwap(key, value)
+  return closestTunableRoll(key, value) ?? exactRollAfterOcrDigitError(key, value)
 }
 
 export function parseStatLine(line: string): StatLine | undefined {
-  const valueMatch = line.match(/(-?\d+(?:[.,]\d+)?)\s*(%)?\s*$/)
+  const cleanedLine = line.trim().replace(/[,;]+$/, '')
+  const valueMatch = cleanedLine.match(/(-?\d+(?:[.,]\d+)?)\s*(%)?\s*$/)
   if (!valueMatch) return
-  const label = line.slice(0, valueMatch.index).replace(/[+.:]/g, ' ').trim()
+  const label = cleanedLine.slice(0, valueMatch.index).replace(/[+.:!|]/g, ' ').trim().replace(/\s+[a-z]$/i, '').replace(/\bcrit\s+bmg\b/i, 'Crit DMG')
   const isPercent = Boolean(valueMatch[2] || label.includes('%'))
   const normalizedLabel = label.replace(/%/g, '').trim()
   let key: StatKey | undefined
   for (const [pattern, candidate] of statAliases) {
     if (pattern.test(`${normalizedLabel}${isPercent ? ' %' : ''}`)) { key = candidate; break }
+  }
+  if (!key) {
+    const firstWord = normalizedLabel.match(/^[a-z]{3,}/i)?.[0].toLowerCase()
+    const rawValue = Number(valueMatch[1].replace(',', '.'))
+    const words = normalizedLabel.toLowerCase().split(/\s+/)
+    const secondWordIsStat = words[1] && Object.values(statLabels).some((name) => name.toLowerCase().split(/[^a-z]+/)[0] === words[1])
+    if (firstWord && words.length <= 2 && !secondWordIsStat) {
+      const matches = Object.keys(tunableRolls).filter((candidate): candidate is StatKey => {
+        const name = statLabels[candidate].toLowerCase().replace(/[^a-z]/g, '')
+        return (name.startsWith(firstWord) || firstWord.startsWith(name))
+          && (!isPercent || candidate !== 'hp' && candidate !== 'atk' && candidate !== 'def')
+          && Boolean(exactTunableRoll(candidate, rawValue))
+      })
+      if (matches.length === 1) key = matches[0]
+    }
   }
   if (!key) return
   const value = restoreDroppedDecimal(key, Number(valueMatch[1].replace(',', '.')))
@@ -205,6 +224,9 @@ export function candidateErrors(candidate: ScanCandidate) {
   if (![1, 3, 4].includes(candidate.fields.cost.value)) errors.push('Cost must be 1, 3, or 4.')
   if (![1, 2, 3, 4, 5].includes(candidate.fields.rarity.value)) errors.push('Rarity must be between 1 and 5.')
   if (!candidate.fields.sonata.value.trim() || candidate.fields.sonata.value === 'Unknown Sonata') errors.push('Choose or enter a Sonata set.')
+  const catalogEcho = echoCatalog.find((entry) => entry.name === candidate.fields.name.value)
+  if (catalogEcho && candidate.fields.sonata.value.trim() && candidate.fields.sonata.value !== 'Unknown Sonata' && !catalogEcho.sonatas.includes(candidate.fields.sonata.value))
+    errors.push(`${catalogEcho.name} cannot use ${candidate.fields.sonata.value}. Choose one of its available Sonata sets.`)
   if (!Number.isFinite(candidate.fields.mainStat.value.value) || candidate.fields.mainStat.value.value < 0) errors.push('Main stat must be a non-negative number.')
   const invalidMainStat = mainStatError(candidate.fields.cost.value, candidate.fields.rarity.value, candidate.fields.level.value, candidate.fields.mainStat.value)
   if (invalidMainStat) errors.push(invalidMainStat)
