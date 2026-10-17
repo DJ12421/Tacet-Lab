@@ -47,8 +47,9 @@ export async function prepareScanFrame(
   const formatDetection = source === 'screenshot'
     ? detectBuildCardFormat(image, preferredBuildCardFormat)
     : { id: 'discord-bot' as const, confidence: 0, certain: false }
-  const buildCard = source === 'screenshot' && (preferredLayout === 'build-card' || formatDetection.certain)
-  const layout: Exclude<ScanLayout, 'unknown'> = buildCard ? 'build-card' : (source !== 'screenshot' && preferredLayout === 'build-card' ? undefined : preferredLayout) ?? dimensionCompatiblePreferred?.layout ?? (detected.layout === 'unknown' ? 'echo-detail' : detected.layout)
+  const requestedLayout = preferredLayout ?? dimensionCompatiblePreferred?.layout
+  const buildCard = source === 'screenshot' && (requestedLayout === 'build-card' || (!requestedLayout && formatDetection.certain))
+  const layout: Exclude<ScanLayout, 'unknown'> = buildCard ? 'build-card' : (source !== 'screenshot' && requestedLayout === 'build-card' ? undefined : requestedLayout) ?? (detected.layout === 'unknown' ? 'echo-detail' : detected.layout)
   const format = buildCard ? formatDetection.id : undefined
   const compatiblePreferred = dimensionCompatiblePreferred?.layout === layout
     && (layout !== 'build-card' || (dimensionCompatiblePreferred.buildCardFormat ?? 'discord-bot') === format)

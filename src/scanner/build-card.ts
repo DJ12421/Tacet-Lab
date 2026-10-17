@@ -538,7 +538,7 @@ async function recognizeConfiguredBuildCard(
     }
     if (sequenceRect && sequenceCrop) evidence.sequence = {
       region: { ...region('sequence', sequenceRect, 'visual'), label: 'Sequence icons' },
-      originalCrop: sequenceCrop.dataUrl, processedCrop: sequenceCrop.dataUrl, rawOcr: sequence.raw,
+      originalCrop: sequenceCrop.dataUrl, processedCrop: sequenceCrop.dataUrl, rawOcr: sequence.raw ?? '',
       confidence: sequence.confidence, parsedValue: sequence.value,
       validation: { valid: sequence.confidence >= .55, messages: sequence.confidence >= .55 ? [] : ['Sequence icons need review.'] },
       workerId: 'visual-classifier', jobId: 'build-card:sequence', processingMs: 0, preprocessing: sequenceCrop.strategy

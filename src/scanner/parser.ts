@@ -77,7 +77,7 @@ export function parseStatLine(line: string): StatLine | undefined {
     const words = normalizedLabel.toLowerCase().split(/\s+/)
     const secondWordIsStat = words[1] && Object.values(statLabels).some((name) => name.toLowerCase().split(/[^a-z]+/)[0] === words[1])
     if (firstWord && words.length <= 2 && !secondWordIsStat) {
-      const matches = Object.keys(tunableRolls).filter((candidate): candidate is StatKey => {
+      const matches = (Object.keys(tunableRolls) as StatKey[]).filter((candidate) => {
         const name = statLabels[candidate].toLowerCase().replace(/[^a-z]/g, '')
         return (name.startsWith(firstWord) || firstWord.startsWith(name))
           && (!isPercent || candidate !== 'hp' && candidate !== 'atk' && candidate !== 'def')

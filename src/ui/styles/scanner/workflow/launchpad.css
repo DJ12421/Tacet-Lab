@@ -152,6 +152,12 @@
   color: #e8efec;
 }
 
+.scanner-format-note {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: var(--font-size-caption);
+}
+
 .scanner-drop-overlay {
   position: fixed;
   z-index: 1000;
