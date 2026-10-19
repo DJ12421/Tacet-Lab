@@ -1,4 +1,4 @@
-import { defaultPanelRectForLayout, normalizeSubstatRegions, regionsForLayout } from './regions'
+import { DEFAULT_PANEL_RECTS, defaultPanelRectForLayout, normalizeSubstatRegions, regionsForLayout } from './regions'
 import type { CalibrationProfile, ScanLayout, ScanRect } from './types'
 import { buildCardFormat, buildCardFormatRegions, buildCardFormats, type BuildCardFormatId } from './build-card-formats'
 
@@ -54,11 +54,54 @@ function inferredBuildCardFormat(profile: Pick<CalibrationProfile, 'layout' | 'n
   return profile.buildCardFormat ?? buildCardFormats.find((format) => profile.name.endsWith(`${format.label} build card`))?.id ?? 'discord-bot'
 }
 
-function normalizedProfileRegions(layout: ScanLayout, input: CalibrationProfile['regions'], buildCardFormat?: BuildCardFormatId) {
+function normalizedProfileRegions(layout: ScanLayout, input: CalibrationProfile['regions'], buildCardFormat?: BuildCardFormatId, panelRect?: ScanRect) {
   const normalized = (layout === 'build-card' ? input.map((region) => ({ ...region, rect: { ...region.rect } })) : normalizeSubstatRegions(input))
     .filter((region) => layout !== 'build-card' || (!/^echo-\d+-main-stat$/.test(region.id)
       && !(buildCardFormat?.startsWith('wuwaflex') && /^echo-\d+-art$/.test(region.id))))
-  if (layout !== 'build-card') return normalized
+  if (layout !== 'build-card') {
+    const panel = layout === 'echo-management' ? DEFAULT_PANEL_RECTS['echo-management'] : DEFAULT_PANEL_RECTS['echo-detail']
+    if (panelRect && (Object.keys(panel) as Array<keyof ScanRect>).some((key) => Math.abs(panelRect[key] - panel[key]) >= 1e-6)) return normalized
+    const oldDefaults: Array<[string, ScanRect[]]> = layout === 'echo-management' ? [
+      ['echo-name', [
+        { x: 0.037202645494859125, y: 0, width: 0.9424581322109724, height: 0.0848 },
+        { x: 0.018648315, y: 0.002004547, width: 0.926962754, height: 0.051133874 }
+      ]],
+      ['level', [{ x: 0.04345000882976219, y: 0.09213376797710895, width: 0.10959238383957302, height: 0.0380334319216382 }]],
+      ['cost', [{ x: 0.04855090112628535, y: 0.15371033421607258, width: 0.20251765952437012, height: 0.03974953671232499 }]],
+      ['rarity', [{ x: 0.038437929224550665, y: 0, width: 0.28296064378777175, height: 0.04482382820020904 }]],
+      ['sonata', [{ x: 0.145, y: 0.075, width: 0.11, height: 0.075 }]],
+      ['main-stat-label', [
+        { x: 0.10673394454909348, y: 0.4195416417402426, width: 0.6744156414331686, height: 0.04058667132532937 },
+        { x: 0.114777786, y: 0.423107042, width: 0.659173514, height: 0.04211025 }
+      ]],
+      ['main-stat-value', [
+        { x: 0.7888109130955184, y: 0.4181002873844789, width: 0.2050195971666274, height: 0.04274863570804797 },
+        { x: 0.7739513, y: 0.423107042, width: 0.2260487, height: 0.04211025 }
+      ]],
+      ['substats-block', [
+        { x: 0.10570595175025509, y: 0.5289550241356548, width: 0.8807481138646887, height: 0.36735557071196745 },
+        { x: 0.114777786, y: 0.535300779, width: 0.885222214, height: 0.36470484 }
+      ]],
+      ['equipped-character', [{ x: 0.10364935297464878, y: 0.9432343066672166, width: 0.8128022108743427, height: 0.04558651016310476 }]],
+      ['locked', [{ x: 0.2560685729142139, y: 0.2744580554896581, width: 0.09756010370065143, height: 0.06820120716952718 }]],
+      ['discarded', [{ x: 0.04110884644062475, y: 0.27589935612468025, width: 0.09550411810297464, height: 0.06603924278680859 }]]
+    ] : [
+      ['sonata', [{ x: 0.88, y: 0.008, width: 0.115, height: 0.065 }]],
+      ['substats-block', [
+        { x: 0.10249478831318715, y: 0.2099360409169144, width: 0.8469986970782968, height: 0.24650859020497576 },
+        { x: 0.10249478831318715, y: 0.2099360409169144, width: 0.8655078175302193, height: 0.24650859020497576 },
+        { x: 0.10249478831318715, y: 0.2099360409169144, width: 0.8469986970782968, height: 0.21 }
+      ]]
+    ]
+    const defaults = regionsForLayout(layout)
+    // Only replace exact bundled boxes; keep every user-adjusted calibration.
+    return normalized.map((region) => {
+      const old = oldDefaults.find(([id]) => id === region.id)?.[1]
+      const current = defaults.find((entry) => entry.id === region.id)
+      return old && current && old.some((rect) => (Object.keys(rect) as Array<keyof ScanRect>).every((key) => Math.abs(region.rect[key] - rect[key]) < 1e-6))
+        ? { ...region, rect: { ...current.rect } } : region
+    })
+  }
   const defaults = buildCardFormat && buildCardFormat !== 'discord-bot' ? buildCardFormatRegions(buildCardFormat) : regionsForLayout('build-card')
   const updated = buildCardFormat === 'wuwaflex' ? normalized.map((region) => {
     const fallback = defaults.find((entry) => entry.id === region.id)
@@ -129,7 +172,7 @@ function normalizedStoredProfile(profile: CalibrationProfile): CalibrationProfil
   return {
     ...profile, buildCardFormat,
     id: profileKey(profile.sourceWidth, profile.sourceHeight, profile.layout, profile.uiScale, buildCardFormat),
-    regions: normalizedProfileRegions(profile.layout, profile.regions ?? [], buildCardFormat)
+    regions: normalizedProfileRegions(profile.layout, profile.regions ?? [], buildCardFormat, profile.panelRect)
   }
 }
 
@@ -147,7 +190,7 @@ export function loadLatestCalibrationProfile() {
 export function saveCalibrationProfile(profile: CalibrationProfile) {
   const buildCardFormat = inferredBuildCardFormat(profile)
   const persisted = {
-    ...profile, buildCardFormat, regions: normalizedProfileRegions(profile.layout, profile.regions, buildCardFormat),
+    ...profile, buildCardFormat, regions: normalizedProfileRegions(profile.layout, profile.regions, buildCardFormat, profile.panelRect),
     id: profileKey(profile.sourceWidth, profile.sourceHeight, profile.layout, profile.uiScale, buildCardFormat), updatedAt: Date.now()
   }
   const profiles = loadCalibrationProfiles().filter((entry) => entry.id !== persisted.id)
@@ -187,7 +230,7 @@ function normalizeImportedProfile(input: unknown): CalibrationProfile {
     buildCardFormat,
     id: profileKey(value.sourceWidth, value.sourceHeight, value.layout, value.uiScale, buildCardFormat),
     name: typeof value.name === 'string' ? value.name : profileName(value.sourceWidth, value.sourceHeight, value.layout, buildCardFormat),
-    regions: normalizedProfileRegions(value.layout, value.regions, buildCardFormat),
+    regions: normalizedProfileRegions(value.layout, value.regions, buildCardFormat, value.panelRect),
     createdAt: typeof value.createdAt === 'number' ? value.createdAt : now,
     updatedAt: now
   } as CalibrationProfile

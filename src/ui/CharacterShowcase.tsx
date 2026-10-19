@@ -2,6 +2,7 @@ import { useCallback, useContext, useDeferredValue, useEffect, useMemo, useRef, 
 import type { CSSProperties, ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { toPng } from 'html-to-image'
+import { embedCardMetadata, type CardMetadata } from '../scanner/card-metadata'
 import { baseTuneBreakBoost, characterCatalog, echoCatalog, sonataNames, statLabels, weaponCatalog, type CharacterCatalogEntry, type WeaponCatalogEntry } from '../game-data'
 import { pendingMechanics } from '../game-data/review-status.generated'
 import { characterSubstatScoreKeys } from '../game-data/character-substat-preferences'
@@ -14,7 +15,7 @@ import { createLocalId } from '../domain/id'
 import { resolveLoadout, type LoadoutCollections } from '../domain/loadouts'
 import { db, repairEchoAssignmentConsistency, saveSettings, setOwnedWeaponOwner } from '../storage/database'
 import { deleteCharacterArtwork, loadCharacterArtwork, saveCharacterArtwork } from '../storage/character-art-cache'
-import { setEquippedEchoIds } from '../storage/loadouts'
+import { equipSavedBuild, setEquippedEchoIds } from '../storage/loadouts'
 import type { AppSettings, Build, Echo, EquippedLoadout, LoadoutSourceRef, OwnedCharacter, OwnedWeapon, StatKey, TheorycraftBuild } from '../domain/types'
 import { CharacterSubstatProfileContext, EchoMiniCard, FilterChips, Icon, Panel, SingleSelect } from './components'
 import { EchoEditModal } from './EchoEditModal'
@@ -23,7 +24,7 @@ import type { CalculationDetail } from './CalculationDetails'
 import { showcaseStatDetail } from './calculation-detail-model'
 import { CharacterBuildCard, prioritizedBuildCardStats, type BuildCardStatKey } from './CharacterBuildCard'
 import { defaultEnabledSkillTreeBonusIds, inherentSkillBonusId, resolveCharacterShowcaseModel, skillTreeBonusId } from './character-showcase-model'
-import { WeaponInventoryCard } from './WeaponInventoryCard'
+import { WeaponInventoryCard, weaponBuildCharacterIds, weaponBuildLabels } from './WeaponInventoryCard'
 import { MultiSelect } from './InventoryView'
 import { statIconSource } from './stat-icons'
 import { confirmDiscardChanges, useUnsavedChanges } from './useUnsavedChanges'
@@ -188,7 +189,7 @@ function savedSelection<T extends string | number>(value: unknown, allowed: read
   return Array.isArray(value) ? value.filter((item): item is T => allowed.includes(item as T)) : fallback
 }
 
-function WeaponPicker({ character, characters, catalog, weapons, refresh, onClose }: { character: OwnedCharacter; characters: OwnedCharacter[]; catalog: CharacterCatalogEntry; weapons: OwnedWeapon[]; refresh: () => Promise<void>; onClose: () => void }) {
+function WeaponPicker({ character, characters, catalog, weapons, builds, equippedLoadouts, refresh, onClose }: { character: OwnedCharacter; characters: OwnedCharacter[]; catalog: CharacterCatalogEntry; weapons: OwnedWeapon[]; builds: Build[]; equippedLoadouts: EquippedLoadout[]; refresh: () => Promise<void>; onClose: () => void }) {
   const preferences = useMemo(() => readPickerPreferences(character.id, 'weapon'), [character.id])
   const [adding, setAdding] = useState(false)
   const [query, setQuery] = useState(() => typeof preferences.query === 'string' ? preferences.query : '')
@@ -201,6 +202,10 @@ function WeaponPicker({ character, characters, catalog, weapons, refresh, onClos
   const eligibleCatalog = weaponCatalog.filter((entry) => entry.type.toLowerCase() === catalog.weaponType.toLowerCase())
   const matches = (entry: WeaponCatalogEntry) => rarities.includes(entry.rarity) && entry.name.toLowerCase().includes(query.trim().toLowerCase())
   const visibleOwned = eligibleOwned.filter(({ entry }) => matches(entry)).sort((left, right) => right.entry.rarity - left.entry.rarity || left.entry.name.localeCompare(right.entry.name))
+  const buildLabels = weaponBuildLabels(builds, characters)
+  const buildCharacterIds = weaponBuildCharacterIds(builds, characters)
+  const equippedWeaponOwners = new Map<string, string>()
+  for (const loadout of equippedLoadouts) if (loadout.weaponId) equippedWeaponOwners.set(loadout.weaponId, loadout.characterId)
   const visibleCatalog = eligibleCatalog.filter(matches).sort((left, right) => right.rarity - left.rarity || left.name.localeCompare(right.name))
   const equip = async (weapon: OwnedWeapon) => {
     await setOwnedWeaponOwner(weapon.id, character.id)
@@ -215,7 +220,7 @@ function WeaponPicker({ character, characters, catalog, weapons, refresh, onClos
   return createPortal(<div className={`catalog-picker-backdrop cs-picker-backdrop cs-element-${catalog.element.toLowerCase()}`} onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}><section className="catalog-picker cs-picker cs-weapon-picker" role="dialog" aria-modal="true" aria-label="Equip weapon"><header><div><span className="eyebrow">{catalog.weaponType} inventory</span><h2>{adding ? 'Add and equip weapon' : 'Equip weapon'}</h2></div><button type="button" className="close" aria-label="Close weapon picker" onClick={onClose}>×</button></header>
     <div className="cs-weapon-picker-toolbar wv-toolbar"><label className="search search-field"><Icon name="scan"/><input data-search="" autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Find a weapon"/><span className="search-count" aria-live="polite">{adding ? visibleCatalog.length : visibleOwned.length}/{adding ? eligibleCatalog.length : eligibleOwned.length}</span><kbd>Ctrl K</kbd></label><FilterChips label="Rarity" hideLabel values={weaponRarities} selected={rarities} onChange={setRarities} renderValue={(value) => `${value} ★`}/>{adding ? <button type="button" className="secondary" onClick={() => setAdding(false)}>← Owned weapons</button> : <button type="button" className="primary" onClick={() => setAdding(true)}><Icon name="plus"/>Add weapon</button>}</div>
     <div className={adding ? 'catalog-picker-grid cs-weapon-picker-grid' : 'wv-grid cs-weapon-picker-grid'}>
-    {!adding && visibleOwned.map(({ owned, entry }) => { const owner = characters.find((candidate) => candidate.id === owned.equippedBy); const ownerCatalog = characterCatalog.find((candidate) => candidate.id === owner?.catalogId); return <WeaponInventoryCard weapon={owned} catalog={entry} className="cs-weapon-picker-card" ariaLabel={`Equip ${entry.name}`} onClick={() => void equip(owned)} footer={<button type="button" className="character-equip-trigger cs-weapon-picker-owner" onClick={() => void equip(owned)}>{ownerCatalog ? <img src={ownerCatalog.iconSourceUrl} alt=""/> : <span className="equip-empty">—</span>}<b>{ownerCatalog?.name ?? 'Unequipped'}</b><i>Equip</i></button>} key={owned.id}/> })}
+    {!adding && visibleOwned.map(({ owned, entry }) => { const owner = characters.find((candidate) => candidate.id === equippedWeaponOwners.get(owned.id)); const ownerCatalog = characterCatalog.find((candidate) => candidate.id === owner?.catalogId); const buildLabel = buildLabels.get(owned.id)?.join(', '); const referenced = characters.filter((candidate) => candidate.id === owner?.id || buildCharacterIds.get(owned.id)?.includes(candidate.id)).flatMap((candidate) => { const catalog = characterCatalog.find((entry) => entry.id === candidate.catalogId); return catalog ? [{ id: candidate.id, catalog }] : [] }); const shared = referenced.length > 1; const displayName = shared ? referenced.map(({ catalog }) => catalog.name).join(', ') : buildLabel ?? ownerCatalog?.name ?? 'Unequipped'; return <WeaponInventoryCard weapon={owned} catalog={entry} className="cs-weapon-picker-card" ariaLabel={`Equip ${entry.name}`} onClick={() => void equip(owned)} footer={<button type="button" className={`character-equip-trigger cs-weapon-picker-owner${shared ? ' multiple-characters' : buildLabel && !ownerCatalog ? ' no-character-icon' : ''}`} title={displayName} onClick={() => void equip(owned)}>{shared ? <span className="character-owner-stack" aria-hidden="true">{referenced.map(({ id, catalog }) => <img src={catalog.iconSourceUrl} alt="" key={id}/>)}</span> : ownerCatalog ? <img src={ownerCatalog.iconSourceUrl} alt=""/> : !buildLabel && <span className="equip-empty">—</span>}<b>{displayName}</b><i>Equip</i></button>} key={owned.id}/> })}
     {adding && visibleCatalog.map((entry) => <button className={`catalog-choice weapon-choice rarity-${entry.rarity}`} key={entry.id} onClick={() => void add(entry)}><img src={entry.iconSourceUrl} alt=""/><span><strong>{entry.name}</strong><small>{entry.type}</small><Stars rarity={entry.rarity}/></span></button>)}
     {(adding ? visibleCatalog.length : visibleOwned.length) === 0 && <div className="wv-empty compact"><h3>No matching weapons</h3><button type="button" className="text-button" onClick={() => { setQuery(''); setRarities(weaponRarities) }}>Clear filters</button></div>}
   </div></section></div>, document.body)
@@ -382,6 +387,7 @@ export function CharacterShowcase({ character, characters, catalog, weapons, ech
   const [exporting, setExporting] = useState(false)
   const [exportMessage, setExportMessage] = useState('')
   const [echoMoveError, setEchoMoveError] = useState('')
+  const [loadoutError, setLoadoutError] = useState('')
   const [weaponPickerOpen, setWeaponPickerOpen] = useState(false)
   const [echoSlot, setEchoSlot] = useState<number | null>(null)
   const [deleteArmed, setDeleteArmed] = useState(false)
@@ -482,11 +488,34 @@ export function CharacterShowcase({ character, characters, catalog, weapons, ech
     await refresh()
     onBack()
   }
+  const characterBuilds = builds.filter((entry) => entry.resonatorId === character.catalogId && (!entry.characterId || entry.characterId === character.id))
+  const equippedLoadout = equippedLoadouts.find((entry) => entry.characterId === character.id)
+  const equippedNumberedBuild = characterBuilds.find((build) => equippedLoadout && /^Build \d+$/.test(build.name)
+    && build.weaponId === equippedLoadout.weaponId
+    && build.echoIds.length === equippedLoadout.echoIds.length
+    && build.echoIds.every((id, index) => id === equippedLoadout.echoIds[index]))
   const loadoutSources: Array<{ source: LoadoutSourceRef; label: string }> = [
-    { source: { type: 'equipped', characterId: character.id }, label: 'Equipped Build' },
-    ...builds.filter((entry) => entry.resonatorId === character.catalogId && (!entry.characterId || entry.characterId === character.id)).map((entry) => ({ source: { type: 'saved' as const, buildId: entry.id }, label: `Saved · ${entry.name}` })),
+    { source: { type: 'equipped', characterId: character.id }, label: equippedNumberedBuild ? `Equipped · ${equippedNumberedBuild.name}` : 'Equipped Build' },
+    ...characterBuilds.filter((entry) => entry.id !== equippedNumberedBuild?.id).map((entry) => ({ source: { type: 'saved' as const, buildId: entry.id }, label: `Saved · ${entry.name}` })),
     ...theorycraftBuilds.filter((entry) => entry.characterId === character.id).map((entry) => ({ source: { type: 'theorycraft' as const, theorycraftBuildId: entry.id }, label: `Theorycraft · ${entry.name}` }))
   ]
+  const changeLoadout = async (value: string) => {
+    const separator = value.indexOf(':')
+    const type = value.slice(0, separator)
+    const id = value.slice(separator + 1)
+    setLoadoutError('')
+    if (type === 'saved') {
+      try {
+        await equipSavedBuild(id)
+        await refresh()
+        setLoadoutSource({ type: 'equipped', characterId: character.id })
+      } catch (error) {
+        setLoadoutError(error instanceof Error ? error.message : 'The build could not be equipped.')
+      }
+      return
+    }
+    setLoadoutSource(type === 'equipped' ? { type, characterId: id } : { type: 'theorycraft', theorycraftBuildId: id })
+  }
   const innateTuneBreakBoost = baseTuneBreakBoost(catalog)
   const statDetail = (key: BuildCardStatKey, label: string): CalculationDetail => key === 'tuneBreakBoost'
     ? { title: label, value: innateTuneBreakBoost.toFixed(1), formula: 'Character Tune Break baseline', rows: [{ label: 'Base Tune Break Boost', value: innateTuneBreakBoost.toFixed(1) }] }
@@ -545,12 +574,20 @@ export function CharacterShowcase({ character, characters, catalog, weapons, ech
         console.warn('Character card backdrop blur could not be baked; using the export-safe glass fallback.', error)
       }
       await nextPaint()
-      const dataUrl = await renderExportFrame(exportFrame)
+      const rendered = await renderExportFrame(exportFrame)
+      const card: CardMetadata | undefined = model.weapon && model.equippedEchoes.length ? {
+        format: 'tacet-lab-card', version: 1,
+        characterCatalogId: catalog.id, characterLevel: character.level, sequence: character.sequence,
+        skillLevels: model.skillLevels, weaponCatalogId: model.weapon.catalog.id,
+        weaponLevel: model.weapon.owned.level, weaponRank: model.weapon.owned.rank,
+        echoes: model.equippedEchoes.map(({ name, cost, rarity, level, sonata, mainStat, subStats }) => ({ name, cost, rarity, level, sonata, mainStat, subStats }))
+      } : undefined
+      const dataUrl = card ? await embedCardMetadata(rendered, card) : rendered
       const anchor = document.createElement('a')
       anchor.download = `${catalog.name.replace(/\W+/g, '-').replace(/^-|-$/g, '').toLowerCase()}-character-card.png`
       anchor.href = dataUrl
       anchor.click()
-      setExportMessage('Character card exported as a 1920 × 1080 PNG.')
+      setExportMessage(card ? 'Character card exported as a 1920 × 1080 PNG with reimport data.' : 'Character card exported as a 1920 × 1080 PNG. Add a weapon and Echo to enable reimport.')
     } catch {
       setExportMessage('Image export failed. Reload the page and try again.')
     } finally {
@@ -594,8 +631,9 @@ export function CharacterShowcase({ character, characters, catalog, weapons, ech
   }
 
   return <CharacterSubstatProfileContext.Provider value={characterSubstatProfile}><section className={`cs-page cs-element-${catalog.element.toLowerCase()}`} style={customAccentStyle(cardAccent)}>
-    <header className="cs-toolbar"><button className="cs-back" onClick={onBack}>← Characters</button><div className="cs-toolbar-identity"><strong>{catalog.name}</strong><small>{loadoutSource.type === 'equipped' ? 'Tap a card section to edit' : 'Build preview'}</small></div><label className="cs-loadout-source"><select aria-label="Build" value={loadoutSource.type === 'equipped' ? `equipped:${loadoutSource.characterId}` : loadoutSource.type === 'saved' ? `saved:${loadoutSource.buildId}` : `theorycraft:${loadoutSource.theorycraftBuildId}`} onChange={(event) => { const separator = event.target.value.indexOf(':'); const type = event.target.value.slice(0, separator); const id = event.target.value.slice(separator + 1); setLoadoutSource(type === 'equipped' ? { type, characterId: id } : type === 'saved' ? { type, buildId: id } : { type: 'theorycraft', theorycraftBuildId: id }) }}>{loadoutSources.map(({ source, label }) => { const value = source.type === 'equipped' ? `equipped:${source.characterId}` : source.type === 'saved' ? `saved:${source.buildId}` : `theorycraft:${source.theorycraftBuildId}`; return <option value={value} key={value}>{label}</option> })}</select></label><div className="cs-layout-controls-host" ref={setLayoutControlsHost}/><div className="cs-toolbar-actions"><button aria-label={character.favorite ? 'Remove from favorites' : 'Add to favorites'} className={character.favorite ? 'cs-favorite active' : 'cs-favorite'} onClick={() => void updateCharacter({ favorite: !character.favorite })}>{character.favorite ? '♥ Favorited' : '♡ Favorite'}</button><button aria-label={deleteArmed ? 'Confirm character deletion' : 'Delete character'} className={`danger ${deleteArmed ? 'is-armed' : ''}`} onClick={() => void removeCharacter()}><Icon name="trash"/><span>{deleteArmed ? 'Confirm delete' : 'Delete'}</span></button><button aria-label="Export character card" className="secondary cs-export-button" disabled={exporting} onClick={() => void exportCharacterCard()}><Icon name="download"/><span>{exporting ? 'Rendering...' : 'Export'}</span></button></div></header>
+    <header className="cs-toolbar"><button className="cs-back" onClick={onBack}>← Characters</button><div className="cs-toolbar-identity"><strong>{catalog.name}</strong><small>{loadoutSource.type === 'equipped' ? 'Tap a card section to edit' : 'Build preview'}</small></div><label className="cs-loadout-source"><select aria-label="Build" value={loadoutSource.type === 'equipped' ? `equipped:${loadoutSource.characterId}` : loadoutSource.type === 'saved' ? `saved:${loadoutSource.buildId}` : `theorycraft:${loadoutSource.theorycraftBuildId}`} onChange={(event) => void changeLoadout(event.target.value)}>{loadoutSources.map(({ source, label }) => { const value = source.type === 'equipped' ? `equipped:${source.characterId}` : source.type === 'saved' ? `saved:${source.buildId}` : `theorycraft:${source.theorycraftBuildId}`; return <option value={value} key={value}>{label}</option> })}</select></label><div className="cs-layout-controls-host" ref={setLayoutControlsHost}/><div className="cs-toolbar-actions"><button aria-label={character.favorite ? 'Remove from favorites' : 'Add to favorites'} className={character.favorite ? 'cs-favorite active' : 'cs-favorite'} onClick={() => void updateCharacter({ favorite: !character.favorite })}>{character.favorite ? '♥ Favorited' : '♡ Favorite'}</button><button aria-label={deleteArmed ? 'Confirm character deletion' : 'Delete character'} className={`danger ${deleteArmed ? 'is-armed' : ''}`} onClick={() => void removeCharacter()}><Icon name="trash"/><span>{deleteArmed ? 'Confirm delete' : 'Delete'}</span></button><button aria-label="Export character card" title="Complete build PNGs include full build data, including hidden card sections, for reimport." className="secondary cs-export-button" disabled={exporting} onClick={() => void exportCharacterCard()}><Icon name="download"/><span>{exporting ? 'Rendering...' : 'Export'}</span></button></div></header>
     {exportMessage && <div className={`cs-export-message ${exportMessage.startsWith('Image export failed') ? 'is-error' : ''}`} role="status">{exportMessage}</div>}
+    {loadoutError && <div className="notice error" role="alert">{loadoutError}</div>}
     {echoMoveError && <div className="notice error" role="alert">{echoMoveError}</div>}
     {tbaSources.length > 0 && <div className="notice">TBA mechanics for {tbaSources.join(', ')} are omitted from calculated stats and damage.</div>}
 
@@ -636,7 +674,7 @@ export function CharacterShowcase({ character, characters, catalog, weapons, ech
     />
     <div className="cs-layout-panel-host" ref={setLayoutPanelHost}/></div>
 
-    {weaponPickerOpen && <WeaponPicker key={character.id} character={character} characters={characters} catalog={catalog} weapons={weapons} refresh={refresh} onClose={() => setWeaponPickerOpen(false)}/>}
+    {weaponPickerOpen && <WeaponPicker key={character.id} character={character} characters={characters} catalog={catalog} weapons={weapons} builds={builds} equippedLoadouts={equippedLoadouts} refresh={refresh} onClose={() => setWeaponPickerOpen(false)}/>}
     {echoSlot !== null && loadoutSource.type === 'equipped' && <EchoPicker
       key={character.id}
       slot={echoSlot}

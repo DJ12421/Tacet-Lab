@@ -5,21 +5,21 @@ import { TacetLabLogo } from './TacetLabLogo'
 const partners = [
   {
     name: 'Rover Waves',
-    label: 'Community server',
+    label: 'Partnered server',
     image: 'partners/rover-waves.webp',
     description: 'Welcome to Rover Waves! A server dedicated to Rover and anything else related to the gameplay such as team building and much more!',
     links: [{ label: 'Discord', icon: 'discord', url: 'https://discord.gg/ENk8XS38TY' }]
   },
   {
     name: 'Ultimate Gacha Hub',
-    label: 'Community server',
+    label: 'Partnered server',
     image: 'partners/ultimate-gacha-hub.gif',
     description: 'An unofficial server made to act as a hub for all popular gacha games! We have the latest news and an enthusiastic community, so come and join the discussions!',
     links: [{ label: 'Discord', icon: 'discord', url: 'https://discord.gg/nGBjMbwTy9' }]
   },
   {
     name: 'Tacet Lab',
-    label: 'Featured example',
+    label: 'Official server',
     description: 'A local-first Wuthering Waves optimizer for Echoes, builds, and team damage.',
     links: [
       { label: 'Discord', icon: 'discord', url: 'https://discord.gg/fy66NmapWb' },

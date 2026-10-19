@@ -201,6 +201,23 @@
   border-radius: 6px;
 }
 
+.character-equip-trigger.no-character-icon {
+  grid-template-columns: minmax(0,1fr) auto;
+}
+
+.character-equip-trigger.multiple-characters {
+  grid-template-columns: auto minmax(0,1fr) auto;
+}
+
+.character-owner-stack {
+  display: flex;
+  align-items: center;
+}
+
+.character-owner-stack img + img {
+  margin-left: -14px;
+}
+
 .character-equip-trigger img,.character-equip-menu img {
   width: 29px;
   height: 29px;

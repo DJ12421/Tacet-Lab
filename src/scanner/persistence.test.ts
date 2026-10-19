@@ -41,6 +41,54 @@ describe('scanner inventory ownership', () => {
     expect(progress.at(-1)).toBe(2)
   })
 
+  it('keeps two scanned cards as separate builds and equips the later card', async () => {
+    const first = [candidate('first-1'), candidate('first-2')]
+    const second = [candidate('second-1'), candidate('second-2')]
+    second.forEach((scan) => { scan.buildCard!.id = 'card-2'; scan.fields.mainStat.value = { key: 'critDamage', value: 44 } })
+
+    await saveScannedCandidates([...first, ...second])
+
+    const builds = (await db.builds.toArray()).sort((left, right) => left.name.localeCompare(right.name))
+    const loadout = await db.equippedLoadouts.toCollection().first()
+    expect(builds.map((build) => build.name)).toEqual(['Build 1', 'Build 2'])
+    expect(builds[0].echoIds).toHaveLength(2)
+    expect(builds[1].echoIds).toEqual(loadout?.echoIds)
+    expect(builds[0].echoIds).not.toEqual(builds[1].echoIds)
+    expect((await db.echoes.bulkGet(builds[0].echoIds)).every((echo) => !echo?.equippedBy)).toBe(true)
+    expect(await db.echoes.count()).toBe(4)
+  })
+
+  it('preserves an existing equipped build and its weapon stats when scanning another card', async () => {
+    await saveScannedCandidates([candidate('first-1'), candidate('first-2')])
+    const firstBuild = await db.builds.toCollection().first()
+    const next = [candidate('second-1'), candidate('second-2')]
+    next.forEach((scan) => { scan.buildCard!.id = 'card-2'; scan.buildCard!.weaponRank.value = 3 })
+
+    await saveScannedCandidates(next)
+
+    const builds = (await db.builds.toArray()).sort((left, right) => left.name.localeCompare(right.name))
+    expect(builds.map((build) => build.name)).toEqual(['Build 1', 'Build 2'])
+    expect(builds[0].echoIds).toEqual(firstBuild?.echoIds)
+    expect((await db.weapons.get(builds[0].weaponId))?.rank).toBe(2)
+    expect((await db.weapons.get(builds[1].weaponId))?.rank).toBe(3)
+    expect((await db.equippedLoadouts.toCollection().first())?.echoIds).toEqual(builds[1].echoIds)
+  })
+
+  it('saves a previously unsaved equipped setup as Build 1', async () => {
+    await saveScannedCandidates([candidate('first-1'), candidate('first-2')])
+    const previous = await db.equippedLoadouts.toCollection().first()
+    await db.builds.clear()
+    const next = [candidate('second-1'), candidate('second-2')]
+    next.forEach((scan) => { scan.buildCard!.id = 'card-2' })
+
+    await saveScannedCandidates(next)
+
+    const builds = (await db.builds.toArray()).sort((left, right) => left.name.localeCompare(right.name))
+    expect(builds.map((build) => build.name)).toEqual(['Build 1', 'Build 2'])
+    expect(builds[0].echoIds).toEqual(previous?.echoIds)
+    expect((await db.equippedLoadouts.toCollection().first())?.echoIds).toEqual(builds[1].echoIds)
+  })
+
   it('adds the catalog character from a normal equipped Echo scan', async () => {
     const scan = candidate('normal'); delete scan.buildCard
     await saveScannedCandidate(scan)

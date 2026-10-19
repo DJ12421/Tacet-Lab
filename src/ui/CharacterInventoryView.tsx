@@ -51,12 +51,11 @@ export interface CharacterInventoryProps {
   refresh: () => Promise<void>
   characterIdentifier?: string
   onCharacterChange?: (character: { id: string; name: string } | null) => void
-  onGuide?: () => void
 }
 
 const characterRouteKey = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, '')
 
-export function CharacterInventory({ owned, weapons = [], echoes = [], builds = [], equippedLoadouts = [], theorycraftBuilds = [], settings, roverGender, refresh, characterIdentifier, onCharacterChange, onGuide }: CharacterInventoryProps) {
+export function CharacterInventory({ owned, weapons = [], echoes = [], builds = [], equippedLoadouts = [], theorycraftBuilds = [], settings, roverGender, refresh, characterIdentifier, onCharacterChange }: CharacterInventoryProps) {
   const [query, setQuery] = useState('')
   const [elements, setElements] = useState<string[]>(characterElements)
   const [weaponTypeFilter, setWeaponTypeFilter] = useState<string[]>(weaponTypes)
@@ -126,7 +125,7 @@ export function CharacterInventory({ owned, weapons = [], echoes = [], builds = 
 
   return <>
     <PageHeader eyebrow="Your resonators" title="Characters" description="Open a character to inspect their loadout and team links."/>
-    <Panel className="owned-filter chip-toolbar character-roster-toolbar"><label className="search search-field"><Icon name="scan"/><input data-search="" autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search characters..."/><span className="search-count" aria-live="polite">{visible.length}/{owned.length}</span><kbd>Ctrl K</kbd></label><FilterChips label="Element" hideLabel values={characterElements} selected={elements} onChange={setElements} renderValue={(value) => <ElementFilterIcon element={value}/>}/><FilterChips label="Weapon type" hideLabel values={weaponTypes} selected={weaponTypeFilter} onChange={setWeaponTypeFilter} renderValue={(value) => <img className="weapon-type-filter-icon" src={weaponTypeIconSource(value)} alt={value} title={value}/>}/><FilterChips label="Rarity" hideLabel values={characterRarities} selected={rarities} onChange={setRarities} renderValue={(value) => `${value} ★`}/><button type="button" className="primary" onClick={() => setPickerOpen(true)}><Icon name="plus"/>Add character</button>{onGuide && <button type="button" className="secondary add-guide-button" onClick={onGuide}>Guide</button>}</Panel>
+    <Panel className="owned-filter chip-toolbar character-roster-toolbar"><label className="search search-field"><Icon name="scan"/><input data-search="" autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search characters..."/><span className="search-count" aria-live="polite">{visible.length}/{owned.length}</span><kbd>Ctrl K</kbd></label><FilterChips label="Element" hideLabel values={characterElements} selected={elements} onChange={setElements} renderValue={(value) => <ElementFilterIcon element={value}/>}/><FilterChips label="Weapon type" hideLabel values={weaponTypes} selected={weaponTypeFilter} onChange={setWeaponTypeFilter} renderValue={(value) => <img className="weapon-type-filter-icon" src={weaponTypeIconSource(value)} alt={value} title={value}/>}/><FilterChips label="Rarity" hideLabel values={characterRarities} selected={rarities} onChange={setRarities} renderValue={(value) => `${value} ★`}/><button type="button" className="primary" onClick={() => setPickerOpen(true)}><Icon name="plus"/>Add character</button></Panel>
     <div className="character-candy-grid">{visible.map(({ item, catalog, weapon, weaponEntry, equipped }) => {
       const openCharacter = () => { setSelectedId(item.id); onCharacterChange?.({ id: catalog.id, name: catalog.name }) }
       return <article className={`character-candy-card rarity-${catalog.rarity}`} key={item.id} role="button" tabIndex={0} onClick={openCharacter} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') openCharacter() }}>

@@ -2,8 +2,9 @@
 import type { ScanRect } from './types'
 import { brightSubstatThreshold } from './bright-substat'
 import { wuwaflexNameThreshold } from './wuwaflex-name'
+import { echoNameThreshold } from './echo-name-threshold'
 
-type Strategy = 'name' | 'label' | 'text' | 'substat' | 'bright-substat' | 'wuwaflex-name' | 'visual' | 'plain' | 'contrast'
+type Strategy = 'name' | 'echo-name-color' | 'label' | 'text' | 'substat' | 'bright-substat' | 'bright-substat-block' | 'wuwaflex-name' | 'visual' | 'plain' | 'contrast'
 type Request =
   | { type: 'source'; sourceId: string; bitmap: ImageBitmap }
   | { type: 'release'; sourceId: string }
@@ -268,10 +269,12 @@ self.onmessage = async (event: MessageEvent<Request>) => {
         ? ensureLightBackground(normalize(gray), canvas.width, canvas.height)
         : strategy === 'wuwaflex-name'
         ? wuwaflexNameThreshold(source.data, canvas.width, canvas.height)
-        : strategy === 'bright-substat'
-        ? brightSubstatThreshold(gray, canvas.width, canvas.height)
+        : strategy === 'echo-name-color'
+        ? echoNameThreshold(source.data, canvas.width, canvas.height) ?? globalThreshold(ensureLightBackground(normalize(gray), canvas.width, canvas.height))
+        : strategy === 'bright-substat' || strategy === 'bright-substat-block'
+        ? brightSubstatThreshold(gray, canvas.width, canvas.height, strategy === 'bright-substat-block')
         : globalThreshold(ensureLightBackground(normalize(gray), canvas.width, canvas.height))
-      if (strategy === 'name') binary = removeLargeNameArtwork(binary, canvas.width, canvas.height)
+      if (strategy === 'name' || strategy === 'echo-name-color') binary = removeLargeNameArtwork(binary, canvas.width, canvas.height)
       if (strategy === 'label') binary = removeSmallLabelNoise(binary, canvas.width, canvas.height)
       if (strategy === 'substat') {
         binary = removeSubstatHighlight(binary, canvas.width, canvas.height)

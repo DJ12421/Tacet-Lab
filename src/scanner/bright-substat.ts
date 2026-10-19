@@ -1,4 +1,4 @@
-export function brightSubstatThreshold(values: Uint8Array, width: number, height: number) {
+export function brightSubstatThreshold(values: Uint8Array, width: number, height: number, block = false) {
   const stride = width + 1
   const integral = new Uint32Array(stride * (height + 1))
   for (let y = 1; y <= height; y += 1) {
@@ -8,7 +8,7 @@ export function brightSubstatThreshold(values: Uint8Array, width: number, height
       integral[y * stride + x] = integral[(y - 1) * stride + x] + row
     }
   }
-  const radius = Math.max(8, Math.round(height * .44))
+  const radius = Math.max(8, Math.round(height * (block ? .08 : .44)))
   const output = new Uint8Array(values.length)
   for (let y = 0; y < height; y += 1) for (let x = 0; x < width; x += 1) {
     const left = Math.max(0, x - radius), right = Math.min(width, x + radius + 1)
@@ -17,6 +17,7 @@ export function brightSubstatThreshold(values: Uint8Array, width: number, height
       - integral[bottom * stride + left] + integral[top * stride + left]) / ((right - left) * (bottom - top))
     output[y * width + x] = values[y * width + x] > mean + 18 ? 0 : 255
   }
+  if (block) return output
   const seen = new Uint8Array(output.length)
   const components: { pixels: number[]; left: number; right: number; top: number; bottom: number }[] = []
   for (let start = 0; start < output.length; start += 1) {

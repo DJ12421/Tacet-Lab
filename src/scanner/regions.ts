@@ -44,28 +44,35 @@ const CHARACTER_MENU_REGIONS: ScanRegion[] = [
   region('level', 'level', 'Level', { x: 0.7757026058434064, y: 0.017978524487560633, width: 0.1192, height: 0.0367 }, 'number'),
   region('cost', 'cost', 'Cost', { x: 0.018259667132357407, y: 0.06466804364373077, width: 0.2406, height: 0.0314 }, 'number'),
   region('rarity', 'rarity', 'Rarity', { x: 0.002745439774038753, y: 0.01645107377562197, width: 0.3196, height: 0.0422 }, 'visual'),
-  region('sonata', 'sonata', 'Sonata icon', { x: 0.88, y: 0.008, width: 0.115, height: 0.065 }, 'visual'),
+  region('sonata', 'sonata', 'Sonata icon', { x: 0.9, y: 0.02, width: 0.085, height: 0.04 }, 'visual'),
   region('main-stat-label', 'main-stat-label', 'Main stat label', { x: 0.10054153100892911, y: 0.12402959826318259, width: 0.6583, height: 0.0293 }, 'text'),
   region('main-stat-value', 'main-stat-value', 'Main stat value', { x: 0.7805026058434064, y: 0.12357852448756063, width: 0.1875, height: 0.028 }, 'number'),
-  region(SUBSTAT_BLOCK_ID, 'substats-block', 'Substats block', { x: 0.10249478831318715, y: 0.2099360409169144, width: 0.8469986970782968, height: 0.24650859020497576 }, 'text'),
+  region(SUBSTAT_BLOCK_ID, 'substats-block', 'Substats block', { x: 0.10249478831318715, y: 0.2099360409169144, width: 0.8655078175302193, height: 0.21 }, 'text'),
   region('equipped-character', 'equipped-character', 'Equipped character', { x: 0.109, y: 0.96, width: 0.8245, height: 0.0372 }, 'text'),
   region('locked', 'locked', 'Locked icon', { x: 0.892653257304258, y: 0.059880672038804574, width: 0.1038, height: 0.0426 }, 'visual'),
   region('discarded', 'discarded', 'Discarded icon', { x: 0.6634973941565936, y: 0.059576376936316705, width: 0.10375195438255481, height: 0.0439 }, 'visual'),
 ]
 
-// Default calibration boxes for the Backpack layout.
+// Measured from 1920x1080 Echo Management captures; convert screen pixels into this panel's coordinates.
+// shortcut: 16:9 geometry only; remeasure when captures at another aspect are available.
+const backpackBox = (x: number, y: number, width: number, height: number): ScanRect => {
+  const panel = DEFAULT_PANEL_RECTS['echo-management']
+  return { x: (x / 1920 - panel.x) / panel.width, y: (y / 1080 - panel.y) / panel.height,
+    width: width / 1920 / panel.width, height: height / 1080 / panel.height }
+}
+
 const BACKPACK_REGIONS: ScanRegion[] = [
-  region('echo-name', 'name', 'Echo name', { x: 0.037202645494859125, y: 0, width: 0.9424581322109724, height: 0.0848 }, 'text'),
-  region('level', 'level', 'Level', { x: 0.04345000882976219, y: 0.09213376797710895, width: 0.10959238383957302, height: 0.0380334319216382 }, 'number'),
-  region('cost', 'cost', 'Cost', { x: 0.04855090112628535, y: 0.15371033421607258, width: 0.20251765952437012, height: 0.03974953671232499 }, 'number'),
-  region('rarity', 'rarity', 'Rarity', { x: 0.038437929224550665, y: 0, width: 0.28296064378777175, height: 0.04482382820020904 }, 'visual'),
-  region('sonata', 'sonata', 'Sonata icon', { x: 0.145, y: 0.075, width: 0.11, height: 0.075 }, 'visual'),
-  region('main-stat-label', 'main-stat-label', 'Main stat label', { x: 0.10673394454909348, y: 0.4195416417402426, width: 0.6744156414331686, height: 0.04058667132532937 }, 'text'),
-  region('main-stat-value', 'main-stat-value', 'Main stat value', { x: 0.7888109130955184, y: 0.4181002873844789, width: 0.2050195971666274, height: 0.04274863570804797 }, 'number'),
-  region(SUBSTAT_BLOCK_ID, 'substats-block', 'Substats block', { x: 0.10570595175025509, y: 0.5289550241356548, width: 0.8807481138646887, height: 0.36735557071196745 }, 'text'),
-  region('equipped-character', 'equipped-character', 'Equipped character', { x: 0.10364935297464878, y: 0.9432343066672166, width: 0.8128022108743427, height: 0.04558651016310476 }, 'text'),
-  region('locked', 'locked', 'Locked icon', { x: 0.2560685729142139, y: 0.2744580554896581, width: 0.09756010370065143, height: 0.06820120716952718 }, 'visual'),
-  region('discarded', 'discarded', 'Discarded icon', { x: 0.04110884644062475, y: 0.27589935612468025, width: 0.09550411810297464, height: 0.06603924278680859 }, 'visual')
+  region('echo-name', 'name', 'Echo name', backpackBox(1327, 124, 506, 43), 'text'),
+  region('level', 'level', 'Level', backpackBox(1331, 192, 62, 40), 'number'),
+  region('cost', 'cost', 'Cost', backpackBox(1421, 245, 37, 38), 'number'),
+  region('rarity', 'rarity', 'Rarity', backpackBox(1321, 412, 536, 15), 'visual'),
+  region('sonata', 'sonata', 'Sonata icon', backpackBox(1393, 195, 35, 36), 'visual'),
+  region('main-stat-label', 'main-stat-label', 'Main stat label', backpackBox(1367, 453, 385, 42), 'text'),
+  region('main-stat-value', 'main-stat-value', 'Main stat value', backpackBox(1755, 453, 100, 42), 'number'),
+  region(SUBSTAT_BLOCK_ID, 'substats-block', 'Substats block', backpackBox(1367, 544, 488, 268), 'text'),
+  region('equipped-character', 'equipped-character', 'Equipped character', backpackBox(1365, 869, 462, 43), 'text'),
+  region('locked', 'locked', 'Locked icon', backpackBox(1451, 347, 53, 50), 'visual'),
+  region('discarded', 'discarded', 'Discarded icon', backpackBox(1330, 347, 53, 50), 'visual')
 ]
 
 const BUILD_CARD_REGIONS: ScanRegion[] = [

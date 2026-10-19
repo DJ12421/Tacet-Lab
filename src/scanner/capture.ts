@@ -1,3 +1,6 @@
+import type { CalibrationProfile } from './types'
+import { substatBlockFromRegions } from './regions'
+
 export interface CapturedPanel {
   dataUrl: string
   fingerprint: number[]
@@ -79,6 +82,26 @@ export function probeEchoPanel(video: HTMLVideoElement): PanelProbe | undefined 
   })
   const fingerprint = [...coarse, ...fine]
   return { fingerprint, sourceWidth: video.videoWidth, sourceHeight: video.videoHeight, calibrated }
+}
+
+export function probeEchoSubstats(video: HTMLVideoElement, profile: CalibrationProfile, sample: HTMLCanvasElement): number[] | undefined {
+  // shortcut: identical consecutive substat panels look like one Echo; sample the name too if real footage shows this case.
+  const block = substatBlockFromRegions(profile.regions)
+  if (!block || !video.videoWidth || !video.videoHeight) return
+  if (sample.width !== 64) sample.width = 64
+  if (sample.height !== 32) sample.height = 32
+  const context = sample.getContext('2d', { willReadFrequently: true })
+  if (!context) return
+  const panel = profile.panelRect, region = block.rect
+  context.drawImage(video,
+    video.videoWidth * (panel.x + panel.width * region.x), video.videoHeight * (panel.y + panel.height * region.y),
+    video.videoWidth * panel.width * region.width, video.videoHeight * panel.height * region.height,
+    0, 0, sample.width, sample.height)
+  const pixels = context.getImageData(0, 0, sample.width, sample.height).data
+  return Array.from({ length: sample.width * sample.height }, (_, index) => {
+    const offset = index * 4
+    return Math.round((pixels[offset] * .2126 + pixels[offset + 1] * .7152 + pixels[offset + 2] * .0722) / 16)
+  })
 }
 
 export async function requestGameWindow() {

@@ -4,8 +4,19 @@ import { defaultPanelRectForLayout } from './regions'
 import type { CalibrationProfile, ScanFrame, ScanLayout, ScanRect, ScanSource } from './types'
 import { detectBuildCardFormat } from './build-card-detection'
 import type { BuildCardFormatPreference } from './build-card-formats'
+import { readCardMetadata } from './card-metadata'
 
 const loadImage = async (dataUrl: string) => { const image = new Image(); image.src = dataUrl; await image.decode(); return image }
+
+function snapshotVideo(video: HTMLVideoElement) {
+  if (!video.videoWidth || !video.videoHeight) throw new Error('The captured frame is not ready.')
+  const canvas = document.createElement('canvas')
+  canvas.width = video.videoWidth; canvas.height = video.videoHeight
+  const context = canvas.getContext('2d')
+  if (!context) throw new Error('The captured frame could not be prepared.')
+  context.drawImage(video, 0, 0)
+  return canvas
+}
 
 function panelFingerprint(context: CanvasRenderingContext2D) {
   const sample = document.createElement('canvas'); sample.width = 32; sample.height = 16
@@ -29,10 +40,10 @@ function panelFingerprint(context: CanvasRenderingContext2D) {
   })]
 }
 
-export interface PreparedFrame { frame: ScanFrame; profile: CalibrationProfile; detectionConfidence: number; needsCalibration: boolean }
+export interface PreparedFrame { frame: ScanFrame; profile: CalibrationProfile; detectionConfidence: number }
 
 export async function prepareScanFrame(
-  sourceDataUrl: string,
+  sourceImage: string | HTMLVideoElement,
   source: ScanSource,
   sessionId: string,
   sequence: number,
@@ -40,17 +51,20 @@ export async function prepareScanFrame(
   preferredLayout?: Exclude<ScanLayout, 'unknown'>,
   preferredBuildCardFormat: BuildCardFormatPreference = 'auto'
 ): Promise<PreparedFrame> {
-  const image = await loadImage(sourceDataUrl)
-  const width = image.naturalWidth, height = image.naturalHeight
+  const image = typeof sourceImage === 'string' ? await loadImage(sourceImage) : snapshotVideo(sourceImage)
+  const cardMetadata = source === 'screenshot' && typeof sourceImage === 'string' ? readCardMetadata(sourceImage) : undefined
+  const width = 'naturalWidth' in image ? image.naturalWidth : image.width
+  const height = 'naturalHeight' in image ? image.naturalHeight : image.height
+  if (!width || !height) throw new Error('The captured frame is not ready.')
   const detected = detectRightPanel(image, width, height)
   const dimensionCompatiblePreferred = preferredProfile && (source === 'screenshot' || preferredProfile.layout !== 'build-card') && Math.abs(preferredProfile.sourceWidth - width) <= 2 && Math.abs(preferredProfile.sourceHeight - height) <= 2 ? preferredProfile : undefined
-  const formatDetection = source === 'screenshot'
+  const formatDetection = source === 'screenshot' && 'naturalWidth' in image
     ? detectBuildCardFormat(image, preferredBuildCardFormat)
     : { id: 'discord-bot' as const, confidence: 0, certain: false }
   const requestedLayout = preferredLayout ?? dimensionCompatiblePreferred?.layout
-  const buildCard = source === 'screenshot' && (requestedLayout === 'build-card' || (!requestedLayout && formatDetection.certain))
+  const buildCard = source === 'screenshot' && (cardMetadata || requestedLayout === 'build-card' || (!requestedLayout && formatDetection.certain))
   const layout: Exclude<ScanLayout, 'unknown'> = buildCard ? 'build-card' : (source !== 'screenshot' && requestedLayout === 'build-card' ? undefined : requestedLayout) ?? (detected.layout === 'unknown' ? 'echo-detail' : detected.layout)
-  const format = buildCard ? formatDetection.id : undefined
+  const format = cardMetadata ? 'tacet-lab' : buildCard ? formatDetection.id : undefined
   const compatiblePreferred = dimensionCompatiblePreferred?.layout === layout
     && (layout !== 'build-card' || (dimensionCompatiblePreferred.buildCardFormat ?? 'discord-bot') === format)
     ? dimensionCompatiblePreferred
@@ -69,10 +83,10 @@ export async function prepareScanFrame(
     frame: {
       id: createLocalId(), sessionId, sequence, source, capturedAt: Date.now(), width, height,
       panelRect: { ...rect }, panelImageDataUrl, fingerprint: panelFingerprint(context), layout: profile.layout,
-      buildCardFormat: buildCard ? formatDetection.id : undefined, buildCardFormatConfidence: buildCard ? formatDetection.confidence : undefined,
+      buildCardFormat: format, buildCardFormatConfidence: cardMetadata ? 1 : buildCard ? formatDetection.confidence : undefined, cardMetadata,
       calibrationProfileId: saved?.id ?? compatiblePreferred?.id
     },
-    profile, detectionConfidence: layout === 'build-card' ? 1 : detected.confidence, needsCalibration: !saved && !compatiblePreferred
+    profile, detectionConfidence: layout === 'build-card' ? 1 : detected.confidence
   }
 }
 

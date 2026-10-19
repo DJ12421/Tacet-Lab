@@ -22,10 +22,6 @@
   white-space: nowrap;
 }
 
-.scanner-calibration-notice {
-  margin: 0 0 2px;
-}
-
 /* Scan review owns one scroll region; the page beneath remains locked. */
 
 .scanner-view:has(.scan-review-backdrop) {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { canUseStatBlockWithoutRows, cardEchoConcurrency, classifyDiscordSequence, classifyWuwaflexSequence, confirmedDroppedDigitValue, discordCharacterLevelField, findGoldBadgeRun, mapCardEchoes, mergeVerifiedStatRows, parseBuildCardStats, resolveKernelPuppetTint } from './build-card'
+import { canUseStatBlockWithoutRows, cardEchoConcurrency, classifyDiscordSequence, classifyWuwaflexSequence, confirmedDroppedDigitValue, discordCharacterLevelField, echoSignatureCandidates, findGoldBadgeRun, mapCardEchoes, mergeVerifiedStatRows, parseBuildCardStats, resolveKernelPuppetTint } from './build-card'
 import { buildCardFormat, buildCardFormatRegions } from './build-card-formats'
 
 it('distinguishes red Anger art from other similarly shaped Kernel Puppets', () => {
@@ -55,6 +55,12 @@ describe('Discord Bot character level badge', () => {
       expect(findGoldBadgeRun(pixels, 30)).toEqual({ start: badgeStart, length: 62 })
     }
   })
+})
+
+it('uses a strong Lamp of Nether Road badge to exclude similar Echo art from other sets', () => {
+  const names = echoSignatureCandidates(1, 'Lamp of Nether Road').map((entry) => entry.name)
+  expect(names).toContain('Kernel Puppet: Grief')
+  expect(names).not.toContain('Kernel Puppet: Joy')
 })
 
 describe('Discord Bot sequence stars', () => {

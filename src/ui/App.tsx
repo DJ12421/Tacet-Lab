@@ -351,12 +351,28 @@ export default function App() {
 
   const owners = new Map<string, string[]>()
   for (const loadout of data.equippedLoadouts) for (const echoId of loadout.echoIds) if (echoId) owners.set(echoId, [...(owners.get(echoId) ?? []), loadout.characterId])
+  const equipmentCharacters = data.characters.flatMap((character) => {
+    const catalog = characterCatalog.find((entry) => entry.id === character.catalogId)
+    return catalog ? [{ id: character.id, name: catalog.name, icon: catalog.iconSourceUrl }] : []
+  })
+  const buildLabels = new Map<string, string[]>()
+  const buildOwners = new Map<string, string[]>()
+  for (const build of data.builds) {
+    if (!/^Build \d+$/.test(build.name)) continue
+    const ownedCharacter = build.characterId
+      ? data.characters.find((entry) => entry.id === build.characterId)
+      : data.characters.find((entry) => entry.catalogId === build.resonatorId)
+    const character = equipmentCharacters.find((entry) => entry.id === ownedCharacter?.id)
+    if (!character) continue
+    const label = `${character.name} · ${build.name}`
+    for (const echoId of build.echoIds) if (echoId) {
+      if (!buildLabels.get(echoId)?.includes(label)) buildLabels.set(echoId, [...(buildLabels.get(echoId) ?? []), label])
+      if (!buildOwners.get(echoId)?.includes(character.id)) buildOwners.set(echoId, [...(buildOwners.get(echoId) ?? []), character.id])
+    }
+  }
   const equipment = {
-    ownedIds: new Set(data.echoes.map((echo) => echo.id)), owners,
-    characters: data.characters.flatMap((character) => {
-      const catalog = characterCatalog.find((entry) => entry.id === character.catalogId)
-      return catalog ? [{ id: character.id, name: catalog.name, icon: catalog.iconSourceUrl }] : []
-    }),
+    ownedIds: new Set(data.echoes.map((echo) => echo.id)), owners, buildLabels, buildOwners,
+    characters: equipmentCharacters,
     toggle: async (echoId: string, characterId: string) => {
       try {
         const loadout = await db.equippedLoadouts.where('characterId').equals(characterId).first()
@@ -403,9 +419,9 @@ export default function App() {
         {view === 'dashboard' && <HomeView echoes={data.echoes} characters={data.characters} weapons={data.weapons} builds={data.builds} teams={data.teams} roverGender={data.settings.roverGender} navigate={setView}/>}
         {view === 'archive' && <ArchiveView roverGender={data.settings.roverGender} tab={route.archiveTab ?? 'characters'} onTabChange={(archiveTab) => setRoute({ view: 'archive', archiveTab })}/>}
         {view === 'scanner' && <ScannerView echoes={data.echoes} refresh={data.refresh} onSessionRiskChange={setScannerSessionAtRisk}/>}
-        {view === 'echoes' && <InventoryView echoes={data.echoes} builds={data.builds} equippedLoadouts={data.equippedLoadouts} characters={data.characters} refresh={data.refresh} openScanner={() => setView('scanner')} onGuide={() => startTutorial('echoes')}/>}
-        {view === 'weapons' && <WeaponInventory owned={data.weapons} characters={data.characters} builds={data.builds} refresh={data.refresh} weaponIdentifier={route.weapon} onWeaponChange={(weapon) => setRoute({ view: 'weapons', weapon: weapon?.id })} onGuide={() => startTutorial('weapons')}/>}
-        {view === 'characters' && <CharacterInventory owned={data.characters} weapons={data.weapons} echoes={data.echoes} builds={data.builds} equippedLoadouts={data.equippedLoadouts} theorycraftBuilds={data.theorycraftBuilds} teams={data.teams} settings={data.settings} roverGender={data.settings.roverGender} refresh={data.refresh} characterIdentifier={route.character} onCharacterChange={(entry) => setRoute({ view: 'characters', character: entry ? characterSlug(entry.name) : undefined })} onGuide={() => startTutorial('characters')}/>}
+        {view === 'echoes' && <InventoryView echoes={data.echoes} builds={data.builds} equippedLoadouts={data.equippedLoadouts} characters={data.characters} refresh={data.refresh} openScanner={() => setView('scanner')}/>}
+        {view === 'weapons' && <WeaponInventory owned={data.weapons} characters={data.characters} builds={data.builds} equippedLoadouts={data.equippedLoadouts} refresh={data.refresh} weaponIdentifier={route.weapon} onWeaponChange={(weapon) => setRoute({ view: 'weapons', weapon: weapon?.id })}/>}
+        {view === 'characters' && <CharacterInventory owned={data.characters} weapons={data.weapons} echoes={data.echoes} builds={data.builds} equippedLoadouts={data.equippedLoadouts} theorycraftBuilds={data.theorycraftBuilds} teams={data.teams} settings={data.settings} roverGender={data.settings.roverGender} refresh={data.refresh} characterIdentifier={route.character} onCharacterChange={(entry) => setRoute({ view: 'characters', character: entry ? characterSlug(entry.name) : undefined })}/>}
         {view === 'teams' && <TeamsView echoes={data.echoes} builds={data.builds} equippedLoadouts={data.equippedLoadouts} theorycraftBuilds={data.theorycraftBuilds} teams={data.teams} characters={data.characters} weapons={data.weapons} refresh={data.refresh} openScanner={() => setView('scanner')} galleryRequest={teamsGalleryRequest} roverGender={data.settings.roverGender} route={{ team: route.team, character: route.teamCharacter, section: route.teamSection }} onRouteChange={(next) => setRoute({ view: 'teams', team: next.team, teamCharacter: next.character, teamSection: next.section })}/>} 
         {view === 'guides' && <GuidesView document={route.guide} counts={guideCounts} isFirstVisit={isFirstVisit} onSelect={(guide) => setRoute({ view: 'guides', guide })} onStart={startTutorial}/>}
         {view === 'partnerships' && <PartnershipsView/>}

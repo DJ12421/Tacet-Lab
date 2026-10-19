@@ -23,7 +23,7 @@ const parametersFor = (region: ScanRegion) => {
   const normalizedInput = { preserve_interword_spaces: '1', user_defined_dpi: '300', tessedit_do_invert: '0' }
   if (region.recognition === 'number') return { ...normalizedInput, tessedit_pageseg_mode: PSM.SINGLE_LINE, tessedit_char_whitelist: numberWhitelist }
   if (region.id === 'character-level' && region.recognition === 'text') return { ...normalizedInput, tessedit_pageseg_mode: PSM.SINGLE_LINE, tessedit_char_whitelist: textWhitelist }
-  if (region.kind === 'name') return { ...normalizedInput, tessedit_pageseg_mode: region.id.startsWith('echo-') ? PSM.SINGLE_LINE : PSM.SINGLE_BLOCK, tessedit_char_whitelist: textWhitelist }
+  if (region.kind === 'name') return { ...normalizedInput, tessedit_pageseg_mode: region.id.startsWith('echo-') && region.id !== 'echo-name' ? PSM.SINGLE_LINE : PSM.SINGLE_BLOCK, tessedit_char_whitelist: textWhitelist }
   if (region.kind === 'main-stat-label') return { ...normalizedInput, tessedit_pageseg_mode: PSM.SINGLE_LINE, tessedit_char_whitelist: textWhitelist }
   if (region.kind === 'equipped-character') return { ...normalizedInput, tessedit_pageseg_mode: PSM.SINGLE_LINE, tessedit_char_whitelist: textWhitelist }
   if (region.kind === 'substats-block' || region.id === 'substats-block') return { ...normalizedInput, tessedit_pageseg_mode: PSM.SINGLE_BLOCK, tessedit_char_whitelist: textWhitelist }
@@ -40,7 +40,7 @@ export class OcrPool {
   private failures = 0
   private preference: OcrWorkerPreference
 
-  constructor(private options: OcrPoolOptions = {}) { this.preference = options.preference ?? 'auto' }
+  constructor(private options: OcrPoolOptions = {}) { this.preference = options.preference ?? 4 }
 
   private desiredCount() {
     if (this.preference !== 'auto') return this.preference
@@ -73,7 +73,10 @@ export class OcrPool {
     const generation = this.generation
     const promise = (async () => {
       const id = `ocr-${index + 1}`
-      const worker = await createWorker('eng', 1, { logger: (message) => this.options.onProgress?.(message.progress, `${id}: ${message.status}`) })
+      const worker = await createWorker('eng', 1, {
+        langPath: `${import.meta.env.BASE_URL}tesseract`, cachePath: 'tacet-lab-eng-fast-v1', gzip: true,
+        logger: (message) => this.options.onProgress?.(message.progress, `${id}: ${message.status}`)
+      })
       if (generation !== this.generation) { await worker.terminate(); return }
       const scheduler = createScheduler(); scheduler.addWorker(worker)
       this.slots[index] = { id, worker, scheduler, pending: 0, chain: Promise.resolve() }

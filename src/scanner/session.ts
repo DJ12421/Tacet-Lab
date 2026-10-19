@@ -30,7 +30,7 @@ export class ScanSessionController {
   private frameCache = new Map<string, PreparedFrame>()
   private buildCardFormatPreference: BuildCardFormatPreference = 'auto'
 
-  constructor(source: ScanSource, private callbacks: ScanControllerCallbacks, preference: OcrWorkerPreference = 'auto') {
+  constructor(source: ScanSource, private callbacks: ScanControllerCallbacks, preference: OcrWorkerPreference = 4) {
     const now = Date.now()
     this.session = {
       id: createLocalId(), source, status: 'running', createdAt: now, nextFrameSequence: 0,
@@ -59,7 +59,7 @@ export class ScanSessionController {
     return this.queue.length < max
   }
 
-  async enqueue(dataUrl: string, source: ScanSource = this.session.source, preferredProfile?: CalibrationProfile): Promise<boolean> {
+  async enqueue(image: string | HTMLVideoElement, source: ScanSource = this.session.source, preferredProfile?: CalibrationProfile): Promise<boolean> {
     if (this.cancelled || this.session.status !== 'running') return false
     if (source === 'screen' && !this.hasCapacity(source)) {
       const obsoleteIndex = this.queue.findIndex((entry) => entry.prepared.frame.source === 'screen')
@@ -67,13 +67,15 @@ export class ScanSessionController {
     }
     if (source === 'video' && !this.hasCapacity(source)) return false
     const sequence = this.session.nextFrameSequence++
-    const prepared = await prepareScanFrame(dataUrl, source, this.session.id, sequence, preferredProfile, undefined, this.buildCardFormatPreference)
+    const prepared = await prepareScanFrame(image, source, this.session.id, sequence, preferredProfile, undefined, this.buildCardFormatPreference)
     this.session.metrics.totalFrames += 1
-    if ((source === 'screen' || source === 'video') && this.fingerprints.some((fingerprint) => fingerprintDistance(fingerprint, prepared.frame.fingerprint) <= .018)) {
+    if (source === 'video' && this.fingerprints.some((fingerprint) => fingerprintDistance(fingerprint, prepared.frame.fingerprint) <= .018)) {
       this.session.metrics.skippedFrames += 1; this.session.metrics.duplicates += 1; this.emit(); return false
     }
-    this.fingerprints.push(prepared.frame.fingerprint)
-    if (this.fingerprints.length > 80) this.fingerprints.shift()
+    if (source === 'video') {
+      this.fingerprints.push(prepared.frame.fingerprint)
+      if (this.fingerprints.length > 80) this.fingerprints.shift()
+    }
     this.frameCache.set(prepared.frame.id, prepared)
     const accepted = new Promise<boolean>((resolve, reject) => this.queue.push({ prepared, resolve, reject }))
     this.updateQueueDepth(); void this.drain()

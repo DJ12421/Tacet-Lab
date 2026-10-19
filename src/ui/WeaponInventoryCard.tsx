@@ -1,10 +1,37 @@
 import type { ReactNode } from 'react'
-import type { OwnedWeapon } from '../domain/types'
-import { weaponCatalog } from '../game-data'
+import type { Build, OwnedCharacter, OwnedWeapon } from '../domain/types'
+import { characterCatalog, weaponCatalog } from '../game-data'
 import { weaponStatsAtLevel } from './character-showcase-model'
 import { statIconSource, weaponStatIconSource } from './stat-icons'
 
 type WeaponCatalogEntry = (typeof weaponCatalog)[number]
+
+export function weaponBuildLabels(builds: Build[], characters: OwnedCharacter[]) {
+  const labels = new Map<string, string[]>()
+  for (const build of builds) {
+    if (!/^Build \d+$/.test(build.name) || !build.weaponId) continue
+    const character = build.characterId
+      ? characters.find((entry) => entry.id === build.characterId)
+      : characters.find((entry) => entry.catalogId === build.resonatorId)
+    const name = characterCatalog.find((entry) => entry.id === character?.catalogId)?.name
+    if (!name) continue
+    const label = `${name} · ${build.name}`
+    if (!labels.get(build.weaponId)?.includes(label)) labels.set(build.weaponId, [...(labels.get(build.weaponId) ?? []), label])
+  }
+  return labels
+}
+
+export function weaponBuildCharacterIds(builds: Build[], characters: OwnedCharacter[]) {
+  const owners = new Map<string, string[]>()
+  for (const build of builds) {
+    if (!/^Build \d+$/.test(build.name) || !build.weaponId) continue
+    const character = build.characterId
+      ? characters.find((entry) => entry.id === build.characterId)
+      : characters.find((entry) => entry.catalogId === build.resonatorId)
+    if (character && !owners.get(build.weaponId)?.includes(character.id)) owners.set(build.weaponId, [...(owners.get(build.weaponId) ?? []), character.id])
+  }
+  return owners
+}
 
 export function WeaponInventoryCard({ weapon, catalog, onClick, ariaLabel, footer, className = '' }: { weapon: OwnedWeapon; catalog: WeaponCatalogEntry; onClick: () => void; ariaLabel?: string; footer?: ReactNode; className?: string }) {
   const stats = weaponStatsAtLevel(catalog, weapon.level)

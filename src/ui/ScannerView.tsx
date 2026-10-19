@@ -2,17 +2,17 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState, type DragEve
 import { createPortal } from 'react-dom'
 import type { BuildCardDetails, Echo } from '../domain/types'
 import { createLocalId } from '../domain/id'
+import { echoSignature } from '../scanner/deduplication'
 import { generatedCharacterSummaries as characterCatalog } from '../game-data/character-summaries.generated'
-import { defaultSettings } from '../game-data/core'
 import { generatedWeaponSummaries as weaponCatalog } from '../game-data/weapon-summaries.generated'
 import { candidateErrors, candidateToEcho, parseEchoText } from '../scanner/parser'
 import { saveScannedCandidates, type ScanSaveProgress } from '../scanner/persistence'
 import { buildCardFormats, type BuildCardFormatPreference } from '../scanner/build-card-formats'
 import { StableFrameDetector } from '../scanner/stability'
-import { probeEchoPanel } from '../scanner/capture'
+import { probeEchoSubstats } from '../scanner/capture'
 import { captureScreenFrame, requestScreenSource, stopScreenSource } from '../scanner/sources/screen-source'
 import { readScreenshot } from '../scanner/sources/screenshot-source'
-import { LocalVideoSource, videoSampleTimes, type VideoTrim } from '../scanner/sources/video-source'
+import { LocalVideoSource, type VideoTrim } from '../scanner/sources/video-source'
 import { prepareScanFrame } from '../scanner/frame'
 import { createCalibrationProfile, findCompatibleProfile, loadLatestCalibrationProfile } from '../scanner/calibration'
 import { ScanSessionController } from '../scanner/session'
@@ -73,18 +73,34 @@ function createFeedbackAudio() {
 
 function feedbackTone(context: AudioContext, kind: 'new' | 'duplicate' | 'error') {
   if (context.state !== 'running') return
-  const oscillator = context.createOscillator(), gain = context.createGain()
-  oscillator.frequency.value = kind === 'new' ? 720 : kind === 'duplicate' ? 420 : 220
-  gain.gain.setValueAtTime(.085, context.currentTime); gain.gain.exponentialRampToValueAtTime(.001, context.currentTime + .18)
-  oscillator.connect(gain); gain.connect(context.destination); oscillator.start(); oscillator.stop(context.currentTime + .19)
+  if (kind === 'duplicate') {
+    const oscillator = context.createOscillator(), gain = context.createGain()
+    oscillator.frequency.value = 420
+    gain.gain.setValueAtTime(.085, context.currentTime); gain.gain.exponentialRampToValueAtTime(.001, context.currentTime + .18)
+    oscillator.connect(gain); gain.connect(context.destination); oscillator.start(); oscillator.stop(context.currentTime + .19)
+    return
+  }
+  const notes = kind === 'new' ? [[520, 0, .22], [780, .11, .32]] : [[440, 0, .18], [300, .13, .29]]
+  for (const [frequency, delay, duration] of notes) {
+    const start = context.currentTime + delay
+    const oscillator = context.createOscillator(), gain = context.createGain()
+    oscillator.type = kind === 'new' ? 'sine' : 'triangle'
+    oscillator.frequency.value = frequency
+    gain.gain.setValueAtTime(.001, start)
+    gain.gain.exponentialRampToValueAtTime(.15, start + .015)
+    gain.gain.exponentialRampToValueAtTime(.001, start + duration)
+    oscillator.connect(gain); gain.connect(context.destination); oscillator.start(start); oscillator.stop(start + duration + .01)
+  }
 }
 
 export function ScannerView({ echoes, refresh, onSessionRiskChange }: { echoes: Echo[]; refresh: () => Promise<void>; onSessionRiskChange?: (atRisk: boolean) => void }) {
   const sidebarIconRoot = `${import.meta.env.BASE_URL}sidebar-icons/`
-  const videoRef = useRef<HTMLVideoElement>(null), screenshotRef = useRef<HTMLInputElement>(null), videoFileRef = useRef<HTMLInputElement>(null)
-  const streamRef = useRef<MediaStream | null>(null), controllerRef = useRef<ScanSessionController | null>(null), detector = useRef(new StableFrameDetector())
+  const videoRef = useRef<HTMLVideoElement>(null), videoReplayRef = useRef<HTMLDivElement>(null), screenshotRef = useRef<HTMLInputElement>(null), videoFileRef = useRef<HTMLInputElement>(null)
+  const streamRef = useRef<MediaStream | null>(null), controllerRef = useRef<ScanSessionController | null>(null), detector = useRef(new StableFrameDetector({ stableThreshold: .01, changedThreshold: .01 }))
+  const liveSubstatSample = useRef<HTMLCanvasElement | null>(null)
   const feedbackAudioRef = useRef<AudioContext | null>(null), audioFeedbackRef = useRef(true)
   const imageScanningRef = useRef(false)
+  const lastLiveEchoRef = useRef('')
   const candidateTabsRef = useRef<HTMLDivElement>(null)
   const reviewRef = useRef<HTMLElement>(null)
   const videoSource = useRef(new LocalVideoSource()), candidatesRef = useRef<DiagnosticScanCandidate[]>([]), echoesRef = useRef(echoes)
@@ -93,16 +109,16 @@ export function ScannerView({ echoes, refresh, onSessionRiskChange }: { echoes: 
   const [selectedScanTypes, setSelectedScanTypes] = useState<(typeof scanCardTypes)[number][]>([...scanCardTypes])
   const [equippedFilter, setEquippedFilter] = useState('all')
   const [progress, setProgress] = useState(0), [status, setStatus] = useState('Idle'), [error, setError] = useState('')
-  const [calibrationNotice, setCalibrationNotice] = useState('')
-  const [workerPreference, setWorkerPreference] = useState<OcrWorkerPreference>(4), [debugVisible, setDebugVisible] = useState(true)
+  const [workerPreference, setWorkerPreference] = useState<Exclude<OcrWorkerPreference, 'auto'>>(4), [debugVisible, setDebugVisible] = useState(true)
   const [profile, setProfile] = useState<CalibrationProfile | undefined>(() => loadLatestCalibrationProfile()), [calibrationImage, setCalibrationImage] = useState(''), [calibrating, setCalibrating] = useState(false)
   const calibrationBaseline = useRef('')
   const calibrationDraft = (value: CalibrationProfile) => JSON.stringify([value.name, value.panelRect, value.regions])
   const calibrationDirty = Boolean(calibrating && profile && calibrationBaseline.current && calibrationDraft(profile) !== calibrationBaseline.current)
   useUnsavedChanges(calibrationDirty)
-  const [selectedLayout, setSelectedLayout] = useState<CalibrationProfile['layout']>('echo-management')
+  const [selectedLayout, setSelectedLayout] = useState<CalibrationProfile['layout']>('build-card')
   const [audioFeedback, setAudioFeedback] = useState(true)
-  const [videoTrim, setVideoTrim] = useState<VideoTrim>({ start: 0, end: 0, fps: 10 }), [videoDuration, setVideoDuration] = useState(0)
+  const [videoTrim, setVideoTrim] = useState<VideoTrim>({ start: 0, end: 0 }), [videoDuration, setVideoDuration] = useState(0)
+  const [videoPlayhead, setVideoPlayhead] = useState(0)
   const [videoEta, setVideoEta] = useState('')
   const [reviewOpen, setReviewOpen] = useState(false), [activeReviewId, setActiveReviewId] = useState<string>()
   const [reviewSection, setReviewSection] = useState<BuildCardReviewSection>('echo')
@@ -110,6 +126,12 @@ export function ScannerView({ echoes, refresh, onSessionRiskChange }: { echoes: 
   const [savingProgress, setSavingProgress] = useState<ScanSaveProgress>()
   const [dragActive, setDragActive] = useState(false)
   const dragDepth = useRef(0)
+  useLayoutEffect(() => {
+    if (!videoDuration || streaming || !videoReplayRef.current) return
+    const replay = videoSource.current.video
+    videoReplayRef.current.prepend(replay)
+    return () => { replay.remove() }
+  }, [videoDuration, streaming])
   const closeReview = useCallback(() => { setReviewOpen(false); setReviewSection('echo') }, [])
   useDismissableLayer(reviewOpen, reviewRef, closeReview)
   useBodyScrollLock(reviewOpen)
@@ -156,11 +178,18 @@ export function ScannerView({ echoes, refresh, onSessionRiskChange }: { echoes: 
   useLayoutEffect(() => { onSessionRiskChange?.(streaming || videoScanning || imageScanning || Boolean(savingProgress) || candidates.length > 0 || session?.status === 'running' || session?.status === 'stopping') })
 
   const acceptCandidate = (candidate: DiagnosticScanCandidate) => {
-    setCandidates((current) => {
-      const next = [...current, candidate].sort((left, right) => (left.frameSequence ?? Number.MAX_SAFE_INTEGER) - (right.frameSequence ?? Number.MAX_SAFE_INTEGER))
-      candidatesRef.current = next
-      return next
-    })
+    if (candidate.source === 'screen') {
+      const signature = echoSignature(candidate)
+      if (candidate.duplicateOf) {
+        if (signature !== lastLiveEchoRef.current && audioFeedbackRef.current && feedbackAudioRef.current) feedbackTone(feedbackAudioRef.current, 'duplicate')
+        lastLiveEchoRef.current = signature
+        return
+      }
+      lastLiveEchoRef.current = signature
+    }
+    const next = [...candidatesRef.current, candidate].sort((left, right) => (left.frameSequence ?? Number.MAX_SAFE_INTEGER) - (right.frameSequence ?? Number.MAX_SAFE_INTEGER))
+    candidatesRef.current = next
+    setCandidates(next)
     if (audioFeedbackRef.current && feedbackAudioRef.current) feedbackTone(feedbackAudioRef.current, candidate.duplicateOf ? 'duplicate' : candidateErrors(candidate).length ? 'error' : 'new')
   }
   const toggleAudioFeedback = async (enabled: boolean) => {
@@ -191,7 +220,6 @@ export function ScannerView({ echoes, refresh, onSessionRiskChange }: { echoes: 
     const prepared = await prepareScanFrame(dataUrl, source, controllerRef.current?.session.id ?? createLocalId(), 0, preferredProfile, layout, formatPreference)
     calibrationBaseline.current = calibrationDraft(prepared.profile)
     setCalibrationImage(dataUrl); setProfile(prepared.profile); setSelectedLayout(prepared.profile.layout)
-    setCalibrationNotice(prepared.needsCalibration ? `Scan used detected defaults because no saved ${prepared.frame.width}x${prepared.frame.height} ${prepared.frame.layout} calibration matched. Review and save the panel if any fields are misplaced.` : '')
     return prepared.profile
   }
 
@@ -222,27 +250,28 @@ export function ScannerView({ echoes, refresh, onSessionRiskChange }: { echoes: 
     try {
       const controller = await createController('screen'), stream = await requestScreenSource(); streamRef.current = stream
       stream.getVideoTracks()[0].addEventListener('ended', stopScreen)
-      detector.current.reset(); setStreaming(true); setStatus('Watching for stable Echo panels'); void controller
+      detector.current.reset(); lastLiveEchoRef.current = ''; setStreaming(true); setStatus('Watching for stable Echo panels'); void controller
     } catch (caught) { setError(caught instanceof Error ? caught.message : 'Window sharing was cancelled.') }
   }
 
   useEffect(() => {
     if (!streaming) return
     const timer = window.setInterval(() => {
-      const video = videoRef.current, controller = controllerRef.current; if (!video || !controller) return
-      const probe = probeEchoPanel(video); if (!probe || !detector.current.observe(probe.fingerprint)) return
-      const dataUrl = captureScreenFrame(video); if (dataUrl) void controller.enqueue(dataUrl, 'screen', profile).catch((caught) => setError(caught instanceof Error ? caught.message : 'Live scan failed.'))
-    }, defaultSettings.scanIntervalMs)
+      const video = videoRef.current, controller = controllerRef.current; if (!video || !controller || !profile || profile.layout === 'build-card') return
+      const sample = liveSubstatSample.current ?? (liveSubstatSample.current = document.createElement('canvas'))
+      const probe = probeEchoSubstats(video, profile, sample); if (!probe || !detector.current.observe(probe)) return
+      void controller.enqueue(video, 'screen', profile).catch((caught) => setError(caught instanceof Error ? caught.message : 'Live scan failed.'))
+    }, 250)
     return () => window.clearInterval(timer)
   }, [streaming, profile])
 
   const scanCurrentFrame = async () => {
-    const dataUrl = videoRef.current ? captureScreenFrame(videoRef.current) : undefined; if (!dataUrl) return
-    const controller = controllerRef.current ?? await createController('screen'); await controller.enqueue(dataUrl, 'screen', profile)
+    const video = videoRef.current; if (!video?.videoWidth || !video.videoHeight) return
+    const controller = controllerRef.current ?? await createController('screen'); await controller.enqueue(video, 'screen', profile)
   }
   const acceptScreenshots = async (files: File[]) => {
     if (!files.length || imageScanningRef.current) return
-    videoSource.current.close(); setVideoDuration(0); setVideoEta('')
+    videoSource.current.close(); setVideoDuration(0); setVideoPlayhead(0); setVideoEta('')
     imageScanningRef.current = true
     setError(''); setImageScanning(true)
     const existingIds = new Set(candidatesRef.current.map((candidate) => candidate.id))
@@ -296,9 +325,9 @@ export function ScannerView({ echoes, refresh, onSessionRiskChange }: { echoes: 
   const openVideo = async (file?: File) => {
     if (!file) return
     try {
-      setError(''); setVideoDuration(0); setVideoEta('')
+      setError(''); setVideoDuration(0); setVideoPlayhead(0); setVideoEta('')
       if (streaming) stopScreen()
-      const metadata = await videoSource.current.open(file); setVideoTrim({ start: 0, end: metadata.duration, fps: 10 })
+      const metadata = await videoSource.current.open(file); setVideoTrim({ start: 0, end: metadata.duration })
       await videoSource.current.seek(0)
       const preview = videoSource.current.capture()
       const layout = selectedLayout === 'build-card' ? 'echo-management' : selectedLayout
@@ -308,36 +337,70 @@ export function ScannerView({ echoes, refresh, onSessionRiskChange }: { echoes: 
       setStatus('Video ready')
     } catch (caught) { setError(caught instanceof Error ? caught.message : 'Invalid video.') }
   }
+  const seekVideoPreview = (time: number) => {
+    setVideoPlayhead(time)
+    videoSource.current.video.currentTime = time
+  }
   const scanVideo = async () => {
     setError(''); setVideoScanning(true); videoSource.current.resetCancellation()
-    const controller = await createController('video'), times = videoSampleTimes(videoTrim), started = performance.now()
-    const stable = new StableFrameDetector()
+    const stable = new StableFrameDetector({ stableThreshold: .01, changedThreshold: .01 })
+    const sample = document.createElement('canvas')
     const existingIds = new Set(candidatesRef.current.map((candidate) => candidate.id))
+    let controller: ScanSessionController | undefined
     try {
-      for (let index = 0; index < times.length; index += 1) {
-        if (!controllerRef.current || controllerRef.current.session.id !== controller.session.id) break
-        await videoSource.current.seek(times[index])
-        const probe = probeEchoPanel(videoSource.current.video)
-        if (probe && stable.observe(probe.fingerprint)) await controller.enqueue(videoSource.current.capture(), 'video', profile)
-        const fraction = (index + 1) / Math.max(1, times.length), elapsed = performance.now() - started
-        setProgress(fraction); setStatus(`Video frame ${index + 1} of ${times.length}`); setVideoEta(`${Math.max(0, elapsed / fraction - elapsed) / 1000 < 1 ? '<1' : Math.round((elapsed / fraction - elapsed) / 1000)}s remaining`)
-      }
-      controller.requestCompletion()
+      const activeController = await createController('video')
+      controller = activeController
+      let checkedFrames = 0, captured = 0, processed = 0, replayFinished = false
+      let scanError: Error | undefined
+      let ocrQueue = Promise.resolve()
+      setVideoPlayhead(videoTrim.start)
+      await videoSource.current.playThrough(videoTrim, (time) => {
+        const probe = profile && probeEchoSubstats(videoSource.current.video, profile, sample)
+        if (probe && stable.observe(probe)) {
+          const image = videoSource.current.capture()
+          captured += 1
+          ocrQueue = ocrQueue.then(async () => {
+            if (scanError || activeController.session.status !== 'running') return
+            try {
+              if (!await activeController.enqueue(image, 'screenshot', profile)) throw new Error('A captured Echo could not be scanned.')
+              processed += 1
+              if (replayFinished) {
+                setProgress(.5 + processed / captured / 2)
+                setStatus(`Scanning captured Echoes: ${processed} of ${captured}`)
+                setVideoEta(`${captured - processed} queued`)
+              }
+            } catch (caught) { scanError = caught instanceof Error ? caught : new Error('Echo scan failed.') }
+          })
+        }
+        if (++checkedFrames % 12 === 0 || time >= videoTrim.end) {
+          setVideoPlayhead(time)
+          setProgress(Math.min(1, (time - videoTrim.start) / Math.max(.1, videoTrim.end - videoTrim.start)) / 2)
+          setStatus(`Replaying video: ${captured} captured, ${processed} scanned`)
+          setVideoEta(`${Math.max(0, videoTrim.end - time).toFixed(1)}s of video left · ${captured - processed} queued`)
+        }
+      })
+      replayFinished = true
+      setProgress(.5 + (captured ? processed / captured / 2 : 0))
+      setStatus(`Video replay complete: ${processed} of ${captured} Echoes scanned`)
+      setVideoEta(`${captured - processed} queued`)
+      await ocrQueue
+      if (scanError) throw scanError
+      activeController.requestCompletion()
       const scanned = candidatesRef.current.filter((candidate) => !existingIds.has(candidate.id))
       const needsCorrection = scanned.filter((candidate) => candidateErrors(candidate).length).length
       setStatus(`Video scan finished: ${scanned.length} Echo${scanned.length === 1 ? '' : 'es'} found, ${needsCorrection} need correction`)
       if (!scanned.length) setError('No stable Echo panels were found. Check the trim and inventory layout, then scan again.')
       else if (needsCorrection === scanned.length) setError('Every scanned Echo needs correction. Check the inventory layout and calibration before saving.')
     } catch (caught) {
-      if (controller.session.status !== 'cancelled') {
-        await controller.cancel()
+      if (controller?.session.status !== 'cancelled') {
+        await controller?.cancel()
         setStatus('Video scan failed')
         setError(caught instanceof Error ? caught.message : 'Video scan failed.')
       }
     }
-    finally { setVideoScanning(false) }
+    finally { setVideoScanning(false); setVideoEta('') }
   }
-  const cancelVideo = () => { videoSource.current.cancel(); void controllerRef.current?.cancel(); setVideoScanning(false); setStatus('Video scan cancelled') }
+  const cancelVideo = () => { videoSource.current.cancel(); void controllerRef.current?.cancel(); setStatus('Video scan cancelled') }
 
   const addManual = async () => {
     const candidate = await parseEchoText(manualText, '', 'manual') as DiagnosticScanCandidate
@@ -366,8 +429,14 @@ export function ScannerView({ echoes, refresh, onSessionRiskChange }: { echoes: 
     finally { setSavingProgress(undefined) }
   }
   const validCandidates = candidates.filter((candidate) => candidateErrors(candidate).length === 0)
-  const approvableCandidates = validCandidates.filter((candidate) => !candidate.duplicateOf)
-  const approvableDuplicates = validCandidates.filter((candidate) => candidate.duplicateOf)
+  const approvableCardIds = new Set(validCandidates.filter((candidate) => candidate.buildCard && !candidate.duplicateOf
+    && candidates.every((entry) => entry.buildCard?.id !== candidate.buildCard?.id || candidateErrors(entry).length === 0)).map((candidate) => candidate.buildCard!.id))
+  const duplicateCardIds = new Set(validCandidates.filter((candidate) => candidate.buildCard && candidate.duplicateOf
+    && candidates.every((entry) => entry.buildCard?.id !== candidate.buildCard?.id || Boolean(entry.duplicateOf) && candidateErrors(entry).length === 0)).map((candidate) => candidate.buildCard!.id))
+  const approvableCandidates = validCandidates.filter((candidate) => candidate.buildCard
+    ? approvableCardIds.has(candidate.buildCard.id) : !candidate.duplicateOf)
+  const approvableDuplicates = validCandidates.filter((candidate) => candidate.buildCard
+    ? duplicateCardIds.has(candidate.buildCard.id) : Boolean(candidate.duplicateOf))
   const duplicateCandidates = candidates.filter((candidate) => candidate.duplicateOf)
   const equippedCharacters = [...new Set(candidates.map((candidate) => candidate.fields.equippedBy.value.trim()).filter(Boolean))].sort((left, right) => left.localeCompare(right))
   const hasUnassignedScans = candidates.some((candidate) => !candidate.fields.equippedBy.value.trim())
@@ -453,14 +522,15 @@ export function ScannerView({ echoes, refresh, onSessionRiskChange }: { echoes: 
       <div className="scanner-step">
         <h2><b>1</b><span>Choose what you’re scanning</span></h2>
         <div className="scanner-source-picker" role="group" aria-label="Scan source layout">
-          {([['echo-management', 'Inventory', 'Echo backpack', `${sidebarIconRoot}backpack.webp`], ['build-card', 'Build cards', 'Six supported formats', `${import.meta.env.BASE_URL}build-cards.webp`], ['echo-detail', 'Character menu', 'Equipped Echo details', `${sidebarIconRoot}echoes.svg`]] as const).map(([layout, label, hint, iconSource]) => <button type="button" className={selectedLayout === layout ? 'active' : ''} aria-pressed={selectedLayout === layout} key={layout} onClick={() => selectLayout(layout)}><img className="scanner-source-icon" src={iconSource} alt=""/><span><strong>{label}{layout === 'echo-detail' && <em className="scanner-beta-tag">Beta</em>}</strong><small>{hint}</small></span><i>{selectedLayout === layout ? '✓' : ''}</i></button>)}
+          {([['build-card', 'Build cards', 'Supported card formats', `${import.meta.env.BASE_URL}build-cards.webp`], ['echo-management', 'Backpack', 'Echo inventory', `${sidebarIconRoot}backpack.webp`], ['echo-detail', 'Character menu', 'Equipped Echo details', `${sidebarIconRoot}echoes.svg`]] as const).map(([layout, label, hint, iconSource]) => <button type="button" className={selectedLayout === layout ? 'active' : ''} aria-pressed={selectedLayout === layout} key={layout} onClick={() => selectLayout(layout)}><img className="scanner-source-icon" src={iconSource} alt=""/><span><strong>{label}</strong><small>{hint}</small></span><i>{selectedLayout === layout ? '✓' : ''}</i></button>)}
         </div>
-        {selectedLayout === 'build-card' && <><label className="scanner-format-select">Build card format<select value={buildCardFormatPreference} onChange={(event) => { if (!confirmDiscardChanges(calibrationDirty)) return; const value = event.target.value as BuildCardFormatPreference; setBuildCardFormatPreference(value); controllerRef.current?.setBuildCardFormatPreference(value); if (calibrationImage) void prepareCalibration(calibrationImage, 'screenshot', profile, value) }}><option value="auto">Auto detect</option>{buildCardFormats.filter((format) => !format.id.startsWith('wuwaflex-')).map((format) => <option value={format.id} key={format.id}>{format.label}</option>)}</select></label><p className="scanner-format-note">Only 3416 × 1600, 3416 × 1580, 2724 × 1272, and 2724 × 1377 WuWaFlex cards are supported.</p></>}
+        {selectedLayout === 'echo-detail' && <div className="scanner-compare-tip"><img src={`${import.meta.env.BASE_URL}scanner-comparison-view.png`} alt="Arrow pointing to the Comparison View button next to Equip"/><p><strong>Turn on Comparison View</strong><span>Use the highlighted button next to Equip before scanning for better Echo recognition.</span></p></div>}
+        {selectedLayout === 'build-card' && <div className="scanner-format-row"><label className="scanner-format-select">Build card format<select value={buildCardFormatPreference} onChange={(event) => { if (!confirmDiscardChanges(calibrationDirty)) return; const value = event.target.value as BuildCardFormatPreference; setBuildCardFormatPreference(value); controllerRef.current?.setBuildCardFormatPreference(value); if (calibrationImage) void prepareCalibration(calibrationImage, 'screenshot', profile, value) }}><option value="auto">Auto detect</option>{buildCardFormats.filter((format) => !format.id.startsWith('wuwaflex-')).map((format) => <option value={format.id} key={format.id}>{format.label}</option>)}</select></label><details className="scanner-format-info"><summary aria-label="Supported build card formats">i</summary><div className="scanner-format-info-panel"><strong>Supported formats</strong><dl><dt>Discord Bot</dt><dd>16:9 aspect ratio</dd><dt>WuWaFlex</dt><dd>3416 × 1600, 3416 × 1580, 2724 × 1272, 2724 × 1377</dd><dt>WuWa Optimizer</dt><dd>1920:1160 aspect ratio</dd><dt>The WuWa Calculator</dt><dd>1984:1440 aspect ratio</dd><dt>Tacet Lab</dt><dd>16:9 aspect ratio (exports at 1920 × 1080)</dd></dl></div></details></div>}
       </div>
       <div className="scanner-step">
         <h2><b>2</b><span>Choose how to scan</span></h2>
         <div className="scanner-start-actions">
-          {streaming ? <button className="danger scanner-live-action" onClick={stopScreen}><span className="scanner-action-icon"><Icon name="scan"/></span><span><strong>Stop live scan</strong><small>End window sharing</small></span></button> : <button className="primary scanner-live-action" onClick={() => void startScreen()}><span className="scanner-action-icon"><Icon name="scan"/></span><span><strong>Scan game window</strong><small>Best for multiple Echoes</small></span></button>}
+          {streaming ? <button className="danger scanner-live-action" onClick={stopScreen}><span className="scanner-action-icon"><Icon name="scan"/></span><span><strong>Stop live scan</strong><small>End window sharing</small></span></button> : <button className="primary scanner-live-action" disabled={videoScanning || imageScanning} onClick={() => void startScreen()}><span className="scanner-action-icon"><Icon name="scan"/></span><span><strong>Scan game window</strong><small>Best for multiple Echoes</small></span></button>}
           <p className="scanner-mobile-note">Live window scanning is available on laptop/pc only. Please use images, video, or manual entry on mobile.</p>
           <button className="secondary" disabled={imageScanning || videoScanning} onClick={() => screenshotRef.current?.click()}><img className="scanner-image-action-icon" src={`${sidebarIconRoot}camera.webp`} alt=""/><span><strong>{imageScanning ? 'Scanning…' : 'Use images'}</strong><small>Screenshots or build cards</small></span></button>
           <button className="secondary scanner-video-action" disabled={videoScanning || imageScanning} onClick={() => videoFileRef.current?.click()}><Icon name="upload"/><span><strong>Use a video</strong><small>Choose a local recording</small></span></button>
@@ -469,13 +539,12 @@ export function ScannerView({ echoes, refresh, onSessionRiskChange }: { echoes: 
       </div>
       <input ref={screenshotRef} hidden multiple type="file" accept="image/png,image/jpeg,image/webp" onChange={(event) => { const files = Array.from(event.target.files ?? []); event.target.value = ''; void acceptScreenshots(files) }}/>
       <input ref={videoFileRef} hidden type="file" accept="video/*" onChange={(event) => { const file = event.target.files?.[0]; event.target.value = ''; void openVideo(file) }}/>
-      {(imageScanning || savingProgress || status !== 'Idle') && !streaming && <div className="scanner-inline-status"><span className={`live-dot ${imageScanning || savingProgress ? 'on' : ''}`}/><strong>{savingProgress ? (savingProgress.phase === 'writing' ? 'Finishing save…' : `Preparing ${savingProgress.completed} of ${savingProgress.total}…`) : status}</strong>{(imageScanning || savingProgress) && <><div className="progress"><i style={{ width: `${savingProgress ? savingProgress.completed / Math.max(1, savingProgress.total) * 100 : progress * 100}%` }}/></div><b>{savingProgress ? `${savingProgress.completed}/${savingProgress.total}` : `${Math.round(progress * 100)}%`}</b></>}</div>}
+      {(imageScanning || videoScanning || savingProgress || status !== 'Idle') && !streaming && <div className="scanner-inline-status"><span className={`live-dot ${imageScanning || videoScanning || savingProgress ? 'on' : ''}`}/><strong>{savingProgress ? (savingProgress.phase === 'writing' ? 'Finishing save…' : `Preparing ${savingProgress.completed} of ${savingProgress.total}…`) : status}</strong>{(imageScanning || videoScanning || savingProgress) && <><div className="progress"><i style={{ width: `${savingProgress ? savingProgress.completed / Math.max(1, savingProgress.total) * 100 : progress * 100}%` }}/></div><b>{savingProgress ? `${savingProgress.completed}/${savingProgress.total}` : `${Math.round(progress * 100)}%`}</b></>}</div>}
       {error && <div className="notice error scanner-capture-error">{error}</div>}
-      {calibrationNotice && <div className="notice warning scanner-calibration-notice">{calibrationNotice}</div>}
       <div className="scanner-step scanner-final-step"><h2><b>3</b><span>Check and save</span></h2><small>Tip: paste an image directly with Ctrl+V</small></div>
       <details className="scanner-advanced">
         <summary><span><Icon name="settings"/>Advanced scanner settings</span><span className="scanner-advanced-arrow"><Icon name="chevron"/></span></summary>
-        <div className="scanner-controls"><label>OCR workers<select value={workerPreference} onChange={(event) => { const value = event.target.value === 'auto' ? 'auto' : Number(event.target.value) as 1 | 2 | 4 | 6 | 8; setWorkerPreference(value); controllerRef.current?.setWorkerPreference(value) }}><option value="auto">Auto</option><option value="1">1</option><option value="2">2</option><option value="4">4</option><option value="6">6</option><option value="8">8</option></select></label><label className="check"><input type="checkbox" checked={audioFeedback} onChange={(event) => void toggleAudioFeedback(event.target.checked)}/>Sound feedback</label><button className="secondary scanner-calibration-button" onClick={toggleCalibration}><Icon name="scan"/>{calibrating ? 'Close calibration' : 'Calibrate'}</button></div>
+        <div className="scanner-controls"><label>OCR workers<select value={workerPreference} onChange={(event) => { const value = Number(event.target.value) as 1 | 2 | 4 | 6 | 8; setWorkerPreference(value); controllerRef.current?.setWorkerPreference(value) }}><option value="1">1</option><option value="2">2</option><option value="4">4</option><option value="6">6</option><option value="8">8</option></select></label><label className="check"><input type="checkbox" checked={audioFeedback} onChange={(event) => void toggleAudioFeedback(event.target.checked)}/>Sound feedback</label><button className="secondary scanner-calibration-button" onClick={toggleCalibration}><Icon name="scan"/>{calibrating ? 'Close calibration' : 'Calibrate'}</button></div>
         <p className="scanner-setting-note">OCR workers split one scan’s text fields across CPU cores.</p>
         <ScanSessionSummary session={session}/>
       </details>
@@ -488,10 +557,25 @@ export function ScannerView({ echoes, refresh, onSessionRiskChange }: { echoes: 
       onChange={(next) => { setProfile(next); setSelectedLayout(next.layout) }}
       onShowScanBoxesChange={setDebugVisible}
       onPersisted={(saved) => { calibrationBaseline.current = calibrationDraft(saved) }}
-      onSaved={(saved) => { calibrationBaseline.current = calibrationDraft(saved); setProfile(saved); setSelectedLayout(saved.layout); setError(''); setCalibrationNotice(''); setCalibrating(false); setStatus('Calibration profile saved locally') }}
+      onSaved={(saved) => { calibrationBaseline.current = calibrationDraft(saved); setProfile(saved); setSelectedLayout(saved.layout); setError(''); setCalibrating(false); setStatus('Calibration profile saved locally') }}
     />}
     {streaming && <div className="scanner-layout scanner-layout-wide"><Panel className="capture-panel"><div className="capture-head"><div><span className="live-dot on"/><strong>Scanning live</strong></div><span>{status}</span></div><div className="video-stage active"><video ref={videoRef} muted playsInline autoPlay/>{profile && <div className="live-panel-overlay" style={{ left: `${profile.panelRect.x * 100}%`, top: `${profile.panelRect.y * 100}%`, width: `${profile.panelRect.width * 100}%`, height: `${profile.panelRect.height * 100}%` }}><ScannerDebugOverlay regions={profile.regions} visible={debugVisible}/></div>}</div><div className="capture-status"><div className="progress"><i style={{ width: `${progress * 100}%` }}/></div><span>{Math.round(progress * 100)}%</span><button className="text-button" onClick={() => void scanCurrentFrame()}>Scan now</button></div><div className="privacy-strip"><strong>Local only</strong><span>No frames leave this device.</span></div></Panel></div>}
-    {videoDuration > 0 && <Panel className="video-scan-controls"><header><div><span className="eyebrow">Local video scan</span><h3>Trim and sample</h3></div><span>{videoEta}</span></header><div className="video-trim"><label>Start {videoTrim.start.toFixed(1)}s<input type="range" min="0" max={videoDuration} step=".1" value={videoTrim.start} onChange={(event) => setVideoTrim((value) => ({ ...value, start: Math.min(Number(event.target.value), value.end) }))}/></label><label>End {videoTrim.end.toFixed(1)}s<input type="range" min="0" max={videoDuration} step=".1" value={videoTrim.end} onChange={(event) => setVideoTrim((value) => ({ ...value, end: Math.max(Number(event.target.value), value.start) }))}/></label><label>Sampling<select value={videoTrim.fps} onChange={(event) => setVideoTrim((value) => ({ ...value, fps: Number(event.target.value) as VideoTrim['fps'] }))}>{[1, 2, 5, 10].map((fps) => <option value={fps} key={fps}>{fps} fps</option>)}</select></label>{videoScanning ? <button className="danger" onClick={cancelVideo}>Cancel immediately</button> : <button className="primary" onClick={() => void scanVideo()}>Scan video</button>}</div></Panel>}
+    {videoDuration > 0 && !streaming && <Panel className="video-scan-controls">
+      <header><div><span className="eyebrow">Local video scan</span><h3>Trim and detect Echoes</h3></div><span>{videoEta}</span></header>
+      <div className="video-trim">
+        <div className="video-timeline">
+          <div className="video-timeline-track"/>
+          <div className="video-timeline-selection" style={{ left: `${videoTrim.start / videoDuration * 100}%`, width: `${(videoTrim.end - videoTrim.start) / videoDuration * 100}%` }}/>
+          <input className="video-playhead" type="range" aria-label="Video playhead" min="0" max={videoDuration} step=".01" value={videoPlayhead} disabled={videoScanning} onChange={(event) => seekVideoPreview(Number(event.target.value))}/>
+          <input className="video-trim-start" type="range" aria-label="Trim start" min="0" max={videoDuration} step=".1" value={videoTrim.start} disabled={videoScanning} onChange={(event) => setVideoTrim((value) => ({ ...value, start: Math.min(Number(event.target.value), value.end) }))}/>
+          <input className="video-trim-end" type="range" aria-label="Trim end" min="0" max={videoDuration} step=".1" value={videoTrim.end} disabled={videoScanning} onChange={(event) => setVideoTrim((value) => ({ ...value, end: Math.max(Number(event.target.value), value.start) }))}/>
+        </div>
+        {videoScanning ? <button className="danger" onClick={cancelVideo}>Cancel immediately</button> : <button className="primary" onClick={() => void scanVideo()}>Scan video</button>}
+        <div className="video-timeline-labels"><span>Start {videoTrim.start.toFixed(1)}s</span><span>Playhead {videoPlayhead.toFixed(1)}s</span><span>End {videoTrim.end.toFixed(1)}s</span></div>
+      </div>
+      <small>Drag the playhead to preview a frame. Captured Echoes join the OCR queue while the video replays.</small>
+      <div className="video-stage active video-replay-stage" ref={videoReplayRef} role="group" aria-label="Video scan replay">{profile && <div className="live-panel-overlay" style={{ left: `${profile.panelRect.x * 100}%`, top: `${profile.panelRect.y * 100}%`, width: `${profile.panelRect.width * 100}%`, height: `${profile.panelRect.height * 100}%` }}><ScannerDebugOverlay regions={profile.regions} visible={debugVisible}/></div>}</div>
+    </Panel>}
     {candidates.length > 0 && <section className="scanned-echoes">
       <div className="section-heading scanned-echoes-heading">
         <div><span className="eyebrow">Ready to save</span><h2>Your scans <b>{candidates.length}</b></h2></div>

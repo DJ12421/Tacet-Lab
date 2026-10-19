@@ -2,9 +2,6 @@
   .scan-session-summary>div {
     grid-template-columns: repeat(4, 1fr);
   }
-  .video-trim {
-    grid-template-columns: 1fr 1fr;
-  }
   .review-card {
     grid-template-columns: 190px 1fr;
   }
@@ -38,6 +35,10 @@
   .video-trim, .scan-evidence-grid, .review-card {
     grid-template-columns: 1fr;
   }
+  .video-trim>button {
+    grid-column: 1;
+    grid-row: 3;
+  }
   .review-actions {
     grid-column: auto;
   }
@@ -56,6 +57,18 @@
 }
 
 @media (max-width:620px) {
+  .scanner-format-select {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .scanner-format-row {
+    align-items: flex-end;
+  }
+  .scanner-format-info-panel {
+    right: auto;
+    left: 0;
+  }
   .scanner-launchpad {
     padding: 14px;
   }
@@ -70,6 +83,13 @@
   }
   .scanner-source-picker>button {
     min-height: 56px;
+  }
+  .scanner-compare-tip {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .scanner-compare-tip img {
+    width: min(353px,100%);
   }
   .scanner-start-actions {
     grid-template-columns: 1fr;

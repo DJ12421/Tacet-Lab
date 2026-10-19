@@ -54,22 +54,106 @@
 
 .video-trim {
   display: grid;
-  grid-template-columns: 1fr 1fr 130px auto;
-  gap: 12px;
-  align-items: end;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 14px;
+  align-items: center;
 }
 
-.video-trim label {
-  display: grid;
-  gap: 5px;
+.video-timeline {
+  position: relative;
+  height: 32px;
+  margin: 0 10px;
+}
+
+.video-timeline-track, .video-timeline-selection {
+  position: absolute;
+  top: 14px;
+  height: 4px;
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.video-timeline-track {
+  inset-inline: 0;
+  background: var(--line);
+}
+
+.video-timeline-selection {
+  background: var(--gold);
+}
+
+.video-timeline input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 32px;
+  margin: 0;
+  appearance: none;
+  background: transparent;
+}
+
+.video-timeline input::-webkit-slider-runnable-track {
+  height: 4px;
+  background: transparent;
+}
+
+.video-timeline input::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 20px;
+  margin-top: -8px;
+  border: 2px solid var(--gold);
+  border-radius: 4px;
+  background: var(--surface-2);
+  cursor: ew-resize;
+}
+
+.video-timeline input:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--mint);
+  outline-offset: 2px;
+}
+
+.video-timeline .video-playhead {
+  z-index: 1;
+}
+
+.video-timeline .video-playhead::-webkit-slider-thumb {
+  border-color: var(--mint);
+  border-radius: 50%;
+}
+
+.video-timeline .video-trim-start, .video-timeline .video-trim-end {
+  z-index: 2;
+  pointer-events: none;
+}
+
+.video-timeline .video-trim-start::-webkit-slider-thumb, .video-timeline .video-trim-end::-webkit-slider-thumb {
+  pointer-events: auto;
+}
+
+.video-timeline input:disabled, .video-timeline input:disabled::-webkit-slider-thumb {
+  pointer-events: none;
+  cursor: default;
+}
+
+.video-timeline-labels {
+  grid-column: 1;
+  grid-row: 2;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
   color: var(--muted);
   font-size: var(--font-size-caption);
   text-transform: uppercase;
 }
 
-.video-trim input {
-  width: 100%;
-  accent-color: var(--gold);
+.video-trim>button {
+  grid-column: 2;
+  grid-row: 1 / 3;
+}
+
+.video-replay-stage {
+  margin-top: 14px;
 }
 
 .batch-review-toolbar {
@@ -135,6 +219,10 @@
   flex-wrap: wrap;
   gap: 12px 20px;
   margin-right: auto;
+}
+
+.scanned-echo-filters .filter-chips {
+  border-radius: 6px;
 }
 
 .scanned-echo-character-filter {

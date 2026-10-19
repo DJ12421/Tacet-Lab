@@ -380,6 +380,16 @@
   stroke: #000;
 }
 
+:root .team-workspace .tw-gallery-empty button.primary,
+:root .team-workspace .tw-member-empty button.primary {
+  color: #000;
+}
+
+:root .team-workspace .tw-gallery-empty button.primary:hover,
+:root .team-workspace .tw-member-empty button.primary:hover {
+  color: #edf3ef;
+}
+
 .team-gallery-original .tw-gallery-card {
   border-color: rgba(255,255,255,.1);
   border-radius: 9px;

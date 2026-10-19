@@ -1,6 +1,53 @@
 import { describe, expect, it } from 'vitest'
 import { createCalibrationProfile, parseCalibrationProfile } from './calibration'
 import { buildCardFormat } from './build-card-formats'
+import { DEFAULT_PANEL_RECTS, regionsForLayout } from './regions'
+
+describe('Echo detail calibration defaults', () => {
+  it('updates old Backpack boxes while preserving a moved box', () => {
+    const profile = createCalibrationProfile(1920, 1080, DEFAULT_PANEL_RECTS['echo-management'], 'echo-management')
+    profile.regions = profile.regions.map((region) => region.id === 'echo-name'
+      ? { ...region, rect: { x: 0.037202645494859125, y: 0, width: 0.9424581322109724, height: 0.0848 } }
+      : region.id === 'main-stat-value' ? { ...region, rect: { ...region.rect, x: region.rect.x + .01 } } : region)
+    const loaded = parseCalibrationProfile(JSON.stringify(profile))
+    expect(loaded.regions.find((region) => region.id === 'echo-name')?.rect)
+      .toEqual(regionsForLayout('echo-management').find((region) => region.id === 'echo-name')?.rect)
+    expect(loaded.regions.find((region) => region.id === 'main-stat-value')?.rect.x)
+      .toBe(profile.regions.find((region) => region.id === 'main-stat-value')!.rect.x)
+  })
+
+  it('keeps field coordinates tied to a manually moved panel', () => {
+    const profile = createCalibrationProfile(1920, 1080, { x: .68, y: .11, width: .29, height: .74 }, 'echo-management')
+    const oldName = { x: 0.018648315, y: 0.002004547, width: 0.926962754, height: 0.051133874 }
+    profile.regions = profile.regions.map((region) => region.id === 'echo-name' ? { ...region, rect: oldName } : region)
+    expect(parseCalibrationProfile(JSON.stringify(profile)).regions.find((region) => region.id === 'echo-name')?.rect).toEqual(oldName)
+  })
+
+  it('widens an untouched Character Menu substat box', () => {
+    const profile = createCalibrationProfile(1920, 1080, DEFAULT_PANEL_RECTS['echo-detail'], 'echo-detail')
+    profile.regions = profile.regions.map((region) => region.id === 'substats-block'
+      ? { ...region, rect: { ...region.rect, width: 0.8469986970782968 } } : region)
+    const loaded = parseCalibrationProfile(JSON.stringify(profile))
+    expect(loaded.regions.find((region) => region.id === 'substats-block')?.rect)
+      .toEqual(regionsForLayout('echo-detail').find((region) => region.id === 'substats-block')?.rect)
+  })
+
+  it('tightens old Character Menu Sonata and substat boxes but preserves custom boxes', () => {
+    const profile = createCalibrationProfile(1920, 1080, DEFAULT_PANEL_RECTS['echo-detail'], 'echo-detail')
+    const moved = profile.regions.find((region) => region.id === 'echo-name')!
+    profile.regions = profile.regions.map((region) => region.id === 'sonata'
+      ? { ...region, rect: { x: .88, y: .008, width: .115, height: .065 } }
+      : region.id === 'substats-block'
+        ? { ...region, rect: { ...region.rect, height: .24650859020497576 } }
+        : region.id === 'echo-name' ? { ...region, rect: { ...region.rect, x: moved.rect.x + .01 } } : region)
+    const loaded = parseCalibrationProfile(JSON.stringify(profile))
+    for (const id of ['sonata', 'substats-block']) {
+      expect(loaded.regions.find((region) => region.id === id)?.rect)
+        .toEqual(regionsForLayout('echo-detail').find((region) => region.id === id)?.rect)
+    }
+    expect(loaded.regions.find((region) => region.id === 'echo-name')?.rect.x).toBe(moved.rect.x + .01)
+  })
+})
 
 describe('WuWaFlex calibration defaults', () => {
   it('recognizes older size-specific profile names after the labels become uniform', () => {

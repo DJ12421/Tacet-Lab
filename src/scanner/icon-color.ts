@@ -1,11 +1,11 @@
 export type IconColor = readonly [number, number, number]
 
-export function iconColor(pixels: Uint8ClampedArray, minimumBrightness = 80): IconColor | undefined {
+export function iconColor(pixels: Uint8ClampedArray, minimumBrightness = 80, minimumChroma = 35): IconColor | undefined {
   const sums = [0, 0, 0]
   let count = 0
   for (let offset = 0; offset < pixels.length; offset += 4) {
     const red = pixels[offset], green = pixels[offset + 1], blue = pixels[offset + 2]
-    if (pixels[offset + 3] <= 80 || Math.max(red, green, blue) <= minimumBrightness || Math.max(red, green, blue) - Math.min(red, green, blue) <= 35) continue
+    if (pixels[offset + 3] <= 80 || Math.max(red, green, blue) <= minimumBrightness || Math.max(red, green, blue) - Math.min(red, green, blue) <= minimumChroma) continue
     sums[0] += red; sums[1] += green; sums[2] += blue; count += 1
   }
   return count ? [Math.round(sums[0] / count), Math.round(sums[1] / count), Math.round(sums[2] / count)] : undefined

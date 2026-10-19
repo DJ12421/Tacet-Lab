@@ -1,4 +1,4 @@
-import type { Echo, EquippedLoadout, OwnedCharacter, OwnedWeapon } from '../domain/types'
+import type { Build, Echo, EquippedLoadout, OwnedCharacter, OwnedWeapon } from '../domain/types'
 import { createLocalId } from '../domain/id'
 import { duplicateSubstatKeys } from '../domain/echo-substats'
 import { generatedCharacterSummaries as characterCatalog } from '../game-data/character-summaries.generated'
@@ -44,7 +44,7 @@ export async function saveScannedCandidates(
     groups.set(key, [...(groups.get(key) ?? []), candidate])
   }
 
-  return db.transaction('rw', [db.echoes, db.characters, db.weapons, db.equippedLoadouts], async () => {
+  return db.transaction('rw', [db.echoes, db.characters, db.weapons, db.equippedLoadouts, db.builds], async () => {
     const saved: Echo[] = []
     const pendingEchoes: Echo[] = []
     const pendingEchoesById = new Map<string, Echo>()
@@ -57,6 +57,24 @@ export async function saveScannedCandidates(
       let ownedCharacter: OwnedCharacter | undefined = characterEntry
         ? await db.characters.where('catalogId').equals(characterEntry.id).first()
         : undefined
+      const characterId = ownedCharacter?.id
+      const previousLoadout = ownedCharacter && first.buildCard
+        ? await db.equippedLoadouts.where('characterId').equals(ownedCharacter.id).first()
+        : undefined
+      const existingBuilds = ownedCharacter && first.buildCard
+        ? await db.builds.where('resonatorId').equals(ownedCharacter.catalogId).filter((build) => !build.characterId || build.characterId === characterId).toArray()
+        : []
+      let buildNumber = Math.max(existingBuilds.length, ...existingBuilds.map((build) => Number(/^Build (\d+)$/.exec(build.name)?.[1] ?? 0)))
+      if (ownedCharacter && previousLoadout?.echoIds.some(Boolean) && !existingBuilds.some((build) => build.weaponId === previousLoadout.weaponId && JSON.stringify(build.echoIds) === JSON.stringify(previousLoadout.echoIds))) {
+        const now = Date.now()
+        const previousBuild: Build = {
+          id: createLocalId(), name: `Build ${++buildNumber}`, description: '', characterId: ownedCharacter.id,
+          resonatorId: ownedCharacter.catalogId, weaponId: previousLoadout.weaponId, echoIds: [...previousLoadout.echoIds],
+          level: ownedCharacter.level, skillLevel: ownedCharacter.skillLevels?.[1] ?? 1,
+          createdAt: now, updatedAt: now, source: 'equipped'
+        }
+        await db.builds.add(previousBuild)
+      }
 
       if (characterEntry && !ownedCharacter) {
         ownedCharacter = {
@@ -81,6 +99,8 @@ export async function saveScannedCandidates(
       if (weaponEntry) {
         const copies = await db.weapons.where('catalogId').equals(weaponEntry.id).toArray()
         ownedWeapon = copies.find((weapon) => weapon.equippedBy === ownedCharacter?.id) ?? copies.find((weapon) => !weapon.equippedBy)
+        if (ownedWeapon && first.buildCard && (ownedWeapon.level !== first.buildCard.weaponLevel.value || ownedWeapon.rank !== first.buildCard.weaponRank.value)
+          && (ownedWeapon.id === previousLoadout?.weaponId || await db.builds.where('weaponId').equals(ownedWeapon.id).count() > 0)) ownedWeapon = undefined
       }
       if (weaponEntry && !ownedWeapon) {
         ownedWeapon = {
@@ -118,13 +138,14 @@ export async function saveScannedCandidates(
         await db.equippedLoadouts.put(loadout)
       }
 
-      if (loadout && ownedCharacter && first.buildCard && group.length > 1) {
+      if (loadout && ownedCharacter && first.buildCard) {
         await db.echoes.where('equippedBy').equals(ownedCharacter.id).modify({ equippedBy: undefined, equippedByName: undefined })
+        for (const echo of pendingEchoes) if (echo.equippedBy === ownedCharacter.id) { echo.equippedBy = undefined; echo.equippedByName = undefined }
         loadout = { ...loadout, echoIds: [], updatedAt: Date.now() }
       }
 
       const loadoutEchoIds = loadout?.echoIds ?? []
-      const storedAssigned = loadout && (!first.buildCard || group.length === 1) ? await db.echoes.bulkGet(loadoutEchoIds) : []
+      const storedAssigned = loadout && !first.buildCard ? await db.echoes.bulkGet(loadoutEchoIds) : []
       const existingAssigned = loadout
         ? storedAssigned.map((echo, index) => echo ?? pendingEchoesById.get(loadoutEchoIds[index])).filter((echo): echo is Echo => Boolean(echo))
         : []
@@ -147,7 +168,7 @@ export async function saveScannedCandidates(
       pendingEchoes.push(...groupEchoes)
       groupEchoes.forEach((echo) => pendingEchoesById.set(echo.id, echo))
       if (loadout) {
-        const echoIds = [...(first.buildCard && group.length > 1 ? [] : loadout.echoIds)]
+        const echoIds = [...(first.buildCard ? [] : loadout.echoIds)]
         for (const echo of newlyAssigned) {
           const emptySlot = echoIds.indexOf('')
           if (emptySlot >= 0) echoIds[emptySlot] = echo.id
@@ -155,6 +176,15 @@ export async function saveScannedCandidates(
         }
         loadout = { ...loadout, echoIds: echoIds.slice(0, 5), updatedAt: Date.now() }
         await db.equippedLoadouts.put(loadout)
+        if (first.buildCard && ownedCharacter) {
+          const now = Date.now()
+          await db.builds.add({
+            id: createLocalId(), name: `Build ${buildNumber + 1}`, description: '', characterId: ownedCharacter.id,
+            resonatorId: ownedCharacter.catalogId, weaponId: loadout.weaponId, echoIds: [...loadout.echoIds],
+            level: ownedCharacter.level, skillLevel: ownedCharacter.skillLevels?.[1] ?? 1,
+            createdAt: now, updatedAt: now, source: 'import'
+          })
+        }
       }
     }
 

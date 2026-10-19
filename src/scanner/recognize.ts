@@ -5,6 +5,7 @@ import { PreprocessClient } from './preprocess'
 import { OcrPool } from './ocr-pool'
 import { SUBSTAT_BLOCK_ID, substatBlockFromRegions } from './regions'
 import { echoCatalog } from '../game-data/echoes'
+import { maxSubStatsForLevel } from '../game-data/echo-main-stats'
 
 const syntheticFullPanelRegion: ScanRegion = {
   id: 'full-panel-fallback', kind: 'name', label: 'Full panel fallback',
@@ -13,7 +14,12 @@ const syntheticFullPanelRegion: ScanRegion = {
 
 const trimSubstatFooterText = (text: string) => text.replace(/\b(?:echo|ho|no)\s+skills?\b[\s\S]*$/i, '').trim()
 
-function assembledRegionalText(profile: CalibrationProfile, rawByRegion: Map<string, string>) {
+const regionalStatText = (raw: Map<string, string>) => ({
+  main: `${raw.get('main-stat-label') ?? ''} ${raw.get('main-stat-value') ?? ''}`.trim(),
+  substats: raw.get(SUBSTAT_BLOCK_ID) ?? ''
+})
+
+export function assembledRegionalText(profile: CalibrationProfile, rawByRegion: Map<string, string>) {
   const lines: string[] = []
   let substatsAdded = false
   for (const region of profile.regions) {
@@ -30,7 +36,11 @@ function assembledRegionalText(profile: CalibrationProfile, rawByRegion: Map<str
       if (text) lines.push(text)
       continue
     }
-    const text = rawByRegion.get(region.id)?.trim(); if (text) lines.push(text)
+    const text = rawByRegion.get(region.id)?.trim()
+    if (!text) continue
+    if (region.kind === 'level' && /^\+?\d{1,2}$/.test(text)) lines.push(`Lv. ${text.replace('+', '')}`)
+    else if (region.kind === 'cost' && /^[134]$/.test(text)) lines.push(`Cost ${text}`)
+    else lines.push(text)
   }
   return lines.join('\n')
 }
@@ -93,7 +103,9 @@ export async function recognizeFrame(
   const recognitionRegions = [...profile.regions.filter((region) => region.kind !== 'substats-block' && region.kind !== 'substat-row'), ...(substats ? [substats] : [])]
   await Promise.all(recognitionRegions.map(async (region) => {
     const original = await preprocess.process(frame.panelImageDataUrl, { ...region, recognition: 'visual' })
-    const processed = region.recognition === 'visual' ? original : await preprocess.process(frame.panelImageDataUrl, region)
+    const processed = region.recognition === 'visual' ? original : await preprocess.process(frame.panelImageDataUrl, region,
+      profile.layout === 'echo-management' && region.kind === 'main-stat-label' ? 'bright-substat'
+        : region.kind === 'substats-block' ? 'bright-substat-block' : undefined)
     crops.set(region.id, { original: original.dataUrl, processed: processed.dataUrl, preprocessing: processed.strategy })
     if (region.recognition !== 'visual') {
       const result = await pool.recognize(processed.blob, region, `${frame.sessionId}:${frame.sequence}:${region.id}`)
@@ -104,15 +116,47 @@ export async function recognizeFrame(
     options.onStage?.(completed / recognitionRegions.length * .82, `Recognized ${region.label}`)
   }))
 
-  const orderedText = assembledRegionalText(profile, new Map([...textResults].map(([key, value]) => [key, value.text])))
-  const textOnly = await parseEchoText(orderedText, frame.panelImageDataUrl, frame.source === 'manual' ? 'manual' : frame.source)
+  const rawByRegion = new Map([...textResults].map(([key, value]) => [key, value.text]))
+  let orderedText = assembledRegionalText(profile, rawByRegion)
+  const textOnly = await parseEchoText(orderedText, frame.panelImageDataUrl, frame.source === 'manual' ? 'manual' : frame.source, {}, regionalStatText(rawByRegion))
   const allowedSonatas = echoCatalog.find((entry) => entry.name === textOnly.fields.name.value)?.sonatas
-  const visual = await recognizeVisualFields(frame.panelImageDataUrl, sonataRect, allowedSonatas)
-  let candidate = await parseEchoText(orderedText, frame.panelImageDataUrl, frame.source === 'manual' ? 'manual' : frame.source, visual) as DiagnosticScanCandidate
+  const visual = await recognizeVisualFields(frame.panelImageDataUrl, sonataRect, allowedSonatas, profile.regions)
+  let candidate = await parseEchoText(orderedText, frame.panelImageDataUrl, frame.source === 'manual' ? 'manual' : frame.source, visual, regionalStatText(rawByRegion)) as DiagnosticScanCandidate
+  if (substats && candidate.fields.subStats.length < maxSubStatsForLevel(candidate.fields.level.value)) {
+    const expanded = { ...substats, rect: { ...substats.rect, height: Math.min(1 - substats.rect.y, substats.rect.height * 1.08) } }
+    const retries = [{ region: substats, strategy: 'contrast' }, { region: expanded, strategy: 'bright-substat-block' }, { region: substats, strategy: 'text' }] as const
+    for (const { region, strategy } of retries) {
+      if (candidate.fields.subStats.length >= maxSubStatsForLevel(candidate.fields.level.value)) break
+      options.onStage?.(.84, 'Retrying substats')
+      const retry = await preprocess.process(frame.panelImageDataUrl, region, strategy)
+      const result = await pool.recognize(retry.blob, substats, `${frame.sessionId}:${frame.sequence}:${substats.id}:${strategy}`)
+      result.text = trimSubstatFooterText(result.text)
+      const retryRaw = new Map(rawByRegion)
+      retryRaw.set(SUBSTAT_BLOCK_ID, result.text)
+      const retryText = assembledRegionalText(profile, retryRaw)
+      const reparsed = await parseEchoText(retryText, frame.panelImageDataUrl, frame.source === 'manual' ? 'manual' : frame.source, visual, regionalStatText(retryRaw)) as DiagnosticScanCandidate
+      if (reparsed.fields.subStats.length > candidate.fields.subStats.length && candidateErrors(reparsed).length <= candidateErrors(candidate).length) {
+        candidate = reparsed
+        orderedText = retryText
+        rawByRegion.set(SUBSTAT_BLOCK_ID, result.text)
+        textResults.set(SUBSTAT_BLOCK_ID, result)
+        const original = crops.get(SUBSTAT_BLOCK_ID)
+        if (original) crops.set(SUBSTAT_BLOCK_ID, { ...original, processed: retry.dataUrl, preprocessing: retry.strategy })
+      }
+    }
+  }
   if (candidateErrors(candidate).length || candidate.fields.name.confidence < .7) {
     options.onStage?.(.86, 'Running full-panel fallback')
     const fallback = await pool.recognize(frame.panelImageDataUrl, syntheticFullPanelRegion, `${frame.sessionId}:${frame.sequence}:fallback`)
-    candidate = await parseEchoText(`${orderedText}\n${fallback.text}`, frame.panelImageDataUrl, frame.source === 'manual' ? 'manual' : frame.source, visual) as DiagnosticScanCandidate
+    orderedText = `${orderedText}\n${fallback.text}`
+    candidate = await parseEchoText(orderedText, frame.panelImageDataUrl, frame.source === 'manual' ? 'manual' : frame.source, visual, regionalStatText(rawByRegion)) as DiagnosticScanCandidate
+  }
+  if (profile.layout === 'echo-detail' && candidate.fields.name.value !== textOnly.fields.name.value) {
+    const finalSonatas = echoCatalog.find((entry) => entry.name === candidate.fields.name.value)?.sonatas
+    if (finalSonatas) {
+      const finalVisual = await recognizeVisualFields(frame.panelImageDataUrl, sonataRect, finalSonatas, profile.regions)
+      candidate = await parseEchoText(orderedText, frame.panelImageDataUrl, frame.source === 'manual' ? 'manual' : frame.source, finalVisual, regionalStatText(rawByRegion)) as DiagnosticScanCandidate
+    }
   }
   candidate.sessionId = frame.sessionId
   candidate.frameSequence = frame.sequence
@@ -148,18 +192,31 @@ export async function rerunRegion(
   onStage?.(.1, `Reprocessing ${region.label}`)
   const recognitionRegion = region.kind === 'substats-block' || region.kind === 'substat-row' ? substatBlockFromRegions(profile.regions) ?? region : region
   const original = await preprocess.process(frame.panelImageDataUrl, { ...recognitionRegion, recognition: 'visual' })
-  const processed = recognitionRegion.recognition === 'visual' ? original : await preprocess.process(frame.panelImageDataUrl, recognitionRegion)
+  const processed = recognitionRegion.recognition === 'visual' ? original : await preprocess.process(frame.panelImageDataUrl, recognitionRegion,
+    profile.layout === 'echo-management' && recognitionRegion.kind === 'main-stat-label' ? 'bright-substat'
+      : recognitionRegion.kind === 'substats-block' ? 'bright-substat-block' : undefined)
   const recognition = recognitionRegion.recognition === 'visual' ? undefined : await pool.recognize(processed.blob, recognitionRegion, `${frame.sessionId}:${frame.sequence}:${recognitionRegion.id}:retry`)
   if (recognition && recognitionRegion.kind === 'substats-block') recognition.text = trimSubstatFooterText(recognition.text)
   const rawByRegion = new Map(profile.regions.map((entry) => [entry.id, candidate.evidence?.[entry.id]?.rawOcr ?? '']))
   if (recognition) rawByRegion.set(recognitionRegion.id, recognition.text)
   const allowedSonatas = echoCatalog.find((entry) => entry.name === candidate.fields.name.value)?.sonatas
-  const visual = region.recognition === 'visual' ? await recognizeVisualFields(frame.panelImageDataUrl, profile.regions.find((entry) => entry.kind === 'sonata')?.rect, allowedSonatas) : {
+  const visual = region.recognition === 'visual' ? await recognizeVisualFields(frame.panelImageDataUrl, profile.regions.find((entry) => entry.kind === 'sonata')?.rect, allowedSonatas, profile.regions) : {
     rarity: candidate.fields.rarity, sonata: candidate.fields.sonata, locked: candidate.fields.locked, excluded: candidate.fields.excluded
   }
-  const reparsed = await parseEchoText(assembledRegionalText(profile, rawByRegion), frame.panelImageDataUrl, candidate.source, visual) as DiagnosticScanCandidate
+  const regionalText = assembledRegionalText(profile, rawByRegion)
+  const reparsed = await parseEchoText(regionalText, frame.panelImageDataUrl, candidate.source, visual, regionalStatText(rawByRegion)) as DiagnosticScanCandidate
   const fields = { ...candidate.fields }
-  if (region.kind === 'name') fields.name = reparsed.fields.name
+  if (region.kind === 'name') {
+    fields.name = reparsed.fields.name
+    if (profile.layout === 'echo-detail') {
+      const possibleSonatas = echoCatalog.find((entry) => entry.name === fields.name.value)?.sonatas
+      if (possibleSonatas && (fields.name.value !== candidate.fields.name.value || !possibleSonatas.includes(fields.sonata.value))) {
+        const refreshedVisual = await recognizeVisualFields(frame.panelImageDataUrl, profile.regions.find((entry) => entry.kind === 'sonata')?.rect, possibleSonatas, profile.regions)
+        const refreshed = await parseEchoText(regionalText, frame.panelImageDataUrl, candidate.source, refreshedVisual, regionalStatText(rawByRegion))
+        fields.sonata = refreshed.fields.sonata
+      }
+    }
+  }
   else if (region.kind === 'level') fields.level = reparsed.fields.level
   else if (region.kind === 'cost') fields.cost = reparsed.fields.cost
   else if (region.kind === 'rarity') fields.rarity = reparsed.fields.rarity
@@ -177,6 +234,13 @@ export async function rerunRegion(
     confidence: confidenceFor(updated, region), parsedValue: parsedValueFor(updated, region), validation: validateEvidence(updated, region),
     workerId: recognition?.workerId ?? 'visual-classifier', jobId: recognition?.jobId ?? `${frame.sessionId}:${frame.sequence}:${region.id}:retry`,
     processingMs: recognition?.processingMs ?? 0, preprocessing: processed.strategy
+  }
+  if (region.kind === 'name' && fields.sonata.value !== candidate.fields.sonata.value) {
+    const sonataRegion = profile.regions.find((entry) => entry.kind === 'sonata')
+    if (sonataRegion && updated.evidence![sonataRegion.id]) updated.evidence![sonataRegion.id] = {
+      ...updated.evidence![sonataRegion.id], parsedValue: fields.sonata.value,
+      confidence: fields.sonata.confidence, validation: validateEvidence(updated, sonataRegion)
+    }
   }
   onStage?.(1, `${region.label} updated`)
   return updated

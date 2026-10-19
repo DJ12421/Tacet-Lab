@@ -42,6 +42,24 @@ const quickStarts = [
 ]
 
 const changelogEntries = [
+  { hash: '', date: 'Oct 20, 2026', title: 'Replay local videos with trim and frame previews while Echo scans finish in the background' },
+  { hash: '', date: 'Oct 20, 2026', title: 'Improve live Echo detection, duplicate feedback, and Backpack and Character Menu recognition' },
+  { hash: '', date: 'Oct 20, 2026', title: 'Export Tacet Lab character cards with build data for direct reimport' },
+  { hash: '', date: 'Oct 20, 2026', title: 'Save imported cards as numbered builds while preserving existing equipment and weapon copies' },
+  { hash: '', date: 'Oct 20, 2026', title: 'Show saved build references on Echoes and weapons and equip saved builds from Characters' },
+  { hash: '', date: 'Oct 20, 2026', title: 'Add scanner format guidance, a Comparison View tip, and a bundled local English OCR model' },
+  { hash: '', date: 'Oct 20, 2026', title: 'Simplify inventory actions and update the site icon and partnership labels' },
+  { hash: '4e76656', date: 'Oct 17, 2026', title: 'Respect the selected scanner layout when reading screenshots' },
+  { hash: '4e3a670', date: 'Oct 17, 2026', title: 'Improve build card OCR, supported formats, scan review, and Echo matching' },
+  { hash: '336fbb8', date: 'Oct 14, 2026', title: 'Keep live tutorials moving through dialogs and completed steps' },
+  { hash: 'b342d5e', date: 'Oct 13, 2026', title: 'Expand estimated Version 3.7 kit and sequence calculations, Tune AMP, and status critical values' },
+  { hash: 'b342d5e', date: 'Oct 13, 2026', title: 'Keep Echo slots and character progression intact across loadouts, scans, and imports' },
+  { hash: 'b342d5e', date: 'Oct 13, 2026', title: 'Add screenshot guides, live tutorials, theme settings, and refreshed app branding' },
+  { hash: 'b342d5e', date: 'Oct 13, 2026', title: 'Refine character build cards and Optimizer controls across desktop and mobile' },
+  { hash: 'ffeccd2', date: 'Oct 5, 2026', title: 'Choose whether imported builds replace Equipped or become new saved builds' },
+  { hash: 'ffeccd2', date: 'Oct 5, 2026', title: 'Improve Echo equipment controls, inventory search, and weapon catalog filters' },
+  { hash: '6254c64', date: 'Oct 4, 2026', title: 'Import Wuthering Tools accounts and preview changes before applying them' },
+  { hash: '6254c64', date: 'Oct 4, 2026', title: 'Check complete account backups before download and refine inventory and account screens' },
   { hash: '89202c4', date: 'Oct 4, 2026', title: 'Add estimated Tune Break and negative status damage with clear verification warnings' },
   { hash: '89202c4', date: 'Oct 4, 2026', title: 'Add enemy Cost and status stack controls to team damage scenarios' },
   { hash: '89202c4', date: 'Oct 4, 2026', title: 'Choose active weapon and Sonata buffs for Optimizer and Theorizer comparisons' },
@@ -218,7 +236,7 @@ export function HomeView({ echoes, characters, builds, teams, roverGender, navig
         <a href="https://github.com/DJ12421/Tacet-Lab/commits/main/" target="_blank" rel="noreferrer">Full history <span aria-hidden="true">→</span></a>
       </header>
       <ol className="home-changelog-list">
-        {(showAllChanges ? changelogEntries : changelogEntries.slice(0, 3)).map((entry) => <li key={`${entry.hash}:${entry.title}`}><time>{entry.date}</time><div><h3>{entry.title}</h3><a href={`https://github.com/DJ12421/Tacet-Lab/commit/${entry.hash}`} target="_blank" rel="noreferrer">{entry.hash} <span aria-hidden="true">→</span></a></div></li>)}
+        {(showAllChanges ? changelogEntries : changelogEntries.slice(0, 3)).map((entry) => <li key={`${entry.hash}:${entry.title}`}><time>{entry.date}</time><div><h3>{entry.title}</h3>{entry.hash ? <a href={`https://github.com/DJ12421/Tacet-Lab/commit/${entry.hash}`} target="_blank" rel="noreferrer">{entry.hash} <span aria-hidden="true">→</span></a> : <span>Latest update</span>}</div></li>)}
       </ol>
       <button className="home-changelog-toggle" type="button" aria-expanded={showAllChanges} onClick={() => setShowAllChanges((current) => !current)}>{showAllChanges ? 'Show less' : `See all ${changelogEntries.length} updates`}</button>
     </article>

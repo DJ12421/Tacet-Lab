@@ -1,5 +1,6 @@
 import type { ScanCandidate, ScanField, StatLine } from '../domain/types'
 import type { BuildCardFormatId } from './build-card-formats'
+import type { CardMetadata } from './card-metadata'
 
 export type ScanSource = 'screen' | 'screenshot' | 'video' | 'manual'
 export type ScanLayout = 'echo-detail' | 'echo-management' | 'build-card' | 'unknown'
@@ -52,6 +53,7 @@ export interface ScanFrame {
   layout: ScanLayout
   buildCardFormat?: BuildCardFormatId
   buildCardFormatConfidence?: number
+  cardMetadata?: CardMetadata
   calibrationProfileId?: string
 }
 

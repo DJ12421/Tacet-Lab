@@ -39,3 +39,20 @@ describe('WuWaFlex highlighted stat rows', () => {
     expect(result[15 * width + 98]).toBe(0)
   })
 })
+
+it('keeps the fifth Backpack substat above a lighter lower gradient', () => {
+  const width = 120, height = 150
+  const pixels = new Uint8Array(width * height)
+  for (let y = 0; y < height; y += 1) for (let x = 0; x < width; x += 1) {
+    pixels[y * width + x] = 50 + Math.round(y * .65)
+  }
+  for (const row of [12, 38, 64, 90, 116]) for (let y = row; y < row + 10; y += 1) {
+    pixels[y * width + 12] = 225
+    pixels[y * width + 102] = 225
+  }
+  const result = brightSubstatThreshold(pixels, width, height, true)
+  expect(result[120 * width + 12]).toBe(0)
+  expect(result[120 * width + 102]).toBe(0)
+  expect(result[120 * width + 60]).toBe(255)
+  expect(result[140 * width + 60]).toBe(255)
+})

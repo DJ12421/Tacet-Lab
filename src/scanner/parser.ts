@@ -4,7 +4,7 @@ import { echoCatalog, type EchoCatalogEntry } from '../game-data/echoes'
 import { generatedSonataCatalog } from '../game-data/sonatas.generated'
 import { generatedWeaponSummaries as weaponCatalog } from '../game-data/weapon-summaries.generated'
 import { closestTunableRoll, exactTunableRoll, tunableRolls } from '../game-data/tunable-rolls'
-import { fixedSecondaryMainStat, isMainStatAllowed, mainStatError, mainStatKeysByCost, maxSubStatsForLevel } from '../game-data/echo-main-stats'
+import { fixedSecondaryMainStat, isMainStatAllowed, mainStatError, mainStatKeysByCost, maxSubStatsForLevel, primaryMainStatValue } from '../game-data/echo-main-stats'
 import type { Echo, ScanCandidate, StatKey, StatLine } from '../domain/types'
 import { createLocalId } from '../domain/id'
 import { dedupeBySubstatKey, duplicateSubstatKeys } from '../domain/echo-substats'
@@ -92,7 +92,7 @@ export function parseStatLine(line: string): StatLine | undefined {
   return { key, value }
 }
 
-const normalizedIdentity = (value: string) => value.toLowerCase().replace(/[^a-z0-9]/g, '')
+const normalizedIdentity = (value: string) => value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '')
 
 function editDistance(left: string, right: string) {
   const row = Array.from({ length: right.length + 1 }, (_, index) => index)
@@ -132,10 +132,28 @@ function closestSonata(lines: string[]) {
 function catalogMatch(lines: string[]): EchoCatalogEntry | undefined {
   const text = normalizedIdentity(lines.join(' '))
   const windows = lines.flatMap((_, index) => [lines.slice(index, index + 2).join(' '), lines.slice(index, index + 3).join(' ')])
-  return echoCatalog.find((entry) => text.includes(normalizedIdentity(entry.name))) ?? closestName([...lines, ...windows], echoCatalog, (entry) => entry.name, 0.68)?.entry
+  const exact = echoCatalog.filter((entry) => text.includes(normalizedIdentity(entry.name)))
+    .sort((left, right) => right.name.length - left.name.length)[0]
+  const phantomNames = lines.filter((line) => /^Phantom:/i.test(line))
+    .map((line) => line.replace(/^Phantom:\s*/i, '').replace(/[(/+].*$/, '').trim())
+  return exact ?? closestName([...lines, ...windows, ...phantomNames], echoCatalog, (entry) => entry.name, 0.68)?.entry
 }
 
 function confidence(found: boolean, base: number) { return found ? base : 0.25 }
+
+function recoverRegionalMain(line: string, cost: Echo['cost'], rarity: Echo['rarity'], level: number): StatLine | undefined {
+  const match = line.match(/(-?\d+(?:[.,]\d+)?)\s*%?\s*$/)
+  if (!match) return
+  const value = Number(match[1].replace(',', '.'))
+  const label = line.slice(0, match.index).trim()
+  const ranked = mainStatKeysByCost[cost]
+    .filter((key) => Math.abs((primaryMainStatValue(cost, rarity, level, key) ?? Infinity) - value) <= .11)
+    .map((key) => ({ key, score: identitySimilarity(label, statLabels[key]) }))
+    .sort((left, right) => right.score - left.score)
+  const [best, runnerUp] = ranked
+  return best && best.score >= .68 && (!runnerUp || best.score - runnerUp.score >= .08)
+    ? { key: best.key, value } : undefined
+}
 
 export async function imageFingerprint(dataUrl: string) {
   const data = new TextEncoder().encode(dataUrl.slice(-6000))
@@ -155,11 +173,18 @@ export async function imageFingerprint(dataUrl: string) {
   return hashes.map((hash) => hash.toString(16).padStart(8, '0')).join('')
 }
 
-export async function parseEchoText(text: string, imageDataUrl: string, source: ScanCandidate['source'], visual: VisualRecognition = {}): Promise<ScanCandidate> {
+export async function parseEchoText(text: string, imageDataUrl: string, source: ScanCandidate['source'], visual: VisualRecognition = {}, regionalStats?: { main: string; substats: string }): Promise<ScanCandidate> {
   const lines = normalizeOcrText(text)
   const detailsEnd = lines.findIndex((line) => /(?:Echo|ho|no)\s+Skills?|Sonata Effect/i.test(line))
   const detailLines = detailsEnd < 0 ? lines : lines.slice(0, detailsEnd)
-  const stats = detailLines.map(parseStatLine).filter((stat): stat is StatLine => Boolean(stat))
+  const parseStats = (statLines: string[]) => statLines.map((line, index) => {
+    const stat = parseStatLine(line)
+    const next = statLines[index + 1]
+    return stat ?? (next && statAliases.some(([pattern]) => pattern.test(line)) && !parseStatLine(next)
+      ? parseStatLine(`${line} ${next}`) : undefined)
+  })
+    .filter((stat): stat is StatLine => Boolean(stat))
+  const stats = parseStats(detailLines)
   const joined = lines.join(' ')
   const levelMatch = joined.match(/(?:Lv\.?|Level|\+)\s*(\d{1,2})/i)
   const level = Number(levelMatch?.[1] ?? 0)
@@ -174,13 +199,17 @@ export async function parseEchoText(text: string, imageDataUrl: string, source: 
   const detectedName = lines.find((line) => !parseStatLine(line) && !/(level|cost|sonata|equipped|locked|echo skills)/i.test(line) && line.length > 2) ?? 'Unknown Echo'
   const name = catalog?.name ?? detectedName.replace(/\s*\+\s*\d{1,2}.*$/, '').trim()
   const textSonata = closestSonata(lines)
-  const visualSonata = visual.sonata && (!catalog || catalog.sonatas.includes(visual.sonata.value)) ? visual.sonata : undefined
+  const visualSonata = visual.sonata && (visual.sonata.confidence >= .85 || !catalog || catalog.sonatas.includes(visual.sonata.value)) ? visual.sonata : undefined
   const sonata = visualSonata?.value ?? (catalog?.sonatas.length === 1 ? catalog.sonatas[0] : textSonata)
   const cost = catalog?.cost ?? Number(costMatch?.[1] ?? 1) as 1 | 3 | 4
   const rarity = visual.rarity?.value ?? Number(rarityMatch?.[1] ?? 5) as Echo['rarity']
-  const mainStatIndex = stats.findIndex((stat) => isMainStatAllowed(cost, stat.key))
-  const mainStat = stats[mainStatIndex] ?? { key: mainStatKeysByCost[cost][0], value: 0 }
-  const remainingStats = stats.filter((_, index) => index !== mainStatIndex)
+  const mainStatIndex = regionalStats ? -1 : stats.findIndex((stat) => isMainStatAllowed(cost, stat.key))
+  const regionalMain = regionalStats && (parseStats(normalizeOcrText(regionalStats.main)).find((stat) => isMainStatAllowed(cost, stat.key))
+    ?? recoverRegionalMain(regionalStats.main, cost, rarity, level))
+  const mainStat = regionalMain ?? stats[mainStatIndex] ?? { key: mainStatKeysByCost[cost][0], value: 0 }
+  const remainingStats = regionalStats
+    ? parseStats(normalizeOcrText(regionalStats.substats)).filter((stat) => stat.key !== mainStat.key || Math.abs(stat.value - mainStat.value) > .51)
+    : stats.filter((_, index) => index !== mainStatIndex)
   const fixedSecondary = fixedSecondaryMainStat({ cost, rarity, level })
   const secondaryMainIndex = remainingStats.findIndex((stat) => stat.key === fixedSecondary.key && Math.abs(stat.value - fixedSecondary.value) <= .51)
   const uniqueSubStats = dedupeBySubstatKey(remainingStats.filter((_, index) => index !== secondaryMainIndex), (stat) => stat.key).values
@@ -197,7 +226,7 @@ export async function parseEchoText(text: string, imageDataUrl: string, source: 
       rarity: { value: rarity, confidence: visual.rarity?.confidence ?? confidence(Boolean(rarityMatch), 0.85), raw: rarityMatch?.[0] },
       level: { value: level, confidence: confidence(Boolean(levelMatch), 0.92), raw: levelMatch?.[0] },
       sonata: { value: sonata, confidence: visualSonata?.confidence ?? (catalog?.sonatas.length === 1 ? 0.96 : confidence(sonata !== 'Unknown Sonata', 0.86)), raw: textSonata },
-      mainStat: { value: mainStat, confidence: confidence(mainStatIndex >= 0, 0.9) },
+      mainStat: { value: mainStat, confidence: confidence(Boolean(regionalMain) || mainStatIndex >= 0, 0.9) },
       subStats,
       equippedBy: { value: equippedCatalog?.entry.name ?? equippedRaw, confidence: equippedCatalog ? Math.max(.84, equippedCatalog.score) : confidence(Boolean(equippedMatch), 0.72), raw: equippedMatch?.[0] },
       locked: { value: visual.excluded?.value ? false : (visual.locked?.value ?? false), confidence: visual.locked?.confidence ?? 0.25 },

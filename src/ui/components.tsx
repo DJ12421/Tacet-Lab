@@ -40,6 +40,8 @@ export const CharacterSubstatProfileContext = createContext<CharacterSubstatProf
 export const EchoEquipmentContext = createContext<{
   ownedIds: Set<string>
   owners: Map<string, string[]>
+  buildLabels: Map<string, string[]>
+  buildOwners: Map<string, string[]>
   characters: Array<{ id: string; name: string; icon: string }>
   toggle: (echoId: string, characterId: string) => Promise<void>
   clear: (echoId: string) => Promise<void>
@@ -100,9 +102,11 @@ export function ElementFilterIcon({ element }: { element: string }) {
     : <span>{element}</span>
 }
 
-function EchoOwnerPicker({ echo, owners, characters, toggle, clear }: {
+function EchoOwnerPicker({ echo, owners, buildLabels, buildOwners, characters, toggle, clear }: {
   echo: Echo
   owners: string[]
+  buildLabels: string[]
+  buildOwners: string[]
   characters: Array<{ id: string; name: string; icon: string }>
   toggle: (echoId: string, characterId: string) => Promise<void>
   clear: (echoId: string) => Promise<void>
@@ -112,9 +116,12 @@ function EchoOwnerPicker({ echo, owners, characters, toggle, clear }: {
   const close = useCallback(() => setOpen(false), [])
   useDismissableLayer(open, ref, close)
   const selected = characters.filter((character) => owners.includes(character.id))
+  const referenced = characters.filter((character) => owners.includes(character.id) || buildOwners.includes(character.id))
+  const displayCharacters = referenced.length > 1 ? referenced : selected
   const names = selected.map((character) => character.name).join(', ')
+  const displayName = referenced.length > 1 ? referenced.map((character) => character.name).join(', ') : buildLabels.length ? buildLabels.join(', ') : names || 'Unequipped'
   return <div className={`echo-owner-picker echo-single-select${open ? ' is-open' : ''}`} ref={ref} onClick={(event) => event.stopPropagation()} onKeyDown={(event) => { event.stopPropagation(); if (event.key === 'Escape' && open) { close(); ref.current?.querySelector<HTMLButtonElement>('.multi-select-trigger')?.focus() } }}>
-    <button type="button" className="multi-select-trigger" aria-label={`Equipped by: ${names || 'no characters'}`} title={names || 'Unequipped'} aria-haspopup="true" aria-expanded={open} onClick={() => setOpen((current) => !current)}><span className="multi-select-values">{selected.length ? <><span className="echo-owner-stack" aria-hidden="true">{selected.map((character) => <img src={character.icon} alt="" key={character.id}/>)}</span><em>{names}</em></> : <em>Unequipped</em>}</span><strong aria-hidden="true">⌄</strong></button>
+    <button type="button" className="multi-select-trigger" aria-label={buildLabels.length ? `${displayName}. ${names ? `Equipped by ${names}` : 'Not currently equipped'}` : `Equipped by: ${names || 'no characters'}`} title={displayName} aria-haspopup="true" aria-expanded={open} onClick={() => setOpen((current) => !current)}><span className="multi-select-values">{displayCharacters.length > 0 && <span className="echo-owner-stack" aria-hidden="true">{displayCharacters.map((character) => <img src={character.icon} alt="" key={character.id}/>)}</span>}<em>{displayName}</em></span><strong aria-hidden="true">⌄</strong></button>
     {open && <div className="echo-single-select-menu echo-owner-options" aria-label={`Equip ${echo.name}`}><button type="button" className={!owners.length ? 'active' : ''} aria-pressed={!owners.length} onClick={() => { void clear(echo.id); close() }}><span className="echo-owner-empty">—</span><span>Unequipped</span></button>{characters.map((character) => <button type="button" className={owners.includes(character.id) ? 'active' : ''} aria-pressed={owners.includes(character.id)} key={character.id} onClick={() => void toggle(echo.id, character.id)}><img src={character.icon} alt=""/><span>{character.name}</span>{owners.includes(character.id) && <span className="echo-owner-check" aria-hidden="true">✓</span>}</button>)}</div>}
   </div>
 }
@@ -152,7 +159,7 @@ export const EchoMiniCard = memo(function EchoMiniCard({ echo, selected, onClick
     {gradeTone && <EchoWaveform/>}
     <footer>{displayedGrade && <><span>{displayedScoreLabel}</span>{scoreDetail ? <span className="echo-score-action" onClick={(event) => event.stopPropagation()} onKeyDown={(event) => event.stopPropagation()}><CalculatedValue detail={scoreDetail}><strong className={`echo-score ${gradeTone ? `grade-${gradeTone}` : ''}`} title={displayedGradeTitle}>{displayedGrade}</strong></CalculatedValue></span> : <strong className={`echo-score ${gradeTone ? `grade-${gradeTone}` : ''}`} title={displayedGradeTitle}>{displayedGrade}</strong>}</>}{actions}</footer>
     {(equipment || equipmentContext?.ownedIds.has(echo.id)) && <div className="echo-equipment">
-      {equipmentContext?.ownedIds.has(echo.id) && <EchoOwnerPicker echo={echo} owners={owners} characters={equipmentContext.characters} toggle={equipmentContext.toggle} clear={equipmentContext.clear}/>}
+      {equipmentContext?.ownedIds.has(echo.id) && <EchoOwnerPicker echo={echo} owners={owners} buildLabels={equipmentContext.buildLabels.get(echo.id) ?? []} buildOwners={equipmentContext.buildOwners.get(echo.id) ?? []} characters={equipmentContext.characters} toggle={equipmentContext.toggle} clear={equipmentContext.clear}/>}
       {equipment}
     </div>}
   </article>

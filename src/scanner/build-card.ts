@@ -107,12 +107,16 @@ export function resolveKernelPuppetTint(name: string, pixels: Uint8ClampedArray)
   return red > pixels.length / 4 * .06 && red > blue * 2 ? 'Kernel Puppet: Anger' : name
 }
 
-async function matchEcho(imageDataUrl: string, cost: Echo['cost'], useColor = true) {
+export function echoSignatureCandidates(cost: Echo['cost'], sonata?: string) {
+  return generatedEchoSignatures.filter((entry) => entry.cost === cost
+    && (!sonata || echoCatalog.some((echo) => echo.name === entry.name && echo.sonatas.includes(sonata))))
+}
+
+async function matchEcho(imageDataUrl: string, cost: Echo['cost'], useColor = true, sonata?: string) {
   const image = await loadImage(imageDataUrl)
   const pixels = cropPixels(image, { x: .04, y: .04, width: .92, height: .92 }, 16)
   const captured = signature(pixels)
-  const templates = generatedEchoSignatures
-    .filter((entry) => entry.cost === cost)
+  const templates = echoSignatureCandidates(cost, sonata)
     .map((entry) => ({ name: entry.name, signature: Array.from(entry.signature, (value) => value / 32), color: 'color' in entry ? entry.color : undefined }))
   const ranked = rankImageSignatures(captured, templates, useColor ? iconColor(pixels) : undefined), best = ranked[0], runnerUp = ranked[1]
   // Recolored WuWaFlex artwork can make different Echoes nearly indistinguishable.
@@ -459,9 +463,11 @@ async function recognizeConfiguredBuildCard(
     const inferredMainCost = inferBuildCardCostFromMain(mainOcr)
     const provisionalCost = nameMatch && (format.id.startsWith('wuwaflex') || nameMatch.score >= .9) ? nameMatch.entry.cost
       : [1, 3, 4].includes(costFromOcr) ? costFromOcr : inferredMainCost ?? nameMatch?.entry.cost ?? (index === 0 ? 4 : index < 3 ? 3 : 1)
+    const sonataRect = layout.sonata ? configuredRect(`echo-${index}-sonata`, layout.sonata) : undefined
+    const cardSonata = format.id.startsWith('wuwaflex') && sonataRect ? await recognizeWuwaflexSonataAt(cardImage, sonataRect) : undefined
     const echoIdentity = nameMatch
       ? { value: nameMatch.entry.name, confidence: Math.max(.75, nameMatch.score) }
-      : await matchEcho(art.dataUrl, provisionalCost, !format.id.startsWith('wuwaflex'))
+      : await matchEcho(art.dataUrl, provisionalCost, !format.id.startsWith('wuwaflex'), cardSonata && cardSonata.confidence >= .85 ? cardSonata.value : undefined)
     const echoEntry = echoCatalog.find((entry) => entry.name === echoIdentity.value)
     const cost = echoEntry?.cost ?? provisionalCost
     const hasExplicitMainRegion = layout.mainStatLabel !== undefined || layout.mainStatValue !== undefined
@@ -499,12 +505,11 @@ async function recognizeConfiguredBuildCard(
       if (quality(rowStats) >= quality(stats)) stats = rowStats
       if (quality(mergedStats) > quality(stats)) stats = mergedStats
     }
-    const sonataRect = layout.sonata ? configuredRect(`echo-${index}-sonata`, layout.sonata) : undefined
     const allowedSonatas = echoEntry?.sonatas
     const [sonata, sonataCrop] = sonataRect
       ? await Promise.all([
         format.id.startsWith('wuwaflex')
-          ? recognizeWuwaflexSonataAt(cardImage, sonataRect, allowedSonatas)
+          ? (cardSonata && cardSonata.confidence >= .85 ? cardSonata : recognizeWuwaflexSonataAt(cardImage, sonataRect, allowedSonatas))
           : recognizeSonataAt(cardImage, sonataRect, allowedSonatas),
         preprocess.crop(source, sonataRect)
       ])
@@ -611,6 +616,30 @@ export async function looksLikeOfficialBuildCard(imageDataUrl: string) {
 }
 
 export async function recognizeBuildCard(frame: ScanFrame, profile: CalibrationProfile, pool: OcrPool, preprocess: PreprocessClient, onStage?: (progress: number, status: string) => void): Promise<DiagnosticScanCandidate[]> {
+  if (frame.cardMetadata) {
+    const card = frame.cardMetadata
+    const character = characterCatalog.find((entry) => entry.id === card.characterCatalogId)!
+    const weapon = weaponCatalog.find((entry) => entry.id === card.weaponCatalogId)!
+    const field = <T,>(value: T): ScanField<T> => ({ value, confidence: 1, raw: 'Embedded Tacet Lab card data' })
+    const details: BuildCardDetails = {
+      id: createLocalId(), formatId: 'tacet-lab', formatConfidence: 1,
+      character: field(character.name), characterCatalogId: character.id,
+      characterLevel: field(card.characterLevel), sequence: field(card.sequence), skillLevels: card.skillLevels.map(field),
+      weapon: field(weapon.name), weaponCatalogId: weapon.id, weaponLevel: field(card.weaponLevel), weaponRank: field(card.weaponRank),
+      sourceImageDataUrl: frame.panelImageDataUrl
+    }
+    onStage?.(1, 'Tacet Lab card ready for review')
+    return card.echoes.map((echo, index) => ({
+      id: createLocalId(), createdAt: Date.now(), imageDataUrl: frame.panelImageDataUrl,
+      fingerprint: `${frame.id}:${index}`, source: frame.source, sessionId: frame.sessionId,
+      frameSequence: frame.sequence + index / 10, reviewState: 'new' as const, buildCard: details,
+      fields: {
+        name: field(echo.name), cost: field(echo.cost), rarity: field(echo.rarity), level: field(echo.level),
+        sonata: field(echo.sonata), mainStat: field(echo.mainStat), subStats: echo.subStats.map(field),
+        equippedBy: field(character.name), locked: field(true), excluded: field(false)
+      }
+    }))
+  }
   if (frame.buildCardFormat && frame.buildCardFormat !== 'discord-bot') return recognizeConfiguredBuildCard(frame, profile, pool, preprocess, onStage)
   const source = frame.panelImageDataUrl
   const configuredRect = (id: string, fallback: ScanRect) => profile.regions.find((entry) => entry.id === id)?.rect ?? fallback
@@ -691,9 +720,13 @@ export async function recognizeBuildCard(frame: ScanFrame, profile: CalibrationP
       recognizeText(pool, preprocess, source, `echo-${index}-stats`, statsRect, 'text', 'substats-block')
     ])
     const parsedCost = Number(costOcr.text.match(/[134]/)?.[0] ?? (index === 0 ? 4 : index < 3 ? 3 : 1)) as Echo['cost']
-    const echoIdentity = await matchEcho(art.dataUrl, parsedCost)
+    const [cardSonata, sonataCrop] = await Promise.all([
+      recognizeSonataAt(sequenceImage, sonataRect, undefined, true), preprocess.crop(source, sonataRect)
+    ])
+    const echoIdentity = await matchEcho(art.dataUrl, parsedCost, true, cardSonata && cardSonata.confidence >= .85 ? cardSonata.value : undefined)
     const echoEntry = echoCatalog.find((entry) => entry.name === echoIdentity.value)
-    const [sonata, sonataCrop] = await Promise.all([recognizeSonataAt(sequenceImage, sonataRect, echoEntry?.sonatas), preprocess.crop(source, sonataRect)])
+    const sonata = cardSonata && cardSonata.confidence >= .85
+      ? cardSonata : await recognizeSonataAt(sequenceImage, sonataRect, echoEntry?.sonatas, true)
     const mainStatRaw = `${mainStatLabelOcr.text.trim()} ${mainStatValueOcr.text.trim()}`.trim()
     const mainOcr = { label: mainStatLabelOcr.text, value: mainStatValueOcr.text }
     const parsedMain = parseExplicitBuildCardMain(mainOcr)

@@ -1,13 +1,14 @@
 import type { ScanRect, ScanRegion } from './types'
 import { createLocalId } from '../domain/id'
 
-type Strategy = 'name' | 'label' | 'text' | 'substat' | 'bright-substat' | 'wuwaflex-name' | 'visual' | 'plain' | 'contrast'
+type Strategy = 'name' | 'echo-name-color' | 'label' | 'text' | 'substat' | 'bright-substat' | 'bright-substat-block' | 'wuwaflex-name' | 'visual' | 'plain' | 'contrast'
 type Pending = { resolve: (value: PreprocessedImage) => void; reject: (reason: Error) => void }
 export interface PreprocessedImage { dataUrl: string; blob: Blob; width: number; height: number; strategy: Strategy }
 
 const strategyFor = (region: ScanRegion): Strategy => {
   if (region.recognition === 'visual') return 'visual'
   if (region.id === 'character-level' && region.recognition === 'text') return 'plain'
+  if (region.id === 'echo-name') return 'echo-name-color'
   if (region.kind === 'name') return 'name'
   if (region.kind === 'main-stat-label') return 'label'
   if (region.kind === 'substats-block' || region.kind === 'substat-row') return 'substat'

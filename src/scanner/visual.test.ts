@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { classifyEchoState, classifyWuwaflexSonata } from './visual'
+import { classifyBackpackSonataGlyph, classifyEchoState, classifySonataCandidates, classifySonataColor, classifyWuwaflexSonata } from './visual'
 import { wuwaflexSonataSignatures } from './wuwaflex-sonata-signatures'
 
 const pixels = (color: [number, number, number], count = 100) => new Uint8ClampedArray(Array.from({ length: count }, () => [...color, 255]).flat())
@@ -21,6 +21,71 @@ describe('Echo HUD state recognition', () => {
     const result = classifyEchoState(pixels([55, 60, 65]), pixels([60, 65, 70]))
     expect(result.excluded?.value).toBe(false)
     expect(result.locked?.value).toBe(false)
+  })
+})
+
+describe('In-game Sonata color check', () => {
+  it('chooses a clear color match from the detected Echo’s possible sets', () => {
+    expect(classifySonataColor(pixels([182, 170, 87]), ['Pact of Neonlight Leap', 'Halo of Starry Radiance'])?.value)
+      .toBe('Pact of Neonlight Leap')
+  })
+
+  it('keeps a dim purple in-game icon distinct from a violet set', () => {
+    expect(classifySonataColor(pixels([133, 111, 126]), ['Havoc Eclipse', 'Void Thunder'])?.value)
+      .toBe('Havoc Eclipse')
+  })
+
+  it('does not invent a color for a white Sonata icon', () => {
+    expect(classifySonataColor(pixels([190, 190, 190]), ['Trailblazing Star', 'Song of Feathered Trace']))
+      .toBeUndefined()
+  })
+
+  it('defers to the icon shape when allowed colors are too similar', () => {
+    expect(classifySonataColor(pixels([95, 221, 168]), ['Windward Pilgrimage', 'Gusts of Welkin']))
+      .toBeUndefined()
+    expect(classifySonataColor(pixels([182, 170, 87]), ['Pact of Neonlight Leap', 'Rite of Gilded Revelation']))
+      .toBeUndefined()
+  })
+
+  it('requires a detected Echo’s set list before matching color', () => {
+    expect(classifySonataColor(pixels([182, 170, 87]))).toBeUndefined()
+  })
+
+  it('uses the white glyph to separate two gold Sonata badges', () => {
+    const allowed = ['Pact of Neonlight Leap', 'Rite of Gilded Revelation']
+    for (const name of allowed) {
+      const template = wuwaflexSonataSignatures.find((entry) => entry.name === name)!
+      const badge = new Uint8ClampedArray(24 * 24 * 4)
+      for (let y = 0; y < 24; y += 1) {
+        const row = Number.parseInt(template.mask.slice(y * 6, y * 6 + 6), 16)
+        for (let x = 0; x < 24; x += 1) badge.set(row & (1 << (23 - x))
+          ? [240, 240, 240, 255] : [182, 170, 87, 255], (y * 24 + x) * 4)
+      }
+      expect(classifySonataColor(badge, allowed)).toBeUndefined()
+      expect(classifyBackpackSonataGlyph(badge, allowed)?.value).toBe(name)
+    }
+  })
+})
+
+describe('Discord Bot Sonata matching', () => {
+  const templates = [
+    { name: 'gold', signature: [1, 1, 1, 1], color: [190, 170, 70] as const },
+    { name: 'green', signature: [1, 1, 1, .8], color: [100, 190, 70] as const }
+  ]
+
+  it('uses badge color to resolve a close shape match', () => {
+    expect(classifySonataCandidates([[1, 1, 1, 1]], templates, ['gold', 'green'], [100, 185, 70])?.value).toBe('green')
+  })
+
+  it('keeps shape matching when badge color is unavailable and respects possible sets', () => {
+    expect(classifySonataCandidates([[1, 1, 1, 1]], templates)?.value).toBe('gold')
+    expect(classifySonataCandidates([[1, 1, 1, 1]], templates, ['gold'], [100, 185, 70])?.value).toBe('gold')
+  })
+
+  it('does not let badge color override a clearly different icon shape', () => {
+    expect(classifySonataCandidates([[1, 1, 1, 1]], [
+      templates[0], { ...templates[1], signature: [-1, -1, -1, -1] }
+    ], undefined, [100, 185, 70])?.value).toBe('gold')
   })
 })
 
@@ -115,6 +180,8 @@ describe('WuWaFlex Sonata badges', () => {
       const row = Number.parseInt(template.mask.slice(y * 6, y * 6 + 6), 16)
       for (let x = 0; x < 24; x += 1) badge.set(row & (1 << (23 - x)) ? [240, 240, 240, 255] : [50, 38, 70, 255], (y * 24 + x) * 4)
     }
+    expect(classifyWuwaflexSonata(badge)).toMatchObject({ value: 'Lingering Tunes' })
+    expect(classifyWuwaflexSonata(badge)?.confidence).toBeGreaterThanOrEqual(.85)
     expect(classifyWuwaflexSonata(badge, ['Pact of Neonlight Leap'])?.value).not.toBe('Lingering Tunes')
   })
 })
