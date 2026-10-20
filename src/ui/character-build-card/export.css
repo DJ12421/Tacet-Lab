@@ -42,7 +42,7 @@
   overflow:visible;
 }
 .cbc-sonatas button,.cbc-sonatas button:hover,.cbc-sonatas button:focus-visible {
-  background:linear-gradient(145deg,rgba(226,247,250,.055),transparent 24%),linear-gradient(135deg,var(--cbc-glass-soft),var(--cbc-glass-deep));
+  background:linear-gradient(145deg,rgba(242,242,242,.055),transparent 24%),linear-gradient(135deg,var(--cbc-glass-soft),var(--cbc-glass-deep));
   box-shadow:inset 0 1px rgba(255,255,255,.1),inset 0 -1px rgba(255,255,255,.025),0 12px 30px -22px rgba(0,0,0,.95);
 }
 .cbc-sonatas button>small {
@@ -70,19 +70,22 @@
   backdrop-filter:none!important;
   -webkit-backdrop-filter:none!important;
 }
+.cbc-card.is-exporting .cbc-sequence-frame::before {
+  content:none;
+}
 .cbc-card.is-exporting .cbc-glass {
-  background:linear-gradient(145deg,rgba(226,247,250,.14),rgba(183,225,234,.035) 28%,transparent 54%),linear-gradient(135deg,rgba(15,32,42,.74),rgba(3,9,15,.88));
+  background:linear-gradient(145deg,color-mix(in srgb,rgba(242,242,242,.14) var(--cbc-panel-fill),transparent),color-mix(in srgb,rgba(216,216,216,.035) var(--cbc-panel-fill),transparent) 28%,transparent 54%),linear-gradient(135deg,color-mix(in srgb,rgba(28,28,28,.74) var(--cbc-panel-fill),transparent),color-mix(in srgb,rgba(9,9,9,.88) var(--cbc-panel-fill),transparent));
   box-shadow:inset 0 1px rgba(255,255,255,.18),inset 0 -1px rgba(255,255,255,.035),0 22px 48px -28px rgba(0,0,0,.96);
 }
 .cbc-card.is-exporting .cbc-echo-row {
-  background:linear-gradient(145deg,rgba(227,247,250,.14),rgba(194,229,237,.03) 30%,transparent 54%),linear-gradient(104deg,color-mix(in srgb,var(--cbc-accent) 11%,rgba(18,34,43,.76)),rgba(3,9,16,.9) 70%);
+  background:linear-gradient(145deg,color-mix(in srgb,rgba(242,242,242,.14) var(--cbc-panel-fill),transparent),color-mix(in srgb,rgba(224,224,224,.03) var(--cbc-panel-fill),transparent) 30%,transparent 54%),linear-gradient(104deg,color-mix(in srgb,rgba(31,31,31,.76) var(--cbc-panel-fill),transparent),color-mix(in srgb,rgba(9,9,9,.9) var(--cbc-panel-fill),transparent) 70%);
   box-shadow:inset 0 1px rgba(255,255,255,.17),inset 2px 0 color-mix(in srgb,var(--cbc-accent) 54%,transparent),0 18px 34px -17px rgba(0,0,0,.94);
 }
 .cbc-card.is-exporting .cbc-skill-bonus-nodes button>span:first-child,.cbc-card.is-exporting .cbc-main-skill>span:first-child,.cbc-card.is-exporting .cbc-extra-skills button>span:first-child {
   background:linear-gradient(145deg,rgba(198,225,231,.22),rgba(4,13,20,.94));
 }
 .cbc-card.is-exporting .cbc-sonatas button {
-  background:linear-gradient(145deg,rgba(226,247,250,.14),rgba(183,225,234,.035) 30%,transparent 56%),linear-gradient(135deg,rgba(15,32,42,.76),rgba(3,9,15,.9));
+  background:linear-gradient(145deg,color-mix(in srgb,rgba(242,242,242,.14) var(--cbc-panel-fill),transparent),color-mix(in srgb,rgba(216,216,216,.035) var(--cbc-panel-fill),transparent) 30%,transparent 56%),linear-gradient(135deg,color-mix(in srgb,rgba(28,28,28,.76) var(--cbc-panel-fill),transparent),color-mix(in srgb,rgba(9,9,9,.9) var(--cbc-panel-fill),transparent));
   box-shadow:inset 0 1px rgba(255,255,255,.17),0 8px 20px rgba(0,0,0,.38);
 }
 /* Export uses a two-pass backdrop. The first pass keeps only the card
@@ -99,19 +102,19 @@
   visibility:hidden!important;
 }
 .cbc-card.is-exporting .cbc-glass.has-export-backdrop {
-  background-image:linear-gradient(145deg,rgba(226,247,250,.14),rgba(183,225,234,.035) 28%,transparent 54%),linear-gradient(135deg,rgba(15,32,42,.56),rgba(3,9,15,.76)),var(--cbc-export-backdrop-image);
+  background-image:linear-gradient(145deg,color-mix(in srgb,rgba(242,242,242,.14) var(--cbc-panel-fill),transparent),color-mix(in srgb,rgba(216,216,216,.035) var(--cbc-panel-fill),transparent) 28%,transparent 54%),linear-gradient(135deg,color-mix(in srgb,rgba(28,28,28,.56) var(--cbc-panel-fill),transparent),color-mix(in srgb,rgba(9,9,9,.76) var(--cbc-panel-fill),transparent)),var(--cbc-export-backdrop-image);
   background-position:center;
   background-repeat:no-repeat;
   background-size:100% 100%;
 }
 .cbc-card.is-exporting .cbc-echo-row.has-export-backdrop {
-  background-image:linear-gradient(145deg,rgba(227,247,250,.14),rgba(194,229,237,.03) 30%,transparent 54%),linear-gradient(104deg,color-mix(in srgb,var(--cbc-accent) 11%,rgba(18,34,43,.54)),rgba(3,9,16,.78) 70%),var(--cbc-export-backdrop-image);
+  background-image:linear-gradient(145deg,color-mix(in srgb,rgba(242,242,242,.14) var(--cbc-panel-fill),transparent),color-mix(in srgb,rgba(224,224,224,.03) var(--cbc-panel-fill),transparent) 30%,transparent 54%),linear-gradient(104deg,color-mix(in srgb,rgba(31,31,31,.54) var(--cbc-panel-fill),transparent),color-mix(in srgb,rgba(9,9,9,.78) var(--cbc-panel-fill),transparent) 70%),var(--cbc-export-backdrop-image);
   background-position:center;
   background-repeat:no-repeat;
   background-size:100% 100%;
 }
 .cbc-card.is-exporting .cbc-sonatas button.has-export-backdrop {
-  background-image:linear-gradient(145deg,rgba(226,247,250,.14),rgba(183,225,234,.035) 30%,transparent 56%),linear-gradient(135deg,rgba(15,32,42,.56),rgba(3,9,15,.78)),var(--cbc-export-backdrop-image);
+  background-image:linear-gradient(145deg,color-mix(in srgb,rgba(242,242,242,.14) var(--cbc-panel-fill),transparent),color-mix(in srgb,rgba(216,216,216,.035) var(--cbc-panel-fill),transparent) 30%,transparent 56%),linear-gradient(135deg,color-mix(in srgb,rgba(28,28,28,.56) var(--cbc-panel-fill),transparent),color-mix(in srgb,rgba(9,9,9,.78) var(--cbc-panel-fill),transparent)),var(--cbc-export-backdrop-image);
   background-position:center;
   background-repeat:no-repeat;
   background-size:100% 100%;

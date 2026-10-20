@@ -57,10 +57,10 @@
   color: #fff!important;
 }
 .cbc-echo-main-stats small {
-  font-size: 15px;
+  font-size: 11px;
 }
 .cbc-echo-main-stats b {
-  font-size: 22px;
+  font-size: 19px;
 }
 .cbc-echo-row.is-grade-colored .cbc-echo-score strong {
   color: var(--cbc-accent);
@@ -76,9 +76,7 @@
   font-size: 18px;
   letter-spacing: .2em;
 }
-.cbc-build-score strong {
-  font-size: 66px;
-}
+
 .cbc-build-score b {
   font-size: 27px;
 }

@@ -574,7 +574,7 @@
   outline: 0!important;
 }
 
-.cbc-card.is-exporting .cbc-layout-calibration-layer,.cbc-card.is-exporting .cbc-edit-popover,.cbc-card.is-exporting .cbc-tooltip,.cbc-card.is-exporting .cbc-stat-actions,.cbc-card.is-exporting .cbc-build-score-info {
+.cbc-card.is-exporting .cbc-layout-calibration-layer,.cbc-card.is-exporting .cbc-edit-popover,.cbc-card.is-exporting .cbc-tooltip,.cbc-card.is-exporting .cbc-stat-actions,.cbc-card.is-exporting .cbc-build-score-info,.cbc-card.is-exporting .cbc-animation-toggle {
   display: none!important;
 }
 

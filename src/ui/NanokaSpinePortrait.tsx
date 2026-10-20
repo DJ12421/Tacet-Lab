@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react'
 import { AtlasAttachmentLoader, SkeletonBinary, Spine, TextureAtlas, type SkeletonData } from '@pixi-spine/all-4.1'
 import { Application, Assets, BaseTexture } from 'pixi.js'
 
@@ -18,6 +18,7 @@ const NORMALIZED_ATLAS_FOLDERS = [
 interface NanokaSpinePortraitProps {
   skeletonSourceUrl: string
   atlasSourceUrl: string
+  artRect: { x: number; y: number; width: number; height: number }
   renderScale?: number
   paused?: boolean
   onReady: () => void
@@ -49,24 +50,26 @@ function portraitResolution(renderScale: number) {
   return Math.max(.5, Math.min((window.devicePixelRatio || 1) * renderScale, 1.25))
 }
 
-export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaSpinePortraitProps>(function NanokaSpinePortrait({ skeletonSourceUrl, atlasSourceUrl, renderScale = 1, paused = false, onReady, onFallback }, ref) {
+export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaSpinePortraitProps>(function NanokaSpinePortrait({ skeletonSourceUrl, atlasSourceUrl, artRect, renderScale = 1, paused = false, onReady, onFallback }, ref) {
   const hostRef = useRef<HTMLDivElement>(null)
   const appRef = useRef<Application | undefined>(undefined)
+  const artRectRef = useRef(artRect)
+  const fitPortraitRef = useRef<() => void>(() => {})
   const pausedRef = useRef(paused)
   const updatePlaybackRef = useRef<() => void>(() => {})
   const [status, setStatus] = useState<PortraitStatus>('idle')
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     pausedRef.current = paused
     updatePlaybackRef.current()
   }, [paused])
 
   useImperativeHandle(ref, () => ({
     captureFrame: () => {
-      const canvas = hostRef.current?.querySelector('canvas')
-      if (!canvas) return
+      const app = appRef.current
+      if (!app) return
       try {
-        return canvas.toDataURL('image/png')
+        return app.renderer.extract.canvas(app.stage, app.screen).toDataURL?.('image/png')
       } catch {
         return
       }
@@ -80,6 +83,11 @@ export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaS
     app.renderer.resolution = portraitResolution(renderScale)
     app.renderer.resize(Math.max(host.clientWidth, 1), Math.max(host.clientHeight, 1))
   }, [renderScale])
+
+  useEffect(() => {
+    artRectRef.current = artRect
+    fitPortraitRef.current()
+  }, [artRect])
 
   useEffect(() => {
     const host = hostRef.current
@@ -96,28 +104,42 @@ export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaS
 
     let disposed = false
     let app: Application | undefined
+    let activePortrait: Spine | undefined
     let spineAtlas: TextureAtlas | undefined
     let resizeObserver: ResizeObserver | undefined
     let intersectionObserver: IntersectionObserver | undefined
     let isIntersecting = true
+    let isFocused = true
     const updatePlayback = () => {
       if (!app) return
-      if (!pausedRef.current && isIntersecting && document.visibilityState === 'visible' && document.hasFocus()) app.start()
+      const playing = !pausedRef.current && isIntersecting && isFocused && document.visibilityState === 'visible'
+      if (activePortrait) activePortrait.state.timeScale = playing ? 1 : 0
+      if (playing) app.start()
       else app.stop()
+    }
+    const onFocus = () => { isFocused = true; updatePlayback() }
+    const onBlur = () => { isFocused = false; updatePlayback() }
+    const onVisibilityChange = () => {
+      if (document.visibilityState === 'visible') isFocused = true
+      updatePlayback()
     }
     updatePlaybackRef.current = updatePlayback
     const disposeRuntime = () => {
       updatePlaybackRef.current = () => {}
+      fitPortraitRef.current = () => {}
       resizeObserver?.disconnect()
       resizeObserver = undefined
       intersectionObserver?.disconnect()
       intersectionObserver = undefined
-      document.removeEventListener('visibilitychange', updatePlayback)
-      window.removeEventListener('focus', updatePlayback)
-      window.removeEventListener('blur', updatePlayback)
+      document.removeEventListener('visibilitychange', onVisibilityChange)
+      window.removeEventListener('focus', onFocus)
+      window.removeEventListener('blur', onBlur)
+      window.removeEventListener('pointerdown', onFocus)
+      window.removeEventListener('keydown', onFocus)
       app?.destroy(true, { children: true, texture: false, baseTexture: false })
       if (appRef.current === app) appRef.current = undefined
       app = undefined
+      activePortrait = undefined
       spineAtlas?.dispose()
       spineAtlas = undefined
     }
@@ -126,13 +148,15 @@ export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaS
 
     void (async () => {
       try {
+        const width = Math.max(host.clientWidth, 1)
+        const height = Math.max(host.clientHeight, 1)
         const runtimeApp = new Application({
-          width: Math.max(host.clientWidth, 1),
-          height: Math.max(host.clientHeight, 1),
+          width,
+          height,
           backgroundAlpha: 0,
           antialias: true,
           autoDensity: true,
-          preserveDrawingBuffer: true,
+          preserveDrawingBuffer: false,
           resolution: portraitResolution(renderScale)
         })
         app = runtimeApp
@@ -190,6 +214,7 @@ export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaS
         }
 
         const portrait = new Spine(resource.spineData)
+        activePortrait = portrait
         portrait.autoUpdate = true
         const animation = portrait.spineData.animations.find((entry) => entry.name.toLowerCase() === 'idle')
           ?? portrait.spineData.animations[0]
@@ -200,11 +225,13 @@ export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaS
           if (disposed) return
           const width = Math.max(host.clientWidth, 1)
           const height = Math.max(host.clientHeight, 1)
-          runtimeApp.renderer.resize(width, height)
+          if (runtimeApp.screen.width !== width || runtimeApp.screen.height !== height) runtimeApp.renderer.resize(width, height)
           portrait.update(0)
           const bounds = portrait.getLocalBounds()
           if (!bounds.width || !bounds.height) return
-          const scale = Math.min(width / bounds.width, height / bounds.height) * 1.02
+          // Preserve the saved art framing inside the card-sized render window.
+          const { x, y, width: artWidth, height: artHeight } = artRectRef.current
+          const scale = Math.min(artWidth / bounds.width, artHeight / bounds.height) * 1.02
           const rootBone = portrait.skeleton.getRootBone()
           const rootCenterX = rootBone?.worldX
           const characterCenterX = typeof rootCenterX === 'number' && Number.isFinite(rootCenterX)
@@ -212,8 +239,9 @@ export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaS
             : bounds.x + bounds.width / 2
           portrait.scale.set(scale)
           portrait.pivot.set(characterCenterX, bounds.y + bounds.height / 2)
-          portrait.position.set(width / 2, height / 2)
+          portrait.position.set(x + artWidth / 2, y + artHeight / 2)
         }
+        fitPortraitRef.current = fitPortrait
         fitPortrait()
         resizeObserver = new ResizeObserver(fitPortrait)
         resizeObserver.observe(host)
@@ -222,9 +250,11 @@ export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaS
           updatePlayback()
         })
         intersectionObserver.observe(host)
-        document.addEventListener('visibilitychange', updatePlayback)
-        window.addEventListener('focus', updatePlayback)
-        window.addEventListener('blur', updatePlayback)
+        document.addEventListener('visibilitychange', onVisibilityChange)
+        window.addEventListener('focus', onFocus)
+        window.addEventListener('blur', onBlur)
+        window.addEventListener('pointerdown', onFocus)
+        window.addEventListener('keydown', onFocus)
         updatePlayback()
         setStatus('ready')
         onReady()

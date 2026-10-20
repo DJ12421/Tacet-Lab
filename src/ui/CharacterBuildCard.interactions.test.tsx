@@ -168,7 +168,7 @@ describe('CharacterBuildCard direct editing', () => {
     expect(callbacks.onOpenEcho).toHaveBeenCalledWith(0)
   })
 
-  it('keeps ER and nonzero elemental damage readable while dimming unweighted stats', () => {
+  it('keeps all resonator statistics readable while dimming unweighted Echo substats', () => {
     const echo: Echo = {
       id: 'echo-1', name: 'Hooscamp', cost: 4, rarity: 5, level: 25, sonata: 'Lingering Tunes',
       mainStat: { key: 'critRate', value: 22 }, subStats: [{ key: 'energyRegen', value: 10.5 }, { key: 'spectroDamage', value: 10.5 }, { key: 'basicDamage', value: 10.5 }],
@@ -179,17 +179,18 @@ describe('CharacterBuildCard direct editing', () => {
     expect(callbacks.onOpenEcho).toHaveBeenCalledWith(0)
     const substat = (label: string) => [...container.querySelectorAll('.cbc-echo-substats .cbc-stat-source')].find((row) => row.textContent?.includes(label))
     const statRow = (label: string) => [...container.querySelectorAll('.cbc-stat-row')].find((row) => row.textContent?.includes(label))
+    expect(container.querySelector('.cbc-stats > .cbc-build-score')).toHaveTextContent('Build score')
     expect(substat('Energy Regen')).not.toHaveClass('is-unweighted')
     expect(substat('Spectro DMG')).not.toHaveClass('is-unweighted')
     expect(substat('Basic Attack')).toHaveClass('is-unweighted')
     expect(statRow('Energy Regen')).not.toHaveClass('is-unweighted')
     expect(statRow('Spectro DMG')).not.toHaveClass('is-unweighted')
-    expect(statRow('DEF')).toHaveClass('is-unweighted')
+    expect(statRow('DEF')).not.toHaveClass('is-unweighted')
   })
 
-  it('dims a zero elemental damage bonus without a weight', () => {
+  it('keeps a zero elemental damage bonus readable without a weight', () => {
     const { container } = card(true)
-    expect([...container.querySelectorAll('.cbc-stat-row')].find((row) => row.textContent?.includes('Spectro DMG'))).toHaveClass('is-unweighted')
+    expect([...container.querySelectorAll('.cbc-stat-row')].find((row) => row.textContent?.includes('Spectro DMG'))).not.toHaveClass('is-unweighted')
   })
 
   it('dismisses the skill edit popover when the pointer leaves its owner', () => {

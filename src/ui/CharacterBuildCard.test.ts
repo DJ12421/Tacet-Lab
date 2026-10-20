@@ -19,6 +19,11 @@ describe('prioritizedBuildCardStats', () => {
     const rows = prioritizedBuildCardStats(lucy, profile({}))
     expect(rows.map((row) => row.key)).toEqual(['hp', 'atk', 'def', 'energyRegen', 'critRate', 'critDamage', 'spectroDamage'])
   })
+
+  it('keeps Crit. Rate before Crit. DMG when damage has a higher priority weight', () => {
+    const rows = prioritizedBuildCardStats(lucy, profile({ critDamage: 4, skillDamage: 3, critRate: 2 }))
+    expect(rows.map((row) => row.key)).toEqual(['hp', 'atk', 'def', 'energyRegen', 'critRate', 'critDamage', 'skillDamage', 'spectroDamage'])
+  })
 })
 
 describe('echoRollBreakdown', () => {

@@ -1,7 +1,7 @@
 import { useCallback, useContext, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
 import { createPortal } from 'react-dom'
-import { toPng } from 'html-to-image'
+import { toCanvas, toPng } from 'html-to-image'
 import { embedCardMetadata, type CardMetadata } from '../scanner/card-metadata'
 import { baseTuneBreakBoost, characterCatalog, echoCatalog, sonataNames, statLabels, weaponCatalog, type CharacterCatalogEntry, type WeaponCatalogEntry } from '../game-data'
 import { pendingMechanics } from '../game-data/review-status.generated'
@@ -80,23 +80,16 @@ const EXPORT_GLASS_SELECTOR = '.cbc-glass,.cbc-echo-row,.cbc-sonatas button'
 
 const nextPaint = () => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())))
 
-function renderExportFrame(frame: HTMLElement) {
-  return toPng(frame, {
-    width: EXPORT_CARD_WIDTH,
-    height: EXPORT_CARD_HEIGHT,
-    pixelRatio: 1,
-    cacheBust: true,
-    backgroundColor: '#030708',
-    style: { width: `${EXPORT_CARD_WIDTH}px`, height: `${EXPORT_CARD_HEIGHT}px`, maxWidth: 'none', transform: 'none' }
-  })
+const exportRenderOptions = {
+  width: EXPORT_CARD_WIDTH,
+  height: EXPORT_CARD_HEIGHT,
+  pixelRatio: 1,
+  cacheBust: true,
+  backgroundColor: '#030708',
+  style: { width: `${EXPORT_CARD_WIDTH}px`, height: `${EXPORT_CARD_HEIGHT}px`, maxWidth: 'none', transform: 'none' }
 }
 
-async function loadExportImage(source: string) {
-  const image = new Image()
-  image.src = source
-  await image.decode()
-  return image
-}
+function renderExportFrame(frame: HTMLElement) { return toPng(frame, exportRenderOptions) }
 
 async function bakeExportGlassBackdrops(exportFrame: HTMLDivElement) {
   const host = exportFrame.parentElement
@@ -104,19 +97,18 @@ async function bakeExportGlassBackdrops(exportFrame: HTMLDivElement) {
 
   const backgroundFrame = exportFrame.cloneNode(true) as HTMLDivElement
   backgroundFrame.classList.add('is-exporting-background')
-  backgroundFrame.classList.remove('has-live-portrait-snapshot')
-  backgroundFrame.querySelector('.cbc-live-portrait-snapshot')?.remove()
   host.append(backgroundFrame)
+  const snapshot = backgroundFrame.querySelector<HTMLImageElement>('.cbc-live-portrait-snapshot')
+  if (snapshot?.src) await snapshot.decode().catch(() => undefined)
   await nextPaint()
 
-  let backgroundSource: string
+  let backgroundCanvas: HTMLCanvasElement
   try {
-    backgroundSource = await renderExportFrame(backgroundFrame)
+    backgroundCanvas = await toCanvas(backgroundFrame, exportRenderOptions)
   } finally {
     backgroundFrame.remove()
   }
 
-  const backgroundImage = await loadExportImage(backgroundSource)
   const padding = EXPORT_BACKDROP_BLUR * 3
   const blurred = document.createElement('canvas')
   blurred.width = EXPORT_CARD_WIDTH + padding * 2
@@ -124,10 +116,11 @@ async function bakeExportGlassBackdrops(exportFrame: HTMLDivElement) {
   const blurContext = blurred.getContext('2d')
   if (!blurContext) return
   blurContext.filter = `blur(${EXPORT_BACKDROP_BLUR}px)`
-  blurContext.drawImage(backgroundImage, padding, padding, EXPORT_CARD_WIDTH, EXPORT_CARD_HEIGHT)
+  blurContext.drawImage(backgroundCanvas, padding, padding, EXPORT_CARD_WIDTH, EXPORT_CARD_HEIGHT)
+  backgroundCanvas.width = 0; backgroundCanvas.height = 0
 
   const frameBounds = exportFrame.getBoundingClientRect()
-  if (!frameBounds.width || !frameBounds.height) return
+  if (!frameBounds.width || !frameBounds.height) { blurred.width = 0; blurred.height = 0; return }
   const scaleX = EXPORT_CARD_WIDTH / frameBounds.width
   const scaleY = EXPORT_CARD_HEIGHT / frameBounds.height
   for (const panel of exportFrame.querySelectorAll<HTMLElement>(EXPORT_GLASS_SELECTOR)) {
@@ -142,9 +135,12 @@ async function bakeExportGlassBackdrops(exportFrame: HTMLDivElement) {
     const cropContext = crop.getContext('2d')
     if (!cropContext) continue
     cropContext.drawImage(blurred, x + padding, y + padding, width, height, 0, 0, width, height)
-    panel.style.setProperty('--cbc-export-backdrop-image', `url("${crop.toDataURL('image/png')}")`)
+    const cropImage = crop.toDataURL('image/png')
+    crop.width = 0; crop.height = 0
+    panel.style.setProperty('--cbc-export-backdrop-image', `url("${cropImage}")`)
     panel.classList.add('has-export-backdrop')
   }
+  blurred.width = 0; blurred.height = 0
 }
 
 export function richSkillDescription(description: string) {
@@ -528,6 +524,7 @@ export function CharacterShowcase({ character, characters, catalog, weapons, ech
     let originalPortraitSource: string | undefined
     let exportHost: HTMLDivElement | undefined
     try {
+      await nextPaint()
       const livePortraitSnapshot = settings.liveCharacterArt && animatedPortraitReady ? livePortraitRef.current?.captureFrame() : undefined
       if (portraitRef.current) {
         try {
@@ -651,7 +648,7 @@ export function CharacterShowcase({ character, characters, catalog, weapons, ech
       livePortraitRef={livePortraitRef}
       portraitFailed={portraitFailed}
       animatedPortraitReady={animatedPortraitReady}
-      pauseLivePortrait={weaponPickerOpen || echoSlot !== null || scoreEditorOpen || scoreInfoOpen}
+      pauseLivePortrait={exporting || weaponPickerOpen || echoSlot !== null || scoreEditorOpen || scoreInfoOpen}
       enabledSkillTreeNodeIds={enabledSkillTreeNodeIds}
       onPortraitError={() => { if (!portraitFailed && catalog.portraitSourceUrl && catalog.portraitSourceUrl !== catalog.iconSourceUrl) setPortraitFailed(true) }}
       onLiveReady={showAnimatedPortrait}

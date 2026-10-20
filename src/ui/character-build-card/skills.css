@@ -163,7 +163,33 @@
   box-shadow: inset 0 1px rgba(255,255,255,.1),0 0 22px color-mix(in srgb,var(--cbc-accent) 12%,transparent),0 10px 22px rgba(0,0,0,.42);
 }
 
+.cbc-main-skill>span:first-child::before,.cbc-main-skill>span:first-child::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.cbc-main-skill>span:first-child::before {
+  left: 50%;
+  top: 50%;
+  width: 80px;
+  height: 80px;
+  transform: translate(-50%,-50%);
+  background: linear-gradient(135deg,#e8f7fc,color-mix(in srgb,var(--cbc-accent) 55%,white),var(--cbc-accent));
+  -webkit-mask: url('./skill-diamond-edge.svg') center / contain no-repeat;
+  mask: url('./skill-diamond-edge.svg') center / contain no-repeat;
+  filter: drop-shadow(0 0 5px color-mix(in srgb,var(--cbc-accent) 38%,transparent));
+}
+
+.cbc-main-skill>span:first-child::after {
+  inset: 4px;
+  border: 1px solid rgba(227,244,248,.35);
+  box-shadow: inset 0 0 8px rgba(227,244,248,.12);
+}
+
 .cbc-main-skill img {
+  position: relative;
+  z-index: 1;
   width: 54px;
   height: 54px;
   object-fit: contain;
@@ -219,10 +245,11 @@
 .cbc-extra-skills button {
   display: grid;
   justify-items: center;
-  gap: 5px;
+  gap: 12px;
 }
 
 .cbc-extra-skills button>span:first-child {
+  position: relative;
   width: 46px;
   height: 46px;
   display: grid;
@@ -233,7 +260,23 @@
   box-shadow: inset 0 1px rgba(255,255,255,.1),0 8px 18px rgba(0,0,0,.4);
 }
 
+.cbc-skill-circle-wave {
+  --wave-color: var(--cbc-accent);
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 50%;
+  width: 100px;
+  height: 100px;
+  max-width: none;
+  transform: translate(-50%,-50%);
+  overflow: visible;
+  filter: drop-shadow(0 0 3px var(--cbc-accent));
+  pointer-events: none;
+}
+
 .cbc-extra-skills img {
+  position: relative;
   width: 36px;
   height: 36px;
   object-fit: contain;
