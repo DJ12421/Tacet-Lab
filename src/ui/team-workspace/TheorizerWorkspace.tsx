@@ -253,6 +253,14 @@ export function TheorizerWorkspace({ member, model, echoes, builds, characters, 
   member: TeamMemberModel; model: TeamWorkspaceModel; echoes: Echo[]; builds: Build[]; characters: OwnedCharacter[]; weapons: OwnedWeapon[]
   equippedLoadouts: EquippedLoadout[]; theorycraftBuilds: TheorycraftBuild[]; roverGender: 'male' | 'female'; refresh: () => Promise<void>; accent?: string
 }) {
+  useEffect(() => () => {
+    theorizerCache.length = 0
+    theorizerWorker?.terminate()
+    theorizerWorker = undefined
+    for (const pending of theorizerPending.values()) pending.reject(new Error('Theorizer workspace closed.'))
+    theorizerPending.clear()
+  }, [])
+  useEffect(() => { theorizerCache.length = 0 }, [echoes, builds, characters, weapons, equippedLoadouts, theorycraftBuilds])
   const preferenceKey = `${model.team.id}:${member.slot}`
   const [mode, setMode] = useWorkspacePreference<TheorizerMode>(`theorizer:${preferenceKey}:mode`, 'mainStats')
   const [disabledEquipmentBuffKeys, setDisabledEquipmentBuffKeys] = useWorkspacePreference<string[]>(`buffs:${preferenceKey}`, [])

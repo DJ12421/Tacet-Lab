@@ -33,6 +33,8 @@ const manualText = `Unknown Echo\nCost 1\n5 Star\nLv. 0\nUnknown Sonata\nATK % 1
 
 type BuildCardReviewSection = 'character' | 'weapon' | 'echo'
 const scanCardTypes = ['Character', 'Weapon', 'Echo'] as const
+const SCAN_CARDS_PER_PAGE = 30
+const MAX_PENDING_SCREENSHOTS = 4
 
 function ScannedLoadoutCards({ details, showCharacter, showWeapon, onReview }: { details: BuildCardDetails; showCharacter: boolean; showWeapon: boolean; onReview: (section: BuildCardReviewSection) => void }) {
   const character = characterCatalog.find((entry) => entry.id === details.characterCatalogId)
@@ -102,11 +104,13 @@ export function ScannerView({ echoes, refresh, onSessionRiskChange }: { echoes: 
   const imageScanningRef = useRef(false)
   const lastLiveEchoRef = useRef('')
   const candidateTabsRef = useRef<HTMLDivElement>(null)
+  const scansRef = useRef<HTMLElement>(null)
   const reviewRef = useRef<HTMLElement>(null)
   const videoSource = useRef(new LocalVideoSource()), candidatesRef = useRef<DiagnosticScanCandidate[]>([]), echoesRef = useRef(echoes)
   const [streaming, setStreaming] = useState(false), [videoScanning, setVideoScanning] = useState(false), [imageScanning, setImageScanning] = useState(false)
   const [candidates, setCandidates] = useState<DiagnosticScanCandidate[]>([]), [session, setSession] = useState<ScanSession>()
   const [selectedScanTypes, setSelectedScanTypes] = useState<(typeof scanCardTypes)[number][]>([...scanCardTypes])
+  const [cardPage, setCardPage] = useState(1)
   const [equippedFilter, setEquippedFilter] = useState('all')
   const [progress, setProgress] = useState(0), [status, setStatus] = useState('Idle'), [error, setError] = useState('')
   const [workerPreference, setWorkerPreference] = useState<Exclude<OcrWorkerPreference, 'auto'>>(4), [debugVisible, setDebugVisible] = useState(true)
@@ -183,7 +187,7 @@ export function ScannerView({ echoes, refresh, onSessionRiskChange }: { echoes: 
       if (candidate.duplicateOf) {
         if (signature !== lastLiveEchoRef.current && audioFeedbackRef.current && feedbackAudioRef.current) feedbackTone(feedbackAudioRef.current, 'duplicate')
         lastLiveEchoRef.current = signature
-        return
+        return false
       }
       lastLiveEchoRef.current = signature
     }
@@ -191,6 +195,7 @@ export function ScannerView({ echoes, refresh, onSessionRiskChange }: { echoes: 
     candidatesRef.current = next
     setCandidates(next)
     if (audioFeedbackRef.current && feedbackAudioRef.current) feedbackTone(feedbackAudioRef.current, candidate.duplicateOf ? 'duplicate' : candidateErrors(candidate).length ? 'error' : 'new')
+    return true
   }
   const toggleAudioFeedback = async (enabled: boolean) => {
     setAudioFeedback(enabled)
@@ -278,25 +283,31 @@ export function ScannerView({ echoes, refresh, onSessionRiskChange }: { echoes: 
     try {
       if (streaming) stopScreen()
       const controller = await createController('screenshot')
-      const pending: Promise<boolean>[] = []
-      const pendingNames: string[] = []
+      const pending = new Set<Promise<void>>()
       const failures: string[] = []
+      let queued = 0, completed = 0
       let selectedProfile = profile
       for (let index = 0; index < files.length; index += 1) {
+        if (pending.size >= MAX_PENDING_SCREENSHOTS) await Promise.race(pending)
+        const name = files[index].name || `Image ${index + 1}`
         try {
           const dataUrl = await readScreenshot(files[index])
           selectedProfile = await prepareCalibration(dataUrl, 'screenshot', selectedProfile)
-          pending.push(controller.enqueue(dataUrl, 'screenshot', selectedProfile))
-          pendingNames.push(files[index].name || `Image ${index + 1}`)
+          let task: Promise<void>
+          task = controller.enqueue(dataUrl, 'screenshot', selectedProfile)
+            .then((accepted) => { if (accepted) completed += 1; else failures.push(`${name}: Scan was cancelled.`) },
+              (caught) => { failures.push(`${name}: ${caught instanceof Error ? caught.message : 'Scan failed.'}`) })
+            .finally(() => { pending.delete(task) })
+          pending.add(task)
+          queued += 1
           setStatus(`Queued image ${index + 1} of ${files.length}`)
         } catch (caught) {
-          failures.push(`${files[index].name || `Image ${index + 1}`}: ${caught instanceof Error ? caught.message : 'Invalid image.'}`)
+          failures.push(`${name}: ${caught instanceof Error ? caught.message : 'Invalid image.'}`)
         }
       }
-      const results = await Promise.allSettled(pending)
-      results.forEach((result, index) => { if (result.status === 'rejected') failures.push(`${pendingNames[index]}: ${result.reason instanceof Error ? result.reason.message : 'Scan failed.'}`) })
+      await Promise.all(pending)
       controller.requestCompletion()
-      setStatus(pending.length ? `Image scan complete (${pending.length - results.filter((result) => result.status === 'rejected').length}/${files.length})` : 'No images scanned')
+      setStatus(queued ? `Image scan complete (${completed}/${files.length})` : 'No images scanned')
       if (failures.length) setError(failures.join(' '))
       const firstNewCandidate = candidatesRef.current.find((candidate) => !existingIds.has(candidate.id))
       if (firstNewCandidate) {
@@ -412,7 +423,7 @@ export function ScannerView({ echoes, refresh, onSessionRiskChange }: { echoes: 
     if (updated.buildCard && candidate.buildCard?.id === updated.buildCard.id) return { ...candidate, buildCard: updated.buildCard, fields: { ...candidate.fields, equippedBy: updated.buildCard.character } }
     return candidate
   }))
-  const discard = (candidate: DiagnosticScanCandidate) => { controllerRef.current?.markRejected(); setCandidates((current) => current.filter((item) => item.id !== candidate.id)) }
+  const discard = (candidate: DiagnosticScanCandidate) => { controllerRef.current?.markRejected(candidate); setCandidates((current) => current.filter((item) => item.id !== candidate.id)) }
   const save = async (candidate: DiagnosticScanCandidate) => {
     const batch = candidate.buildCard ? candidates.filter((entry) => entry.buildCard?.id === candidate.buildCard?.id) : [candidate]
     if (batch.some((entry) => candidateErrors(entry).length) || savingProgress) {
@@ -422,7 +433,7 @@ export function ScannerView({ echoes, refresh, onSessionRiskChange }: { echoes: 
     try {
       setError(''); setSavingProgress({ completed: 0, total: batch.length, phase: 'preparing' })
       await saveScannedCandidates(batch, setSavingProgress)
-      batch.forEach(() => controllerRef.current?.markApproved())
+      batch.forEach((entry) => controllerRef.current?.markApproved(entry))
       const savedIds = new Set(batch.map((entry) => entry.id))
       setCandidates((current) => current.filter((item) => !savedIds.has(item.id))); await refresh()
     } catch (caught) { setError(caught instanceof Error ? caught.message : 'The scan could not be saved.') }
@@ -445,13 +456,30 @@ export function ScannerView({ echoes, refresh, onSessionRiskChange }: { echoes: 
   const showCharacters = selectedScanTypes.includes('Character'), showWeapons = selectedScanTypes.includes('Weapon'), showEchoes = selectedScanTypes.includes('Echo')
   const scannedBuildCards = visibleCandidates.flatMap((candidate) => candidate.buildCard ? [{ candidate, details: candidate.buildCard }] : [])
     .filter((entry, index, entries) => entries.findIndex((candidate) => candidate.details.id === entry.details.id) === index)
-  const visibleCardCount = scannedBuildCards.length * (Number(showCharacters) + Number(showWeapons)) + (showEchoes ? visibleCandidates.length : 0)
+  const scanCards = [
+    ...scannedBuildCards.flatMap(({ candidate, details }) => [
+      ...(showCharacters ? [{ kind: 'character' as const, candidate, details }] : []),
+      ...(showWeapons ? [{ kind: 'weapon' as const, candidate, details }] : [])
+    ]),
+    ...(showEchoes ? visibleCandidates.map((candidate) => ({ kind: 'echo' as const, candidate })) : [])
+  ]
+  const pageCount = Math.max(1, Math.ceil(scanCards.length / SCAN_CARDS_PER_PAGE))
+  const currentPage = Math.min(cardPage, pageCount)
+  const pageCards = scanCards.slice((currentPage - 1) * SCAN_CARDS_PER_PAGE, currentPage * SCAN_CARDS_PER_PAGE)
+  useEffect(() => { if (cardPage > pageCount) setCardPage(pageCount) }, [cardPage, pageCount])
+  const changeCardPage = (page: number) => { setCardPage(page); scansRef.current?.scrollIntoView({ block: 'start' }) }
+  const pagination = pageCount > 1 && <nav className="echo-pagination" aria-label="Scanned card pages">
+    <span>{(currentPage - 1) * SCAN_CARDS_PER_PAGE + 1}–{Math.min(currentPage * SCAN_CARDS_PER_PAGE, scanCards.length)} <small>of {scanCards.length} cards</small></span>
+    <div><button type="button" className="echo-page-arrow" disabled={currentPage === 1} onClick={() => changeCardPage(currentPage - 1)} aria-label="Previous page">‹</button>
+      <label className="echo-page-select"><span className="sr-only">Page</span><select value={currentPage} onChange={(event) => changeCardPage(Number(event.target.value))}>{Array.from({ length: pageCount }, (_, index) => <option value={index + 1} key={index + 1}>{index + 1}</option>)}</select><small>/ {pageCount}</small></label>
+      <button type="button" className="echo-page-arrow" disabled={currentPage === pageCount} onClick={() => changeCardPage(currentPage + 1)} aria-label="Next page">›</button></div>
+  </nav>
   const approveCandidates = async (batch: DiagnosticScanCandidate[]) => {
     if (!batch.length || savingProgress) return
     try {
       setError(''); setSavingProgress({ completed: 0, total: batch.length, phase: 'preparing' })
       await saveScannedCandidates(batch, setSavingProgress)
-      batch.forEach(() => controllerRef.current?.markApproved())
+      batch.forEach((entry) => controllerRef.current?.markApproved(entry))
       const approvedIds = new Set(batch.map((candidate) => candidate.id))
       setCandidates((current) => current.filter((candidate) => !approvedIds.has(candidate.id)))
       await refresh()
@@ -463,12 +491,12 @@ export function ScannerView({ echoes, refresh, onSessionRiskChange }: { echoes: 
   const discardDuplicates = () => {
     if (!duplicateCandidates.length || savingProgress || !window.confirm(`Discard ${duplicateCandidates.length} duplicate scan${duplicateCandidates.length === 1 ? '' : 's'}? This cannot be undone.`)) return
     const duplicateIds = new Set(duplicateCandidates.map((candidate) => candidate.id))
-    duplicateCandidates.forEach(() => controllerRef.current?.markRejected())
+    duplicateCandidates.forEach((candidate) => controllerRef.current?.markRejected(candidate))
     setCandidates((current) => current.filter((candidate) => !duplicateIds.has(candidate.id)))
   }
   const discardAll = () => {
     if (!candidates.length || !window.confirm(`Discard all ${candidates.length} scanned Echoes? This cannot be undone.`)) return
-    candidates.forEach(() => controllerRef.current?.markRejected()); setCandidates([]); setReviewOpen(false); setActiveReviewId(undefined)
+    candidates.forEach((candidate) => controllerRef.current?.markRejected(candidate)); setCandidates([]); setReviewOpen(false); setActiveReviewId(undefined)
   }
   const rerunField = async (candidate: DiagnosticScanCandidate, regionId: string) => {
     try { const rescanned = await controllerRef.current?.rerunField(candidate, regionId); if (rescanned) updateCandidate({ ...rescanned, id: candidate.id, selected: candidate.selected }) }
@@ -576,10 +604,10 @@ export function ScannerView({ echoes, refresh, onSessionRiskChange }: { echoes: 
       <small>Drag the playhead to preview a frame. Captured Echoes join the OCR queue while the video replays.</small>
       <div className="video-stage active video-replay-stage" ref={videoReplayRef} role="group" aria-label="Video scan replay">{profile && <div className="live-panel-overlay" style={{ left: `${profile.panelRect.x * 100}%`, top: `${profile.panelRect.y * 100}%`, width: `${profile.panelRect.width * 100}%`, height: `${profile.panelRect.height * 100}%` }}><ScannerDebugOverlay regions={profile.regions} visible={debugVisible}/></div>}</div>
     </Panel>}
-    {candidates.length > 0 && <section className="scanned-echoes">
+    {candidates.length > 0 && <section className="scanned-echoes" ref={scansRef}>
       <div className="section-heading scanned-echoes-heading">
         <div><span className="eyebrow">Ready to save</span><h2>Your scans <b>{candidates.length}</b></h2></div>
-        <div className="scanned-echo-filters"><FilterChips label="Scan type" values={scanCardTypes} selected={selectedScanTypes} onChange={setSelectedScanTypes}/><div className="scanned-echo-character-filter"><span>Equipped character</span><SingleSelect label="Equipped character" value={activeEquippedFilter} options={[{ value: 'all', label: 'All characters' }, ...(hasUnassignedScans ? [{ value: '', label: 'Unassigned' }] : []), ...equippedCharacters.map((name) => ({ value: name, label: name, icon: characterCatalog.find((entry) => entry.name === name)?.iconSourceUrl }))]} onChange={setEquippedFilter}/></div>{(visibleCandidates.length !== candidates.length || selectedScanTypes.length !== scanCardTypes.length) && <small>Bulk actions apply to all {candidates.length} scans.</small>}</div>
+        <div className="scanned-echo-filters"><FilterChips label="Scan type" values={scanCardTypes} selected={selectedScanTypes} onChange={(next) => { setSelectedScanTypes(next); setCardPage(1) }}/><div className="scanned-echo-character-filter"><span>Equipped character</span><SingleSelect label="Equipped character" value={activeEquippedFilter} options={[{ value: 'all', label: 'All characters' }, ...(hasUnassignedScans ? [{ value: '', label: 'Unassigned' }] : []), ...equippedCharacters.map((name) => ({ value: name, label: name, icon: characterCatalog.find((entry) => entry.name === name)?.iconSourceUrl }))]} onChange={(next) => { setEquippedFilter(next); setCardPage(1) }}/></div>{(visibleCandidates.length !== candidates.length || selectedScanTypes.length !== scanCardTypes.length || pageCount > 1) && <small>Bulk actions apply to all {candidates.length} scans.</small>}</div>
         <div className="scanned-echo-actions">
           <button className="primary" disabled={!approvableCandidates.length || Boolean(savingProgress)} onClick={() => void approveAll()}>{savingProgress ? 'Saving…' : 'Save all'}</button>
           <button className="secondary" disabled={!approvableDuplicates.length || Boolean(savingProgress)} onClick={() => void approveAllDuplicates()}>Save duplicates</button>
@@ -588,7 +616,14 @@ export function ScannerView({ echoes, refresh, onSessionRiskChange }: { echoes: 
         </div>
       </div>
       {savingProgress && <div className="scanner-save-progress" role="status"><div className="progress"><i style={{ width: `${savingProgress.completed / Math.max(1, savingProgress.total) * 100}%` }}/></div><strong>{savingProgress.phase === 'writing' ? 'Finishing save…' : `Saving ${savingProgress.completed} of ${savingProgress.total}`}</strong></div>}
-      {visibleCardCount ? <div className="scanned-echo-grid">{scannedBuildCards.map(({ candidate, details }) => <ScannedLoadoutCards key={details.id} details={details} showCharacter={showCharacters} showWeapon={showWeapons} onReview={(section) => { setActiveReviewId(candidate.id); setReviewSection(section); setReviewOpen(true) }}/>)}{showEchoes && visibleCandidates.map((candidate) => { const duplicateBadge = candidate.duplicateOf ? <span className="scan-duplicate-badge">Duplicate</span> : null; if (candidateErrors(candidate).length > 0) return <button className={`scan-error-card${candidate.duplicateOf ? ' duplicate' : ''}`} key={candidate.id} onClick={() => { setActiveReviewId(candidate.id); setReviewSection('echo'); setReviewOpen(true) }}>{duplicateBadge}<span>Needs a check</span><strong>{candidate.fields.name.value || 'Unknown Echo'}</strong><small>{candidateErrors(candidate).join(' ')}</small></button>; const echo = candidateToEcho(candidate); return <div className={`scanned-echo-card${candidate.duplicateOf ? ' duplicate' : ''}`} key={candidate.id}>{duplicateBadge}<EchoMiniCard echo={echo} rollRating={echoRollRating(echo)} equipment={<EquippedCharacterLabel name={candidate.fields.equippedBy.value}/>} onClick={() => { setActiveReviewId(candidate.id); setReviewSection('echo'); setReviewOpen(true) }}/></div> })}</div> : <div className="empty-state compact">No scans match these filters.</div>}
+      {scanCards.length ? <>{pagination}<div className="scanned-echo-grid">{pageCards.map((card) => {
+        const { candidate } = card
+        if (card.kind !== 'echo') return <ScannedLoadoutCards key={`${card.details.id}:${card.kind}`} details={card.details} showCharacter={card.kind === 'character'} showWeapon={card.kind === 'weapon'} onReview={(section) => { setActiveReviewId(candidate.id); setReviewSection(section); setReviewOpen(true) }}/>
+        const duplicateBadge = candidate.duplicateOf ? <span className="scan-duplicate-badge">Duplicate</span> : null
+        if (candidateErrors(candidate).length > 0) return <button className={`scan-error-card${candidate.duplicateOf ? ' duplicate' : ''}`} key={candidate.id} onClick={() => { setActiveReviewId(candidate.id); setReviewSection('echo'); setReviewOpen(true) }}>{duplicateBadge}<span>Needs a check</span><strong>{candidate.fields.name.value || 'Unknown Echo'}</strong><small>{candidateErrors(candidate).join(' ')}</small></button>
+        const echo = candidateToEcho(candidate)
+        return <div className={`scanned-echo-card${candidate.duplicateOf ? ' duplicate' : ''}`} key={candidate.id}>{duplicateBadge}<EchoMiniCard echo={echo} rollRating={echoRollRating(echo)} equipment={<EquippedCharacterLabel name={candidate.fields.equippedBy.value}/>} onClick={() => { setActiveReviewId(candidate.id); setReviewSection('echo'); setReviewOpen(true) }}/></div>
+      })}</div>{pagination}</> : <div className="empty-state compact">No scans match these filters.</div>}
     </section>}
     {reviewOpen && createPortal(<div className="modal-backdrop scan-review-backdrop" role="dialog" aria-modal="true" aria-label="Review scans"><section className="panel scan-review-popout" ref={reviewRef}><header><div><span className="eyebrow">Check before saving</span><h2>Review your scans <b>{candidates.length}</b></h2></div><button className="close" aria-label="Close review" onClick={closeReview}>×</button></header>{candidates.length > 1 && <div className="review-candidate-tabs" ref={candidateTabsRef}>{candidates.map((candidate, index) => <button className={candidate.id === activeReview?.id ? 'active' : ''} onClick={() => setActiveReviewId(candidate.id)} key={candidate.id}>{index + 1}. {candidate.fields.name.value}</button>)}</div>}<div className="scan-review-scroll">{activeReview ? <ScanReviewCard candidate={activeReview} reviewSection={reviewSection} onReviewSectionChange={setReviewSection} onChange={updateCandidate} onDiscard={() => { discard(activeReview); setActiveReviewId(undefined) }} onSave={() => { void save(activeReview); setActiveReviewId(undefined) }} onRerunField={(regionId) => void rerunField(activeReview, regionId)} onCopyDiagnostic={(includeImages) => void copyDiagnosticReport(activeReview, includeImages)}/> : <div className="empty-state compact"><h3>All done</h3><p>Close this window to scan more Echoes.</p></div>}</div></section></div>, document.body)}
   </div>

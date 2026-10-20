@@ -25,6 +25,8 @@ function rotationEvaluator(request: OptimizerRequest): OptimizerCandidateEvaluat
     else buildIds[rotation.memberSlot] = build.id
     const model = resolveTeamWorkspace({
       ...rotation,
+      includeTraces:false,
+      formulaTargetIds:[],
       team: { ...rotation.team, buildIds, ...(member ? { members } : {}), ...(request.combat ? { scenario: withEquipmentBuffs(rotation.team.scenario, member?.memberId ?? build.id, request.combat.weapon, echoes, request.disabledEquipmentBuffKeys) } : {}) },
       builds: [...rotation.builds.filter((entry) => entry.id !== build.id), build],
       echoes: request.echoes,

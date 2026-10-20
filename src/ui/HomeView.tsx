@@ -42,6 +42,11 @@ const quickStarts = [
 ]
 
 const changelogEntries = [
+  { hash: '', date: 'Oct 21, 2026', title: 'Page through large scanner review batches and the Weapon Archive' },
+  { hash: '', date: 'Oct 21, 2026', title: 'Process screenshot batches with bounded concurrency and clearer per-image results' },
+  { hash: '', date: 'Oct 21, 2026', title: 'Release completed scan images and idle OCR workers while keeping scans that need review available' },
+  { hash: '', date: 'Oct 21, 2026', title: 'Load app pages on demand and reduce unnecessary Teams, Optimizer, and Theorizer calculations' },
+  { hash: '', date: 'Oct 21, 2026', title: 'Show current loadouts and active Sonata effects in the team gallery' },
   { hash: '', date: 'Oct 20, 2026', title: 'Replay local videos with trim and frame previews while Echo scans finish in the background' },
   { hash: '', date: 'Oct 20, 2026', title: 'Improve live Echo detection, duplicate feedback, and Backpack and Character Menu recognition' },
   { hash: '', date: 'Oct 20, 2026', title: 'Export Tacet Lab character cards with build data for direct reimport' },

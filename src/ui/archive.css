@@ -703,6 +703,12 @@
   font-size: var(--font-size-caption);
 }
 
+.archive-page-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .archive-credit {
   margin: 2px 0 0;
 }

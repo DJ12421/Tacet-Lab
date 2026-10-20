@@ -25,6 +25,8 @@ export function compactAttackLabel(label: string) {
 
 export interface TeamWorkspaceInput {
   team: Team
+  includeTraces?: boolean
+  formulaTargetIds?: readonly string[]
   disabledEffectIdsByMember?: Record<string, string[]>
   builds: Build[]
   characters: OwnedCharacter[]
@@ -300,11 +302,12 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
       if (statResult.ok) member.conditionedStats = statResult.stats
       else member.warnings.push(...statResult.errors.map((error) => error.message))
       member.warnings.push(...statResult.warnings.map((warning) => warning.message))
-      member.formulaRows = combatTargets(member.character.catalogId, member.resolvedEchoes).map((target) => {
+      const formulaTargets = input.formulaTargetIds?.length === 0 ? [] : combatTargets(member.character.catalogId, member.resolvedEchoes)
+      member.formulaRows = formulaTargets.filter((target) => input.formulaTargetIds === undefined || input.formulaTargetIds.includes(target.id)).map((target) => {
         const result = calculateBuildModes({
           build: member.build!, character: member.character!, weapon: ownedWeapon,
           echoes: member.build!.echoIds.map((id) => runtimeEchoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)),
-          enemy: effectiveEnemy, scenario: input.team.scenario, buffs: member.receivedBuffs, targetId: target.id, trace:true, teamMembers:combatTeamMembers, disabledEffectIdsByMember:input.disabledEffectIdsByMember
+          enemy: effectiveEnemy, scenario: input.team.scenario, buffs: member.receivedBuffs, targetId: target.id, trace:input.includeTraces !== false, teamMembers:combatTeamMembers, disabledEffectIdsByMember:input.disabledEffectIdsByMember
         })
         member.warnings.push(...result.warnings)
         const fallback: CalculationTrace = { stage:'unavailable', value:0, children:[] }
@@ -333,7 +336,7 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
       const calculated = calculateBuildModes({
         build: member.build, character: member.character, weapon: ownedWeapon,
         echoes: member.build.echoIds.map((id) => runtimeEchoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)),
-        enemy: effectiveEnemy, scenario: input.team.scenario, buffs: activeBuffs, actionInputs: action.inputs, targetId: target.id, trace:true, teamMembers:combatTeamMembers, disabledEffectIdsByMember:input.disabledEffectIdsByMember
+        enemy: effectiveEnemy, scenario: input.team.scenario, buffs: activeBuffs, actionInputs: action.inputs, targetId: target.id, trace:input.includeTraces !== false, teamMembers:combatTeamMembers, disabledEffectIdsByMember:input.disabledEffectIdsByMember
       })
       warnings.push(...calculated.warnings)
       const mode = input.team.scenario?.resultMode ?? 'expected'

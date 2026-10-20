@@ -57,9 +57,20 @@ export class OcrPool {
 
   private emit() { this.options.onMetrics?.(this.metrics()) }
 
+  private trimIdleSlots() {
+    const desired = this.preference
+    if (desired === 'auto') return
+    while (this.slots.length > desired && this.slots[this.slots.length - 1].pending === 0) {
+      const slot = this.slots.pop()!
+      void slot.scheduler.terminate().catch(() => {})
+    }
+  }
+
   setPreference(preference: OcrWorkerPreference) {
     this.preference = preference
-    void this.warm()
+    this.trimIdleSlots()
+    this.emit()
+    if (this.slots.length || this.warming.size) void this.warm()
   }
 
   async warm() {
@@ -77,11 +88,11 @@ export class OcrPool {
         langPath: `${import.meta.env.BASE_URL}tesseract`, cachePath: 'tacet-lab-eng-fast-v1', gzip: true,
         logger: (message) => this.options.onProgress?.(message.progress, `${id}: ${message.status}`)
       })
-      if (generation !== this.generation) { await worker.terminate(); return }
+      if (generation !== this.generation || (this.preference !== 'auto' && index >= this.preference)) { await worker.terminate(); return }
       const scheduler = createScheduler(); scheduler.addWorker(worker)
       this.slots[index] = { id, worker, scheduler, pending: 0, chain: Promise.resolve() }
       this.emit()
-    })().finally(() => this.warming.delete(index))
+    })().finally(() => { if (this.warming.get(index) === promise) this.warming.delete(index) })
     this.warming.set(index, promise)
     return promise
   }
@@ -110,7 +121,7 @@ export class OcrPool {
       } catch (error) {
         this.failures += 1
         rejectResult(error instanceof Error ? error : new Error('OCR recognition failed.'))
-      } finally { slot.pending = Math.max(0, slot.pending - 1); this.emit() }
+      } finally { slot.pending = Math.max(0, slot.pending - 1); this.trimIdleSlots(); this.emit() }
     })
     return result
   }

@@ -1,31 +1,31 @@
-import { useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import type { AppSettings, AppView, CustomThemeColors } from '../domain/types'
 import { clearAccount, db, saveSettings } from '../storage/database'
 import { setEquippedEchoIds } from '../storage/loadouts'
 import { clearEchoId } from '../domain/echo-slots'
 import { generatedCharacterSummaries as characterCatalog } from '../game-data/character-summaries.generated'
 import { EchoEquipmentContext } from './components'
-import { ArchiveView } from './ArchiveView'
-import { CharacterInventory } from './CharacterInventoryView'
 import { HomeView } from './HomeView'
 import { ImportDataModal } from './ImportDataModal'
 import { ExportDataModal } from './ExportDataModal'
-import { GuidesView } from './GuidesView'
 import { LiveTutorial } from './LiveTutorial'
 import { guideFor, type GuideCounts, type GuideId } from './guide-content'
-import { InventoryView } from './InventoryView'
-import { WeaponInventory } from './OwnedInventoryView'
-import { PartnershipsView } from './PartnershipsView'
 import { Icon, PageHeader, Panel } from './primitives'
-import { PrivacyLegalView } from './PrivacyLegalView'
 import { PwaUpdatePrompt } from './PwaUpdatePrompt'
-import { ScannerView } from './ScannerView'
-import { TeamsView } from './TeamsView'
 import { TacetLabLogo } from './TacetLabLogo'
 import { useAppData } from './useAppData'
 import { useBodyScrollLock } from './useDismissableLayer'
 import { confirmDiscardChanges, useAnyUnsavedChanges, useUnsavedChanges } from './useUnsavedChanges'
 
+const ArchiveView = lazy(() => import('./ArchiveView').then(({ ArchiveView }) => ({ default: ArchiveView })))
+const CharacterInventory = lazy(() => import('./CharacterInventoryView').then(({ CharacterInventory }) => ({ default: CharacterInventory })))
+const GuidesView = lazy(() => import('./GuidesView').then(({ GuidesView }) => ({ default: GuidesView })))
+const InventoryView = lazy(() => import('./InventoryView').then(({ InventoryView }) => ({ default: InventoryView })))
+const WeaponInventory = lazy(() => import('./OwnedInventoryView').then(({ WeaponInventory }) => ({ default: WeaponInventory })))
+const PartnershipsView = lazy(() => import('./PartnershipsView').then(({ PartnershipsView }) => ({ default: PartnershipsView })))
+const PrivacyLegalView = lazy(() => import('./PrivacyLegalView').then(({ PrivacyLegalView }) => ({ default: PrivacyLegalView })))
+const ScannerView = lazy(() => import('./ScannerView').then(({ ScannerView }) => ({ default: ScannerView })))
+const TeamsView = lazy(() => import('./TeamsView').then(({ TeamsView }) => ({ default: TeamsView })))
 const sidebarIconRoot = `${import.meta.env.BASE_URL}sidebar-icons/`
 type NavItem = { view: AppView; label: string; icon?: string; legacyIcon?: Parameters<typeof Icon>[0]['name'] }
 const nav: NavItem[] = [
@@ -416,6 +416,7 @@ export default function App() {
     <main>
       <div className="topbar"><div className="topbar-brand"><TacetLabLogo/></div><div>{contextualGuideId && <button type="button" className="topbar-tutorial" aria-label="Start live tutorial for this section" title="Guide me through this section" onClick={() => startTutorial(contextualGuideId)}><Icon name="info"/><span>Guide me</span></button>}<button type="button" aria-label="Import data" onClick={() => setImportOpen(true)}><Icon name="upload"/><span>Import</span></button><button type="button" aria-label="Export data" onClick={() => setExportOpen(true)}><Icon name="download"/><span>Export</span></button><button type="button" className="discord-button donation-button" aria-label="Donations (coming soon)" title="Donations coming soon" disabled><Icon name="donations"/></button><a className="discord-button" href="https://discord.gg/fy66NmapWb" target="_blank" rel="noreferrer" aria-label="Join the Tacet Lab Discord" title="Join the Tacet Lab Discord"><Icon name="discord"/></a></div></div>
       <div className={`content${view === 'teams' ? ' teams-content' : ''}`}>
+        <Suspense key={view} fallback={<Panel>Loading…</Panel>}>
         {view === 'dashboard' && <HomeView echoes={data.echoes} characters={data.characters} weapons={data.weapons} builds={data.builds} teams={data.teams} roverGender={data.settings.roverGender} navigate={setView}/>}
         {view === 'archive' && <ArchiveView roverGender={data.settings.roverGender} tab={route.archiveTab ?? 'characters'} onTabChange={(archiveTab) => setRoute({ view: 'archive', archiveTab })}/>}
         {view === 'scanner' && <ScannerView echoes={data.echoes} refresh={data.refresh} onSessionRiskChange={setScannerSessionAtRisk}/>}
@@ -426,6 +427,7 @@ export default function App() {
         {view === 'guides' && <GuidesView document={route.guide} counts={guideCounts} isFirstVisit={isFirstVisit} onSelect={(guide) => setRoute({ view: 'guides', guide })} onStart={startTutorial}/>}
         {view === 'partnerships' && <PartnershipsView/>}
         {view === 'legal' && <PrivacyLegalView/>}
+        </Suspense>
       </div>
       <footer className="site-footer"><span>This is an independent fan project not affiliated with/endorsed by Wuthering Waves or Kuro Games.</span><span>Catalog data: Nanoka 3.7</span></footer>
     </main>

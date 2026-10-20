@@ -301,6 +301,10 @@
   gap: 11px;
 }
 
+.scanned-echo-grid + .echo-pagination {
+  margin-top: 13px;
+}
+
 .scanned-echo-card {
   min-width: 0;
 }

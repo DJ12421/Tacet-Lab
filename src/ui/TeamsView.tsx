@@ -6,6 +6,7 @@ import { applicableTeamStatusEffects, negativeStatusActions, negativeStatusMotio
 import { resolveCharacterSubstatProfile } from '../domain/character-substat-score'
 import { echoRollRating } from '../domain/echo-grade'
 import { createLocalId } from '../domain/id'
+import { resolveLoadout } from '../domain/loadouts'
 import type { BuffEffect, Build, DamageType, Echo, EquippedLoadout, FormulaResultMode, LoadoutSourceRef, OwnedCharacter, OwnedWeapon, RotationAction, ScenarioValue, StatKey, Team, TheorycraftBuild } from '../domain/types'
 import { characterCatalog, sonataCatalog, statLabels, weaponCatalog } from '../game-data'
 import { generatedSonataIconSources } from '../game-data/sonatas.generated'
@@ -350,21 +351,26 @@ function TeamGalleryCard({ team, builds, characters, weapons, echoes, equippedLo
     else if (nextName !== team.name) void onRename(nextName)
   }
 
-  const workspace = resolveTeamWorkspace({ team, builds, characters, weapons, echoes, equippedLoadouts, theorycraftBuilds })
-  const members = workspace.members.map((member) => ({
-    slot: member.slot,
-    build: member.build,
-    character: member.character,
-    catalog: member.catalog,
-    weapon: member.showcase?.weapon?.owned,
-    weaponEntry: member.showcase?.weapon?.catalog,
-    equippedEchoes: member.showcase?.equippedEchoes ?? [],
-    activeSonatas: member.showcase?.sonatas.flatMap((candidate) => {
-      const entry = sonataCatalog.find((sonata) => sonata.name === candidate.name)
-      const activePieces = Math.max(0, ...(entry?.effects.filter((effect) => candidate.count >= effect.pieces).map((effect) => effect.pieces) ?? []))
-      return activePieces ? [{ ...candidate, activePieces }] : []
-    }) ?? []
-  }))
+  const members = useMemo(() => {
+    const collections = { builds, characters, weapons, echoes, equippedLoadouts, theorycraftBuilds }
+    return Array.from({ length: 3 }, (_, slot) => {
+      const record = team.members?.[slot]
+      const legacyBuildId = team.buildIds[slot]
+      const source: LoadoutSourceRef | undefined = record?.loadoutSource ?? (legacyBuildId ? { type: 'saved', buildId: legacyBuildId } : undefined)
+      const resolved = source ? resolveLoadout(source, collections, record?.memberId ?? legacyBuildId) : undefined
+      const catalog = characterCatalog.find((entry) => entry.id === resolved?.build?.resonatorId)
+      const equippedEchoes = resolved?.echoes ?? []
+      const sonataCounts = new Map<string, number>()
+      for (const echo of equippedEchoes) sonataCounts.set(echo.sonata, (sonataCounts.get(echo.sonata) ?? 0) + 1)
+      const activeSonatas = [...sonataCounts].sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0])).flatMap(([name, count]) => {
+        const candidate = { name, count, iconSourceUrl: generatedSonataIconSources[name] ?? '' }
+        const entry = sonataCatalog.find((sonata) => sonata.name === candidate.name)
+        const activePieces = Math.max(0, ...(entry?.effects.filter((effect) => candidate.count >= effect.pieces).map((effect) => effect.pieces) ?? []))
+        return activePieces ? [{ ...candidate, activePieces }] : []
+      })
+      return { slot, build: resolved?.build, character: resolved?.character, catalog, weapon: resolved?.weapon, weaponEntry: weaponCatalog.find((entry) => entry.id === resolved?.weapon?.catalogId), equippedEchoes, activeSonatas }
+    })
+  }, [team, builds, characters, weapons, echoes, equippedLoadouts, theorycraftBuilds])
 
   return <article className="tw-gallery-card">
     <header>
@@ -1763,7 +1769,9 @@ export function TeamsView({ echoes, builds, equippedLoadouts, theorycraftBuilds,
   const [tab, setTab] = useState<WorkspaceTab>('settings')
   const [memberSection, setMemberSection] = useState<MemberSection>('overview')
   const team = teams.find((entry) => entry.id === selectedId) ?? teams[0]
-  const model = useMemo(() => team ? resolveTeamWorkspace({ team, builds, equippedLoadouts, theorycraftBuilds, characters, weapons, echoes, roverGender }) : undefined, [team, builds, equippedLoadouts, theorycraftBuilds, characters, weapons, echoes, roverGender])
+  const includeTraces = typeof tab === 'number' && (memberSection === 'overview' || memberSection === 'forte' || memberSection === 'rotation')
+  const includeFormulaRows = tab !== 'settings'
+  const model = useMemo(() => team && (!showGallery || route?.team) ? resolveTeamWorkspace({ team, builds, equippedLoadouts, theorycraftBuilds, characters, weapons, echoes, roverGender, includeTraces, formulaTargetIds: includeFormulaRows ? undefined : [] }) : undefined, [team, showGallery, route?.team, builds, equippedLoadouts, theorycraftBuilds, characters, weapons, echoes, roverGender, includeTraces, includeFormulaRows])
 
   useEffect(() => { if (!team && teams[0]) setSelectedId(teams[0].id) }, [team, teams])
   useEffect(() => {

@@ -86,7 +86,7 @@ function resolveCandidate(input: TheorizerRankingRequest, draft: TheorycraftBuil
   const theorycraftBuilds = [...(input.theorycraftBuilds ?? []), draft]
   const conditions = equipmentBuffConditions(draft.weapon, draft.sonatas, input.team.scenario?.memberConditions[record.memberId], input.disabledEquipmentBuffKeys)
   const scenario = input.team.scenario ?? { resultMode: input.resultMode, memberConditions: {}, enemyConditions: {}, selectedTargetByBuild: {} }
-  const model = resolveTeamWorkspace({ ...input, team: { ...input.team, members, scenario: { ...scenario, memberConditions: { ...scenario.memberConditions, [record.memberId]: conditions } } }, theorycraftBuilds, disabledEffectIdsByMember:{ [record.memberId]:disabledEquipmentEffectIds(draft.weapon, draft.sonatas, input.disabledEquipmentBuffKeys ?? []) } })
+  const model = resolveTeamWorkspace({ ...input, team: { ...input.team, members, scenario: { ...scenario, memberConditions: { ...scenario.memberConditions, [record.memberId]: conditions } } }, theorycraftBuilds, disabledEffectIdsByMember:{ [record.memberId]:disabledEquipmentEffectIds(draft.weapon, draft.sonatas, input.disabledEquipmentBuffKeys ?? []) }, includeTraces:false, formulaTargetIds:input.targetId === TEAM_ROTATION_TARGET_ID ? [] : [input.targetId] })
   const member = model.members[input.memberSlot]
   const score = input.targetId === TEAM_ROTATION_TARGET_ID
     ? rotationDamageByMode(model)[input.resultMode]

@@ -10,6 +10,7 @@ import { fixedSecondaryMainStat, mainStatKeysByCost, maxLevelByRarity, maxSubSta
 import { Confidence, formatStat, Icon, Panel } from './components'
 import { SonataPicker } from './SonataPicker'
 import type { DiagnosticScanCandidate, ScanEvidence } from '../scanner/types'
+import { actionableEvidenceWarning } from '../scanner/review-images'
 import { useDismissableLayer } from './useDismissableLayer'
 import { availableSubstatKeys } from '../domain/echo-substats'
 import { buildCardFormat, type BuildCardFormatId } from '../scanner/build-card-formats'
@@ -107,8 +108,9 @@ export function ScanReviewCard({ candidate, reviewSection = 'echo', onReviewSect
     return { value: { key, value: rolls[Math.max(0, rollIndex ?? currentIndex)]?.value ?? 0 }, confidence: 1 }
   }) })
   const setState = (field: 'locked' | 'excluded', value: boolean) => updateFields({ [field]: { value, confidence: 1 }, ...(value ? { [field === 'locked' ? 'excluded' : 'locked']: { value: false, confidence: 1 } } : {}) })
-  const lowConfidence = Object.values(candidate.evidence ?? {}).some((entry) => entry.confidence < .55 || !entry.validation.valid)
-  const lowConfidenceCount = Object.values(candidate.evidence ?? {}).filter((entry) => entry.confidence < .55 || !entry.validation.valid).length
+  const lowConfidenceCount = Object.values(candidate.evidence ?? {}).filter((entry) => actionableEvidenceWarning(candidate, entry)).length
+  const lowConfidence = lowConfidenceCount > 0
+  const hasImageEvidence = Boolean(candidate.imageDataUrl || candidate.buildCard?.sourceImageDataUrl || Object.values(candidate.evidence ?? {}).some((entry) => entry.originalCrop || entry.processedCrop))
   const [evidenceOpen, setEvidenceOpen] = useState(false)
   const sonataMissing = !candidate.fields.sonata.value.trim() || candidate.fields.sonata.value === 'Unknown Sonata'
   const sonataMismatch = Boolean(selectedEcho && !sonataMissing && !selectedEcho.sonatas.includes(candidate.fields.sonata.value))
@@ -119,13 +121,13 @@ export function ScanReviewCard({ candidate, reviewSection = 'echo', onReviewSect
       <div className="review-actions"><button className="review-discard" onClick={onDiscard}>Discard</button><button className="primary" disabled={errors.length > 0} onClick={onSave}>Approve & save</button></div>
     </div>
     <section className={`review-attention ${errors.length ? 'needs-attention' : 'is-ready'}`}>
-      <div><strong>{errors.length ? `${errors.length} required ${errors.length === 1 ? 'fix' : 'fixes'}` : 'Required fields are ready'}</strong><small>{errors.length ? 'Resolve these before this Echo can be saved.' : 'Review the values below, then approve when they match the image.'}</small></div>
+      <div><strong>{errors.length ? `${errors.length} required ${errors.length === 1 ? 'fix' : 'fixes'}` : 'Required fields are ready'}</strong><small>{errors.length ? 'Resolve these before this Echo can be saved.' : hasImageEvidence ? 'Review the values below, then approve when they match the image.' : 'Review the recognized values below before approving.'}</small></div>
       {errors.length > 0 && <ul>{errors.map((message) => <li key={message}>{message}</li>)}</ul>}
       {lowConfidenceCount > 0 && <button type="button" className="text-button" onClick={() => setEvidenceOpen(true)}>{lowConfidenceCount} low-confidence {lowConfidenceCount === 1 ? 'field' : 'fields'} — inspect evidence</button>}
     </section>
     <div className="review-fields">
       {candidate.buildCard && <section className="scan-build-card-summary">
-        <header><div><span className="eyebrow">{buildCardFormat((candidate.buildCard.formatId ?? 'discord-bot') as BuildCardFormatId).label} build card</span><h3>{reviewSection === 'character' ? 'Character details' : reviewSection === 'weapon' ? 'Weapon details' : 'Echo details'}</h3></div><img src={candidate.buildCard.sourceImageDataUrl} alt="Scanned build card"/></header>
+        <header><div><span className="eyebrow">{buildCardFormat((candidate.buildCard.formatId ?? 'discord-bot') as BuildCardFormatId).label} build card</span><h3>{reviewSection === 'character' ? 'Character details' : reviewSection === 'weapon' ? 'Weapon details' : 'Echo details'}</h3></div>{candidate.buildCard.sourceImageDataUrl && <img src={candidate.buildCard.sourceImageDataUrl} alt="Scanned build card"/>}</header>
         <div className="scan-build-card-tabs" role="group" aria-label="Review build card fields">{(['character', 'weapon', 'echo'] as const).map((section) => <button type="button" key={section} className={reviewSection === section ? 'active' : ''} aria-pressed={reviewSection === section} onClick={() => onReviewSectionChange?.(section)}>{section === 'echo' ? candidate.fields.name.value : section === 'character' ? 'Character' : 'Weapon'}</button>)}</div>
         {reviewSection === 'character' && <div className="scan-build-card-fields">
           <label>Character <Confidence value={candidate.buildCard.character.confidence}/><select value={candidate.buildCard.characterCatalogId ?? ''} onChange={(event) => { const entry = characterCatalog.find((item) => item.id === event.target.value); if (entry) updateBuildCard({ characterCatalogId: entry.id, character: { value: entry.name, confidence: 1 } }) }}><option value="">Choose character</option>{characterCatalog.map((entry) => <option value={entry.id} key={entry.id}>{entry.name}</option>)}</select></label>
@@ -155,7 +157,7 @@ export function ScanReviewCard({ candidate, reviewSection = 'echo', onReviewSect
       {candidate.duplicateOf && <div className="notice warning">Possible duplicate. Saving creates a separate inventory item.</div>}
       {errors.length > 0 && <div className="notice error">{errors.join(' ')}</div>}
       </>}
-      {evidenceOpen && candidate.evidence && <div className="scan-evidence-drawer"><header><div><span className="eyebrow">Local diagnostics</span><h3>Field evidence</h3></div><div>{onCopyDiagnostic && <><button type="button" className="text-button" onClick={() => onCopyDiagnostic(false)}>Copy report</button><button type="button" className="text-button" onClick={() => onCopyDiagnostic(true)}>Copy with images</button></>}</div></header><div className="scan-evidence-grid">{Object.values(candidate.evidence).map((evidence) => <article className={evidence.validation.valid ? '' : 'invalid'} key={evidence.region.id}><header><b>{evidence.region.label}</b><span>{Math.round(evidence.confidence * 100)}%</span></header><div><figure><img src={evidence.originalCrop} alt={`${evidence.region.label} original crop`}/><figcaption>Original</figcaption></figure><figure><img src={evidence.processedCrop} alt={`${evidence.region.label} processed crop`}/><figcaption>{evidence.preprocessing}</figcaption></figure></div><code>{evidenceText(evidence)}</code><small>{evidence.workerId} · {Math.round(evidence.processingMs)} ms</small>{evidence.validation.messages.map((message) => <p key={message}>{message}</p>)}{onRerunField && !candidate.buildCard && <footer><button type="button" className="text-button" onClick={() => onRerunField(evidence.region.id)}>Re-run field</button></footer>}</article>)}</div></div>}
+      {evidenceOpen && candidate.evidence && <div className="scan-evidence-drawer"><header><div><span className="eyebrow">Local diagnostics</span><h3>Field evidence</h3></div><div>{onCopyDiagnostic && <><button type="button" className="text-button" onClick={() => onCopyDiagnostic(false)}>Copy report</button>{hasImageEvidence && <button type="button" className="text-button" onClick={() => onCopyDiagnostic(true)}>Copy with images</button>}</>}</div></header>{!hasImageEvidence && <small>Image evidence was released to save memory.</small>}<div className="scan-evidence-grid">{Object.values(candidate.evidence).map((evidence) => <article className={evidence.validation.valid ? '' : 'invalid'} key={evidence.region.id}><header><b>{evidence.region.label}</b><span>{Math.round(evidence.confidence * 100)}%</span></header>{(evidence.originalCrop || evidence.processedCrop) && <div>{evidence.originalCrop && <figure><img src={evidence.originalCrop} alt={`${evidence.region.label} original crop`}/><figcaption>Original</figcaption></figure>}{evidence.processedCrop && <figure><img src={evidence.processedCrop} alt={`${evidence.region.label} processed crop`}/><figcaption>{evidence.preprocessing}</figcaption></figure>}</div>}<code>{evidenceText(evidence)}</code><small>{evidence.workerId} · {Math.round(evidence.processingMs)} ms</small>{evidence.validation.messages.map((message) => <p key={message}>{message}</p>)}{onRerunField && !candidate.buildCard && candidate.imageDataUrl && <footer><button type="button" className="text-button" onClick={() => onRerunField(evidence.region.id)}>Re-run field</button></footer>}</article>)}</div></div>}
     </div>
   </Panel>
 }

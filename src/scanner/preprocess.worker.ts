@@ -29,9 +29,8 @@ function grayscale(data: Uint8ClampedArray) {
 
 function normalize(values: Uint8Array) {
   const low = percentile(values, .04), high = percentile(values, .96), range = Math.max(18, high - low)
-  const normalized = new Uint8Array(values.length)
-  for (let index = 0; index < values.length; index += 1) normalized[index] = Math.max(0, Math.min(255, Math.round((values[index] - low) / range * 255)))
-  return normalized
+  for (let index = 0; index < values.length; index += 1) values[index] = Math.max(0, Math.min(255, Math.round((values[index] - low) / range * 255)))
+  return values
 }
 
 function borderMean(values: Uint8Array, width: number, height: number) {
@@ -46,9 +45,8 @@ function borderMean(values: Uint8Array, width: number, height: number) {
 
 function ensureLightBackground(values: Uint8Array, width: number, height: number) {
   if (borderMean(values, width, height) >= 128) return values
-  const inverted = new Uint8Array(values.length)
-  for (let index = 0; index < values.length; index += 1) inverted[index] = 255 - values[index]
-  return inverted
+  for (let index = 0; index < values.length; index += 1) values[index] = 255 - values[index]
+  return values
 }
 
 function integralImage(values: Uint8Array, width: number, height: number) {
@@ -237,6 +235,27 @@ function renderBinary(context: OffscreenCanvasRenderingContext2D, values: Uint8A
   context.fillRect(0, 0, border, height); context.fillRect(width - border, 0, border, height)
 }
 
+function preprocessPixels(context: OffscreenCanvasRenderingContext2D, width: number, height: number, strategy: Strategy) {
+  const source = context.getImageData(0, 0, width, height)
+  const gray = strategy === 'wuwaflex-name' || strategy === 'echo-name-color' ? undefined : grayscale(source.data)
+  let binary = strategy === 'contrast'
+    ? ensureLightBackground(normalize(gray!), width, height)
+    : strategy === 'wuwaflex-name'
+    ? wuwaflexNameThreshold(source.data, width, height)
+    : strategy === 'echo-name-color'
+    ? echoNameThreshold(source.data, width, height) ?? globalThreshold(ensureLightBackground(normalize(grayscale(source.data)), width, height))
+    : strategy === 'bright-substat' || strategy === 'bright-substat-block'
+    ? brightSubstatThreshold(gray!, width, height, strategy === 'bright-substat-block')
+    : globalThreshold(ensureLightBackground(normalize(gray!), width, height))
+  if (strategy === 'name' || strategy === 'echo-name-color') binary = removeLargeNameArtwork(binary, width, height)
+  if (strategy === 'label') binary = removeSmallLabelNoise(binary, width, height)
+  if (strategy === 'substat') {
+    binary = removeSubstatHighlight(binary, width, height)
+    binary = trimSubstatFooter(binary, width, height)
+  }
+  renderBinary(context, binary, width, height)
+}
+
 const sources = new Map<string, ImageBitmap>()
 
 self.onmessage = async (event: MessageEvent<Request>) => {
@@ -262,29 +281,13 @@ self.onmessage = async (event: MessageEvent<Request>) => {
     if (!context) throw new Error('Offscreen preprocessing canvas is unavailable.')
     context.imageSmoothingEnabled = true; context.imageSmoothingQuality = 'high'
     context.drawImage(bitmap, sourceX, sourceY, sourceWidth, sourceHeight, 0, 0, canvas.width, canvas.height)
-    if (strategy !== 'visual' && strategy !== 'plain') {
-      const source = context.getImageData(0, 0, canvas.width, canvas.height)
-      const gray = grayscale(source.data)
-      let binary = strategy === 'contrast'
-        ? ensureLightBackground(normalize(gray), canvas.width, canvas.height)
-        : strategy === 'wuwaflex-name'
-        ? wuwaflexNameThreshold(source.data, canvas.width, canvas.height)
-        : strategy === 'echo-name-color'
-        ? echoNameThreshold(source.data, canvas.width, canvas.height) ?? globalThreshold(ensureLightBackground(normalize(gray), canvas.width, canvas.height))
-        : strategy === 'bright-substat' || strategy === 'bright-substat-block'
-        ? brightSubstatThreshold(gray, canvas.width, canvas.height, strategy === 'bright-substat-block')
-        : globalThreshold(ensureLightBackground(normalize(gray), canvas.width, canvas.height))
-      if (strategy === 'name' || strategy === 'echo-name-color') binary = removeLargeNameArtwork(binary, canvas.width, canvas.height)
-      if (strategy === 'label') binary = removeSmallLabelNoise(binary, canvas.width, canvas.height)
-      if (strategy === 'substat') {
-        binary = removeSubstatHighlight(binary, canvas.width, canvas.height)
-        binary = trimSubstatFooter(binary, canvas.width, canvas.height)
-      }
-      renderBinary(context, binary, canvas.width, canvas.height)
-    }
-    const blob = await canvas.convertToBlob({ type: 'image/png' }), bytes = await blob.arrayBuffer()
+    if (strategy !== 'visual' && strategy !== 'plain') preprocessPixels(context, canvas.width, canvas.height, strategy)
+    const width = canvas.width, height = canvas.height
+    const blob = await canvas.convertToBlob({ type: 'image/png' })
+    canvas.width = 1; canvas.height = 1
+    const bytes = await blob.arrayBuffer()
     request.bitmap?.close()
-    self.postMessage({ id, ok: true, bytes, width: canvas.width, height: canvas.height, strategy }, [bytes])
+    self.postMessage({ id, ok: true, bytes, width, height, strategy }, [bytes])
   } catch (error) {
     request.bitmap?.close()
     self.postMessage({ id, ok: false, error: error instanceof Error ? error.message : 'Preprocessing failed.' })

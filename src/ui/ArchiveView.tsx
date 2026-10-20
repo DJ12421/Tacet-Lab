@@ -30,6 +30,7 @@ const sortOptionsFor = (tab: ArchiveTab): Array<{ value: SortMode; label: string
 ]
 
 const PAGE_SIZE = 48
+const WEAPON_PAGE_SIZE = 30
 const archiveIconRoot = `${import.meta.env.BASE_URL}sidebar-icons/`
 const tabs: Array<{ id: ArchiveTab; label: string; count: number; iconSource: string }> = [
   { id: 'characters', label: 'Characters', count: characterCatalog.length, iconSource: `${archiveIconRoot}characters.svg` },
@@ -160,6 +161,7 @@ export function ArchiveView({ roverGender, tab, onTabChange }: { roverGender: 'm
   const [sort, setSort] = useState<SortMode>(() => tab === 'sonatas' ? 'release-order' : 'name-asc')
   const [sortOpen, setSortOpen] = useState(false)
   const [visibleLimit, setVisibleLimit] = useState(PAGE_SIZE)
+  const [weaponPage, setWeaponPage] = useState(1)
   const [activeDetail, setActiveDetail] = useState<ArchiveDetail | null>(null)
   const searchRef = useRef<HTMLInputElement>(null)
   const detailTriggerRef = useRef<HTMLButtonElement>(null)
@@ -182,11 +184,15 @@ export function ArchiveView({ roverGender, tab, onTabChange }: { roverGender: 'm
     setSort(tab === 'sonatas' ? 'release-order' : 'name-asc')
     setSortOpen(false)
     setVisibleLimit(PAGE_SIZE)
+    setWeaponPage(1)
     setActiveDetail(null)
     searchRef.current?.focus()
   }, [tab])
 
-  useEffect(() => setVisibleLimit(PAGE_SIZE), [deferredQuery, rarities, categories, selectedWeaponTypes, sonata, sort])
+  useEffect(() => {
+    setVisibleLimit(PAGE_SIZE)
+    setWeaponPage(1)
+  }, [deferredQuery, rarities, categories, selectedWeaponTypes, sonata, sort])
 
   const results = useMemo(() => {
     const includesQuery = (text: string) => !deferredQuery || text.toLowerCase().includes(deferredQuery)
@@ -205,7 +211,11 @@ export function ArchiveView({ roverGender, tab, onTabChange }: { roverGender: 'm
     return byName(echoCatalog.filter((item) => includesQuery(item.name) && includesCategory(`${item.cost} cost`) && (sonata === 'all' || item.sonatas.includes(sonata))))
   }, [categories, deferredQuery, rarities, roverGender, selectedWeaponTypes, sonata, sort, tab])
 
-  const visibleResults = tab === 'characters' || tab === 'weapons' ? results : results.slice(0, visibleLimit)
+  const weaponPageCount = Math.max(1, Math.ceil(results.length / WEAPON_PAGE_SIZE))
+  const currentWeaponPage = Math.min(weaponPage, weaponPageCount)
+  const visibleResults = tab === 'characters' ? results : tab === 'weapons'
+    ? results.slice((currentWeaponPage - 1) * WEAPON_PAGE_SIZE, currentWeaponPage * WEAPON_PAGE_SIZE)
+    : results.slice(0, visibleLimit)
   const hasFilters = Boolean(query) || rarities.length !== rarityOptions.length || categories.length !== categoryOptions.length || selectedWeaponTypes.length !== weaponTypes.length || sonata !== 'all'
   const clearFilters = () => {
     setQuery('')
@@ -268,6 +278,7 @@ export function ArchiveView({ roverGender, tab, onTabChange }: { roverGender: 'm
     {tab === 'sonatas' && <div className="archive-results-grid archive-sonata-grid">{(visibleResults as typeof sonataCatalog).map((item) => <article className="archive-sonata-card" key={item.id}><header><span><CatalogImage src={generatedSonataIconSources[item.name]} alt=""/></span><div><h2>{item.name}</h2><p>{item.echoCount} compatible Echoes</p></div></header><div className="archive-sonata-effects">{item.effects.map((effect) => <div key={effect.pieces}><b>{effect.pieces}<small>PC</small></b><p>{effect.description}</p></div>)}</div></article>)}</div>}
     {tab === 'echoes' && <div className="archive-results-grid archive-echo-grid">{(visibleResults as typeof echoCatalog).map((item) => <button type="button" className="archive-entry-card archive-echo-card" aria-haspopup="dialog" onClick={(event) => openDetail({ kind: 'echo', item }, event.currentTarget)} key={item.id}><div className="archive-entry-art"><CatalogImage src={item.iconSourceUrl} alt={item.name}/><b className={`archive-cost cost-${item.cost}`}>{item.cost}</b></div><div className="archive-entry-copy"><h2>{item.name}</h2><div className="archive-echo-sonatas" aria-label={`Sonatas: ${item.sonatas.join(', ')}`}>{item.sonatas.map((name) => <img src={generatedSonataIconSources[name]} alt="" title={name} key={name}/>)}</div><footer><span>{item.cost} cost</span>{tbaSections('echo', item.id).length > 0 && <em className="archive-tba">TBA</em>}</footer></div></button>)}</div>}
 
+    {tab === 'weapons' && weaponPageCount > 1 && <nav className="archive-load-more" aria-label="Weapon pages"><p>Showing {(currentWeaponPage - 1) * WEAPON_PAGE_SIZE + 1}–{Math.min(currentWeaponPage * WEAPON_PAGE_SIZE, results.length)} of {results.length}</p><div className="archive-page-actions"><button type="button" className="secondary" disabled={currentWeaponPage === 1} onClick={() => setWeaponPage(currentWeaponPage - 1)}>Previous</button><span>Page {currentWeaponPage} of {weaponPageCount}</span><button type="button" className="secondary" disabled={currentWeaponPage === weaponPageCount} onClick={() => setWeaponPage(currentWeaponPage + 1)}>Next</button></div></nav>}
     {tab !== 'characters' && tab !== 'weapons' && visibleLimit < results.length && <div className="archive-load-more"><p>Showing {visibleResults.length} of {results.length}</p><button type="button" className="secondary" onClick={() => setVisibleLimit((value) => value + PAGE_SIZE)}>Show {Math.min(PAGE_SIZE, results.length - visibleLimit)} more</button></div>}
     <p className="archive-credit">Catalog and artwork from Nanoka 3.7. Select a card for details.</p>
     {activeDetail && <ArchiveDetailDialog detail={activeDetail} onClose={closeDetail}/>}
