@@ -860,6 +860,7 @@ function isTeam(value: unknown) {
     && isFiniteNumber(value.enemy.damageReduction) && value.enemy.damageReduction >= 0 && value.enemy.damageReduction <= 100
     && Array.isArray(value.actions) && value.actions.every((action) => isRecord(action) && typeof action.id === 'string'
       && typeof action.buildId === 'string' && typeof action.attackId === 'string' && isFiniteNumber(action.timestamp)
+      && (action.label === undefined || typeof action.label === 'string')
       && (action.duration === undefined || (isFiniteNumber(action.duration) && action.duration > 0))
       && (action.multiplier === undefined || (isFiniteNumber(action.multiplier) && action.multiplier >= 1 && action.multiplier <= 99 && Number.isInteger(action.multiplier)))
       && (action.formulaTargetId === undefined || typeof action.formulaTargetId === 'string')

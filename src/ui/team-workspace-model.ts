@@ -322,7 +322,7 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
     const attack = member?.attacks.find((entry) => entry.id === action.attackId)
     const warnings: string[] = []
     if (!member?.build) warnings.push('Character is not assigned to this team.')
-    if (!attack) warnings.push('Character attack data is missing for this action.')
+    if (!attack) warnings.push(action.label ? `${action.label} is not in Tacet Lab's attack data.` : 'Character attack data is missing for this action.')
     if (!member?.showcase?.weapon) warnings.push('Damage skipped because no weapon is equipped.')
     if (action.timestamp < 0 || action.timestamp > input.team.rotationDuration) warnings.push('Timestamp is outside the rotation duration.')
     if (action.duration !== undefined && action.timestamp + action.duration > input.team.rotationDuration) warnings.push('Clip extends past the rotation duration.')

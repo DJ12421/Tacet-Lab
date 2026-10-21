@@ -46,7 +46,7 @@ export interface TeamScenario {
   selectedTargetByBuild: Record<string, string>
   compareBuildId?: string
 }
-export interface RotationAction { id: string; timestamp: number; duration?: number; multiplier?: number; buildId: string; attackId: string; formulaTargetId?: string; inputs?: Record<string, ScenarioValue> }
+export interface RotationAction { id: string; timestamp: number; duration?: number; multiplier?: number; buildId: string; attackId: string; label?: string; formulaTargetId?: string; inputs?: Record<string, ScenarioValue> }
 export interface BuffEffect { id: string; name: string; sourceBuildId: string; target: 'self' | 'next' | 'team'; triggerAttackId: string; duration: number; stat: StatKey | 'amplify'; value: number; stackingGroup: string }
 export interface EnemyConfig {
   level: number

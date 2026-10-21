@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WuwaLab rotation exporter</title>
+<style>
+  :root { color-scheme: dark; font: 16px system-ui, sans-serif; background: #10191a; color: #e9f3f0; }
+  body { max-width: 620px; margin: 12vh auto 0; padding: 24px; }
+  main { padding: 28px; border: 1px solid #42635e; border-radius: 12px; background: #182526; }
+  h1 { margin: 0 0 10px; font-size: 1.6rem; }
+  p { color: #bfd1cb; line-height: 1.5; }
+  label { display: block; margin: 24px 0 8px; font-weight: 600; }
+  input { box-sizing: border-box; width: 100%; padding: 12px; border: 1px solid #719289; border-radius: 6px; background: #0b1516; color: inherit; font: inherit; }
+  input:focus-visible, button:focus-visible { outline: 2px solid #8fe0c8; outline-offset: 2px; }
+  button { margin-top: 16px; padding: 11px 18px; border: 0; border-radius: 6px; background: #8fe0c8; color: #10201c; font: inherit; font-weight: 700; cursor: pointer; }
+  button:disabled { opacity: .6; cursor: wait; }
+  #status { min-height: 1.5em; margin-bottom: 0; }
+  #status.error { color: #ffb4a9; }
+</style>
+<main>
+  <h1>WuwaLab rotation exporter</h1>
+  <p>Paste a WuwaLab rotation link. The JSON download can be selected in Tacet Lab’s Import menu.</p>
+  <form id="form">
+    <label for="link">Rotation link</label>
+    <input id="link" name="link" type="url" required autofocus autocomplete="url" placeholder="https://wuwalab.com/rotation/554/loop">
+    <button id="export" type="submit">Download JSON</button>
+  </form>
+  <p id="status" role="status" aria-live="polite"></p>
+</main>
+<script>
+  const form = document.querySelector('#form')
+  const input = document.querySelector('#link')
+  const button = document.querySelector('#export')
+  const status = document.querySelector('#status')
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault()
+    button.disabled = true
+    status.className = ''
+    status.textContent = 'Fetching rotation…'
+    try {
+      const response = await fetch('/export', { method: 'POST', body: input.value })
+      if (!response.ok) throw new Error(await response.text())
+      const rotation = await response.json()
+      const blob = new Blob([JSON.stringify(rotation, null, 2) + '\n'], { type: 'application/json' })
+      const url = URL.createObjectURL(blob)
+      const download = document.createElement('a')
+      download.href = url
+      download.download = `wuwalab-rotation-${rotation.source.rotationId}-${rotation.source.segment}.json`
+      download.click()
+      setTimeout(() => URL.revokeObjectURL(url), 1000)
+      const unmatched = rotation.actions.filter((action) => !action.attackId).length
+      status.textContent = `Download ready. Choose this JSON file in Tacet Lab’s Import menu.${unmatched ? ` ${unmatched} action(s) have no matching Tacet Lab attack ID; their WuwaLab names are preserved.` : ''}`
+    } catch (error) {
+      status.className = 'error'
+      status.textContent = error instanceof Error ? error.message : 'Could not export this rotation.'
+    } finally {
+      button.disabled = false
+    }
+  })
+</script>
+</html>
