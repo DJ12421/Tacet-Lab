@@ -16,37 +16,37 @@ const statKeys: Record<string, StatKey> = {
   electrodmg: 'electroDamage', aerodmg: 'aeroDamage', havocdmg: 'havocDamage', healingbonus: 'healingBonus'
 }
 
-interface WuwalabEcho {
+interface RotationEcho {
   cost: 1 | 3 | 4
   name: string | null
   sonata: string
   main: { label: string; value: string }
   subs: Array<{ label: string; value: string } | null>
 }
-interface WuwalabCharacter {
+interface RotationCharacter {
   slot: number
   catalogId: string
   name: string
   sequence: number
   weapon: { name: string; rank: number }
-  echoes: WuwalabEcho[]
+  echoes: RotationEcho[]
 }
-interface WuwalabAction {
+interface RotationExportAction {
   slot: number
   attackName: string
   attackId: string | null
   timestamp: number
 }
-interface WuwalabRotation {
+interface RotationExport {
   schemaVersion: number
   source: { site: string; rotationId: number; segment: 'loop' | 'full' }
   name: string
   duration: number
-  characters: WuwalabCharacter[]
-  actions: WuwalabAction[]
+  characters: RotationCharacter[]
+  actions: RotationExportAction[]
 }
 
-export function isWuwalabRotationExport(value: unknown): value is RecordValue {
+export function isRotationExport(value: unknown): value is RecordValue {
   return record(value) && record(value.source) && value.source.site === 'wuwalab'
 }
 
@@ -54,7 +54,7 @@ function statLine(value: { label: string; value: string }): StatLine {
   const stat = statKeys[key(value.label)]
   const raw = value.value.trim()
   const amount = Number(raw.replace(/%$/, ''))
-  if (!stat || !/^\d+(?:\.\d+)?%?$/.test(raw) || !Number.isFinite(amount)) throw new Error(`Unsupported WuwaLab Echo stat: ${value.label}.`)
+  if (!stat || !/^\d+(?:\.\d+)?%?$/.test(raw) || !Number.isFinite(amount)) throw new Error(`Unsupported imported Echo stat: ${value.label}.`)
   return { key: stat, value: amount }
 }
 
@@ -72,31 +72,31 @@ function availableId<T extends { id: string }>(base: string, current: T[], make:
   }
 }
 
-export function convertWuwalabRotationExport(value: RecordValue, current: AccountDocument) {
-  const source = value as unknown as WuwalabRotation
+export function convertRotationExport(value: RecordValue, current: AccountDocument) {
+  const source = value as unknown as RotationExport
   if (source.schemaVersion !== 1 || !record(source.source) || source.source.site !== 'wuwalab' || !Number.isSafeInteger(source.source.rotationId) ||
       !['loop', 'full'].includes(source.source.segment) || typeof source.name !== 'string' || !source.name.trim() ||
       !Number.isFinite(source.duration) || source.duration <= 0 || source.duration > 600 ||
       !Array.isArray(source.characters) || source.characters.length < 1 || source.characters.length > 3 ||
-      !Array.isArray(source.actions) || !source.actions.length || source.actions.length > 2000) throw new Error('This WuwaLab rotation JSON is invalid or unsupported.')
-  if (source.characters.some((member) => !record(member))) throw new Error('The WuwaLab character list is invalid.')
+      !Array.isArray(source.actions) || !source.actions.length || source.actions.length > 2000) throw new Error('This rotation JSON is invalid or unsupported.')
+  if (source.characters.some((member) => !record(member))) throw new Error('The imported character list is invalid.')
   const characters = [...source.characters].sort((left, right) => left.slot - right.slot)
   if (characters.some((member, slot) => !record(member) || member.slot !== slot || typeof member.name !== 'string' || !member.name.trim() ||
       !characterCatalog.some((entry) => entry.id === member.catalogId) ||
       !Number.isInteger(member.sequence) || member.sequence < 0 || member.sequence > 6 || !record(member.weapon) ||
       typeof member.weapon.name !== 'string' || !Number.isInteger(member.weapon.rank) || member.weapon.rank < 1 || member.weapon.rank > 5 ||
-      !Array.isArray(member.echoes) || member.echoes.length !== 5)) throw new Error('The WuwaLab characters or Echo slots cannot be imported.')
+      !Array.isArray(member.echoes) || member.echoes.length !== 5)) throw new Error('The characters or Echo slots cannot be imported.')
   if (source.actions.some((action) => !record(action) || !Number.isInteger(action.slot) || action.slot < 0 || action.slot >= characters.length ||
       typeof action.attackName !== 'string' || !action.attackName ||
       (action.attackId !== null && typeof action.attackId !== 'string') ||
       !Number.isFinite(action.timestamp) || action.timestamp < 0 || action.timestamp >= source.duration)) {
-    throw new Error('The WuwaLab rotation contains an invalid action.')
+    throw new Error('The rotation contains an invalid action.')
   }
 
   const now = Date.now()
   const newCharacters: OwnedCharacter[] = []
   const builds: TheorycraftBuild[] = []
-  const notices = ['WuwaLab Echoes are imported as theorycraft gear; owned Echoes, weapons, and existing character progression stay unchanged. Echo rarity 5 and level 25 are assumed.']
+  const notices = ['Echoes are imported as theorycraft gear; owned Echoes, weapons, and existing character progression stay unchanged. Echo rarity 5 and level 25 are assumed.']
   const members: NonNullable<Team['members']> = []
   for (const member of characters) {
     const catalog = characterCatalog.find((entry) => entry.id === member.catalogId)!
@@ -110,7 +110,7 @@ export function convertWuwalabRotationExport(value: RecordValue, current: Accoun
     const weapon = weaponCatalog.find((entry) => key(entry.name) === key(member.weapon.name) && entry.type.toLowerCase() === catalog.weaponType.toLowerCase())
     if (!weapon) notices.push(`${member.name}: weapon ${member.weapon.name} is not in Tacet Lab's catalog; select a weapon in the imported theorycraft build.`)
     const sonatas = new Map<string, number>()
-    // shortcut: WuwaLab omits Echo rarity and level; use its displayed level-25, rarity-5 build until those fields are exported.
+    // shortcut: The export omits Echo rarity and level; use its displayed level-25, rarity-5 build until those fields are exported.
     const slots = member.echoes.map((echo, index) => {
       if (!record(echo) || ![1, 3, 4].includes(echo.cost) || (echo.name !== null && typeof echo.name !== 'string') || typeof echo.sonata !== 'string' ||
           !record(echo.main) || typeof echo.main.label !== 'string' || typeof echo.main.value !== 'string' ||
@@ -128,7 +128,7 @@ export function convertWuwalabRotationExport(value: RecordValue, current: Accoun
     if (mainEcho && !echoCatalog.some((entry) => echoKey(entry.name) === echoKey(mainEcho))) notices.push(`${member.name}: main Echo ${mainEcho} is not in Tacet Lab's catalog.`)
     const base = `wuwalab:${source.source.rotationId}:${source.source.segment}:build:${member.slot}`
     const build = availableId(base, current.theorycraftBuilds ?? [], (id, existing) => ({
-      id, name: `${source.name} · ${member.name}`, description: `WuwaLab weapon: ${member.weapon.name}`,
+      id, name: `${source.name} · ${member.name}`, description: existing?.description ?? `Imported weapon: ${member.weapon.name}`,
       characterId: character.id, weapon: { catalogId: weapon?.id ?? '', level: 90, rank: member.weapon.rank },
       mainEchoName: echoCatalog.find((entry) => echoKey(entry.name) === echoKey(mainEcho ?? ''))?.name ?? mainEcho ?? '',
       slots, sonatas: [...sonatas].map(([name, pieces]) => ({ name, pieces })),
@@ -163,7 +163,7 @@ export function convertWuwalabRotationExport(value: RecordValue, current: Accoun
     }
   }
   const team = availableId(`wuwalab:${source.source.rotationId}:${source.source.segment}:team`, current.teams, makeTeam)
-  if (unmatched.size) notices.push(`${unmatched.size} WuwaLab attack name(s) have no matching Tacet Lab attack; their timeline clips are retained but have no calculated damage: ${[...unmatched].join(', ')}.`)
+  if (unmatched.size) notices.push(`${unmatched.size} imported attack name(s) have no matching Tacet Lab attack; their timeline clips are retained but have no calculated damage: ${[...unmatched].join(', ')}.`)
   const document: AccountDocument = {
     schemaVersion: 7, gameDataVersion: GAME_DATA_VERSION, exportedAt: new Date(now).toISOString(),
     echoes: [], characters: newCharacters, weapons: [], builds: [], equippedLoadouts: [], theorycraftBuilds: builds,

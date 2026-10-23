@@ -3,11 +3,11 @@ import type { AccountDocument } from '../domain/types'
 import { exportAccount, importAccount, prepareAccountBackup, previewAccountImport, type AccountImportPreview } from '../storage/database'
 import { prepareNativeBuildChoices } from '../storage/import-build-choices'
 import { convertWutheringToolsExport, isWutheringToolsExport, type WutheringToolsCharacterChoice } from '../storage/import-wuthering-tools'
-import { convertWuwalabRotationExport, isWuwalabRotationExport } from '../storage/import-wuwalab-rotation'
+import { convertRotationExport, isRotationExport } from '../storage/import-rotation-export'
 import { Icon, Panel } from './primitives'
 import { confirmDiscardChanges, useUnsavedChanges } from './useUnsavedChanges'
 
-const emptyFileLabel = 'Choose a Tacet Lab, Wuthering Tools, or WuwaLab JSON export'
+const emptyFileLabel = 'Choose a Tacet Lab or external account JSON export'
 
 interface ImportDataModalProps {
   onClose: () => void
@@ -46,8 +46,8 @@ export function ImportDataModal({ onClose, onImported }: ImportDataModalProps) {
   }, [importing, requestClose])
 
   const prepare = async (parsed: unknown, analysisId: number, choices: Record<string, boolean> = {}) => {
-    const wuwalab = isWuwalabRotationExport(parsed)
-    const converted = wuwalab ? convertWuwalabRotationExport(parsed, await exportAccount())
+    const rotationExport = isRotationExport(parsed)
+    const converted = rotationExport ? convertRotationExport(parsed, await exportAccount())
       : isWutheringToolsExport(parsed) ? await convertWutheringToolsExport(parsed, choices) : undefined
     const prepared = prepareAccountBackup(converted?.document ?? parsed)
     const native = converted ? undefined : await prepareNativeBuildChoices(prepared.document, choices)
@@ -58,7 +58,7 @@ export function ImportDataModal({ onClose, onImported }: ImportDataModalProps) {
     setPreview(nextPreview)
     setRepairs(prepared.repairs)
     setSourceNotices(converted?.notices ?? [])
-    setSourceLabel(wuwalab ? 'WuwaLab rotation' : converted ? 'Wuthering Tools v9' : '')
+    setSourceLabel(rotationExport ? 'Rotation export' : converted ? 'External account v9' : '')
     setSourceCharacters(converted?.choices ?? native?.choices ?? [])
     setWutheringToolsSource(converted ? parsed as Record<string, unknown> : undefined)
     setNativeSource(converted ? undefined : parsed)
@@ -135,7 +135,7 @@ export function ImportDataModal({ onClose, onImported }: ImportDataModalProps) {
   return <div className="modal-backdrop import-data-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget && !importing) requestClose() }}>
     <Panel className="import-data-modal" role="dialog" aria-modal="true" aria-labelledby="import-data-title">
       <header className="import-data-header">
-        <div><span className="eyebrow">Your data · Restore</span><h2 id="import-data-title">Import a backup</h2><p>Choose a Tacet Lab, Wuthering Tools, or WuwaLab JSON export, then review every change before merging.</p></div>
+        <div><span className="eyebrow">Your data · Restore</span><h2 id="import-data-title">Import a backup</h2><p>Choose a Tacet Lab or external account JSON export, then review every change before merging.</p></div>
         <button className="close" aria-label="Close import" disabled={importing} onClick={requestClose}>×</button>
       </header>
 
@@ -161,7 +161,7 @@ export function ImportDataModal({ onClose, onImported }: ImportDataModalProps) {
           <div><span className="eyebrow">Import preview</span><h3>{sourceLabel || preview.gameDataVersion || 'Tacet Lab backup'}</h3></div>
           <div><span>Schema v{preview.schemaVersion}</span><small>Exported {formattedExportDate(preview.exportedAt)}</small></div>
         </header>
-        {sourceNotices.length > 0 && <div className="import-repair-notice import-source-notices" role="status"><strong>{sourceLabel === 'WuwaLab rotation' ? 'WuwaLab import notes' : 'Wuthering Tools import notes'}</strong><p>{sourceNotices[0]}</p>{sourceNotices.length > 1 && <details><summary>{sourceNotices.length - 1} more import notes</summary><ul>{sourceNotices.slice(1).map((notice) => <li key={notice}>{notice}</li>)}</ul></details>}</div>}
+        {sourceNotices.length > 0 && <div className="import-repair-notice import-source-notices" role="status"><strong>External import notes</strong><p>{sourceNotices[0]}</p>{sourceNotices.length > 1 && <details><summary>{sourceNotices.length - 1} more import notes</summary><ul>{sourceNotices.slice(1).map((notice) => <li key={notice}>{notice}</li>)}</ul></details>}</div>}
         {sourceCharacters.some((choice) => choice.existing) && <section className="import-build-choices" aria-label="Build import choices"><header><h3>Existing characters</h3><p>Save a new build to keep Equipped, or turn it off to replace Equipped.</p></header><div>{sourceCharacters.filter((choice) => choice.existing).map((choice) => <label key={choice.catalogId}><strong title={choice.name}>{choice.name}</strong><span>{choice.addAsNewBuild ? 'New build' : 'Replace Equipped'}</span><input type="checkbox" aria-label={`Save ${choice.name} as a new build`} checked={choice.addAsNewBuild} disabled={importing || analyzing} onChange={(event) => void setBuildChoice(choice.catalogId, event.target.checked)}/></label>)}</div></section>}
         {repairs.length > 0 && <div className="import-repair-notice" role="status"><strong>Timing recovered from this backup</strong><p>{repairs.length} rotation action{repairs.length === 1 ? '' : 's'} had missing timing. Tacet Lab estimated the values below. Review these actions after import.</p><ul>{repairs.map((repair) => <li key={repair}>{repair}</li>)}</ul></div>}
         <div className="import-summary-strip">

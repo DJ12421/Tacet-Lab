@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import type { AccountDocument } from '../domain/types'
 import { defaultSettings } from '../game-data'
 import { validateAccount } from './database'
-import { convertWuwalabRotationExport, isWuwalabRotationExport } from './import-wuwalab-rotation'
+import { convertRotationExport, isRotationExport } from './import-rotation-export'
 
 const empty: AccountDocument = {
   schemaVersion: 7, gameDataVersion: 'test', exportedAt: '2026-10-21T00:00:00.000Z',
@@ -22,10 +22,10 @@ const source = {
   ]
 }
 
-describe('WuwaLab rotation import', () => {
+describe('rotation export import', () => {
   it('builds a valid team and theorycraft gear while retaining unmapped action names', () => {
-    expect(isWuwalabRotationExport(source)).toBe(true)
-    const { document, notices } = convertWuwalabRotationExport(source, empty)
+    expect(isRotationExport(source)).toBe(true)
+    const { document, notices } = convertRotationExport(source, empty)
     expect(validateAccount(document)).toBe(true)
     expect(document.echoes).toHaveLength(0)
     expect(document.theorycraftBuilds?.[0].slots).toHaveLength(5)
@@ -34,10 +34,12 @@ describe('WuwaLab rotation import', () => {
   })
 
   it('reuses an unchanged import and leaves a later team edit intact', () => {
-    const first = convertWuwalabRotationExport(source, empty).document
+    const first = convertRotationExport(source, empty).document
     const current = { ...empty, characters: first.characters, theorycraftBuilds: first.theorycraftBuilds, teams: first.teams }
-    expect(convertWuwalabRotationExport(source, current).document.teams[0].id).toBe(first.teams[0].id)
+    expect(convertRotationExport(source, current).document.teams[0].id).toBe(first.teams[0].id)
+    const previousDescription = { ...current, theorycraftBuilds: first.theorycraftBuilds!.map((build) => ({ ...build, description: 'Previous weapon description' })) }
+    expect(convertRotationExport(source, previousDescription).document.theorycraftBuilds?.[0].id).toBe(first.theorycraftBuilds?.[0].id)
     const edited = { ...current, teams: [{ ...current.teams[0], name: 'My edited team' }] }
-    expect(convertWuwalabRotationExport(source, edited).document.teams[0].id).not.toBe(first.teams[0].id)
+    expect(convertRotationExport(source, edited).document.teams[0].id).not.toBe(first.teams[0].id)
   })
 })
