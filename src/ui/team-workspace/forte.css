@@ -26,6 +26,16 @@
   gap: 5px;
 }
 
+.tw-imported-buffs {
+  padding: 12px;
+  border: 1px solid rgba(var(--mint-rgb),.25);
+}
+
+.tw-imported-buffs summary { cursor: pointer; }
+.tw-imported-buffs ul { max-height: 260px; overflow: auto; padding-left: 20px; }
+.tw-imported-buffs li { margin: 8px 0; }
+.tw-imported-buffs li span,.tw-imported-buffs li small { display: block; }
+
 .tw-sequence-column>header {
   height: 40px;
   display: flex;

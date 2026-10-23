@@ -1,7 +1,7 @@
 import type { ScanRect, ScanRegion } from './types'
 import { createLocalId } from '../domain/id'
 
-type Strategy = 'name' | 'echo-name-color' | 'label' | 'text' | 'substat' | 'bright-substat' | 'bright-substat-block' | 'wuwaflex-name' | 'visual' | 'plain' | 'contrast'
+type Strategy = 'name' | 'echo-name-color' | 'label' | 'text' | 'substat' | 'bright-substat' | 'bright-substat-block' | 'wide-card-name' | 'visual' | 'plain' | 'contrast'
 type Pending = { resolve: (value: PreprocessedImage) => void; reject: (reason: Error) => void }
 export interface PreprocessedImage { dataUrl: string; blob: Blob; width: number; height: number; strategy: Strategy }
 

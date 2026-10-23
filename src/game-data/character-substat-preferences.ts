@@ -1,4 +1,5 @@
 import type { StatKey } from '../domain/types'
+import { sheetCharacterSubstatPreferences } from './character-substat-preferences.generated'
 
 export type CharacterSubstatPreferenceWeight = 0 | 0.5 | 1 | 1.5 | 2 | 2.5 | 3 | 3.5 | 4
 
@@ -13,11 +14,9 @@ export const characterSubstatScoreKeys: StatKey[] = [
   'atk', 'hp', 'def'
 ]
 
-// Defaults with a DPR Calc Results Substat Value graph are normalized per character:
-// the highest plotted value is 4, zero is omitted, and other values round to the
-// nearest 0.5. Multiple build graphs for one character are weighted equally.
-// Characters without a usable graph retain their previously published priorities.
-export const characterSubstatPreferences: Record<string, CharacterSubstatPreference> = {
+// Graph-backed defaults are generated from DPR Calc Results. Characters without
+// a usable graph retain their previously published priorities below.
+export const characterSubstatPreferences: Record<string, CharacterSubstatPreference> = Object.assign({
   Aalto: { weights: { critRate: 4, critDamage: 4, energyRegen: 2, atkPercent: 2, atk: 1 } },
   Aemeath: { weights: { critRate: 4, critDamage: 4, atkPercent: 2, liberationDamage: 1.5, atk: 1 } },
   Augusta: { weights: { critRate: 3.5, critDamage: 4, atkPercent: 1.5, heavyDamage: 1.5, atk: 0.5 } },
@@ -74,4 +73,4 @@ export const characterSubstatPreferences: Record<string, CharacterSubstatPrefere
   Yuanwu: { weights: {} },
   Zani: { weights: { energyRegen: 2, critRate: 4, critDamage: 4, atkPercent: 2, heavyDamage: 3, atk: 1 } },
   Zhezhi: { weights: { energyRegen: 2, critRate: 4, critDamage: 4, atkPercent: 2, basicDamage: 3, atk: 1 } }
-}
+} satisfies Record<string, CharacterSubstatPreference>, sheetCharacterSubstatPreferences)

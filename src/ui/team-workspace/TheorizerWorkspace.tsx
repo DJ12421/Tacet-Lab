@@ -8,7 +8,7 @@ import { generatedSonataIconSources } from '../../game-data/sonatas.generated'
 import type { TheorizerMode, TheorizerRankingRequest, TheorizerRankingResponse } from '../../workers/theorizer.worker'
 import { statIconSource } from '../stat-icons'
 import { TacetMark } from '../TacetLabLogo'
-import { compactAttackLabel, formatWorkspaceStat, TEAM_ROTATION_TARGET_ID, type TeamMemberModel, type TeamWorkspaceModel } from '../team-workspace-model'
+import { compactAttackLabel, formatWorkspaceStat, TEAM_LOOP_TARGET_ID, TEAM_ROTATION_TARGET_ID, type TeamMemberModel, type TeamWorkspaceModel } from '../team-workspace-model'
 import { EquipmentBuffSettings } from './EquipmentBuffSettings'
 import { useWorkspacePreference } from './useWorkspacePreference'
 
@@ -304,7 +304,7 @@ export function TheorizerWorkspace({ member, model, echoes, builds, characters, 
     }
   }
   */
-  const targetGroups = [['Team', [{ id: TEAM_ROTATION_TARGET_ID, label: 'Rotation' }]], ...member.formulaRows.reduce((groups, row) => {
+  const targetGroups = [['Team', [{ id: TEAM_ROTATION_TARGET_ID, label: 'Rotation' }, ...(model.team.loop ? [{ id: TEAM_LOOP_TARGET_ID, label: 'Loop' }] : [])]], ...member.formulaRows.reduce((groups, row) => {
     const targets = groups.get(row.target.group) ?? []
     targets.push({ id: row.target.id, label: compactAttackLabel(row.target.label) })
     groups.set(row.target.group, targets)
@@ -357,7 +357,7 @@ export function TheorizerWorkspace({ member, model, echoes, builds, characters, 
 
   const ranked: RankedSuggestion[] = ranking.results
   const selected = ranked.find((entry) => entry.id === selectedId)
-  const resultModeLabel = `${resultMode === 'expected' ? 'Avg' : resultMode === 'normal' ? 'Non-crit' : 'Crit'} ${activeTargetId === TEAM_ROTATION_TARGET_ID ? 'rotation DMG' : 'DMG'}`
+  const resultModeLabel = `${resultMode === 'expected' ? 'Avg' : resultMode === 'normal' ? 'Non-crit' : 'Crit'} ${activeTargetId === TEAM_ROTATION_TARGET_ID ? 'rotation DMG' : activeTargetId === TEAM_LOOP_TARGET_ID ? 'loop DMG' : 'DMG'}`
   const modeLabel = MODES.find((entry) => entry.id === mode)?.label ?? 'options'
 
   return <section className="tw-theorizer tw-panel">

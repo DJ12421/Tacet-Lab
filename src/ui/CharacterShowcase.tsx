@@ -19,7 +19,7 @@ import { equipSavedBuild, setEquippedEchoIds } from '../storage/loadouts'
 import type { AppSettings, Build, Echo, EquippedLoadout, LoadoutSourceRef, OwnedCharacter, OwnedWeapon, StatKey, TheorycraftBuild } from '../domain/types'
 import { CharacterSubstatProfileContext, EchoMiniCard, FilterChips, Icon, Panel, SingleSelect } from './components'
 import { EchoEditModal } from './EchoEditModal'
-import type { NanokaSpinePortraitHandle } from './NanokaSpinePortrait'
+import type { AnimatedCharacterPortraitHandle } from './AnimatedCharacterPortrait'
 import type { CalculationDetail } from './CalculationDetails'
 import { showcaseStatDetail } from './calculation-detail-model'
 import { CharacterBuildCard, prioritizedBuildCardStats, type BuildCardStatKey } from './CharacterBuildCard'
@@ -399,7 +399,7 @@ export function CharacterShowcase({ character, characters, catalog, weapons, ech
   const [loadoutSource, setLoadoutSource] = useState<LoadoutSourceRef>({ type: 'equipped', characterId: character.id })
   const exportRef = useRef<HTMLDivElement>(null)
   const portraitRef = useRef<HTMLImageElement>(null)
-  const livePortraitRef = useRef<NanokaSpinePortraitHandle>(null)
+  const livePortraitRef = useRef<AnimatedCharacterPortraitHandle>(null)
   const showAnimatedPortrait = useCallback(() => setAnimatedPortraitReady(true), [])
   const showStaticPortrait = useCallback(() => setAnimatedPortraitReady(false), [])
 

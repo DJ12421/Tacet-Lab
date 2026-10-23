@@ -1,9 +1,9 @@
 import { afterAll, beforeEach, describe, expect, it } from 'vitest'
 import { characterCatalog, weaponSummaries } from '../game-data'
 import { db, importAccount } from './database'
-import { convertWutheringToolsExport } from './import-wuthering-tools'
+import { convertExternalAccountExport } from './import-external-account'
 
-describe('Wuthering Tools build and team imports', () => {
+describe('external account build and team imports', () => {
   beforeEach(async () => {
     db.close()
     await db.delete()
@@ -15,7 +15,7 @@ describe('Wuthering Tools build and team imports', () => {
     const lucy = characterCatalog.find((entry) => entry.name === 'Lucy')!
     const [firstWeapon, secondWeapon] = weaponSummaries.filter((weapon) => weapon.type === lucy.weaponType)
     const source = {
-      meta: { version: '9', source: 'WutheringTools' },
+      meta: { version: '9', source: 'external' },
       data: {
         character: JSON.stringify({ characters: { Lucy: {
           weapon: firstWeapon.name, activeBuildId: 'main', builds: [
@@ -30,7 +30,7 @@ describe('Wuthering Tools build and team imports', () => {
       }
     }
 
-    const converted = await convertWutheringToolsExport(source)
+    const converted = await convertExternalAccountExport(source)
     expect(converted.document.equippedLoadouts).toHaveLength(1)
     expect(converted.document.builds).toMatchObject([{ name: 'Alternate' }])
     expect(converted.document.teams).toHaveLength(1)
@@ -39,23 +39,24 @@ describe('Wuthering Tools build and team imports', () => {
     expect(converted.document.teams[0].actions[0].multiplier).toBe(2)
 
     await importAccount(converted.document)
-    const repeated = await convertWutheringToolsExport(source)
+    const repeated = await convertExternalAccountExport(source)
     expect(repeated.document.builds).toHaveLength(0)
     expect(repeated.choices).toHaveLength(0)
+    expect(repeated.document.teams[0]?.id).toBe(converted.document.teams[0].id)
   })
 
   it('uses exported progression for new ownership and preserves it on reimport', async () => {
     const lucy = characterCatalog.find((entry) => entry.name === 'Lucy')!
     const weapon = weaponSummaries.find((entry) => entry.type === lucy.weaponType)!
     const source = {
-      meta: { version: '9', source: 'WutheringTools' },
+      meta: { version: '9', source: 'external' },
       data: { character: JSON.stringify({ characters: { Lucy: {
         characterLevel: '70', sequence: '2', talents: { basic: '6', skill: '8', forte: '10', liberation: '7', intro: '5' },
         weapon: weapon.name, weapons: { [weapon.name]: { weaponLevel: '80', refinement: '3' } }
       } } }) }
     }
 
-    const converted = await convertWutheringToolsExport(source)
+    const converted = await convertExternalAccountExport(source)
     expect(converted.document.characters[0]).toMatchObject({ level: 70, sequence: 2, skillLevels: [6, 8, 10, 7, 5] })
     expect(converted.document.weapons[0]).toMatchObject({ level: 80, rank: 3 })
 
@@ -64,20 +65,20 @@ describe('Wuthering Tools build and team imports', () => {
     changed.characters.Lucy.characterLevel = '90'
     changed.characters.Lucy.talents.skill = '10'
     changed.characters.Lucy.weapons[weapon.name].refinement = '5'
-    const repeated = await convertWutheringToolsExport({ ...source, data: { character: JSON.stringify(changed) } })
+    const repeated = await convertExternalAccountExport({ ...source, data: { character: JSON.stringify(changed) } })
     expect(repeated.document.characters).toHaveLength(0)
     expect(repeated.document.weapons).toHaveLength(0)
   })
 
   it('stops before preview when source characters cannot be accounted for', async () => {
     const source = {
-      meta: { version: '9', source: 'WutheringTools' },
+      meta: { version: '9', source: 'external' },
       data: { character: JSON.stringify({ characters: {
         Lucy: { echoes: Array.from({ length: 6 }, () => ({ echo: 'unknown', type: 1 })) },
         UnknownCharacter: {}
       } }) }
     }
 
-    await expect(convertWutheringToolsExport(source)).rejects.toThrow('2 of 2 Wuthering Tools characters: Lucy, UnknownCharacter')
+    await expect(convertExternalAccountExport(source)).rejects.toThrow('2 of 2 imported characters: Lucy, UnknownCharacter')
   })
 })

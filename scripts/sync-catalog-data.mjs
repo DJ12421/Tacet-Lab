@@ -4,7 +4,7 @@ const encoreBase='https://api-v2.encore.moe/api/en'
 const sources={characters:`${base}/character.json`,weapons:`${base}/weapon.json`,echoes:`${base}/echo.json`,titles:`${encoreBase}/title`}
 const names=['','Freezing Frost','Molten Rift','Void Thunder','Sierra Gale','Celestial Light','Havoc Eclipse','Rejuvenating Glow','Moonlit Clouds','Lingering Tunes','Frosty Resolve','Eternal Radiance','Midnight Veil','Empyrean Anthem','Tidebreaking Courage',,'Gusts of Welkin','Windward Pilgrimage','Flaming Clawprint','Dream of the Lost','Crown of Valor','Law of Harmony',"Flamewing's Shadow",'Thread of Severed Fate','Pact of Neonlight Leap','Halo of Starry Radiance','Rite of Gilded Revelation','Trailblazing Star','Chromatic Foam','Sound of True Name','Wishes of Quiet Snowfall','Reel of Spliced Memories','Shadow of Shattered Dreams','Song of Feathered Trace',"Heart of Evil's Purge",'Lamp of Nether Road','Heart of Sworn Vigil','Flash of Electric Reflection','Flower of Tinged Yearning']
 const load=async(source,attempt=0)=>{
-  try{const response=await fetch(source);if(!response.ok)throw Error(`Nanoka ${response.status}: ${source}`);return response.json()}
+  try{const response=await fetch(source);if(!response.ok)throw Error(`catalog source ${response.status}: ${source}`);return response.json()}
   catch(error){if(attempt>=2)throw error;await new Promise(resolve=>setTimeout(resolve,400*(attempt+1)));return load(source,attempt+1)}
 }
 const mapLimit=async(items,limit,mapper)=>{
@@ -119,10 +119,10 @@ const outroDescriptionAttack=(id,nodeId,skill)=>{
     hitMultipliers
   }]
 }
-// Nanoka formats this as 6.11% × 6 + 24.44%, but the two damage
+// catalog source formats this as 6.11% × 6 + 24.44%, but the two damage
 // components and the English in-game damage breakdown both show two hits.
 const verifiedComponentHitAttacks=new Set(['1511:1:Basic Attack Stage 1 DMG'])
-// Nanoka's related_property is stale for these rows; the displayed English
+// catalog source's related_property is stale for these rows; the displayed English
 // formulas explicitly name the actual scaling stat.
 const verifiedCharacterAttackScaling=new Map([
   ['1110:2:Enrichment Healing','hp'],
@@ -209,7 +209,7 @@ const characters=Object.entries(rawCharacters).map(([id,c])=>{
     attacks.push(...outroDescriptionAttack(id,outroEntry[0],outroEntry[1].skill??outroEntry[1]))
   }
   const animatedSkin=Object.values(detail?.skin??{}).find(skin=>skin.formation_spine_skel&&skin.formation_spine_atlas)
-  // Nanoka's character-page "Luckdraw" viewer resolves gacha animations from
+  // catalog source's character-page "Luckdraw" viewer resolves gacha animations from
   // the character audio key. Older characters without that key do not expose a
   // Luckdraw asset, so preserve their formation Spine render as the fallback.
   const luckdrawId=String(detail?.audio??'').trim().toLowerCase()
@@ -243,7 +243,7 @@ const weapons=weaponEntries.map(([id,w])=>{
   const passiveEffects=Array.from({length:5},(_,rank)=>formatEffect(detail?.effect,(detail?.param??[]).map(values=>values[rank])))
   return {id,name:w.en,description:w.desc,rarity:w.rank,type:weaponTypes[w.type]??'Unknown',baseAtk:floorWeaponAtk(maxStats[0]?.value??w.atk),secondaryStat:w.sub??secondary?.name??'Unreleased',secondaryStatValue:formatWeaponStat(secondary),levelStats,passiveName:detail?.effect_name??'',passiveEffects,articleUrl:`https://ww.nanoka.cc/weapon/${id}`,iconSourceUrl:asset(w.icon)}
 }).sort((a,b)=>a.name.localeCompare(b.name))
-// Corrections verified from user-provided in-game catalog evidence but not yet reflected in Nanoka.
+// Corrections verified from user-provided in-game catalog evidence but not yet reflected in catalog source.
 const additionalEchoSonataGroups={6000085:[1,2,3,4,5,6]}
 const echoDetails=await mapLimit(Object.keys(rawEchoes),8,async id=>[id,await load(`${base}/en/echo/${id}.json`)])
 const echoDetailById=new Map(echoDetails)
@@ -252,7 +252,7 @@ const echoes=Object.entries(rawEchoes).map(([id,e])=>{
   const maxSkillParams=skill?.param?.at(-1)??[]
   return {id,name:e.en,cost:e.intensity===0?1:e.intensity===1?3:4,sonatas:[...new Set([...e.group,...(additionalEchoSonataGroups[id]??[])])].map(g=>names[g]),rarities:e.rank,intensity:e.intensity,skillDescription:formatEffect(skill?.desc,maxSkillParams),articleUrl:`https://ww.nanoka.cc/echo/${id}`,iconPath:e.icon,iconSourceUrl:asset(e.icon)}
 }).sort((a,b)=>a.name.localeCompare(b.name))
-if(echoes.length<170||echoes.some(e=>e.sonatas.includes(undefined)))throw Error('Incomplete Nanoka data')
+if(echoes.length<170||echoes.some(e=>e.sonatas.includes(undefined)))throw Error('Incomplete catalog source data')
 const representativeEchoByGroup=new Map()
 for(const [echoId,echo] of Object.entries(rawEchoes))for(const groupId of echo.group)if(!representativeEchoByGroup.has(groupId))representativeEchoByGroup.set(groupId,echoId)
 const groupDetails=[...representativeEchoByGroup.entries()].map(([groupId,echoId])=>[groupId,echoDetailById.get(echoId)?.group?.[groupId]])
@@ -262,9 +262,9 @@ const sonataIconSources=Object.fromEntries(await mapLimit(sonatas,8,async sonata
   const icon=groupById.get(Number(sonata.id))?.icon
   return [sonata.name,icon?await sonataAsset(icon):'']
 }))
-if(characters.length<50||weapons.length<100||sonatas.length<30)throw Error('Incomplete Nanoka catalogs')
+if(characters.length<50||weapons.length<100||sonatas.length<30)throw Error('Incomplete catalog source catalogs')
 const generatedAt=new Date().toISOString()
-const header='// Generated by scripts/sync-nanoka-echoes.mjs. Do not edit.\n'
+const header='// Generated by scripts/sync-catalog-data.mjs. Do not edit.\n'
 const types=`${header}export interface GeneratedCharacterAttackEntry {id:string;name:string;type:'basic'|'heavy'|'skill'|'liberation'|'intro'|'outro'|'healing';skillLevelIndex:number;scalesWith:'atk'|'hp'|'def';multipliers:number[];hitMultipliers:number[][]}
 export interface GeneratedCharacterSkillInputGuideEntry {id:string;description:string;imageSourceUrls:string[]}
 export interface GeneratedCharacterSkillInputGuideSection {id:string;name:string;entries:GeneratedCharacterSkillInputGuideEntry[]}
@@ -294,4 +294,4 @@ await Promise.all([
   writeFile('src/game-data/catalog-provenance.generated.ts',`${header}export const catalogProvenance=${JSON.stringify({sources,dataVersion:version,generatedAt})} as const\n`),
   writeFile('src/game-data/catalog.generated.ts',`${header}export * from './catalog-types.generated'\nexport { generatedCharacterCatalog } from './characters.generated'\nexport { generatedCharacterSummaries } from './character-summaries.generated'\nexport { generatedWeaponCatalog } from './weapons.generated'\nexport { generatedWeaponSummaries } from './weapon-summaries.generated'\nexport { generatedSonataCatalog, generatedSonataIconSources } from './sonatas.generated'\nexport { generatedEchoCatalog } from './echoes.generated'\nexport { catalogProvenance } from './catalog-provenance.generated'\n`)
 ])
-console.log(`Wrote ${characters.length} characters, ${weapons.length} weapons, ${sonatas.length} Sonatas, and ${echoes.length} Echoes from Nanoka ${version}`)
+console.log(`Wrote ${characters.length} characters, ${weapons.length} weapons, ${sonatas.length} Sonatas, and ${echoes.length} Echoes from catalog source ${version}`)

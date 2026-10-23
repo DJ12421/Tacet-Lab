@@ -15,6 +15,7 @@ import { PwaUpdatePrompt } from './PwaUpdatePrompt'
 import { TacetLabLogo } from './TacetLabLogo'
 import { useAppData } from './useAppData'
 import { useBodyScrollLock } from './useDismissableLayer'
+import { usePageFocused } from './usePageFocused'
 import { confirmDiscardChanges, useAnyUnsavedChanges, useUnsavedChanges } from './useUnsavedChanges'
 
 const ArchiveView = lazy(() => import('./ArchiveView').then(({ ArchiveView }) => ({ default: ArchiveView })))
@@ -168,6 +169,11 @@ export default function App() {
   })
   const [sidebarOpenOverride, setSidebarOpenOverride] = useState<boolean | null>(null)
   const data = useAppData()
+  const pageFocused = usePageFocused()
+  useEffect(() => {
+    document.documentElement.classList.toggle('site-unfocused', !pageFocused)
+    return () => document.documentElement.classList.remove('site-unfocused')
+  }, [pageFocused])
   const settingsDirty = settingsOpen && (settingsFormDirty || (customPreview !== null && (Object.keys(data.settings.customTheme) as (keyof CustomThemeColors)[]).some((key) => customPreview[key] !== data.settings.customTheme[key])))
   useUnsavedChanges(settingsDirty)
   const anyUnsavedChanges = useAnyUnsavedChanges()
@@ -409,7 +415,7 @@ export default function App() {
         <span className="sidebar-label">Navigation</span>
         <button className="sidebar-pin" type="button" aria-pressed={sidebarPinned} title={sidebarPinned ? 'Unpin sidebar' : 'Pin sidebar'} onClick={() => { setSidebarPinned(!sidebarPinned); setSidebarOpenOverride(sidebarPinned ? false : true) }}><svg className="sidebar-pin-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m15.8 3.4 4.8 4.8-2.6 1.3-3.2 3.2.8 3.9-1.5 1.5-4.1-4.1-5.1 5.1-1.2-1.2 5.1-5.1-4.1-4.1 1.5-1.5 3.9.8 3.2-3.2 1.3-2.6Z"/></svg><span>{sidebarPinned ? 'Unpin' : 'Pin'}</span></button>
       </div>
-      <button className="brand" onClick={() => setView('dashboard')}><div className="brand-mark"><i/><i/><i/></div><div><strong>TACET LAB</strong><span>WUWA OPTIMIZER</span></div></button>
+      <button className="brand" onClick={() => setView('dashboard')}><div className="brand-mark"><i/><i/><i/></div><div><strong>TACET LAB</strong><span>BUILD PLANNER</span></div></button>
       <nav className="desktop-nav">{nav.map((item) => <button key={item.view} type="button" title={item.label} aria-current={view === item.view ? 'page' : undefined} className={view === item.view ? 'active' : ''} onClick={() => navigateFromShell(item.view)}><NavIcon item={item}/><span>{item.label}</span>{item.view === 'scanner' && <b>EN</b>}</button>)}</nav>
       <nav className="mobile-nav" aria-label="Mobile navigation">{mobilePrimaryNav.map((item) => <button key={item.view} type="button" aria-current={view === item.view ? 'page' : undefined} className={view === item.view ? 'active' : ''} onClick={() => navigateFromShell(item.view)}><NavIcon item={item}/><span>{item.label}</span></button>)}<button type="button" className={mobileMoreActive ? 'active' : ''} aria-current={mobileMoreActive ? 'page' : undefined} aria-haspopup="dialog" aria-expanded={mobileMoreOpen} onClick={() => setMobileMoreOpen(true)}><Icon name="more"/><span>More</span></button></nav>
       <div className="side-bottom"><div className="local-status"><i/><div><strong>Local inventory</strong><span>{data.echoes.length} Echoes · {data.characters.length} characters · {data.weapons.length} weapons</span></div></div><button className={view === 'partnerships' ? 'active' : ''} onClick={() => setView('partnerships')}><Icon name="team"/><span>Partnerships</span></button><button className={view === 'guides' ? 'active' : ''} onClick={() => setView('guides')}><Icon name="info"/><span>Guides</span></button><button onClick={() => setSettingsOpen(true)}><Icon name="settings"/><span>Settings</span></button></div>
@@ -430,7 +436,7 @@ export default function App() {
         {view === 'legal' && <PrivacyLegalView/>}
         </Suspense>
       </div>
-      <footer className="site-footer"><span>This is an independent fan project not affiliated with/endorsed by Wuthering Waves or Kuro Games.</span><span>Catalog data: Nanoka 3.7</span></footer>
+      <footer className="site-footer"><span>This is an independent fan project not affiliated with/endorsed by Wuthering Waves or Kuro Games.</span><span>Catalog version: 3.7</span></footer>
     </main>
     <dialog ref={mobileMoreRef} className="mobile-more-sheet" aria-labelledby="mobile-more-title" onClose={() => setMobileMoreOpen(false)} onMouseDown={(event) => { if (event.target === event.currentTarget) setMobileMoreOpen(false) }}>
       <div className="mobile-more-handle" aria-hidden="true"/>

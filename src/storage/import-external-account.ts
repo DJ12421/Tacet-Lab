@@ -42,28 +42,29 @@ function sourceGearScore(character: RecordValue) {
     + Number(Boolean(character.weapon || (record(activeBuild) && activeBuild.weapon)))
 }
 
-export interface WutheringToolsCharacterChoice {
+export interface ExternalCharacterChoice {
   catalogId: string
   name: string
   existing: boolean
   addAsNewBuild: boolean
 }
 
-export function isWutheringToolsExport(value: unknown): value is RecordValue {
-  return record(value) && record(value.meta) && value.meta.source === 'WutheringTools'
+export function isExternalAccountExport(value: unknown): value is RecordValue {
+  return record(value) && record(value.meta) && String(value.meta.version) === '9'
+    && record(value.data) && typeof value.data.character === 'string'
 }
 
-export async function convertWutheringToolsExport(value: RecordValue, addAsNewBuild: Record<string, boolean> = {}): Promise<{ document: AccountDocument; notices: string[]; choices: WutheringToolsCharacterChoice[] }> {
+export async function convertExternalAccountExport(value: RecordValue, addAsNewBuild: Record<string, boolean> = {}): Promise<{ document: AccountDocument; notices: string[]; choices: ExternalCharacterChoice[] }> {
   const meta = value.meta
-  if (!record(meta) || String(meta.version) !== '9') throw new Error(`Wuthering Tools version ${String(record(meta) ? meta.version : 'missing')} is not supported yet.`)
+  if (!record(meta) || String(meta.version) !== '9') throw new Error(`External account version ${String(record(meta) ? meta.version : 'missing')} is not supported yet.`)
   const data = value.data
-  if (!record(data) || typeof data.character !== 'string') throw new Error('This Wuthering Tools export has no character data.')
+  if (!record(data) || typeof data.character !== 'string') throw new Error('This external account export has no character data.')
   let characterData: unknown
-  try { characterData = JSON.parse(data.character) } catch { throw new Error('The character data inside this Wuthering Tools export is invalid JSON.') }
-  if (!record(characterData) || !record(characterData.characters)) throw new Error('This Wuthering Tools export has no character list.')
+  try { characterData = JSON.parse(data.character) } catch { throw new Error('The character data inside this external account export is invalid JSON.') }
+  if (!record(characterData) || !record(characterData.characters)) throw new Error('This external account export has no character list.')
 
-  const [ownedCharacters, ownedWeapons, currentBuilds, currentLoadouts, ownedEchoes] = await Promise.all([
-    db.characters.toArray(), db.weapons.toArray(), db.builds.toArray(), db.equippedLoadouts.toArray(), db.echoes.toArray()
+  const [ownedCharacters, ownedWeapons, currentBuilds, currentLoadouts, ownedEchoes, currentTeams] = await Promise.all([
+    db.characters.toArray(), db.weapons.toArray(), db.builds.toArray(), db.equippedLoadouts.toArray(), db.echoes.toArray(), db.teams.toArray()
   ])
   const currentEchoes = new Map(ownedEchoes.map((echo) => [echo.id, echo]))
   const importedEchoesByStats = new Map<string, Echo>()
@@ -73,7 +74,7 @@ export async function convertWutheringToolsExport(value: RecordValue, addAsNewBu
   const builds: Build[] = []
   const equippedLoadouts: EquippedLoadout[] = []
   const teams: Team[] = []
-  const choices: WutheringToolsCharacterChoice[] = []
+  const choices: ExternalCharacterChoice[] = []
   const notices: string[] = []
   const createdAt = Date.now()
   const characterIds = new Map<string, string>()
@@ -103,7 +104,7 @@ export async function convertWutheringToolsExport(value: RecordValue, addAsNewBu
     const activeBuild = sourceBuilds.find((build) => build.id === character.activeBuildId) ?? sourceBuilds[0]
     const ownedCharacter = existingRover ?? ownedCharacters.find((entry) => entry.catalogId === catalogCharacter.id)
     const catalogId = ownedCharacter?.catalogId ?? catalogCharacter.id
-    const characterId = ownedCharacter?.id ?? `wuthering-tools:character:${catalogId}`
+    const characterId = ownedCharacter?.id ?? `external-account:character:${catalogId}`
     const sourceKey = key(characterName)
     characterIds.set(sourceKey, characterId)
     characterCatalogIds.set(sourceKey, catalogId)
@@ -143,7 +144,7 @@ export async function convertWutheringToolsExport(value: RecordValue, addAsNewBu
       id: characterId, catalogId, level: characterLevel, sequence: progression(character.sequence, 0, 6, 0), locked: false,
       skillLevels, createdAt: now
     })
-    const importedWeaponId = `wuthering-tools:weapon:${catalogId}:${catalogWeapon.id}`
+    const importedWeaponId = `external-account:weapon:${catalogId}:${catalogWeapon.id}`
     const existingWeapon = [...ownedWeapons, ...weapons].find((weapon) => weapon.id === importedWeaponId && weapon.catalogId === catalogWeapon.id)
       ?? [...ownedWeapons, ...weapons].find((weapon) => weapon.catalogId === catalogWeapon.id && (weapon.equippedBy === characterId || !weapon.equippedBy))
     const weaponId = existingWeapon?.id ?? importedWeaponId
@@ -192,7 +193,7 @@ export async function convertWutheringToolsExport(value: RecordValue, addAsNewBu
         continue
       }
       const level = subStats.length * 5
-      const id = `wuthering-tools:${encodeURIComponent(characterName)}:${variant.active ? '' : `${encodeURIComponent(String(variant.build?.id ?? variantIndex))}:`}${slot}`
+      const id = `external-account:${encodeURIComponent(characterName)}:${variant.active ? '' : `${encodeURIComponent(String(variant.build?.id ?? variantIndex))}:`}${slot}`
       const existing = currentEchoes.get(id)
       const echo: Echo = {
         id, name: catalogEcho.name, cost: cost as Echo['cost'], rarity: rarity as Echo['rarity'], level,
@@ -239,7 +240,7 @@ export async function convertWutheringToolsExport(value: RecordValue, addAsNewBu
       equippedLoadouts.push({ id: `equipped:${characterId}`, characterId, weaponId, echoIds: [], updatedAt: now })
       activeRefs.set(sourceKey, { type: 'equipped', characterId })
     } else if (saveSecondBuild) {
-      const id = `wuthering-tools:build:${catalogId}${variant.active ? '' : `:${encodeURIComponent(String(variant.build?.id ?? variantIndex))}`}`
+      const id = `external-account:build:${catalogId}${variant.active ? '' : `:${encodeURIComponent(String(variant.build?.id ?? variantIndex))}`}`
       const existingBuild = currentBuilds.find((build) => build.id === id)
       const usedNames = new Set(currentBuilds.filter((build) => build.characterId === characterId || build.resonatorId === catalogId).map((build) => build.name))
       let number = 2
@@ -269,7 +270,7 @@ export async function convertWutheringToolsExport(value: RecordValue, addAsNewBu
     const catalogId = characterCatalogIds.get(key(name)) ?? (roverTypes.has(roverType) ? characterCatalogIds.get(roverType) : undefined)
     return !catalogId || ![...ownedCharacters, ...characters].some((entry) => entry.catalogId === catalogId)
   })
-  if (missingCharacters.length) throw new Error(`Could not account for ${missingCharacters.length} of ${Object.keys(characterData.characters).length} Wuthering Tools characters: ${missingCharacters.join(', ')}.`)
+  if (missingCharacters.length) throw new Error(`Could not account for ${missingCharacters.length} of ${Object.keys(characterData.characters).length} imported characters: ${missingCharacters.join(', ')}.`)
   let rotationData: unknown
   if (typeof data.teamRotations === 'string') {
     try { rotationData = JSON.parse(data.teamRotations) } catch { notices.push('Team rotations could not be read from this export.') }
@@ -279,7 +280,8 @@ export async function convertWutheringToolsExport(value: RecordValue, addAsNewBu
       if (!record(sourceTeam) || !Array.isArray(sourceTeam.characterIds)) continue
       const sourceNames = sourceTeam.characterIds.slice(0, 3)
       if (!sourceNames.some((name) => typeof name === 'string' && name.trim())) continue
-      const teamId = `wuthering-tools:team:${typeof sourceTeam.id === 'string' ? encodeURIComponent(sourceTeam.id) : teamIndex}`
+      const sourceTeamKey = typeof sourceTeam.id === 'string' ? encodeURIComponent(sourceTeam.id) : teamIndex
+      const teamId = currentTeams.find((team) => team.id.endsWith(`:team:${sourceTeamKey}`))?.id ?? `external-account:team:${sourceTeamKey}`
       const members: TeamMember[] = []
       const memberBySlot = new Map<number, TeamMember>()
       for (const [slot, name] of sourceNames.entries()) {

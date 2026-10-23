@@ -1,11 +1,11 @@
 {
-  "name": "wuwa-optimizer",
+  "name": "tacet-lab",
   "version": "0.1.0",
   "license": "GPL-3.0-only",
   "private": true,
   "type": "module",
   "scripts": {
-    "data:sync:echoes": "node scripts/sync-nanoka-echoes.mjs",
+    "data:sync:echoes": "node scripts/sync-catalog-data.mjs",
     "data:sync:scanner-signatures": "node scripts/generate-scanner-signatures.mjs",
     "dev": "vite",
     "build": "tsc -b && vite build",

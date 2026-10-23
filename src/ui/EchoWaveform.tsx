@@ -1,4 +1,5 @@
 import { useEffect, useRef, type CSSProperties } from 'react'
+import { usePageFocused } from './usePageFocused'
 import './echo-waveform.css'
 
 const elementColors: Record<string, string> = { Spectro: '#e8cc72', Fusion: '#ee715e', Glacio: '#76cef2', Electro: '#b581ef', Aero: '#62d7ae', Havoc: '#d36adf' }
@@ -46,22 +47,27 @@ const initialPaths = waves.map((wave) => wavePath(0, wave))
 
 export function EchoWaveform({ element }: { element?: string } = {}) {
   const svgRef = useRef<SVGSVGElement>(null)
+  const elapsedRef = useRef(0)
+  const pageFocused = usePageFocused()
   const style = element ? { '--wave-accent': elementColors[element] ?? '#d1aa4c' } as CSSProperties : undefined
 
   useEffect(() => {
-    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return
+    if (!pageFocused || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return
     const paths = svgRef.current?.querySelectorAll<SVGPathElement>('path')
     if (!paths?.length) return
     let frame = 0
+    let previous = 0
     const render = (time: number) => {
-      const nextPaths = waves.map((wave) => wavePath(time, wave))
+      if (previous) elapsedRef.current += time - previous
+      previous = time
+      const nextPaths = waves.map((wave) => wavePath(elapsedRef.current, wave))
       paths[0]?.setAttribute('d', `${nextPaths[2]} L${WIDTH},${HEIGHT} L0,${HEIGHT} Z`)
       nextPaths.forEach((path, index) => paths[index + 1]?.setAttribute('d', path))
       frame = requestAnimationFrame(render)
     }
     frame = requestAnimationFrame(render)
     return () => cancelAnimationFrame(frame)
-  }, [])
+  }, [pageFocused])
 
   return <svg ref={svgRef} className="cs-echo-waveform" style={style} viewBox={`0 0 ${WIDTH} ${HEIGHT}`} preserveAspectRatio="none" fill="none" aria-hidden="true">
     <path d={`${initialPaths[2]} L${WIDTH},${HEIGHT} L0,${HEIGHT} Z`} className="cs-echo-wave-fill"/>

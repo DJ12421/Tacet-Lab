@@ -155,7 +155,7 @@
             "count": 6,
             "cooldownSeconds": 20,
             "sourceText": "When equipped by Hsin, the Echo Skill instead deals 5 Electro hits followed by a final Electro hit over a larger area. CD: 20s.",
-            "classificationEvidence": "Wuthering Tools Hsin Cast DMG for ranks 2-5; Nanoka rank 1. Wuthering Tools rank 3 final-hit talent conflicts with its description, so the reviewed final hit follows Nanoka and the description."
+            "classificationEvidence": "secondary reference Hsin Cast DMG for ranks 2-5; catalog source rank 1. secondary reference rank 3 final-hit talent conflicts with its description, so the reviewed final hit follows catalog source and the description."
           }
         ],
         "cooldownSeconds": 20

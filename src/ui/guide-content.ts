@@ -195,7 +195,7 @@ export const guides: readonly Guide[] = [
     steps: [
       { title: 'Open Export', body: 'Choose Export in the top bar. The dialog lists the collections included in the versioned JSON backup.', target: '.topbar button[aria-label="Export data"]', action: '.topbar button[aria-label="Export data"]', complete: '.export-data-modal', image: 'export-backup.jpg' },
       { title: 'Download the backup', body: 'Review the counts and download the JSON file to a location you control. Optimizer filters and past search results are excluded.', target: '.export-data-modal', action: '.export-data-modal .primary', image: 'export-backup.jpg' },
-      { title: 'Open Import', body: 'Choose Import in the top bar, then Choose backup. A Tacet Lab or supported Wuthering Tools JSON file is read locally.', target: '.topbar button[aria-label="Import data"]', action: '.topbar button[aria-label="Import data"]', complete: '.import-data-modal', image: 'import-backup.jpg' },
+      { title: 'Open Import', body: 'Choose Import in the top bar, then Choose backup. A Tacet Lab or supported external account JSON file is read locally.', target: '.topbar button[aria-label="Import data"]', action: '.topbar button[aria-label="Import data"]', complete: '.import-data-modal', image: 'import-backup.jpg' },
       { title: 'Review before applying', body: 'Choose the backup you just downloaded, then inspect the preview of new and updated records. Apply changes only when the preview matches your intent; a backup of the same account may have no changes to apply.', target: '.import-file-row, .import-preview', action: '.import-file-row input[type="file"]', event: 'change', complete: '.import-preview', image: 'import-backup.jpg' }
     ]
   }

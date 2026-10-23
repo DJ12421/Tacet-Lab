@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { classifyBackpackSonataGlyph, classifyEchoState, classifySonataCandidates, classifySonataColor, classifyWuwaflexSonata } from './visual'
-import { wuwaflexSonataSignatures } from './wuwaflex-sonata-signatures'
+import { classifyBackpackSonataGlyph, classifyEchoState, classifySonataCandidates, classifySonataColor, classifyWideCardSonata } from './visual'
+import { wideCardSonataSignatures } from './wide-card-sonata-signatures'
 
 const pixels = (color: [number, number, number], count = 100) => new Uint8ClampedArray(Array.from({ length: count }, () => [...color, 255]).flat())
 
@@ -54,7 +54,7 @@ describe('In-game Sonata color check', () => {
   it('uses the white glyph to separate two gold Sonata badges', () => {
     const allowed = ['Pact of Neonlight Leap', 'Rite of Gilded Revelation']
     for (const name of allowed) {
-      const template = wuwaflexSonataSignatures.find((entry) => entry.name === name)!
+      const template = wideCardSonataSignatures.find((entry) => entry.name === name)!
       const badge = new Uint8ClampedArray(24 * 24 * 4)
       for (let y = 0; y < 24; y += 1) {
         const row = Number.parseInt(template.mask.slice(y * 6, y * 6 + 6), 16)
@@ -67,7 +67,7 @@ describe('In-game Sonata color check', () => {
   })
 })
 
-describe('Discord Bot Sonata matching', () => {
+describe('Landscape card Sonata matching', () => {
   const templates = [
     { name: 'gold', signature: [1, 1, 1, 1], color: [190, 170, 70] as const },
     { name: 'green', signature: [1, 1, 1, .8], color: [100, 190, 70] as const }
@@ -89,9 +89,9 @@ describe('Discord Bot Sonata matching', () => {
   })
 })
 
-describe('WuWaFlex Sonata badges', () => {
+describe('Wide card Sonata badges', () => {
   it('reads a green ring without the bright orange card background', () => {
-    const template = wuwaflexSonataSignatures.find((entry) => entry.name === 'Halo of Starry Radiance')!
+    const template = wideCardSonataSignatures.find((entry) => entry.name === 'Halo of Starry Radiance')!
     const badge = new Uint8ClampedArray(24 * 24 * 4)
     for (let y = 0; y < 24; y += 1) {
       const row = Number.parseInt(template.mask.slice(y * 6, y * 6 + 6), 16)
@@ -100,7 +100,7 @@ describe('WuWaFlex Sonata badges', () => {
         badge.set(row & (1 << (23 - x)) ? [240, 240, 240, 255] : distance > 6 && distance < 8 ? [145, 205, 42, 255] : [210, 110, 25, 255], (y * 24 + x) * 4)
       }
     }
-    expect(classifyWuwaflexSonata(badge)?.value).toBe('Halo of Starry Radiance')
+    expect(classifyWideCardSonata(badge)?.value).toBe('Halo of Starry Radiance')
   })
 
   it('ignores card background color behind a white Tidebreaking Courage ring', () => {
@@ -110,7 +110,7 @@ describe('WuWaFlex Sonata badges', () => {
       const row = Number.parseInt(mask.slice(y * 6, y * 6 + 6), 16)
       for (let x = 0; x < 24; x += 1) badge.set(row & (1 << (23 - x)) ? [240, 240, 240, 255] : [170, 35, 45, 255], (y * 24 + x) * 4)
     }
-    expect(classifyWuwaflexSonata(badge)?.value).toBe('Tidebreaking Courage')
+    expect(classifyWideCardSonata(badge)?.value).toBe('Tidebreaking Courage')
   })
 
   it('recognizes a shifted Rejuvenating Glow glyph using its green ring', () => {
@@ -123,11 +123,11 @@ describe('WuWaFlex Sonata badges', () => {
         badge.set(row & (1 << (23 - x)) ? [240, 240, 240, 255] : distance > 6 && distance < 8 ? [132, 187, 43, 255] : [45, 85, 35, 255], (y * 24 + x) * 4)
       }
     }
-    expect(classifyWuwaflexSonata(badge)?.value).toBe('Rejuvenating Glow')
+    expect(classifyWideCardSonata(badge)?.value).toBe('Rejuvenating Glow')
   })
 
   it('uses the ring color when gold and green shield badges have a similar glyph', () => {
-    const template = wuwaflexSonataSignatures.find((entry) => entry.name === 'Halo of Starry Radiance')!
+    const template = wideCardSonataSignatures.find((entry) => entry.name === 'Halo of Starry Radiance')!
     const badge = (ring: [number, number, number]) => {
       const image = new Uint8ClampedArray(24 * 24 * 4)
       for (let y = 0; y < 24; y += 1) {
@@ -139,14 +139,14 @@ describe('WuWaFlex Sonata badges', () => {
       }
       return image
     }
-    expect(classifyWuwaflexSonata(badge([140, 183, 41]))?.value).toBe('Halo of Starry Radiance')
-    expect(classifyWuwaflexSonata(badge([196, 182, 88]))?.value).not.toBe('Halo of Starry Radiance')
-    expect(classifyWuwaflexSonata(badge([196, 182, 88]), ['Halo of Starry Radiance', 'Wishes of Quiet Snowfall'])?.value).toBe('Halo of Starry Radiance')
-    expect(classifyWuwaflexSonata(badge([100, 189, 248]), ['Halo of Starry Radiance', 'Wishes of Quiet Snowfall'])?.value).toBe('Wishes of Quiet Snowfall')
+    expect(classifyWideCardSonata(badge([140, 183, 41]))?.value).toBe('Halo of Starry Radiance')
+    expect(classifyWideCardSonata(badge([196, 182, 88]))?.value).not.toBe('Halo of Starry Radiance')
+    expect(classifyWideCardSonata(badge([196, 182, 88]), ['Halo of Starry Radiance', 'Wishes of Quiet Snowfall'])?.value).toBe('Halo of Starry Radiance')
+    expect(classifyWideCardSonata(badge([100, 189, 248]), ['Halo of Starry Radiance', 'Wishes of Quiet Snowfall'])?.value).toBe('Wishes of Quiet Snowfall')
   })
 
   it('recognizes the white glyph despite a colored badge background', () => {
-    const template = wuwaflexSonataSignatures.find((entry) => entry.name === 'Pact of Neonlight Leap')!
+    const template = wideCardSonataSignatures.find((entry) => entry.name === 'Pact of Neonlight Leap')!
     const badge = new Uint8ClampedArray(24 * 24 * 4)
     for (let y = 0; y < 24; y += 1) {
       const row = Number.parseInt(template.mask.slice(y * 6, y * 6 + 6), 16)
@@ -156,8 +156,8 @@ describe('WuWaFlex Sonata badges', () => {
         badge.set(glyph ? [240, 240, 238, 255] : [80, 140, 20, 255], offset)
       }
     }
-    expect(classifyWuwaflexSonata(badge)?.value).toBe('Pact of Neonlight Leap')
-    expect(classifyWuwaflexSonata(badge, ['Halo of Starry Radiance'])?.value).not.toBe('Pact of Neonlight Leap')
+    expect(classifyWideCardSonata(badge)?.value).toBe('Pact of Neonlight Leap')
+    expect(classifyWideCardSonata(badge, ['Halo of Starry Radiance'])?.value).not.toBe('Pact of Neonlight Leap')
   })
 
   it('recognizes the offset Celestial Light glyph from the local Lucy card', () => {
@@ -170,18 +170,18 @@ describe('WuWaFlex Sonata badges', () => {
         if (row & (1 << (23 - x))) badge.set([235, 235, 225, 255], (y * 24 + x) * 4)
       }
     }
-    expect(classifyWuwaflexSonata(badge, ['Celestial Light', 'Sierra Gale'])?.value).toBe('Celestial Light')
+    expect(classifyWideCardSonata(badge, ['Celestial Light', 'Sierra Gale'])?.value).toBe('Celestial Light')
   })
 
   it('does not accept a clear badge outside the Echo name’s possible sets', () => {
-    const template = wuwaflexSonataSignatures.find((entry) => entry.name === 'Lingering Tunes')!
+    const template = wideCardSonataSignatures.find((entry) => entry.name === 'Lingering Tunes')!
     const badge = new Uint8ClampedArray(24 * 24 * 4)
     for (let y = 0; y < 24; y += 1) {
       const row = Number.parseInt(template.mask.slice(y * 6, y * 6 + 6), 16)
       for (let x = 0; x < 24; x += 1) badge.set(row & (1 << (23 - x)) ? [240, 240, 240, 255] : [50, 38, 70, 255], (y * 24 + x) * 4)
     }
-    expect(classifyWuwaflexSonata(badge)).toMatchObject({ value: 'Lingering Tunes' })
-    expect(classifyWuwaflexSonata(badge)?.confidence).toBeGreaterThanOrEqual(.85)
-    expect(classifyWuwaflexSonata(badge, ['Pact of Neonlight Leap'])?.value).not.toBe('Lingering Tunes')
+    expect(classifyWideCardSonata(badge)).toMatchObject({ value: 'Lingering Tunes' })
+    expect(classifyWideCardSonata(badge)?.confidence).toBeGreaterThanOrEqual(.85)
+    expect(classifyWideCardSonata(badge, ['Pact of Neonlight Leap'])?.value).not.toBe('Lingering Tunes')
   })
 })

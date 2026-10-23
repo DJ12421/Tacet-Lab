@@ -1,4 +1,4 @@
-﻿import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { candidateErrors, normalizeOcrText, parseEchoText, parseStatLine } from './parser'
 import { tunableRolls } from '../game-data/tunable-rolls'
 
@@ -119,7 +119,7 @@ describe('English Echo OCR parser', () => {
     expect(separator.fields.equippedBy.value).toBe('Yangyang: Xuanling')
   })
 
-  it('fuzzy-matches Nanoka identity and Sonata names after OCR drift', async () => {
+  it('fuzzy-matches catalog source identity and Sonata names after OCR drift', async () => {
     const candidate = await parseEchoText('Cyan Feathered Her0n +25\nCOST 3\nCelestiaI Light\nSpectro DMG Bonus 30.0%\nCrit. Rate 6.3%', 'data:image/png;base64,fuzzy', 'screenshot')
     expect(candidate.fields.name.value).toBe('Cyan-Feathered Heron')
     expect(candidate.fields.cost.value).toBe(3)

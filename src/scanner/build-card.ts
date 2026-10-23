@@ -9,7 +9,7 @@ import { imageFingerprint, normalizeOcrText, parseStatLine, resolveTunableRoll }
 import { dedupeBySubstatKey } from '../domain/echo-substats'
 import type { OcrPool } from './ocr-pool'
 import type { PreprocessClient } from './preprocess'
-import { recognizeSonataAt, recognizeWuwaflexSonataAt } from './visual'
+import { recognizeSonataAt, recognizeWideCardSonataAt } from './visual'
 import type { CalibrationProfile, DiagnosticScanCandidate, ScanEvidence, ScanFrame, ScanRect, ScanRegion } from './types'
 import { buildCardFormat } from './build-card-formats'
 import { generatedEchoSignatures } from '../game-data/scanner-signatures.generated'
@@ -119,7 +119,7 @@ async function matchEcho(imageDataUrl: string, cost: Echo['cost'], useColor = tr
   const templates = echoSignatureCandidates(cost, sonata)
     .map((entry) => ({ name: entry.name, signature: Array.from(entry.signature, (value) => value / 32), color: 'color' in entry ? entry.color : undefined }))
   const ranked = rankImageSignatures(captured, templates, useColor ? iconColor(pixels) : undefined), best = ranked[0], runnerUp = ranked[1]
-  // Recolored WuWaFlex artwork can make different Echoes nearly indistinguishable.
+  // Recolored wide card artwork can make different Echoes nearly indistinguishable.
   if (!best || best.score < .42 || (!useColor && runnerUp && best.score - runnerUp.score < .03)) return { value: 'Unknown Echo', confidence: .2 }
   const name = useColor ? resolveKernelPuppetTint(best.name, pixels) : best.name
   return { value: name, confidence: name === best.name ? Math.min(.94, .48 + best.score * .42 + Math.max(0, best.score - (runnerUp?.score ?? 0)) * 2) : .9 }
@@ -140,7 +140,7 @@ async function recognizeText(
   rect: ScanRect,
   recognition: ScanRegion['recognition'] = 'text',
   kind?: ScanRegion['kind'],
-  strategy?: 'bright-substat' | 'plain' | 'wuwaflex-name' | 'contrast'
+  strategy?: 'bright-substat' | 'plain' | 'wide-card-name' | 'contrast'
 ) {
   const configured = region(id, rect, recognition, kind)
   const [original, ocrCrop] = await Promise.all([
@@ -281,7 +281,7 @@ function discordSequenceBrightness(image: HTMLImageElement, rect: ScanRect) {
   })
 }
 
-export function classifyWuwaflexSequence(whiteFractions: number[]): ScanField<number> {
+export function classifyWideCardSequence(whiteFractions: number[]): ScanField<number> {
   if (whiteFractions.length !== 6 || whiteFractions.some((value) => !Number.isFinite(value)))
     return { value: 0, confidence: 0, raw: 'Sequence icons could not be read' }
   const threshold = .1
@@ -295,7 +295,7 @@ export function classifyWuwaflexSequence(whiteFractions: number[]): ScanField<nu
   }
 }
 
-function wuwaflexSequenceWhiteFractions(image: HTMLImageElement, rect: ScanRect) {
+function wideCardSequenceWhiteFractions(image: HTMLImageElement, rect: ScanRect) {
   return Array.from({ length: 6 }, (_, index) => {
     const pixels = cropPixels(image, {
       x: rect.x + rect.width * .24,
@@ -385,7 +385,7 @@ async function recognizeConfiguredBuildCard(
   onStage?: (progress: number, status: string) => void
 ): Promise<DiagnosticScanCandidate[]> {
   const source = frame.panelImageDataUrl
-  const format = buildCardFormat(frame.buildCardFormat ?? 'discord-bot')
+  const format = buildCardFormat(frame.buildCardFormat ?? 'landscape-card')
   const configuredRect = (id: string, fallback: ScanRect) => profile.regions.find((entry) => entry.id === id)?.rect ?? fallback
   const optionalText = async (id: string, rect: ScanRect | undefined, recognition: ScanRegion['recognition'] = 'text', kind?: ScanRegion['kind']) => rect
     ? recognizeText(pool, preprocess, source, id, configuredRect(id, rect), recognition, kind)
@@ -405,7 +405,7 @@ async function recognizeConfiguredBuildCard(
   const sequenceRect = format.sequence && configuredRect('sequence', format.sequence)
   const sequenceCrop = sequenceRect ? await preprocess.crop(source, sequenceRect) : undefined
   const sequence = sequenceRect
-    ? classifyWuwaflexSequence(wuwaflexSequenceWhiteFractions(cardImage, sequenceRect))
+    ? classifyWideCardSequence(wideCardSequenceWhiteFractions(cardImage, sequenceRect))
     : { value: 0, confidence: 0, raw: 'Review sequence from the card artwork' }
   const details: BuildCardDetails = {
     id: createLocalId(), formatId: format.id, formatConfidence: frame.buildCardFormatConfidence ?? 1,
@@ -429,14 +429,14 @@ async function recognizeConfiguredBuildCard(
     const [art, nameOcr, costOcr, initialStatsOcr, initialMainLabelOcr, mainValueOcr] = await Promise.all([
       preprocess.crop(source, artRect),
       layout.name ? recognizeText(pool, preprocess, source, `echo-${index}-name`,
-        configuredRect(`echo-${index}-name`, layout.name), 'text', 'name', format.id.startsWith('wuwaflex') ? 'wuwaflex-name' : undefined) : undefined,
+        configuredRect(`echo-${index}-name`, layout.name), 'text', 'name', format.id.startsWith('wide-card') ? 'wide-card-name' : undefined) : undefined,
       optionalText(`echo-${index}-cost`, layout.cost, 'number'),
       recognizeText(pool, preprocess, source, `echo-${index}-stats`, statsRect, 'text', 'substats-block'),
       optionalText(`echo-${index}-main-stat-label`, layout.mainStatLabel, 'text', 'main-stat-label'),
       optionalText(`echo-${index}-main-stat-value`, layout.mainStatValue, 'number')
     ])
     let mainLabelOcr = initialMainLabelOcr
-    if (format.id.startsWith('wuwaflex') && layout.mainStatLabel && mainLabelOcr && mainValueOcr && !parseExplicitBuildCardMain({ label: mainLabelOcr.text, value: mainValueOcr.text })) {
+    if (format.id.startsWith('wide-card') && layout.mainStatLabel && mainLabelOcr && mainValueOcr && !parseExplicitBuildCardMain({ label: mainLabelOcr.text, value: mainValueOcr.text })) {
       const rect = configuredRect(`echo-${index}-main-stat-label`, layout.mainStatLabel)
       for (const [retryIndex, retryRect] of [
         { ...rect, x: rect.x - .006, width: rect.width + .006 },
@@ -450,7 +450,7 @@ async function recognizeConfiguredBuildCard(
     const mainRaw = `${mainOcr.label} ${mainOcr.value}`.trim()
     let selectedNameOcr = nameOcr
     let nameMatch = closestCatalogEntry(nameOcr?.text ?? '', echoCatalog, (entry) => entry.name)
-    if (format.id.startsWith('wuwaflex') && layout.name && (!nameMatch || nameMatch.score < .9)) {
+    if (format.id.startsWith('wide-card') && layout.name && (!nameMatch || nameMatch.score < .9)) {
       const alternateName = await recognizeText(pool, preprocess, source, `echo-${index}-name-plain`,
         configuredRect(`echo-${index}-name`, layout.name), 'text', 'name', 'plain')
       const alternateMatch = closestCatalogEntry(alternateName.text, echoCatalog, (entry) => entry.name)
@@ -461,20 +461,20 @@ async function recognizeConfiguredBuildCard(
     }
     const costFromOcr = Number(costOcr?.text.match(/[134]/)?.[0]) as Echo['cost']
     const inferredMainCost = inferBuildCardCostFromMain(mainOcr)
-    const provisionalCost = nameMatch && (format.id.startsWith('wuwaflex') || nameMatch.score >= .9) ? nameMatch.entry.cost
+    const provisionalCost = nameMatch && (format.id.startsWith('wide-card') || nameMatch.score >= .9) ? nameMatch.entry.cost
       : [1, 3, 4].includes(costFromOcr) ? costFromOcr : inferredMainCost ?? nameMatch?.entry.cost ?? (index === 0 ? 4 : index < 3 ? 3 : 1)
     const sonataRect = layout.sonata ? configuredRect(`echo-${index}-sonata`, layout.sonata) : undefined
-    const cardSonata = format.id.startsWith('wuwaflex') && sonataRect ? await recognizeWuwaflexSonataAt(cardImage, sonataRect) : undefined
+    const cardSonata = format.id.startsWith('wide-card') && sonataRect ? await recognizeWideCardSonataAt(cardImage, sonataRect) : undefined
     const echoIdentity = nameMatch
       ? { value: nameMatch.entry.name, confidence: Math.max(.75, nameMatch.score) }
-      : await matchEcho(art.dataUrl, provisionalCost, !format.id.startsWith('wuwaflex'), cardSonata && cardSonata.confidence >= .85 ? cardSonata.value : undefined)
+      : await matchEcho(art.dataUrl, provisionalCost, !format.id.startsWith('wide-card'), cardSonata && cardSonata.confidence >= .85 ? cardSonata.value : undefined)
     const echoEntry = echoCatalog.find((entry) => entry.name === echoIdentity.value)
     const cost = echoEntry?.cost ?? provisionalCost
     const hasExplicitMainRegion = layout.mainStatLabel !== undefined || layout.mainStatValue !== undefined
     let stats = parseBuildCardStats(initialStatsOcr.text, cost, hasExplicitMainRegion ? mainOcr : undefined)
     let statRows: BuildCardOcrResult[] = []
     const statRetries: BuildCardOcrResult[] = []
-    if (format.id.startsWith('wuwaflex') && (stats.subStats.length !== 5 || !canUseStatBlockWithoutRows(initialStatsOcr.text, initialStatsOcr.confidence))) {
+    if (format.id.startsWith('wide-card') && (stats.subStats.length !== 5 || !canUseStatBlockWithoutRows(initialStatsOcr.text, initialStatsOcr.confidence))) {
       statRows = await Promise.all(Array.from({ length: 5 }, (_, rowIndex) => recognizeText(
         pool, preprocess, source, `echo-${index}-stats-row-${rowIndex}`,
         { ...statsRect, y: statsRect.y + statsRect.height * rowIndex / 5, height: statsRect.height / 5 },
@@ -508,8 +508,8 @@ async function recognizeConfiguredBuildCard(
     const allowedSonatas = echoEntry?.sonatas
     const [sonata, sonataCrop] = sonataRect
       ? await Promise.all([
-        format.id.startsWith('wuwaflex')
-          ? (cardSonata && cardSonata.confidence >= .85 ? cardSonata : recognizeWuwaflexSonataAt(cardImage, sonataRect, allowedSonatas))
+        format.id.startsWith('wide-card')
+          ? (cardSonata && cardSonata.confidence >= .85 ? cardSonata : recognizeWideCardSonataAt(cardImage, sonataRect, allowedSonatas))
           : recognizeSonataAt(cardImage, sonataRect, allowedSonatas),
         preprocess.crop(source, sonataRect)
       ])
@@ -581,7 +581,7 @@ async function recognizeConfiguredBuildCard(
     onStage?.(.2 + completedEchoes * .15, `Read ${completedEchoes} of ${format.echoes.length} ${format.label} Echoes`)
     return { ...candidate, sessionId: frame.sessionId, frameSequence: frame.sequence + index / 10, reviewState: 'new', evidence }
   }, cardEchoConcurrency(pool.metrics().workerCount))
-  if (format.id.startsWith('wuwaflex')) {
+  if (format.id.startsWith('wide-card')) {
     const unresolved = candidates.findIndex((candidate) => candidate.fields.sonata.value === 'Unknown Sonata')
     const peers = candidates.filter((candidate, index) => index !== unresolved && candidate.fields.sonata.value !== 'Unknown Sonata' && candidate.fields.sonata.confidence >= .7)
     const sharedSonata = peers[0]?.fields.sonata.value
@@ -640,7 +640,7 @@ export async function recognizeBuildCard(frame: ScanFrame, profile: CalibrationP
       }
     }))
   }
-  if (frame.buildCardFormat && frame.buildCardFormat !== 'discord-bot') return recognizeConfiguredBuildCard(frame, profile, pool, preprocess, onStage)
+  if (frame.buildCardFormat && frame.buildCardFormat !== 'landscape-card') return recognizeConfiguredBuildCard(frame, profile, pool, preprocess, onStage)
   const source = frame.panelImageDataUrl
   const configuredRect = (id: string, fallback: ScanRect) => profile.regions.find((entry) => entry.id === id)?.rect ?? fallback
   const evidenceRegion = (id: string, fallback: ScanRegion) => profile.regions.find((entry) => entry.id === id) ?? fallback

@@ -60,13 +60,13 @@ export async function prepareScanFrame(
   const dimensionCompatiblePreferred = preferredProfile && (source === 'screenshot' || preferredProfile.layout !== 'build-card') && Math.abs(preferredProfile.sourceWidth - width) <= 2 && Math.abs(preferredProfile.sourceHeight - height) <= 2 ? preferredProfile : undefined
   const formatDetection = source === 'screenshot' && 'naturalWidth' in image
     ? detectBuildCardFormat(image, preferredBuildCardFormat)
-    : { id: 'discord-bot' as const, confidence: 0, certain: false }
+    : { id: 'landscape-card' as const, confidence: 0, certain: false }
   const requestedLayout = preferredLayout ?? dimensionCompatiblePreferred?.layout
   const buildCard = source === 'screenshot' && (cardMetadata || requestedLayout === 'build-card' || (!requestedLayout && formatDetection.certain))
   const layout: Exclude<ScanLayout, 'unknown'> = buildCard ? 'build-card' : (source !== 'screenshot' && requestedLayout === 'build-card' ? undefined : requestedLayout) ?? (detected.layout === 'unknown' ? 'echo-detail' : detected.layout)
   const format = cardMetadata ? 'tacet-lab' : buildCard ? formatDetection.id : undefined
   const compatiblePreferred = dimensionCompatiblePreferred?.layout === layout
-    && (layout !== 'build-card' || (dimensionCompatiblePreferred.buildCardFormat ?? 'discord-bot') === format)
+    && (layout !== 'build-card' || (dimensionCompatiblePreferred.buildCardFormat ?? 'landscape-card') === format)
     ? dimensionCompatiblePreferred
     : undefined
   const saved = findCompatibleProfile(width, height, layout, compatiblePreferred?.uiScale, format)

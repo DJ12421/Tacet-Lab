@@ -5,7 +5,7 @@ import type { AggregatedStats, Echo, StatKey, TheorycraftBuild } from '../domain
 import { echoCatalog, sonataCatalog, statLabels, weaponCatalog } from '../game-data'
 import { mainStatKeysByCost } from '../game-data/echo-main-stats'
 import { tunableRolls } from '../game-data/tunable-rolls'
-import { resolveTeamWorkspace, rotationDamageByMode, TEAM_ROTATION_TARGET_ID, type TeamWorkspaceInput } from '../ui/team-workspace-model'
+import { resolveTeamWorkspace, rotationDamageByMode, TEAM_LOOP_TARGET_ID, TEAM_ROTATION_TARGET_ID, type TeamWorkspaceInput } from '../ui/team-workspace-model'
 
 export type TheorizerMode = 'mainStats' | 'substats' | 'sonatas' | 'weapons'
 export type TheorizerRankingRequest = TeamWorkspaceInput & { requestId: number; mode: TheorizerMode; baseline: TheorycraftBuild; memberSlot: number; targetId: string; resultMode: 'normal' | 'critical' | 'expected'; scalesWith: 'atk' | 'hp' | 'def'; element: string; weaponType?: string; substatDraft?: TheorycraftBuild; disabledEquipmentBuffKeys?: string[] }
@@ -86,10 +86,10 @@ function resolveCandidate(input: TheorizerRankingRequest, draft: TheorycraftBuil
   const theorycraftBuilds = [...(input.theorycraftBuilds ?? []), draft]
   const conditions = equipmentBuffConditions(draft.weapon, draft.sonatas, input.team.scenario?.memberConditions[record.memberId], input.disabledEquipmentBuffKeys)
   const scenario = input.team.scenario ?? { resultMode: input.resultMode, memberConditions: {}, enemyConditions: {}, selectedTargetByBuild: {} }
-  const model = resolveTeamWorkspace({ ...input, team: { ...input.team, members, scenario: { ...scenario, memberConditions: { ...scenario.memberConditions, [record.memberId]: conditions } } }, theorycraftBuilds, disabledEffectIdsByMember:{ [record.memberId]:disabledEquipmentEffectIds(draft.weapon, draft.sonatas, input.disabledEquipmentBuffKeys ?? []) }, includeTraces:false, formulaTargetIds:input.targetId === TEAM_ROTATION_TARGET_ID ? [] : [input.targetId] })
+  const model = resolveTeamWorkspace({ ...input, team: { ...input.team, members, scenario: { ...scenario, memberConditions: { ...scenario.memberConditions, [record.memberId]: conditions } } }, theorycraftBuilds, disabledEffectIdsByMember:{ [record.memberId]:disabledEquipmentEffectIds(draft.weapon, draft.sonatas, input.disabledEquipmentBuffKeys ?? []) }, includeTraces:false, formulaTargetIds:input.targetId === TEAM_ROTATION_TARGET_ID || input.targetId === TEAM_LOOP_TARGET_ID ? [] : [input.targetId] })
   const member = model.members[input.memberSlot]
-  const score = input.targetId === TEAM_ROTATION_TARGET_ID
-    ? rotationDamageByMode(model)[input.resultMode]
+  const score = input.targetId === TEAM_ROTATION_TARGET_ID || input.targetId === TEAM_LOOP_TARGET_ID
+    ? rotationDamageByMode(model, input.targetId)[input.resultMode]
     : member.formulaRows.find((row) => row.target.id === input.targetId)?.[input.resultMode] ?? 0
   return { score, stats: comparisonStats(member.conditionedStats) }
 }

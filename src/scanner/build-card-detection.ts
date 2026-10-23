@@ -19,24 +19,24 @@ function regionMetrics(image: HTMLImageElement, x: number, y: number, width: num
 }
 
 export function detectBuildCardFormat(image: HTMLImageElement, preference: BuildCardFormatPreference = 'auto'): BuildCardFormatDetection {
-  const wuwaflexSize: BuildCardFormatId | undefined = image.naturalWidth === 3416 && image.naturalHeight === 1580 ? 'wuwaflex-1580'
-    : image.naturalWidth === 2724 && image.naturalHeight === 1272 ? 'wuwaflex-1272'
-      : image.naturalWidth === 2724 && image.naturalHeight === 1377 ? 'wuwaflex-1377' : undefined
-  if (preference === 'wuwaflex') return { id: wuwaflexSize ?? 'wuwaflex', confidence: 1, certain: true }
+  const wideCardSize: BuildCardFormatId | undefined = image.naturalWidth === 3416 && image.naturalHeight === 1580 ? 'wide-card-1580'
+    : image.naturalWidth === 2724 && image.naturalHeight === 1272 ? 'wide-card-1272'
+      : image.naturalWidth === 2724 && image.naturalHeight === 1377 ? 'wide-card-1377' : undefined
+  if (preference === 'wide-card') return { id: wideCardSize ?? 'wide-card', confidence: 1, certain: true }
   if (preference !== 'auto') return { id: preference, confidence: 1, certain: true }
-  // shortcut: exact-size exports only; use a visual signature if resized WuWaFlex cards need auto-detection.
-  if (wuwaflexSize) return { id: wuwaflexSize, confidence: .99, certain: true }
+  // shortcut: exact-size exports only; use a visual signature if resized wide card cards need auto-detection.
+  if (wideCardSize) return { id: wideCardSize, confidence: .99, certain: true }
   const ratio = image.naturalWidth / image.naturalHeight
   const aspectScore = (target: number) => Math.max(0, 1 - Math.abs(ratio - target) / .16)
   const scores = new Map<BuildCardFormatId, number>(buildCardFormats.map((format) => [format.id, aspectScore(format.aspectRatio)]))
 
-  if (ratio > 2) scores.set('wuwaflex', (scores.get('wuwaflex') ?? 0) + .55)
-  if (ratio > 1.58 && ratio < 1.72) scores.set('wuwa-optimizer', (scores.get('wuwa-optimizer') ?? 0) + .55)
-  if (ratio < 1.48) scores.set('the-wuwa-calculator', (scores.get('the-wuwa-calculator') ?? 0) + .55)
+  if (ratio > 2) scores.set('wide-card', (scores.get('wide-card') ?? 0) + .55)
+  if (ratio > 1.58 && ratio < 1.72) scores.set('horizontal-card', (scores.get('horizontal-card') ?? 0) + .55)
+  if (ratio < 1.48) scores.set('compact-card', (scores.get('compact-card') ?? 0) + .55)
   if (ratio > 1.72 && ratio < 1.84) {
     const topRight = regionMetrics(image, .88, .015, .105, .085)
     const bottomCenter = regionMetrics(image, .35, .93, .3, .055)
-    if (topRight && topRight.brightNeutral > .055) scores.set('discord-bot', (scores.get('discord-bot') ?? 0) + .7)
+    if (topRight && topRight.brightNeutral > .055) scores.set('landscape-card', (scores.get('landscape-card') ?? 0) + .7)
     else scores.set('tacet-lab', (scores.get('tacet-lab') ?? 0) + .6)
   }
 

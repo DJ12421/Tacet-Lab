@@ -1,10 +1,10 @@
 /// <reference lib="webworker" />
 import type { ScanRect } from './types'
 import { brightSubstatThreshold } from './bright-substat'
-import { wuwaflexNameThreshold } from './wuwaflex-name'
+import { wideCardNameThreshold } from './wide-card-name'
 import { echoNameThreshold } from './echo-name-threshold'
 
-type Strategy = 'name' | 'echo-name-color' | 'label' | 'text' | 'substat' | 'bright-substat' | 'bright-substat-block' | 'wuwaflex-name' | 'visual' | 'plain' | 'contrast'
+type Strategy = 'name' | 'echo-name-color' | 'label' | 'text' | 'substat' | 'bright-substat' | 'bright-substat-block' | 'wide-card-name' | 'visual' | 'plain' | 'contrast'
 type Request =
   | { type: 'source'; sourceId: string; bitmap: ImageBitmap }
   | { type: 'release'; sourceId: string }
@@ -237,11 +237,11 @@ function renderBinary(context: OffscreenCanvasRenderingContext2D, values: Uint8A
 
 function preprocessPixels(context: OffscreenCanvasRenderingContext2D, width: number, height: number, strategy: Strategy) {
   const source = context.getImageData(0, 0, width, height)
-  const gray = strategy === 'wuwaflex-name' || strategy === 'echo-name-color' ? undefined : grayscale(source.data)
+  const gray = strategy === 'wide-card-name' || strategy === 'echo-name-color' ? undefined : grayscale(source.data)
   let binary = strategy === 'contrast'
     ? ensureLightBackground(normalize(gray!), width, height)
-    : strategy === 'wuwaflex-name'
-    ? wuwaflexNameThreshold(source.data, width, height)
+    : strategy === 'wide-card-name'
+    ? wideCardNameThreshold(source.data, width, height)
     : strategy === 'echo-name-color'
     ? echoNameThreshold(source.data, width, height) ?? globalThreshold(ensureLightBackground(normalize(grayscale(source.data)), width, height))
     : strategy === 'bright-substat' || strategy === 'bright-substat-block'

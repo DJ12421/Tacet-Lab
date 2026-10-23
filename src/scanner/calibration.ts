@@ -42,22 +42,28 @@ export function detectRightPanel(source: CanvasImageSource, width: number, heigh
 }
 
 export function profileKey(width: number, height: number, layout: ScanLayout, uiScale = 1, buildCardFormat?: BuildCardFormatId) {
-  return `${width}x${height}:${layout}:${uiScale.toFixed(2)}${layout === 'build-card' ? `:${buildCardFormat ?? 'discord-bot'}` : ''}`
+  return `${width}x${height}:${layout}:${uiScale.toFixed(2)}${layout === 'build-card' ? `:${buildCardFormat ?? 'landscape-card'}` : ''}`
 }
 
 function inferredBuildCardFormat(profile: Pick<CalibrationProfile, 'layout' | 'name' | 'buildCardFormat'> & Partial<Pick<CalibrationProfile, 'sourceWidth' | 'sourceHeight'>>): BuildCardFormatId | undefined {
   if (profile.layout !== 'build-card') return undefined
+  const storedFormat = buildCardFormats.find((format) => format.id === profile.buildCardFormat)?.id
   if (profile.sourceWidth === 3416 && profile.sourceHeight === 1580
-    && (profile.buildCardFormat === 'wuwaflex' || (!profile.buildCardFormat && profile.name.includes('WuWaFlex')))) return 'wuwaflex-1580'
-  if (!profile.buildCardFormat && profile.name.includes('(2724×1272)')) return 'wuwaflex-1272'
-  if (!profile.buildCardFormat && profile.name.includes('(2724×1377)')) return 'wuwaflex-1377'
-  return profile.buildCardFormat ?? buildCardFormats.find((format) => profile.name.endsWith(`${format.label} build card`))?.id ?? 'discord-bot'
+    && (!storedFormat || storedFormat === 'wide-card')) return 'wide-card-1580'
+  if (!storedFormat && profile.sourceWidth === 3416 && profile.sourceHeight === 1600) return 'wide-card'
+  if (!storedFormat && profile.sourceWidth === 2724 && profile.sourceHeight === 1272) return 'wide-card-1272'
+  if (!storedFormat && profile.sourceWidth === 2724 && profile.sourceHeight === 1377) return 'wide-card-1377'
+  if (!storedFormat && profile.sourceWidth === 1920 && profile.sourceHeight === 1160) return 'horizontal-card'
+  if (!storedFormat && profile.sourceWidth === 1984 && profile.sourceHeight === 1440) return 'compact-card'
+  if (!storedFormat && profile.name.includes('(2724×1272)')) return 'wide-card-1272'
+  if (!storedFormat && profile.name.includes('(2724×1377)')) return 'wide-card-1377'
+  return storedFormat ?? buildCardFormats.find((format) => profile.name.endsWith(`${format.label} build card`))?.id ?? 'landscape-card'
 }
 
 function normalizedProfileRegions(layout: ScanLayout, input: CalibrationProfile['regions'], buildCardFormat?: BuildCardFormatId, panelRect?: ScanRect) {
   const normalized = (layout === 'build-card' ? input.map((region) => ({ ...region, rect: { ...region.rect } })) : normalizeSubstatRegions(input))
     .filter((region) => layout !== 'build-card' || (!/^echo-\d+-main-stat$/.test(region.id)
-      && !(buildCardFormat?.startsWith('wuwaflex') && /^echo-\d+-art$/.test(region.id))))
+      && !(buildCardFormat?.startsWith('wide-card') && /^echo-\d+-art$/.test(region.id))))
   if (layout !== 'build-card') {
     const panel = layout === 'echo-management' ? DEFAULT_PANEL_RECTS['echo-management'] : DEFAULT_PANEL_RECTS['echo-detail']
     if (panelRect && (Object.keys(panel) as Array<keyof ScanRect>).some((key) => Math.abs(panelRect[key] - panel[key]) >= 1e-6)) return normalized
@@ -102,8 +108,8 @@ function normalizedProfileRegions(layout: ScanLayout, input: CalibrationProfile[
         ? { ...region, rect: { ...current.rect } } : region
     })
   }
-  const defaults = buildCardFormat && buildCardFormat !== 'discord-bot' ? buildCardFormatRegions(buildCardFormat) : regionsForLayout('build-card')
-  const updated = buildCardFormat === 'wuwaflex' ? normalized.map((region) => {
+  const defaults = buildCardFormat && buildCardFormat !== 'landscape-card' ? buildCardFormatRegions(buildCardFormat) : regionsForLayout('build-card')
+  const updated = buildCardFormat === 'wide-card' ? normalized.map((region) => {
     const fallback = defaults.find((entry) => entry.id === region.id)
     if (!fallback) return region
     const skill = region.id.match(/^skill-(\d)$/)
@@ -124,8 +130,8 @@ function normalizedProfileRegions(layout: ScanLayout, input: CalibrationProfile[
       ? { ...region, rect: { ...fallback.rect } }
       : region
   }) : normalized
-  const current = buildCardFormat === 'wuwaflex-1272' || buildCardFormat === 'wuwaflex-1377' ? updated.map((region) => {
-    const scale = buildCardFormat === 'wuwaflex-1377' ? 1272 / 1377 : 1
+  const current = buildCardFormat === 'wide-card-1272' || buildCardFormat === 'wide-card-1377' ? updated.map((region) => {
+    const scale = buildCardFormat === 'wide-card-1377' ? 1272 / 1377 : 1
     const skill = region.id.match(/^skill-([0-4])$/)
     if (skill) {
       const fallback = defaults.find((entry) => entry.id === region.id)
@@ -147,8 +153,8 @@ function normalizedProfileRegions(layout: ScanLayout, input: CalibrationProfile[
       ? { ...region, rect: { ...fallback.rect } }
       : region
   }) : updated
-  const oldDefaults = buildCardFormat === 'wuwaflex-1580' ? buildCardFormatRegions('wuwaflex') : []
-  const heightAdjusted = buildCardFormat === 'wuwaflex-1580' ? current.map((region) => {
+  const oldDefaults = buildCardFormat === 'wide-card-1580' ? buildCardFormatRegions('wide-card') : []
+  const heightAdjusted = buildCardFormat === 'wide-card-1580' ? current.map((region) => {
     const oldDefault = oldDefaults.find((entry) => entry.id === region.id)?.rect
     const fallback = defaults.find((entry) => entry.id === region.id)
     const tallStats = /^echo-\d+-stats$/.test(region.id) && oldDefault && fallback
@@ -213,7 +219,7 @@ function normalizeImportedProfile(input: unknown): CalibrationProfile {
   const value = input as Partial<CalibrationProfile>
   if (!value || typeof value !== 'object'
     || (value.layout !== 'echo-detail' && value.layout !== 'echo-management' && value.layout !== 'build-card')
-    || (value.buildCardFormat !== undefined && !buildCardFormats.some((format) => format.id === value.buildCardFormat))
+    || (value.buildCardFormat !== undefined && typeof value.buildCardFormat !== 'string')
     || typeof value.sourceWidth !== 'number' || !Number.isFinite(value.sourceWidth)
     || typeof value.sourceHeight !== 'number' || !Number.isFinite(value.sourceHeight)
     || typeof value.uiScale !== 'number' || !Number.isFinite(value.uiScale)
@@ -267,24 +273,24 @@ export function calibrationExportProfiles(current: CalibrationProfile) {
 
 export function findCompatibleProfile(width: number, height: number, layout: ScanLayout, uiScale?: number, buildCardFormat?: BuildCardFormatId) {
   return loadCalibrationProfiles().filter((profile) => profile.layout === layout
-    && (layout !== 'build-card' || inferredBuildCardFormat(profile) === (buildCardFormat ?? 'discord-bot'))
+    && (layout !== 'build-card' || inferredBuildCardFormat(profile) === (buildCardFormat ?? 'landscape-card'))
     && Math.abs(profile.sourceWidth - width) <= 2 && Math.abs(profile.sourceHeight - height) <= 2
     && (uiScale === undefined || Math.abs(profile.uiScale - uiScale) <= .02))
     .sort((left, right) => right.updatedAt - left.updatedAt)[0]
 }
 
 function profileName(width: number, height: number, layout: Exclude<ScanLayout, 'unknown'>, formatId?: BuildCardFormatId) {
-  const label = layout === 'echo-detail' ? 'Character Menu' : layout === 'echo-management' ? 'Backpack' : `${buildCardFormat(formatId ?? 'discord-bot').label} build card`
+  const label = layout === 'echo-detail' ? 'Character Menu' : layout === 'echo-management' ? 'Backpack' : `${buildCardFormat(formatId ?? 'landscape-card').label} build card`
   return `${width}x${height} - ${label}`
 }
 
 export function createCalibrationProfile(width: number, height: number, panelRect: ScanRect, layout: Exclude<ScanLayout, 'unknown'>, uiScale = 1, buildCardFormatId?: BuildCardFormatId): CalibrationProfile {
   const now = Date.now()
-  const format = layout === 'build-card' ? buildCardFormatId ?? 'discord-bot' : undefined
+  const format = layout === 'build-card' ? buildCardFormatId ?? 'landscape-card' : undefined
   return {
     id: profileKey(width, height, layout, uiScale, format), name: profileName(width, height, layout, format), buildCardFormat: format,
     layout, sourceWidth: width, sourceHeight: height, uiScale, panelRect: { ...panelRect },
-    regions: format && format !== 'discord-bot' ? buildCardFormatRegions(format) : regionsForLayout(layout), createdAt: now, updatedAt: now
+    regions: format && format !== 'landscape-card' ? buildCardFormatRegions(format) : regionsForLayout(layout), createdAt: now, updatedAt: now
   }
 }
 

@@ -8,7 +8,7 @@ import { generatedSonataIconSources } from '../game-data/sonatas.generated'
 import { skillTreeStatLine } from '../game-data/passive-stats'
 import { tunableRolls } from '../game-data/tunable-rolls'
 import type { CalculationDetail } from './CalculationDetails'
-import { NanokaSpinePortrait, type NanokaSpinePortraitHandle } from './NanokaSpinePortrait'
+import { AnimatedCharacterPortrait, type AnimatedCharacterPortraitHandle } from './AnimatedCharacterPortrait'
 import { Icon } from './components'
 import { EchoWaveform } from './EchoWaveform'
 import { SkillCircleWave } from './SkillCircleWave'
@@ -353,7 +353,7 @@ interface CharacterBuildCardProps {
   statDetail: (key: BuildCardStatKey, label: string) => CalculationDetail
   editable: boolean
   portraitRef: RefObject<HTMLImageElement | null>
-  livePortraitRef: RefObject<NanokaSpinePortraitHandle | null>
+  livePortraitRef: RefObject<AnimatedCharacterPortraitHandle | null>
   portraitFailed: boolean
   animatedPortraitReady: boolean
   pauseLivePortrait?: boolean
@@ -726,7 +726,7 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
           <img ref={portraitRef} className={`cbc-character-art ${portraitFailed && !customArtworkUrl ? 'is-fallback' : ''} ${settings.liveCharacterArt && animatedPortraitReady && !customArtworkUrl ? 'is-live-hidden' : ''}`} src={customArtworkUrl ?? (portraitFailed ? catalog.iconSourceUrl : (catalog.portraitSourceUrl || catalog.iconSourceUrl))} alt={catalog.name} onError={onPortraitError}/>
           {settings.liveCharacterArt && <div className="cbc-live-portrait-viewport" style={{ left: -liveArtRect.x, top: -liveArtRect.y }}>
             <img className="cbc-live-portrait-snapshot" alt="" aria-hidden="true"/>
-            {!customArtworkUrl && catalog.spineSkeletonSourceUrl && catalog.spineAtlasSourceUrl && <NanokaSpinePortrait ref={livePortraitRef} skeletonSourceUrl={catalog.spineSkeletonSourceUrl} atlasSourceUrl={catalog.spineAtlasSourceUrl} artRect={liveArtRect} renderScale={scale} paused={manualPortraitPaused || pauseLivePortrait || levelOpen || skillLevelOpen !== null} onReady={onLiveReady} onFallback={onLiveFallback}/>}
+            {!customArtworkUrl && catalog.spineSkeletonSourceUrl && catalog.spineAtlasSourceUrl && <AnimatedCharacterPortrait ref={livePortraitRef} skeletonSourceUrl={catalog.spineSkeletonSourceUrl} atlasSourceUrl={catalog.spineAtlasSourceUrl} artRect={liveArtRect} renderScale={scale} paused={manualPortraitPaused || pauseLivePortrait || levelOpen || skillLevelOpen !== null} onReady={onLiveReady} onFallback={onLiveFallback}/>}
           </div>}
         </div>
       </section>

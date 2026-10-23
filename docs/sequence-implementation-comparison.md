@@ -1,8 +1,8 @@
 # S1–S6 implementation comparison and correction log
 
-Local WutheringTools: `.codex-work/wutheringtools-3.7` at `061bfa80fb0ed3fac43028d75e0a0ea899dabc12` (2026-09-30). Tacet Lab: current checkout, reviewed 3.7 data.
+Local reference implementation: `.codex-work/combat-reference-3.7` at `061bfa80fb0ed3fac43028d75e0a0ea899dabc12` (2026-09-30). Tacet Lab: current checkout, reviewed 3.7 data.
 
-The matrix and per-sequence details below are the **initial audit snapshot**, before the corrections in the next section. They compare WutheringTools chain declarations with Tacet Lab generated effects, so a matching declaration does not establish identical runtime behavior. WutheringTools also has character-specific calculator code. Tacet Lab has separate activation, target-filter, action, and damage-formula paths. No tests, builds, or browser checks were run.
+The matrix and per-sequence details below are the **initial audit snapshot**, before the corrections in the next section. They compare reference implementation chain declarations with Tacet Lab generated effects, so a matching declaration does not establish identical runtime behavior. reference implementation also has character-specific calculator code. Tacet Lab has separate activation, target-filter, action, and damage-formula paths. No tests, builds, or browser checks were run.
 
 ## Corrections applied after the snapshot
 
@@ -49,15 +49,15 @@ At Aemeath S2, the Fusion Trail bonus replaces 10% per stack with 15%, and the S
 
 The later action-enable review added Hsin S3's final-stage Electro Flare hit, Brant S6's 30% Returned from Ashes blast, Qingxiao S1's Juque Perdition with its 4% per consumed seal increase, Roccia S6's Reality Recreation after Real Fantasy Stage 3 and its scoped DEF ignore, and Verina S6's Photosynthesis Mark coordinated hit and team heal. Qiuyuan's Sundering Strike is now classified as Echo Skill DMG and receives the S3 500% motion increase. His S3 replacement skill and Outro and S6 exit burst are selectable, sequence-gated Echo Skill actions. Brant S2's 440% Outro blast was removed from Returned from Ashes: its actual trigger is an incoming teammate's skill after his Outro. It is now a selectable sequence-gated Basic Attack DMG action with a one-second cooldown and a two-use rotation limit; its Outro window still needs linked team action state.
 
-Additional sequence corrections include Jiyan S5 and Xiangli Yao S5 on their Outro actions, Luuk Herssen S5 on his Intro and Outro, Camellya S6's Sweet Dream action scope and post-Perennial increase, Jingran S6's target Heavy amplification, Lucy S6's conditional Heavy and Hack bonuses, Yangyang: Xuanling S2's named attacks and Strung Notes hit, Denia S6's Erosion Field Fusion Burst, and Qingxiao S6's restricted damage amplification. Xuanling's local WutheringTools numeric modifier targets different attacks from its own sequence text; the reviewed implementation follows the text and records the conflict.
+Additional sequence corrections include Jiyan S5 and Xiangli Yao S5 on their Outro actions, Luuk Herssen S5 on his Intro and Outro, Camellya S6's Sweet Dream action scope and post-Perennial increase, Jingran S6's target Heavy amplification, Lucy S6's conditional Heavy and Hack bonuses, Yangyang: Xuanling S2's named attacks and Strung Notes hit, Denia S6's Erosion Field Fusion Burst, and Qingxiao S6's restricted damage amplification. Xuanling's local reference implementation numeric modifier targets different attacks from its own sequence text; the reviewed implementation follows the text and records the conflict.
 
-The following buff and support review also corrected Phoebe's Confession Silent Prayer to grant its timed Spectro Frazzle amplification and Spectro resistance reduction; Sigrika's Soliskin Vitality to scale with Vitality consumed; Jianxin's Formless Release and Reflection; Jiyan's two mutually exclusive Windqueller modes; Lingyang's Diligent Practice follow-up; and Jingran's base and S3 HP-derived ATK, Fusion, and Fortune in Disguise bonuses. Iuno's Waxing Ascent shield, Jingran's two inherent shields, Augusta's Ruler's Realm shield, Verina's Grace of Life shield, Mornye's Boundedness heal, Youhu's Antique Appraisal team heal, and Aemeath's, Cartethyia's, and Lucy's S5 defensive shields are selectable support actions. Ciaccona's Interlude Tune shield now triggers from the Liberation cast once, rather than also from a later tonic hit. These manual inputs and selected actions do not track elapsed time, target ownership, or resource consumption across a rotation. Cartethyia's S5 shield follows the local WutheringTools action table's 25% Max HP; its sequence description instead says 20%.
+The following buff and support review also corrected Phoebe's Confession Silent Prayer to grant its timed Spectro Frazzle amplification and Spectro resistance reduction; Sigrika's Soliskin Vitality to scale with Vitality consumed; Jianxin's Formless Release and Reflection; Jiyan's two mutually exclusive Windqueller modes; Lingyang's Diligent Practice follow-up; and Jingran's base and S3 HP-derived ATK, Fusion, and Fortune in Disguise bonuses. Iuno's Waxing Ascent shield, Jingran's two inherent shields, Augusta's Ruler's Realm shield, Verina's Grace of Life shield, Mornye's Boundedness heal, Youhu's Antique Appraisal team heal, and Aemeath's, Cartethyia's, and Lucy's S5 defensive shields are selectable support actions. Ciaccona's Interlude Tune shield now triggers from the Liberation cast once, rather than also from a later tonic hit. These manual inputs and selected actions do not track elapsed time, target ownership, or resource consumption across a rotation. Cartethyia's S5 shield follows the local reference implementation action table's 25% Max HP; its sequence description instead says 20%.
 
 ## Implementation differences still open
 
 The local audit covers all 64 character buff files and every S1–S6 chain. Each chain that enables an additional WT attack or support action was checked against the reviewed action, triggered effect, or an explicit gap below. Source labels alone were not treated as matching proof; several WT actions have copied or alternate labels.
 
-- **Action and event state:** WutheringTools declares attacks that are absent from the reviewed action list, including triggered or conditional hits. The name-based inventory reports 294 unmatched WT labels; this includes alternate labels and source-only triggered actions, so it is an investigation list, not 294 confirmed missing attacks. Some triggered effects still lack action IDs or rotation-wide trigger limits.
+- **Action and event state:** reference implementation declares attacks that are absent from the reviewed action list, including triggered or conditional hits. The name-based inventory reports 294 unmatched WT labels; this includes alternate labels and source-only triggered actions, so it is an investigation list, not 294 confirmed missing attacks. Some triggered effects still lack action IDs or rotation-wide trigger limits.
 - **Remaining defensive event state:** Aemeath S5, Cartethyia S5, and Lucy S5 shields are sequence-gated manual actions; the outgoing-damage action model does not detect the fatal blow or low-HP hit that grants them, nor enforce their cooldowns. Iuno's base Arc Beyond the Edge action remains an unsupported supplemental formula. Brant's Returned from Ashes supplement currently uses rank-one formulas; its level curve is not represented.
 - **Fixed and linked values:** Several remaining effects link to another action or consume a buff in a rotation, so manual inputs can diverge from real timing and talent levels. Conditional effects that read a member's Tune Break Boost, such as Luuk Herssen's conversion, still read the member input rather than an active teammate's added boost. The fixed critical values and explicit replacements listed above are implemented only for their specified actions.
 - **Aemeath Tune Rupture:** The Tune AMP formula, five or ten instances, removed Rupturous Trail scaling, S2 same-target average ramp, and S6 fixed critical values are implemented. The calculator assigns every instance to the selected target; random target allocation and exact timing of the S2 one-second ramp are not tracked. Disable the same-target toggle when hits split across targets or outside that window. The S2 Fusion Trail and Stardust replacements on Fusion Burst are also implemented.
@@ -142,17 +142,17 @@ The initial matrix below predates all of these corrections and must be read as a
 
 Totals across 64 characters / 384 sequence slots: Both 294; WT only 23; TL only 5; Neither 56; Unreviewed 6.
 
-The five “TL only” rows are declaration-level findings. WutheringTools handles Augusta S1, Buling S6, and Galbrena S1/S2 in `src/calculator/stats.ts` despite empty chain modifier arrays. Phrolova S5 has no declared WutheringTools modifier or direct calculator reference to its chain key in this checkout.
+The five “TL only” rows are declaration-level findings. reference implementation handles Augusta S1, Buling S6, and Galbrena S1/S2 in `src/calculator/stats.ts` despite empty chain modifier arrays. Phrolova S5 has no declared reference implementation modifier or direct calculator reference to its chain key in this checkout.
 
-Tacet Lab has 27 generated sequence effects with triggered actions or action-use adjustments; WutheringTools has 44 `EnableAttack` chain modifiers. Those mechanisms are represented differently and require action-level comparison before claiming numeric parity.
+Tacet Lab has 27 generated sequence effects with triggered actions or action-use adjustments; reference implementation has 44 `EnableAttack` chain modifiers. Those mechanisms are represented differently and require action-level comparison before claiming numeric parity.
 
 ## Per-sequence details
 
 ## Aalto (1403)
 
-WT source: [Aalto/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Aalto/resonanceChains.ts). TL source: [1403.review.json](../src/game-data/mechanics-reviews/3.7/1403.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Aalto/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Aalto/resonanceChains.ts). TL source: [1403.review.json](../src/game-data/mechanics-reviews/3.7/1403.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | No declared modifier | No generated sequence effect | Neither |
 | S2 | ATK 0.15 | toggle: add-percent-stat atk 0.15 | Both |
@@ -163,9 +163,9 @@ WT source: [Aalto/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/char
 
 ## Aemeath (1210)
 
-WT source: [Aemeath/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Aemeath/resonanceChains.ts). TL source: [1210.review.json](../src/game-data/mechanics-reviews/3.7/1210.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Aemeath/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Aemeath/resonanceChains.ts). TL source: [1210.review.json](../src/game-data/mechanics-reviews/3.7/1210.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | CritDMG 3 → 4 talent(s) | toggle: add-flat-stat critDamage 3 → 10 action(s) | Both |
 | S2 | talentModifierMultiply 1 → 2 talent(s) / Tune Rupture: specialMultiplier 0.2 → 1 talent(s) (up to 5 stacks) / Fusion Burst: No declared modifier | always: increase-motion-value 1 → 1 action(s) / always: increase-motion-value 1 → 1 action(s) | Both |
@@ -176,9 +176,9 @@ WT source: [Aemeath/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/ch
 
 ## Augusta (1306)
 
-WT source: [Augusta/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Augusta/resonanceChains.ts). TL source: [1306.review.json](../src/game-data/mechanics-reviews/3.7/1306.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Augusta/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Augusta/resonanceChains.ts). TL source: [1306.review.json](../src/game-data/mechanics-reviews/3.7/1306.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | No declared modifier | stacks ≤1: add-flat-stat critDamage 0.15 | TL only |
 | S2 | CritOverflow 0.02 | stacks ≤1: add-flat-stat critRate 0.2 / toggle: add-flat-stat critDamage 0.02 | Both |
@@ -189,9 +189,9 @@ WT source: [Augusta/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/ch
 
 ## Baizhi (1103)
 
-WT source: [Baizhi/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Baizhi/resonanceChains.ts). TL source: [1103.review.json](../src/game-data/mechanics-reviews/3.7/1103.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Baizhi/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Baizhi/resonanceChains.ts). TL source: [1103.review.json](../src/game-data/mechanics-reviews/3.7/1103.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | No declared modifier | No generated sequence effect | Neither |
 | S2 | Glacio 0.15; HealingBonus 0.15 | toggle: add-damage-bonus 0.15; add-flat-stat healingBonus 0.15 | Both |
@@ -202,9 +202,9 @@ WT source: [Baizhi/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/cha
 
 ## Brant (1206)
 
-WT source: [Brant/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Brant/resonanceChains.ts). TL source: [1206.review.json](../src/game-data/mechanics-reviews/3.7/1206.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Brant/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Brant/resonanceChains.ts). TL source: [1206.review.json](../src/game-data/mechanics-reviews/3.7/1206.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | DMGBonus 0.2 (up to 3 stacks) | stacks ≤3: add-damage-bonus 0.2 → 4 action(s) | Both |
 | S2 | CritRate 0.3 → 12 talent(s); EnableAttack SequenceNode2ForSmilesandCheers | toggle: add-flat-stat critRate 0.3 → 11 action(s); 1 triggered action(s) / toggle: 1 triggered action(s) | Both |
@@ -215,9 +215,9 @@ WT source: [Brant/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/char
 
 ## Buling (1307)
 
-WT source: [Buling/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Buling/resonanceChains.ts). TL source: [1307.review.json](../src/game-data/mechanics-reviews/3.7/1307.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Buling/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Buling/resonanceChains.ts). TL source: [1307.review.json](../src/game-data/mechanics-reviews/3.7/1307.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | CritRate 0.2 → 1 talent(s) | always: add-flat-stat critRate 0.2 → 1 action(s) | Both |
 | S2 | No declared modifier | No generated sequence effect | Neither |
@@ -228,9 +228,9 @@ WT source: [Buling/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/cha
 
 ## Calcharo (1301)
 
-WT source: [Calcharo/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Calcharo/resonanceChains.ts). TL source: [1301.review.json](../src/game-data/mechanics-reviews/3.7/1301.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Calcharo/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Calcharo/resonanceChains.ts). TL source: [1301.review.json](../src/game-data/mechanics-reviews/3.7/1301.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | No declared modifier | No generated sequence effect | Neither |
 | S2 | ResonanceSkillDMGBonus 0.3 | toggle: add-damage-bonus 0.3 | Both |
@@ -241,9 +241,9 @@ WT source: [Calcharo/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/c
 
 ## Camellya (1603)
 
-WT source: [Camellya/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Camellya/resonanceChains.ts). TL source: [1603.review.json](../src/game-data/mechanics-reviews/3.7/1603.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Camellya/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Camellya/resonanceChains.ts). TL source: [1603.review.json](../src/game-data/mechanics-reviews/3.7/1603.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | CritDMG 0.28 | toggle: add-flat-stat critDamage 0.28 | Both |
 | S2 | talentModifierMultiply 1.2 → 2 talent(s) | always: increase-motion-value 1.2 → 1 action(s) | Both |
@@ -254,9 +254,9 @@ WT source: [Camellya/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/c
 
 ## Cantarella (1607)
 
-WT source: [Cantarella/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Cantarella/resonanceChains.ts). TL source: [1607.review.json](../src/game-data/mechanics-reviews/3.7/1607.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Cantarella/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Cantarella/resonanceChains.ts). TL source: [1607.review.json](../src/game-data/mechanics-reviews/3.7/1607.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | talentModifierMultiply 0.5 → 3 talent(s) | always: increase-motion-value 0.5 → 4 action(s) | Both |
 | S2 | talentModifierMultiply 2.45 → 1 talent(s) | toggle: increase-motion-value 2.45 → 1 action(s) | Both |
@@ -267,9 +267,9 @@ WT source: [Cantarella/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src
 
 ## Carlotta (1107)
 
-WT source: [Carlotta/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Carlotta/resonanceChains.ts). TL source: [1107.review.json](../src/game-data/mechanics-reviews/3.7/1107.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Carlotta/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Carlotta/resonanceChains.ts). TL source: [1107.review.json](../src/game-data/mechanics-reviews/3.7/1107.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | CritRate 0.125 | toggle: add-flat-stat critRate 0.125 | Both |
 | S2 | talentReplace [object Object] → 1 talent(s) | always: increase-motion-value 1.26 → 1 action(s) | Both |
@@ -280,9 +280,9 @@ WT source: [Carlotta/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/c
 
 ## Cartethyia (1409)
 
-WT source: [Cartethyia/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Cartethyia/resonanceChains.ts). TL source: [1409.review.json](../src/game-data/mechanics-reviews/3.7/1409.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Cartethyia/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Cartethyia/resonanceChains.ts). TL source: [1409.review.json](../src/game-data/mechanics-reviews/3.7/1409.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | CritDMG 0.25 → 16 talent(s) (up to 4 stacks) | stacks ≤4: add-flat-stat critDamage 0.25 | Both |
 | S2 | talentModifierMultiply 0.5 → 7 talent(s); talentModifierMultiply 2 → 4 talent(s) | always: increase-motion-value 0.5 → 10 action(s) | Both |
@@ -293,9 +293,9 @@ WT source: [Cartethyia/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src
 
 ## Changli (1205)
 
-WT source: [Changli/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Changli/resonanceChains.ts). TL source: [1205.review.json](../src/game-data/mechanics-reviews/3.7/1205.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Changli/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Changli/resonanceChains.ts). TL source: [1205.review.json](../src/game-data/mechanics-reviews/3.7/1205.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | targeted multiplier 0.1 → 4 talent(s) | always: add-damage-bonus 0.1 → 2 action(s) | Both |
 | S2 | CritRate 0.25 | toggle: add-flat-stat critRate 0.25 | Both |
@@ -306,9 +306,9 @@ WT source: [Changli/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/ch
 
 ## Chisa (1508)
 
-WT source: [Chisa/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Chisa/resonanceChains.ts). TL source: [1508.review.json](../src/game-data/mechanics-reviews/3.7/1508.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Chisa/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Chisa/resonanceChains.ts). TL source: [1508.review.json](../src/game-data/mechanics-reviews/3.7/1508.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | ATK 0.3; EnableAttack SequenceNode1WanderingThroughtheDesolateCorridors | toggle: add-percent-stat atk 0.3 | Both |
 | S2 | ResistShred:Havoc 0.1; AllElementAttributeBonus 0.5 | always: add-damage-bonus 0.5 (team) | Both |
@@ -319,9 +319,9 @@ WT source: [Chisa/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/char
 
 ## Chixia (1202)
 
-WT source: [Chixia/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Chixia/resonanceChains.ts). TL source: [1202.review.json](../src/game-data/mechanics-reviews/3.7/1202.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Chixia/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Chixia/resonanceChains.ts). TL source: [1202.review.json](../src/game-data/mechanics-reviews/3.7/1202.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | CritRate 1 → 1 talent(s) | always: override-crit → 1 action(s) | Both |
 | S2 | No declared modifier | No generated sequence effect | Neither |
@@ -332,9 +332,9 @@ WT source: [Chixia/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/cha
 
 ## Ciaccona (1407)
 
-WT source: [Ciaccona/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Ciaccona/resonanceChains.ts). TL source: [1407.review.json](../src/game-data/mechanics-reviews/3.7/1407.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Ciaccona/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Ciaccona/resonanceChains.ts). TL source: [1407.review.json](../src/game-data/mechanics-reviews/3.7/1407.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | ATK 0.35 | toggle: add-percent-stat atk 0.35 | Both |
 | S2 | Aero 0.4 | toggle: add-damage-bonus 0.4 (team) | Both |
@@ -345,9 +345,9 @@ WT source: [Ciaccona/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/c
 
 ## Danjin (1602)
 
-WT source: [Danjin/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Danjin/resonanceChains.ts). TL source: [1602.review.json](../src/game-data/mechanics-reviews/3.7/1602.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Danjin/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Danjin/resonanceChains.ts). TL source: [1602.review.json](../src/game-data/mechanics-reviews/3.7/1602.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | ATK 0.05 (up to 6 stacks) | stacks ≤6: add-percent-stat atk 0.05 | Both |
 | S2 | DMGBonus 0.2 | toggle: add-damage-bonus 0.2 | Both |
@@ -358,9 +358,9 @@ WT source: [Danjin/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/cha
 
 ## Denia (1211)
 
-WT source: [Denia/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Denia/resonanceChains.ts). TL source: [1211.review.json](../src/game-data/mechanics-reviews/3.7/1211.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Denia/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Denia/resonanceChains.ts). TL source: [1211.review.json](../src/game-data/mechanics-reviews/3.7/1211.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | CritDMG 0.3 | always: add-flat-stat critDamage 0.3 | Both |
 | S2 | talentModifierSpecialMultiply 0.4 → 2 talent(s) / Fusion Burst: Fusion 0.5 / Fusion Burst: ResistShred:Fusion 0.01 (up to 10 stacks) / Tune Strain: tuneBreakBoost 0.2 | toggle: add-damage-bonus 0.5 / toggle: add-damage-bonus 0.2 / always: increase-motion-value 0.4 → 15 action(s) | Both |
@@ -371,9 +371,9 @@ WT source: [Denia/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/char
 
 ## Encore (1203)
 
-WT source: [Encore/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Encore/resonanceChains.ts). TL source: [1203.review.json](../src/game-data/mechanics-reviews/3.7/1203.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Encore/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Encore/resonanceChains.ts). TL source: [1203.review.json](../src/game-data/mechanics-reviews/3.7/1203.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | Fusion 0.03 (up to 4 stacks) | stacks ≤4: add-damage-bonus 0.03 | Both |
 | S2 | No declared modifier | No generated sequence effect | Neither |
@@ -384,9 +384,9 @@ WT source: [Encore/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/cha
 
 ## Galbrena (1208)
 
-WT source: [Galbrena/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Galbrena/resonanceChains.ts). TL source: [1208.review.json](../src/game-data/mechanics-reviews/3.7/1208.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Galbrena/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Galbrena/resonanceChains.ts). TL source: [1208.review.json](../src/game-data/mechanics-reviews/3.7/1208.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | No declared modifier | toggle: add-flat-stat critDamage 0.02 → 15 action(s) | TL only |
 | S2 | No declared modifier | always: add-percent-stat atk 3.5 | TL only |
@@ -397,9 +397,9 @@ WT source: [Galbrena/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/c
 
 ## Hiyuki (1108)
 
-WT source: [Hiyuki/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Hiyuki/resonanceChains.ts). TL source: [1108.review.json](../src/game-data/mechanics-reviews/3.7/1108.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Hiyuki/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Hiyuki/resonanceChains.ts). TL source: [1108.review.json](../src/game-data/mechanics-reviews/3.7/1108.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | talentModifierMultiply 1.2 → 11 talent(s) | toggle: increase-motion-value 1.2 → 10 action(s) | Both |
 | S2 | talentModifierMultiply 1.25 → 1 talent(s) | always: increase-motion-value 1.25 → 1 action(s) | Both |
@@ -410,9 +410,9 @@ WT source: [Hiyuki/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/cha
 
 ## Hsin (1311)
 
-WT source: [Hsin/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Hsin/resonanceChains.ts). TL review: pending; no approved `1311.review.json` exists. See [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Hsin/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Hsin/resonanceChains.ts). TL review: pending; no approved `1311.review.json` exists. See [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | No declared modifier / Unison: talentModifierMultiply 0.15 → 2 talent(s) | No generated sequence effect | Unreviewed |
 | S2 | talentModifierMultiply 0.6 → 4 talent(s) | No generated sequence effect | Unreviewed |
@@ -423,9 +423,9 @@ WT source: [Hsin/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/chara
 
 ## Iuno (1410)
 
-WT source: [Iuno/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Iuno/resonanceChains.ts). TL source: [1410.review.json](../src/game-data/mechanics-reviews/3.7/1410.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Iuno/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Iuno/resonanceChains.ts). TL source: [1410.review.json](../src/game-data/mechanics-reviews/3.7/1410.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | ATK 0.4 | toggle: add-percent-stat atk 0.4 | Both |
 | S2 | DMGDeepen 0.4 | stacks ≤10: amplify-damage 0.4 (team) | Both |
@@ -436,9 +436,9 @@ WT source: [Iuno/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/chara
 
 ## Jianxin (1405)
 
-WT source: [Jianxin/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Jianxin/resonanceChains.ts). TL source: [1405.review.json](../src/game-data/mechanics-reviews/3.7/1405.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Jianxin/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Jianxin/resonanceChains.ts). TL source: [1405.review.json](../src/game-data/mechanics-reviews/3.7/1405.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | No declared modifier | No generated sequence effect | Neither |
 | S2 | No declared modifier | No generated sequence effect | Neither |
@@ -449,9 +449,9 @@ WT source: [Jianxin/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/ch
 
 ## Jingran (1212)
 
-WT source: [Jingran/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Jingran/resonanceChains.ts). TL source: [1212.review.json](../src/game-data/mechanics-reviews/3.7/1212.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Jingran/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Jingran/resonanceChains.ts). TL source: [1212.review.json](../src/game-data/mechanics-reviews/3.7/1212.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | talentModifierMultiply 0.8 → 6 talent(s) | toggle: increase-motion-value 0.8 → 4 action(s) | Both |
 | S2 | talentModifierMultiply 0.46 → 2 talent(s) / DMGDeepen 1.8 → 2 talent(s) | toggle: increase-motion-value 0.46 → 2 action(s) | Both |
@@ -462,9 +462,9 @@ WT source: [Jingran/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/ch
 
 ## Jinhsi (1304)
 
-WT source: [Jinhsi/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Jinhsi/resonanceChains.ts). TL source: [1304.review.json](../src/game-data/mechanics-reviews/3.7/1304.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Jinhsi/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Jinhsi/resonanceChains.ts). TL source: [1304.review.json](../src/game-data/mechanics-reviews/3.7/1304.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | targeted multiplier 0.2 → 2 talent(s) (up to 4 stacks) | No generated sequence effect | WT only |
 | S2 | No declared modifier | No generated sequence effect | Neither |
@@ -475,9 +475,9 @@ WT source: [Jinhsi/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/cha
 
 ## Jiyan (1404)
 
-WT source: [Jiyan/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Jiyan/resonanceChains.ts). TL source: [1404.review.json](../src/game-data/mechanics-reviews/3.7/1404.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Jiyan/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Jiyan/resonanceChains.ts). TL source: [1404.review.json](../src/game-data/mechanics-reviews/3.7/1404.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | No declared modifier | No generated sequence effect | Neither |
 | S2 | ATK 0.28 | toggle: add-percent-stat atk 0.28 | Both |
@@ -488,9 +488,9 @@ WT source: [Jiyan/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/char
 
 ## Lingyang (1104)
 
-WT source: [Lingyang/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Lingyang/resonanceChains.ts). TL source: [1104.review.json](../src/game-data/mechanics-reviews/3.7/1104.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Lingyang/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Lingyang/resonanceChains.ts). TL source: [1104.review.json](../src/game-data/mechanics-reviews/3.7/1104.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | No chain entry | No generated sequence effect | Neither |
 | S2 | No chain entry | No generated sequence effect | Neither |
@@ -501,9 +501,9 @@ WT source: [Lingyang/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/c
 
 ## Lucilla (1109)
 
-WT source: [Lucilla/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Lucilla/resonanceChains.ts). TL source: [1109.review.json](../src/game-data/mechanics-reviews/3.7/1109.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Lucilla/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Lucilla/resonanceChains.ts). TL source: [1109.review.json](../src/game-data/mechanics-reviews/3.7/1109.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | CritRate 0.2 | toggle: add-flat-stat critRate 0.2 → 1 action(s) | Both |
 | S2 | Glacio Chafe: DMGDeepen:GlacioChafe 0.8 / Echo: EchoDMGBonus 0.4 | toggle: amplify-damage 0.8 / toggle: add-damage-bonus 0.4 (team) | Both |
@@ -514,9 +514,9 @@ WT source: [Lucilla/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/ch
 
 ## Lucy (1511)
 
-WT source: [Lucy/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Lucy/resonanceChains.ts). TL source: [1511.review.json](../src/game-data/mechanics-reviews/3.7/1511.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Lucy/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Lucy/resonanceChains.ts). TL source: [1511.review.json](../src/game-data/mechanics-reviews/3.7/1511.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | ATK 0.2 | toggle: add-percent-stat atk 0.2 | Both |
 | S2 | EnableAttack SequenceNode2TheBlackwallthePasttheEscape | toggle: 1 triggered action(s) / toggle: increase-motion-value 2.7 → 1 action(s) | Both |
@@ -527,9 +527,9 @@ WT source: [Lucy/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/chara
 
 ## Lumi (1504)
 
-WT source: [Lumi/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Lumi/resonanceChains.ts). TL source: [1504.review.json](../src/game-data/mechanics-reviews/3.7/1504.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Lumi/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Lumi/resonanceChains.ts). TL source: [1504.review.json](../src/game-data/mechanics-reviews/3.7/1504.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | No declared modifier | No generated sequence effect | Neither |
 | S2 | DEFIgnore 0.2 → 2 talent(s) | always: ignore-defense 0.2 → 2 action(s) | Both |
@@ -540,9 +540,9 @@ WT source: [Lumi/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/chara
 
 ## Lupa (1207)
 
-WT source: [Lupa/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Lupa/resonanceChains.ts). TL source: [1207.review.json](../src/game-data/mechanics-reviews/3.7/1207.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Lupa/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Lupa/resonanceChains.ts). TL source: [1207.review.json](../src/game-data/mechanics-reviews/3.7/1207.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | CritRate 0.2 | toggle: add-flat-stat critRate 0.2 | Both |
 | S2 | Fusion 0.2 (up to 2 stacks) | stacks ≤2: add-damage-bonus 0.2 (team) | Both |
@@ -553,9 +553,9 @@ WT source: [Lupa/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/chara
 
 ## Luuk Herssen (1510)
 
-WT source: [LuukHerssen/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/LuukHerssen/resonanceChains.ts). TL source: [1510.review.json](../src/game-data/mechanics-reviews/3.7/1510.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [LuukHerssen/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/LuukHerssen/resonanceChains.ts). TL source: [1510.review.json](../src/game-data/mechanics-reviews/3.7/1510.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | targeted multiplier 1.5 → 8 talent(s) | always: add-damage-bonus 1.5 → 2 action(s) | Both |
 | S2 | talentModifierMultiply 0.6 → 1 talent(s) | toggle: amplify-damage 0.1 / always: amplify-damage 0.6 | Both |
@@ -566,9 +566,9 @@ WT source: [LuukHerssen/resonanceChains.ts](../.codex-work/wutheringtools-3.7/sr
 
 ## Lynae (1509)
 
-WT source: [Lynae/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Lynae/resonanceChains.ts). TL source: [1509.review.json](../src/game-data/mechanics-reviews/3.7/1509.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Lynae/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Lynae/resonanceChains.ts). TL source: [1509.review.json](../src/game-data/mechanics-reviews/3.7/1509.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | talentModifierMultiply 1.2 → 3 talent(s) | always: increase-motion-value 1.2 → 8 action(s) | Both |
 | S2 | DMGDeepen 0.25 | always: amplify-damage 0.25 / toggle: amplify-damage 0.25 (next) | Both |
@@ -579,9 +579,9 @@ WT source: [Lynae/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/char
 
 ## Mornye (1209)
 
-WT source: [Mornye/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Mornye/resonanceChains.ts). TL source: [1209.review.json](../src/game-data/mechanics-reviews/3.7/1209.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Mornye/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Mornye/resonanceChains.ts). TL source: [1209.review.json](../src/game-data/mechanics-reviews/3.7/1209.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | No declared modifier | No generated sequence effect | Neither |
 | S2 | CritDMG:AdditionalBase 0.002 | always: add-flat-stat critDamage 0.002 (team) | Both |
@@ -592,9 +592,9 @@ WT source: [Mornye/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/cha
 
 ## Mortefi (1204)
 
-WT source: [Mortefi/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Mortefi/resonanceChains.ts). TL source: [1204.review.json](../src/game-data/mechanics-reviews/3.7/1204.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Mortefi/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Mortefi/resonanceChains.ts). TL source: [1204.review.json](../src/game-data/mechanics-reviews/3.7/1204.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | No declared modifier | No generated sequence effect | Neither |
 | S2 | No declared modifier | No generated sequence effect | Neither |
@@ -605,9 +605,9 @@ WT source: [Mortefi/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/ch
 
 ## Phoebe (1506)
 
-WT source: [Phoebe/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Phoebe/resonanceChains.ts). TL source: [1506.review.json](../src/game-data/mechanics-reviews/3.7/1506.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Phoebe/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Phoebe/resonanceChains.ts). TL source: [1506.review.json](../src/game-data/mechanics-reviews/3.7/1506.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | Absolution: talentModifierMultiplySetValue 4.8 → 1 talent(s) / Confession: talentModifierMultiply 0.9 → 1 talent(s) | toggle: increase-motion-value 0.88235 → 1 action(s) / toggle: increase-motion-value 0.9 → 1 action(s) | Both |
 | S2 | Absolution: DMGDeepen:Outro 1.2 / Confession: DMGDeepen:SpectroFrazzle 1.2 | toggle: amplify-damage 1.2 / toggle: amplify-damage 1.2 | Both |
@@ -618,9 +618,9 @@ WT source: [Phoebe/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/cha
 
 ## Phrolova (1608)
 
-WT source: [Phrolova/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Phrolova/resonanceChains.ts). TL source: [1608.review.json](../src/game-data/mechanics-reviews/3.7/1608.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Phrolova/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Phrolova/resonanceChains.ts). TL source: [1608.review.json](../src/game-data/mechanics-reviews/3.7/1608.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | talentModifierMultiply 0.8 → 2 talent(s) (up to 4 stacks) | always: increase-motion-value 0.8 → 1 action(s) / always: increase-motion-value 0.8 → 1 action(s) | Both |
 | S2 | talentModifierMultiply 0.75 → 1 talent(s) | always: increase-motion-value 0.75 → 1 action(s) / toggle: increase-motion-value 0.75 → 1 action(s) | Both |
@@ -631,9 +631,9 @@ WT source: [Phrolova/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/c
 
 ## Qingxiao (1413)
 
-WT source: [Qingxiao/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Qingxiao/resonanceChains.ts). TL source: [1413.review.json](../src/game-data/mechanics-reviews/3.7/1413.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Qingxiao/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Qingxiao/resonanceChains.ts). TL source: [1413.review.json](../src/game-data/mechanics-reviews/3.7/1413.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | CritRate 0.16; EnableAttack SequenceNode1LikeCloudsThatMeetAndDriftApart / specialMultiplier 0.04 → 1 talent(s) (up to 25 stacks) | always: add-flat-stat critRate 0.16 | Both |
 | S2 | talentModifierMultiply 0.4 → 1 talent(s) | always: increase-motion-value 0.4 → 9 action(s) | Both |
@@ -644,9 +644,9 @@ WT source: [Qingxiao/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/c
 
 ## Qiuyuan (1411)
 
-WT source: [Qiuyuan/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Qiuyuan/resonanceChains.ts). TL source: [1411.review.json](../src/game-data/mechanics-reviews/3.7/1411.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Qiuyuan/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Qiuyuan/resonanceChains.ts). TL source: [1411.review.json](../src/game-data/mechanics-reviews/3.7/1411.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | CritRate 0.2 | always: add-flat-stat critRate 0.2 | Both |
 | S2 | DMGDeepen:Echo 0.3 | always: amplify-damage 0.3 (team) | Both |
@@ -657,9 +657,9 @@ WT source: [Qiuyuan/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/ch
 
 ## Rebecca (1308)
 
-WT source: [Rebecca/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Rebecca/resonanceChains.ts). TL source: [1308.review.json](../src/game-data/mechanics-reviews/3.7/1308.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Rebecca/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Rebecca/resonanceChains.ts). TL source: [1308.review.json](../src/game-data/mechanics-reviews/3.7/1308.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | talentModifierMultiply 0.5 → 13 talent(s) | always: add-damage-bonus 0.5 | Both |
 | S2 | Fusion 0.2; Electro 0.2; Havoc 0.2; Spectro 0.2; Aero 0.2; Glacio 0.2 / DMGDeepen 0.15 | toggle: add-damage-bonus 0.2 (team) / toggle: amplify-damage 0.15 (team) | Both |
@@ -670,9 +670,9 @@ WT source: [Rebecca/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/ch
 
 ## Roccia (1606)
 
-WT source: [Roccia/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Roccia/resonanceChains.ts). TL source: [1606.review.json](../src/game-data/mechanics-reviews/3.7/1606.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Roccia/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Roccia/resonanceChains.ts). TL source: [1606.review.json](../src/game-data/mechanics-reviews/3.7/1606.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | No declared modifier | No generated sequence effect | Neither |
 | S2 | Havoc 0.1 (up to 3 stacks) / Havoc 0.1 | stacks ≤3: add-damage-bonus 0.1 (team) / stacks ≤1: add-damage-bonus 0.1 (team) | Both |
@@ -683,9 +683,9 @@ WT source: [Roccia/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/cha
 
 ## Rover: Aero (Male) (1406)
 
-WT source: [RoverAeroFemale/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/RoverAeroFemale/resonanceChains.ts). TL source: [1406.review.json](../src/game-data/mechanics-reviews/3.7/1406.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [RoverAeroFemale/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/RoverAeroFemale/resonanceChains.ts). TL source: [1406.review.json](../src/game-data/mechanics-reviews/3.7/1406.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | No declared modifier | No generated sequence effect | Neither |
 | S2 | EnableAttack SequenceNode2GlimmersFadeintotheDarkHeal1 | toggle: 1 triggered action(s) | Both |
@@ -696,9 +696,9 @@ WT source: [RoverAeroFemale/resonanceChains.ts](../.codex-work/wutheringtools-3.
 
 ## Rover: Aero (Female) (1408)
 
-WT source: [RoverAeroFemale/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/RoverAeroFemale/resonanceChains.ts). TL source: [1408.review.json](../src/game-data/mechanics-reviews/3.7/1408.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [RoverAeroFemale/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/RoverAeroFemale/resonanceChains.ts). TL source: [1408.review.json](../src/game-data/mechanics-reviews/3.7/1408.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | No declared modifier | No generated sequence effect | Neither |
 | S2 | EnableAttack SequenceNode2GlimmersFadeintotheDarkHeal1 | toggle: 1 triggered action(s) | Both |
@@ -709,9 +709,9 @@ WT source: [RoverAeroFemale/resonanceChains.ts](../.codex-work/wutheringtools-3.
 
 ## Rover: Electro (Male) (1309)
 
-WT source: [Roverelectrofemale/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Roverelectrofemale/resonanceChains.ts). TL source: [1309.review.json](../src/game-data/mechanics-reviews/3.7/1309.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Roverelectrofemale/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Roverelectrofemale/resonanceChains.ts). TL source: [1309.review.json](../src/game-data/mechanics-reviews/3.7/1309.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | No declared modifier | No generated sequence effect | Neither |
 | S2 | No declared modifier | No generated sequence effect | Neither |
@@ -722,9 +722,9 @@ WT source: [Roverelectrofemale/resonanceChains.ts](../.codex-work/wutheringtools
 
 ## Rover: Electro (Female) (1310)
 
-WT source: [Roverelectrofemale/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Roverelectrofemale/resonanceChains.ts). TL source: [1310.review.json](../src/game-data/mechanics-reviews/3.7/1310.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Roverelectrofemale/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Roverelectrofemale/resonanceChains.ts). TL source: [1310.review.json](../src/game-data/mechanics-reviews/3.7/1310.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | No declared modifier | No generated sequence effect | Neither |
 | S2 | No declared modifier | No generated sequence effect | Neither |
@@ -735,9 +735,9 @@ WT source: [Roverelectrofemale/resonanceChains.ts](../.codex-work/wutheringtools
 
 ## Rover: Havoc (Female) (1604)
 
-WT source: [RoverHavocFemale/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/RoverHavocFemale/resonanceChains.ts). TL source: [1604.review.json](../src/game-data/mechanics-reviews/3.7/1604.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [RoverHavocFemale/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/RoverHavocFemale/resonanceChains.ts). TL source: [1604.review.json](../src/game-data/mechanics-reviews/3.7/1604.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | ResonanceSkillDMGBonus 0.3 | always: add-damage-bonus 0.3 | Both |
 | S2 | No chain entry | No generated sequence effect | Neither |
@@ -748,9 +748,9 @@ WT source: [RoverHavocFemale/resonanceChains.ts](../.codex-work/wutheringtools-3
 
 ## Rover: Havoc (Male) (1605)
 
-WT source: [RoverHavocFemale/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/RoverHavocFemale/resonanceChains.ts). TL source: [1605.review.json](../src/game-data/mechanics-reviews/3.7/1605.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [RoverHavocFemale/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/RoverHavocFemale/resonanceChains.ts). TL source: [1605.review.json](../src/game-data/mechanics-reviews/3.7/1605.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | ResonanceSkillDMGBonus 0.3 | always: add-damage-bonus 0.3 | Both |
 | S2 | No chain entry | No generated sequence effect | Neither |
@@ -761,9 +761,9 @@ WT source: [RoverHavocFemale/resonanceChains.ts](../.codex-work/wutheringtools-3
 
 ## Rover: Spectro (Male) (1501)
 
-WT source: [RoverSpectroFemale/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/RoverSpectroFemale/resonanceChains.ts). TL source: [1501.review.json](../src/game-data/mechanics-reviews/3.7/1501.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [RoverSpectroFemale/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/RoverSpectroFemale/resonanceChains.ts). TL source: [1501.review.json](../src/game-data/mechanics-reviews/3.7/1501.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | CritRate 0.15 | toggle: add-flat-stat critRate 0.15 → 2 action(s) | Both |
 | S2 | Spectro 0.2 | always: add-damage-bonus 0.2 | Both |
@@ -774,9 +774,9 @@ WT source: [RoverSpectroFemale/resonanceChains.ts](../.codex-work/wutheringtools
 
 ## Rover: Spectro (Female) (1502)
 
-WT source: [RoverSpectroFemale/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/RoverSpectroFemale/resonanceChains.ts). TL source: [1502.review.json](../src/game-data/mechanics-reviews/3.7/1502.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [RoverSpectroFemale/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/RoverSpectroFemale/resonanceChains.ts). TL source: [1502.review.json](../src/game-data/mechanics-reviews/3.7/1502.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | CritRate 0.15 | toggle: add-flat-stat critRate 0.15 → 2 action(s) | Both |
 | S2 | Spectro 0.2 | always: add-damage-bonus 0.2 | Both |
@@ -787,9 +787,9 @@ WT source: [RoverSpectroFemale/resonanceChains.ts](../.codex-work/wutheringtools
 
 ## Sanhua (1102)
 
-WT source: [Sanhua/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Sanhua/resonanceChains.ts). TL source: [1102.review.json](../src/game-data/mechanics-reviews/3.7/1102.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Sanhua/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Sanhua/resonanceChains.ts). TL source: [1102.review.json](../src/game-data/mechanics-reviews/3.7/1102.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | CritRate 0.15 | toggle: add-flat-stat critRate 0.15 | Both |
 | S2 | No declared modifier | No generated sequence effect | Neither |
@@ -800,9 +800,9 @@ WT source: [Sanhua/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/cha
 
 ## Shorekeeper (1505)
 
-WT source: [Shorekeeper/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Shorekeeper/resonanceChains.ts). TL source: [1505.review.json](../src/game-data/mechanics-reviews/3.7/1505.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Shorekeeper/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Shorekeeper/resonanceChains.ts). TL source: [1505.review.json](../src/game-data/mechanics-reviews/3.7/1505.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | No declared modifier | No generated sequence effect | Neither |
 | S2 | ATK 0.4 | always: add-percent-stat atk 0.4 (team) | Both |
@@ -813,9 +813,9 @@ WT source: [Shorekeeper/resonanceChains.ts](../.codex-work/wutheringtools-3.7/sr
 
 ## Sigrika (1412)
 
-WT source: [Sigrika/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Sigrika/resonanceChains.ts). TL source: [1412.review.json](../src/game-data/mechanics-reviews/3.7/1412.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Sigrika/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Sigrika/resonanceChains.ts). TL source: [1412.review.json](../src/game-data/mechanics-reviews/3.7/1412.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | talentModifierMultiply 0.7 → 4 talent(s) | toggle: increase-motion-value 0.7 → 4 action(s) | Both |
 | S2 | talentModifierMultiply 1.2 → 1 talent(s) | always: increase-motion-value 1.2 → 1 action(s) | Both |
@@ -826,9 +826,9 @@ WT source: [Sigrika/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/ch
 
 ## Suisui (1110)
 
-WT source: [Suisui/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Suisui/resonanceChains.ts). TL source: [1110.review.json](../src/game-data/mechanics-reviews/3.7/1110.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Suisui/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Suisui/resonanceChains.ts). TL source: [1110.review.json](../src/game-data/mechanics-reviews/3.7/1110.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | No declared modifier | No generated sequence effect | Neither |
 | S2 | CritDMG 0.5 | toggle: add-flat-stat critDamage 0.5 | Both |
@@ -839,9 +839,9 @@ WT source: [Suisui/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/cha
 
 ## Suoming (1312)
 
-WT source: [Suoming/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Suoming/resonanceChains.ts). TL source: [1312.review.json](../src/game-data/mechanics-reviews/3.7/1312.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Suoming/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Suoming/resonanceChains.ts). TL source: [1312.review.json](../src/game-data/mechanics-reviews/3.7/1312.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | talentModifierMultiply 0.6 → 4 talent(s) | toggle: increase-motion-value 0.6 → 4 action(s) | Both |
 | S2 | CritDMG 0.4 | always: add-flat-stat critDamage 0.4 / toggle: add-flat-stat critDamage 0.1 (next) / stacks ≤4: add-flat-stat critDamage 0.06 (next) | Both |
@@ -852,9 +852,9 @@ WT source: [Suoming/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/ch
 
 ## Taoqi (1601)
 
-WT source: [Taoqi/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Taoqi/resonanceChains.ts). TL source: [1601.review.json](../src/game-data/mechanics-reviews/3.7/1601.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Taoqi/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Taoqi/resonanceChains.ts). TL source: [1601.review.json](../src/game-data/mechanics-reviews/3.7/1601.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | targeted multiplier 0.4 → 3 talent(s) | No generated sequence effect | WT only |
 | S2 | CritRate 0.2 → 1 talent(s); CritDMG 0.2 → 1 talent(s) | always: add-flat-stat critRate 0.2 → 1 action(s); add-flat-stat critDamage 0.2 → 1 action(s) | Both |
@@ -865,9 +865,9 @@ WT source: [Taoqi/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/char
 
 ## Verina (1503)
 
-WT source: [Verina/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Verina/resonanceChains.ts). TL source: [1503.review.json](../src/game-data/mechanics-reviews/3.7/1503.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Verina/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Verina/resonanceChains.ts). TL source: [1503.review.json](../src/game-data/mechanics-reviews/3.7/1503.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | EnableAttack SequenceNode1MomentofEmergence | No generated sequence effect | WT only |
 | S2 | No declared modifier | No generated sequence effect | Neither |
@@ -878,9 +878,9 @@ WT source: [Verina/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/cha
 
 ## Xiangli Yao (1305)
 
-WT source: [XiangliYao/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/XiangliYao/resonanceChains.ts). TL source: [1305.review.json](../src/game-data/mechanics-reviews/3.7/1305.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [XiangliYao/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/XiangliYao/resonanceChains.ts). TL source: [1305.review.json](../src/game-data/mechanics-reviews/3.7/1305.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | EnableAttack SequenceNode1ProdigyofProteges | No generated sequence effect | WT only |
 | S2 | CritDMG 0.3 | toggle: add-flat-stat critDamage 0.3 → 1 action(s) | Both |
@@ -891,9 +891,9 @@ WT source: [XiangliYao/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src
 
 ## Yangyang (1402)
 
-WT source: [Yangyang/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Yangyang/resonanceChains.ts). TL source: [1402.review.json](../src/game-data/mechanics-reviews/3.7/1402.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Yangyang/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Yangyang/resonanceChains.ts). TL source: [1402.review.json](../src/game-data/mechanics-reviews/3.7/1402.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | Aero 0.15 | toggle: add-damage-bonus 0.15 | Both |
 | S2 | No declared modifier | No generated sequence effect | Neither |
@@ -904,9 +904,9 @@ WT source: [Yangyang/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/c
 
 ## Yangyang: Xuanling (1610)
 
-WT source: [YangyangXuanling/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/YangyangXuanling/resonanceChains.ts). TL source: [1610.review.json](../src/game-data/mechanics-reviews/3.7/1610.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [YangyangXuanling/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/YangyangXuanling/resonanceChains.ts). TL source: [1610.review.json](../src/game-data/mechanics-reviews/3.7/1610.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | EnableAttack SequenceNode1AtTheWindSBreathTheBlossomsWake | toggle: 1 triggered action(s) | Both |
 | S2 | targeted multiplier 1 → 14 talent(s); EnableAttack SequenceNode2RiverCarriesHerSongAway | toggle: 1 triggered action(s) | Both |
@@ -917,9 +917,9 @@ WT source: [YangyangXuanling/resonanceChains.ts](../.codex-work/wutheringtools-3
 
 ## Yinlin (1302)
 
-WT source: [Yinlin/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Yinlin/resonanceChains.ts). TL source: [1302.review.json](../src/game-data/mechanics-reviews/3.7/1302.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Yinlin/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Yinlin/resonanceChains.ts). TL source: [1302.review.json](../src/game-data/mechanics-reviews/3.7/1302.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | targeted multiplier 0.7 → 2 talent(s) | No generated sequence effect | WT only |
 | S2 | No chain entry | No generated sequence effect | Neither |
@@ -930,9 +930,9 @@ WT source: [Yinlin/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/cha
 
 ## Youhu (1106)
 
-WT source: [Youhu/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Youhu/resonanceChains.ts). TL source: [1106.review.json](../src/game-data/mechanics-reviews/3.7/1106.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Youhu/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Youhu/resonanceChains.ts). TL source: [1106.review.json](../src/game-data/mechanics-reviews/3.7/1106.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | No declared modifier | No generated sequence effect | Neither |
 | S2 | MultiplySelfBuff 2 → 1 talent(s) | toggle: add-damage-bonus 0.7 → 1 action(s) / toggle: add-damage-bonus 1.75 → 1 action(s) | Both |
@@ -943,9 +943,9 @@ WT source: [Youhu/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/char
 
 ## Yuanwu (1303)
 
-WT source: [Yuanwu/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Yuanwu/resonanceChains.ts). TL source: [1303.review.json](../src/game-data/mechanics-reviews/3.7/1303.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Yuanwu/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Yuanwu/resonanceChains.ts). TL source: [1303.review.json](../src/game-data/mechanics-reviews/3.7/1303.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | No declared modifier | No generated sequence effect | Neither |
 | S2 | No declared modifier | No generated sequence effect | Neither |
@@ -956,9 +956,9 @@ WT source: [Yuanwu/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/cha
 
 ## Zani (1507)
 
-WT source: [Zani/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Zani/resonanceChains.ts). TL source: [1507.review.json](../src/game-data/mechanics-reviews/3.7/1507.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Zani/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Zani/resonanceChains.ts). TL source: [1507.review.json](../src/game-data/mechanics-reviews/3.7/1507.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | Spectro 0.5 | toggle: add-damage-bonus 0.5 | Both |
 | S2 | CritRate 0.2; talentModifierMultiply 0.8 → 2 talent(s) | always: add-flat-stat critRate 0.2 / always: increase-motion-value 0.8 → 2 action(s) | Both |
@@ -969,9 +969,9 @@ WT source: [Zani/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/chara
 
 ## Zhezhi (1105)
 
-WT source: [Zhezhi/resonanceChains.ts](../.codex-work/wutheringtools-3.7/src/characters/Zhezhi/resonanceChains.ts). TL source: [1105.review.json](../src/game-data/mechanics-reviews/3.7/1105.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
+WT source: [Zhezhi/resonanceChains.ts](../.codex-work/combat-reference-3.7/src/characters/Zhezhi/resonanceChains.ts). TL source: [1105.review.json](../src/game-data/mechanics-reviews/3.7/1105.review.json), [generated mechanics](../src/game-data/combat/reviewed-mechanics.generated.ts).
 
-| Sequence | WutheringTools declaration | Tacet Lab generated effect | Difference |
+| Sequence | reference implementation declaration | Tacet Lab generated effect | Difference |
 |---|---|---|---|
 | S1 | CritRate 0.1 | toggle: add-flat-stat critRate 0.1 → 1 action(s) | Both |
 | S2 | No chain entry | No generated sequence effect | Neither |

@@ -4,12 +4,12 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Echo, OwnedCharacter } from '../domain/types'
 import { resolveCharacterSubstatProfile } from '../domain/character-substat-score'
 import { characterCatalog, defaultSettings } from '../game-data'
-import type { NanokaSpinePortraitHandle } from './NanokaSpinePortrait'
+import type { AnimatedCharacterPortraitHandle } from './AnimatedCharacterPortrait'
 import { CharacterBuildCard, prioritizedBuildCardStats } from './CharacterBuildCard'
 import { EchoPicker } from './CharacterShowcase'
 import { defaultEnabledSkillTreeBonusIds, resolveCharacterShowcaseModel } from './character-showcase-model'
 
-vi.mock('./NanokaSpinePortrait', () => ({ NanokaSpinePortrait: ({ paused }: { paused: boolean }) => <div data-testid="live-character-art" data-paused={paused}/> }))
+vi.mock('./AnimatedCharacterPortrait', () => ({ AnimatedCharacterPortrait: ({ paused }: { paused: boolean }) => <div data-testid="live-character-art" data-paused={paused}/> }))
 vi.mock('./EchoEditModal', () => ({ EchoEditModal: ({ echo }: { echo: Echo }) => <div data-testid="echo-editor">{echo.name}</div> }))
 
 beforeEach(() => {
@@ -46,7 +46,7 @@ function card(editable: boolean, overrides: Partial<typeof baseModel> = {}, sett
     statDetail={(_key, label) => ({ title: label, value: '0', formula: 'Test formula', rows: [] })}
     editable={editable}
     portraitRef={createRef<HTMLImageElement>()}
-    livePortraitRef={createRef<NanokaSpinePortraitHandle>()}
+    livePortraitRef={createRef<AnimatedCharacterPortraitHandle>()}
     portraitFailed={false}
     animatedPortraitReady={false}
     enabledSkillTreeNodeIds={defaultEnabledSkillTreeBonusIds(catalog)}
@@ -94,7 +94,7 @@ describe('CharacterBuildCard direct editing', () => {
       statDetail={(_key, label) => ({ title: label, value: '0', formula: 'Test formula', rows: [] })}
       editable
       portraitRef={createRef<HTMLImageElement>()}
-      livePortraitRef={createRef<NanokaSpinePortraitHandle>()}
+      livePortraitRef={createRef<AnimatedCharacterPortraitHandle>()}
       portraitFailed={false}
       animatedPortraitReady={false}
       enabledSkillTreeNodeIds={defaultEnabledSkillTreeBonusIds(catalog)}

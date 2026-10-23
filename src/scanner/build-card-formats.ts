@@ -1,6 +1,6 @@
 import type { ScanRect, ScanRegion } from './types'
 
-export type BuildCardFormatId = 'discord-bot' | 'wuwaflex' | 'wuwaflex-1580' | 'wuwaflex-1272' | 'wuwaflex-1377' | 'wuwa-optimizer' | 'the-wuwa-calculator' | 'tacet-lab'
+export type BuildCardFormatId = 'landscape-card' | 'wide-card' | 'wide-card-1580' | 'wide-card-1272' | 'wide-card-1377' | 'horizontal-card' | 'compact-card' | 'tacet-lab'
 export type BuildCardFormatPreference = BuildCardFormatId | 'auto'
 
 export interface BuildCardEchoLayout {
@@ -47,17 +47,17 @@ const discordEchoes: BuildCardEchoLayout[] = discordStarts.map((x) => ({
   mainStatValue: { x: x + .129, y: .775, width: .063, height: .04 }
 }))
 
-const wuwaflexStarts = [.269, .414, .56, .705, .85]
-const wuwaflexEchoes: BuildCardEchoLayout[] = horizontalEchoes(wuwaflexStarts, .14, { artY: .625, artHeight: .13, nameY: .596, nameHeight: .035, statsY: .755, statsHeight: .235 })
+const wideCardStarts = [.269, .414, .56, .705, .85]
+const wideCardEchoes: BuildCardEchoLayout[] = horizontalEchoes(wideCardStarts, .14, { artY: .625, artHeight: .13, nameY: .596, nameHeight: .035, statsY: .755, statsHeight: .235 })
   .map((echo, index) => ({
     ...echo,
-    stats: { x: wuwaflexStarts[index] + .02, y: .765, width: .12, height: .225 },
-    sonata: { x: wuwaflexStarts[index] + .113, y: .644, width: .025, height: .043 },
-    mainStatLabel: { x: wuwaflexStarts[index] + .073, y: .696, width: .065, height: .027 },
-    mainStatValue: { x: wuwaflexStarts[index] + .105, y: .72, width: .033, height: .037 }
+    stats: { x: wideCardStarts[index] + .02, y: .765, width: .12, height: .225 },
+    sonata: { x: wideCardStarts[index] + .113, y: .644, width: .025, height: .043 },
+    mainStatLabel: { x: wideCardStarts[index] + .073, y: .696, width: .065, height: .027 },
+    mainStatValue: { x: wideCardStarts[index] + .105, y: .72, width: .033, height: .037 }
   }))
 
-const wuwaflexCurrentEchoes: BuildCardEchoLayout[] = [.276, .417, .561, .705, .849].map((x) => ({
+const wideCardCurrentEchoes: BuildCardEchoLayout[] = [.276, .417, .561, .705, .849].map((x) => ({
   art: { x: x + .006, y: .637, width: .055, height: .13 },
   name: { x: x + .005, y: .603, width: .13, height: .03 },
   sonata: { x: x + .11, y: .65, width: .028, height: .045 },
@@ -66,8 +66,8 @@ const wuwaflexCurrentEchoes: BuildCardEchoLayout[] = [.276, .417, .561, .705, .8
   stats: { x: x + .018, y: .775, width: .12, height: .21 }
 }))
 
-const wuwaflex1272 = {
-  id: 'wuwaflex-1272', label: 'WuWaFlex', aspectRatio: 2724 / 1272,
+const wideCard1272 = {
+  id: 'wide-card-1272', label: 'Wide card', aspectRatio: 2724 / 1272,
   character: { x: .32, y: .04, width: .16, height: .04 },
   characterLevel: { x: .32, y: .09, width: .1, height: .04 },
   sequence: { x: .291, y: .157, width: .028, height: .346 },
@@ -81,32 +81,32 @@ const wuwaflex1272 = {
     { x: .896, y: .431, width: .038, height: .027 },
     { x: .946, y: .458, width: .038, height: .027 }
   ],
-  echoes: wuwaflexCurrentEchoes
+  echoes: wideCardCurrentEchoes
 } satisfies BuildCardFormat
 
-const wuwaflex1377Scale = 1272 / 1377
-const wuwaflex1377Rect = (rect: ScanRect): ScanRect => ({ ...rect, y: rect.y * wuwaflex1377Scale, height: rect.height * wuwaflex1377Scale })
-const wuwaflex1377: BuildCardFormat = {
-  ...wuwaflex1272, id: 'wuwaflex-1377', label: 'WuWaFlex', aspectRatio: 2724 / 1377,
-  character: wuwaflex1377Rect(wuwaflex1272.character),
-  characterLevel: wuwaflex1377Rect(wuwaflex1272.characterLevel),
-  sequence: wuwaflex1377Rect(wuwaflex1272.sequence),
-  weapon: wuwaflex1377Rect(wuwaflex1272.weapon),
-  weaponLevel: wuwaflex1377Rect(wuwaflex1272.weaponLevel),
-  weaponRank: wuwaflex1377Rect(wuwaflex1272.weaponRank),
-  skills: wuwaflex1272.skills.map(wuwaflex1377Rect),
-  echoes: wuwaflex1272.echoes.map((echo) => ({
-    art: wuwaflex1377Rect(echo.art),
-    name: echo.name && wuwaflex1377Rect(echo.name),
-    sonata: echo.sonata && wuwaflex1377Rect(echo.sonata),
-    mainStatLabel: echo.mainStatLabel && wuwaflex1377Rect(echo.mainStatLabel),
-    mainStatValue: echo.mainStatValue && wuwaflex1377Rect(echo.mainStatValue),
-    stats: wuwaflex1377Rect(echo.stats)
+const wideCard1377Scale = 1272 / 1377
+const wideCard1377Rect = (rect: ScanRect): ScanRect => ({ ...rect, y: rect.y * wideCard1377Scale, height: rect.height * wideCard1377Scale })
+const wideCard1377: BuildCardFormat = {
+  ...wideCard1272, id: 'wide-card-1377', label: 'Wide card', aspectRatio: 2724 / 1377,
+  character: wideCard1377Rect(wideCard1272.character),
+  characterLevel: wideCard1377Rect(wideCard1272.characterLevel),
+  sequence: wideCard1377Rect(wideCard1272.sequence),
+  weapon: wideCard1377Rect(wideCard1272.weapon),
+  weaponLevel: wideCard1377Rect(wideCard1272.weaponLevel),
+  weaponRank: wideCard1377Rect(wideCard1272.weaponRank),
+  skills: wideCard1272.skills.map(wideCard1377Rect),
+  echoes: wideCard1272.echoes.map((echo) => ({
+    art: wideCard1377Rect(echo.art),
+    name: echo.name && wideCard1377Rect(echo.name),
+    sonata: echo.sonata && wideCard1377Rect(echo.sonata),
+    mainStatLabel: echo.mainStatLabel && wideCard1377Rect(echo.mainStatLabel),
+    mainStatValue: echo.mainStatValue && wideCard1377Rect(echo.mainStatValue),
+    stats: wideCard1377Rect(echo.stats)
   }))
 }
 
-const wuwaflex1600 = {
-  id: 'wuwaflex', label: 'WuWaFlex', aspectRatio: 3416 / 1600,
+const wideCard1600 = {
+  id: 'wide-card', label: 'Wide card', aspectRatio: 3416 / 1600,
   character: { x: .35, y: .035, width: .16, height: .045 },
   characterLevel: { x: .35, y: .08, width: .09, height: .035 },
   sequence: { x: .278, y: .13, width: .028, height: .372 },
@@ -118,35 +118,35 @@ const wuwaflex1600 = {
     { x: .815, y: .395, width: .04, height: .033 }, { x: .87, y: .427, width: .04, height: .033 },
     { x: .925, y: .45, width: .055, height: .033 }
   ],
-  echoes: wuwaflexEchoes
+  echoes: wideCardEchoes
 } satisfies BuildCardFormat
 
-const wuwaflex1580Rect = (rect: ScanRect): ScanRect => {
+const wideCard1580Rect = (rect: ScanRect): ScanRect => {
   const y = rect.y * 1600 / 1580
   return { ...rect, y, height: Math.min(rect.height * 1600 / 1580, .995 - y) }
 }
-const wuwaflex1580: BuildCardFormat = {
-  ...wuwaflex1600, id: 'wuwaflex-1580', aspectRatio: 3416 / 1580,
-  character: wuwaflex1580Rect(wuwaflex1600.character),
-  characterLevel: wuwaflex1580Rect(wuwaflex1600.characterLevel),
-  sequence: wuwaflex1580Rect(wuwaflex1600.sequence),
-  weapon: wuwaflex1580Rect(wuwaflex1600.weapon),
-  weaponLevel: wuwaflex1580Rect(wuwaflex1600.weaponLevel),
-  weaponRank: wuwaflex1580Rect(wuwaflex1600.weaponRank),
-  skills: wuwaflex1600.skills.map(wuwaflex1580Rect),
-  echoes: wuwaflex1600.echoes.map((echo) => ({
-    art: wuwaflex1580Rect(echo.art),
-    name: echo.name && wuwaflex1580Rect(echo.name),
-    sonata: echo.sonata && wuwaflex1580Rect(echo.sonata),
-    stats: wuwaflex1580Rect({ ...echo.stats, height: .19 }),
-    mainStatLabel: echo.mainStatLabel && wuwaflex1580Rect(echo.mainStatLabel),
-    mainStatValue: echo.mainStatValue && wuwaflex1580Rect(echo.mainStatValue)
+const wideCard1580: BuildCardFormat = {
+  ...wideCard1600, id: 'wide-card-1580', aspectRatio: 3416 / 1580,
+  character: wideCard1580Rect(wideCard1600.character),
+  characterLevel: wideCard1580Rect(wideCard1600.characterLevel),
+  sequence: wideCard1580Rect(wideCard1600.sequence),
+  weapon: wideCard1580Rect(wideCard1600.weapon),
+  weaponLevel: wideCard1580Rect(wideCard1600.weaponLevel),
+  weaponRank: wideCard1580Rect(wideCard1600.weaponRank),
+  skills: wideCard1600.skills.map(wideCard1580Rect),
+  echoes: wideCard1600.echoes.map((echo) => ({
+    art: wideCard1580Rect(echo.art),
+    name: echo.name && wideCard1580Rect(echo.name),
+    sonata: echo.sonata && wideCard1580Rect(echo.sonata),
+    stats: wideCard1580Rect({ ...echo.stats, height: .19 }),
+    mainStatLabel: echo.mainStatLabel && wideCard1580Rect(echo.mainStatLabel),
+    mainStatValue: echo.mainStatValue && wideCard1580Rect(echo.mainStatValue)
   }))
 }
 
 export const buildCardFormats: BuildCardFormat[] = [
   {
-    id: 'discord-bot', label: 'Discord Bot', aspectRatio: 16 / 9,
+    id: 'landscape-card', label: 'Landscape card', aspectRatio: 16 / 9,
     character: { x: .03, y: .012, width: .19, height: .062 },
     weapon: { x: .825, y: .416, width: .15, height: .045 },
     weaponLevel: { x: .846, y: .468, width: .075, height: .043 },
@@ -159,12 +159,12 @@ export const buildCardFormats: BuildCardFormat[] = [
     ],
     echoes: discordEchoes
   },
-  wuwaflex1600,
-  wuwaflex1580,
-  wuwaflex1272,
-  wuwaflex1377,
+  wideCard1600,
+  wideCard1580,
+  wideCard1272,
+  wideCard1377,
   {
-    id: 'wuwa-optimizer', label: 'WuWa Optimizer', aspectRatio: 1920 / 1160,
+    id: 'horizontal-card', label: 'Horizontal card', aspectRatio: 1920 / 1160,
     weapon: { x: .21, y: .395, width: .22, height: .035 },
     weaponLevel: { x: .30, y: .4, width: .08, height: .03 },
     weaponRank: { x: .35, y: .4, width: .05, height: .03 },
@@ -176,7 +176,7 @@ export const buildCardFormats: BuildCardFormat[] = [
     echoes: horizontalEchoes([.009, .205, .402, .599, .796], .195, { artY: .57, artHeight: .105, nameY: .56, nameHeight: .035, statsY: .675, statsHeight: .22 })
   },
   {
-    id: 'the-wuwa-calculator', label: 'The WuWa Calculator', aspectRatio: 1984 / 1440,
+    id: 'compact-card', label: 'Compact card', aspectRatio: 1984 / 1440,
     character: { x: .015, y: .545, width: .18, height: .045 },
     characterLevel: { x: .09, y: .59, width: .08, height: .035 },
     weapon: { x: .085, y: .635, width: .17, height: .04 },
@@ -234,7 +234,7 @@ export function buildCardFormatRegions(id: BuildCardFormatId): ScanRegion[] {
   format.skills.forEach((rect, index) => add(`skill-${index}`, ['Normal Attack', 'Resonance Skill', 'Forte Circuit', 'Resonance Liberation', 'Intro Skill'][index] ?? `Skill ${index + 1}`, rect, 'number', 'level', index))
   format.echoes.forEach((echo, index) => {
     const label = `Echo ${index + 1}`
-    if (!id.startsWith('wuwaflex')) add(`echo-${index}-art`, `${label} art`, echo.art, 'visual', 'name', index)
+    if (!id.startsWith('wide-card')) add(`echo-${index}-art`, `${label} art`, echo.art, 'visual', 'name', index)
     add(`echo-${index}-name`, `${label} name`, echo.name, 'text', 'name', index)
     add(`echo-${index}-cost`, `${label} cost`, echo.cost, 'number', 'cost', index)
     add(`echo-${index}-sonata`, `${label} Sonata`, echo.sonata, 'visual', 'sonata', index)

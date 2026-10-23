@@ -35,7 +35,7 @@ import { resolveCharacterShowcaseModel } from './character-showcase-model'
 import { OptimizerDistributionChart } from './OptimizerDistributionChart'
 import { OptimizerSetup } from './OptimizerSetup'
 import { TacetMark } from './TacetLabLogo'
-import { resolveTeamWorkspace, rotationDamageByMode, TEAM_ROTATION_TARGET_ID, type TeamWorkspaceInput, type TeamWorkspaceModel } from './team-workspace-model'
+import { resolveTeamWorkspace, rotationDamageByMode, TEAM_LOOP_TARGET_ID, TEAM_ROTATION_TARGET_ID, type TeamWorkspaceInput, type TeamWorkspaceModel } from './team-workspace-model'
 import { EquipmentBuffSettings } from './team-workspace/EquipmentBuffSettings'
 import { useWorkspacePreference } from './team-workspace/useWorkspacePreference'
 
@@ -145,7 +145,8 @@ export function OptimizerView({
   const showcase = useMemo(() => build && runtime ? resolveCharacterShowcaseModel({ character: runtime.character, weapons: ownedWeapons, echoes, builds: [build] }) : undefined, [build, runtime, ownedWeapons, echoes])
   const resonator = runtime?.resonator
   const weapon = runtime?.runtimeWeapon
-  const rotationTarget = Boolean(rotation && targetId === TEAM_ROTATION_TARGET_ID)
+  const rotationTarget = Boolean(rotation && (targetId === TEAM_ROTATION_TARGET_ID || targetId === TEAM_LOOP_TARGET_ID))
+  const loopTarget = targetId === TEAM_LOOP_TARGET_ID
   const attack = resonator?.attacks.find((item) => item.id === targetId) ?? resonator?.attacks[0]
   const formulaTargets = combatTargets(resonator?.id ?? '').filter(isOptimizerCombatTarget)
   const formulaTarget = formulaTargets.find((target) => target.id === attack?.id) ?? formulaTargets[0]
@@ -159,7 +160,7 @@ export function OptimizerView({
     runtime?.weapon.catalogId && pendingMechanics.weapon?.[runtime.weapon.catalogId]?.length ? weapon?.name ?? 'Weapon' : '',
     echoCatalog.find((entry) => entry.name === currentEchoes[0]?.name && entry.id && pendingMechanics.echo?.[entry.id]?.length)?.name ?? ''
   ].filter(Boolean)
-  const targets = [...(rotation ? [{ id: TEAM_ROTATION_TARGET_ID, label: 'Rotation', group: 'Team' }] : []), ...(resonator?.attacks.map((item) => ({ id: item.id, label: item.name, group: formulaTargets.find((target) => target.id === item.id)?.group ?? 'Other' })) ?? [])]
+  const targets = [...(rotation ? [{ id: TEAM_ROTATION_TARGET_ID, label: 'Rotation', group: 'Team' }, ...(rotation.input.team.loop ? [{ id: TEAM_LOOP_TARGET_ID, label: 'Loop', group: 'Team' }] : [])] : []), ...(resonator?.attacks.map((item) => ({ id: item.id, label: item.name, group: formulaTargets.find((target) => target.id === item.id)?.group ?? 'Other' })) ?? [])]
   const optimizerEnemy = (): EnemyConfig => ({
     ...(initialEnemy ?? {}),
     level: Math.min(120, Math.max(1, initialEnemy?.level ?? 100)),
@@ -173,21 +174,21 @@ export function OptimizerView({
   const currentRotationModel = useMemo(() => rotationTarget && rotation && runtime && build
     ? resolveTeamWorkspace({ ...rotation.input, team: { ...rotation.input.team, scenario: withEquipmentBuffs(rotation.input.team.scenario, rotation.input.team.members?.[rotation.memberSlot]?.memberId ?? rotation.input.team.buildIds[rotation.memberSlot] ?? build.id, runtime.weapon, currentEchoes, disabledEquipmentBuffKeys) }, disabledEffectIdsByMember:{ [rotation.input.team.members?.[rotation.memberSlot]?.memberId ?? rotation.input.team.buildIds[rotation.memberSlot] ?? build.id]:disabledEffectIds }, includeTraces:false, formulaTargetIds:[] })
     : rotation?.model, [build?.id, currentEchoes, disabledEffectIds, disabledEquipmentBuffKeys, rotation, rotationTarget, runtime])
-  const currentDamage = rotationTarget && currentRotationModel ? rotationDamageByMode(currentRotationModel) : currentCalculation?.values
+  const currentDamage = rotationTarget && currentRotationModel ? rotationDamageByMode(currentRotationModel, targetId) : currentCalculation?.values
   const currentStats = currentCalculation?.stats
   const currentScore = currentDamage && (objective === 'normal' || objective === 'critical' || objective === 'expected') ? currentDamage[objective] : currentStats?.[objective as OptimizerStatKey]
   const scalesWith = useMemo(() => {
-    if (rotationTarget) return ['All members', 'All rotation actions']
+    if (rotationTarget) return ['All members', loopTarget ? 'Actions inside loop markers' : 'All rotation actions']
     const labels = new Set<string>()
     labels.add(attack?.scalesWith === 'hp' ? 'HP' : attack?.scalesWith === 'def' ? 'DEF' : 'ATK')
     if (objective === 'expected' || objective === 'critical') { labels.add('CRIT Rate'); labels.add('CRIT DMG') }
     if (attack?.element) labels.add(`${attack.element} DMG`)
     if (attack?.type) labels.add(`${attack.type} DMG`)
     return [...labels]
-  }, [attack, objective, rotationTarget])
-  const selectedTargetLabel = rotationTarget ? 'Rotation' : formulaTarget?.label ?? attack?.name ?? 'Target score'
+  }, [attack, loopTarget, objective, rotationTarget])
+  const selectedTargetLabel = rotationTarget ? loopTarget ? 'Loop' : 'Rotation' : formulaTarget?.label ?? attack?.name ?? 'Target score'
   const selectedObjectiveLabel = rotationTarget
-    ? `${objective === 'expected' ? 'Average' : objective === 'normal' ? 'Non-CRIT' : 'CRIT'} rotation DMG`
+    ? `${objective === 'expected' ? 'Average' : objective === 'normal' ? 'Non-CRIT' : 'CRIT'} ${loopTarget ? 'loop' : 'rotation'} DMG`
     : objectiveLabel(objective)
   const activeContextFingerprint = useMemo(() => optimizerContextFingerprint({
     objective,
@@ -224,7 +225,7 @@ export function OptimizerView({
       const nextTarget = savedTarget ?? targets[0]?.id ?? ''
       const nextProfile = { ...storedProfile, targetId: nextTarget || undefined, teamBuildIds: [...new Set(teamBuildIds)] }
       setProfile(nextProfile)
-      const contextFingerprint = optimizerContextFingerprint({ objective, targetId: nextTarget, initialEnemy, scenario, disabledEquipmentBuffKeys, rotation: nextTarget === TEAM_ROTATION_TARGET_ID ? rotation?.input : undefined, gameDataVersion: GAME_DATA_VERSION })
+      const contextFingerprint = optimizerContextFingerprint({ objective, targetId: nextTarget, initialEnemy, scenario, disabledEquipmentBuffKeys, rotation: nextTarget === TEAM_ROTATION_TARGET_ID || nextTarget === TEAM_LOOP_TARGET_ID ? rotation?.input : undefined, gameDataVersion: GAME_DATA_VERSION })
       contextFingerprintRef.current = contextFingerprint
       setTargetId(nextTarget)
       clearResults()
@@ -283,7 +284,7 @@ export function OptimizerView({
       maximumStats: profile.maximumStats, limit: profile.resultLimit, maxEvaluations: profile.maxEvaluations,
       includeEquippedBy: runtime.character.id, currentMainEchoId: build.echoIds[0], profile: { ...profile, teamBuildIds: [...new Set(teamBuildIds)] },
       combat: formulaTarget ? { target: { id: formulaTarget.id, label: formulaTarget.label, kind: formulaTarget.kind, mode:mode ?? 'expected' }, build, character:runtime.character, weapon:runtime.weapon, scenario } : undefined,
-      rotation: rotationTarget && rotation ? { ...rotation.input, targetId: TEAM_ROTATION_TARGET_ID, memberSlot: rotation.memberSlot } : undefined
+      rotation: rotationTarget && rotation ? { ...rotation.input, targetId, memberSlot: rotation.memberSlot } : undefined
     }
     const mergedProgress = () => {
       const combined = mergeProgress(requestId, [...outputs.map((output) => output.progress), ...workerProgress])
@@ -483,7 +484,7 @@ export function OptimizerView({
       characterName={showcase.catalog.name} portraitUrl={showcase.catalog.portraitSourceUrl || showcase.catalog.iconSourceUrl}
       currentStats={currentStats} currentScore={currentScore}
       objectiveLabel={selectedObjectiveLabel} targetId={targetId} targets={targets}
-      onTargetChange={(id) => { setTargetId(id); updateProfile((current) => ({ ...current, targetId: id, updatedAt: Date.now() })) }} scalesWith={scalesWith} scalesWithTitle={rotationTarget ? 'Rotation includes' : undefined} running={running} onRun={run} onCancel={cancel}
+      onTargetChange={(id) => { setTargetId(id); updateProfile((current) => ({ ...current, targetId: id, updatedAt: Date.now() })) }} scalesWith={scalesWith} scalesWithTitle={rotationTarget ? `${selectedTargetLabel} includes` : undefined} running={running} onRun={run} onCancel={cancel}
     />}
     {!profileReady && <Panel className="searching" role="status" aria-label="Loading optimizer profile"><TacetMark/><p>Your saved filters stay on this device. Search results are only kept for the current session.</p></Panel>}
     {error && <div className="notice error">{error}</div>}

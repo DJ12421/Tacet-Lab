@@ -65,7 +65,7 @@ const changelogEntries = [
   { hash: 'b342d5e', date: 'Oct 13, 2026', title: 'Refine character build cards and Optimizer controls across desktop and mobile' },
   { hash: 'ffeccd2', date: 'Oct 5, 2026', title: 'Choose whether imported builds replace Equipped or become new saved builds' },
   { hash: 'ffeccd2', date: 'Oct 5, 2026', title: 'Improve Echo equipment controls, inventory search, and weapon catalog filters' },
-  { hash: '6254c64', date: 'Oct 4, 2026', title: 'Import Wuthering Tools accounts and preview changes before applying them' },
+  { hash: '6254c64', date: 'Oct 4, 2026', title: 'Import external account accounts and preview changes before applying them' },
   { hash: '6254c64', date: 'Oct 4, 2026', title: 'Check complete account backups before download and refine inventory and account screens' },
   { hash: '89202c4', date: 'Oct 4, 2026', title: 'Add estimated Tune Break and negative status damage with clear verification warnings' },
   { hash: '89202c4', date: 'Oct 4, 2026', title: 'Add enemy Cost and status stack controls to team damage scenarios' },
@@ -151,7 +151,7 @@ const changelogEntries = [
   { hash: 'fec4838', date: 'Jul 13, 2026', title: 'Update README for current Tacet Lab experience' },
   { hash: '4544918', date: 'Jul 13, 2026', title: 'Expand local archive and catalog support' },
   { hash: '21600e6', date: 'Jul 13, 2026', title: 'Improve live Echo scanning responsiveness' },
-  { hash: '2036e54', date: 'Jul 13, 2026', title: 'Fix Nanoka-backed Echo parsing' },
+  { hash: '2036e54', date: 'Jul 13, 2026', title: 'Fix catalog-backed Echo parsing' },
   { hash: '1b23720', date: 'Jul 12, 2026', title: 'Add Echo data and update scanner support' },
   { hash: '6abe006', date: 'Jul 12, 2026', title: 'Enable GitHub Pages setup' },
   { hash: '88384ae', date: 'Jul 12, 2026', title: 'Initial Tacet Lab implementation' }
@@ -205,7 +205,7 @@ export function HomeView({ echoes, characters, builds, teams, roverGender, navig
       <div className="home-hero-copy">
         <span className="home-kicker">Tacet Lab</span>
         <h1><span className="home-hero-title-desktop">WUTHERING WAVES<br/><em>OPTIMIZER</em></span><span className="home-hero-title-mobile">WUTHERING WAVES<br/><em>OPTIMIZER</em></span></h1>
-        <p><span className="home-hero-summary-desktop">A free, local-first WuWa optimizer for scanning Echoes, comparing builds, calculating damage, and planning teams.</span><span className="home-hero-summary-mobile">A free, local-first WuWa optimizer.</span></p>
+        <p><span className="home-hero-summary-desktop">A free, local-first build planner for scanning Echoes, comparing builds, calculating damage, and planning teams.</span><span className="home-hero-summary-mobile">A free, local-first build planner.</span></p>
         <div className="home-hero-actions">
           <button className="primary" onClick={() => navigate(primaryView)}>{hasStarted ? 'Continue your build' : 'Start scanning'}<span aria-hidden="true">→</span></button>
           <button className="secondary" onClick={() => navigate(hasStarted ? 'scanner' : 'archive')}><HomeNavIcon view={hasStarted ? 'scanner' : 'archive'}/>{hasStarted ? 'Add my Echoes' : 'Browse characters'}</button>

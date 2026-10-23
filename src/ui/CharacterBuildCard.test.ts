@@ -40,8 +40,8 @@ describe('echoRollBreakdown', () => {
   })
 })
 
-describe('Nanoka animated card artwork', () => {
-  it('uses Lucy\'s Luckdraw animation from the Nanoka character page', () => {
+describe('catalog source animated card artwork', () => {
+  it('uses Lucy\'s Luckdraw animation from the catalog source character page', () => {
     expect(lucy.spineSkeletonSourceUrl).toBe('https://static.nanoka.cc/assets/ww/luckdraw/luxi/luxi.skel')
     expect(lucy.spineAtlasSourceUrl).toBe('https://static.nanoka.cc/assets/ww/luckdraw/luxi/luxi.atlas')
   })

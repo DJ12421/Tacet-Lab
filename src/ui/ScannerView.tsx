@@ -200,7 +200,12 @@ export function ScannerView({ echoes, refresh, onSessionRiskChange }: { echoes: 
   const toggleAudioFeedback = async (enabled: boolean) => {
     setAudioFeedback(enabled)
     audioFeedbackRef.current = enabled
-    if (!enabled) return
+    if (!enabled) {
+      const context = feedbackAudioRef.current
+      feedbackAudioRef.current = null
+      if (context) void context.close()
+      return
+    }
     try {
       const context = feedbackAudioRef.current ?? createFeedbackAudio()
       if (!context) throw new Error('Audio feedback is not supported by this browser.')
@@ -346,7 +351,7 @@ export function ScannerView({ echoes, refresh, onSessionRiskChange }: { echoes: 
       await prepareCalibration(preview, 'video', undefined, buildCardFormatPreference, layout)
       setVideoDuration(metadata.duration)
       setStatus('Video ready')
-    } catch (caught) { setError(caught instanceof Error ? caught.message : 'Invalid video.') }
+    } catch (caught) { videoSource.current.close(); setError(caught instanceof Error ? caught.message : 'Invalid video.') }
   }
   const seekVideoPreview = (time: number) => {
     setVideoPlayhead(time)
@@ -510,7 +515,7 @@ export function ScannerView({ echoes, refresh, onSessionRiskChange }: { echoes: 
     if (!confirmDiscardChanges(calibrationDirty)) return
     setSelectedLayout(layout)
     if (!profile) return
-    const format = layout === 'build-card' ? buildCardFormatPreference === 'auto' ? profile.buildCardFormat ?? 'discord-bot' : buildCardFormatPreference === 'wuwaflex' && profile.buildCardFormat?.startsWith('wuwaflex') ? profile.buildCardFormat : buildCardFormatPreference : undefined
+    const format = layout === 'build-card' ? buildCardFormatPreference === 'auto' ? profile.buildCardFormat ?? 'landscape-card' : buildCardFormatPreference === 'wide-card' && profile.buildCardFormat?.startsWith('wide-card') ? profile.buildCardFormat : buildCardFormatPreference : undefined
     const next = findCompatibleProfile(profile.sourceWidth, profile.sourceHeight, layout, profile.uiScale, format)
       ?? createCalibrationProfile(profile.sourceWidth, profile.sourceHeight, defaultPanelRectForLayout(layout), layout, profile.uiScale, format)
     calibrationBaseline.current = calibrationDraft(next)
@@ -553,7 +558,7 @@ export function ScannerView({ echoes, refresh, onSessionRiskChange }: { echoes: 
           {([['build-card', 'Build cards', 'Supported card formats', `${import.meta.env.BASE_URL}build-cards.webp`], ['echo-management', 'Backpack', 'Echo inventory', `${sidebarIconRoot}backpack.webp`], ['echo-detail', 'Character menu', 'Equipped Echo details', `${sidebarIconRoot}echoes.svg`]] as const).map(([layout, label, hint, iconSource]) => <button type="button" className={selectedLayout === layout ? 'active' : ''} aria-pressed={selectedLayout === layout} key={layout} onClick={() => selectLayout(layout)}><img className="scanner-source-icon" src={iconSource} alt=""/><span><strong>{label}</strong><small>{hint}</small></span><i>{selectedLayout === layout ? '✓' : ''}</i></button>)}
         </div>
         {selectedLayout === 'echo-detail' && <div className="scanner-compare-tip"><img src={`${import.meta.env.BASE_URL}scanner-comparison-view.png`} alt="Arrow pointing to the Comparison View button next to Equip"/><p><strong>Turn on Comparison View</strong><span>Use the highlighted button next to Equip before scanning for better Echo recognition.</span></p></div>}
-        {selectedLayout === 'build-card' && <div className="scanner-format-row"><label className="scanner-format-select">Build card format<select value={buildCardFormatPreference} onChange={(event) => { if (!confirmDiscardChanges(calibrationDirty)) return; const value = event.target.value as BuildCardFormatPreference; setBuildCardFormatPreference(value); controllerRef.current?.setBuildCardFormatPreference(value); if (calibrationImage) void prepareCalibration(calibrationImage, 'screenshot', profile, value) }}><option value="auto">Auto detect</option>{buildCardFormats.filter((format) => !format.id.startsWith('wuwaflex-')).map((format) => <option value={format.id} key={format.id}>{format.label}</option>)}</select></label><details className="scanner-format-info"><summary aria-label="Supported build card formats">i</summary><div className="scanner-format-info-panel"><strong>Supported formats</strong><dl><dt>Discord Bot</dt><dd>16:9 aspect ratio</dd><dt>WuWaFlex</dt><dd>3416 × 1600, 3416 × 1580, 2724 × 1272, 2724 × 1377</dd><dt>WuWa Optimizer</dt><dd>1920:1160 aspect ratio</dd><dt>The WuWa Calculator</dt><dd>1984:1440 aspect ratio</dd><dt>Tacet Lab</dt><dd>16:9 aspect ratio (exports at 1920 × 1080)</dd></dl></div></details></div>}
+        {selectedLayout === 'build-card' && <div className="scanner-format-row"><label className="scanner-format-select">Build card format<select value={buildCardFormatPreference} onChange={(event) => { if (!confirmDiscardChanges(calibrationDirty)) return; const value = event.target.value as BuildCardFormatPreference; setBuildCardFormatPreference(value); controllerRef.current?.setBuildCardFormatPreference(value); if (calibrationImage) void prepareCalibration(calibrationImage, 'screenshot', profile, value) }}><option value="auto">Auto detect</option>{buildCardFormats.filter((format) => !format.id.startsWith('wide-card-')).map((format) => <option value={format.id} key={format.id}>{format.label}</option>)}</select></label><details className="scanner-format-info"><summary aria-label="Supported build card formats">i</summary><div className="scanner-format-info-panel"><strong>Supported formats</strong><dl><dt>Landscape card</dt><dd>16:9 aspect ratio</dd><dt>Wide card</dt><dd>3416 × 1600, 3416 × 1580, 2724 × 1272, 2724 × 1377</dd><dt>Horizontal card</dt><dd>1920:1160 aspect ratio</dd><dt>Compact card</dt><dd>1984:1440 aspect ratio</dd><dt>Tacet Lab</dt><dd>16:9 aspect ratio (exports at 1920 × 1080)</dd></dl></div></details></div>}
       </div>
       <div className="scanner-step">
         <h2><b>2</b><span>Choose how to scan</span></h2>

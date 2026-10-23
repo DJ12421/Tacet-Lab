@@ -49,14 +49,24 @@ describe('Echo detail calibration defaults', () => {
   })
 })
 
-describe('WuWaFlex calibration defaults', () => {
-  it('recognizes older size-specific profile names after the labels become uniform', () => {
-    const profile = createCalibrationProfile(2724, 1272, { x: 0, y: 0, width: 1, height: 1 }, 'build-card', 1, 'wuwaflex-1272')
-    expect(parseCalibrationProfile(JSON.stringify({ ...profile, buildCardFormat: undefined, name: 'WuWaFlex (2724×1272) build card' })).buildCardFormat).toBe('wuwaflex-1272')
+describe('Wide card calibration defaults', () => {
+  it.each([
+    [3416, 1600, 'wide-card'], [3416, 1580, 'wide-card-1580'],
+    [2724, 1272, 'wide-card-1272'], [2724, 1377, 'wide-card-1377'],
+    [1920, 1160, 'horizontal-card'], [1984, 1440, 'compact-card']
+  ] as const)('recovers the format for an older %ix%i profile without a format ID', (width, height, format) => {
+    const profile = createCalibrationProfile(width, height, { x: 0, y: 0, width: 1, height: 1 }, 'build-card', 1, format)
+    expect(parseCalibrationProfile(JSON.stringify({ ...profile, buildCardFormat: undefined, name: 'Imported build card' })).buildCardFormat).toBe(format)
+    expect(parseCalibrationProfile(JSON.stringify({ ...profile, buildCardFormat: 'legacy-format', name: 'Imported build card' })).buildCardFormat).toBe(format)
   })
 
-  it.each(['wuwaflex-1272', 'wuwaflex-1377'] as const)('crops icons from saved default stats in %s without moving custom regions', (format) => {
-    const profile = createCalibrationProfile(2724, format === 'wuwaflex-1272' ? 1272 : 1377,
+  it('recognizes older size-specific profile names after the labels become uniform', () => {
+    const profile = createCalibrationProfile(2724, 1272, { x: 0, y: 0, width: 1, height: 1 }, 'build-card', 1, 'wide-card-1272')
+    expect(parseCalibrationProfile(JSON.stringify({ ...profile, buildCardFormat: undefined, name: 'Wide card (2724×1272) build card' })).buildCardFormat).toBe('wide-card-1272')
+  })
+
+  it.each(['wide-card-1272', 'wide-card-1377'] as const)('crops icons from saved default stats in %s without moving custom regions', (format) => {
+    const profile = createCalibrationProfile(2724, format === 'wide-card-1272' ? 1272 : 1377,
       { x: 0, y: 0, width: 1, height: 1 }, 'build-card', 1, format)
     const current = profile.regions.find((region) => region.id === 'echo-0-stats')!.rect
     const custom = profile.regions.find((region) => region.id === 'echo-1-stats')!.rect
@@ -69,8 +79,8 @@ describe('WuWaFlex calibration defaults', () => {
     expect(loaded.regions.find((region) => region.id === 'echo-1-stats')?.rect.x).toBe(custom.x + .005)
   })
 
-  it.each(['wuwaflex-1272', 'wuwaflex-1377'] as const)('moves the old %s sequence default onto the icon column', (format) => {
-    const height = format === 'wuwaflex-1272' ? 1272 : 1377
+  it.each(['wide-card-1272', 'wide-card-1377'] as const)('moves the old %s sequence default onto the icon column', (format) => {
+    const height = format === 'wide-card-1272' ? 1272 : 1377
     const profile = createCalibrationProfile(2724, height, { x: 0, y: 0, width: 1, height: 1 }, 'build-card', 1, format)
     const scale = 1272 / height
     profile.regions = profile.regions.map((region) => region.id === 'sequence'
@@ -80,18 +90,18 @@ describe('WuWaFlex calibration defaults', () => {
   })
 
   it('moves old 3416x1580 defaults into the shorter card without changing custom boxes', () => {
-    const profile = createCalibrationProfile(3416, 1580, { x: 0, y: 0, width: 1, height: 1 }, 'build-card', 1, 'wuwaflex')
+    const profile = createCalibrationProfile(3416, 1580, { x: 0, y: 0, width: 1, height: 1 }, 'build-card', 1, 'wide-card')
     const custom = profile.regions.find((region) => region.id === 'echo-1-stats')!.rect
     profile.regions = profile.regions.map((region) => region.id === 'echo-1-stats'
       ? { ...region, rect: { ...custom, x: custom.x + .004 } } : region)
     const loaded = parseCalibrationProfile(JSON.stringify(profile))
-    expect(loaded.buildCardFormat).toBe('wuwaflex-1580')
-    expect(loaded.regions.find((region) => region.id === 'echo-0-stats')?.rect).toEqual(buildCardFormat('wuwaflex-1580').echoes[0].stats)
+    expect(loaded.buildCardFormat).toBe('wide-card-1580')
+    expect(loaded.regions.find((region) => region.id === 'echo-0-stats')?.rect).toEqual(buildCardFormat('wide-card-1580').echoes[0].stats)
     expect(loaded.regions.find((region) => region.id === 'echo-1-stats')?.rect.x).toBe(custom.x + .004)
   })
 
   it('replaces the tall 1580 stats default while preserving a custom box', () => {
-    const profile = createCalibrationProfile(3416, 1580, { x: 0, y: 0, width: 1, height: 1 }, 'build-card', 1, 'wuwaflex-1580')
+    const profile = createCalibrationProfile(3416, 1580, { x: 0, y: 0, width: 1, height: 1 }, 'build-card', 1, 'wide-card-1580')
     const first = profile.regions.find((region) => region.id === 'echo-0-stats')!.rect
     const second = profile.regions.find((region) => region.id === 'echo-1-stats')!.rect
     const oldLabel = profile.regions.find((region) => region.id === 'echo-0-main-stat-label')!.rect
@@ -107,12 +117,12 @@ describe('WuWaFlex calibration defaults', () => {
   })
 
   it('does not relabel another card format solely because its dimensions match', () => {
-    const profile = createCalibrationProfile(3416, 1580, { x: 0, y: 0, width: 1, height: 1 }, 'build-card', 1, 'discord-bot')
-    expect(parseCalibrationProfile(JSON.stringify(profile)).buildCardFormat).toBe('discord-bot')
+    const profile = createCalibrationProfile(3416, 1580, { x: 0, y: 0, width: 1, height: 1 }, 'build-card', 1, 'landscape-card')
+    expect(parseCalibrationProfile(JSON.stringify(profile)).buildCardFormat).toBe('landscape-card')
   })
 
   it('updates saved default boxes without changing a manually positioned box', () => {
-    const profile = createCalibrationProfile(3416, 1600, { x: 0, y: 0, width: 1, height: 1 }, 'build-card', 1, 'wuwaflex')
+    const profile = createCalibrationProfile(3416, 1600, { x: 0, y: 0, width: 1, height: 1 }, 'build-card', 1, 'wide-card')
     const currentMain = profile.regions.find((region) => region.id === 'echo-0-main-stat-value')!.rect
     const currentSecondMain = profile.regions.find((region) => region.id === 'echo-1-main-stat-value')!.rect
     const currentLabel = profile.regions.find((region) => region.id === 'echo-0-main-stat-label')!.rect

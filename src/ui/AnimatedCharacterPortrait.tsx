@@ -5,7 +5,7 @@ import { Application, Assets, BaseTexture } from 'pixi.js'
 type PortraitStatus = 'idle' | 'loading' | 'ready' | 'error' | 'reduced-motion'
 
 // These source textures are 2048px squares, while their atlases were authored
-// against smaller canvases. Match Nanoka's viewer by restoring the authored
+// against smaller canvases. Match the source viewer by restoring the authored
 // atlas dimensions before the Spine runtime creates its mesh regions.
 const NORMALIZED_ATLAS_FOLDERS = [
   'Portraits_Kanteleila',
@@ -15,7 +15,7 @@ const NORMALIZED_ATLAS_FOLDERS = [
   'Portraits_Zanni'
 ]
 
-interface NanokaSpinePortraitProps {
+interface AnimatedCharacterPortraitProps {
   skeletonSourceUrl: string
   atlasSourceUrl: string
   artRect: { x: number; y: number; width: number; height: number }
@@ -25,7 +25,7 @@ interface NanokaSpinePortraitProps {
   onFallback: () => void
 }
 
-export interface NanokaSpinePortraitHandle {
+export interface AnimatedCharacterPortraitHandle {
   captureFrame: () => string | undefined
 }
 
@@ -50,7 +50,7 @@ function portraitResolution(renderScale: number) {
   return Math.max(.5, Math.min((window.devicePixelRatio || 1) * renderScale, 1.25))
 }
 
-export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaSpinePortraitProps>(function NanokaSpinePortrait({ skeletonSourceUrl, atlasSourceUrl, artRect, renderScale = 1, paused = false, onReady, onFallback }, ref) {
+export const AnimatedCharacterPortrait = forwardRef<AnimatedCharacterPortraitHandle, AnimatedCharacterPortraitProps>(function AnimatedCharacterPortrait({ skeletonSourceUrl, atlasSourceUrl, artRect, renderScale = 1, paused = false, onReady, onFallback }, ref) {
   const hostRef = useRef<HTMLDivElement>(null)
   const appRef = useRef<Application | undefined>(undefined)
   const artRectRef = useRef(artRect)
@@ -109,7 +109,7 @@ export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaS
     let resizeObserver: ResizeObserver | undefined
     let intersectionObserver: IntersectionObserver | undefined
     let isIntersecting = true
-    let isFocused = true
+    let isFocused = document.hasFocus()
     const updatePlayback = () => {
       if (!app) return
       const playing = !pausedRef.current && isIntersecting && isFocused && document.visibilityState === 'visible'
@@ -117,10 +117,10 @@ export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaS
       if (playing) app.start()
       else app.stop()
     }
-    const onFocus = () => { isFocused = true; updatePlayback() }
+    const onFocus = () => { isFocused = document.hasFocus(); updatePlayback() }
     const onBlur = () => { isFocused = false; updatePlayback() }
     const onVisibilityChange = () => {
-      if (document.visibilityState === 'visible') isFocused = true
+      isFocused = document.hasFocus()
       updatePlayback()
     }
     updatePlaybackRef.current = updatePlayback
@@ -172,21 +172,21 @@ export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaS
             fetch(atlasSourceUrl),
             fetch(skeletonSourceUrl)
           ])
-          if (!atlasResponse.ok || !skeletonResponse.ok) throw new Error('Nanoka Spine asset request failed.')
+          if (!atlasResponse.ok || !skeletonResponse.ok) throw new Error('source Spine asset request failed.')
           const atlasText = await atlasResponse.text()
           const pageSizes = atlasPageSizes(atlasText)
           const normalizedAtlas = await new Promise<TextureAtlas>((resolve, reject) => {
             new TextureAtlas(atlasText, (pagePath, loaded) => {
               void (async () => {
                 const textureResponse = await fetch(new URL(pagePath, atlasSourceUrl))
-                if (!textureResponse.ok) throw new Error(`Nanoka Spine texture request failed: ${pagePath}`)
+                if (!textureResponse.ok) throw new Error(`source Spine texture request failed: ${pagePath}`)
                 const bitmap = await createImageBitmap(await textureResponse.blob())
                 const expected = pageSizes.get(pagePath)
                 const canvas = document.createElement('canvas')
                 canvas.width = expected?.width ?? bitmap.width
                 canvas.height = expected?.height ?? bitmap.height
                 const context = canvas.getContext('2d')
-                if (!context) throw new Error('A canvas context could not be created for the Nanoka Spine texture.')
+                if (!context) throw new Error('A canvas context could not be created for the source Spine texture.')
                 context.imageSmoothingEnabled = true
                 context.imageSmoothingQuality = 'high'
                 context.drawImage(bitmap, 0, 0, bitmap.width, bitmap.height, 0, 0, canvas.width, canvas.height)
@@ -261,7 +261,7 @@ export const NanokaSpinePortrait = forwardRef<NanokaSpinePortraitHandle, NanokaS
       } catch (error) {
         if (disposed) return
         disposeRuntime()
-        console.warn('Nanoka animated portrait could not be loaded.', error)
+        console.warn('source animated portrait could not be loaded.', error)
         host.replaceChildren()
         setStatus('error')
         onFallback()

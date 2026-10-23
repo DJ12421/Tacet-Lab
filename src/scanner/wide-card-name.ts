@@ -1,4 +1,4 @@
-export function wuwaflexNameThreshold(pixels: Uint8ClampedArray, width: number, height: number) {
+export function wideCardNameThreshold(pixels: Uint8ClampedArray, width: number, height: number) {
   const brightness = (index: number) => pixels[index] * .2126 + pixels[index + 1] * .7152 + pixels[index + 2] * .0722
   const sampleHeight = Math.max(2, Math.round(height * .15))
   const background = new Float32Array(width)

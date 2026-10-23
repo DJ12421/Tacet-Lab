@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { usePageFocused } from './usePageFocused'
 import './echo-waveform.css'
 
 const TAU = Math.PI * 2
@@ -35,19 +36,24 @@ const initialPaths = waves.map((wave) => wavePath(0, wave))
 
 export function SkillCircleWave() {
   const svgRef = useRef<SVGSVGElement>(null)
+  const elapsedRef = useRef(0)
+  const pageFocused = usePageFocused()
 
   useEffect(() => {
-    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return
+    if (!pageFocused || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return
     const paths = svgRef.current?.querySelectorAll<SVGPathElement>('path')
     if (!paths) return
     let frame = 0
+    let previous = 0
     const render = (time: number) => {
-      waves.forEach((wave, index) => paths[index]?.setAttribute('d', wavePath(time * SPEED_MULTIPLIER, wave)))
+      if (previous) elapsedRef.current += time - previous
+      previous = time
+      waves.forEach((wave, index) => paths[index]?.setAttribute('d', wavePath(elapsedRef.current * SPEED_MULTIPLIER, wave)))
       frame = requestAnimationFrame(render)
     }
     frame = requestAnimationFrame(render)
     return () => cancelAnimationFrame(frame)
-  }, [])
+  }, [pageFocused])
 
   return <svg ref={svgRef} className="cbc-skill-circle-wave" viewBox="0 0 100 100" fill="none" aria-hidden="true">
     {initialPaths.map((path, index) => <path key={colors[index]} d={path} className={colors[index]} strokeWidth={widths[index]} vectorEffect="non-scaling-stroke" strokeLinecap="round" opacity={opacities[index]}/>)}

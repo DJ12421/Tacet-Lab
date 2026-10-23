@@ -139,7 +139,7 @@ describe('combat Step 3 public interface fixtures', () => {
     expectClose(result.selected, 250 * D90)
   })
 
-  it('rejects a main Echo rotation that reuses the Nanoka cooldown too early', () => {
+  it('rejects a main Echo rotation that reuses the catalog source cooldown too early', () => {
     const context = fixture({ echoes:[{ stat:'atk', mode:'flat', value:0 }], mainEchoId:'echo-0' })
     context.registry.echoes = {
       'fixture-echo-0': {

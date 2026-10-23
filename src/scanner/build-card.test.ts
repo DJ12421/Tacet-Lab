@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { canUseStatBlockWithoutRows, cardEchoConcurrency, classifyDiscordSequence, classifyWuwaflexSequence, confirmedDroppedDigitValue, discordCharacterLevelField, echoSignatureCandidates, findGoldBadgeRun, mapCardEchoes, mergeVerifiedStatRows, parseBuildCardStats, resolveKernelPuppetTint } from './build-card'
+import { canUseStatBlockWithoutRows, cardEchoConcurrency, classifyDiscordSequence, classifyWideCardSequence, confirmedDroppedDigitValue, discordCharacterLevelField, echoSignatureCandidates, findGoldBadgeRun, mapCardEchoes, mergeVerifiedStatRows, parseBuildCardStats, resolveKernelPuppetTint } from './build-card'
 import { buildCardFormat, buildCardFormatRegions } from './build-card-formats'
 
 it('distinguishes red Anger art from other similarly shaped Kernel Puppets', () => {
@@ -39,7 +39,7 @@ it('allows all five Echoes to scan together when given more than four OCR worker
   expect(results).toEqual([0, 1, 2, 3, 4])
 })
 
-describe('Discord Bot character level badge', () => {
+describe('Landscape card character level badge', () => {
   it('reads a level only from the badge text', () => {
     expect(discordCharacterLevelField('Verina LV.80').value).toBe(80)
     expect(discordCharacterLevelField('LV.8O').value).toBe(80)
@@ -63,7 +63,7 @@ it('uses a strong Lamp of Nether Road badge to exclude similar Echo art from oth
   expect(names).not.toContain('Kernel Puppet: Joy')
 })
 
-describe('Discord Bot sequence stars', () => {
+describe('Landscape card sequence stars', () => {
   it('counts the filled prefix and lowers confidence for inconsistent stars', () => {
     const two = classifyDiscordSequence([180, 177, 114, 114, 113, 114])
     expect(two.value).toBe(2)
@@ -76,10 +76,10 @@ describe('Discord Bot sequence stars', () => {
   })
 })
 
-describe('WuWaFlex card layout and sequence icons', () => {
+describe('Wide card card layout and sequence icons', () => {
   it('uses one label for all sizes and includes sequence and Echo name regions', () => {
-    for (const id of ['wuwaflex', 'wuwaflex-1580', 'wuwaflex-1272', 'wuwaflex-1377'] as const) {
-      expect(buildCardFormat(id).label).toBe('WuWaFlex')
+    for (const id of ['wide-card', 'wide-card-1580', 'wide-card-1272', 'wide-card-1377'] as const) {
+      expect(buildCardFormat(id).label).toBe('Wide card')
       expect(buildCardFormatRegions(id).some((region) => region.id === 'sequence')).toBe(true)
       expect(buildCardFormatRegions(id).filter((region) => /^echo-\d+-name$/.test(region.id))).toHaveLength(5)
     }
@@ -87,8 +87,8 @@ describe('WuWaFlex card layout and sequence icons', () => {
 
   it('uses the tighter five-row spacing only for 3416×1580 cards', () => {
     for (let index = 0; index < 5; index += 1) {
-      const shorter = buildCardFormat('wuwaflex-1580').echoes[index].stats
-      const standard = buildCardFormat('wuwaflex').echoes[index].stats
+      const shorter = buildCardFormat('wide-card-1580').echoes[index].stats
+      const standard = buildCardFormat('wide-card').echoes[index].stats
       expect(shorter.y * 1580).toBeCloseTo(1224)
       expect(shorter.height * 1580 / 5).toBeCloseTo(60.8)
       expect((shorter.y + shorter.height) * 1580).toBeCloseTo(1528)
@@ -97,12 +97,12 @@ describe('WuWaFlex card layout and sequence icons', () => {
   })
 
   it('counts only a consistent prefix of white sequence icons', () => {
-    expect(classifyWuwaflexSequence([0, 0, 0, 0, 0, 0]).value).toBe(0)
-    expect(classifyWuwaflexSequence([.3, .32, 0, 0, 0, 0]).value).toBe(2)
-    expect(classifyWuwaflexSequence([.25, .32, .25, .3, 0, 0]).value).toBe(4)
-    expect(classifyWuwaflexSequence([.3, .3, .3, .3, .3, .3]).value).toBe(6)
-    expect(classifyWuwaflexSequence([.3, 0, .3, 0, 0, 0]).confidence).toBe(.25)
-    expect(classifyWuwaflexSequence([NaN, 0, 0, 0, 0, 0]).confidence).toBe(0)
+    expect(classifyWideCardSequence([0, 0, 0, 0, 0, 0]).value).toBe(0)
+    expect(classifyWideCardSequence([.3, .32, 0, 0, 0, 0]).value).toBe(2)
+    expect(classifyWideCardSequence([.25, .32, .25, .3, 0, 0]).value).toBe(4)
+    expect(classifyWideCardSequence([.3, .3, .3, .3, .3, .3]).value).toBe(6)
+    expect(classifyWideCardSequence([.3, 0, .3, 0, 0, 0]).confidence).toBe(.25)
+    expect(classifyWideCardSequence([NaN, 0, 0, 0, 0, 0]).confidence).toBe(0)
   })
 })
 
@@ -115,7 +115,7 @@ describe('official build-card stat parsing', () => {
     expect(canUseStatBlockWithoutRows(block.replace('7.6%', '76%'), .96)).toBe(false)
     expect(canUseStatBlockWithoutRows(block.replace('HP 7.9%', 'ATK 40'), .96)).toBe(false)
   })
-  it('keeps Discord Bot substats separate when the main-stat value OCR drops digits', () => {
+  it('keeps Landscape card substats separate when the main-stat value OCR drops digits', () => {
     const reactor = parseBuildCardStats('ATK 40\nCrit. DMG 13.8%\nEnergy Regen 10.8%\nHeavy Attack DMG Bonus 8.6%\nHP 7.9%', 4, { label: 'DEF', value: '1.8%' })
     expect(reactor.mainStat.key).toBe('defPercent')
     expect(reactor.subStats.map((field) => field.value)).toEqual([
@@ -134,7 +134,7 @@ describe('official build-card stat parsing', () => {
     expect(merged).toContain('Energy Regen 11.6%')
     expect(parseBuildCardStats(merged, 3, { label: 'Spectro DMG', value: '30%' }).subStats.map((field) => field.value)).toContainEqual({ key: 'energyRegen', value: 11.6 })
   })
-  it('ignores isolated OCR punctuation after a WuWaFlex stat label', () => {
+  it('ignores isolated OCR punctuation after a Wide card stat label', () => {
     const parsed = parseBuildCardStats('ATK ! 9.4%\nCrit. Rate 9.3%', 1, { label: 'ATK', value: '18%' })
     expect(parsed.subStats[0].value).toEqual({ key: 'atkPercent', value: 9.4 })
   })
@@ -202,7 +202,7 @@ describe('official build-card stat parsing', () => {
     expect(parsed.subStats.map((field) => field.confidence)).toEqual([.8, .8])
   })
 
-  it('joins separate WuWaFlex main-stat OCR while preserving the same substat', () => {
+  it('joins separate Wide card main-stat OCR while preserving the same substat', () => {
     const parsed = parseBuildCardStats('Crit. Rate 8.1%\nHP 8.6%', 4, { label: 'Crit. Rate\n', value: '22%\n' })
 
     expect(parsed.mainStat).toEqual({ key: 'critRate', value: 22 })
@@ -212,7 +212,7 @@ describe('official build-card stat parsing', () => {
     ])
   })
 
-  it('treats a one-cost WuWaFlex HP main as percentage when number OCR drops the percent sign', () => {
+  it('treats a one-cost Wide card HP main as percentage when number OCR drops the percent sign', () => {
     const parsed = parseBuildCardStats('HP 8.6%\nCrit. Rate 8.1%', 1, { label: 'HP', value: '22.8' })
 
     expect(parsed.mainStat).toEqual({ key: 'hpPercent', value: 22.8 })
@@ -222,7 +222,7 @@ describe('official build-card stat parsing', () => {
     ])
   })
 
-  it('parses five WuWaFlex rows with abbreviated Resonance and flat stats', () => {
+  it('parses five Wide card rows with abbreviated Resonance and flat stats', () => {
     const parsed = parseBuildCardStats('Res. Liberation 10.9%\nCrit. DMG 15%\nHP 7.9%\nDEF 50\nCrit. Rate 9.9%', 4, { label: 'Crit. DMG', value: '44%' })
 
     expect(parsed.mainStat).toEqual({ key: 'critDamage', value: 44 })
@@ -235,7 +235,7 @@ describe('official build-card stat parsing', () => {
     ])
   })
 
-  it('keeps each Echo row from a WuWaFlex card as a separate stat', () => {
+  it('keeps each Echo row from a Wide card card as a separate stat', () => {
     const parsed = parseBuildCardStats('Crit. Rate 7.5%\nHP 390\nEnergy Regen 9.2%\nHeavy Attack 9.4%\nCrit. DMG 13.8%', 1, { label: 'HP', value: '22.8%' })
 
     expect(parsed.subStats.map((field) => field.value)).toEqual([
@@ -247,7 +247,7 @@ describe('official build-card stat parsing', () => {
     ])
   })
 
-  it('recovers a partially recognized WuWaFlex row among five different substats', () => {
+  it('recovers a partially recognized Wide card row among five different substats', () => {
     const parsed = parseBuildCardStats('ATK 8.6%\nDEF Co 50\nCritDMG 15%\nCrit. Rate 9.3%\nATK 40', 4, { label: 'Crit. DMG', value: '44%' })
     expect(parsed.subStats.map((field) => field.value)).toEqual([
       { key: 'atkPercent', value: 8.6 },

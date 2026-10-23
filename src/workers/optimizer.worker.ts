@@ -2,7 +2,7 @@
 import { createOptimizerWorkPlan, optimizeOptimizerWorkUnit, type OptimizerCandidateEvaluator, type OptimizerWorkPlan } from '../domain/optimizer'
 import { disabledEquipmentEffectIds, sonatasForEchoes, withEquipmentBuffs } from '../domain/combat/runtime'
 import type { OptimizerRequest } from '../domain/types'
-import { resolveTeamWorkspace, rotationDamageByMode } from '../ui/team-workspace-model'
+import { resolveTeamWorkspace, rotationActionsForTarget, rotationDamageByMode } from '../ui/team-workspace-model'
 
 type InitCommand = { type: 'init'; request: OptimizerRequest }
 type RunCommand = { type: 'run'; requestId: string; workIndex: number; scoreThreshold?: number; maxEvaluations?: number }
@@ -32,9 +32,9 @@ function rotationEvaluator(request: OptimizerRequest): OptimizerCandidateEvaluat
       echoes: request.echoes,
       disabledEffectIdsByMember:request.combat ? { [member?.memberId ?? build.id]:disabledEquipmentEffectIds(request.combat.weapon, sonatasForEchoes(echoes), request.disabledEquipmentBuffKeys ?? []) } : undefined
     })
-    const totals = rotationDamageByMode(model)
+    const totals = rotationDamageByMode(model, rotation.targetId)
     const mode = rotation.team.scenario?.resultMode ?? 'expected'
-    return { score: totals[mode], damage: { ...totals, hits: model.actions.length, attackId: rotation.targetId } }
+    return { score: totals[mode], damage: { ...totals, hits: rotationActionsForTarget(model, rotation.targetId).length, attackId: rotation.targetId } }
   }
 }
 

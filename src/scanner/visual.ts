@@ -3,7 +3,7 @@ import type { VisualRecognition } from './parser'
 import type { ScanRect, ScanRegion } from './types'
 import { regionsForLayout } from './regions'
 import { generatedSonataSignatures } from '../game-data/scanner-signatures.generated'
-import { wuwaflexSonataSignatures } from './wuwaflex-sonata-signatures'
+import { wideCardSonataSignatures } from './wide-card-sonata-signatures'
 import { iconColor, iconColorDistance, type IconColor } from './icon-color'
 
 function rgbToHsl(red: number, green: number, blue: number) {
@@ -196,13 +196,13 @@ export function classifyBackpackSonataGlyph(pixels: Uint8ClampedArray, allowedNa
     const reference = sonataSignatureTemplates.find((template) => template.name === name)?.color
     return reference && sonataHueDistance(color, reference) < .18
   })
-  if (nearColors.length < 2 || nearColors.some((name) => !wuwaflexSonataSignatures.some((entry) => entry.name === name))) return
+  if (nearColors.length < 2 || nearColors.some((name) => !wideCardSonataSignatures.some((entry) => entry.name === name))) return
   const captured = centeredGlyph(Array.from({ length: 24 * 24 }, (_, index) => {
     const offset = index * 4
     const channels = [pixels[offset], pixels[offset + 1], pixels[offset + 2]]
     return pixels[offset + 3] > 80 && Math.min(...channels) >= 130 && Math.max(...channels) - Math.min(...channels) <= 35
   }))
-  const ranked = nearColors.map((name) => ({ name, score: Math.max(...wuwaflexSonataSignatures
+  const ranked = nearColors.map((name) => ({ name, score: Math.max(...wideCardSonataSignatures
     .filter((entry) => entry.name === name)
     .map((entry) => glyphOverlap(captured, centeredGlyph(sonataGlyph(entry.mask))))) }))
     .sort((left, right) => right.score - left.score)
@@ -212,7 +212,7 @@ export function classifyBackpackSonataGlyph(pixels: Uint8ClampedArray, allowedNa
   return { value: best.name, confidence: Math.min(.9, .55 + best.score * .4) }
 }
 
-export function classifyWuwaflexSonata(pixels: Uint8ClampedArray, allowedNames?: string[]): VisualRecognition['sonata'] {
+export function classifyWideCardSonata(pixels: Uint8ClampedArray, allowedNames?: string[]): VisualRecognition['sonata'] {
   if (pixels.length !== 24 * 24 * 4) return
   const allowed = allowedNames?.length ? new Set(allowedNames) : undefined
   const captured = Array.from({ length: 24 * 24 }, (_, index) => {
@@ -237,7 +237,7 @@ export function classifyWuwaflexSonata(pixels: Uint8ClampedArray, allowedNames?:
   const badgeColor = whiteRing ? undefined : iconColor(ringPixels, 140)
   if (badgeColor && allowed && allowed.size > 1) {
     const colors = [...allowed].map((name) => {
-      const references: IconColor[] = wuwaflexSonataSignatures.filter((entry) => entry.name === name).map((entry) => entry.color)
+      const references: IconColor[] = wideCardSonataSignatures.filter((entry) => entry.name === name).map((entry) => entry.color)
       const catalog = generatedSonataSignatures.find((entry) => entry.name === name)
       if (!references.length && catalog && 'color' in catalog) references.push(catalog.color)
       return references.length ? { name, distance: Math.min(...references.map((color) => iconColorDistance(badgeColor, color))) } : undefined
@@ -248,10 +248,10 @@ export function classifyWuwaflexSonata(pixels: Uint8ClampedArray, allowedNames?:
         return { value: best.name, confidence: Math.min(.95, .65 + (runnerUp.distance - best.distance)) }
     }
   }
-  const colorMatched = badgeColor && wuwaflexSonataSignatures.some((template) => iconColorDistance(badgeColor, template.color) < .12)
+  const colorMatched = badgeColor && wideCardSonataSignatures.some((template) => iconColorDistance(badgeColor, template.color) < .12)
   const ranked = new Map<string, number>(), allowedRanked = new Map<string, number>(), centeredRanked = new Map<string, number>()
   const centeredCaptured = (allowed || colorMatched) ? centeredGlyph(captured) : undefined
-  for (const template of wuwaflexSonataSignatures) {
+  for (const template of wideCardSonataSignatures) {
     const expected = sonataGlyph(template.mask)
     const score = glyphOverlap(captured, expected)
     const colorCompatible = !badgeColor || !colorMatched || iconColorDistance(badgeColor, template.color) < .12
@@ -273,14 +273,14 @@ export function classifyWuwaflexSonata(pixels: Uint8ClampedArray, allowedNames?:
     ?? (centeredCaptured ? select(centeredRanked, .55, .05) : undefined)
 }
 
-export async function recognizeWuwaflexSonataAt(image: HTMLImageElement, rect: ScanRect, allowedNames?: string[]) {
+export async function recognizeWideCardSonataAt(image: HTMLImageElement, rect: ScanRect, allowedNames?: string[]) {
   const canvas = document.createElement('canvas'); canvas.width = 24; canvas.height = 24
   const context = canvas.getContext('2d', { willReadFrequently: true }); if (!context) return
   let best: VisualRecognition['sonata']
   for (const yOffset of [0, -.2]) {
     context.clearRect(0, 0, 24, 24)
     context.drawImage(image, image.naturalWidth * rect.x, image.naturalHeight * (rect.y + rect.height * yOffset), image.naturalWidth * rect.width, image.naturalHeight * rect.height, 0, 0, 24, 24)
-    const candidate = classifyWuwaflexSonata(context.getImageData(0, 0, 24, 24).data, allowedNames)
+    const candidate = classifyWideCardSonata(context.getImageData(0, 0, 24, 24).data, allowedNames)
     if (candidate && (!best || candidate.confidence > best.confidence)) best = candidate
   }
   if (best || !allowedNames?.length) return best

@@ -265,7 +265,7 @@ For a rotation:
 
 1. Validate and stably order commands by timestamp and original position.
 2. Enforce source-backed action cooldowns; no charge or recharge model exists
-   until Encore or Nanoka exposes reliable structured values for one.
+   until Encore or catalog source exposes reliable structured values for one.
 3. Resolve each damaging, healing, or shielding command through the action
    implementation above.
 4. Accumulate per-action, per-actor, per-type, total, and DPS results.
@@ -292,7 +292,7 @@ visible in traces and tested at the public interface.
 
 ## Parser and compiler contract
 
-The local Nanoka parser remains an offline ingestion and review assistant. It
+The local catalog source parser remains an offline ingestion and review assistant. It
 must produce neutral drafts, not executable mechanics:
 
 ```ts
@@ -333,7 +333,7 @@ src/game-data/combat/
   reviewed-mechanics.generated.ts
   registry.ts
 
-.local-tools/nanoka-review/
+.local-tools/catalog-review/
   parser.mjs           retained extraction and candidate generation
   compiler.mjs         replaced to emit the new registry contract
 ```

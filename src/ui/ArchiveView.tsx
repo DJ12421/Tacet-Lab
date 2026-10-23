@@ -64,7 +64,7 @@ function CatalogImage({ src, alt }: { src?: string; alt: string }) {
 }
 
 const plainDescription = (description: string) => description.replace(/<[^>]*>/g, '').replace(/\{Cus:[^}]*\}/g, '')
-const NanokaText = ({ text }: { text: string }) => <>{text.split(/(<color=Highlight>.*?<\/color>)/g).map((part, index) => {
+const CatalogMarkupText = ({ text }: { text: string }) => <>{text.split(/(<color=Highlight>.*?<\/color>)/g).map((part, index) => {
   const highlight = part.match(/^<color=Highlight>(.*?)<\/color>$/)
   return highlight ? <mark key={index}>{highlight[1]}</mark> : part
 })}</>
@@ -115,11 +115,11 @@ function ArchiveDetailDialog({ detail, onClose }: { detail: ArchiveDetail; onClo
           </dl>
           <section className="archive-detail-section archive-skill-input-guide">
             <h3>Skill Input</h3>
-            {item.skillInputGuide.features.length > 0 && <div className="archive-skill-guide-features"><strong>Features</strong><ul>{item.skillInputGuide.features.map((feature) => <li key={feature}><NanokaText text={feature}/></li>)}</ul></div>}
+            {item.skillInputGuide.features.length > 0 && <div className="archive-skill-guide-features"><strong>Features</strong><ul>{item.skillInputGuide.features.map((feature) => <li key={feature}><CatalogMarkupText text={feature}/></li>)}</ul></div>}
             {item.skillInputGuide.overviewImageSourceUrl && <img className="archive-skill-guide-overview" src={item.skillInputGuide.overviewImageSourceUrl} alt="Skill input overview"/>}
             {item.skillInputGuide.sections.length > 0 && <div className="archive-skill-guide-instructions"><strong>Instructions</strong>{item.skillInputGuide.sections.map((section) => <article key={section.id}>
               <h4>{section.name}</h4>
-              {section.entries.map((entry) => <div className="archive-skill-guide-entry" key={entry.id}><p>· <NanokaText text={entry.description}/></p>{entry.imageSourceUrls.length > 0 && <div className="archive-skill-guide-images">{entry.imageSourceUrls.map((source) => <img src={source} alt="" key={source}/>)}</div>}</div>)}
+              {section.entries.map((entry) => <div className="archive-skill-guide-entry" key={entry.id}><p>· <CatalogMarkupText text={entry.description}/></p>{entry.imageSourceUrls.length > 0 && <div className="archive-skill-guide-images">{entry.imageSourceUrls.map((source) => <img src={source} alt="" key={source}/>)}</div>}</div>)}
             </article>)}</div>}
           </section>
         </>}
@@ -280,7 +280,7 @@ export function ArchiveView({ roverGender, tab, onTabChange }: { roverGender: 'm
 
     {tab === 'weapons' && weaponPageCount > 1 && <nav className="archive-load-more" aria-label="Weapon pages"><p>Showing {(currentWeaponPage - 1) * WEAPON_PAGE_SIZE + 1}–{Math.min(currentWeaponPage * WEAPON_PAGE_SIZE, results.length)} of {results.length}</p><div className="archive-page-actions"><button type="button" className="secondary" disabled={currentWeaponPage === 1} onClick={() => setWeaponPage(currentWeaponPage - 1)}>Previous</button><span>Page {currentWeaponPage} of {weaponPageCount}</span><button type="button" className="secondary" disabled={currentWeaponPage === weaponPageCount} onClick={() => setWeaponPage(currentWeaponPage + 1)}>Next</button></div></nav>}
     {tab !== 'characters' && tab !== 'weapons' && visibleLimit < results.length && <div className="archive-load-more"><p>Showing {visibleResults.length} of {results.length}</p><button type="button" className="secondary" onClick={() => setVisibleLimit((value) => value + PAGE_SIZE)}>Show {Math.min(PAGE_SIZE, results.length - visibleLimit)} more</button></div>}
-    <p className="archive-credit">Catalog and artwork from Nanoka 3.7. Select a card for details.</p>
+    <p className="archive-credit">Catalog and artwork used with permission. Select a card for details.</p>
     {activeDetail && <ArchiveDetailDialog detail={activeDetail} onClose={closeDetail}/>}
   </section>
 }

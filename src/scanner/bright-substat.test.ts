@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { brightSubstatThreshold } from './bright-substat'
 
-describe('WuWaFlex highlighted stat rows', () => {
+describe('Wide card highlighted stat rows', () => {
   it('keeps bright label and colored value text while clearing a changing background', () => {
     const width = 120, height = 30
     const pixels = new Uint8Array(width * height)

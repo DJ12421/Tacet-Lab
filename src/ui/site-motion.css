@@ -812,6 +812,10 @@ input[type="range"]:hover {
 
 /* Preserve exports and accessibility preferences. */
 
+html.site-unfocused *,html.site-unfocused *::before,html.site-unfocused *::after {
+  animation-play-state: paused!important;
+}
+
 .is-exporting,.is-exporting * {
   animation: none!important;
   transition: none!important;

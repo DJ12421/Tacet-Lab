@@ -41,7 +41,7 @@ export function PrivacyLegalView() {
             <ul>
               <li><strong>GitHub Pages</strong> hosts the website.</li>
               <li><strong>Cloudflare Web Analytics</strong> reports aggregate page views, visits, referrers, and browser performance. Its beacon does not use cookies or access local storage, session storage, or IndexedDB. Cloudflare states that source IP addresses received during request handling are discarded at the nearest data center rather than stored in its core databases or logs.</li>
-              <li><strong>Nanoka and referenced asset hosts</strong> provide catalog data, artwork, and selected character portrait files.</li>
+              <li><strong>Catalog and asset providers</strong> supply game data, artwork, and selected character portrait files.</li>
               <li><strong>Google Fonts</strong> provides the Cinzel typeface.</li>
               <li><strong>Tesseract.js distribution hosts</strong> may provide the OCR worker, WebAssembly runtime, and English language model on first use.</li>
             </ul>
@@ -68,7 +68,7 @@ export function PrivacyLegalView() {
           <div className="legal-copy">
             <p>Tacet Lab is an independent, unofficial fan project. It is not affiliated with, sponsored by, approved by, or endorsed by Wuthering Waves, Kuro Games, or their affiliates.</p>
             <p>Wuthering Waves, Kuro Games, and all related names, characters, artwork, icons, game data, and trademarks belong to their respective owners. Their appearance identifies the game and the in-game items this tool helps players organize; it does not imply ownership or endorsement.</p>
-            <p>Catalog metadata and artwork are sourced from the attributed Nanoka dataset with permission. Third-party links and source credits do not imply that those providers endorse Tacet Lab.</p>
+            <p>Catalog metadata and artwork are sourced from third-party data with permission. This does not imply endorsement of Tacet Lab.</p>
           </div>
         </Panel>
 
@@ -123,7 +123,6 @@ export function PrivacyLegalView() {
           <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noreferrer">GitHub Privacy Statement <span>↗</span></a>
           <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noreferrer">Cloudflare Privacy Policy <span>↗</span></a>
           <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer">Google Privacy Policy <span>↗</span></a>
-          <a href="https://ww.nanoka.cc/" target="_blank" rel="noreferrer">Nanoka <span>↗</span></a>
         </Panel>
         <p className="legal-note">This page describes Tacet Lab&apos;s current behavior in plain language. It is not legal advice and does not replace the policies of linked third-party services.</p>
       </aside>

@@ -83,7 +83,7 @@ describe('scan review checkpoint', () => {
           workerId: 'visual-classifier', jobId: 'art', processingMs: 0, preprocessing: 'visual'
         },
         'echo-0-name': {
-          region: { id: 'echo-0-name', kind: 'name' as const, label: 'WuWaFlex Echo 1 name', rect: { x: .27, y: .6, width: .14, height: .03 }, recognition: 'text' as const },
+          region: { id: 'echo-0-name', kind: 'name' as const, label: 'Wide card Echo 1 name', rect: { x: .27, y: .6, width: .14, height: .03 }, recognition: 'text' as const },
           originalCrop: 'data:image/png;base64,abc', processedCrop: 'data:image/png;base64,abc', rawOcr: 'Hooscamp',
           confidence: .9, parsedValue: 'Hooscamp', validation: { valid: true, messages: [] },
           workerId: 'ocr-1', jobId: 'name', processingMs: 1, preprocessing: 'name'
@@ -98,8 +98,8 @@ describe('scan review checkpoint', () => {
     }
     render(<ScanReviewCard candidate={buildCard} onChange={vi.fn()} onDiscard={vi.fn()} onSave={vi.fn()}/> )
     fireEvent.click(screen.getByRole('button', { name: 'Show field evidence' }))
-    expect(screen.getByText('WuWaFlex Echo 1 name')).toBeInTheDocument()
-    expect(screen.getByAltText('WuWaFlex Echo 1 name original crop')).toBeInTheDocument()
+    expect(screen.getByText('Wide card Echo 1 name')).toBeInTheDocument()
+    expect(screen.getByAltText('Wide card Echo 1 name original crop')).toBeInTheDocument()
     expect(screen.getByText('Echo 1 art').closest('article')?.querySelector('code')).toHaveTextContent('Hooscamp')
     expect(screen.getByText('Echo 1 Sonata').closest('article')?.querySelector('code')).toHaveTextContent('Sierra Gale')
   })
