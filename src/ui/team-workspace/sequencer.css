@@ -21,6 +21,9 @@
   .tw-rotation-action-summary,.tw-rotation-layout .tw-rotation-composer,.tw-rotation-action-fields {
     grid-template-columns: 1fr;
   }
+  .tw-rotation-layout .tw-rotation-composer {
+    position: static;
+  }
 }
 
 /* Rotation card edge control and natural-height analysis column. */

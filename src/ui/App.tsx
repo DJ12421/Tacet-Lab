@@ -246,16 +246,17 @@ export default function App() {
   }
   const navigateFromShell = (nextView: AppView) => {
     setMobileMoreOpen(false)
-    if (nextView === 'teams') setTeamsGalleryRequest((request) => request + 1)
     setSidebarOpenOverride(null)
-    setView(nextView)
+    if (setView(nextView) && nextView === 'teams') setTeamsGalleryRequest((request) => request + 1)
   }
   const startTutorial = (id: GuideId) => {
     setTutorialFirstVisit(isFirstVisit(id))
     const destination: AppView = id === 'optimizer' || id === 'theorizer' || id === 'rotation' || id === 'overview' || id === 'forte' ? 'teams' : id === 'backup' ? view : id
     if (view === destination) { setTutorialId(id); return }
-    if (destination === 'teams') setTeamsGalleryRequest((request) => request + 1)
-    if (setView(destination)) setTutorialId(id)
+    if (setView(destination)) {
+      if (destination === 'teams') setTeamsGalleryRequest((request) => request + 1)
+      setTutorialId(id)
+    }
   }
   const isFirstVisit = (id: GuideId) => {
     try { return window.localStorage.getItem(`tacet-lab-visited-${id}`) !== 'true' } catch { return true }

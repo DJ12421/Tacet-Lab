@@ -2,7 +2,7 @@ import { expect, it } from 'vitest'
 import { combatTargets } from '../domain/combat/runtime'
 import type { Build, OwnedCharacter, OwnedWeapon, Team } from '../domain/types'
 import { characterCatalog, weaponCatalog } from '../game-data'
-import { resolveTeamWorkspace } from './team-workspace-model'
+import { resolveTeamWorkspace, rotationActionsForTarget, rotationDamageByMode, TEAM_LOOP_TARGET_ID, type TeamActionModel } from './team-workspace-model'
 
 it('keeps team damage results while omitting unused calculation traces', () => {
   const catalog = characterCatalog.find((entry) => combatTargets(entry.id).some((target) => target.kind === 'damage'))!
@@ -27,4 +27,20 @@ it('keeps team damage results while omitting unused calculation traces', () => {
   expect(selectedTarget.members[0].formulaRows).toEqual(lean.members[0].formulaRows.filter((row) => row.target.id === target.id))
   expect(rotationOnly.members.every((member) => member.formulaRows.length === 0)).toBe(true)
   expect(rotationOnly.actions.map(({ normal, critical, expected }) => [normal, critical, expected])).toEqual(lean.actions.map(({ normal, critical, expected }) => [normal, critical, expected]))
+})
+
+it('counts only complete damage clips between loop markers', () => {
+  const action = (id: string, timestamp: number, duration: number, expected: number): TeamActionModel => ({
+    action: { id, timestamp, duration, buildId: 'build', attackId: id },
+    normal: expected, critical: expected, expected, resultKind: 'damage', activeBuffs: [], activates: [], warnings: []
+  })
+  const team: Team = { id: 'team', name: 'Loop', buildIds: [], enemy: { level: 90, resistance: 10, damageReduction: 0 }, rotationDuration: 10, actions: [], loop: { start: 2, end: 6 } }
+  const model = {
+    team,
+    actions: [action('before', 1, 2, 100), action('inside', 2, 2, 200), action('crosses-end', 5, 2, 300), action('at-end', 5, 1, 400)]
+  }
+
+  expect(rotationActionsForTarget(model, TEAM_LOOP_TARGET_ID).map((row) => row.action.id)).toEqual(['inside', 'at-end'])
+  expect(rotationDamageByMode(model, TEAM_LOOP_TARGET_ID).expected).toBe(600)
+  expect(rotationDamageByMode(model).expected).toBe(1000)
 })

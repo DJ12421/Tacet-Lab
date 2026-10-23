@@ -683,6 +683,10 @@ function calculateAction(registry: MechanicsRegistry, request: ActionRequest): C
       } } : {})
     }
     const triggeredTuneAmp = effects.triggeredActions.some((trigger) => trigger.referenceActionId && resolveAction(registry, member, trigger.referenceActionId).formula.kind === 'tune-amp')
+    if (action.sourceId.startsWith('imported:')) return { ok:true, value:result, warnings:[{
+      code:'unverified-data', message:'Imported attack damage is a source estimate; confirm it against the current English in-game UI.',
+      sourceId:action.sourceId, actorId:request.actorId, actionId:request.actionId
+    }] }
     return action.formula.kind === 'tune-break' || action.formula.kind === 'tune-amp' || triggeredTuneAmp || (action.formula.kind === 'negative-status' && (request.setup.enemy.statusStacks?.[action.formula.status] ?? 0) > 0)
       ? { ok:true, value:result, warnings:[{ code:'unverified-data', message:`${action.formula.kind === 'tune-break' ? 'Base Tune Break' : action.formula.kind === 'tune-amp' || triggeredTuneAmp ? 'Tune AMP' : 'Negative status'} damage is an unverified estimate; confirm it against the current English in-game UI.`, sourceId:action.sourceId, actorId:request.actorId, actionId:request.actionId }] }
       : success(result)

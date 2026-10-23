@@ -1,7 +1,7 @@
 import type { AccountDocument, OwnedCharacter, RotationAction, StatKey, StatLine, Team, TheorycraftBuild } from '../domain/types'
 import { createLocalId } from '../domain/id'
-import { characterCatalog, echoCatalog, GAME_DATA_VERSION, isFixedSkillValueName, sonataCatalog, weaponCatalog } from '../game-data'
-import { mechanicsRegistry } from '../game-data/combat/registry'
+import { characterCatalog, echoCatalog, GAME_DATA_VERSION, sonataCatalog, weaponCatalog } from '../game-data'
+import { resolveRotationActionId } from '../game-data/combat/rotation-action-mapping'
 
 type RecordValue = Record<string, unknown>
 const record = (value: unknown): value is RecordValue => Boolean(value) && typeof value === 'object' && !Array.isArray(value)
@@ -144,15 +144,11 @@ export function convertRotationExport(value: RecordValue, current: AccountDocume
     const teamMembers = members.map((member, slot) => ({ ...member, memberId: `${id}:member:${slot}` }))
     const actions: RotationAction[] = source.actions.map((action, index) => {
       const member = characters[action.slot]
-      const catalog = characterCatalog.find((entry) => entry.id === member.catalogId)!
-      const echoId = echoCatalog.find((entry) => entry.name === builds[action.slot].mainEchoName)?.id
-      const known = action.attackId && (catalog.attacks.some((entry) => entry.id === action.attackId && !isFixedSkillValueName(entry.name)) ||
-        (mechanicsRegistry.characters[member.catalogId]?.actions[action.attackId]?.kind !== 'utility' && Boolean(mechanicsRegistry.characters[member.catalogId]?.actions[action.attackId])) ||
-        (echoId && mechanicsRegistry.echoes?.[echoId]?.actions[action.attackId]?.kind !== 'utility' && Boolean(mechanicsRegistry.echoes?.[echoId]?.actions[action.attackId])))
-      if (!known) unmatched.add(`${member.name}: ${action.attackName}`)
+      const attackId = resolveRotationActionId(member.catalogId, action.attackId, action.attackName, builds[action.slot].mainEchoName)
+      if (!attackId) unmatched.add(`${member.name}: ${action.attackName}`)
       return {
         id: `${id}:action:${index}`, buildId: teamMembers[action.slot].memberId,
-        attackId: known ? action.attackId! : `wuwalab:${encodeURIComponent(action.attackName)}`,
+        attackId: attackId ?? `wuwalab:${encodeURIComponent(action.attackName)}`,
         label: action.attackName, timestamp: action.timestamp,
         duration: Math.min(0.8, source.duration - action.timestamp)
       }

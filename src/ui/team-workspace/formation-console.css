@@ -1611,6 +1611,30 @@
   text-align: right;
 }
 
+.tw-rotation-save-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.tw-rotation-save-controls > button {
+  min-height: 36px;
+}
+
+.tw-rotation-save-controls > button:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.tw-rotation-save-error {
+  flex-basis: 100%;
+  color: #ed7478;
+  font-size: var(--font-size-caption);
+  text-align: right;
+}
+
 @media (max-width: 650px) {
   .tw-rotation > header { align-items: flex-start; flex-wrap: wrap; }
   .tw-overview-weapon-compact { grid-template-columns: 100px minmax(0,1fr); }

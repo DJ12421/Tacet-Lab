@@ -12,6 +12,7 @@
 .tw-sequencer-toolbar {
   min-height: 48px;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
@@ -273,6 +274,16 @@
   box-shadow: 0 0 12px color-mix(in srgb,var(--tw-lane-accent) 42%,transparent);
 }
 
+.tw-clip-hit {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--tw-lane-accent);
+  opacity: .8;
+  pointer-events: none;
+}
+
 .tw-clip-handle {
   position: relative;
   z-index: 2;
@@ -341,6 +352,44 @@
   width: 1px;
   background: #fff;
   pointer-events: none;
+}
+
+.tw-loop-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tw-loop-controls label { display: flex; align-items: center; gap: 4px; }
+.tw-loop-controls input { width: 64px; }
+
+.tw-loop-range {
+  position: absolute;
+  z-index: 2;
+  top: 32px;
+  bottom: 0;
+  background: rgba(var(--mint-rgb), .09);
+  pointer-events: none;
+}
+
+.tw-loop-marker {
+  position: absolute;
+  z-index: 7;
+  top: 32px;
+  bottom: 0;
+  border-left: 2px dashed var(--mint);
+  pointer-events: none;
+}
+
+.tw-loop-marker span {
+  position: absolute;
+  top: 3px;
+  left: 4px;
+  padding: 2px 4px;
+  background: #0b1413;
+  color: var(--mint);
+  font-size: var(--font-size-caption);
 }
 
 .tw-playhead>i {
@@ -693,6 +742,14 @@
 }
 
 @media (max-width:600px) {
+  .tw-edit-controls {
+    display: grid;
+    grid-template-columns: repeat(3,minmax(0,1fr));
+    overflow: visible;
+  }
+  .tw-edit-controls button {
+    width: 100%;
+  }
   .tw-lane-label {
     grid-template-columns: 28px minmax(0,1fr);
     padding: 5px;

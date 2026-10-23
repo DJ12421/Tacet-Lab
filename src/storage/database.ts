@@ -855,6 +855,7 @@ function isTeam(value: unknown) {
     && new Set(value.buildIds).size === value.buildIds.length
     && (value.members === undefined || (Array.isArray(value.members) && value.members.length <= 3 && value.members.every((member) => isRecord(member) && typeof member.memberId === 'string' && typeof member.characterId === 'string' && isLoadoutSource(member.loadoutSource) && (member.compareSource === undefined || isLoadoutSource(member.compareSource)))))
     && isFiniteNumber(value.rotationDuration) && value.rotationDuration > 0
+    && (value.loop === undefined || (isRecord(value.loop) && isFiniteNumber(value.loop.start) && isFiniteNumber(value.loop.end) && value.loop.start >= 0 && value.loop.start < value.loop.end && value.loop.end <= value.rotationDuration))
     && isFiniteNumber(value.enemy.level) && value.enemy.level >= 1
     && isFiniteNumber(value.enemy.resistance) && value.enemy.resistance >= -100 && value.enemy.resistance <= 100
     && isFiniteNumber(value.enemy.damageReduction) && value.enemy.damageReduction >= 0 && value.enemy.damageReduction <= 100

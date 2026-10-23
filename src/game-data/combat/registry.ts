@@ -5,8 +5,10 @@ import { generatedEchoCatalog } from '../echoes.generated'
 import { generatedWeaponCatalog } from '../weapons.generated'
 import { reviewedMechanicsCatalog } from './reviewed-mechanics.generated'
 import { supplementalCharacterActions } from './supplemental-character-actions'
-import { wutheringToolsActionClassification } from './wutheringtools-action-classification.generated'
-import { wutheringToolsEffectScopes } from './wutheringtools-effect-scopes.generated'
+import { importedAdditionalActions } from './imported-actions'
+import { referenceAdditionalActions } from './reference-actions'
+import { sourceActionClassification } from './source-action-classification.generated'
+import { sourceEffectScopes } from './source-effect-scopes.generated'
 
 const ratio = (value: string) => {
   const parsed = Number.parseFloat(value)
@@ -48,7 +50,7 @@ const normalizeDamageBonusStats = (operation: EffectOperation): EffectOperation[
 }
 
 const normalizeReviewedEffect = (effect: EffectMechanics): EffectMechanics => {
-  const scopeCorrection = wutheringToolsEffectScopes[effect.id] ?? wutheringToolsEffectScopes[effect.sourceId]
+  const scopeCorrection = sourceEffectScopes[effect.id] ?? sourceEffectScopes[effect.sourceId]
   const reviewedEffect: EffectMechanics = scopeCorrection ? {
     ...effect,
     ...(effect.filter && scopeCorrection.all ? { filter:{ ...effect.filter, actionIds:scopeCorrection.all } } : {}),
@@ -95,6 +97,12 @@ export const mechanicsRegistry: MechanicsRegistry = {
   dataVersion:reviewedMechanicsCatalog.dataVersion,
   characters:Object.fromEntries(generatedCharacterCatalog.map((character) => {
     const reviewed = reviewedMechanicsCatalog.characters[character.id]
+    const hasOutroAction = [
+      ...Object.values(reviewed?.actions ?? {}),
+      ...Object.values(supplementalCharacterActions[character.id] ?? {}),
+      ...Object.values(importedAdditionalActions[character.id] ?? {}),
+      ...Object.values(referenceAdditionalActions[character.id] ?? {})
+    ].some((action) => action.group === 'Outro Skill' || action.damageType === 'outro')
     return [character.id, {
       id:character.id,
       sourceId:reviewed?.sourceId ?? `character:${character.id}`,
@@ -108,6 +116,15 @@ export const mechanicsRegistry: MechanicsRegistry = {
       actions:Object.fromEntries(Object.entries({
         ...(reviewed?.actions ?? {}),
         ...(reviewed ? supplementalCharacterActions[character.id] ?? {} : {}),
+        ...(reviewed ? importedAdditionalActions[character.id] ?? {} : {}),
+        ...(reviewed ? referenceAdditionalActions[character.id] ?? {} : {}),
+        ...(hasOutroAction ? {} : { [`${character.id}:outro-cast`]:{
+          id:`${character.id}:outro-cast`, name:`Outro: ${character.skillTreeExtras.outroSkill.name}`,
+          group:'Outro Skill', sourceId:`character:${character.id}:outro-cast`, reviewFingerprint:'unverified:outro-cast',
+          kind:'utility' as const, damageType:'outro' as const, element:'none' as const,
+          tags:[] as const, skillLevelIndex:4,
+          formulas:{ 1:{ kind:'unsupported' as const, family:'Non-damaging Outro cast' } }
+        } }),
         [`${character.id}:tune-break`]:{
           id:`${character.id}:tune-break`, name:character.skillTreeExtras.tuneBreakSkill.name,
           group:'Tune Break', sourceId:`character:${character.id}:tune-break`, reviewFingerprint:'estimated:tune-break:2026-10-03',
@@ -123,7 +140,7 @@ export const mechanicsRegistry: MechanicsRegistry = {
           formulas:{ 1:{ kind:'negative-status' as const, status } }
         }]))
       }).map(([id, action]) => {
-        const correction = wutheringToolsActionClassification[id]
+        const correction = sourceActionClassification[id]
         const damageType = correction?.damageType ?? action.damageType
         const tags = [...new Set([...(action.tags ?? []), ...(correction?.addTags ?? [])])]
         const formulas = 'formulas' in action && correction && (correction.scalingStat || correction.hitsByLevel) ? Object.fromEntries(Object.entries(action.formulas).map(([level, formula]) => [level, {
@@ -148,11 +165,16 @@ export const mechanicsRegistry: MechanicsRegistry = {
   })),
   echoes:Object.fromEntries(generatedEchoCatalog.map((catalog) => {
     const reviewed = reviewedMechanicsCatalog.echoes?.[catalog.id]
+    const utilityAction = { [`echo:${catalog.id}:cast`]:{
+      id:`echo:${catalog.id}:cast`, name:`${catalog.name} - Echo Skill`, description:catalog.skillDescription,
+      sourceId:`echo:${catalog.id}:cast`, reviewFingerprint:'unverified:echo-cast',
+      kind:'utility' as const, formulas:{ 1:{ kind:'unsupported' as const, family:'Non-damaging Echo cast' } }
+    } }
     return [catalog.id, reviewed
-      ? { ...reviewed, effects:normalizeReviewedEffects(reviewed.effects) ?? [] }
+      ? { ...reviewed, actions:Object.keys(reviewed.actions).length ? reviewed.actions : utilityAction, effects:normalizeReviewedEffects(reviewed.effects) ?? [] }
       : { id:catalog.id, name:catalog.name, description:catalog.skillDescription,
           sourceId:`echo:${catalog.id}`, reviewFingerprint:`tba:${reviewedMechanicsCatalog.dataVersion}:${catalog.id}`,
-          actions:{}, effects:[] }]
+          actions:utilityAction, effects:[] }]
   })),
   sonatas:Object.fromEntries(Object.entries(reviewedMechanicsCatalog.sonatas ?? {}).map(([id, sonata]) => [id, { ...sonata, effects:normalizeReviewedEffects(sonata.effects) ?? [] }]))
 }

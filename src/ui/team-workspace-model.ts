@@ -12,11 +12,15 @@ import {
 import { generatedSonataIconSources } from '../game-data/sonatas.generated'
 import { applicableTeamStatusEffects, negativeStatusActions } from '../game-data/combat/negative-status'
 import { pendingMechanics } from '../game-data/review-status.generated'
+import { mechanicsRegistry } from '../game-data/combat/registry'
+import { importedAbilityForAction } from '../game-data/combat/imported-actions'
+import { resolveRotationActionId } from '../game-data/combat/rotation-action-mapping'
 import { resolveCharacterShowcaseModel, type CharacterShowcaseModel } from './character-showcase-model'
 
 const SKILL_KEYS = ['normalAttack', 'resonanceSkill', 'forteCircuit', 'resonanceLiberation', 'introSkill'] as const
 export type TeamAttackGroup = 'basic' | 'skill' | 'forte' | 'liberation' | 'intro' | 'outro' | 'echo' | 'tuneBreak' | 'status'
 export const TEAM_ROTATION_TARGET_ID = 'team:rotation'
+export const TEAM_LOOP_TARGET_ID = 'team:loop'
 
 export function compactAttackLabel(label: string) {
   const separator = label.indexOf(' - ')
@@ -49,6 +53,16 @@ export interface TeamAttackModel {
   skillName: string
   iconSourceUrl: string
   group: TeamAttackGroup
+  timing?: { totalFrames:number; cancelFrame:number; noSwapFrame:number; timeStopFrames:number; motionStopFrames:number; hitFrames:number[]; hitCommitFrames:number[]; sourceAbilityId:number }
+}
+
+function importedTiming(characterId: string, actionId: string): TeamAttackModel['timing'] {
+  const ability = importedAbilityForAction(characterId, actionId)
+  return ability && (ability.total_frames || ability.hits.length) ? {
+    totalFrames:ability.total_frames, cancelFrame:ability.earliest_frame_cancel,
+    noSwapFrame:ability.no_swap, timeStopFrames:ability.time_stop, motionStopFrames:ability.motion_stop,
+    hitFrames:ability.hits.map((hit) => hit.frame), hitCommitFrames:ability.hits.map((hit) => hit.commit_frame), sourceAbilityId:ability.id
+  } : undefined
 }
 
 export interface TeamMemberModel {
@@ -120,8 +134,14 @@ export interface TeamWorkspaceModel {
   warnings: string[]
 }
 
-export function rotationDamageByMode(model: Pick<TeamWorkspaceModel, 'actions'>) {
-  return model.actions.reduce((totals, row) => {
+export function rotationActionsForTarget(model: Pick<TeamWorkspaceModel, 'team' | 'actions'>, targetId = TEAM_ROTATION_TARGET_ID) {
+  const loop = targetId === TEAM_LOOP_TARGET_ID ? model.team.loop : undefined
+  if (!loop) return targetId === TEAM_LOOP_TARGET_ID ? [] : model.actions
+  return model.actions.filter(({ action }) => action.timestamp >= loop.start && action.timestamp + Math.min(action.duration ?? 0.8, model.team.rotationDuration - action.timestamp) <= loop.end + 0.000001)
+}
+
+export function rotationDamageByMode(model: Pick<TeamWorkspaceModel, 'team' | 'actions'>, targetId = TEAM_ROTATION_TARGET_ID) {
+  return rotationActionsForTarget(model, targetId).reduce((totals, row) => {
     if (row.resultKind === 'damage') {
       totals.normal += row.normal
       totals.critical += row.critical
@@ -158,20 +178,33 @@ function attackModels(catalog: CharacterCatalogEntry, character: OwnedCharacter,
       skillLevel: level,
       skillName: skill.name,
       iconSourceUrl: skill.iconSourceUrl,
-      group
+      group, timing:importedTiming(catalog.id, attack.id)
     }]
   })
   const matchedTargetIds = new Set(catalog.attacks.flatMap((attack) => {
     const target = resolveCombatTarget(catalog.id, attack.id, echoes)
     return target ? [target.id] : []
   }))
-  const reviewedExtras = combatTargets(catalog.id, echoes).filter((target) => !matchedTargetIds.has(target.id) && target.kind !== 'utility').map((target): TeamAttackModel => {
-    const group: TeamAttackGroup = target.group === 'Echo Skill' ? 'echo' : target.damageType === 'outro' ? 'outro' : target.damageType === 'tune-break' ? 'tuneBreak' : target.damageType === 'status' ? 'status' : 'forte'
-    const type: DamageType = target.kind === 'damage' ? (target.damageType === 'tune-break' ? 'tuneBreak' : target.damageType ?? 'skill') : 'healing'
+  const reviewedExtras = combatTargets(catalog.id, echoes).filter((target) => {
+    const action = mechanicsRegistry.characters[catalog.id]?.actions[target.id]
+    return !matchedTargetIds.has(target.id) && (target.kind !== 'utility' || target.group === 'Outro Skill' || target.group === 'Echo Skill')
+      && (!action || !('minimumSequence' in action) || action.minimumSequence === undefined || character.sequence >= action.minimumSequence)
+  }).map((target): TeamAttackModel => {
+    const group: TeamAttackGroup = target.group === 'Echo Skill' ? 'echo' : target.group === 'Outro Skill' || target.damageType === 'outro' ? 'outro' : target.damageType === 'tune-break' ? 'tuneBreak' : target.damageType === 'status' ? 'status'
+      : target.group === 'Normal Attack' ? 'basic' : target.group === 'Resonance Skill' ? 'skill' : target.group === 'Resonance Liberation' ? 'liberation' : target.group === 'Intro Skill' ? 'intro' : 'forte'
+    const type: DamageType = target.kind === 'damage' ? (target.damageType === 'tune-break' ? 'tuneBreak' : target.damageType ?? 'skill') : target.kind === 'utility' ? group === 'echo' ? 'echo' : 'outro' : 'healing'
+    const skill = group === 'basic' ? catalog.skillIcons.normalAttack : group === 'skill' ? catalog.skillIcons.resonanceSkill : group === 'liberation' ? catalog.skillIcons.resonanceLiberation : group === 'intro' ? catalog.skillIcons.introSkill : group === 'outro' ? catalog.skillTreeExtras.outroSkill : group === 'tuneBreak' ? catalog.skillTreeExtras.tuneBreakSkill : catalog.skillIcons.forteCircuit
+    const action = mechanicsRegistry.characters[catalog.id]?.actions[target.id]
+    const levelIndex = action && 'skillLevelIndex' in action ? action.skillLevelIndex : 4
+    const level = group === 'tuneBreak' || group === 'status' ? character.level : group === 'echo' ? echoes[0]?.rarity ?? 1 : character.skillLevels?.[levelIndex] ?? 1
+    const formula = action && 'formulas' in action ? action.formulas[level] ?? (Object.keys(action.formulas).length === 1 ? Object.values(action.formulas)[0] : undefined) : undefined
+    const formulaHits = formula?.kind === 'damage' ? formula.hits : []
+    const multiplier = formulaHits.reduce((total, hit) => total + hit, 0)
     return {
       id:target.id, name:target.label, type,
-      multiplier:0, multiplierLabel:group === 'status' || group === 'tuneBreak' ? 'Estimated formula' : 'Reviewed formula', hitMultipliers:[], scalesWith:group === 'status' || group === 'tuneBreak' ? 'level' : 'atk', skillLevel:group === 'status' || group === 'tuneBreak' ? character.level : group === 'echo' ? echoes[0]?.rarity ?? 1 : character.skillLevels?.[4] ?? 1,
-      skillName:target.group, iconSourceUrl:group === 'echo' ? echoCatalog.find((entry) => entry.name === echoes[0]?.name)?.iconSourceUrl ?? '' : '', group
+      multiplier, multiplierLabel:target.kind === 'utility' ? 'No damage' : formulaHits.length ? `${(multiplier * 100).toFixed(2)}%` : formula?.kind === 'unsupported' && formula.family.includes('skill level 10 only') ? 'Lv. 10 only' : action?.sourceId.startsWith('imported:') ? 'Unsupported formula' : group === 'status' || group === 'tuneBreak' ? 'Estimated formula' : 'Reviewed formula', hitMultipliers:[...formulaHits], scalesWith:group === 'status' || group === 'tuneBreak' ? 'level' : formula?.kind === 'damage' && formula.scaling.hp ? 'hp' : formula?.kind === 'damage' && formula.scaling.def ? 'def' : 'atk', skillLevel:level,
+      skillName:group === 'echo' ? target.group : skill.name, iconSourceUrl:group === 'echo' ? echoCatalog.find((entry) => entry.name === echoes[0]?.name)?.iconSourceUrl ?? '' : skill.iconSourceUrl, group,
+      timing:importedTiming(catalog.id, target.id)
     }
   })
   return [...characterAttacks, ...reviewedExtras]
@@ -264,7 +297,7 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
     if (echoPending?.length) warnings.push(`TBA: ${mainEcho!.name} ${echoPending.join(', ')} mechanics are not included in calculations.`)
     if (!build) warnings.push('No build assigned to this slot.')
     else {
-      if (!catalog || !character) warnings.push('Owned character or Nanoka catalog data is missing.')
+      if (!catalog || !character) warnings.push('Owned character or game catalog data is missing.')
       if (!showcase?.weapon) warnings.push('No compatible owned weapon is equipped; rotation actions cannot be calculated.')
       if ((showcase?.equippedEchoes.length ?? 0) < 5) warnings.push(`${showcase?.equippedEchoes.length ?? 0}/5 Echoes equipped.`)
       if ((showcase?.totalEchoCost ?? 0) > 12) warnings.push('Echo cost exceeds the 12-cost limit.')
@@ -303,7 +336,7 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
       else member.warnings.push(...statResult.errors.map((error) => error.message))
       member.warnings.push(...statResult.warnings.map((warning) => warning.message))
       const formulaTargets = input.formulaTargetIds?.length === 0 ? [] : combatTargets(member.character.catalogId, member.resolvedEchoes)
-      member.formulaRows = formulaTargets.filter((target) => input.formulaTargetIds === undefined || input.formulaTargetIds.includes(target.id)).map((target) => {
+      member.formulaRows = formulaTargets.filter((target) => target.kind !== 'utility' && (input.formulaTargetIds === undefined || input.formulaTargetIds.includes(target.id))).map((target) => {
         const result = calculateBuildModes({
           build: member.build!, character: member.character!, weapon: ownedWeapon,
           echoes: member.build!.echoIds.map((id) => runtimeEchoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)),
@@ -313,26 +346,31 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
         const fallback: CalculationTrace = { stage:'unavailable', value:0, children:[] }
         return { target, ...result.values, traces:{ normal:result.traces.normal ?? fallback, critical:result.traces.critical ?? fallback, expected:result.traces.expected ?? fallback } }
       })
+      member.warnings = [...new Set(member.warnings)]
     }
   }
 
   const sortedActions = [...input.team.actions].sort((left, right) => left.timestamp - right.timestamp)
   const actions = sortedActions.map((action, index): TeamActionModel => {
     const member = baseMembers.find((entry) => entry.build?.id === action.buildId)
-    const attack = member?.attacks.find((entry) => entry.id === action.attackId)
+    const directAttack = member?.attacks.find((entry) => entry.id === action.attackId)
+    const mappedId = !directAttack && member?.catalog && action.label
+      ? resolveRotationActionId(member.catalog.id, action.attackId, action.label, member.resolvedEchoes[0]?.name) : undefined
+    const attack = directAttack ?? member?.attacks.find((entry) => entry.id === mappedId)
     const warnings: string[] = []
     if (!member?.build) warnings.push('Character is not assigned to this team.')
     if (!attack) warnings.push(action.label ? `${action.label} is not in Tacet Lab's attack data.` : 'Character attack data is missing for this action.')
-    if (!member?.showcase?.weapon) warnings.push('Damage skipped because no weapon is equipped.')
     if (action.timestamp < 0 || action.timestamp > input.team.rotationDuration) warnings.push('Timestamp is outside the rotation duration.')
     if (action.duration !== undefined && action.timestamp + action.duration > input.team.rotationDuration) warnings.push('Clip extends past the rotation duration.')
     const activeBuffs = activeBuffsAt(input.team, sortedActions, index).filter((effect) => member ? buffAppliesTo(effect, member) : false)
     const activates = (input.team.buffs ?? []).filter((effect) => effect.sourceBuildId === action.buildId && effect.triggerAttackId === action.attackId)
-    const formulaTargetId = action.formulaTargetId ?? (member?.catalog && attack ? `${member.catalog.id}:${attack.id}` : undefined)
+    const formulaTargetId = mappedId && attack && member?.catalog ? `${member.catalog.id}:${attack.id}`
+      : action.formulaTargetId ?? (member?.catalog && attack ? `${member.catalog.id}:${attack.id}` : undefined)
     const target = formulaTargetId && member?.catalog ? resolveCombatTarget(member.catalog.id, formulaTargetId, member.resolvedEchoes) : undefined
+    if (!member?.showcase?.weapon && target?.kind !== 'utility') warnings.push('Damage skipped because no weapon is equipped.')
     let formulaResult: { normal: number; critical: number; expected: number; trace?: CalculationTrace; traces?: Record<'normal' | 'critical' | 'expected', CalculationTrace> } | undefined
     const ownedWeapon = member?.showcase?.weapon?.owned
-    if (target && member?.build && member.character && ownedWeapon) {
+    if (target && target.kind !== 'utility' && member?.build && member.character && ownedWeapon) {
       const calculated = calculateBuildModes({
         build: member.build, character: member.character, weapon: ownedWeapon,
         echoes: member.build.echoIds.map((id) => runtimeEchoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)),

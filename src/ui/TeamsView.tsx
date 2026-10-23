@@ -3,6 +3,7 @@ import type { CSSProperties, DragEvent as ReactDragEvent, MouseEvent as ReactMou
 import { createPortal } from 'react-dom'
 import { combatEffectDefinitions, formatDamage, resolveCombatTarget, type CombatEffectDefinition } from '../domain/combat/runtime'
 import { applicableTeamStatusEffects, negativeStatusActions, negativeStatusMotionValues } from '../game-data/combat/negative-status'
+import { importedCharacterBuffs } from '../game-data/combat/imported-buffs'
 import { resolveCharacterSubstatProfile } from '../domain/character-substat-score'
 import { echoRollRating } from '../domain/echo-grade'
 import { createLocalId } from '../domain/id'
@@ -24,10 +25,12 @@ import { OptimizerView } from './OptimizerView'
 import { BuildsView, TheorycraftEditor } from './BuildsView'
 import { TheorizerWorkspace } from './team-workspace/TheorizerWorkspace'
 import { useWorkspacePreference } from './team-workspace/useWorkspacePreference'
+import { usePageFocused } from './usePageFocused'
+import { confirmDiscardChanges, useUnsavedChanges } from './useUnsavedChanges'
 import { statIconSource, weaponStatIconSource } from './stat-icons'
 import {
-  compactAttackLabel, echoArtwork, formatWorkspaceStat, resolveTeamWorkspace, teamBuffLabel,
-  type TeamActionModel, type TeamAttackGroup, type TeamMemberModel, type TeamWorkspaceInput, type TeamWorkspaceModel
+  compactAttackLabel, echoArtwork, formatWorkspaceStat, resolveTeamWorkspace, rotationActionsForTarget, teamBuffLabel, TEAM_LOOP_TARGET_ID, TEAM_ROTATION_TARGET_ID,
+  type TeamActionModel, type TeamAttackGroup, type TeamAttackModel, type TeamMemberModel, type TeamWorkspaceInput, type TeamWorkspaceModel
 } from './team-workspace-model'
 import { defaultEnabledSkillTreeBonusIds, inherentSkillBonusId, skillTreeBonusId } from './character-showcase-model'
 import { BoundedNumberInput } from './BoundedNumberInput'
@@ -50,6 +53,8 @@ const DAMAGE_RESULT_MODES: Array<{ id: FormulaResultMode; label: string }> = [
   { id: 'expected', label: 'Avg' },
   { id: 'critical', label: 'Crit' }
 ]
+
+const importedAttackEstimateWarning = 'Imported attack damage is a source estimate; confirm it against the current English in-game UI.'
 
 const ROTATION_ATTACK_GROUPS: Array<{ id: TeamAttackGroup; label: string }> = [
   { id: 'basic', label: 'Basic' },
@@ -161,7 +166,7 @@ interface TeamsViewProps {
   galleryRequest: number
   roverGender: 'male' | 'female'
   route?: { team?: string; character?: string; section?: TeamRouteSection }
-  onRouteChange?: (route: { team?: string; character?: string; section?: TeamRouteSection }) => void
+  onRouteChange?: (route: { team?: string; character?: string; section?: TeamRouteSection }) => boolean | void
 }
 
 const routeKey = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, '')
@@ -579,13 +584,13 @@ function TeamOverview({ model, echoes, builds, characters, weapons, equippedLoad
           <span className="tw-environment-heading"><strong className="tw-environment-title">Combat scenario</strong><small>Enemy &amp; timing</small></span>
           {model.actions.length ? <><b className="rotation">{resultModeLabel} {formatDamage(model.total)}</b><b className="dps">{formatDamage(model.dps)} DPS</b></> : <b className="empty">No rotation yet</b>}
           <span>Lv. {model.team.enemy.level} enemy · {model.team.enemy.resistance}% RES</span>
-          <span>{model.team.rotationDuration.toFixed(1)}s window</span>
+          <span>{model.team.rotationDuration.toFixed(2)}s window</span>
         </span>
         <i aria-hidden="true">⌄</i>
       </summary>
       <section className="tw-metrics">
-        <div><span>{resultModeLabel} rotation</span><CalculatedValue detail={sumDetail(`${resultModeLabel} rotation`, model.total, model.actions.map((row) => ({ label: `${row.action.timestamp.toFixed(1)}s · ${compactAttackLabel(row.action.label ?? row.attack?.name ?? 'Missing attack')}`, value: row[resultMode] })))}><strong>{formatDamage(model.total)}</strong></CalculatedValue></div>
-        <div><span>Rotation DPS</span><CalculatedValue detail={sumDetail('Rotation DPS', model.dps, [{ label: `${resultModeLabel} rotation total`, value: model.total }, { label: 'Rotation duration', value: model.team.rotationDuration }], `${resultModeLabel} rotation ÷ rotation duration`)}><strong>{formatDamage(model.dps)}</strong></CalculatedValue><small>{model.team.rotationDuration.toFixed(1)} second window</small></div>
+        <div><span>{resultModeLabel} rotation</span><CalculatedValue detail={sumDetail(`${resultModeLabel} rotation`, model.total, model.actions.map((row) => ({ label: `${row.action.timestamp.toFixed(2)}s · ${compactAttackLabel(row.action.label ?? row.attack?.name ?? 'Missing attack')}`, value: row[resultMode] })))}><strong>{formatDamage(model.total)}</strong></CalculatedValue></div>
+        <div><span>Rotation DPS</span><CalculatedValue detail={sumDetail('Rotation DPS', model.dps, [{ label: `${resultModeLabel} rotation total`, value: model.total }, { label: 'Rotation duration', value: model.team.rotationDuration }], `${resultModeLabel} rotation ÷ rotation duration`)}><strong>{formatDamage(model.dps)}</strong></CalculatedValue><small>{model.team.rotationDuration.toFixed(2)} second window</small></div>
         <label><span>Enemy Cost (Tune Break)</span><select value={model.team.enemy.cost ?? 4} onChange={(event) => void updateTeam({ enemy: { ...model.team.enemy, cost:Number(event.target.value) as 1 | 3 | 4 } })}><option value={1}>1 Cost</option><option value={3}>3 Cost</option><option value={4}>4 Cost</option></select></label>
         <label><span>DMG reduction %</span><BoundedNumberInput min={0} max={100} value={model.team.enemy.damageReduction} onChange={(damageReduction) => void updateTeam({ enemy: { ...model.team.enemy, damageReduction } })}/></label>
         <label><span>DEF ignore %</span><BoundedNumberInput min={0} max={100} value={model.team.enemy.defenseIgnore ?? 0} onChange={(defenseIgnore) => void updateTeam({ enemy: { ...model.team.enemy, defenseIgnore } })}/></label>
@@ -647,10 +652,11 @@ function BuffWorkspace({ model, updateTeam }: { model: TeamWorkspaceModel; updat
 }
 
 const ROTATION_DEFAULT_CLIP_DURATION = 0.8
-const ROTATION_MIN_CLIP_DURATION = 0.1
-const ROTATION_SNAP = 0.1
+const ROTATION_MIN_CLIP_DURATION = 1 / 60
+const ROTATION_SNAP = 1 / 60
 
-function defaultRotationClipDuration(group: TeamAttackGroup) {
+function defaultRotationClipDuration(group: TeamAttackGroup, timing?: TeamAttackModel['timing']) {
+  if (timing?.totalFrames) return Math.max(ROTATION_MIN_CLIP_DURATION, Number((timing.totalFrames / 60).toFixed(4)))
   return { basic: 0.2, skill: 0.8, forte: 0.3, liberation: 1.5, intro: 0.5, outro: 0.5, echo: 0.2, tuneBreak: 0.8, status: 0.8 }[group]
 }
 
@@ -659,7 +665,7 @@ function timelineClamp(value: number, minimum: number, maximum: number) {
 }
 
 function timelineRound(value: number) {
-  return Number(value.toFixed(2))
+  return Number(value.toFixed(4))
 }
 
 function compactDamage(value: number) {
@@ -680,6 +686,10 @@ function actionDuration(action: RotationAction, rotationDuration: number) {
   return timelineClamp(action.duration ?? ROTATION_DEFAULT_CLIP_DURATION, ROTATION_MIN_CLIP_DURATION, Math.max(ROTATION_MIN_CLIP_DURATION, rotationDuration - action.timestamp))
 }
 
+function rotationTail(actions: readonly RotationAction[], rotationDuration: number) {
+  return timelineRound(Math.min(rotationDuration, Math.max(0, ...actions.map((action) => action.timestamp + actionDuration(action, rotationDuration)))))
+}
+
 function actionMultiplier(action: RotationAction) {
   return Math.max(1, Math.min(99, Math.floor(action.multiplier ?? 1)))
 }
@@ -696,7 +706,7 @@ interface TimelineQuickCreate { buildId: string; timestamp: number; attackId: st
 
 interface TimelineMenu { actionId: string; x: number; y: number }
 
-function RotationWorkspace({ model, updateTeam, focusBuildId }: { model: TeamWorkspaceModel; updateTeam: (patch: Partial<Team>) => Promise<void>; focusBuildId?: string }) {
+function RotationWorkspace({ model, updateTeam, saveChanges, discardChanges, hasChanges, saving, saveError, focusBuildId }: { model: TeamWorkspaceModel; updateTeam: (patch: Partial<Team>) => Promise<void>; saveChanges: () => Promise<void>; discardChanges: () => void; hasChanges: boolean; saving: boolean; saveError: string | null; focusBuildId?: string }) {
   const forteGroupLabel = (group: TeamAttackGroup) => ROTATION_ATTACK_GROUPS.find((entry) => entry.id === group)?.label ?? group
   const damageSourceLabel = (type: DamageType) => type === 'basic' ? 'Basic DMG'
     : type === 'heavy' ? 'Heavy DMG'
@@ -712,14 +722,16 @@ function RotationWorkspace({ model, updateTeam, focusBuildId }: { model: TeamWor
   const [draftBuildId, setDraftBuildId] = useWorkspacePreference(`rotation:${rotationPreferenceKey}:build`, focusBuildId ?? firstMember?.build?.id ?? '')
   const draftMember = model.members.find((entry) => entry.build?.id === draftBuildId) ?? firstMember
   const [draftAttackId, setDraftAttackId] = useWorkspacePreference(`rotation:${rotationPreferenceKey}:attack`, draftMember?.attacks[0]?.id ?? '')
-  const [draftTimestamp, setDraftTimestamp] = useWorkspacePreference(`rotation:${rotationPreferenceKey}:timestamp`, Math.min(model.team.rotationDuration, Math.ceil((model.team.actions.at(-1)?.timestamp ?? -1) + 1)))
-  const [draftDuration, setDraftDuration] = useWorkspacePreference(`rotation:${rotationPreferenceKey}:duration`, defaultRotationClipDuration(draftMember?.attacks[0]?.group ?? 'skill'))
+  const [draftTimestamp, setDraftTimestamp] = useWorkspacePreference(`rotation:${rotationPreferenceKey}:timestamp-v2`, rotationTail(model.team.actions, model.team.rotationDuration))
+  const [draftDuration, setDraftDuration] = useWorkspacePreference(`rotation:${rotationPreferenceKey}:duration`, defaultRotationClipDuration(draftMember?.attacks[0]?.group ?? 'skill', draftMember?.attacks[0]?.timing))
   const [analysisMode, setAnalysisMode] = useWorkspacePreference<'character' | 'type'>(`rotation:${model.team.id}:analysis`, 'character')
+  const [damageTarget, setDamageTarget] = useWorkspacePreference<'rotation' | 'loop'>(`rotation:${model.team.id}:damage-target`, 'rotation')
   const [timelineActions, setTimelineActions] = useState<RotationAction[]>(model.team.actions)
   const [selectedActionIds, setSelectedActionIds] = useState<string[]>([])
   const [timelineScale, setTimelineScale] = useWorkspacePreference(`rotation:${model.team.id}:scale`, 56)
   const [playhead, setPlayhead] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
+  const pageFocused = usePageFocused()
   const [quickCreate, setQuickCreate] = useState<TimelineQuickCreate | null>(null)
   const [timelineMenu, setTimelineMenu] = useState<TimelineMenu | null>(null)
   const [boxSelection, setBoxSelection] = useState<{ startTime: number; currentTime: number; startY: number; currentY: number } | null>(null)
@@ -733,14 +745,18 @@ function RotationWorkspace({ model, updateTeam, focusBuildId }: { model: TeamWor
   const resultMode = model.team.scenario?.resultMode ?? 'expected'
   useEffect(() => { setTimelineActions(model.team.actions) }, [model.team.actions])
   useEffect(() => {
+    const tail = rotationTail(model.team.actions, model.team.rotationDuration)
+    setDraftTimestamp((current) => current < tail ? tail : current)
+  }, [model.team.actions, model.team.rotationDuration])
+  useEffect(() => {
     if (!focusBuildId || model.members.some((entry) => entry.build?.id === draftBuildId)) return
     setDraftBuildId(focusBuildId)
   }, [draftBuildId, focusBuildId, model.members])
   useEffect(() => {
-    if (!draftMember?.attacks.some((attack) => attack.id === draftAttackId)) { setDraftAttackId(draftMember?.attacks[0]?.id ?? ''); setDraftDuration(defaultRotationClipDuration(draftMember?.attacks[0]?.group ?? 'skill')) }
+    if (!draftMember?.attacks.some((attack) => attack.id === draftAttackId)) { setDraftAttackId(draftMember?.attacks[0]?.id ?? ''); setDraftDuration(defaultRotationClipDuration(draftMember?.attacks[0]?.group ?? 'skill', draftMember?.attacks[0]?.timing)) }
   }, [draftAttackId, draftMember])
   useEffect(() => {
-    if (!isPlaying) return
+    if (!isPlaying || !pageFocused) return
     let frame = 0
     let previous = performance.now()
     const tick = (now: number) => {
@@ -758,16 +774,16 @@ function RotationWorkspace({ model, updateTeam, focusBuildId }: { model: TeamWor
     }
     frame = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(frame)
-  }, [isPlaying, model.team.rotationDuration])
+  }, [isPlaying, pageFocused, model.team.rotationDuration])
 
-  const commitActions = (next: RotationAction[], previous = timelineActions) => {
+  const commitActions = (next: RotationAction[], previous = timelineActions, rotationDuration = model.team.rotationDuration) => {
     if (next.some((action) => !Number.isFinite(action.timestamp) || (action.duration !== undefined && !Number.isFinite(action.duration)))) return
     if (sameActions(next, previous)) return
     undoStackRef.current.push(previous)
     if (undoStackRef.current.length > 80) undoStackRef.current.shift()
     redoStackRef.current = []
     setTimelineActions(next)
-    void updateTeam({ actions: next })
+    void updateTeam(rotationDuration === model.team.rotationDuration ? { actions: next } : { actions: next, rotationDuration })
   }
   const restoreActions = (next: RotationAction[]) => {
     setTimelineActions(next)
@@ -808,14 +824,17 @@ function RotationWorkspace({ model, updateTeam, focusBuildId }: { model: TeamWor
   const duplicateSelected = (ids = selectedActionIds) => {
     const source = timelineActions.filter((action) => ids.includes(action.id))
     if (!source.length) return
+    const firstTimestamp = Math.min(...source.map((action) => action.timestamp))
     const latestEnd = Math.max(...source.map((action) => action.timestamp + actionDuration(action, model.team.rotationDuration)))
-    const shift = latestEnd + ROTATION_SNAP <= model.team.rotationDuration ? ROTATION_SNAP : -ROTATION_SNAP
+    const appendAt = rotationTail(timelineActions, model.team.rotationDuration)
+    if (appendAt + latestEnd - firstTimestamp > 600) return
     const duplicates = source.map((action) => {
       const duration = actionDuration(action, model.team.rotationDuration)
-      return { ...action, id: createLocalId(), timestamp: timelineRound(timelineClamp(action.timestamp + shift, 0, Math.max(0, model.team.rotationDuration - duration))), duration }
+      return { ...action, id: createLocalId(), timestamp: timelineRound(appendAt + action.timestamp - firstTimestamp), duration }
     })
-    commitActions([...timelineActions, ...duplicates])
+    commitActions([...timelineActions, ...duplicates], timelineActions, Math.max(model.team.rotationDuration, timelineRound(appendAt + latestEnd - firstTimestamp)))
     setSelectedActionIds(duplicates.map((action) => action.id))
+    setDraftTimestamp(timelineRound(appendAt + latestEnd - firstTimestamp))
   }
   const nudgeSelected = (direction: -1 | 1, free = false) => {
     if (!selectedActionIds.length) return
@@ -937,7 +956,7 @@ function RotationWorkspace({ model, updateTeam, focusBuildId }: { model: TeamWor
     const member = model.members.find((entry) => entry.build?.id === quickCreate.buildId)
     const attack = member?.attacks.find((entry) => entry.id === quickCreate.attackId)
     if (!member?.build || !attack) return
-    const next: RotationAction = { id: createLocalId(), timestamp: quickCreate.timestamp, duration: timelineClamp(defaultRotationClipDuration(attack.group), ROTATION_MIN_CLIP_DURATION, model.team.rotationDuration - quickCreate.timestamp), buildId: member.build.id, attackId: attack.id, formulaTargetId: member.catalog ? `${member.catalog.id}:${attack.id}` : undefined }
+    const next: RotationAction = { id: createLocalId(), timestamp: quickCreate.timestamp, duration: timelineClamp(defaultRotationClipDuration(attack.group, attack.timing), ROTATION_MIN_CLIP_DURATION, model.team.rotationDuration - quickCreate.timestamp), buildId: member.build.id, attackId: attack.id, formulaTargetId: member.catalog ? `${member.catalog.id}:${attack.id}` : undefined }
     commitActions([...timelineActions, next])
     setSelectedActionIds([next.id])
     setQuickCreate(null)
@@ -968,10 +987,12 @@ function RotationWorkspace({ model, updateTeam, focusBuildId }: { model: TeamWor
   const addAction = async () => {
     const attack = draftMember?.attacks.find((entry) => entry.id === draftAttackId) ?? draftMember?.attacks[0]
     if (!draftMember?.build || !attack || !Number.isFinite(draftTimestamp) || !Number.isFinite(draftDuration)) return
-    const duration = timelineClamp(draftDuration, ROTATION_MIN_CLIP_DURATION, model.team.rotationDuration)
-    const timestamp = timelineClamp(draftTimestamp, 0, Math.max(0, model.team.rotationDuration - duration))
-    commitActions([...timelineActions, { id: createLocalId(), timestamp, duration, buildId: draftMember.build.id, attackId: attack.id, formulaTargetId: `${draftMember.catalog?.id}:${attack.id}` }])
-    setDraftTimestamp(Math.min(model.team.rotationDuration, Number((draftTimestamp + 1).toFixed(1))))
+    const timestamp = timelineRound(draftTimestamp)
+    const duration = timelineRound(draftDuration)
+    const end = timelineRound(timestamp + duration)
+    if (timestamp < 0 || duration < ROTATION_MIN_CLIP_DURATION || end > 600) return
+    commitActions([...timelineActions, { id: createLocalId(), timestamp, duration, buildId: draftMember.build.id, attackId: attack.id, formulaTargetId: `${draftMember.catalog?.id}:${attack.id}` }], timelineActions, Math.max(model.team.rotationDuration, end))
+    setDraftTimestamp(end)
   }
   const duplicateAction = (row: TeamActionModel) => duplicateSelected([row.action.id])
   const moveAction = (index: number, direction: -1 | 1) => {
@@ -992,11 +1013,15 @@ function RotationWorkspace({ model, updateTeam, focusBuildId }: { model: TeamWor
     ordered.splice(adjustedTarget + (after ? 1 : 0), 0, source)
     commitActions(ordered.map((action, index) => ({ ...action, timestamp: timestamps[index] })))
   }
-  const rotationTotal = model.actions.reduce((total, row) => total + row[resultMode], 0)
+  const selectedTarget = damageTarget === 'loop' && model.team.loop ? TEAM_LOOP_TARGET_ID : TEAM_ROTATION_TARGET_ID
+  const analysisRows = rotationActionsForTarget(model, selectedTarget).filter((row) => row.resultKind === 'damage')
+  const rotationTotal = analysisRows.reduce((total, row) => total + row[resultMode], 0)
   const members = model.members.filter((member): member is TeamMemberModel & { build: Build } => Boolean(member.build))
-  const damageTypes = DAMAGE_TYPE_ORDER.filter((type) => (model.byType[type] ?? 0) > 0)
-  const memberSegments = members.filter((member) => member.contribution > 0).map((member, index) => ({ label: teamMemberName(member), value: member.contribution, color: ROTATION_CHART_COLORS[index] }))
-  const typeSegments = damageTypes.map((type, index) => ({ label: DAMAGE_TYPE_LABELS[type], value: model.byType[type] ?? 0, color: ROTATION_CHART_COLORS[index] }))
+  const memberDamage = (buildId: string, type?: DamageType) => analysisRows.reduce((total, row) => total + (row.action.buildId === buildId && (!type || row.attack?.type === type) ? row[resultMode] : 0), 0)
+  const typeDamage = (type: DamageType) => analysisRows.reduce((total, row) => total + (row.attack?.type === type ? row[resultMode] : 0), 0)
+  const damageTypes = DAMAGE_TYPE_ORDER.filter((type) => typeDamage(type) > 0)
+  const memberSegments = members.map((member, index) => ({ label: teamMemberName(member), value: memberDamage(member.build.id), color: ROTATION_CHART_COLORS[index] })).filter((segment) => segment.value > 0)
+  const typeSegments = damageTypes.map((type, index) => ({ label: DAMAGE_TYPE_LABELS[type], value: typeDamage(type), color: ROTATION_CHART_COLORS[index] }))
   const segments = analysisMode === 'character' ? memberSegments : typeSegments
   let chartCursor = 0
   const chartStops = segments.map((segment) => {
@@ -1007,9 +1032,9 @@ function RotationWorkspace({ model, updateTeam, focusBuildId }: { model: TeamWor
   const chartStyle = { '--tw-rotation-chart': rotationTotal > 0 && chartStops.length ? `conic-gradient(${chartStops.join(',')})` : '#151b1c' } as CSSProperties
   const activeRows = model.actions.filter((row) => row.action.timestamp <= playhead && playhead < row.action.timestamp + actionDuration(row.action, model.team.rotationDuration))
   const activeActionIds = new Set(activeRows.map((row) => row.action.id))
-  const currentDamage = activeRows.reduce((total, row) => total + row[resultMode], 0)
+  const currentDamage = activeRows.reduce((total, row) => total + (row.resultKind === 'damage' ? row[resultMode] : 0), 0)
   const activeEffectCount = activeRows.reduce((total, row) => total + row.activeBuffs.length + row.activates.length, 0)
-  const damageSources = model.actions.flatMap((row) => {
+  const damageSources = analysisRows.flatMap((row) => {
     const memberIndex = members.findIndex((member) => member.build.id === row.action.buildId)
     if (memberIndex < 0) return []
     const duration = actionDuration(row.action, model.team.rotationDuration)
@@ -1041,15 +1066,16 @@ function RotationWorkspace({ model, updateTeam, focusBuildId }: { model: TeamWor
   const damageTimeTicks = Array.from({ length: 5 }, (_, index) => model.team.rotationDuration * index / 4)
   const rulerTicks = Array.from({ length: Math.floor(model.team.rotationDuration) + 1 }, (_, index) => index)
 
-  return <section className="tw-panel tw-rotation"><header><div><span className="eyebrow">Team sequence</span><h2>Rotation</h2><p>Arrange actions on the timeline and review their damage.</p></div><label className="tw-rotation-window"><span>Rotation time</span><BoundedNumberInput min={1} max={600} step="0.1" value={model.team.rotationDuration} onChange={(rotationDuration) => void updateTeam({ rotationDuration })}/>s</label></header>
+  return <section className="tw-panel tw-rotation"><header><div><span className="eyebrow">Team sequence</span><h2>Rotation</h2><p>Changes update damage live. Save them to keep them when you leave Rotation.</p></div><div className="tw-rotation-save-controls"><label className="tw-rotation-window"><span>Rotation time</span><BoundedNumberInput min={1} max={600} step="any" value={model.team.rotationDuration} onChange={(rotationDuration) => void updateTeam({ rotationDuration, loop: model.team.loop && model.team.loop.start < rotationDuration ? { start: model.team.loop.start, end: Math.min(model.team.loop.end, rotationDuration) } : undefined })}/>s</label><button type="button" onClick={discardChanges} disabled={!hasChanges || saving}>Discard changes</button><button type="button" className="primary" onClick={() => void saveChanges()} disabled={!hasChanges || saving}>{saving ? 'Saving…' : 'Save changes'}</button>{saveError && <span className="tw-rotation-save-error" role="alert">{saveError}</span>}</div></header>
     <section className="tw-sequencer" aria-label="Interactive rotation timeline">
       <header className="tw-sequencer-toolbar">
         <div className="tw-transport" role="group" aria-label="Playback controls">
           <button type="button" onClick={() => { setIsPlaying(false); setPlayhead(0) }} title="Return to start">|◀</button>
           <button type="button" className={isPlaying ? 'is-active' : ''} onClick={() => { if (playhead >= model.team.rotationDuration) setPlayhead(0); setIsPlaying((current) => !current) }} aria-label={isPlaying ? 'Pause timeline' : 'Play timeline'}>{isPlaying ? 'Ⅱ' : '▶'}</button>
-          <span><b>{playhead.toFixed(2)}s</b><small>/ {model.team.rotationDuration.toFixed(1)}s</small></span>
+          <span><b>{playhead.toFixed(2)}s</b><small>/ {model.team.rotationDuration.toFixed(2)}s</small></span>
         </div>
-        <div className="tw-playback-readout" aria-live="polite"><span><small>Now</small><b>{activeRows.length ? activeRows.map((row) => compactAttackLabel(row.action.label ?? row.attack?.name ?? 'Missing attack')).join(' + ') : 'Ready'}</b></span><span><small>Active effects</small><b>{activeEffectCount}</b></span><span><small>Current DMG</small><b>{formatDamage(currentDamage)}</b></span></div>
+        <div className="tw-playback-readout" aria-live="polite"><span><small>Now</small><b>{activeRows.length ? activeRows.map((row) => compactAttackLabel(row.action.label ?? row.attack?.name ?? 'Missing attack')).join(' + ') : 'Ready'}</b></span><span><small>Active effects</small><b>{activeEffectCount}</b></span><span><small>Current DMG</small><b>{activeRows.some((row) => row.resultKind === 'damage') ? formatDamage(currentDamage) : '—'}</b></span></div>
+        <div className="tw-loop-controls" role="group" aria-label="Loop markers"><button type="button" onClick={() => void updateTeam({ loop: { start: Math.min(playhead, model.team.rotationDuration - 0.01), end: Math.max(model.team.loop?.end ?? model.team.rotationDuration, Math.min(playhead, model.team.rotationDuration - 0.01) + 0.01) } })}>Set start</button><button type="button" onClick={() => void updateTeam({ loop: { start: Math.min(model.team.loop?.start ?? 0, Math.max(0, playhead - 0.01)), end: Math.max(0.01, playhead) } })}>Set stop</button>{model.team.loop && <><label>Start <BoundedNumberInput min={0} max={model.team.loop.end - 0.01} step="any" value={model.team.loop.start} onChange={(start) => void updateTeam({ loop: { ...model.team.loop!, start } })}/></label><label>Stop <BoundedNumberInput min={model.team.loop.start + 0.01} max={model.team.rotationDuration} step="any" value={model.team.loop.end} onChange={(end) => void updateTeam({ loop: { ...model.team.loop!, end } })}/></label><button type="button" onClick={() => void updateTeam({ loop: undefined })}>Clear loop</button></>}</div>
         <div className="tw-edit-controls" role="group" aria-label="Timeline editing controls">
           <button type="button" onClick={undoTimeline} disabled={!undoStackRef.current.length} title="Undo (Ctrl+Z)">Undo</button>
           <button type="button" onClick={redoTimeline} disabled={!redoStackRef.current.length} title="Redo (Ctrl+Y)">Redo</button>
@@ -1069,13 +1095,16 @@ function RotationWorkspace({ model, updateTeam, focusBuildId }: { model: TeamWor
         <div className="tw-sequencer-canvas" style={{ width: 128 + model.team.rotationDuration * timelineScale }}>
           <div className="tw-ruler-row"><span className="tw-ruler-corner">Tracks</span><div className="tw-ruler" style={{ width: model.team.rotationDuration * timelineScale }} onPointerDown={(event) => { const rect = event.currentTarget.getBoundingClientRect(); setPlayhead(timelineRound(timelineClamp((event.clientX - rect.left) / timelineScale, 0, model.team.rotationDuration))); setIsPlaying(false) }}>{rulerTicks.map((tick) => <i style={{ left: tick * timelineScale }} key={tick}><b>{tick}s</b></i>)}</div></div>
           <div className="tw-playhead" style={{ left: 128 + playhead * timelineScale }} aria-hidden="true"><i/><span/></div>
+          {model.team.loop && <><div className="tw-loop-range" style={{ left: 128 + model.team.loop.start * timelineScale, width: (model.team.loop.end - model.team.loop.start) * timelineScale }} aria-hidden="true"/><div className="tw-loop-marker" style={{ left: 128 + model.team.loop.start * timelineScale }} aria-hidden="true"><span>Start</span></div><div className="tw-loop-marker" style={{ left: 128 + model.team.loop.end * timelineScale }} aria-hidden="true"><span>Stop</span></div></>}
           <div className="tw-sequencer-lanes">{members.map((member, memberIndex) => {
             const laneActions = timelineActions.filter((action) => action.buildId === member.build.id).sort((left, right) => left.timestamp - right.timestamp)
             const rowEnds: number[] = []
             const clips = laneActions.map((action) => {
               const duration = actionDuration(action, model.team.rotationDuration)
-              let row = rowEnds.findIndex((end) => end <= action.timestamp)
-              if (row < 0) { row = rowEnds.length; rowEnds.push(action.timestamp + duration) } else rowEnds[row] = action.timestamp + duration
+              const left = action.timestamp * timelineScale
+              const right = left + Math.max(18, duration * timelineScale)
+              let row = rowEnds.findIndex((end) => end <= left)
+              if (row < 0) { row = rowEnds.length; rowEnds.push(right) } else rowEnds[row] = right
               return { action, duration, row }
             })
             const laneHeight = Math.max(72, rowEnds.length * 34 + 24)
@@ -1088,9 +1117,10 @@ function RotationWorkspace({ model, updateTeam, focusBuildId }: { model: TeamWor
                   const attack = member.attacks.find((entry) => entry.id === action.attackId)
                   const selected = selectedActionIds.includes(action.id)
                   const active = activeActionIds.has(action.id)
-                  return <article data-timeline-action-id={action.id} className={`tw-timeline-clip ${selected ? 'is-selected' : ''} ${active ? 'is-active' : ''}`} style={{ left: action.timestamp * timelineScale, top: 6 + row * 34, width: Math.max(18, duration * timelineScale) }} aria-label={`${attack?.name ?? 'Missing attack'}, ${action.timestamp.toFixed(1)} seconds, duration ${duration.toFixed(1)} seconds`} aria-selected={selected} key={action.id} onPointerDown={(event) => selectClip(event, action.id)} onContextMenu={(event) => openTimelineMenu(event, action.id)} onDoubleClick={(event) => { event.stopPropagation(); document.getElementById(`rotation-action-${action.id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' }) }}>
+                  return <article data-timeline-action-id={action.id} className={`tw-timeline-clip ${selected ? 'is-selected' : ''} ${active ? 'is-active' : ''}`} style={{ left: action.timestamp * timelineScale, top: 6 + row * 34, width: Math.max(18, duration * timelineScale) }} aria-label={`${action.label ?? attack?.name ?? 'Missing attack'}, ${action.timestamp.toFixed(2)} seconds, duration ${duration.toFixed(2)} seconds`} aria-selected={selected} key={action.id} onPointerDown={(event) => selectClip(event, action.id)} onContextMenu={(event) => openTimelineMenu(event, action.id)} onDoubleClick={(event) => { event.stopPropagation(); document.getElementById(`rotation-action-${action.id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' }) }}>
                     <span className="tw-clip-handle start" data-timeline-handle="start" aria-hidden="true"/>
-                    <span className="tw-clip-copy"><b>{attack?.name ?? 'Missing attack'}</b><small>{actionMultiplier(action) > 1 ? `×${actionMultiplier(action)} · ` : ''}{action.timestamp.toFixed(1)}–{(action.timestamp + duration).toFixed(1)}s</small></span>
+                    <span className="tw-clip-copy"><b>{action.label ?? attack?.name ?? 'Missing attack'}</b><small>{actionMultiplier(action) > 1 ? `×${actionMultiplier(action)} · ` : ''}{action.timestamp.toFixed(2)}–{(action.timestamp + duration).toFixed(2)}s</small></span>
+                    {attack?.timing?.hitFrames.map((frame, hit) => <i className="tw-clip-hit" style={{ left:`${Math.min(100, frame / 60 / duration * 100)}%` }} title={`Hit ${hit + 1}: frame ${frame}`} key={hit}/>)}
                     <span className="tw-clip-handle end" data-timeline-handle="end" aria-hidden="true"/>
                   </article>
                 })}
@@ -1100,7 +1130,7 @@ function RotationWorkspace({ model, updateTeam, focusBuildId }: { model: TeamWor
         </div>
       </div>
       <footer className="tw-sequencer-help"><span>Double-click a track to add an action.</span><span>Drag to move or trim · Hold Alt for free timing</span></footer>
-      {quickCreate && (() => { const member = model.members.find((entry) => entry.build?.id === quickCreate.buildId); return <div className="tw-quick-create" role="dialog" aria-label="Add timeline action"><span><b>Add at {quickCreate.timestamp.toFixed(1)}s</b><small>{member ? teamMemberName(member) : 'Character'}</small></span><select autoFocus value={quickCreate.attackId} onChange={(event) => setQuickCreate({ ...quickCreate, attackId: event.target.value })}>{ROTATION_ATTACK_GROUPS.map((group) => { const attacks = member?.attacks.filter((attack) => attack.group === group.id) ?? []; return attacks.length ? <optgroup label={group.label} key={group.id}>{attacks.map((attack) => <option value={attack.id} key={attack.id}>{compactAttackLabel(attack.name)}</option>)}</optgroup> : null })}</select><button type="button" className="primary" disabled={!quickCreate.attackId} onClick={addQuickAction}>Add clip</button><button type="button" onClick={() => setQuickCreate(null)}>Cancel</button></div> })()}
+      {quickCreate && (() => { const member = model.members.find((entry) => entry.build?.id === quickCreate.buildId); return <div className="tw-quick-create" role="dialog" aria-label="Add timeline action"><span><b>Add at {quickCreate.timestamp.toFixed(2)}s</b><small>{member ? teamMemberName(member) : 'Character'}</small></span><select autoFocus value={quickCreate.attackId} onChange={(event) => setQuickCreate({ ...quickCreate, attackId: event.target.value })}>{ROTATION_ATTACK_GROUPS.map((group) => { const attacks = member?.attacks.filter((attack) => attack.group === group.id) ?? []; return attacks.length ? <optgroup label={group.label} key={group.id}>{attacks.map((attack) => <option value={attack.id} key={attack.id}>{compactAttackLabel(attack.name)}</option>)}</optgroup> : null })}</select><button type="button" className="primary" disabled={!quickCreate.attackId} onClick={addQuickAction}>Add clip</button><button type="button" onClick={() => setQuickCreate(null)}>Cancel</button></div> })()}
       {timelineMenu && <div className="tw-timeline-menu" style={{ left: timelineMenu.x, top: timelineMenu.y }} role="menu"><button type="button" onClick={() => { copySelected(selectedActionIds.includes(timelineMenu.actionId) ? selectedActionIds : [timelineMenu.actionId]); setTimelineMenu(null) }}>Copy selection</button><button type="button" onClick={() => { duplicateSelected(selectedActionIds.includes(timelineMenu.actionId) ? selectedActionIds : [timelineMenu.actionId]); setTimelineMenu(null) }}>Duplicate</button><button type="button" onClick={() => { const ids = selectedActionIds.includes(timelineMenu.actionId) ? selectedActionIds : [timelineMenu.actionId]; commitActions(timelineActions.filter((action) => !ids.includes(action.id))); setSelectedActionIds([]); setTimelineMenu(null) }}>Delete</button></div>}
     </section>
     <div className="tw-rotation-layout">
@@ -1111,40 +1141,44 @@ function RotationWorkspace({ model, updateTeam, focusBuildId }: { model: TeamWor
           const trace = row.traces?.[resultMode]
           const effectCount = row.activeBuffs.length + row.activates.length
           const multiplier = actionMultiplier(row.action)
+          const isOutroCast = row.attack?.group === 'outro' && row.resultKind !== 'damage'
           const dragTarget = cardDropTarget?.actionId === row.action.id
-          return <article id={`rotation-action-${row.action.id}`} draggable className={`tw-rotation-card ${row.warnings.length ? 'is-invalid' : ''} ${selectedActionIds.includes(row.action.id) ? 'is-selected' : ''} ${activeActionIds.has(row.action.id) ? 'is-playing' : ''} ${draggedCardId === row.action.id ? 'is-dragging' : ''} ${dragTarget ? cardDropTarget.after ? 'drop-after' : 'drop-before' : ''}`} key={row.action.id} onClick={() => setSelectedActionIds([row.action.id])} onDragStart={(event: ReactDragEvent<HTMLElement>) => { setDraggedCardId(row.action.id); event.dataTransfer.effectAllowed = 'move'; event.dataTransfer.setData('text/plain', row.action.id) }} onDragOver={(event) => { event.preventDefault(); if (draggedCardId === row.action.id) return; const rect = event.currentTarget.getBoundingClientRect(); setCardDropTarget({ actionId: row.action.id, after: event.clientY >= rect.top + rect.height / 2 }) }} onDrop={(event) => { event.preventDefault(); const sourceId = event.dataTransfer.getData('text/plain') || draggedCardId; const rect = event.currentTarget.getBoundingClientRect(); if (sourceId) reorderActionCard(sourceId, row.action.id, event.clientY >= rect.top + rect.height / 2); setDraggedCardId(null); setCardDropTarget(null) }} onDragEnd={() => { setDraggedCardId(null); setCardDropTarget(null) }}>
-            <div className="tw-rotation-marker"><b>{index + 1}</b><span>{row.action.timestamp.toFixed(1)}s</span></div>
+          const visibleWarnings = row.warnings.filter((warning) => warning !== importedAttackEstimateWarning)
+          return <article id={`rotation-action-${row.action.id}`} draggable className={`tw-rotation-card ${visibleWarnings.length ? 'is-invalid' : ''} ${selectedActionIds.includes(row.action.id) ? 'is-selected' : ''} ${activeActionIds.has(row.action.id) ? 'is-playing' : ''} ${draggedCardId === row.action.id ? 'is-dragging' : ''} ${dragTarget ? cardDropTarget.after ? 'drop-after' : 'drop-before' : ''}`} key={row.action.id} onClick={() => setSelectedActionIds([row.action.id])} onDragStart={(event: ReactDragEvent<HTMLElement>) => { setDraggedCardId(row.action.id); event.dataTransfer.effectAllowed = 'move'; event.dataTransfer.setData('text/plain', row.action.id) }} onDragOver={(event) => { event.preventDefault(); if (draggedCardId === row.action.id) return; const rect = event.currentTarget.getBoundingClientRect(); setCardDropTarget({ actionId: row.action.id, after: event.clientY >= rect.top + rect.height / 2 }) }} onDrop={(event) => { event.preventDefault(); const sourceId = event.dataTransfer.getData('text/plain') || draggedCardId; const rect = event.currentTarget.getBoundingClientRect(); if (sourceId) reorderActionCard(sourceId, row.action.id, event.clientY >= rect.top + rect.height / 2); setDraggedCardId(null); setCardDropTarget(null) }} onDragEnd={() => { setDraggedCardId(null); setCardDropTarget(null) }}>
+            <div className="tw-rotation-marker"><b>{index + 1}</b><span>{row.action.timestamp.toFixed(2)}s</span></div>
             <div className="tw-rotation-card-main">
-              <div className="tw-rotation-action-summary"><div><small>{row.member ? teamMemberName(row.member) : 'Unassigned'}</small><strong>{compactAttackLabel(row.action.label ?? row.attack?.name ?? 'Missing attack')}</strong><span className="tw-action-tags">{row.attack && <><em className="forte">{forteGroupLabel(row.attack.group)}</em><em className="damage">{damageSourceLabel(row.attack.type)}</em></>}</span></div><label className="tw-action-multiplier" title="Repeat this action without adding duplicate cards" onClick={(event) => event.stopPropagation()}><b>×</b><BoundedNumberInput aria-label={`Action ${index + 1} repeat multiplier`} min={1} max={99} step="1" value={multiplier} onChange={(multiplier) => void updateAction(row.action.id, { multiplier })}/></label><CalculatedValue detail={multiplier > 1 ? sumDetail(`${compactAttackLabel(row.action.label ?? row.attack?.name ?? 'Action')} · ${resultMode}`, value, [{ label: `One action × ${multiplier}`, value: value / multiplier }]) : trace ? traceCalculationDetail(trace, `${compactAttackLabel(row.action.label ?? row.attack?.name ?? 'Action')} · ${resultMode}`) : sumDetail(`${resultMode} damage`, value, [{ label: 'Calculated action', value }])}><strong className="tw-rotation-result"><small>{resultMode === 'expected' ? 'Avg DMG' : resultMode === 'normal' ? 'Non-crit' : 'Crit DMG'}</small>{formatDamage(value)}</strong></CalculatedValue></div>
+              <div className="tw-rotation-action-summary"><div><small>{row.member ? teamMemberName(row.member) : 'Unassigned'}</small><strong>{compactAttackLabel(row.action.label ?? row.attack?.name ?? 'Missing attack')}</strong><span className="tw-action-tags">{row.attack && <><em className="forte">{forteGroupLabel(row.attack.group)}</em>{!isOutroCast && <em className="damage">{damageSourceLabel(row.attack.type)}</em>}</>}</span></div><label className="tw-action-multiplier" title="Repeat this action without adding duplicate cards" onClick={(event) => event.stopPropagation()}><b>×</b><BoundedNumberInput aria-label={`Action ${index + 1} repeat multiplier`} min={1} max={99} step="1" value={multiplier} onChange={(multiplier) => void updateAction(row.action.id, { multiplier })}/></label>{isOutroCast ? <strong className="tw-rotation-result">Cast</strong> : <CalculatedValue detail={multiplier > 1 ? sumDetail(`${compactAttackLabel(row.action.label ?? row.attack?.name ?? 'Action')} · ${resultMode}`, value, [{ label: `One action × ${multiplier}`, value: value / multiplier }]) : trace ? traceCalculationDetail(trace, `${compactAttackLabel(row.action.label ?? row.attack?.name ?? 'Action')} · ${resultMode}`) : sumDetail(`${resultMode} damage`, value, [{ label: 'Calculated action', value }])}><strong className="tw-rotation-result"><small>{resultMode === 'expected' ? 'Avg DMG' : resultMode === 'normal' ? 'Non-crit' : 'Crit DMG'}</small>{formatDamage(value)}</strong></CalculatedValue>}</div>
               <details className="tw-rotation-action-editor"><summary>Edit action and mechanics <span>{effectCount ? `${effectCount} active effects` : 'No additional effects'}</span></summary><div>
-                <div className="tw-rotation-action-fields"><label><span>Character</span><select aria-label={`Action ${index + 1} character`} value={row.action.buildId} onChange={(event) => { const member = model.members.find((entry) => entry.build?.id === event.target.value); const attack = member?.attacks[0]; const attackId = attack?.id ?? ''; void updateAction(row.action.id, { buildId: event.target.value, attackId, duration: defaultRotationClipDuration(attack?.group ?? 'skill'), formulaTargetId: member?.catalog ? `${member.catalog.id}:${attackId}` : undefined }) }}>{model.members.flatMap((member) => member.build ? [<option value={member.build.id} key={member.build.id}>{teamMemberName(member)}</option>] : [])}</select></label><label><span>Attack</span><select aria-label={`Action ${index + 1} attack`} value={row.attack?.id ?? row.action.attackId} onChange={(event) => { const attack = row.member?.attacks.find((entry) => entry.id === event.target.value); void updateAction(row.action.id, { attackId: event.target.value, duration: defaultRotationClipDuration(attack?.group ?? 'skill'), formulaTargetId: row.member?.catalog ? `${row.member.catalog.id}:${event.target.value}` : undefined }) }}>{!row.attack && row.action.label && <option value={row.action.attackId}>{row.action.label} (unmapped)</option>}{ROTATION_ATTACK_GROUPS.map((group) => { const attacks = row.member?.attacks.filter((attack) => attack.group === group.id) ?? []; return attacks.length ? <optgroup label={group.label} key={group.id}>{attacks.map((attack) => <option value={attack.id} key={attack.id}>{compactAttackLabel(attack.name)}</option>)}</optgroup> : null })}</select></label><label><span>Time</span><BoundedNumberInput aria-label={`Action ${index + 1} timestamp`} min={0} max={model.team.rotationDuration} step="0.1" value={row.action.timestamp} onChange={(timestamp) => void updateAction(row.action.id, { timestamp })}/></label><label><span>Duration</span><BoundedNumberInput aria-label={`Action ${index + 1} duration`} min={ROTATION_MIN_CLIP_DURATION} max={Math.max(ROTATION_MIN_CLIP_DURATION, model.team.rotationDuration - row.action.timestamp)} step="0.1" value={actionDuration(row.action, model.team.rotationDuration)} onChange={(duration) => void updateAction(row.action.id, { duration })}/></label></div>
-                <div className="tw-rotation-mechanics"><span className="tw-buff-state"><b>{row.activeBuffs.length ? 'Active authored buffs' : 'No additional effects'}</b>{row.activeBuffs.map((buff) => <small key={buff.id}>{teamBuffLabel(buff)}</small>)}{row.activates.map((buff) => <small className="activates" key={buff.id}>Activates {buff.name} until {(row.action.timestamp + buff.duration).toFixed(1)}s</small>)}</span><span className="tw-rotation-level">Lv. {row.attack?.skillLevel ?? '—'}<small>{row.attack?.scalesWith === 'level' ? 'Level-based damage' : `${row.attack?.scalesWith.toUpperCase() ?? '—'} scaling`}</small></span></div>
-                <div className="tw-action-breakdown"><div><span>Non-crit <b>{formatDamage(row.normal)}</b></span><span>Average <b>{formatDamage(row.expected)}</b></span><span>Critical <b>{formatDamage(row.critical)}</b></span><span>Multiplier <b>{row.attack?.multiplierLabel ?? 'Missing'}</b></span></div></div>
+                <div className="tw-rotation-action-fields"><label><span>Character</span><select aria-label={`Action ${index + 1} character`} value={row.action.buildId} onChange={(event) => { const member = model.members.find((entry) => entry.build?.id === event.target.value); const attack = member?.attacks[0]; const attackId = attack?.id ?? ''; void updateAction(row.action.id, { buildId: event.target.value, attackId, label: undefined, duration: defaultRotationClipDuration(attack?.group ?? 'skill', attack?.timing), formulaTargetId: member?.catalog ? `${member.catalog.id}:${attackId}` : undefined }) }}>{model.members.flatMap((member) => member.build ? [<option value={member.build.id} key={member.build.id}>{teamMemberName(member)}</option>] : [])}</select></label><label><span>Attack</span><select aria-label={`Action ${index + 1} attack`} value={row.attack?.id ?? row.action.attackId} onChange={(event) => { const attack = row.member?.attacks.find((entry) => entry.id === event.target.value); void updateAction(row.action.id, { attackId: event.target.value, label: undefined, duration: defaultRotationClipDuration(attack?.group ?? 'skill', attack?.timing), formulaTargetId: row.member?.catalog ? `${row.member.catalog.id}:${event.target.value}` : undefined }) }}>{!row.attack && row.action.label && <option value={row.action.attackId}>{row.action.label} (unmapped)</option>}{ROTATION_ATTACK_GROUPS.map((group) => { const attacks = row.member?.attacks.filter((attack) => attack.group === group.id) ?? []; return attacks.length ? <optgroup label={group.label} key={group.id}>{attacks.map((attack) => <option value={attack.id} key={attack.id}>{compactAttackLabel(attack.name)}</option>)}</optgroup> : null })}</select></label><label><span>Time</span><BoundedNumberInput aria-label={`Action ${index + 1} timestamp`} min={0} max={model.team.rotationDuration} step="any" value={row.action.timestamp} onChange={(timestamp) => void updateAction(row.action.id, { timestamp })}/></label><label><span>Duration</span><BoundedNumberInput aria-label={`Action ${index + 1} duration`} min={ROTATION_MIN_CLIP_DURATION} max={Math.max(ROTATION_MIN_CLIP_DURATION, model.team.rotationDuration - row.action.timestamp)} step="any" value={actionDuration(row.action, model.team.rotationDuration)} onChange={(duration) => void updateAction(row.action.id, { duration })}/></label></div>
+                <div className="tw-rotation-mechanics"><span className="tw-buff-state"><b>{row.activeBuffs.length ? 'Active authored buffs' : 'No additional effects'}</b>{row.activeBuffs.map((buff) => <small key={buff.id}>{teamBuffLabel(buff)}</small>)}{row.activates.map((buff) => <small className="activates" key={buff.id}>Activates {buff.name} until {(row.action.timestamp + buff.duration).toFixed(2)}s</small>)}</span><span className="tw-rotation-level">{row.resultKind === 'utility' ? 'Cast' : `Lv. ${row.attack?.skillLevel ?? '—'}`}<small>{row.resultKind === 'utility' ? 'No damage' : row.attack?.scalesWith === 'level' ? 'Level-based damage' : `${row.attack?.scalesWith.toUpperCase() ?? '—'} scaling`}</small>{row.attack?.timing && <small>Source timing: {row.attack.timing.totalFrames}f total · cancel {row.attack.timing.cancelFrame}f · swap lock {row.attack.timing.noSwapFrame}f · stop {row.attack.timing.timeStopFrames}f/{row.attack.timing.motionStopFrames}f · hits {row.attack.timing.hitFrames.join(', ')}f · commits {row.attack.timing.hitCommitFrames.join(', ')}f</small>}</span></div>
+                {!isOutroCast && <div className="tw-action-breakdown"><div><span>Non-crit <b>{formatDamage(row.normal)}</b></span><span>Average <b>{formatDamage(row.expected)}</b></span><span>Critical <b>{formatDamage(row.critical)}</b></span><span>Multiplier <b>{row.attack?.multiplierLabel ?? 'Missing'}</b></span></div></div>}
               </div></details>
-              {row.warnings.length > 0 && <p className="tw-action-warning">{row.warnings.join(' ')}</p>}
+              {visibleWarnings.length > 0 && <p className="tw-action-warning">{visibleWarnings.join(' ')}</p>}
             </div>
             <div className="tw-rotation-card-actions"><button type="button" title="Move earlier" aria-label={`Move action ${index + 1} earlier`} disabled={index === 0} onClick={() => void moveAction(index, -1)}>↑</button><button type="button" title="Move later" aria-label={`Move action ${index + 1} later`} disabled={index === model.actions.length - 1} onClick={() => void moveAction(index, 1)}>↓</button><button type="button" title="Duplicate" aria-label={`Duplicate action ${index + 1}`} onClick={() => void duplicateAction(row)}>⧉</button><button type="button" title="Remove" className="tw-remove" aria-label={`Remove action ${index + 1}`} onClick={() => commitActions(timelineActions.filter((action) => action.id !== row.action.id))}><Icon name="trash"/></button></div>
           </article>
         })}{!model.actions.length && <p className="tw-empty-state">Choose the first action below to begin the rotation and populate the analysis.</p>}</div>
         <div className="tw-rotation-composer">
           <label><span>Character</span><select value={draftMember?.build?.id ?? ''} onChange={(event) => setDraftBuildId(event.target.value)}>{model.members.flatMap((member) => member.build ? [<option value={member.build.id} key={member.build.id}>{teamMemberName(member)}</option>] : [])}</select></label>
-          <label><span>Attack</span><select value={draftAttackId} onChange={(event) => { setDraftAttackId(event.target.value); setDraftDuration(defaultRotationClipDuration(draftMember?.attacks.find((attack) => attack.id === event.target.value)?.group ?? 'skill')) }}>{ROTATION_ATTACK_GROUPS.map((group) => { const attacks = draftMember?.attacks.filter((attack) => attack.group === group.id) ?? []; return attacks.length ? <optgroup label={group.label} key={group.id}>{attacks.map((attack) => <option value={attack.id} key={attack.id}>{compactAttackLabel(attack.name)}</option>)}</optgroup> : null })}</select></label>
-          <label><span>Time</span><BoundedNumberInput min={0} max={model.team.rotationDuration} step="0.1" value={draftTimestamp} onChange={setDraftTimestamp}/></label>
-          <label><span>Duration</span><BoundedNumberInput min={ROTATION_MIN_CLIP_DURATION} max={model.team.rotationDuration} step="0.1" value={draftDuration} onChange={setDraftDuration}/></label>
-          <button className="primary" onClick={() => void addAction()} disabled={!draftMember?.build || !draftAttackId || !Number.isFinite(draftTimestamp) || !Number.isFinite(draftDuration)}><Icon name="plus"/>Add</button>
+          <label><span>Attack</span><select value={draftAttackId} onChange={(event) => { setDraftAttackId(event.target.value); setDraftDuration(defaultRotationClipDuration(draftMember?.attacks.find((attack) => attack.id === event.target.value)?.group ?? 'skill', draftMember?.attacks.find((attack) => attack.id === event.target.value)?.timing)) }}>{ROTATION_ATTACK_GROUPS.map((group) => { const attacks = draftMember?.attacks.filter((attack) => attack.group === group.id) ?? []; return attacks.length ? <optgroup label={group.label} key={group.id}>{attacks.map((attack) => <option value={attack.id} key={attack.id}>{compactAttackLabel(attack.name)}</option>)}</optgroup> : null })}</select></label>
+          <label><span>Time</span><BoundedNumberInput min={0} max={600} step="any" value={draftTimestamp} onChange={setDraftTimestamp}/></label>
+          <label><span>Duration</span><BoundedNumberInput min={ROTATION_MIN_CLIP_DURATION} max={600} step="any" value={draftDuration} onChange={setDraftDuration}/></label>
+          <button className="primary" onClick={() => void addAction()} disabled={!draftMember?.build || !draftAttackId || !Number.isFinite(draftTimestamp) || !Number.isFinite(draftDuration) || draftTimestamp + draftDuration > 600}><Icon name="plus"/>Add</button>
         </div>
       </section>
 
       <aside className="tw-rotation-analysis" aria-label="Rotation analysis">
-        <div className="tw-rotation-kpis"><div><span>{resultMode === 'expected' ? 'Average rotation' : resultMode === 'normal' ? 'Non-crit rotation' : 'Critical rotation'}</span><CalculatedValue detail={sumDetail('Rotation total', rotationTotal, model.actions.map((row) => ({ label: `${row.action.timestamp.toFixed(1)}s · ${compactAttackLabel(row.action.label ?? row.attack?.name ?? 'Missing attack')}`, value: row[resultMode] })))}><strong>{formatDamage(rotationTotal)}</strong></CalculatedValue></div><div><span>DPS</span><strong>{formatDamage(rotationTotal / Math.max(1, model.team.rotationDuration))}</strong></div><div><span>Window</span><strong>{model.team.rotationDuration.toFixed(1)}s</strong></div></div>
+          <div className="tw-chart-toggle" role="group" aria-label="Damage range"><button type="button" aria-pressed={selectedTarget === TEAM_ROTATION_TARGET_ID} onClick={() => setDamageTarget('rotation')}>Rotation</button><button type="button" aria-pressed={selectedTarget === TEAM_LOOP_TARGET_ID} disabled={!model.team.loop} onClick={() => setDamageTarget('loop')}>Loop</button></div>
+          <div className="tw-rotation-kpis"><div><span>{resultMode === 'expected' ? 'Average' : resultMode === 'normal' ? 'Non-crit' : 'Critical'} {selectedTarget === TEAM_LOOP_TARGET_ID ? 'loop' : 'rotation'}</span><CalculatedValue detail={sumDetail(selectedTarget === TEAM_LOOP_TARGET_ID ? 'Loop total' : 'Rotation total', rotationTotal, analysisRows.map((row) => ({ label: `${row.action.timestamp.toFixed(2)}s · ${compactAttackLabel(row.action.label ?? row.attack?.name ?? 'Missing attack')}`, value: row[resultMode] })))}><strong>{formatDamage(rotationTotal)}</strong></CalculatedValue></div><div><span>DPS</span><strong>{formatDamage(rotationTotal / (selectedTarget === TEAM_LOOP_TARGET_ID && model.team.loop ? model.team.loop.end - model.team.loop.start : model.team.rotationDuration))}</strong></div><div><span>Window</span><strong>{(selectedTarget === TEAM_LOOP_TARGET_ID && model.team.loop ? model.team.loop.end - model.team.loop.start : model.team.rotationDuration).toFixed(2)}s</strong></div></div>
+          {selectedTarget === TEAM_LOOP_TARGET_ID && <p>Loop damage counts clips fully between the start and stop markers.</p>}
         <section className="tw-analysis-card tw-damage-chart"><header><div><span className="eyebrow">Damage distribution</span><h3>{analysisMode === 'character' ? 'Team contribution' : 'Damage types'}</h3></div><div className="tw-chart-toggle" role="group" aria-label="Chart grouping"><button type="button" aria-pressed={analysisMode === 'character'} onClick={() => setAnalysisMode('character')}>Character</button><button type="button" aria-pressed={analysisMode === 'type'} onClick={() => setAnalysisMode('type')}>Damage type</button></div></header>
           <div className="tw-donut-layout"><div className="tw-donut" style={chartStyle} role="img" aria-label={rotationTotal ? `${analysisMode} damage distribution` : 'No calculated damage'}><div><strong>{formatDamage(rotationTotal)}</strong><span>Total damage</span></div></div><div className="tw-donut-legend">{segments.map((segment) => <div key={segment.label}><i style={{ background: segment.color }}/><span>{segment.label}</span><b>{percent(segment.value, rotationTotal)}</b><small>{formatDamage(segment.value)}</small></div>)}{!segments.length && <p>No calculated damage yet.</p>}</div></div>
         </section>
         <section className="tw-analysis-card tw-damage-matrix"><header><div><span className="eyebrow">Damage split</span><h3>Type by character</h3></div></header>
-          {damageTypes.length && members.length ? <div className="tw-damage-table-scroll"><table><thead><tr><th>Type</th>{members.map((member) => <th key={member.build.id}>{teamMemberName(member)}</th>)}<th>Total</th></tr></thead><tbody>{damageTypes.map((type) => <tr key={type}><th>{DAMAGE_TYPE_LABELS[type]}</th>{members.map((member) => <td key={member.build.id}>{member.byType[type] ? formatDamage(member.byType[type] ?? 0) : '—'}</td>)}<td><b>{formatDamage(model.byType[type] ?? 0)}</b><small>{percent(model.byType[type] ?? 0, rotationTotal)}</small></td></tr>)}<tr className="tw-damage-total"><th>Total</th>{members.map((member) => <td key={member.build.id}><b>{formatDamage(member.contribution)}</b></td>)}<td><b>{formatDamage(rotationTotal)}</b></td></tr></tbody></table></div> : <p className="tw-analysis-empty">Damage rows will appear when the rotation contains calculated attacks.</p>}
+          {damageTypes.length && members.length ? <div className="tw-damage-table-scroll"><table><thead><tr><th>Type</th>{members.map((member) => <th key={member.build.id}>{teamMemberName(member)}</th>)}<th>Total</th></tr></thead><tbody>{damageTypes.map((type) => <tr key={type}><th>{DAMAGE_TYPE_LABELS[type]}</th>{members.map((member) => <td key={member.build.id}>{memberDamage(member.build.id, type) ? formatDamage(memberDamage(member.build.id, type)) : '—'}</td>)}<td><b>{formatDamage(typeDamage(type))}</b><small>{percent(typeDamage(type), rotationTotal)}</small></td></tr>)}<tr className="tw-damage-total"><th>Total</th>{members.map((member) => <td key={member.build.id}><b>{formatDamage(memberDamage(member.build.id))}</b></td>)}<td><b>{formatDamage(rotationTotal)}</b></td></tr></tbody></table></div> : <p className="tw-analysis-empty">Damage rows will appear when the selected range contains calculated attacks.</p>}
         </section>
         <section className="tw-analysis-card tw-damage-over-time"><header><div><span className="eyebrow">Timeline analysis</span><h3>Damage over time</h3></div><b>Peak {compactDamage(peakActiveDamage)}</b></header>
-          <div className="tw-damage-time-chart" role="group" aria-label={`Stacked action damage across the ${model.team.rotationDuration.toFixed(1)} second rotation`}>
+          <div className="tw-damage-time-chart" role="group" aria-label={`Stacked action damage across the ${model.team.rotationDuration.toFixed(2)} second rotation`}>
             <div className="tw-damage-y-axis">{damageAxisTicks.map((tick, index) => <span style={{ top: `${index / (damageAxisTicks.length - 1) * 100}%` }} key={tick}>{compactDamage(tick)}</span>)}</div>
             <div className="tw-damage-plot">
               {damageAxisTicks.map((tick, index) => <i className="horizontal" style={{ top: `${index / (damageAxisTicks.length - 1) * 100}%` }} key={`y-${tick}`}/>)}
@@ -1156,11 +1190,11 @@ function RotationWorkspace({ model, updateTeam, focusBuildId }: { model: TeamWor
                 const height = Math.max(1, damage / damageAxisMaximum * 100)
                 const bottom = stackBottom / damageAxisMaximum * 100
                 const isActive = start <= playhead && playhead < end
-                return <button type="button" className={`tw-damage-spike ${end <= playhead ? 'is-past' : ''} ${isActive ? 'is-active' : ''}`} style={{ left: `${left}%`, bottom: `${bottom}%`, width: `${width}%`, height: `${height}%`, '--tw-spike-color': color } as CSSProperties} title={`Character ${memberIndex + 1} · ${start.toFixed(1)}s–${end.toFixed(1)}s · ${attackNames.join(' + ')} · ${formatDamage(damage)} DMG`} aria-label={`Character ${memberIndex + 1}, ${attackNames.join(' and ')}, ${formatDamage(damage)} damage from ${start.toFixed(1)} to ${end.toFixed(1)} seconds`} key={`${start}:${end}:${memberIndex}`} onClick={() => { setPlayhead(start); setIsPlaying(false); setSelectedActionIds(actionIds) }}/>
+                return <button type="button" className={`tw-damage-spike ${end <= playhead ? 'is-past' : ''} ${isActive ? 'is-active' : ''}`} style={{ left: `${left}%`, bottom: `${bottom}%`, width: `${width}%`, height: `${height}%`, '--tw-spike-color': color } as CSSProperties} title={`Character ${memberIndex + 1} · ${start.toFixed(2)}s–${end.toFixed(2)}s · ${attackNames.join(' + ')} · ${formatDamage(damage)} DMG`} aria-label={`Character ${memberIndex + 1}, ${attackNames.join(' and ')}, ${formatDamage(damage)} damage from ${start.toFixed(2)} to ${end.toFixed(2)} seconds`} key={`${start}:${end}:${memberIndex}`} onClick={() => { setPlayhead(start); setIsPlaying(false); setSelectedActionIds(actionIds) }}/>
               })}
               <span className="tw-damage-cursor" style={{ left: `${model.team.rotationDuration > 0 ? playhead / model.team.rotationDuration * 100 : 0}%` }}/>
             </div>
-            <div className="tw-damage-x-axis">{damageTimeTicks.map((tick, index) => <span style={{ left: `${index / (damageTimeTicks.length - 1) * 100}%` }} key={tick}>{Number(tick.toFixed(1))}s</span>)}</div>
+            <div className="tw-damage-x-axis">{damageTimeTicks.map((tick, index) => <span style={{ left: `${index / (damageTimeTicks.length - 1) * 100}%` }} key={tick}>{Number(tick.toFixed(2))}s</span>)}</div>
           </div>
           <div className="tw-damage-time-legend">{members.map((member, index) => <span key={member.build.id}><i style={{ background: ROTATION_CHART_COLORS[index % ROTATION_CHART_COLORS.length] }}/>{teamMemberName(member)}</span>)}<small>Height is total action damage; width is action duration; overlaps stack Character 1 upward.</small></div>
         </section>
@@ -1272,7 +1306,12 @@ function ForteDamageRows({ attacks, member, resultMode }: { attacks: ForteAttack
       : sumDetail(`${compactAttackLabel(attack.name)} · ${resultMode}`, damage, calculationRows.map((row, rowIndex) => ({ label: compactAttackLabel(row.target.label) || String(rowIndex + 1), value: row[resultMode] })))
     const hitValues = calculationRows.map((row) => row[resultMode])
     const label = compactAttackLabel(attack.name)
-    return <div key={`${attack.name}:${attack.type}`}><dt>{label}<small>{attack.type}{hitValues.length > 1 ? ` · ${hitValues.length}-hit sequence` : ''}</small></dt><dd><CalculatedValue detail={detail} presentation="tooltip" tooltipValues={hitValues.map(formatDamage)}><b>{calculationRows.length ? formatDamage(damage) : '—'}</b></CalculatedValue><small>{resultMode}</small></dd></div>
+    const outroMultiplier = attack.attackIds.every((id) => {
+      const entry = member.attacks.find((candidate) => candidate.id === id)
+      return entry?.group === 'outro' && entry.scalesWith === 'atk'
+    })
+      ? attack.multipliers.reduce((total, value) => total + value, 0) : 0
+    return <div key={`${attack.name}:${attack.type}`}><dt>{label}<small>{attack.type}{outroMultiplier ? ` · ${(outroMultiplier * 100).toFixed(2)}% ATK` : ''}{hitValues.length > 1 ? ` · ${hitValues.length}-hit sequence` : ''}</small></dt><dd><CalculatedValue detail={detail} presentation="tooltip" tooltipValues={hitValues.map(formatDamage)}><b>{calculationRows.length ? formatDamage(damage) : '—'}</b></CalculatedValue><small>{resultMode}</small></dd></div>
   })}</dl>
 }
 
@@ -1291,6 +1330,8 @@ function ForteWorkspace({ member, model, refresh, focusTarget, effects, values, 
     { ...member.catalog.skillTreeExtras.tuneBreakSkill, eyebrow: 'Tune Break', id: undefined, inherentSkillIndex: undefined }
   ].filter((skill) => skill.name || skill.description || skill.iconSourceUrl)
   const characterEffects = effects.filter((effect) => effect.sourceKind === 'character')
+  // shortcut: Buff prose is reference material; add reviewed trigger mappings before applying it to damage.
+  const sourceBuffs = importedCharacterBuffs(member.catalog.id)
   const effectName = (value: string) => value.toLocaleLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
   const effectsForName = (name: string) => characterEffects.filter((effect) => effect.minimumSequence === undefined && effectName(effect.label) === effectName(name))
   const resultMode = model.team.scenario?.resultMode ?? 'expected'
@@ -1316,6 +1357,7 @@ function ForteWorkspace({ member, model, refresh, focusTarget, effects, values, 
       </article>})}
     </aside>
     <div className="tw-skill-board">
+      {sourceBuffs.length > 0 && <details className="tw-imported-buffs"><summary>Imported buff conditions and sequence notes ({sourceBuffs.length})</summary><p>Source descriptions for review. Damage uses the reviewed effects shown in each skill and sequence card.</p><ul>{sourceBuffs.map((buff) => <li key={`${buff.scope}:${buff.id}`}><b>{buff.tagLabel} · {buff.name} · {buff.scope}</b><span>{buff.effect} · {buff.duration}</span><small>{buff.conditionText}</small></li>)}</ul></details>}
       <div className="tw-skill-grid">{skillEntries.map(({ key, skill, level, skillLevelIndex }) => {
         const attacks = member.attacks.filter((attack) => attack.skillName === skill.name)
         const flatValues = member.catalog!.flatSkillValues.filter((value) => value.skillLevelIndex === skillLevelIndex)
@@ -1705,7 +1747,7 @@ function CharacterOverviewWorkspace({ member, model, updateTeam, weaponPassive, 
   </>
 }
 
-function MemberWorkspace({ member, model, section, setSection, backToFormation, updateTeam, echoes, builds, equippedLoadouts, theorycraftBuilds, characters, weapons, openScanner, refresh, roverGender }: { member: TeamMemberModel; model: TeamWorkspaceModel; section: MemberSection; setSection: (section: MemberSection) => void; backToFormation: () => void; updateTeam: (patch: Partial<Team>) => Promise<void>; echoes: Echo[]; builds: Build[]; equippedLoadouts: EquippedLoadout[]; theorycraftBuilds: TheorycraftBuild[]; characters: OwnedCharacter[]; weapons: OwnedWeapon[]; openScanner: () => void; refresh: () => Promise<void>; roverGender: 'male' | 'female' }) {
+function MemberWorkspace({ member, model, section, setSection, backToFormation, updateTeam, updateRotation, saveRotation, discardRotation, rotationHasChanges, rotationSaving, rotationSaveError, rotationRevision, echoes, builds, equippedLoadouts, theorycraftBuilds, characters, weapons, openScanner, refresh, roverGender }: { member: TeamMemberModel; model: TeamWorkspaceModel; section: MemberSection; setSection: (section: MemberSection) => void; backToFormation: () => void; updateTeam: (patch: Partial<Team>) => Promise<void>; updateRotation: (patch: Partial<Team>) => Promise<void>; saveRotation: () => Promise<void>; discardRotation: () => void; rotationHasChanges: boolean; rotationSaving: boolean; rotationSaveError: string | null; rotationRevision: number; echoes: Echo[]; builds: Build[]; equippedLoadouts: EquippedLoadout[]; theorycraftBuilds: TheorycraftBuild[]; characters: OwnedCharacter[]; weapons: OwnedWeapon[]; openScanner: () => void; refresh: () => Promise<void>; roverGender: 'male' | 'female' }) {
   const [echoSlot, setEchoSlot] = useState<number>()
   const [editingEcho, setEditingEcho] = useState<Echo | null>(null)
   const [forteTarget, setForteTarget] = useState<string>()
@@ -1748,7 +1790,7 @@ function MemberWorkspace({ member, model, section, setSection, backToFormation, 
   if (echoSlot !== undefined && theorycraftToEdit) return <div className="tw-member-page"><TheorycraftEditor value={theorycraftToEdit} ownedCharacter={member.character} onClose={() => setEchoSlot(undefined)} onSaved={refresh} backLabel="Back to overview"/></div>
   return <div className={`tw-member-page section-${section}`} style={{ '--tw-member-accent': ELEMENT_COLORS[member.catalog.element] ?? '#c8d0ce' } as CSSProperties}>
     {section === 'overview' ? <CharacterOverviewWorkspace member={member} model={model} updateTeam={updateTeam} weaponPassive={weaponPassive} onChangeEcho={setEchoSlot} onEditEcho={editEcho} onOpenForteTarget={(target) => { setForteTarget(target); setSection('forte') }} effects={reviewedEffects} values={effectValues} updateInputs={updateEffectInputs}/>
-      : section === 'rotation' ? <RotationWorkspace key={member.build.id} model={model} updateTeam={updateTeam} focusBuildId={member.build.id}/>
+      : section === 'rotation' ? <RotationWorkspace key={`${member.build.id}:${rotationRevision}`} model={model} updateTeam={updateRotation} saveChanges={saveRotation} discardChanges={discardRotation} hasChanges={rotationHasChanges} saving={rotationSaving} saveError={rotationSaveError} focusBuildId={member.build.id}/>
       : section === 'optimizer' ? <OptimizerView key={member.build.id} echoes={optimizerEchoes} builds={optimizerBuilds} characters={characters} ownedWeapons={optimizerWeapons} refresh={refresh} openScanner={openScanner} buildId={member.build.id} teamBuildIds={model.members.flatMap((entry) => entry.character ? [entry.character.id] : [])} initialEnemy={model.team.enemy} damageMode={scenario.resultMode} scenario={scenario} rotation={{ input: optimizerRotationInput, memberSlot: member.slot, model }} accent={ELEMENT_COLORS[member.catalog.element]}/>
       : section === 'theorizer' ? <TheorizerWorkspace member={member} model={model} echoes={echoes} builds={builds} characters={characters} weapons={weapons} equippedLoadouts={equippedLoadouts} theorycraftBuilds={theorycraftBuilds} roverGender={roverGender} refresh={refresh} accent={ELEMENT_COLORS[member.catalog.element]}/>
       : <section className="tw-member-hero tw-panel forte-mode" style={{ '--tw-element': member.catalog.element.toLowerCase() } as CSSProperties}>
@@ -1757,7 +1799,7 @@ function MemberWorkspace({ member, model, section, setSection, backToFormation, 
         <ForteWorkspace member={member} model={model} refresh={refresh} focusTarget={forteTarget} effects={reviewedEffects} values={effectValues} updateInputs={updateEffectInputs}/>
       </div>
     </section>}
-    <WarningList warnings={section === 'rotation' ? model.warnings : member.warnings}/>
+    <WarningList warnings={section === 'rotation' ? model.warnings.filter((warning) => warning !== importedAttackEstimateWarning) : member.warnings}/>
     {echoSlot !== undefined && member.source && member.source.type !== 'theorycraft' && <CharacterSubstatProfileContext.Provider value={resolveCharacterSubstatProfile(member.catalog)}><EchoPicker slot={echoSlot} characterId={member.character.id} currentIds={member.build.echoIds} echoes={echoes} accentClass={`cs-element-${member.catalog.element.toLowerCase()}`} refresh={refresh} onClose={() => setEchoSlot(undefined)} onSelect={selectEcho}/></CharacterSubstatProfileContext.Provider>}
     {editingEcho && <EchoEditModal echo={editingEcho} onClose={() => setEditingEcho(null)} onSave={async (updated) => { await db.echoes.put(updated); setEditingEcho(null); await refresh() }}/>}
   </div>
@@ -1769,9 +1811,23 @@ export function TeamsView({ echoes, builds, equippedLoadouts, theorycraftBuilds,
   const [tab, setTab] = useState<WorkspaceTab>('settings')
   const [memberSection, setMemberSection] = useState<MemberSection>('overview')
   const team = teams.find((entry) => entry.id === selectedId) ?? teams[0]
+  const [rotationDraft, setRotationDraft] = useState<{ teamId: string; patch: Partial<Team> } | null>(null)
+  const [rotationRevision, setRotationRevision] = useState(0)
+  const [rotationSaving, setRotationSaving] = useState(false)
+  const [rotationSaveError, setRotationSaveError] = useState<string | null>(null)
+  const rotationActive = !showGallery && typeof tab === 'number' && memberSection === 'rotation'
+  const draftPatch = rotationActive && rotationDraft?.teamId === team?.id ? rotationDraft.patch : null
+  useUnsavedChanges(!!draftPatch)
+  const rotationTeam = useMemo(() => team && draftPatch ? { ...team, ...draftPatch } : team, [team, draftPatch])
   const includeTraces = typeof tab === 'number' && (memberSection === 'overview' || memberSection === 'forte' || memberSection === 'rotation')
   const includeFormulaRows = tab !== 'settings'
-  const model = useMemo(() => team && (!showGallery || route?.team) ? resolveTeamWorkspace({ team, builds, equippedLoadouts, theorycraftBuilds, characters, weapons, echoes, roverGender, includeTraces, formulaTargetIds: includeFormulaRows ? undefined : [] }) : undefined, [team, showGallery, route?.team, builds, equippedLoadouts, theorycraftBuilds, characters, weapons, echoes, roverGender, includeTraces, includeFormulaRows])
+  const model = useMemo(() => rotationTeam && (!showGallery || route?.team) ? resolveTeamWorkspace({ team: rotationTeam, builds, equippedLoadouts, theorycraftBuilds, characters, weapons, echoes, roverGender, includeTraces, formulaTargetIds: includeFormulaRows ? undefined : [] }) : undefined, [rotationTeam, showGallery, route?.team, builds, equippedLoadouts, theorycraftBuilds, characters, weapons, echoes, roverGender, includeTraces, includeFormulaRows])
+
+  useEffect(() => {
+    if (rotationActive && rotationDraft?.teamId === team?.id) return
+    setRotationDraft(null)
+    setRotationSaveError(null)
+  }, [rotationActive, rotationDraft?.teamId, team?.id])
 
   useEffect(() => { if (!team && teams[0]) setSelectedId(teams[0].id) }, [team, teams])
   useEffect(() => {
@@ -1822,6 +1878,33 @@ export function TeamsView({ echoes, builds, equippedLoadouts, theorycraftBuilds,
     if (!team) return
     await updateTeamById(team.id, patch)
   }
+  const updateRotation = async (patch: Partial<Team>) => {
+    if (!team) return
+    setRotationSaveError(null)
+    setRotationDraft((current) => ({ teamId: team.id, patch: { ...(current?.teamId === team.id ? current.patch : {}), ...patch } }))
+  }
+  const discardRotation = () => {
+    setRotationDraft(null)
+    setRotationSaveError(null)
+    setRotationRevision((current) => current + 1)
+  }
+  const saveRotation = async () => {
+    if (!team || !draftPatch || rotationSaving) return
+    const savedDraft = rotationDraft
+    setRotationSaving(true)
+    setRotationSaveError(null)
+    let saved = false
+    try {
+      if (!await db.teams.update(team.id, draftPatch)) throw new Error('Team no longer exists.')
+      saved = true
+      await refresh()
+      setRotationDraft((current) => current === savedDraft ? null : current)
+    } catch {
+      setRotationSaveError(saved ? 'Changes were saved, but the view could not refresh.' : 'Could not save rotation changes. Your draft is still here.')
+    } finally {
+      setRotationSaving(false)
+    }
+  }
   const createTeam = async () => {
     let number = 1
     while (teams.some((entry) => entry.name === `Team ${number}`)) number += 1
@@ -1839,42 +1922,41 @@ export function TeamsView({ echoes, builds, equippedLoadouts, theorycraftBuilds,
 
   const teamIndex = team ? teams.findIndex((entry) => entry.id === team.id) : -1
   const teamRouteId = teamIndex >= 0 ? `team_${teamIndex + 1}` : undefined
+  const requestRotationNavigation = (next: { team?: string; character?: string; section?: TeamRouteSection }) => onRouteChange ? onRouteChange(next) !== false : confirmDiscardChanges(!!draftPatch)
   const openTeam = (teamId: string) => {
     const index = teams.findIndex((entry) => entry.id === teamId)
+    if (!requestRotationNavigation({ team: index >= 0 ? `team_${index + 1}` : teamId })) return
     setSelectedId(teamId)
     setTab('settings')
     setShowGallery(false)
-    onRouteChange?.({ team: index >= 0 ? `team_${index + 1}` : teamId })
   }
   const backToGallery = () => {
+    if (!requestRotationNavigation({})) return
     setShowGallery(true)
     setTab('settings')
-    onRouteChange?.({})
   }
   const deleteCurrentTeam = async () => {
     if (!team || !confirm(`Delete ${team.name}? This removes its local rotation and authored buffs.`)) return
+    if (!requestRotationNavigation({})) return
     await db.teams.delete(team.id)
     await refresh()
     setSelectedId(teams.find((entry) => entry.id !== team.id)?.id ?? null)
-    backToGallery()
+    setShowGallery(true)
+    setTab('settings')
   }
   const openMemberRoute = (slot: 0 | 1 | 2, section: MemberSection = 'overview') => {
     const member = model?.members[slot]
+    if (!requestRotationNavigation({ team: teamRouteId, character: member?.catalog ? routeKey(member.catalog.name) : undefined, section: member?.catalog ? memberSectionToRoute(section) : undefined })) return
     setTab(slot)
     setMemberSection(section)
-    onRouteChange?.({
-      team: teamRouteId,
-      character: member?.catalog ? routeKey(member.catalog.name) : undefined,
-      section: member?.catalog ? memberSectionToRoute(section) : undefined
-    })
   }
   const setMemberSectionRoute = (section: MemberSection) => {
     if (typeof tab !== 'number') return
     openMemberRoute(tab, section)
   }
   const openFormation = () => {
+    if (!requestRotationNavigation({ team: teamRouteId })) return
     setTab('settings')
-    onRouteChange?.({ team: teamRouteId })
   }
 
   if (showGallery) return <main className="team-workspace team-gallery-original"><TeamGallery teams={teams} builds={builds} characters={characters} weapons={weapons} echoes={echoes} equippedLoadouts={equippedLoadouts} theorycraftBuilds={theorycraftBuilds} onCreate={createTeam} onOpen={openTeam} onRename={(teamId, name) => updateTeamById(teamId, { name })} onDelete={deleteGalleryTeam}/></main>
@@ -1889,12 +1971,12 @@ export function TeamsView({ echoes, builds, equippedLoadouts, theorycraftBuilds,
       {model && typeof tab === 'number' && model.members[tab]?.catalog && <nav className="tw-subnav" aria-label={`${model.members[tab].catalog?.name ?? 'Character'} sections`} role="tablist">
         {MEMBER_SECTIONS.map((item) => <button key={item.id} role="tab" className={memberSection === item.id ? 'active' : ''} aria-selected={memberSection === item.id} onClick={() => setMemberSectionRoute(item.id)}>{item.label}</button>)}
         <div className="tw-nav-result-modes" role="group" aria-label="Damage result mode">
-          {DAMAGE_RESULT_MODES.map((mode) => <button type="button" aria-pressed={(model.team.scenario?.resultMode ?? 'expected') === mode.id} className={(model.team.scenario?.resultMode ?? 'expected') === mode.id ? 'active' : ''} key={mode.id} onClick={() => void updateTeam({ scenario: { ...(model.team.scenario ?? { memberConditions: {}, enemyConditions: {}, selectedTargetByBuild: {} }), resultMode: mode.id } })}>{mode.label}</button>)}
+          {DAMAGE_RESULT_MODES.map((mode) => <button type="button" aria-pressed={(model.team.scenario?.resultMode ?? 'expected') === mode.id} className={(model.team.scenario?.resultMode ?? 'expected') === mode.id ? 'active' : ''} key={mode.id} onClick={() => void (memberSection === 'rotation' ? updateRotation : updateTeam)({ scenario: { ...(model.team.scenario ?? { memberConditions: {}, enemyConditions: {}, selectedTargetByBuild: {} }), resultMode: mode.id } })}>{mode.label}</button>)}
         </div>
       </nav>}
     </div>
     {!model ? <section className="tw-first-team tw-panel"><span className="eyebrow">No teams yet</span><h1>Start a team workspace</h1><p>Create a local team, assign up to three saved builds, and author its rotation without leaving this page.</p><button className="primary" onClick={() => void createTeam()}><Icon name="plus"/>Create team</button></section>
       : tab === 'settings' ? <TeamOverview key={team?.id} model={model} echoes={echoes} builds={builds} characters={characters} weapons={weapons} equippedLoadouts={equippedLoadouts} theorycraftBuilds={theorycraftBuilds} refresh={refresh} updateTeam={updateTeam}/>
-        : <MemberWorkspace key={`${team?.id}:${tab}`} member={model.members[tab]} model={model} section={memberSection} setSection={setMemberSectionRoute} backToFormation={openFormation} updateTeam={updateTeam} echoes={echoes} builds={builds} equippedLoadouts={equippedLoadouts} theorycraftBuilds={theorycraftBuilds} characters={characters} weapons={weapons} openScanner={openScanner} refresh={refresh} roverGender={roverGender}/>}
+        : <MemberWorkspace key={`${team?.id}:${tab}`} member={model.members[tab]} model={model} section={memberSection} setSection={setMemberSectionRoute} backToFormation={openFormation} updateTeam={updateTeam} updateRotation={updateRotation} saveRotation={saveRotation} discardRotation={discardRotation} rotationHasChanges={!!draftPatch} rotationSaving={rotationSaving} rotationSaveError={rotationSaveError} rotationRevision={rotationRevision} echoes={echoes} builds={builds} equippedLoadouts={equippedLoadouts} theorycraftBuilds={theorycraftBuilds} characters={characters} weapons={weapons} openScanner={openScanner} refresh={refresh} roverGender={roverGender}/>}
   </main>
 }
