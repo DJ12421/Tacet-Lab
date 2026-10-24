@@ -380,7 +380,7 @@ export async function ensureSeedData() {
     await db.theorycraftBuilds.toCollection().modify((build) => {
       if (build.substats?.mode === 'rolls') build.substats = { ...build.substats, rolls: build.substats.rolls ?? {} }
       else if (build.substats?.mode === 'values') build.substats = { ...build.substats, values: build.substats.values ?? {} }
-      else build.substats = { mode: 'values', values: {} }
+      else if (build.substats?.mode !== 'slots') build.substats = { mode: 'values', values: {} }
     })
   })
 }

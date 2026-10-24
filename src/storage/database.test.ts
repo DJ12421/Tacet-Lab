@@ -76,6 +76,22 @@ describe('local account persistence', () => {
     expect((await db.theorycraftBuilds.get('missing-rolls'))?.substats).toEqual({ mode: 'rolls', quality: 'mid', rolls: {} })
   })
 
+  it('preserves imported rotation gear after a page reload', async () => {
+    const substats = { mode: 'slots' as const, slots: [[{ key: 'critRate' as const, value: 7.5 }], [], [], [], []] }
+    await db.theorycraftBuilds.add({
+      id: 'rotation-build', name: 'Imported rotation', description: '', characterId: 'character',
+      weapon: { catalogId: 'weapon', level: 90, rank: 1 }, mainEchoName: '',
+      slots: Array.from({ length: 5 }, () => ({ cost: 1 as const, rarity: 5 as const, level: 25, mainStatKey: 'atkPercent' as const })),
+      sonatas: [], substats, createdAt: 1, updatedAt: 1
+    })
+
+    db.close()
+    await db.open()
+    await ensureSeedData()
+
+    expect(await db.theorycraftBuilds.get('rotation-build')).toMatchObject({ name: 'Imported rotation', substats })
+  })
+
   it('round-trips a versioned account document atomically', async () => {
     await ensureSeedData()
     const exported = await exportAccount()

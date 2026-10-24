@@ -224,6 +224,25 @@
   height: 16px;
 }
 
+.theorycraft-overview-gear {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.theorycraft-overview-gear span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: var(--font-size-caption);
+}
+
+.theorycraft-overview-gear img { width: 24px; height: 24px; object-fit: contain; }
+
 .theorycraft-editor>section {
   min-width: 0;
   padding: 14px;
@@ -266,15 +285,30 @@
 
 .theorycraft-grid {
   display: grid;
-  grid-template-columns: repeat(12,minmax(0,1fr));
+  grid-template-columns: minmax(220px,.75fr) minmax(310px,1.25fr) minmax(220px,.85fr);
   gap: 12px;
 }
 
-.theorycraft-grid>label:nth-child(1) { grid-column: span 3; }
-.theorycraft-grid>label:nth-child(2) { grid-column: span 5; }
-.theorycraft-grid>label:nth-child(3) { grid-column: span 4; }
-.theorycraft-grid>label:nth-child(4),.theorycraft-grid>label:nth-child(5) { grid-column: span 2; }
-.theorycraft-grid>label:nth-child(6) { grid-column: span 8; }
+.theorycraft-grid>div { display: grid; align-content: start; gap: 9px; min-width: 0; }
+.theorycraft-weapon .wv-card { width: 100%; }
+.theorycraft-weapon .wv-card.selected { border-color: var(--mint); }
+.theorycraft-weapon-controls { display: grid; grid-template-columns: 1fr 1fr auto; align-items: end; gap: 7px; }
+.theorycraft-weapon-controls button { min-height: 36px; }
+.theorycraft-weapon-options { display: grid; gap: 8px; max-height: 360px; overflow-y: auto; }
+.theorycraft-main-echo-card { display: flex; align-items: center; gap: 10px; min-height: 96px; padding: 10px; border: 1px solid var(--line); background: #0b1112; }
+.theorycraft-main-echo-card>img { width: 72px; height: 72px; object-fit: contain; }
+.theorycraft-main-echo-card>div { display: grid; gap: 5px; min-width: 0; }
+.theorycraft-main-echo-card strong { color: var(--theme-text,var(--text)); }
+.theorycraft-main-echo-card small { color: var(--muted); line-height: 1.35; }
+.theorycraft-main-echo .echo-single-select { position: relative; min-width: 0; }
+.theorycraft-main-echo .multi-select-trigger { width: 100%; min-height: 38px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.theorycraft-main-echo .multi-select-values { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.theorycraft-main-echo .multi-select-values img { width: 26px; height: 26px; object-fit: contain; }
+.theorycraft-main-echo .multi-select-values em { overflow: hidden; font-style: normal; text-overflow: ellipsis; white-space: nowrap; }
+.theorycraft-main-echo .echo-single-select-menu { position: absolute; z-index: 4; top: 100%; left: 0; right: 0; display: grid; max-height: 300px; overflow-y: auto; padding: 5px; border: 1px solid var(--line); background: var(--surface); box-shadow: 0 12px 28px #000a; }
+.theorycraft-main-echo .echo-single-select-menu button { display: flex; align-items: center; gap: 8px; min-height: 42px; padding: 4px 8px; border: 0; background: transparent; color: var(--theme-text,var(--text)); text-align: left; }
+.theorycraft-main-echo .echo-single-select-menu button:is(:hover,:focus-visible,.active) { background: color-mix(in srgb,var(--mint) 12%,var(--surface)); }
+.theorycraft-main-echo .echo-single-select-menu img { width: 36px; height: 36px; object-fit: contain; }
 
 .theorycraft-slots article,
 .theorycraft-slot-substats>article {
@@ -296,12 +330,25 @@
   gap: 7px;
 }
 
+.theorycraft-echo-cards { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,275px),1fr)); gap: 10px; }
+.theorycraft-echo-cards>div { display: grid; align-content: start; gap: 7px; min-width: 0; }
+.theorycraft-echo-cards .echo-card { width: 100%; }
+.theorycraft-echo-cards .echo-card[role="button"] { cursor: pointer; }
+.theorycraft-echo-cards>div>button { min-height: 36px; }
+
 .theorycraft-slots article {
   display: grid;
   gap: 7px;
   padding: 9px;
   border: 1px solid var(--line);
 }
+
+.theorycraft-slot-preview { display: flex; align-items: center; gap: 8px; min-height: 72px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+.theorycraft-slot-preview>img { width: 56px; height: 56px; object-fit: contain; }
+.theorycraft-slot-preview>div { display: grid; gap: 3px; min-width: 0; }
+.theorycraft-slot-preview strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.theorycraft-slot-preview small { color: var(--muted); }
+.theorycraft-slot-preview b { color: var(--gold); font-size: var(--font-size-caption); }
 
 .theorycraft-sonatas {
   display: grid;
@@ -311,8 +358,12 @@
 .theorycraft-sonatas>div {
   display: grid;
   grid-template-columns: minmax(180px,1fr) 80px auto;
+  align-items: end;
   gap: 7px;
 }
+
+.theorycraft-sonatas .sonata-picker { min-width: 0; }
+.theorycraft-sonatas .sonata-picker-trigger { width: 100%; }
 
 .theorycraft-substats {
   display: grid;
@@ -341,6 +392,12 @@
   justify-content: space-between;
   gap: 6px;
 }
+
+.theorycraft-slot-substats>article>header { justify-content: flex-start; min-height: 52px; }
+.theorycraft-slot-substats>article>header img { width: 42px; height: 42px; object-fit: contain; }
+.theorycraft-slot-substats>article>header span { display: grid; gap: 3px; min-width: 0; }
+.theorycraft-slot-substats>article>header strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.theorycraft-slot-substats>article>header small { color: var(--muted); }
 
 .theorycraft-slot-substats>article>div {
   display: grid;
@@ -388,10 +445,9 @@
     grid-template-columns: repeat(3,1fr);
   }
   .theorycraft-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2,minmax(0,1fr));
   }
-  .theorycraft-grid>label:nth-child(n) { grid-column: auto; }
-  .theorycraft-grid>label:nth-child(2),.theorycraft-grid>label:nth-child(6) { grid-column: 1 / -1; }
+  .theorycraft-identity { grid-column: 1 / -1; }
   .theorycraft-slots {
     display: flex;
     overflow-x: auto;
@@ -429,7 +485,11 @@
   .theorycraft-grid,.theorycraft-substats {
     grid-template-columns: 1fr;
   }
-  .theorycraft-grid>label:nth-child(n) { grid-column: 1; }
+  .theorycraft-identity { grid-column: auto; }
+  .theorycraft-weapon-controls { grid-template-columns: 1fr 1fr; }
+  .theorycraft-weapon-controls button { grid-column: 1 / -1; }
+  .theorycraft-sonatas>div { grid-template-columns: minmax(0,1fr) 70px; }
+  .theorycraft-sonatas>div>.danger { grid-column: 1 / -1; }
   .loadout-summary-facts,.loadout-final-stats {
     grid-template-columns: 1fr 1fr;
   }
