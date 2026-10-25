@@ -257,7 +257,7 @@ For an action:
 3. Resolve selected, always-active, stack-counted, and recipient-scoped effects.
 4. Aggregate final stats in a documented order.
 5. Evaluate every hit with the numeric kernel.
-6. Preserve full damage precision and apply only the documented base-stat rounding.
+6. Floor the scaling stat and each completed hit outcome at the documented boundaries.
 7. Return all three crit outcomes and select the requested result mode.
 8. Build an optional trace from the same named stages.
 
@@ -283,9 +283,9 @@ change numeric output.
 - No random values, current time, locale, DOM, storage, or network access.
 - Invalid numbers, unknown IDs, and contradictory inputs fail closed.
 - UI number formatting never occurs inside the module.
-- Base-stat rounding occurs only through the named internal policy.
-- Damage, timers, percentages, probabilities, and source values retain precision;
-  the UI owns display rounding.
+- Base-stat and hit rounding occur only through the named internal policy.
+- Timers, percentages, probabilities, and source values retain precision;
+  damage hits leave the kernel as whole numbers.
 
 The exact precision boundaries require hand-calculated fixtures. The policy is
 visible in traces and tested at the public interface.

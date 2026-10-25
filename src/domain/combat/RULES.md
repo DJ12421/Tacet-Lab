@@ -146,7 +146,7 @@ base ATK, not to already calculated final ATK.
 
 | Rule | Status | Decision |
 | --- | --- | --- |
-| `STAT-001` | `reference-parity` | Computed base HP, ATK, and DEF round down; final stats retain precision for calculations and are rounded only for display. |
+| `STAT-001` | `reference-parity` | Computed base HP, ATK, and DEF round down; aggregate stats retain precision for display, then each scaling stat is floored for damage. |
 | `STAT-002` | `baseline` | Weapon base ATK joins character base ATK before ATK percentage bonuses. |
 | `STAT-003` | `baseline` | Flat HP, ATK, and DEF are added after the base-stat percentage multiplication. |
 | `STAT-004` | `design` | Crit, Energy Regen, damage bonus, healing bonus, and similar ratios remain ratios and are not integer-rounded during aggregation. |
@@ -159,7 +159,7 @@ base ATK, not to already calculated final ATK.
 The engine evaluates each hit independently. For one hit:
 
 ```text
-scaling power = sum of each final scaling stat * its reviewed scaling ratio
+scaling power = sum of each floored final scaling stat * its reviewed scaling ratio
 
 base hit = scaling power * hit motion value + reviewed flat damage
 
@@ -184,15 +184,14 @@ pre-crit hit = base hit
   * resistance multiplier
   * damage-reduction factor
 
-normal hit = pre-crit hit
-critical hit = pre-crit hit * critical-damage multiplier
+normal hit = floor(pre-crit hit)
+critical hit = floor(pre-crit hit * critical-damage multiplier)
 
-expected hit =
-  pre-crit hit * (1 + effective critical rate
-    * (critical-damage multiplier - 1))
+expected hit = floor(pre-crit hit * (1 + effective critical rate
+  * (critical-damage multiplier - 1)))
 ```
 
-Action totals are sums of full-precision hit results. A multi-hit line stores one
+Action totals are sums of floored hit results. A multi-hit line stores one
 motion value per real hit. `40% * 3 + 80%` remains four hits so hit-level traces
 and effects retain their real structure.
 
@@ -202,7 +201,7 @@ and effects retain their real structure.
 | `DMG-002` | `baseline` | Amplification/deepen values add within a separate multiplicative factor. |
 | `DMG-003` | `deferred` | Enemy damage reduction is unsupported until a dedicated baseline and fixture family define it. |
 | `DMG-004` | `design` | Every hit is evaluated independently and action totals sum hit results. |
-| `DMG-005` | `reference-parity` | Returned normal, critical, and expected hit values preserve precision; the UI rounds the displayed action total up. |
+| `DMG-005` | `reference-parity` | Floor each normal, critical, and expected hit after applying its full-precision factors; sum those integers for action totals. |
 | `DMG-006` | `design` | Damage factors may not produce negative damage; invalid negative factors are either clamped where the rule says so or rejected. |
 | `DMG-007` | `design` | Arbitrary legacy `specialMultiplier` inputs are not part of the new interface. A real mechanic must receive a reviewed typed operation. |
 | `DMG-008` | `deferred` | Generic flat damage on an ordinary hit is unsupported; mechanic-specific additive motion values require typed operations. |
@@ -233,8 +232,8 @@ The baseline formula is:
 ```text
 attacker term = 800 + 8 * attacker level
 
-enemy defence term = (792 + 8 * enemy level)
-  * (1 - total defence reduction)
+enemy defence term = floor((792 + 8 * enemy level)
+  * (1 - total defence reduction))
   * (1 - total defence ignore)
 
 defence multiplier = attacker term
@@ -310,19 +309,19 @@ rounding.
 | Source percentages and motion values | Preserve supplied precision | `design` |
 | Character base HP/ATK/DEF at level | Floor | `user-rule` |
 | Weapon base ATK at level | Floor | `user-rule` |
-| Final aggregated HP/ATK/DEF | Preserve precision; UI rounds displayed stats separately | `reference-parity` |
+| Final aggregated HP/ATK/DEF | Preserve precision for display; floor each stat before damage scaling | `reference-parity` |
 | Intermediate bonus, amplification, defence, and resistance factors | Preserve precision | `design` |
 | Reviewed flat damage | Preserve precision until its hit is evaluated | `design` |
-| Normal hit | Preserve precision | `reference-parity` |
-| Critical hit | Preserve precision | `reference-parity` |
-| Expected hit | Calculate from unrounded pre-crit damage and crit expectation; preserve precision | `reference-parity` |
-| Multi-hit action total | Sum full-precision hit results; UI rounds the displayed total up | `reference-parity` |
+| Normal hit | Floor the completed hit | `reference-parity` |
+| Critical hit | Floor unrounded pre-crit damage times Crit. DMG | `reference-parity` |
+| Expected hit | Floor unrounded pre-crit damage times crit expectation | `reference-parity` |
+| Multi-hit action total | Sum the floored hit results | `reference-parity` |
 | Rotation total | Sum action results; no additional transformation | `design` |
 | DPS | Preserve calculation precision; UI decides display formatting | `design` |
 | Timers, probabilities, confidence, and scheduling | Never gameplay-floor | `design` |
 
 Every trace must identify each rounded input stage and preserve full-precision
-damage outputs. A tiny epsilon hack
+factors alongside floored damage outputs. A tiny epsilon hack
 must not be added unless a fixture proves it is required to protect a decimal
 value from binary floating-point representation.
 
@@ -459,7 +458,7 @@ The next step may create fixtures only for rules accepted above:
 6. One DEF-scaling hit.
 7. One hybrid-scaling hit.
 8. One Energy-Regen-scaling hit.
-9. Unequal multi-hit motion values with full-precision aggregation.
+9. Unequal multi-hit motion values with per-hit flooring.
 10. Normal, forced-critical, and expected outcomes.
 11. Generic, elemental, action-specific, and damage-type bonuses in one additive bucket.
 12. Multiple amplification values in their separate factor.

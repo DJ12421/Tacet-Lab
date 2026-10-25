@@ -22,7 +22,7 @@ is part of the combat module.
 | Base and final HP, ATK, and DEF aggregation | `STAT-001`–`STAT-003` | `F01`–`F03` | accepted |
 | ATK, HP, DEF, hybrid, and Energy Regen scaling | `CLASS-006`–`CLASS-009` | `F04`–`F08` | accepted |
 | One calculation per real hit | `DMG-004` | `F09` | accepted |
-| Preserve calculation precision and round only for display | `DMG-005`, rounding policy | `F01`–`F22` | accepted |
+| Floor completed hits and sum those results | `DMG-005`, rounding policy | `F01`–`F22` | accepted |
 | Normal, critical, and expected results | `CRIT-001`–`CRIT-004` | `F10` | accepted |
 | Additive ordinary damage-bonus bucket | `DMG-001` | `F11` | accepted |
 | Separate amplification factor | `DMG-002` | `F12` | accepted |
@@ -50,8 +50,8 @@ is part of the combat module.
 | Resistance already below zero | Further reduction contributes at half strength |
 | Positive resistance crossed below zero | Only the excess below zero contributes at half strength |
 | Base resistance exactly `100%` | High-resistance multiplier `1 / 6` |
-| Multi-hit totals | Sum full-precision hit values; round the displayed total up |
-| Expected damage | Apply crit expectation to the unrounded pre-crit hit and preserve precision |
+| Multi-hit totals | Sum the floored values of each hit |
+| Expected damage | Apply crit expectation to the unrounded pre-crit hit, then floor |
 
 ## Completion gate
 
