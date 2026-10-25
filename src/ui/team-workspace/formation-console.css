@@ -134,7 +134,7 @@
   position: sticky;
   top: 0;
   z-index: 43;
-  grid-template-columns: minmax(130px, .8fr) repeat(3, minmax(170px, 1fr));
+  grid-template-columns: minmax(130px, .8fr) repeat(3, minmax(170px, 1fr)) minmax(130px, .8fr);
   gap: 4px;
   margin: 0;
   padding: 4px;
@@ -158,6 +158,10 @@
 }
 
 .tw-primary-tabs > button:first-child {
+  grid-template-columns: 1fr;
+}
+
+.tw-primary-tabs > button:last-child {
   grid-template-columns: 1fr;
 }
 
@@ -371,6 +375,16 @@
   top: auto;
   border-top: 0;
   border-radius: 0 0 4px 4px;
+}
+
+.tw-member-page.section-rotation {
+  overflow-x: clip;
+}
+
+.section-rotation .tw-sequencer {
+  position: sticky;
+  top: 116px;
+  z-index: 40;
 }
 
 .tw-subnav > button,

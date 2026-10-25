@@ -126,6 +126,43 @@
   font-weight: 600;
 }
 
+.calculation-formula-lines {
+  display: grid;
+  gap: 18px;
+}
+
+.calculation-formula-lines section {
+  border-top: 1px solid rgba(255,255,255,.12);
+  padding-top: 14px;
+}
+
+.calculation-formula-lines section:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.calculation-formula-lines h3 {
+  margin: 0 0 8px;
+  color: var(--mint);
+  font-size: var(--font-size-body);
+}
+
+.calculation-formula-lines code {
+  display: block;
+  padding: 12px;
+  border-radius: 4px;
+  background: rgba(255,255,255,.035);
+  color: #dfe8e5;
+  font-size: var(--font-size-body);
+  font-weight: 400;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.calculation-formula-lines code strong {
+  color: var(--mint);
+}
+
 .calculation-formula {
   display: flex;
   align-items: center;

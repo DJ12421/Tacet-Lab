@@ -142,6 +142,26 @@ describe('combat Step 4 reviewed effects', () => {
     expectClose(result.stats.critRate, 0.7)
   })
 
+  it('applies Mornye Critical Protocol crit bonuses only to its Liberation and caps them', () => {
+    const criticalProtocol = mechanicsRegistry.characters['1209'].effects?.find((entry) => entry.id === 'character:1209:1209:3:effect:1')
+    expect(criticalProtocol).toBeDefined()
+    if (!criticalProtocol) return
+    const actionId = '1209:3:0'
+    const options = {
+      characterEffects:[criticalProtocol],
+      actorConditionStats:{ energyRegen:180 },
+      selections:{ [criticalProtocol.id]:true },
+      extraActions:[{ ...action, id:actionId }]
+    }
+    const boosted = valueOf(fixture({ ...options, actionId }))
+    expectClose(boosted.stats.critRate, 0.7)
+    expectClose(boosted.stats.critDamage, 2.4)
+    const capped = valueOf(fixture({ ...options, actorConditionStats:{ energyRegen:300 }, actionId }))
+    expectClose(capped.stats.critRate, 1.05)
+    expectClose(capped.stats.critDamage, 3.1)
+    expectClose(valueOf(fixture(options)).stats.critRate, 0.25)
+  })
+
   it('uses an active damage-type override for category bonuses', () => {
     const mode = effect('echo-mode', { operations:[
       { kind:'override-damage-type', damageType:'echo', filter:{ actionIds:['skill'] } },

@@ -69,6 +69,10 @@ const normalizeReviewedEffect = (effect: EffectMechanics): EffectMechanics => {
   const reductions = new Set(reviewedEffect.operations.filter((operation) => operation.kind === 'reduce-damage-taken').map((operation) => operation.value))
   const teamBonuses = new Set(reviewedEffect.operations.flatMap((operation) => operation.kind === 'add-damage-bonus' && operation.recipient === 'team' ? [operation.value] : []))
   const operations = reviewedEffect.operations.flatMap((operation): EffectOperation[] => {
+    if (reviewedEffect.id === 'character:1209:1209:3:effect:1' && operation.kind === 'add-derived-stat') {
+      // The imported Mornye values are percentage points; combat stats use fractions.
+      return [{ ...operation, value:operation.value / 100, maximumValue:operation.maximumValue === undefined ? undefined : operation.maximumValue / 100 }]
+    }
     if (tuneBreakScaledDamage && operation.kind === 'add-damage-bonus') {
       if (operation.filter?.damageTypes?.includes('tune-break')) return []
       return [{ ...operation, stacking:'per-stack' }]

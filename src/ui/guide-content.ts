@@ -128,14 +128,14 @@ export const guides: readonly Guide[] = [
       { title: 'Explore Forte', body: 'Forte lists skills and sequences, attack rows, and calculation details. Choose an attack row to inspect its number.', target: '.tw-subnav', action: '.tw-subnav [role="tab"]:nth-child(2)', image: 'teams-forte.jpg' },
       { title: 'Explore Optimizer', body: 'Optimizer searches owned Echo combinations for this member. Set the pool and objective before generating results.', target: '.tw-subnav', action: '.tw-subnav [role="tab"]:nth-child(3)', image: 'optimizer.jpg' },
       { title: 'Explore Theorizer', body: 'Theorizer estimates one hypothetical equipment change against the current build; it does not alter inventory.', target: '.tw-subnav', action: '.tw-subnav [role="tab"]:nth-child(4)', image: 'theorizer.jpg' },
-      { title: 'Explore Rotation', body: 'Rotation places member attacks on a shared timeline. Use the result mode buttons to compare Average, Non-crit, and Critical estimates.', target: '.tw-subnav', action: '.tw-subnav [role="tab"]:nth-child(5)', image: 'rotation.jpg' }
+      { title: 'Explore Rotation', body: 'Rotation places member attacks on a shared timeline. Use the result mode buttons to compare Average, Non-crit, and Critical estimates.', target: '.tw-primary-tabs', action: '.tw-primary-tabs [role="tab"]:nth-child(5)', image: 'rotation.jpg' }
     ]
   },
   {
     id: 'overview', title: 'Understand Overview', summary: 'Read a Team member’s loadout, stats, effects, and damage conditions.', outcome: 'Know which inputs are behind the member estimate.',
     steps: [
       ...teamMemberStart,
-      { title: 'Open a member Overview', body: 'Open a team, choose a filled member slot, and select Overview.', target: '.tw-primary-tabs, .tw-subnav', action: '.tw-primary-tabs button:not(:first-child), .tw-subnav [role="tab"]:nth-child(1)', image: 'teams-member.jpg' },
+      { title: 'Open a member Overview', body: 'Open a team, choose a filled member slot, and select Overview.', target: '.tw-primary-tabs, .tw-subnav', action: '.tw-primary-tabs button:nth-child(n+2):nth-child(-n+4), .tw-subnav [role="tab"]:nth-child(1)', image: 'teams-member.jpg' },
       { title: 'Check equipped gear', body: 'Read the weapon and Echo slots, then open an Echo slot to see which owned pieces can be equipped. Missing or over-cost gear changes the estimate.', target: '.tw-overview-equipment', action: '.tw-echo-slot-add, .tw-overview-echo-actions button:last-child', image: 'teams-member.jpg' },
       { title: 'Inspect stats and effects', body: 'Select a resolved stat to see its sources. Check conditional effects only when they apply in your scenario.', target: '.tw-sheet-stats, .tw-v2-effect-list', action: '.tw-sheet-stats .calculated-value, .tw-condition-toggle', image: 'teams-member.jpg' },
       { title: 'Compare result modes', body: 'Switch Average, Non-crit, or Critical in the shared team navigation. The selected mode also affects Forte and Rotation.', target: '.tw-nav-result-modes', action: '.tw-nav-result-modes button', image: 'teams-forte.jpg' }
@@ -182,10 +182,10 @@ export const guides: readonly Guide[] = [
     id: 'rotation', title: 'Build a Rotation', summary: 'Place actions in time, edit their mechanics, and interpret the team result.', outcome: 'Author a usable action sequence.',
     steps: [
       ...teamMemberStart,
-      { title: 'Open Rotation', body: 'Open a team with at least one filled member and choose Rotation.', target: '.tw-primary-tabs, .tw-subnav', action: '.tw-subnav [role="tab"]:nth-child(5)', image: 'rotation.jpg' },
+      { title: 'Open Rotation', body: 'Open a team with at least one filled member and choose Rotation.', target: '.tw-primary-tabs', action: '.tw-primary-tabs [role="tab"]:nth-child(5)', image: 'rotation.jpg' },
       { title: 'Set the time window', body: 'Enter the sequence length in seconds. DPS is rotation damage divided by this window, so use the interval you intend to model.', target: '.tw-rotation-window', action: '.tw-rotation-window input', event: 'input', image: 'rotation.jpg' },
-      { title: 'Add an action', body: 'Choose member, attack, and timestamp in the composer, then add it. Double-clicking a member track also inserts an action at that time.', target: '.tw-rotation-composer, .tw-sequencer-viewport', action: '.tw-rotation-composer button, .tw-sequencer-viewport', increase: '.tw-rotation-card', image: 'rotation-action.jpg' },
-      { title: 'Edit play order and timing', body: 'Open Edit action and mechanics on the action card. Change attack, timestamp, duration, or repeat count there; drag clips to move or trim them.', target: '.tw-rotation-action-editor', action: '.tw-rotation-action-editor summary', complete: '.tw-rotation-action-editor[open]', image: 'rotation-editor.jpg' },
+      { title: 'Add an action', body: 'Choose member, attack, and timestamp in the composer, then add it.', target: '.tw-rotation-composer', action: '.tw-rotation-composer button', increase: '.tw-rotation-card', image: 'rotation-action.jpg' },
+      { title: 'Edit play order and timing', body: 'Double-click a Play order action to find its timeline clip. Open Edit action and mechanics on the card to change attack, timestamp, duration, or repeat count; drag clips to move or trim them.', target: '.tw-rotation-action-editor', action: '.tw-rotation-action-editor summary', complete: '.tw-rotation-action-editor[open]', image: 'rotation-editor.jpg' },
       { title: 'Review mechanics', body: 'Inspect the effects and damage split in the open editor. Close it when finished; only model effects that actually occur in the sequence.', target: '.tw-rotation-mechanics, .tw-action-breakdown', action: '.tw-rotation-action-editor summary', image: 'rotation-editor.jpg' },
       { title: 'Read the result', body: 'Rotation analysis shows total damage, DPS, and each contribution. Open the calculated rotation total to trace its number.', target: '.tw-rotation-kpis', action: '.tw-rotation-kpis .calculated-value', complete: '.calculation-backdrop', image: 'rotation-action.jpg' }
     ]

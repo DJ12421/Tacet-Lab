@@ -265,7 +265,7 @@ function calculateDamage(
   const power = scalingPower(stats, formula.scaling)
   const scalingSources = (Object.entries(formula.scaling) as Array<[ScalingStat, number]>).map(([stat, ratio]) => ({
     stage:`scaling:${STAT_TRACE_LABELS[stat]}`,
-    value:(stat === 'energyRegen' ? stats.energyRegen * 100 : stats[stat]) * ratio,
+    value:(stat === 'energyRegen' ? stats.energyRegen * 100 : Math.floor(stats[stat])) * ratio,
     children:[statTrace(registry, member, effects, stats, stat), { stage:'percent:Scaling ratio', value:ratio, children:[] }]
   }))
   const typeBonusKey = action.damageType === 'status'
@@ -367,6 +367,7 @@ function calculateDamage(
         ] },
         { stage:'crit-rate', value:effects.critOverride === 'always' ? 1 : effects.critOverride === 'never' ? 0 : Math.min(1, Math.max(0, stats.critRate)), children:[statTrace(registry, member, effects, stats, 'critRate')] },
         { stage:'crit-damage', value:stats.critDamage, children:[statTrace(registry, member, effects, stats, 'critDamage')] },
+        { stage:'crit-enabled', value:effects.critOverride === 'always' || (formula.canCrit && effects.critOverride !== 'never') ? 'yes' : 'no', children:[] },
         ...hits.map((hit) => hit.trace)
       ]
     } satisfies CalculationTrace
@@ -470,6 +471,9 @@ function calculateTuneAmp(request: ActionRequest, member: CombatMember, action: 
     { stage:'motion-value', value:amp * motion, children:[] }, { stage:'percent:Tune Break Boost', value:boost / 100, children:[] },
     { stage:'bonus-factor', value:bonus, children:[] }, { stage:'special-multiplier', value:special, children:[] },
     { stage:'defence-multiplier', value:defense, children:[] }, { stage:'resistance-multiplier', value:resistance, children:[] },
+    { stage:'vulnerability-factor', value:vulnerability, children:[] }, { stage:'final-damage-factor', value:finalDamage, children:[] },
+    { stage:'damage-reduction-factor', value:reduction, children:[] },
+    ...(effects.statusCrit ? [{ stage:'fixed-status-crit-rate', value:effects.statusCrit.rate, children:[] }, { stage:'fixed-status-crit-damage', value:effects.statusCrit.damage, children:[] }] : []),
     { stage:'result', value, children:[] }
   ] } satisfies CalculationTrace }
 }
@@ -526,6 +530,7 @@ function calculateSupport(formula: SupportFormula, stats: AggregatedStats, effec
       stage: formula.kind,
       children: [
         { stage: 'scaling-power', value: power, children: [] },
+        { stage: 'motion-value', value: formula.motionValue, children: [] },
         { stage: 'motion-value-factor', value: motionValueFactor, children: [] },
         { stage: 'flat-value', value: flatValue, children: [] },
         { stage: 'support-bonus-factor', value: bonusFactor, children: [] },
@@ -671,9 +676,14 @@ function calculateAction(registry: MechanicsRegistry, request: ActionRequest): C
       actionUseAdjustments:effects.actionUseAdjustments,
       ...(request.trace ? { trace: {
         stage: calculated.trace.stage,
+        value: totals[request.resultMode],
         children: [
+          { stage:'result-mode', value:request.resultMode, children:[] },
           { stage: 'applied-effects', value: effects.appliedEffects.length, children: effects.appliedEffects.map((id) => ({ stage: id, children: [] })) },
-          ...(contributingTriggers.length ? [{ stage:'triggered-actions', value:contributingTriggers.reduce((total, trigger) => total + trigger.selected, 0), children:contributingTriggers.map((trigger) => ({ stage:`number:${trigger.name}`, value:trigger.selected, children:[] })) }] : []),
+          ...(contributingTriggers.length ? [{ stage:'triggered-actions', value:contributingTriggers.reduce((total, trigger) => total + trigger.selected, 0), children:[
+            ...(['normal', 'critical', 'expected'] as const).map((mode) => ({ stage:`result-${mode}`, value:contributingTriggers.reduce((total, trigger) => total + trigger.totals[mode], 0), children:[] })),
+            ...contributingTriggers.map((trigger) => ({ stage:`number:${trigger.name}`, value:trigger.selected, children:[] }))
+          ] }] : []),
           ...calculated.trace.children
         ]
       } } : {})
@@ -805,6 +815,7 @@ function calculateRotation(registry: MechanicsRegistry, request: RotationRequest
         children: [
           { stage: 'timestamp', value: command.timestamp, children: [] },
           { stage: 'repetitions', value: repetitions, children: [] },
+          { stage: 'rotation-damage', value: damageSelected, children: [] },
           ...(outcome.value.trace ? [outcome.value.trace] : [])
         ]
       })

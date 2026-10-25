@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import type { CalculationTrace } from '../domain/combat'
+import { traceFormulaLines } from './calculation-trace-formulas'
 import './calculation-details.css'
 
 export interface CalculationDetailRow {
@@ -13,33 +14,32 @@ export interface CalculationDetail {
   title: string
   value: string
   formula?: string
-  equationOperator?: '+' | '×' | '÷'
+  equationOperator?: '+' | '×' | '÷' | ''
   note?: string
   rows: CalculationDetailRow[]
+  trace?: CalculationTrace
 }
 
-function compactDetailRows(rows: CalculationDetailRow[]) {
+function compactDetailRows(rows: CalculationDetailRow[], limit = 12) {
   const generic = /^(prod|sum|min|max|floor|stat|input|constant|lookup|query|if|compare)$/i
   const result: CalculationDetailRow[] = []
   const visit = (row: CalculationDetailRow) => {
-    if (!generic.test(row.label.trim())) result.push(row)
+    if (row.value && !generic.test(row.label.trim())) result.push(row)
     else row.children?.forEach(visit)
   }
   rows.forEach(visit)
   return result
     .filter((row, index) => result.findIndex((candidate) => candidate.label === row.label && candidate.value === row.value) === index)
-    .slice(0, 12)
+    .slice(0, limit)
 }
 
 export function traceCalculationDetail(trace: CalculationTrace, title = trace.stage): CalculationDetail {
   const traceValue = (node: CalculationTrace) => {
     if (typeof node.value !== 'number') return String(node.value ?? '')
     const value = node.value.toLocaleString('en-US', { maximumFractionDigits: 3 })
-    if (/\bbonus\b/i.test(node.stage) && !/\bmultiplier\b/i.test(node.stage)) return `(100% + ${value}%)`
-    if (/\b(?:multiplier|factor|motion value)\b/i.test(node.stage) && Math.abs(node.value) <= 10) {
+    if (node.stage.startsWith('percent:') || /^(?:motion-value|crit-rate|crit-damage)$/.test(node.stage) || /(?:factor|multiplier)$/.test(node.stage) && Math.abs(node.value) <= 10) {
       return `${(node.value * 100).toLocaleString('en-US', { maximumFractionDigits: 3 })}%`
     }
-    if (/\b(?:rate|regen|ignore|reduction)\b/i.test(node.stage) && !/%$/.test(value)) return `${value}%`
     return value
   }
   const row = (node: CalculationTrace): CalculationDetailRow => ({
@@ -48,21 +48,25 @@ export function traceCalculationDetail(trace: CalculationTrace, title = trace.st
     children: node.children.map(row)
   })
   const resultValue = typeof trace.value === 'number'
-    ? Math.floor(trace.value + 1e-9).toLocaleString('en-US')
+    ? trace.value.toLocaleString('en-US', { maximumFractionDigits: 6 })
     : String(trace.value ?? '')
-  return { title, value: resultValue, formula: 'Reviewed combat calculation', rows: [row(trace)] }
+  return { title, value: resultValue, rows: trace.children.map(row), trace }
 }
 
 function CalculationEquation({ detail }: { detail: CalculationDetail }) {
-  const rows = compactDetailRows(detail.rows)
+  const traceLines = detail.trace ? traceFormulaLines(detail.trace) : null
+  const rows = compactDetailRows(detail.rows, Infinity)
   const operator = detail.equationOperator ?? (detail.formula?.includes('÷') ? '÷' : detail.formula?.toLowerCase().includes('sum') ? '+' : '×')
   return <div className="calculation-equation">
+    {traceLines ? <div className="calculation-formula-lines">{traceLines.map((entry, index) => <section key={`${entry.label}-${index}`}>
+      <h3>{entry.label}</h3><code><strong>{entry.result}</strong> ≈ {entry.expression}</code>
+    </section>)}</div> : <>
     {detail.formula && <div className="calculation-formula"><span>Formula</span><code>{detail.formula}</code></div>}
     {rows.length ? <div className="calculation-terms">{rows.map((row, index) => <span className="calculation-term" key={`${row.label}-${index}`}>
-      {index > 0 && <i>{operator}</i>}
+      {index > 0 && operator && <i>{operator}</i>}
       <em>{row.label}</em>
       <b>{row.value}</b>
-    </span>)}</div> : <span className="calculation-formula-text">{detail.formula ?? detail.value}</span>}
+    </span>)}</div> : <span className="calculation-formula-text">{detail.formula ?? detail.value}</span>}</>}
   </div>
 }
 

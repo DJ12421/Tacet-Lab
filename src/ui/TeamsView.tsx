@@ -44,8 +44,7 @@ const MEMBER_SECTIONS: Array<{ id: MemberSection; label: string }> = [
   { id: 'overview', label: 'Overview' },
   { id: 'forte', label: 'Forte' },
   { id: 'optimizer', label: 'Optimizer' },
-  { id: 'theorizer', label: 'Theorizer' },
-  { id: 'rotation', label: 'Rotation' }
+  { id: 'theorizer', label: 'Theorizer' }
 ]
 
 const DAMAGE_RESULT_MODES: Array<{ id: FormulaResultMode; label: string }> = [
@@ -703,8 +702,6 @@ type TimelineGesture =
   | { kind: 'move' | 'trim-start' | 'trim-end'; pointerId: number; originX: number; actionId: string; selectedIds: string[]; original: RotationAction[]; preview: RotationAction[]; changed: boolean }
   | { kind: 'box'; pointerId: number; startTime: number; currentTime: number; startX: number; currentX: number; startY: number; currentY: number; initialIds: string[] }
 
-interface TimelineQuickCreate { buildId: string; timestamp: number; attackId: string }
-
 interface TimelineMenu { actionId: string; x: number; y: number }
 
 function RotationWorkspace({ model, updateTeam, saveChanges, discardChanges, hasChanges, saving, saveError, focusBuildId }: { model: TeamWorkspaceModel; updateTeam: (patch: Partial<Team>) => Promise<void>; saveChanges: () => Promise<void>; discardChanges: () => void; hasChanges: boolean; saving: boolean; saveError: string | null; focusBuildId?: string }) {
@@ -748,12 +745,22 @@ function RotationWorkspace({ model, updateTeam, saveChanges, discardChanges, has
   const playbackSpikesRef = useRef<HTMLElement[]>([])
   const [isPlaying, setIsPlaying] = useState(false)
   const pageFocused = usePageFocused()
-  const [quickCreate, setQuickCreate] = useState<TimelineQuickCreate | null>(null)
   const [timelineMenu, setTimelineMenu] = useState<TimelineMenu | null>(null)
   const [boxSelection, setBoxSelection] = useState<{ startTime: number; currentTime: number; startY: number; currentY: number } | null>(null)
   const [draggedCardId, setDraggedCardId] = useState<string | null>(null)
   const [cardDropTarget, setCardDropTarget] = useState<{ actionId: string; after: boolean } | null>(null)
   const timelineViewportRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const viewport = timelineViewportRef.current
+    if (!viewport) return
+    const scrollTimeline = (event: WheelEvent) => {
+      if (viewport.scrollWidth <= viewport.clientWidth || !event.deltaY) return
+      event.preventDefault()
+      viewport.scrollLeft += event.deltaY
+    }
+    viewport.addEventListener('wheel', scrollTimeline, { passive: false })
+    return () => viewport.removeEventListener('wheel', scrollTimeline)
+  }, [])
   const gestureRef = useRef<TimelineGesture | null>(null)
   const undoStackRef = useRef<RotationAction[][]>([])
   const redoStackRef = useRef<RotationAction[][]>([])
@@ -1042,22 +1049,12 @@ function RotationWorkspace({ model, updateTeam, saveChanges, discardChanges, has
     if (!selectedActionIds.includes(actionId)) setSelectedActionIds([actionId])
     setTimelineMenu({ actionId, x: event.clientX, y: event.clientY })
   }
-  const openQuickCreate = (event: ReactMouseEvent<HTMLDivElement>, member: TeamMemberModel & { build: Build }) => {
-    if (event.target !== event.currentTarget) return
-    const rect = event.currentTarget.getBoundingClientRect()
-    const timestamp = timelineRound(timelineClamp((event.clientX - rect.left) / timelineScale, 0, model.team.rotationDuration - ROTATION_MIN_CLIP_DURATION))
-    seekPlayhead(timestamp)
-    setQuickCreate({ buildId: member.build.id, timestamp, attackId: member.attacks[0]?.id ?? '' })
-  }
-  const addQuickAction = () => {
-    if (!quickCreate) return
-    const member = model.members.find((entry) => entry.build?.id === quickCreate.buildId)
-    const attack = member?.attacks.find((entry) => entry.id === quickCreate.attackId)
-    if (!member?.build || !attack) return
-    const next: RotationAction = { id: createLocalId(), timestamp: quickCreate.timestamp, duration: timelineClamp(defaultRotationClipDuration(attack.group, attack.timing), ROTATION_MIN_CLIP_DURATION, model.team.rotationDuration - quickCreate.timestamp), buildId: member.build.id, attackId: attack.id, formulaTargetId: member.catalog ? `${member.catalog.id}:${attack.id}` : undefined }
-    commitActions([...timelineActions, next])
-    setSelectedActionIds([next.id])
-    setQuickCreate(null)
+  const jumpToTimelineAction = (actionId: string) => {
+    const viewport = timelineViewportRef.current
+    const clip = [...(viewport?.querySelectorAll<HTMLElement>('[data-timeline-action-id]') ?? [])].find((entry) => entry.dataset.timelineActionId === actionId)
+    if (!viewport || !clip) return
+    setSelectedActionIds([actionId])
+    viewport.scrollTo({ left: viewport.scrollLeft + clip.getBoundingClientRect().left - viewport.getBoundingClientRect().left - (viewport.clientWidth - clip.offsetWidth) / 2, behavior: 'smooth' })
   }
   const fitTimeline = () => {
     const available = Math.max(320, (timelineViewportRef.current?.clientWidth ?? 900) - 144)
@@ -1077,7 +1074,7 @@ function RotationWorkspace({ model, updateTeam, saveChanges, discardChanges, has
       else if (event.key === 'Delete' || event.key === 'Backspace') { event.preventDefault(); deleteSelected() }
       else if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); nudgeSelected(event.key === 'ArrowLeft' ? -1 : 1, event.altKey) }
       else if (event.key === ' ') { event.preventDefault(); togglePlayback() }
-      else if (event.key === 'Escape') { setSelectedActionIds([]); setTimelineMenu(null); setQuickCreate(null) }
+      else if (event.key === 'Escape') { setSelectedActionIds([]); setTimelineMenu(null) }
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
@@ -1209,7 +1206,7 @@ function RotationWorkspace({ model, updateTeam, saveChanges, discardChanges, has
             const accent = member.catalog ? ELEMENT_COLORS[member.catalog.element] ?? ROTATION_CHART_COLORS[memberIndex] : ROTATION_CHART_COLORS[memberIndex]
             return <div className="tw-sequencer-lane" style={{ height: laneHeight, '--tw-lane-accent': accent } as CSSProperties} key={member.build.id}>
               <div className="tw-lane-label">{member.catalog?.iconSourceUrl && <img src={member.catalog.iconSourceUrl} alt=""/>}<span><b>{teamMemberName(member)}</b><small>{laneActions.length} {laneActions.length === 1 ? 'clip' : 'clips'}</small></span></div>
-              <div className="tw-lane-stage" data-timeline-lane={member.build.id} style={{ width: model.team.rotationDuration * timelineScale, height: laneHeight }} onPointerDown={beginBoxSelection} onDoubleClick={(event) => openQuickCreate(event, member)}>
+              <div className="tw-lane-stage" data-timeline-lane={member.build.id} style={{ width: model.team.rotationDuration * timelineScale, height: laneHeight }} onPointerDown={beginBoxSelection}>
                 {Array.from({ length: Math.floor(model.team.rotationDuration) + 1 }, (_, tick) => <i className="tw-grid-line" style={{ left: tick * timelineScale }} key={tick}/>) }
                 {clips.map(({ action, duration, row }) => {
                   const attack = member.attacks.find((entry) => entry.id === action.attackId)
@@ -1227,8 +1224,7 @@ function RotationWorkspace({ model, updateTeam, saveChanges, discardChanges, has
           })}{boxSelection && <span className="tw-selection-box" style={{ left: 128 + Math.min(boxSelection.startTime, boxSelection.currentTime) * timelineScale, top: Math.min(boxSelection.startY, boxSelection.currentY), width: Math.abs(boxSelection.currentTime - boxSelection.startTime) * timelineScale, height: Math.max(2, Math.abs(boxSelection.currentY - boxSelection.startY)) }}/>}</div>
         </div>
       </div>
-      <footer className="tw-sequencer-help"><span>Double-click a track to add an action.</span><span>Drag to move or trim · Hold Alt for free timing</span></footer>
-      {quickCreate && (() => { const member = model.members.find((entry) => entry.build?.id === quickCreate.buildId); return <div className="tw-quick-create" role="dialog" aria-label="Add timeline action"><span><b>Add at {quickCreate.timestamp.toFixed(2)}s</b><small>{member ? teamMemberName(member) : 'Character'}</small></span><select autoFocus value={quickCreate.attackId} onChange={(event) => setQuickCreate({ ...quickCreate, attackId: event.target.value })}>{ROTATION_ATTACK_GROUPS.map((group) => { const attacks = member?.attacks.filter((attack) => attack.group === group.id) ?? []; return attacks.length ? <optgroup label={group.label} key={group.id}>{attacks.map((attack) => <option value={attack.id} key={attack.id}>{compactAttackLabel(attack.name)}</option>)}</optgroup> : null })}</select><button type="button" className="primary" disabled={!quickCreate.attackId} onClick={addQuickAction}>Add clip</button><button type="button" onClick={() => setQuickCreate(null)}>Cancel</button></div> })()}
+      <footer className="tw-sequencer-help"><span>Wheel to scroll timeline · Drag to select</span><span>Drag clips to move or trim · Hold Alt for free timing</span></footer>
       {timelineMenu && <div className="tw-timeline-menu" style={{ left: timelineMenu.x, top: timelineMenu.y }} role="menu"><button type="button" onClick={() => { copySelected(selectedActionIds.includes(timelineMenu.actionId) ? selectedActionIds : [timelineMenu.actionId]); setTimelineMenu(null) }}>Copy selection</button><button type="button" onClick={() => { duplicateSelected(selectedActionIds.includes(timelineMenu.actionId) ? selectedActionIds : [timelineMenu.actionId]); setTimelineMenu(null) }}>Duplicate</button><button type="button" onClick={() => { const ids = selectedActionIds.includes(timelineMenu.actionId) ? selectedActionIds : [timelineMenu.actionId]; commitActions(timelineActions.filter((action) => !ids.includes(action.id))); setSelectedActionIds([]); setTimelineMenu(null) }}>Delete</button></div>}
     </section>
     <div className="tw-rotation-layout">
@@ -1242,7 +1238,7 @@ function RotationWorkspace({ model, updateTeam, saveChanges, discardChanges, has
           const isOutroCast = row.attack?.group === 'outro' && row.resultKind !== 'damage'
           const dragTarget = cardDropTarget?.actionId === row.action.id
           const visibleWarnings = row.warnings.filter((warning) => !isRepeatedRotationEstimateWarning(warning))
-          return <article id={`rotation-action-${row.action.id}`} data-playback-action-id={row.action.id} draggable className={`tw-rotation-card ${visibleWarnings.length ? 'is-invalid' : ''} ${selectedActionIds.includes(row.action.id) ? 'is-selected' : ''} ${activeActionIds.has(row.action.id) ? 'is-playing' : ''} ${draggedCardId === row.action.id ? 'is-dragging' : ''} ${dragTarget ? cardDropTarget.after ? 'drop-after' : 'drop-before' : ''}`} style={{ '--tw-member-accent': ELEMENT_COLORS[row.member?.catalog?.element ?? ''] ?? '#c8d0ce' } as CSSProperties} key={row.action.id} onClick={() => setSelectedActionIds([row.action.id])} onDragStart={(event: ReactDragEvent<HTMLElement>) => { setDraggedCardId(row.action.id); event.dataTransfer.effectAllowed = 'move'; event.dataTransfer.setData('text/plain', row.action.id) }} onDragOver={(event) => { event.preventDefault(); if (draggedCardId === row.action.id) return; const rect = event.currentTarget.getBoundingClientRect(); setCardDropTarget({ actionId: row.action.id, after: event.clientY >= rect.top + rect.height / 2 }) }} onDrop={(event) => { event.preventDefault(); const sourceId = event.dataTransfer.getData('text/plain') || draggedCardId; const rect = event.currentTarget.getBoundingClientRect(); if (sourceId) reorderActionCard(sourceId, row.action.id, event.clientY >= rect.top + rect.height / 2); setDraggedCardId(null); setCardDropTarget(null) }} onDragEnd={() => { setDraggedCardId(null); setCardDropTarget(null) }}>
+          return <article id={`rotation-action-${row.action.id}`} data-playback-action-id={row.action.id} draggable className={`tw-rotation-card ${visibleWarnings.length ? 'is-invalid' : ''} ${selectedActionIds.includes(row.action.id) ? 'is-selected' : ''} ${activeActionIds.has(row.action.id) ? 'is-playing' : ''} ${draggedCardId === row.action.id ? 'is-dragging' : ''} ${dragTarget ? cardDropTarget.after ? 'drop-after' : 'drop-before' : ''}`} style={{ '--tw-member-accent': ELEMENT_COLORS[row.member?.catalog?.element ?? ''] ?? '#c8d0ce' } as CSSProperties} key={row.action.id} onClick={() => setSelectedActionIds([row.action.id])} onDoubleClick={(event) => { if (!(event.target as HTMLElement).closest('button, input, select, summary, label, .calculated-value')) jumpToTimelineAction(row.action.id) }} onDragStart={(event: ReactDragEvent<HTMLElement>) => { setDraggedCardId(row.action.id); event.dataTransfer.effectAllowed = 'move'; event.dataTransfer.setData('text/plain', row.action.id) }} onDragOver={(event) => { event.preventDefault(); if (draggedCardId === row.action.id) return; const rect = event.currentTarget.getBoundingClientRect(); setCardDropTarget({ actionId: row.action.id, after: event.clientY >= rect.top + rect.height / 2 }) }} onDrop={(event) => { event.preventDefault(); const sourceId = event.dataTransfer.getData('text/plain') || draggedCardId; const rect = event.currentTarget.getBoundingClientRect(); if (sourceId) reorderActionCard(sourceId, row.action.id, event.clientY >= rect.top + rect.height / 2); setDraggedCardId(null); setCardDropTarget(null) }} onDragEnd={() => { setDraggedCardId(null); setCardDropTarget(null) }}>
             <div className="tw-rotation-marker"><b>{index + 1}</b><span>{row.action.timestamp.toFixed(2)}s</span></div>
             <div className="tw-rotation-card-main">
               <div className="tw-rotation-action-summary"><div><small>{row.member ? teamMemberName(row.member) : 'Unassigned'}</small><strong>{compactAttackLabel(row.action.label ?? row.attack?.name ?? 'Missing attack')}</strong><span className="tw-action-tags">{row.attack && <><em className="forte">{forteGroupLabel(row.attack.group)}</em>{!isOutroCast && <em className="damage">{damageSourceLabel(row.attack.type)}</em>}</>}</span></div><label className="tw-action-multiplier" title="Repeat this action without adding duplicate cards" onClick={(event) => event.stopPropagation()}><b>×</b><BoundedNumberInput aria-label={`Action ${index + 1} repeat multiplier`} min={1} max={99} step="1" value={multiplier} onChange={(multiplier) => void updateAction(row.action.id, { multiplier })}/></label>{isOutroCast ? <strong className="tw-rotation-result">Cast</strong> : <CalculatedValue detail={multiplier > 1 ? sumDetail(`${compactAttackLabel(row.action.label ?? row.attack?.name ?? 'Action')} · ${resultMode}`, value, [{ label: `One action × ${multiplier}`, value: value / multiplier }]) : sumDetail(`${resultMode} damage`, value, [{ label: 'Calculated action', value }])} lazyDetail={multiplier === 1 && trace ? () => traceCalculationDetail(trace, `${compactAttackLabel(row.action.label ?? row.attack?.name ?? 'Action')} · ${resultMode}`) : undefined}><strong className="tw-rotation-result"><small>{resultMode === 'expected' ? 'Avg DMG' : resultMode === 'normal' ? 'Non-crit' : 'Crit DMG'}</small>{formatDamage(value)}</strong></CalculatedValue>}</div>
@@ -2067,7 +2063,8 @@ export function TeamsView({ echoes, builds, equippedLoadouts, theorycraftBuilds,
     <div className="tw-sticky-navigation" style={typeof tab === 'number' && model?.members[tab]?.catalog ? { '--tw-member-accent': ELEMENT_COLORS[model.members[tab].catalog?.element ?? ''] ?? '#c8d0ce' } as CSSProperties : undefined}>
       <nav className="tw-primary-tabs" aria-label="Formation" role="tablist">
         <button role="tab" className={tab === 'settings' ? 'active' : ''} aria-selected={tab === 'settings'} onClick={openFormation}><span>Formation</span><small>Team setup</small></button>
-        {Array.from({ length: 3 }, (_, slot) => { const member = model?.members[slot]; return <button role="tab" className={tab === slot ? 'active' : ''} aria-selected={tab === slot} key={slot} style={member?.catalog ? { '--tw-member-accent': ELEMENT_COLORS[member.catalog.element] ?? '#c8d0ce' } as CSSProperties : undefined} onClick={() => openMemberRoute(slot as 0 | 1 | 2)}><MemberAvatar member={member ?? { slot, attacks: [], contribution: 0, contributionPercent: 0, byType: {}, appliedBuffs: [], receivedBuffs: [], roles: [], warnings: [], resolvedEchoes: [] }} compact/><span>{member?.catalog?.name ?? `Slot ${slot + 1}`}</span><small>{member?.build?.name ?? 'Empty'}</small></button> })}
+        {Array.from({ length: 3 }, (_, slot) => { const member = model?.members[slot]; return <button role="tab" className={tab === slot && memberSection !== 'rotation' ? 'active' : ''} aria-selected={tab === slot && memberSection !== 'rotation'} key={slot} style={member?.catalog ? { '--tw-member-accent': ELEMENT_COLORS[member.catalog.element] ?? '#c8d0ce' } as CSSProperties : undefined} onClick={() => openMemberRoute(slot as 0 | 1 | 2)}><MemberAvatar member={member ?? { slot, attacks: [], contribution: 0, contributionPercent: 0, byType: {}, appliedBuffs: [], roles: [], warnings: [], resolvedEchoes: [] }} compact/><span>{member?.catalog?.name ?? `Slot ${slot + 1}`}</span><small>{member?.build?.name ?? 'Empty'}</small></button> })}
+        <button role="tab" className={memberSection === 'rotation' && typeof tab === 'number' ? 'active' : ''} aria-selected={memberSection === 'rotation' && typeof tab === 'number'} disabled={!model?.members.some((member) => member.catalog)} onClick={() => { const slot = typeof tab === 'number' && model?.members[tab]?.catalog ? tab : model?.members.findIndex((member) => member.catalog) ?? -1; if (slot >= 0) openMemberRoute(slot as 0 | 1 | 2, 'rotation') }}><span>Rotation</span><small>Team sequence</small></button>
       </nav>
       {model && typeof tab === 'number' && model.members[tab]?.catalog && <nav className="tw-subnav" aria-label={`${model.members[tab].catalog?.name ?? 'Character'} sections`} role="tablist">
         {MEMBER_SECTIONS.map((item) => <button key={item.id} role="tab" className={memberSection === item.id ? 'active' : ''} aria-selected={memberSection === item.id} onClick={() => setMemberSectionRoute(item.id)}>{item.label}</button>)}
