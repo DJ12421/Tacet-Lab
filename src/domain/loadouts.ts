@@ -125,7 +125,6 @@ export function theorycraftWarnings(build: TheorycraftBuild) {
       if (lines.length > capacity) warnings.push(`Slot ${index + 1} has ${lines.length}/${capacity} available substats.`)
       const seen = new Set<StatKey>()
       for (const line of lines) {
-        if (line.key === slot.mainStatKey) warnings.push(`Slot ${index + 1} repeats its main stat ${statLabels[line.key]} as a substat.`)
         if (seen.has(line.key)) warnings.push(`Slot ${index + 1} has duplicate ${statLabels[line.key]} substats.`)
         seen.add(line.key)
         if (!exactTunableRoll(line.key, line.value)) warnings.push(`Slot ${index + 1} has an invalid ${statLabels[line.key]} roll of ${line.value}.`)
@@ -137,14 +136,11 @@ export function theorycraftWarnings(build: TheorycraftBuild) {
     const total = Object.values(build.substats.rolls).reduce((sum, count) => sum + Math.max(0, Math.floor(Number(count) || 0)), 0)
     if (total > capacity) warnings.push(`Substat allocation uses ${total}/${capacity} available rolls.`)
     for (const [key, count] of Object.entries(build.substats.rolls)) {
-      const availableSlots = build.slots.filter((slot) => slot.mainStatKey !== key && maxSubStatsForLevel(slot.level) > 0).length
-      if (Number(count) > availableSlots) warnings.push(`${key} appears on more Echoes than the configured main stats permit.`)
+      const availableSlots = build.slots.filter((slot) => maxSubStatsForLevel(slot.level) > 0).length
+      if (Number(count) > availableSlots) warnings.push(`${key} appears on more Echoes than the configured slots permit.`)
     }
   } else {
     warnings.push('Legacy aggregate substats must be converted to exact per-Echo rolls before saving.')
-    for (const [key, value] of Object.entries(build.substats.values)) {
-      if (Number(value) > 0 && !build.slots.some((slot) => slot.mainStatKey !== key && maxSubStatsForLevel(slot.level) > 0)) warnings.push(`${key} cannot be placed because every eligible slot uses it as a main stat.`)
-    }
   }
   return [...new Set(warnings)]
 }

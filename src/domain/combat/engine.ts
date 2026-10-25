@@ -27,6 +27,7 @@ import type {
 } from './contract'
 import { EffectResolutionFailure, resolveEffects, type ResolvedEffects } from './effects'
 import { negativeStatusLevels, negativeStatusMotionValues } from '../../game-data/combat/negative-status'
+import { tuneBreakLevelBases } from '../../game-data/tune-break'
 
 class CombatFailure extends Error {
   constructor(readonly diagnostic: CalculationDiagnostic) {
@@ -147,7 +148,7 @@ function materializeStats(registry: MechanicsRegistry, member: CombatMember, eff
     baseDef,
     hp: baseHp * (1 + percent.hp) + flat.hp,
     atk: baseAtk * (1 + percent.atk) + flat.atk,
-    def: baseDef * (1 + percent.def) + flat.def,
+    def: character.id === '1212' ? 0 : baseDef * (1 + percent.def) + flat.def,
     critRate: finite(characterStats.critRate, 'Crit. Rate') + secondary.critRate,
     critDamage: finite(characterStats.critDamage, 'Crit. DMG') + secondary.critDamage,
     energyRegen: finite(characterStats.energyRegen, 'Energy Regen') + secondary.energyRegen,
@@ -218,35 +219,32 @@ function scalingPower(stats: AggregatedStats, scaling: Readonly<Partial<Record<S
   for (const [stat, rawRatio] of Object.entries(scaling) as Array<[ScalingStat, number]>) {
     const ratio = finite(rawRatio, `${stat} scaling ratio`)
     if (ratio < 0) throw new CombatFailure({ code: 'invalid-input', message: `${stat} scaling ratio cannot be negative.` })
-    total += (stat === 'energyRegen' ? stats.energyRegen * 100 : stats[stat]) * ratio
+    total += (stat === 'energyRegen' ? stats.energyRegen * 100 : Math.floor(stats[stat])) * ratio
   }
   return total
 }
 
 function defenseMultiplier(attackerLevel: number, enemy: EnemyInput, reduction: number, ignore: number) {
   const attackerTerm = 800 + 8 * attackerLevel
-  const enemyTerm = (792 + 8 * enemy.level) * (1 - reduction) * (1 - ignore)
+  const enemyTerm = Math.floor((792 + 8 * enemy.level) * (1 - reduction)) * (1 - ignore)
   const denominator = attackerTerm + enemyTerm
   if (!Number.isFinite(denominator) || denominator === 0) throw new CombatFailure({ code: 'invalid-input', message: 'Defence inputs produce an invalid denominator.' })
   return attackerTerm / denominator
 }
 
 function resistanceMultiplier(base: number, reduction: number, ignore: number) {
-  const totalReduction = reduction + ignore
-  if (totalReduction === 0) return 1 - base
-  if (base <= 0) return 1 - (base - totalReduction / 2)
-  const excess = totalReduction - base
-  return excess <= 0 ? 1 - (base - totalReduction) : 1 + excess / 2
+  const effective = base - reduction - ignore
+  return effective < 0 ? 1 - effective / 2 : effective < 0.8 ? 1 - effective : 1 / (1 + 5 * effective)
 }
 
 function critValues(preCrit: number, stats: AggregatedStats, canCrit: boolean, override: ResolvedEffects['critOverride']): DamageValues {
-  const normal = finite(preCrit, 'Pre-crit damage')
+  const normal = Math.floor(finite(preCrit, 'Pre-crit damage'))
   if (override === 'never' || (!canCrit && override !== 'always')) return { normal, critical: normal, expected: normal }
   const rate = override === 'always' ? 1 : Math.min(1, Math.max(0, stats.critRate))
   return {
     normal,
-    critical: finite(preCrit * stats.critDamage, 'Critical damage'),
-    expected: finite(preCrit * (1 + rate * (stats.critDamage - 1)), 'Expected damage')
+    critical: Math.floor(finite(preCrit * stats.critDamage, 'Critical damage')),
+    expected: Math.floor(finite(preCrit * (1 + rate * (stats.critDamage - 1)), 'Expected damage'))
   }
 }
 
@@ -409,8 +407,6 @@ function cooldownKey(registry: MechanicsRegistry, member: CombatMember, actionId
   const echo = equipped ? registry.echoes?.[equipped.catalogId] : undefined
   return echo?.actions[actionId] ? `${member.memberId}:echo:${equipped?.catalogId}` : `${member.memberId}:${actionId}`
 }
-
-const tuneBreakLevelBases: Readonly<Record<number, number>> = { 1:2.215, 20:5.932, 40:29.357, 50:60.934, 60:130.868, 70:249.715, 80:437.085, 90:716.22 }
 
 function calculateTuneBreak(request: ActionRequest, member: CombatMember, stats: AggregatedStats, effects: ResolvedEffects) {
   const cost = request.setup.enemy.cost

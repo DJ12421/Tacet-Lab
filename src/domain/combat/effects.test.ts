@@ -21,6 +21,7 @@ const action: ActionMechanics = {
 }
 const D90 = 1520 / 3032
 const expectClose = (actual: number, expected: number) => expect(actual).toBeCloseTo(expected, 10)
+const expectDamage = (actual: number, expected: number) => expect(actual).toBe(Math.floor(expected))
 
 const effect = (id: string, overrides: Partial<EffectMechanics> = {}): EffectMechanics => ({
   id,
@@ -132,7 +133,7 @@ describe('combat Step 4 reviewed effects', () => {
     const options = { actionId:'replacement', extraActions:[replacement] }
     const locked = fixture({ ...options, sequence:2 })
     expect(locked.ok).toBe(false)
-    expectClose(valueOf(fixture({ ...options, sequence:3 })).totals.normal, 5000 * D90)
+    expectDamage(valueOf(fixture({ ...options, sequence:3 })).totals.normal, 5000 * D90)
   })
   it('derives a capped stat bonus from Energy Regen above a threshold', () => {
     const result = valueOf(fixture({ actorConditionStats:{ energyRegen:180 }, characterEffects:[effect('energy-scaling', {
@@ -148,7 +149,7 @@ describe('combat Step 4 reviewed effects', () => {
     ] })
     const result = valueOf(fixture({ characterEffects:[mode] }))
     expect(result.damageType).toBe('echo')
-    expectClose(result.selected, 1200 * D90)
+    expectDamage(result.selected, 1200 * D90)
   })
 
   it('limits a triggered action to its reviewed source action', () => {
@@ -164,7 +165,7 @@ describe('combat Step 4 reviewed effects', () => {
       { kind:'add-damage-bonus', value:0.2 },
       { kind:'add-special-multiplier', value:0.4 }
     ] })] }))
-    expectClose(result.selected, 1000 * 1.2 * 1.4 * D90)
+    expectDamage(result.selected, 1000 * 1.2 * 1.4 * D90)
   })
 
   it('uses fixed critical values only for the reviewed negative status action', () => {
@@ -252,7 +253,7 @@ describe('combat Step 4 reviewed effects', () => {
       weaponEffects: [effect('weapon', { minimumRank: 2, activation: { kind: 'stacks', input: 'stacks', minimum: 1, maximum: 3 }, operations: [{ kind: 'add-percent-stat', stat: 'atk', value: 0.05 }] })]
     }))
     expect(result.stats.atk).toBe(1200)
-    expectClose(result.selected, 1200 * D90)
+    expectDamage(result.selected, 1200 * D90)
     expect(result.appliedEffects).toEqual(['sequence', 'weapon'])
   })
 
@@ -265,8 +266,8 @@ describe('combat Step 4 reviewed effects', () => {
       activation:{ kind:'toggle', input:'panorama-consumed', requires:[{ input:'panorama-stacks', minimum:3 }] },
       operations:[{ kind:'add-damage-bonus', value:0.52 }]
     })
-    expectClose(valueOf(fixture({ selections:{ 'panorama-stacks':3 }, weaponEffects:[stacked,consumed] })).selected, 1360 * D90)
-    expectClose(valueOf(fixture({ selections:{ 'panorama-stacks':3, 'panorama-consumed':true }, weaponEffects:[stacked,consumed] })).selected, 1520 * D90)
+    expectDamage(valueOf(fixture({ selections:{ 'panorama-stacks':3 }, weaponEffects:[stacked,consumed] })).selected, 1360 * D90)
+    expectDamage(valueOf(fixture({ selections:{ 'panorama-stacks':3, 'panorama-consumed':true }, weaponEffects:[stacked,consumed] })).selected, 1520 * D90)
     expect(fixture({ selections:{ 'panorama-stacks':2, 'panorama-consumed':true }, weaponEffects:[stacked,consumed] }).ok).toBe(false)
   })
 
@@ -275,9 +276,9 @@ describe('combat Step 4 reviewed effects', () => {
       sourceId: 'weapon:21020046:weapon:21020046:effect:1',
       operations: [{ kind:'add-damage-bonus', value:0.2 }]
     })
-    expectClose(valueOf(fixture({ weaponEffects:[special] })).selected, 1000 * D90)
-    expectClose(valueOf(fixture({ actorCharacterId:'1406', weaponEffects:[special] })).selected, 1200 * D90)
-    expectClose(valueOf(fixture({ actorCharacterId:'1408', weaponEffects:[special] })).selected, 1200 * D90)
+    expectDamage(valueOf(fixture({ weaponEffects:[special] })).selected, 1000 * D90)
+    expectDamage(valueOf(fixture({ actorCharacterId:'1406', weaponEffects:[special] })).selected, 1200 * D90)
+    expectDamage(valueOf(fixture({ actorCharacterId:'1408', weaponEffects:[special] })).selected, 1200 * D90)
   })
 
   it('routes operation filters and team recipients to the acting member', () => {
@@ -290,7 +291,7 @@ describe('combat Step 4 reviewed effects', () => {
         ]
       })]
     }))
-    expectClose(result.selected, 1200 * D90)
+    expectDamage(result.selected, 1200 * D90)
     expect(result.appliedEffects).toEqual(['team'])
   })
 
@@ -298,8 +299,8 @@ describe('combat Step 4 reviewed effects', () => {
     const coordinatedBonus = effect('coordinated-bonus', {
       operations: [{ kind: 'add-damage-bonus', value: 0.2, filter: { tags: ['coordinated'] } }]
     })
-    expectClose(valueOf(fixture({ actionTags: ['coordinated'], characterEffects: [coordinatedBonus] })).selected, 1200 * D90)
-    expectClose(valueOf(fixture({ characterEffects: [coordinatedBonus] })).selected, 1000 * D90)
+    expectDamage(valueOf(fixture({ actionTags: ['coordinated'], characterEffects: [coordinatedBonus] })).selected, 1200 * D90)
+    expectDamage(valueOf(fixture({ characterEffects: [coordinatedBonus] })).selected, 1000 * D90)
   })
 
   it('applies DEF Ignore only to damage families that accept it', () => {
@@ -307,10 +308,10 @@ describe('combat Step 4 reviewed effects', () => {
     const spectro = effect('spectro-def-ignore', { operations:[{ kind:'ignore-defense', value:0.2, filter:{ elements:['spectro'] } }] })
     const ignoredDefense = 1000 * 1520 / (1520 + 1512 * 0.8)
 
-    expectClose(valueOf(fixture({ characterEffects:[generic] })).selected, ignoredDefense)
-    expectClose(valueOf(fixture({ characterEffects:[generic], actionDamageType:'status' })).selected, 1000 * D90)
-    expectClose(valueOf(fixture({ characterEffects:[generic], actionDamageType:'tune-break' })).selected, ignoredDefense)
-    expectClose(valueOf(fixture({ characterEffects:[spectro], actionDamageType:'tune-break' })).selected, 1000 * D90)
+    expectDamage(valueOf(fixture({ characterEffects:[generic] })).selected, ignoredDefense)
+    expectDamage(valueOf(fixture({ characterEffects:[generic], actionDamageType:'status' })).selected, 1000 * D90)
+    expectDamage(valueOf(fixture({ characterEffects:[generic], actionDamageType:'tune-break' })).selected, ignoredDefense)
+    expectDamage(valueOf(fixture({ characterEffects:[spectro], actionDamageType:'tune-break' })).selected, 1000 * D90)
   })
 
   it('registers Spectral Trigger global DEF Ignore separately from its Heavy Attack amplification', () => {
@@ -343,18 +344,18 @@ describe('combat Step 4 reviewed effects', () => {
       weaponEffects:rankOne ? [rankOne] : []
     }))
 
-    expectClose(inactive.selected, 1000 * D90)
-    expectClose(active.selected, 1000 * 1.3 * 1520 / (1520 + 1512 * 0.9))
+    expectDamage(inactive.selected, 1000 * D90)
+    expectDamage(active.selected, 1000 * 1.3 * 1520 / (1520 + 1512 * 0.9))
     expect(active.appliedEffects).toEqual([rankOne?.id])
-    expectClose(basicAttack.selected, 1000 * 1520 / (1520 + 1512 * 0.9))
+    expectDamage(basicAttack.selected, 1000 * 1520 / (1520 + 1512 * 0.9))
     expect(basicAttack.appliedEffects).toEqual([rankOne?.id])
   })
 
   it('scopes reviewed Hecate damage bonus to Coordinated Attacks', () => {
     const hecateEffects = mechanicsRegistry.echoes?.['6000085']?.effects
     expect(hecateEffects).toBeDefined()
-    expectClose(valueOf(fixture({ echoes: 1, echoEffects: hecateEffects, actionTags: ['coordinated'] })).selected, 1400 * D90)
-    expectClose(valueOf(fixture({ echoes: 1, echoEffects: hecateEffects })).selected, 1000 * D90)
+    expectDamage(valueOf(fixture({ echoes: 1, echoEffects: hecateEffects, actionTags: ['coordinated'] })).selected, 1400 * D90)
+    expectDamage(valueOf(fixture({ echoes: 1, echoEffects: hecateEffects })).selected, 1000 * D90)
   })
 
   it('uses upstream damage classifications and coordinated tags', () => {
@@ -401,8 +402,8 @@ describe('combat Step 4 reviewed effects', () => {
         { kind: 'add-damage-bonus', value: 0.2, recipient: 'self' }
       ]
     })
-    expectClose(valueOf(fixture({ selections: { shared: true }, characterEffects: [shared] })).selected, 1300 * D90)
-    expectClose(valueOf(fixture({ selections: { shared: true }, providerEffects: [shared] })).selected, 1100 * D90)
+    expectDamage(valueOf(fixture({ selections: { shared: true }, characterEffects: [shared] })).selected, 1300 * D90)
+    expectDamage(valueOf(fixture({ selections: { shared: true }, providerEffects: [shared] })).selected, 1100 * D90)
   })
 
   it('applies reviewed main Echo and Sonata thresholds', () => {
@@ -411,7 +412,7 @@ describe('combat Step 4 reviewed effects', () => {
       echoEffects: [effect('main-echo', { operations: [{ kind: 'amplify-damage', value: 0.1 }] })],
       sonataEffects: [effect('sonata-2', { minimumPieces: 2, operations: [{ kind: 'add-damage-bonus', value: 0.2 }] })]
     }))
-    expectClose(result.selected, 1320 * D90)
+    expectDamage(result.selected, 1320 * D90)
     expect(result.appliedEffects).toEqual(['main-echo', 'sonata-2'])
   })
 
@@ -439,8 +440,8 @@ describe('combat Step 4 reviewed effects', () => {
       activation: { kind: 'stacks', input: 'shared-stacks', minimum: 0, maximum: 3 },
       operations: [{ kind: 'add-damage-bonus', value: 0.4, stacking: 'once', minimumActivation: 3 }]
     })
-    expectClose(valueOf(fixture({ selections: { 'shared-stacks': 2 }, characterEffects: [threshold] })).selected, 1000 * D90)
-    expectClose(valueOf(fixture({ selections: { 'shared-stacks': 3 }, characterEffects: [threshold] })).selected, 1400 * D90)
+    expectDamage(valueOf(fixture({ selections: { 'shared-stacks': 2 }, characterEffects: [threshold] })).selected, 1000 * D90)
+    expectDamage(valueOf(fixture({ selections: { 'shared-stacks': 3 }, characterEffects: [threshold] })).selected, 1400 * D90)
   })
 
   it('triggers one extra hit for each completed group of activation stacks', () => {
@@ -451,8 +452,8 @@ describe('combat Step 4 reviewed effects', () => {
       triggeredActions:[{ id:'extra-spirit', name:'Extra spirit', kind:'damage', damageType:'basic', scaling:'atk', expression:'100%', count:1, countPerActivation:3 }]
     })
     expect(valueOf(fixture({ selections:{ spirits:2 }, characterEffects:[everyThird] })).triggeredActions).toHaveLength(0)
-    expectClose(valueOf(fixture({ selections:{ spirits:3 }, characterEffects:[everyThird] })).triggeredActions[0].selected, 1000 * D90)
-    expectClose(valueOf(fixture({ selections:{ spirits:7 }, characterEffects:[everyThird] })).triggeredActions[0].selected, 2000 * D90)
+    expectDamage(valueOf(fixture({ selections:{ spirits:3 }, characterEffects:[everyThird] })).triggeredActions[0].selected, 1000 * D90)
+    expectDamage(valueOf(fixture({ selections:{ spirits:7 }, characterEffects:[everyThird] })).triggeredActions[0].selected, 2000 * D90)
   })
 
   it('activates a linked effect only when every required input is active', () => {
@@ -460,8 +461,8 @@ describe('combat Step 4 reviewed effects', () => {
       activation: { kind: 'all', inputs: ['echo-hit', 'heavy-hit'] },
       operations: [{ kind: 'add-damage-bonus', value: 0.16 }]
     })
-    expectClose(valueOf(fixture({ selections: { 'echo-hit': true }, characterEffects: [linked] })).selected, 1000 * D90)
-    expectClose(valueOf(fixture({ selections: { 'echo-hit': true, 'heavy-hit': true }, characterEffects: [linked] })).selected, 1160 * D90)
+    expectDamage(valueOf(fixture({ selections: { 'echo-hit': true }, characterEffects: [linked] })).selected, 1000 * D90)
+    expectDamage(valueOf(fixture({ selections: { 'echo-hit': true, 'heavy-hit': true }, characterEffects: [linked] })).selected, 1160 * D90)
   })
 
   it('excludes a disabled always-active Sonata effect', () => {
@@ -472,9 +473,9 @@ describe('combat Step 4 reviewed effects', () => {
 
   it('supports explicit crit overrides without a second formula path', () => {
     const result = valueOf(fixture({ characterEffects: [effect('forced-crit', { operations: [{ kind: 'override-crit', mode: 'always' }] })] }))
-    expectClose(result.totals.normal, 1000 * D90)
-    expectClose(result.totals.critical, 1500 * D90)
-    expectClose(result.totals.expected, 1500 * D90)
+    expectDamage(result.totals.normal, 1000 * D90)
+    expectDamage(result.totals.critical, 1500 * D90)
+    expectDamage(result.totals.expected, 1500 * D90)
   })
 
   it('fails closed for unknown inputs, invalid stacks, and contradictory effects', () => {

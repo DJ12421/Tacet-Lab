@@ -623,6 +623,8 @@
 }
 
 .tw-rotation-layout .tw-rotation-card {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 38px;
   grid-template-columns: 76px minmax(0,1fr) auto;
   align-items: center;
   gap: 8px;

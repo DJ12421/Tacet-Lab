@@ -106,6 +106,7 @@ describe('loadout resolution', () => {
 
   it('keeps exact legal substats on their individual Echo slots', () => {
     const build = createTheorycraftBuild(ownedCharacter)
+    build.slots[0].mainStatKey = 'critDamage'
     build.substats = { mode:'slots', slots:[[{ key:'atk', value:30 },{ key:'critDamage', value:12.6 }], [], [], [], []] }
     const collections = { characters:[ownedCharacter], weapons:[], echoes:[], builds:[], equippedLoadouts:[], theorycraftBuilds:[build] }
     expect(theorycraftWarnings(build)).toEqual([])

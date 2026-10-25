@@ -46,6 +46,7 @@ export interface CharacterShowcaseModel {
   echoStatContributions: Partial<Record<StatKey, number>>
   equipmentStats: AggregatedStats
   finalStats: AggregatedStats
+  incomingHealingBonus: number
   sonatas: SonataCount[]
   statBonusSources: CharacterStatBonusSource[]
   skillLevels: [number, number, number, number, number]
@@ -165,6 +166,9 @@ export function resolveCharacterShowcaseModel(input: CharacterShowcaseInput): Ch
   const characterBaseStats = characterStatsAtLevel(catalog, input.character.level)
   const skillTreeStats = enabledSkillTreeStats(catalog, input.character.enabledSkillTreeBonusIds ?? defaultEnabledSkillTreeBonusIds(catalog))
   const weaponPassiveDescription = weapon?.catalog.passiveEffects[Math.max(0, Math.min(4, weapon.owned.rank - 1))] ?? ''
+  const equipmentOutcome = calculateShowcaseStats({ character:input.character, weapon:weapon?.owned, echoes:equippedEchoes, build }, false)
+  const finalOutcome = calculateShowcaseStats({ character:input.character, weapon:weapon?.owned, echoes:equippedEchoes, build }, true)
+  const jingranHpSteps = catalog.id === '1212' && finalOutcome.ok ? Math.floor(Math.min(finalOutcome.stats.hp, 50000) / 1000) : 0
   const sonataSources = Object.entries(sonataCounts).flatMap(([name, count]) => {
     const sonata = sonataCatalog.find((entry) => entry.name === name)
     return sonata?.effects.filter((effect) => count >= effect.pieces).map((effect) => ({
@@ -177,6 +181,10 @@ export function resolveCharacterShowcaseModel(input: CharacterShowcaseInput): Ch
   })
   const statBonusSources: CharacterStatBonusSource[] = [
     ...(skillTreeStats.lines.length || skillTreeStats.hasConditionalStats ? [{ id: 'skill-tree', label: 'Skill tree nodes', description: 'Selected stat bonus and inherent-skill nodes on this character card.', ...skillTreeStats }] : []),
+    ...(jingranHpSteps ? [
+      { id:'jingran-nether-to-light', label:'Nether to Light', description:'Always active. DEF is fixed at 0; gains 6.2% Incoming Healing Bonus and 1.5% Fusion DMG Bonus for every 1,000 Max HP, up to 310% and 75%.', lines:[{ key:'fusionDamage' as const, value:jingranHpSteps * 1.5 }], hasConditionalStats:false },
+      { id:'jingran-yang-changes', label:'Yang Changes, Yin Unites', description:'Always active. Gains 36 ATK for every 1,000 Max HP, up to 1,800.', lines:[{ key:'atk' as const, value:jingranHpSteps * 36 }], hasConditionalStats:false }
+    ] : []),
     ...catalog.sequenceIcons.filter((sequence) => input.includeSequenceBonuses !== false && sequence.sequence <= input.character.sequence).flatMap((sequence) => {
       const hasConditionalStats = hasConditionalStatLines(sequence.description)
       return hasConditionalStats ? [{
@@ -190,8 +198,6 @@ export function resolveCharacterShowcaseModel(input: CharacterShowcaseInput): Ch
     ...(weapon && weaponPassiveDescription ? [{ id: `weapon-${weapon.owned.id}`, label: weapon.catalog.passiveName || 'Weapon passive', description: weaponPassiveDescription, lines: [], hasConditionalStats: hasConditionalStatLines(weaponPassiveDescription) }] : []),
     ...sonataSources
   ]
-  const equipmentOutcome = calculateShowcaseStats({ character:input.character, weapon:weapon?.owned, echoes:equippedEchoes, build }, false)
-  const finalOutcome = calculateShowcaseStats({ character:input.character, weapon:weapon?.owned, echoes:equippedEchoes, build }, true)
   const fallbackStats = baseShowcaseStats(catalog, characterBaseStats)
 
   return {
@@ -205,6 +211,8 @@ export function resolveCharacterShowcaseModel(input: CharacterShowcaseInput): Ch
     echoStatContributions: totalLines(echoLines),
     equipmentStats: equipmentOutcome.ok ? equipmentOutcome.stats : fallbackStats,
     finalStats: finalOutcome.ok ? finalOutcome.stats : equipmentOutcome.ok ? equipmentOutcome.stats : fallbackStats,
+    // shortcut: recipient healing is display-only until combat healing calculations model their target.
+    incomingHealingBonus: jingranHpSteps * 6.2,
     sonatas,
     statBonusSources,
     skillLevels: normalizedSkillLevels(input.character),

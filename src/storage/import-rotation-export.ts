@@ -2,6 +2,7 @@ import type { AccountDocument, OwnedCharacter, RotationAction, StatKey, StatLine
 import { createLocalId } from '../domain/id'
 import { characterCatalog, echoCatalog, GAME_DATA_VERSION, sonataCatalog, weaponCatalog } from '../game-data'
 import { resolveRotationActionId } from '../game-data/combat/rotation-action-mapping'
+import { importedAbilityForAction } from '../game-data/combat/imported-actions'
 
 type RecordValue = Record<string, unknown>
 const record = (value: unknown): value is RecordValue => Boolean(value) && typeof value === 'object' && !Array.isArray(value)
@@ -96,7 +97,10 @@ export function convertRotationExport(value: RecordValue, current: AccountDocume
   const now = Date.now()
   const newCharacters: OwnedCharacter[] = []
   const builds: TheorycraftBuild[] = []
-  const notices = ['Echoes are imported as theorycraft gear; owned Echoes, weapons, and existing character progression stay unchanged. Echo rarity 5 and level 25 are assumed.']
+  const notices = [
+    'Echoes are imported as theorycraft gear; owned Echoes, weapons, and existing character progression stay unchanged. Echo rarity 5 and level 25 are assumed.',
+    'The rotation export contains cast times but not combat buffs, status state, enemy settings, or character and weapon levels. The imported team uses Tacet Lab defaults; review these before comparing damage.'
+  ]
   const members: NonNullable<Team['members']> = []
   for (const member of characters) {
     const catalog = characterCatalog.find((entry) => entry.id === member.catalogId)!
@@ -145,12 +149,13 @@ export function convertRotationExport(value: RecordValue, current: AccountDocume
     const actions: RotationAction[] = source.actions.map((action, index) => {
       const member = characters[action.slot]
       const attackId = resolveRotationActionId(member.catalogId, action.attackId, action.attackName, builds[action.slot].mainEchoName)
+      const frames = attackId ? importedAbilityForAction(member.catalogId, attackId)?.total_frames : undefined
       if (!attackId) unmatched.add(`${member.name}: ${action.attackName}`)
       return {
         id: `${id}:action:${index}`, buildId: teamMembers[action.slot].memberId,
         attackId: attackId ?? `wuwalab:${encodeURIComponent(action.attackName)}`,
         label: action.attackName, timestamp: action.timestamp,
-        duration: Math.min(0.8, source.duration - action.timestamp)
+        duration: Math.min(frames && frames > 0 ? frames / 60 : 0.8, source.duration - action.timestamp)
       }
     })
     return {

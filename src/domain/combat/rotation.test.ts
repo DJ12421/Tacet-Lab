@@ -19,7 +19,7 @@ const damageAction = (id: string, damageType: ActionMechanics['damageType'], mot
 
 const actions = [damageAction('skill', 'skill', 1), damageAction('basic', 'basic', 0.5)]
 const D90 = 1520 / 3032
-const expectClose = (actual: number, expected: number) => expect(actual).toBeCloseTo(expected, 10)
+const expectDamage = (actual: number, expected: number) => expect(actual).toBe(Math.floor(expected))
 const registry: MechanicsRegistry = {
   dataVersion: 'rotation-v1',
   characters: {
@@ -73,19 +73,22 @@ describe('combat Step 5 rotations', () => {
     expect(result.ok).toBe(true)
     if (!result.ok) return
     expect(result.value.actions.map((entry) => entry.commandId)).toEqual(['first', 'second', 'late'])
-    result.value.actions.map((entry) => entry.selected).forEach((value, index) => expectClose(value, [1000, 500, 1000][index] * D90))
-    expectClose(result.value.total, 2500 * D90)
-    expectClose(result.value.dps, 250 * D90)
-    expectClose(result.value.byActor.actor, 2500 * D90)
-    expectClose(result.value.byDamageType.skill ?? 0, 1000 * D90)
-    expectClose(result.value.byDamageType.basic ?? 0, 1500 * D90)
+    const skill = Math.floor(1000 * D90)
+    const basic = Math.floor(500 * D90)
+    const total = skill + basic * 3
+    expect(result.value.actions.map((entry) => entry.selected)).toEqual([skill, basic, basic * 2])
+    expect(result.value.total).toBe(total)
+    expect(result.value.dps).toBe(total / 10)
+    expect(result.value.byActor.actor).toBe(total)
+    expect(result.value.byDamageType.skill).toBe(skill)
+    expect(result.value.byDamageType.basic).toBe(basic * 3)
   })
 
   it('passes command inputs through reviewed effect resolution', () => {
     const result = rotate({ actions: [{ id: 'buffed', actorId: 'actor', actionId: 'skill', timestamp: 0, inputs: { buff: true } }] })
     expect(result.ok).toBe(true)
     if (!result.ok) return
-    expectClose(result.value.total, 1200 * D90)
+    expectDamage(result.value.total, 1200 * D90)
   })
 
   it('fails closed for invalid timelines and action failures', () => {

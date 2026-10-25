@@ -237,16 +237,20 @@ function activeBuffsAt(team: Team, sortedActions: RotationAction[], currentIndex
     // effect for another action in the same group.
     if (action.timestamp >= currentTimestamp) continue
     for (let activeIndex = active.length - 1; activeIndex >= 0; activeIndex -= 1) {
-      if (action.timestamp > active[activeIndex].activatedAt + active[activeIndex].effect.duration) active.splice(activeIndex, 1)
+      if (action.timestamp >= active[activeIndex].activatedAt + active[activeIndex].effect.duration) active.splice(activeIndex, 1)
     }
     for (const effect of team.buffs ?? []) {
-      if (effect.sourceBuildId === action.buildId && effect.triggerAttackId === action.attackId) active.push({ effect, activatedAt: action.timestamp })
+      if (effect.sourceBuildId === action.buildId && effect.triggerAttackId === action.attackId) {
+        const previous = active.findIndex((entry) => entry.effect.id === effect.id)
+        if (previous >= 0) active.splice(previous, 1)
+        active.push({ effect, activatedAt: action.timestamp })
+      }
     }
     for (let activeIndex = active.length - 1; activeIndex >= 0; activeIndex -= 1) {
       if (active[activeIndex].effect.target === 'next' && active[activeIndex].effect.sourceBuildId !== action.buildId) active.splice(activeIndex, 1)
     }
   }
-  return active.filter((entry) => currentTimestamp <= entry.activatedAt + entry.effect.duration).map((entry) => entry.effect)
+  return active.filter((entry) => currentTimestamp < entry.activatedAt + entry.effect.duration).map((entry) => entry.effect)
 }
 
 export function formatWorkspaceStat(key: StatKey, value: number) {
@@ -351,6 +355,7 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
   }
 
   const sortedActions = [...input.team.actions].sort((left, right) => left.timestamp - right.timestamp)
+  const actionCalculations = new Map<string, ReturnType<typeof calculateBuildModes>>()
   const actions = sortedActions.map((action, index): TeamActionModel => {
     const member = baseMembers.find((entry) => entry.build?.id === action.buildId)
     const directAttack = member?.attacks.find((entry) => entry.id === action.attackId)
@@ -371,11 +376,16 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
     let formulaResult: { normal: number; critical: number; expected: number; trace?: CalculationTrace; traces?: Record<'normal' | 'critical' | 'expected', CalculationTrace> } | undefined
     const ownedWeapon = member?.showcase?.weapon?.owned
     if (target && target.kind !== 'utility' && member?.build && member.character && ownedWeapon) {
-      const calculated = calculateBuildModes({
-        build: member.build, character: member.character, weapon: ownedWeapon,
-        echoes: member.build.echoIds.map((id) => runtimeEchoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)),
-        enemy: effectiveEnemy, scenario: input.team.scenario, buffs: activeBuffs, actionInputs: action.inputs, targetId: target.id, trace:input.includeTraces !== false, teamMembers:combatTeamMembers, disabledEffectIdsByMember:input.disabledEffectIdsByMember
-      })
+      const calculationKey = JSON.stringify([member.build.id, target.id, activeBuffs, action.inputs])
+      let calculated = actionCalculations.get(calculationKey)
+      if (!calculated) {
+        calculated = calculateBuildModes({
+          build: member.build, character: member.character, weapon: ownedWeapon,
+          echoes: member.build.echoIds.map((id) => runtimeEchoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)),
+          enemy: effectiveEnemy, scenario: input.team.scenario, buffs: activeBuffs, actionInputs: action.inputs, targetId: target.id, trace:input.includeTraces !== false, teamMembers:combatTeamMembers, disabledEffectIdsByMember:input.disabledEffectIdsByMember
+        })
+        actionCalculations.set(calculationKey, calculated)
+      }
       warnings.push(...calculated.warnings)
       const mode = input.team.scenario?.resultMode ?? 'expected'
       const fallback: CalculationTrace = { stage:'unavailable', value:0, children:[] }

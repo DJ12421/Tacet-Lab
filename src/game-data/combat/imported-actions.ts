@@ -57,8 +57,24 @@ const damageTypes: Record<string, DamageType> = {
 const scalingStats: Record<string, ScalingStat> = { attack:'atk', hp:'hp', defense:'def' }
 const elements = new Set<Element>(['spectro','fusion','glacio','electro','aero','havoc','physical'])
 
-function formulaFor(ability: ImportedAbility, motionValues?: number[]): ActionFormula {
+function castHits(characterId: string, ability: ImportedAbility) {
+  // shortcut: Split only verified bundled triggers; review new mixed-hit imports before extending this list.
   const hits = ability.hits
+  const mornye = characterId === '1209' && [417, 430].includes(ability.id)
+  const rover = ['1309', '1310'].includes(characterId) && ability.id >= 999851 && ability.id <= 999864
+  if (!mornye && !rover) return hits
+  const first = hits[0]
+  if (!first) return hits
+  const primary = hits.filter((hit) => hit.damage_type === first.damage_type && hit.attribute === first.attribute)
+  const triggered = hits.filter((hit) => hit.damage_type !== first.damage_type || hit.attribute !== first.attribute)
+  if (mornye
+    && triggered.length === 5 && triggered.every((hit) => hit.damage_type === 'resonance_liberation' && hit.attribute === 'fusion' && hit.motion_value === 3977)) return primary
+  if (rover
+    && triggered.length === primary.length && triggered.every((hit) => hit.damage_type === 'resonance_skill' && hit.attribute === 'electro' && hit.motion_value === 3977)) return primary
+  return hits
+}
+
+function formulaFor(hits: ImportedHit[], motionValues?: number[]): ActionFormula {
   const scaling = new Set(hits.map((hit) => hit.motion_value_scaling))
   if (hits.every((hit) => hit.damage_type === 'tune_break')) return { kind:'unsupported', family:'Imported Tune Break variant needs a dedicated formula review' }
   if (scaling.size === 1 && scaling.has('fixed')) return { kind:'unsupported', family:'Imported fixed damage needs manual formula review' }
@@ -69,12 +85,11 @@ function formulaFor(ability: ImportedAbility, motionValues?: number[]): ActionFo
   return { kind:'unsupported', family:'Imported hit scaling or mixed damage types need manual review' }
 }
 
-function catalogMotionValues(characterId: string, ability: ImportedAbility) {
-  const hits = ability.hits
+function catalogMotionValues(characterId: string, ability: ImportedAbility, hits: ImportedHit[]) {
   const stat = scalingStats[hits[0]?.motion_value_scaling]
   if (!stat || hits.some((hit) => hit.motion_value_scaling !== hits[0].motion_value_scaling)) return undefined
   const attacks = catalogByCharacter.get(characterId)?.attacks.filter((attack) =>
-    !isFixedSkillValueName(attack.name) && attack.scalesWith === stat && attack.hitMultipliers.every((values) => values.length >= 10)) ?? []
+    !isFixedSkillValueName(attack.name) && (attack.scalesWith === stat || characterId === '1209' && ability.id === 430 && attack.id === '1209-7-2') && attack.hitMultipliers.every((values) => values.length >= 10)) ?? []
   const candidates = attacks.flatMap((attack) => {
     const values = attack.hitMultipliers.map((levels) => Math.round(levels[9] * 10000))
     const exact = values.length === hits.length && values.every((value, index) => value === hits[index].motion_value)
@@ -115,18 +130,19 @@ function groupFor(ability: ImportedAbility) {
 export const importedAdditionalActions: Readonly<Record<string, Readonly<Record<string, CharacterActionMechanics>>>> = Object.fromEntries(
   Object.entries(characters).map(([characterId, character]) => [characterId, Object.fromEntries(
     character.abilities.filter((ability) => ability.match === 'additional' && (ability.hits.length || ability.genre === 'outro') && ability.tacetActionId).map((ability) => {
-      const hit = ability.hits[0]
+      const hits = castHits(characterId, ability)
+      const hit = hits[0]
       const element = hit && elements.has(hit.attribute as Element) ? hit.attribute as Element : 'none'
       const damageType = hit ? damageTypes[hit.damage_type] ?? 'status' : 'outro'
-      const formula: ActionFormula = hit ? formulaFor(ability) : { kind:'unsupported', family:'Non-damaging Outro cast' }
+      const formula: ActionFormula = hit ? formulaFor(hits) : { kind:'unsupported', family:'Non-damaging Outro cast' }
       const levelIndependent = ability.genre === 'outro' || /^Outro:/i.test(ability.name) || ability.genre === 'tunebreak'
-      const catalogValues = hit && !levelIndependent ? catalogMotionValues(characterId, ability) : undefined
+      const catalogValues = hit && !levelIndependent ? catalogMotionValues(characterId, ability, hits) : undefined
       // shortcut: Unmatched imported variants have only a level 10 value; keep other levels unavailable until their curves are reviewed.
       const unavailable: ActionFormula = { kind:'unsupported', family:'Imported provides this damage value at skill level 10 only' }
       const formulas = levelIndependent ? { 1:formula } : Object.fromEntries(Array.from({ length:20 }, (_, index) => {
         const values = catalogValues?.indexes.map((hitIndex) => catalogValues.attack.hitMultipliers[hitIndex][index])
         const mapped = values?.every((value) => value !== undefined)
-          ? formulaFor(ability, values) : undefined
+          ? formulaFor(hits, values) : undefined
         return [index + 1, mapped ?? (index === 9 ? formula : unavailable)]
       }))
       const action: CharacterActionMechanics = {

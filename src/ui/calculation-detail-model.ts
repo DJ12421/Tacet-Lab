@@ -20,6 +20,10 @@ function sourceRow(label: string, lines: StatLine[], keys: StatKey[]): Calculati
 
 export function showcaseStatDetail(model: CharacterShowcaseModel, key: StatKey, label = statLabels[key]): CalculationDetail {
   const final = model.finalStats[key as keyof AggregatedStats]
+  if (key === 'def' && model.catalog.id === '1212') return {
+    title: label, value: '0', formula: 'Fixed at 0', equationOperator: '+',
+    rows: [{ label: 'Nether to Light', value: 'DEF fixed at 0' }]
+  }
   const percentKey: StatKey | undefined = key === 'hp' ? 'hpPercent' : key === 'atk' ? 'atkPercent' : key === 'def' ? 'defPercent' : undefined
   const relevant = percentKey ? [key, percentKey] : [key]
   const rows: CalculationDetailRow[] = []

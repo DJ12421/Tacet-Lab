@@ -302,6 +302,11 @@ const operationLabel = (operation: EffectOperation, effect: EffectMechanics) => 
   return `${scope ? `${scope} ` : ''}DMG Bonus`
 }
 
+const jingranPassiveInputs = new Set([
+  'character:1212:jingran-hp-thousands-fusion',
+  'character:1212:jingran-base-yinyang-hp-thousands'
+])
+
 const effectResults = (effect: EffectMechanics): CombatEffectResult[] => [
   ...effect.operations.map((operation): CombatEffectResult => operation.kind === 'override-crit'
   ? { label:operationLabel(operation, effect), value:operation.mode === 'always' ? 'Always' : 'Never', percent:false }
@@ -336,7 +341,7 @@ export function combatEffectDefinitions(characterId: string, weaponId: string, s
   ]
   return effects.map(({ effect, sourceKind, sourceLabel, sourceBadge }) => {
     const common = { label:effect.name ?? effect.id, description:effect.description }
-    const inputs: CombatInputDefinition[] = effect.activation.kind === 'always' ? []
+    const inputs: CombatInputDefinition[] = effect.activation.kind === 'always' || (effect.activation.kind === 'value' && jingranPassiveInputs.has(effect.activation.input)) ? []
       : effect.activation.kind === 'all' ? effect.activation.inputs.map((id) => ({ id, ...common, kind:'boolean' }))
         : effect.activation.kind === 'conditional-value' ? [{ id:effect.activation.toggleInput, ...common, kind:'boolean' }]
           : effect.activation.kind === 'toggle' ? [{ id:effect.activation.input, ...common, kind:'boolean' }]
@@ -347,7 +352,7 @@ export function combatEffectDefinitions(characterId: string, weaponId: string, s
       description:effect.description,
       sourceKind,
       sourceLabel,
-      badge:effect.activation.kind === 'always' ? sourceBadge : sourceBadge === 'Character' || sourceBadge === 'Weapon' || sourceBadge === 'Echo' ? 'Conditional' : sourceBadge,
+      badge:effect.activation.kind === 'always' || (effect.activation.kind === 'value' && jingranPassiveInputs.has(effect.activation.input)) ? sourceBadge : sourceBadge === 'Character' || sourceBadge === 'Weapon' || sourceBadge === 'Echo' ? 'Conditional' : sourceBadge,
       minimumSequence:effect.minimumSequence,
       activationKind:effect.activation.kind,
       inputs,
@@ -371,7 +376,7 @@ function combatSetup(input: BuildStatsInput, member: CombatMember): CombatSetup 
     input.scenario,
     entry.build.id === input.build.id ? input.actionInputs : undefined
   )).filter(([id]) => allowedInputs.has(id)).map(([id, value]) => [`${entry.build.id}:${id}`, value])))
-  return {
+  const setup: CombatSetup = {
     dataVersion:mechanicsRegistry.dataVersion,
     members,
     disabledEffectIdsByMember:input.disabledEffectIdsByMember,
@@ -395,6 +400,14 @@ function combatSetup(input: BuildStatsInput, member: CombatMember): CombatSetup 
       entry.build.id === input.build.id ? input.bonusStatLines : []
     )]))
   }
+  const resolvedSelections = { ...setup.selections }
+  for (const jingran of members.filter((entry) => entry.character.id === '1212')) {
+    const preview = calculateMemberStats(runtimeRegistry, setup, jingran.memberId)
+    if (!preview.ok) continue
+    const steps = Math.floor(Math.min(preview.value.hp, 50000) / 1000)
+    for (const key of jingranPassiveInputs) resolvedSelections[`${jingran.memberId}:${key}`] = steps
+  }
+  return { ...setup, selections: resolvedSelections }
 }
 
 export function calculateBuildStats(input: BuildStatsInput, includeReviewedEffects = true) {

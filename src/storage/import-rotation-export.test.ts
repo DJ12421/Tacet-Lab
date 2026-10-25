@@ -42,4 +42,10 @@ describe('rotation export import', () => {
     const edited = { ...current, teams: [{ ...current.teams[0], name: 'My edited team' }] }
     expect(convertRotationExport(source, edited).document.teams[0].id).not.toBe(first.teams[0].id)
   })
+
+  it('uses reviewed animation length for imported casts longer than the fallback clip', () => {
+    const longer = { ...source, actions: [{ slot: 0, attackName: 'Basic: Zephyr 3', attackId: '1110-1-2', timestamp: 0 }] }
+    const { document } = convertRotationExport(longer, empty)
+    expect(document.teams[0].actions[0].duration).toBe(51 / 60)
+  })
 })

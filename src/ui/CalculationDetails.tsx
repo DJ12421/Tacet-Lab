@@ -80,19 +80,22 @@ function CalculationDialog({ detail, onClose }: { detail: CalculationDetail; onC
   </div>, document.body)
 }
 
-export function CalculatedValue({ children, detail, className = '', ariaLabel, presentation = 'dialog', tooltipValues }: { children: ReactNode; detail: CalculationDetail; className?: string; ariaLabel?: string; presentation?: 'dialog' | 'tooltip'; tooltipValues?: Array<string | number> }) {
+export function CalculatedValue({ children, detail, lazyDetail, className = '', ariaLabel, presentation = 'dialog', tooltipValues }: { children: ReactNode; detail: CalculationDetail; lazyDetail?: () => CalculationDetail; className?: string; ariaLabel?: string; presentation?: 'dialog' | 'tooltip'; tooltipValues?: Array<string | number> }) {
   const [open, setOpen] = useState(false)
+  const [openedDetail, setOpenedDetail] = useState<CalculationDetail | null>(null)
+  const show = () => { setOpenedDetail(lazyDetail ? lazyDetail() : null); setOpen(true) }
+  const close = () => { setOpen(false); setOpenedDetail(null) }
   useEffect(() => {
     if (!open) return
-    const close = (event: KeyboardEvent) => { if (event.key === 'Escape') setOpen(false) }
-    window.addEventListener('keydown', close)
-    return () => window.removeEventListener('keydown', close)
+    const onKeyDown = (event: KeyboardEvent) => { if (event.key === 'Escape') close() }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
   }, [open])
   if (presentation === 'tooltip') {
     const rows = compactDetailRows(detail.rows)
     return <>
       <span className="calculation-tooltip-anchor">
-        <button type="button" className={`calculated-value ${className}`} onClick={() => setOpen(true)} aria-label={ariaLabel ?? `Show calculation for ${detail.title}`}>{children}</button>
+        <button type="button" className={`calculated-value ${className}`} onClick={show} aria-label={ariaLabel ?? `Show calculation for ${detail.title}`}>{children}</button>
         <span className="calculation-tooltip" role="tooltip">
           {!tooltipValues?.length && <strong>{detail.title}</strong>}
           <span className={`calculation-tooltip-expression ${tooltipValues?.length ? 'damage-split' : ''}`}>{tooltipValues?.length
@@ -102,11 +105,11 @@ export function CalculatedValue({ children, detail, className = '', ariaLabel, p
               : <span>{detail.formula ?? 'Calculated formula'}: {detail.value}</span>}</span>
         </span>
       </span>
-      {open && <CalculationDialog detail={detail} onClose={() => setOpen(false)}/>}
+      {open && <CalculationDialog detail={openedDetail ?? detail} onClose={close}/>}
     </>
   }
   return <>
-    <button type="button" className={`calculated-value ${className}`} onClick={() => setOpen(true)} aria-label={ariaLabel ?? `Show calculation for ${detail.title}`}>{children}</button>
-    {open && <CalculationDialog detail={detail} onClose={() => setOpen(false)}/>}
+    <button type="button" className={`calculated-value ${className}`} onClick={show} aria-label={ariaLabel ?? `Show calculation for ${detail.title}`}>{children}</button>
+    {open && <CalculationDialog detail={openedDetail ?? detail} onClose={close}/>}
   </>
 }

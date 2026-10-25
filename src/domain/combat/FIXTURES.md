@@ -18,7 +18,7 @@ Unless a case overrides them:
   reduction: `0`
 - Each damage case uses one hit and cannot crit unless stated otherwise
 - Percentages are shown as decimal ratios
-- Damage results preserve calculation precision; display formatting rounds totals up
+- Damage factors retain precision; each completed hit is floored before totals are summed
 
 The shared defence multiplier is:
 
@@ -31,8 +31,8 @@ D90 = 1520 / (1520 + 1512)
     = 0.5013192612137203
 ```
 
-Decimals shown below are explanatory approximations. Tests compare the
-full-precision expression rather than a pre-rounded display value.
+Decimals shown below are explanatory intermediate values. Tests compare the
+floored damage outcomes computed from those expressions.
 
 ## F01 — ATK aggregation
 
@@ -179,7 +179,7 @@ result = 150.3957783641161...
 
 Expected normal/critical/expected: `150.3957783641161...` for each mode.
 
-## F09 — Multi-hit precision
+## F09 — Multi-hit flooring
 
 Rules: `DMG-004`, `DMG-005`.
 
@@ -195,15 +195,14 @@ hit 2 = 166.93931398416885...
 hit 3 = 1000 * 0.334 * D90
       = 167.44063324538257...
 
-action total = hit 1 + hit 2 + hit 3
-             = 501.31926121372027...
+action total = floor(hit 1) + floor(hit 2) + floor(hit 3)
+             = 166 + 166 + 167 = 499
 ```
 
-The hits stay separate for tracing and effect resolution, while their
-full-precision sum equals `1000 * 1.0 * D90`.
+The hits stay separate for tracing and effect resolution. Flooring each hit
+produces a different total from flooring the combined motion value.
 
-Expected hits: the three full-precision values above. Expected total:
-`501.31926121372027...`.
+Expected hits: `[166, 166, 167]`. Expected total: `499`.
 
 ## F10 — Normal, critical, and expected damage
 
@@ -228,7 +227,7 @@ expected = 501.31926121372027...
          = 563.9841688654353...
 ```
 
-Expected normal/critical/expected: the full-precision values above.
+Expected normal/critical/expected after flooring: `501 / 751 / 563`.
 
 ## F11 — Additive damage-bonus bucket
 
@@ -330,10 +329,9 @@ Reduction only:
 
 ```text
 reduction = 0.20
-enemy term = 1512 * 0.80 = 1209.6
-multiplier = 1520 / (1520 + 1209.6)
-           = 0.5568581477139507...
-1000 base damage result = 556.8581477139507...
+enemy term = floor(1512 * 0.80) = 1209
+multiplier = 1520 / (1520 + 1209)
+1000 base damage result = floor(1000 * multiplier) = 556
 ```
 
 Ignore only:
@@ -343,19 +341,18 @@ ignore = 0.30
 enemy term = 1512 * 0.70 = 1058.4
 multiplier = 1520 / (1520 + 1058.4)
            = 0.5895128762022961...
-1000 base damage result = 589.5128762022961...
+1000 base damage result = floor(1000 * multiplier) = 589
 ```
 
 Both:
 
 ```text
-enemy term = 1512 * 0.80 * 0.70 = 846.72
-multiplier = 1520 / (1520 + 846.72)
-           = 0.6422390481341265...
-1000 base damage result = 642.2390481341265...
+enemy term = floor(1512 * 0.80) * 0.70 = 846.3
+multiplier = 1520 / (1520 + 846.3)
+1000 base damage result = floor(1000 * multiplier) = 642
 ```
 
-Expected reduction/ignore/both: the three full-precision values above.
+Expected reduction/ignore/both: `556 / 589 / 642`.
 
 ## F17 — Negative, ordinary, and high resistance
 
@@ -377,7 +374,7 @@ base resistance 0.80:
   damage = 1000 * D90 * 0.20 = 100.26385224274406...
 ```
 
-Expected negative/ordinary/high results: the three full-precision values above.
+Expected negative/ordinary/high results after flooring: `551 / 451 / 100`.
 
 ## F18 — Resistance reduction and ignore
 
@@ -406,7 +403,7 @@ multiplier = 1 - (-0.30) / 2 = 1.15
 damage = 1000 * D90 * 1.15 = 576.5171503957783...
 ```
 
-Expected crossed/already-negative results: the two full-precision values above.
+Expected crossed/already-negative results after flooring: `526 / 576`.
 
 ## F19 — Enemy damage reduction fails closed
 
@@ -516,10 +513,10 @@ No partial damage result may accompany the failure.
 | `F14` | `unsupported-mechanic` failure and no value |
 | `F15` | equal/unequal `501 / 488` |
 | `F16` | reduction/ignore/both `556 / 589 / 642` |
-| `F17` | negative/ordinary/high `601 / 451 / 100` |
-| `F18` | crossed/already-negative `526 / 601` |
+| `F17` | negative/ordinary/high `551 / 451 / 100` |
+| `F18` | crossed/already-negative `526 / 576` |
 | `F19` | `unsupported-mechanic` failure and no value |
-| `F20` | `1234 / 1234 / 1234` |
+| `F20` | `1234.75 / 1234.75 / 1234.75` |
 | `F21` | healing `3000` |
 | `F22` | shield `1300` |
 | `F23` | `unsupported-mechanic` failure and no value |

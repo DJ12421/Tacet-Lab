@@ -515,6 +515,8 @@ export function CharacterShowcase({ character, characters, catalog, weapons, ech
   const innateTuneBreakBoost = baseTuneBreakBoost(catalog)
   const statDetail = (key: BuildCardStatKey, label: string): CalculationDetail => key === 'tuneBreakBoost'
     ? { title: label, value: innateTuneBreakBoost.toFixed(1), formula: 'Character Tune Break baseline', rows: [{ label: 'Base Tune Break Boost', value: innateTuneBreakBoost.toFixed(1) }] }
+    : key === 'incomingHealingBonus'
+      ? { title: label, value: `${model.incomingHealingBonus.toFixed(1)}%`, formula: '6.2% per 1,000 Max HP, up to 310%', rows: [{ label: 'Nether to Light', value: `${model.incomingHealingBonus.toFixed(1)}%` }] }
     : showcaseStatDetail(model, key, label)
   const exportCharacterCard = async () => {
     const frame = exportRef.current

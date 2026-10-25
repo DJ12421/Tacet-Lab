@@ -36,6 +36,7 @@ const ELEMENT_STATS: Partial<Record<Element, Stat>> = {
   spectro:'spectroDamage', fusion:'fusionDamage', glacio:'glacioDamage', electro:'electroDamage',
   aero:'aeroDamage', havoc:'havocDamage', physical:'physicalDamage'
 }
+const ATTRIBUTE_DAMAGE_STATS: Stat[] = ['spectroDamage', 'fusionDamage', 'glacioDamage', 'electroDamage', 'aeroDamage', 'havocDamage']
 
 const normalizeDamageBonusStats = (operation: EffectOperation): EffectOperation[] => {
   if (operation.kind !== 'add-damage-bonus' || !operation.filter || operation.filter.actionIds?.length || operation.filter.tags?.length) return [operation]
@@ -73,11 +74,14 @@ const normalizeReviewedEffect = (effect: EffectMechanics): EffectMechanics => {
       return [{ ...operation, stacking:'per-stack' }]
     }
     if (operation.kind !== 'add-damage-bonus' || operation.filter) return [operation]
+    if (/^Grants \d+(?:\.\d+)?% All-Attribute DMG Bonus\.$/i.test(description)) return ATTRIBUTE_DAMAGE_STATS.map((stat) => ({ ...operation, kind:'add-flat-stat', stat }))
     if (/DMG Reduction/i.test(description) && reductions.has(operation.value)) return []
     if (/Attribute DMG Bonus for all Resonators/i.test(description) && operation.recipient !== 'team' && teamBonuses.has(operation.value)) return []
     if (/\bBasic(?: Attack)? DMG Bonus\b/i.test(description)) return [{ ...operation, filter:{ damageTypes:['basic'] } }]
     return [operation]
   }).flatMap(normalizeDamageBonusStats)
+  // The reviewed Myriad Snare effect omitted the Heavy bonus stated in its description.
+  if (reviewedEffect.sourceId === 'echo:6000217:echo:6000217:effect:0') operations.push({ kind:'add-flat-stat', stat:'heavyDamage', value:0.12 })
   const activation = tuneBreakScaledDamage ? {
     kind:'conditional-value' as const,
     toggleInput:reviewedEffect.activation.kind === 'always' ? reviewedEffect.id : reviewedEffect.activation.kind === 'all' ? reviewedEffect.id : reviewedEffect.activation.kind === 'conditional-value' ? reviewedEffect.activation.toggleInput : reviewedEffect.activation.input,
@@ -91,7 +95,7 @@ const normalizeReviewedEffect = (effect: EffectMechanics): EffectMechanics => {
 
 const normalizeReviewedEffects = (effects: readonly EffectMechanics[] | undefined) => effects?.map(normalizeReviewedEffect)
 const isSkillTreeStatNodeEffect = (effect: EffectMechanics) => /:\d+:(?:9|10|11|12|13|14|15|16):effect:0$/.test(effect.id)
-  && /^(?:ATK|HP|DEF|Crit\.(?: Rate| DMG)|Energy Regen|Healing Bonus|(?:Spectro|Fusion|Glacio|Electro|Aero|Havoc) DMG Bonus)\+$/.test(effect.name ?? '')
+  && /^(?:ATK|HP|DEF|Crit\.(?: Rate| DMG)|Energy Regen|Healing Bonus|(?:Spectro|Fusion|Glacio|Electro|Aero|Havoc) DMG Bonus)(?:\+| Up)$/.test(effect.name ?? '')
 
 export const mechanicsRegistry: MechanicsRegistry = {
   dataVersion:reviewedMechanicsCatalog.dataVersion,

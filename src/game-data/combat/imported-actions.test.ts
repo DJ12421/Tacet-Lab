@@ -1,6 +1,9 @@
 import { expect, it } from 'vitest'
+import type { ActionFormula } from '../../domain/combat'
 import { generatedCharacterCatalog } from '../characters.generated'
 import { importedAdditionalActions } from './imported-actions'
+
+const hitValues = (formula: ActionFormula) => formula.kind === 'damage' ? formula.hits.map((hit) => Math.round(hit * 10000)) : []
 
 it('uses catalog hit values at the selected skill level for matched imported variants', () => {
   const catalog = generatedCharacterCatalog.find((character) => character.id === '1505')!
@@ -42,4 +45,32 @@ it('preserves repeated and partial hit counts while using catalog levels', () =>
   expect(importedAdditionalActions['1105']['1105:imported:576'].formulas[1]).toMatchObject({
     kind:'damage', hits:midair.hitMultipliers.slice(0, 5).map((hit) => hit[0])
   })
+})
+
+it('keeps Mornye cast damage separate from Syntony Field damage', () => {
+  const actions = importedAdditionalActions['1209']
+  expect(actions['1209:imported:417']).toMatchObject({ damageType:'intro', element:'fusion', formulas:{
+    1:{ kind:'damage' }, 10:{ kind:'damage' }
+  } })
+  expect(hitValues(actions['1209:imported:417'].formulas[1])).toEqual([10200])
+  expect(hitValues(actions['1209:imported:417'].formulas[10])).toEqual([20279])
+  expect(actions['1209:imported:430']).toMatchObject({ damageType:'heavy', element:'fusion', formulas:{
+    1:{ kind:'damage' }, 10:{ kind:'damage' }
+  } })
+  expect(hitValues(actions['1209:imported:430'].formulas[1])).toEqual([2220, 4981])
+  expect(hitValues(actions['1209:imported:430'].formulas[10])).toEqual([4414, 9902])
+})
+
+it('keeps Electro Rover Thrum damage separate from Thunder Bane', () => {
+  for (const characterId of ['1309', '1310']) {
+    const actions = importedAdditionalActions[characterId]
+    for (const id of [999851, 999852, 999853, 999854, 999855, 999856, 999857, 999858, 999859, 999860, 999861, 999862, 999863, 999864]) {
+      expect(actions[`${characterId}:imported:${id}`].formulas[1].kind).toBe('damage')
+      expect(actions[`${characterId}:imported:${id}`].formulas[10].kind).toBe('damage')
+    }
+    expect(actions[`${characterId}:imported:999853`].element).toBe('spectro')
+    expect(hitValues(actions[`${characterId}:imported:999853`].formulas[10])).toEqual([9912])
+    expect(actions[`${characterId}:imported:999864`].element).toBe('aero')
+    expect(hitValues(actions[`${characterId}:imported:999864`].formulas[10])).toEqual([4707, 4707, 4707, 4707, 4707, 23533])
+  }
 })

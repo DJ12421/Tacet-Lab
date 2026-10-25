@@ -191,7 +191,7 @@ function debugCoordinateRange(section: DebugSectionKey, property: keyof DebugSec
   return { minimum: isArt ? CARD_HEIGHT / 100 : 30, maximum: canvasHeight }
 }
 
-export type BuildCardStatKey = StatKey | 'tuneBreakBoost'
+export type BuildCardStatKey = StatKey | 'tuneBreakBoost' | 'incomingHealingBonus'
 
 export interface BuildCardStatRow {
   key: BuildCardStatKey
@@ -205,7 +205,7 @@ const PRIORITY_DISPLAY_KEYS: Partial<Record<StatKey, BuildCardStatKey>> = {
   spectroDamage: 'spectroDamage', fusionDamage: 'fusionDamage', glacioDamage: 'glacioDamage', electroDamage: 'electroDamage', aeroDamage: 'aeroDamage', havocDamage: 'havocDamage'
 }
 
-const contributingStatKeys = (key: BuildCardStatKey): StatKey[] => key === 'hp' ? ['hp', 'hpPercent'] : key === 'atk' ? ['atk', 'atkPercent'] : key === 'def' ? ['def', 'defPercent'] : key === 'tuneBreakBoost' ? [] : [key]
+const contributingStatKeys = (key: BuildCardStatKey): StatKey[] => key === 'hp' ? ['hp', 'hpPercent'] : key === 'atk' ? ['atk', 'atkPercent'] : key === 'def' ? ['def', 'defPercent'] : key === 'tuneBreakBoost' || key === 'incomingHealingBonus' ? [] : [key]
 const isUnweightedStat = (key: BuildCardStatKey, value: number, profile: CharacterSubstatProfile) => key !== 'energyRegen' && !(value !== 0 && /^(spectro|fusion|glacio|electro|aero|havoc)Damage$/.test(key)) && !contributingStatKeys(key).some((source) => profile.weights[source])
 const contributesToStat = (source: StatKey, target: BuildCardStatKey | null) => Boolean(target && contributingStatKeys(target).includes(source))
 const displayedStatKey = (source: StatKey): BuildCardStatKey => source === 'hpPercent' ? 'hp' : source === 'atkPercent' ? 'atk' : source === 'defPercent' ? 'def' : source
@@ -215,7 +215,8 @@ export function prioritizedBuildCardStats(catalog: CharacterCatalogEntry, profil
     { key: 'hp', label: 'HP' },
     { key: 'atk', label: 'ATK' },
     { key: 'def', label: 'DEF' },
-    { key: 'energyRegen', label: 'Energy Regen' }
+    { key: 'energyRegen', label: 'Energy Regen' },
+    ...(catalog.id === '1212' ? [{ key: 'incomingHealingBonus' as const, label: 'Incoming Healing Bonus' }] : [])
   ]
   const weights = new Map<BuildCardStatKey, number>()
   for (const [sourceKey, weight] of Object.entries(profile.weights) as Array<[StatKey, number]>) {
@@ -245,7 +246,7 @@ export function prioritizedBuildCardStats(catalog: CharacterCatalogEntry, profil
 
 function formatStat(key: StatKey, value: number) {
   return key === 'hp' || key === 'atk' || key === 'def'
-    ? Math.floor(value + 1e-9).toLocaleString('en-US')
+    ? Math.max(0, Math.ceil(value - 1e-9)).toLocaleString('en-US')
     : `${value.toFixed(1)}%`
 }
 
@@ -257,7 +258,7 @@ function StatIcon({ stat }: { stat: BuildCardStatKey }) {
   const iconNames: Partial<Record<BuildCardStatKey, string>> = {
     hp: 'Icon_Attribute_Health.webp', atk: 'Icon_Attribute_Attack.webp', def: 'Icon_Attribute_Defense.webp',
     critRate: 'Icon_Attribute_Crit_Rate.webp', critDamage: 'Icon_Attribute_Crit_DMG.webp', energyRegen: 'Icon_Attribute_Energy_Regen.webp',
-    healingBonus: 'Icon_Attribute_Healing.webp', basicDamage: 'Icon_Basic_Attack_DMG_Amplification.webp',
+    healingBonus: 'Icon_Attribute_Healing.webp', incomingHealingBonus: 'Icon_Attribute_Healing.webp', basicDamage: 'Icon_Basic_Attack_DMG_Amplification.webp',
     heavyDamage: 'Icon_Heavy_Attack_DMG_Amplification.webp', skillDamage: 'Icon_Resonance_Skill_DMG_Amplification.webp',
     liberationDamage: 'Icon_Resonance_Liberation_DMG_Amplification.webp', glacioDamage: 'Icon_Glacio_DMG_Bonus.webp',
     fusionDamage: 'Icon_Fusion_DMG_Bonus.webp', electroDamage: 'Icon_Electro_DMG_Bonus.webp', aeroDamage: 'Icon_Aero_DMG_Bonus.webp',
@@ -767,7 +768,7 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
           <header><strong>Resonator statistics</strong><div className="cbc-stat-actions"><button type="button" title={editable ? 'Edit character stat priorities' : 'Stat priorities are read-only for this loadout'} disabled={!editable} onClick={(event) => { event.stopPropagation(); if (editable) onEditPriorities() }}><Icon name="settings"/></button></div></header>
           <div className="cbc-stat-list">{statRows.map(({ key, label }) => {
             const detail = statDetail(key, label)
-            const value = key === 'tuneBreakBoost' ? Number(detail.value) : model.finalStats[key as keyof typeof model.finalStats] ?? 0
+            const value = key === 'tuneBreakBoost' ? Number(detail.value) : key === 'incomingHealingBonus' ? model.incomingHealingBonus : model.finalStats[key as keyof typeof model.finalStats] ?? 0
             return <div className={`cbc-stat-row${highlightedStat === key ? ' is-active' : ''}`} key={key} tabIndex={0} onMouseEnter={() => setHighlightedStat(key)} onMouseLeave={() => setHighlightedStat(null)} onFocus={() => setHighlightedStat(key)} onBlur={() => setHighlightedStat(null)}><StatIcon stat={key}/><span>{label}</span><b>{key === 'tuneBreakBoost' ? Number(value).toFixed(1) : formatStat(key as StatKey, Number(value))}</b></div>
           })}</div>
           <div className="cbc-build-score" onClick={(event) => event.stopPropagation()} onKeyDown={(event) => event.stopPropagation()}><EchoWaveform/><span>Build score</span><div><strong>{buildScore.grade ?? '—'}</strong><b title={buildScore.energyRequirementMet ? undefined : `Below ${energyRegenMinimum}% Energy Regen`}>{buildScore.label}</b><button type="button" className="cbc-build-score-info" aria-label="How Substat Score works" title="How Substat Score works" onClick={onShowScoreInfo}>?</button></div></div>

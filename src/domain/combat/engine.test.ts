@@ -17,6 +17,7 @@ const baseStats: BaseStats = { hp: 1, atk: 1000, def: 1, critRate: 0, critDamage
 const baseEnemy: EnemyInput = { level: 90, resistance: {}, damageReduction: 0 }
 const D90 = 1520 / 3032
 const expectClose = (actual: number, expected: number) => expect(actual).toBeCloseTo(expected, 10)
+const expectDamage = (actual: number, expected: number) => expect(actual).toBe(Math.floor(expected))
 
 const damageAction = (
   id: string,
@@ -136,7 +137,7 @@ describe('combat Step 3 public interface fixtures', () => {
     }
     const result = valueOf(context.calculate('echo:skill'))
     expect(result.damageType).toBe('echo')
-    expectClose(result.selected, 250 * D90)
+    expectDamage(result.selected, 250 * D90)
   })
 
   it('rejects a main Echo rotation that reuses the catalog source cooldown too early', () => {
@@ -215,28 +216,32 @@ describe('combat Step 3 public interface fixtures', () => {
       damageAction('F08', { kind: 'damage', scaling: { energyRegen: 2 }, hits: [1], canCrit: false })
     ]
     const run = fixture({ stats: { atk: 1000, hp: 20000, def: 1500, energyRegen: 1.5 }, actions }).calculate
-    expectClose(valueOf(run('F04')).selected, 1200 * D90)
-    expectClose(valueOf(run('F05')).selected, 2000 * D90)
-    expectClose(valueOf(run('F06')).selected, 1200 * D90)
+    expectDamage(valueOf(run('F04')).selected, 1200 * D90)
+    expectDamage(valueOf(run('F05')).selected, 2000 * D90)
+    expectDamage(valueOf(run('F06')).selected, 1200 * D90)
 
     const hybrid = fixture({ stats: { atk: 1000, hp: 10000, def: 1000 }, actions }).calculate
-    expectClose(valueOf(hybrid('F07')).selected, 800 * D90)
-    expectClose(valueOf(run('F08')).selected, 300 * D90)
+    expectDamage(valueOf(hybrid('F07')).selected, 800 * D90)
+    expectDamage(valueOf(run('F08')).selected, 300 * D90)
+
+    const fractionalAtk = fixture({ stats: { atk: 500.9 }, weaponAtk: 300.9,
+      echoes: [{ stat: 'atk', mode: 'percent', value: 0.30 }, { stat: 'atk', mode: 'flat', value: 75.25 }], actions }).calculate
+    expectDamage(valueOf(fractionalAtk('F04')).selected, Math.floor(1115.25) * 1.2 * D90)
   })
 
-  it('F09 preserves real-hit precision before summing the action', () => {
+  it('F09 floors each hit before summing the action', () => {
     const action = damageAction('F09', { kind: 'damage', scaling: { atk: 1 }, hits: [0.333, 0.333, 0.334], canCrit: false })
     const result = valueOf(fixture({ actions: [action] }).calculate('F09'))
-    result.hits.forEach((hit, index) => expectClose(hit, 1000 * [0.333, 0.333, 0.334][index] * D90))
-    expectClose(result.selected, 1000 * D90)
+    result.hits.forEach((hit, index) => expectDamage(hit, 1000 * [0.333, 0.333, 0.334][index] * D90))
+    expect(result.selected).toBe([0.333, 0.333, 0.334].reduce((total, mv) => total + Math.floor(1000 * mv * D90), 0))
   })
 
-  it('F10 calculates normal, critical, and expected values from unrounded pre-crit damage', () => {
+  it('F10 floors normal, critical, and expected values after applying crit', () => {
     const action = damageAction('F10', { kind: 'damage', scaling: { atk: 1 }, hits: [1], canCrit: true })
     const result = valueOf(fixture({ stats: { critRate: 0.25, critDamage: 1.5 }, actions: [action] }).calculate('F10'))
-    expectClose(result.totals.normal, 1000 * D90)
-    expectClose(result.totals.critical, 1500 * D90)
-    expectClose(result.totals.expected, 1125 * D90)
+    expectDamage(result.totals.normal, 1000 * D90)
+    expectDamage(result.totals.critical, 1500 * D90)
+    expectDamage(result.totals.expected, 1125 * D90)
   })
 
   it('F11-F13 keep bonus, amplification, vulnerability, and final damage in separate factors', () => {
@@ -246,9 +251,9 @@ describe('combat Step 3 public interface fixtures', () => {
       damageAction('F13', { kind: 'damage', scaling: { atk: 1 }, hits: [1], canCrit: false, vulnerabilities: [0.20], finalDamageBonuses: [0.10] })
     ]
     const run = fixture({ actions }).calculate
-    expectClose(valueOf(run('F11')).selected, 1000 * 1.65 * D90)
-    expectClose(valueOf(run('F12')).selected, 1000 * 1.30 * D90)
-    expectClose(valueOf(run('F13')).selected, 1000 * 1.20 * 1.10 * D90)
+    expectDamage(valueOf(run('F11')).selected, 1000 * 1.65 * D90)
+    expectDamage(valueOf(run('F12')).selected, 1000 * 1.30 * D90)
+    expectDamage(valueOf(run('F13')).selected, 1000 * 1.20 * 1.10 * D90)
   })
 
   it('F14 rejects generic flat ordinary damage', () => {
@@ -260,24 +265,24 @@ describe('combat Step 3 public interface fixtures', () => {
   it('F15-F16 apply levels, defence reduction, and defence ignore', () => {
     const action = damageAction('defence', { kind: 'damage', scaling: { atk: 1 }, hits: [1], canCrit: false })
     const status = damageAction('status', { kind: 'damage', scaling: { atk: 1 }, hits: [1], canCrit: false }, { damageType:'status' })
-    expectClose(valueOf(fixture({ actions: [action] }).calculate('defence')).selected, 1000 * D90)
-    expectClose(valueOf(fixture({ actions: [action], enemy: { level: 100 } }).calculate('defence')).selected, 1000 * 1520 / (1520 + 1592))
-    expectClose(valueOf(fixture({ actions: [action], enemy: { defenseReduction: 0.20 } }).calculate('defence')).selected, 1000 * 1520 / (1520 + 1512 * 0.8))
-    expectClose(valueOf(fixture({ actions: [action], enemy: { defenseIgnore: 0.30 } }).calculate('defence')).selected, 1000 * 1520 / (1520 + 1512 * 0.7))
-    expectClose(valueOf(fixture({ actions: [action], enemy: { defenseReduction: 0.20, defenseIgnore: 0.30 } }).calculate('defence')).selected, 1000 * 1520 / (1520 + 1512 * 0.8 * 0.7))
-    expectClose(valueOf(fixture({ actions: [status], enemy: { defenseIgnore: 0.30 } }).calculate('status')).selected, 1000 * D90)
-    expectClose(valueOf(fixture({ actions: [status], enemy: { defenseReduction: 0.20, defenseIgnore: 0.30 } }).calculate('status')).selected, 1000 * 1520 / (1520 + 1512 * 0.8))
+    expectDamage(valueOf(fixture({ actions: [action] }).calculate('defence')).selected, 1000 * D90)
+    expectDamage(valueOf(fixture({ actions: [action], enemy: { level: 100 } }).calculate('defence')).selected, 1000 * 1520 / (1520 + 1592))
+    expectDamage(valueOf(fixture({ actions: [action], enemy: { defenseReduction: 0.20 } }).calculate('defence')).selected, 1000 * 1520 / (1520 + Math.floor(1512 * 0.8)))
+    expectDamage(valueOf(fixture({ actions: [action], enemy: { defenseIgnore: 0.30 } }).calculate('defence')).selected, 1000 * 1520 / (1520 + 1512 * 0.7))
+    expectDamage(valueOf(fixture({ actions: [action], enemy: { defenseReduction: 0.20, defenseIgnore: 0.30 } }).calculate('defence')).selected, 1000 * 1520 / (1520 + Math.floor(1512 * 0.8) * 0.7))
+    expectDamage(valueOf(fixture({ actions: [status], enemy: { defenseIgnore: 0.30 } }).calculate('status')).selected, 1000 * D90)
+    expectDamage(valueOf(fixture({ actions: [status], enemy: { defenseReduction: 0.20, defenseIgnore: 0.30 } }).calculate('status')).selected, 1000 * 1520 / (1520 + Math.floor(1512 * 0.8)))
   })
 
   it('F17-F18 apply every accepted resistance branch', () => {
     const action = damageAction('resistance', { kind: 'damage', scaling: { atk: 1 }, hits: [1], canCrit: false })
     const run = (resistance: number, reduction = 0, ignore = 0) => valueOf(fixture({ actions: [action], enemy: { resistance: { spectro: resistance }, resistanceReduction: reduction, resistanceIgnore: ignore } }).calculate('resistance')).selected
-    expectClose(run(-0.20), 1000 * D90 * 1.20)
-    expectClose(run(0.10), 1000 * D90 * 0.90)
-    expectClose(run(0.80), 1000 * D90 * 0.20)
-    expectClose(run(0.90), 1000 * D90 * 0.10)
-    expectClose(run(0.10, 0.15, 0.05), 1000 * D90 * 1.05)
-    expectClose(run(-0.10, 0.20), 1000 * D90 * 1.20)
+    expectDamage(run(-0.20), 1000 * D90 * 1.10)
+    expectDamage(run(0.10), 1000 * D90 * 0.90)
+    expectDamage(run(0.80), 1000 * D90 / 5)
+    expectDamage(run(0.90), 1000 * D90 / 5.5)
+    expectDamage(run(0.10, 0.15, 0.05), 1000 * D90 * 1.05)
+    expectDamage(run(-0.10, 0.20), 1000 * D90 * 1.15)
   })
 
   it('F20 fixed damage bypasses crit and enemy multipliers', () => {
@@ -329,10 +334,10 @@ describe('combat Step 3 public interface fixtures', () => {
     const result = valueOf(run.calculate('tune-break', 'expected'))
     expect(run.calculate('tune-break', 'expected').warnings[0]?.code).toBe('unverified-data')
     const expected = 716.22 * 14 * 12.8 * 1.1 * (1520 / 3032) * 0.9
-    expectClose(result.selected, expected)
-    expectClose(result.totals.normal, expected)
-    expectClose(result.totals.critical, expected)
-    expect(valueOf(fixture({ actions:[action], enemy:{ cost:1 } }).calculate('tune-break')).selected).toBeCloseTo(716.22 * 12.8 * (1520 / 3032), 10)
+    expectDamage(result.selected, expected)
+    expectDamage(result.totals.normal, expected)
+    expectDamage(result.totals.critical, expected)
+    expectDamage(valueOf(fixture({ actions:[action], enemy:{ cost:1 } }).calculate('tune-break')).selected, 716.22 * 12.8 * D90)
     expect(fixture({ actions:[action] }).calculate('tune-break').ok).toBe(false)
   })
 
