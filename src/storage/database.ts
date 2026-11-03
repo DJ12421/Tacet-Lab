@@ -8,6 +8,7 @@ import { createLocalId } from '../domain/id'
 import { setEchoSlot, trimEmptyEchoSlots } from '../domain/echo-slots'
 import { clearCharacterArtwork } from './character-art-cache'
 import { dedupeBySubstatKey, duplicateSubstatKeys } from '../domain/echo-substats'
+import { validRotationTiming } from '../domain/rotation-timing'
 
 type SettingsRow = AppSettings & { id: 'settings' }
 
@@ -834,7 +835,7 @@ function isTheorycraftBuild(value: unknown) {
 }
 
 function isRotationPreset(value: unknown) {
-  if (!isRecord(value) || value.schemaVersion !== 1 || typeof value.id !== 'string' || typeof value.name !== 'string') return false
+  if (!isRecord(value) || (value.schemaVersion !== 1 && value.schemaVersion !== 2) || typeof value.id !== 'string' || typeof value.name !== 'string') return false
   if (value.description !== undefined && typeof value.description !== 'string') return false
   if (!isFiniteNumber(value.duration) || value.duration <= 0 || !isFiniteNumber(value.createdAt) || !['bundled', 'user'].includes(String(value.source))) return false
   if (!Array.isArray(value.characters) || !value.characters.every((entry) => isRecord(entry) && Number.isInteger(entry.slot) && Number(entry.slot) >= 0 && Number(entry.slot) < 3 && typeof entry.catalogId === 'string' && typeof entry.name === 'string')) return false
@@ -845,6 +846,7 @@ function isRotationPreset(value: unknown) {
     && slots.includes(Number(action.slot)) && typeof action.attackId === 'string' && isFiniteNumber(action.timestamp) && action.timestamp >= 0 && action.timestamp <= duration
     && (action.duration === undefined || (isFiniteNumber(action.duration) && action.duration > 0 && action.timestamp + action.duration <= duration))
     && (action.multiplier === undefined || (isFiniteNumber(action.multiplier) && action.multiplier >= 1 && action.multiplier <= 99 && Number.isInteger(action.multiplier)))
+    && validRotationTiming(action, (duration - action.timestamp) * 60)
     && (action.inputs === undefined || (isRecord(action.inputs) && Object.values(action.inputs).every((input) => isFiniteNumber(input) || typeof input === 'string' || typeof input === 'boolean'))))
 }
 
@@ -864,6 +866,7 @@ function isTeam(value: unknown) {
       && (action.label === undefined || typeof action.label === 'string')
       && (action.duration === undefined || (isFiniteNumber(action.duration) && action.duration > 0))
       && (action.multiplier === undefined || (isFiniteNumber(action.multiplier) && action.multiplier >= 1 && action.multiplier <= 99 && Number.isInteger(action.multiplier)))
+      && validRotationTiming(action, (Number(value.rotationDuration) - action.timestamp) * 60)
       && (action.formulaTargetId === undefined || typeof action.formulaTargetId === 'string')
       && (action.inputs === undefined || (isRecord(action.inputs) && Object.values(action.inputs).every((input) => isFiniteNumber(input) || typeof input === 'string' || typeof input === 'boolean'))))
     && (value.rotationPresets === undefined || (Array.isArray(value.rotationPresets) && value.rotationPresets.every(isRotationPreset)))

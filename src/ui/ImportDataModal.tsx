@@ -4,10 +4,11 @@ import { exportAccount, importAccount, prepareAccountBackup, previewAccountImpor
 import { prepareNativeBuildChoices } from '../storage/import-build-choices'
 import { convertExternalAccountExport, isExternalAccountExport, type ExternalCharacterChoice } from '../storage/import-external-account'
 import { convertRotationExport, isRotationExport } from '../storage/import-rotation-export'
+import { convertWavescanExport, isWavescanExport } from '../storage/import-wavescan'
 import { Icon, Panel } from './primitives'
 import { confirmDiscardChanges, useUnsavedChanges } from './useUnsavedChanges'
 
-const emptyFileLabel = 'Choose a Tacet Lab or external account JSON export'
+const emptyFileLabel = 'No file selected'
 
 interface ImportDataModalProps {
   onClose: () => void
@@ -48,7 +49,8 @@ export function ImportDataModal({ onClose, onImported }: ImportDataModalProps) {
   const prepare = async (parsed: unknown, analysisId: number, choices: Record<string, boolean> = {}) => {
     const rotationExport = isRotationExport(parsed)
     const converted = rotationExport ? convertRotationExport(parsed, await exportAccount())
-      : isExternalAccountExport(parsed) ? await convertExternalAccountExport(parsed, choices) : undefined
+      : isWavescanExport(parsed) ? await convertWavescanExport(parsed)
+        : isExternalAccountExport(parsed) ? await convertExternalAccountExport(parsed, choices) : undefined
     const prepared = prepareAccountBackup(converted?.document ?? parsed)
     const native = converted ? undefined : await prepareNativeBuildChoices(prepared.document, choices)
     const document = native?.document ?? prepared.document
@@ -58,9 +60,9 @@ export function ImportDataModal({ onClose, onImported }: ImportDataModalProps) {
     setPreview(nextPreview)
     setRepairs(prepared.repairs)
     setSourceNotices(converted?.notices ?? [])
-    setSourceLabel(rotationExport ? 'Rotation export' : converted ? 'External account v9' : '')
-    setSourceCharacters(converted?.choices ?? native?.choices ?? [])
-    setExternalAccountSource(converted ? parsed as Record<string, unknown> : undefined)
+    setSourceLabel(rotationExport ? 'Rotation export' : isWavescanExport(parsed) ? 'WaveScan export' : converted ? 'WutheringTools account' : '')
+    setSourceCharacters(converted && 'choices' in converted ? converted.choices : native?.choices ?? [])
+    setExternalAccountSource(isExternalAccountExport(parsed) ? parsed : undefined)
     setNativeSource(converted ? undefined : parsed)
   }
 
@@ -79,7 +81,7 @@ export function ImportDataModal({ onClose, onImported }: ImportDataModalProps) {
     setError('')
     if (!nextRaw.trim()) {
       setAnalyzing(false)
-      if (!pasted) setError('This file is empty. Choose a Tacet Lab JSON backup.')
+      if (!pasted) setError('This file is empty. Choose an export with JSON data.')
       return
     }
     try {
@@ -135,49 +137,49 @@ export function ImportDataModal({ onClose, onImported }: ImportDataModalProps) {
   return <div className="modal-backdrop import-data-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget && !importing) requestClose() }}>
     <Panel className="import-data-modal" role="dialog" aria-modal="true" aria-labelledby="import-data-title">
       <header className="import-data-header">
-        <div><span className="eyebrow">Your data · Restore</span><h2 id="import-data-title">Import a backup</h2><p>Choose a Tacet Lab or external account JSON export, then review every change before merging.</p></div>
+        <div><span className="eyebrow">Your data</span><h2 id="import-data-title">Import data</h2><p>Choose a file, review the changes, then import.</p></div>
         <button className="close" aria-label="Close import" disabled={importing} onClick={requestClose}>×</button>
       </header>
 
       <div className="import-data-scroll">
       <section className="import-data-source">
+        <div className="import-supported" aria-label="Supported imports">
+          <div><strong>Tacet Lab backup</strong><small>Account data</small></div>
+          <div><strong>WaveScan</strong><small>Echoes</small></div>
+          <div><strong>WutheringTools account</strong><small>v9 · Characters, gear, teams</small></div>
+          <div><strong>WuWa Lab rotation</strong><small>Team and rotation</small></div>
+        </div>
         <div className="import-file-row">
-          <button className="secondary" type="button" autoFocus disabled={importing} onClick={() => fileRef.current?.click()}><Icon name="upload"/>Choose backup</button>
+          <button className="secondary" type="button" autoFocus disabled={importing} onClick={() => fileRef.current?.click()}><Icon name="upload"/>Choose file</button>
           <div><Icon name="build"/><span>{fileName}</span></div>
-          <input ref={fileRef} hidden type="file" accept="application/json,.json" onChange={(event) => { void chooseFile(event.target.files?.[0]); event.currentTarget.value = '' }}/>
+          <input ref={fileRef} hidden type="file" accept="application/json,.json,.txt" onChange={(event) => { void chooseFile(event.target.files?.[0]); event.currentTarget.value = '' }}/>
         </div>
-        <div className="import-guardrails" aria-label="Import behavior">
-          <div><Icon name="lock"/><span><strong>Current data stays</strong><small>Existing records are never deleted.</small></span></div>
-          <div><Icon name="build"/><span><strong>Duplicates are skipped</strong><small>Only new and changed records are merged.</small></span></div>
-          <div><Icon name="settings"/><span><strong>Optimizer stays local</strong><small>Profiles and old run history are ignored.</small></span></div>
-        </div>
-        <details className="import-paste"><summary>Paste JSON instead</summary><label className="import-json-input"><span>Account JSON</span><textarea spellCheck={false} value={raw} disabled={importing} placeholder="Paste a Tacet Lab account export here…" onChange={(event) => void analyze(event.target.value, 'Pasted JSON data', true)}/></label></details>
+        <p className="import-safety"><Icon name="lock"/>Preview first. No records are deleted.</p>
+        <details className="import-paste"><summary>Or paste JSON</summary><label className="import-json-input"><span>Export JSON</span><textarea spellCheck={false} value={raw} disabled={importing} placeholder="Paste export JSON here…" onChange={(event) => void analyze(event.target.value, 'Pasted JSON data', true)}/></label></details>
         {error && <div className="import-message error" role="alert"><strong>Could not prepare import</strong><span>{error}</span></div>}
         {analyzing && <div className="import-message"><span className="import-spinner"/><span>Comparing the import with your local database…</span></div>}
       </section>
 
       {preview && <section className="import-preview">
         <header>
-          <div><span className="eyebrow">Import preview</span><h3>{sourceLabel || preview.gameDataVersion || 'Tacet Lab backup'}</h3></div>
-          <div><span>Schema v{preview.schemaVersion}</span><small>Exported {formattedExportDate(preview.exportedAt)}</small></div>
+          <div><span className="eyebrow">Review changes</span><h3>{sourceLabel || 'Tacet Lab backup'}</h3></div>
+          <div><small>Exported {formattedExportDate(preview.exportedAt)}</small></div>
         </header>
-        {sourceNotices.length > 0 && <div className="import-repair-notice import-source-notices" role="status"><strong>External account import notes</strong><p>{sourceNotices[0]}</p>{sourceNotices.length > 1 && <details><summary>{sourceNotices.length - 1} more import notes</summary><ul>{sourceNotices.slice(1).map((notice) => <li key={notice}>{notice}</li>)}</ul></details>}</div>}
+        {sourceNotices.length > 0 && <div className="import-repair-notice import-source-notices" role="status"><strong>Import notes</strong><p>{sourceNotices[0]}</p>{sourceNotices.length > 1 && <details><summary>{sourceNotices.length - 1} more notes</summary><ul>{sourceNotices.slice(1).map((notice) => <li key={notice}>{notice}</li>)}</ul></details>}</div>}
         {sourceCharacters.some((choice) => choice.existing) && <section className="import-build-choices" aria-label="Build import choices"><header><h3>Existing characters</h3><p>Save a new build to keep Equipped, or turn it off to replace Equipped.</p></header><div>{sourceCharacters.filter((choice) => choice.existing).map((choice) => <label key={choice.catalogId}><strong title={choice.name}>{choice.name}</strong><span>{choice.addAsNewBuild ? 'New build' : 'Replace Equipped'}</span><input type="checkbox" aria-label={`Save ${choice.name} as a new build`} checked={choice.addAsNewBuild} disabled={importing || analyzing} onChange={(event) => void setBuildChoice(choice.catalogId, event.target.checked)}/></label>)}</div></section>}
         {repairs.length > 0 && <div className="import-repair-notice" role="status"><strong>Timing recovered from this backup</strong><p>{repairs.length} rotation action{repairs.length === 1 ? '' : 's'} had missing timing. Tacet Lab estimated the values below. Review these actions after import.</p><ul>{repairs.map((repair) => <li key={repair}>{repair}</li>)}</ul></div>}
         <div className="import-summary-strip">
           <div><span>New</span><strong>{preview.added}</strong></div>
           <div><span>Updates</span><strong>{preview.updated}</strong></div>
           <div><span>Duplicates</span><strong>{preview.duplicates}</strong></div>
-          <p><Icon name="lock"/>Additive merge only. No current records will be removed.</p>
         </div>
         <div className="import-collection-grid">
-          {preview.collections.map((collection) => <article key={collection.key} className={collection.incoming ? '' : 'empty'}>
+          {preview.collections.filter((collection) => collection.incoming).map((collection) => <article key={collection.key}>
             <header><strong>{collection.label}</strong><b>{collection.incoming} incoming</b></header>
             <dl>
               <div><dt>New</dt><dd className="new">+{collection.added}</dd></div>
               <div><dt>Updates</dt><dd className="updated">{collection.updated}</dd></div>
-              <div><dt>Duplicates</dt><dd>{collection.duplicates}</dd></div>
-              <div className="merged"><dt>Merged total</dt><dd>{collection.current} → {collection.result}</dd></div>
+              <div><dt>Already here</dt><dd>{collection.duplicates}</dd></div>
             </dl>
           </article>)}
         </div>
@@ -185,7 +187,7 @@ export function ImportDataModal({ onClose, onImported }: ImportDataModalProps) {
       </div>
 
       <footer className="import-data-actions">
-        <div>{preview && !hasChanges ? <span>Everything in this backup is already present.</span> : sourceCharacters.some((choice) => choice.existing && !choice.addAsNewBuild) ? <span>Equipped will be replaced for characters with the toggle off.</span> : repairs.length ? <span>Review the recovered timing before applying changes.</span> : <span>New records are added; matching records are updated.</span>}</div>
+        <div>{preview && !hasChanges ? <span>Everything is already here.</span> : sourceCharacters.some((choice) => choice.existing && !choice.addAsNewBuild) ? <span>Some equipped builds will be replaced.</span> : repairs.length ? <span>Review the recovered timing.</span> : preview ? <span>New records are added; matching records are updated.</span> : null}</div>
         <button className="secondary" type="button" disabled={importing} onClick={requestClose}>Cancel</button>
         <button className="primary" type="button" disabled={!hasChanges || importing || analyzing} onClick={() => void merge()}><Icon name="upload"/>{importing ? 'Merging…' : `Apply ${(preview?.added ?? 0) + (preview?.updated ?? 0)} changes`}</button>
       </footer>

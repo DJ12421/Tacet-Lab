@@ -72,11 +72,11 @@
 
 .scanner-source-picker {
   display: grid;
-  grid-template-columns: repeat(3,minmax(0,1fr));
+  grid-template-columns: repeat(4,minmax(0,1fr));
   gap: 7px;
 }
 
-.scanner-source-picker>button {
+.scanner-source-picker>button,.scanner-source-picker>a {
   display: grid;
   grid-template-columns: 32px minmax(0,1fr) 16px;
   align-items: center;
@@ -88,15 +88,29 @@
   border-radius: 7px;
   background: rgba(4,8,9,.56);
   color: #dce5e2;
+  text-decoration: none;
   text-align: left;
   cursor: pointer;
   transition: border-color .18s,background .18s,transform .18s;
 }
 
-.scanner-source-picker>button:hover {
+.scanner-source-picker>button:hover,.scanner-source-picker>a:hover {
   transform: translateY(-1px);
   border-color: rgba(var(--gold-rgb),.38);
   background: rgba(var(--gold-rgb),.05);
+}
+
+.scanner-source-picker>a:focus-visible {
+  outline: 2px solid var(--mint);
+  outline-offset: 2px;
+}
+
+.scanner-source-picker>a {
+  min-height: 68px;
+}
+
+.scanner-source-picker>a small {
+  white-space: normal;
 }
 
 .scanner-source-picker>button.active {
@@ -298,6 +312,24 @@
   color: var(--muted);
   font-size: var(--font-size-caption);
   text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scanner-source-picker .scanner-wavescan-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 6px;
+}
+
+.scanner-automatic-control {
+  padding: 3px 6px;
+  border-radius: 4px;
+  background: var(--gold);
+  color: #080b0d;
+  font-size: var(--font-size-caption);
+  font-weight: 700;
+  line-height: 1.2;
   white-space: nowrap;
 }
 

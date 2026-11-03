@@ -29,6 +29,35 @@ const weaponNames = new Map(weaponSummaries.map((weapon) => [key(weapon.name), w
 const roverTypes = new Map([...new Set(characterSummaries.filter((character) => character.name.startsWith('Rover: ')).map((character) => key(character.name)))].map((name) => [name, characterSummaries.filter((character) => key(character.name) === name)] as const))
 const roverTypeKey = (name: string) => key(name).replace(/(?:male|female)$/, '')
 
+function parseSourceEcho(source: RecordValue, id: string, existing: Echo | undefined, createdAt: number): Echo | undefined {
+  const catalogEcho = typeof source.echo === 'string' ? echoNames.get(key(source.echo)) : undefined
+  const sonata = typeof source.echoSet === 'string' ? sonataNames.get(key(source.echoSet)) : undefined
+  const mainKey = typeof source.stat === 'string' ? statKeys[key(source.stat)] : undefined
+  const cost = source.type
+  const rarity = source.rank
+  if (!catalogEcho || !sonata || !mainKey || ![1, 3, 4].includes(Number(cost)) || ![1, 2, 3, 4, 5].includes(Number(rarity))
+    || catalogEcho.cost !== cost || !catalogEcho.sonatas.includes(sonata) || !isMainStatAllowed(cost as Echo['cost'], mainKey)) return
+  const subStats: StatLine[] = []
+  for (let index = 1; index <= 5; index++) {
+    const type = source[`echoSubStatsType${index}`]
+    const amount = source[`echoSubStatsValue${index}`]
+    if ((type == null || (typeof type === 'string' && key(type) === 'none')) && (amount == null || amount === 0)) continue
+    const statKey = typeof type === 'string' ? statKeys[key(type)] : undefined
+    if (!statKey || typeof amount !== 'number' || !Number.isFinite(amount) || subStats.some((stat) => stat.key === statKey)) return
+    subStats.push({ key: statKey, value: amount })
+  }
+  if (!subStats.length || subStats.length * 5 > maxLevelByRarity[rarity as Echo['rarity']]) return
+  const echo: Echo = {
+    id, name: catalogEcho.name, cost: cost as Echo['cost'], rarity: rarity as Echo['rarity'], level: subStats.length * 5,
+    sonata, mainStat: { key: mainKey, value: 0 }, subStats,
+    locked: existing?.locked ?? (source.locked === true), excluded: existing?.excluded ?? false,
+    equippedBy: existing?.equippedBy, equippedByName: existing?.equippedByName,
+    createdAt: existing?.createdAt ?? createdAt, source: 'import'
+  }
+  echo.mainStat = normalizeEchoMainStat(echo)
+  return echo
+}
+
 function sourceGearScore(character: RecordValue) {
   const activeBuild = Array.isArray(character.builds) ? character.builds.find((build) => record(build) && build.id === character.activeBuildId) : undefined
   const slots = Array.isArray(character.echoes) ? character.echoes : record(character.echoes) ? Object.values(character.echoes) : []
@@ -68,6 +97,7 @@ export async function convertExternalAccountExport(value: RecordValue, addAsNewB
   ])
   const currentEchoes = new Map(ownedEchoes.map((echo) => [echo.id, echo]))
   const importedEchoesByStats = new Map<string, Echo>()
+  const importedSourceEchoIds = new Set<string>()
   const echoes: Echo[] = []
   const characters: OwnedCharacter[] = []
   const weapons: OwnedWeapon[] = []
@@ -169,41 +199,10 @@ export async function convertExternalAccountExport(value: RecordValue, addAsNewB
     }
     for (const [slot, source] of sourceSlots.entries()) {
       if (!record(source) || typeof source.echo !== 'string') continue
-      const catalogEcho = echoNames.get(key(source.echo))
-      const sonata = typeof source.echoSet === 'string' ? sonataNames.get(key(source.echoSet)) : undefined
-      const mainKey = typeof source.stat === 'string' ? statKeys[key(source.stat)] : undefined
-      const cost = source.type
-      const rarity = source.rank
-      if (!catalogEcho || !sonata || !mainKey || ![1, 3, 4].includes(Number(cost)) || ![1, 2, 3, 4, 5].includes(Number(rarity))
-        || catalogEcho.cost !== cost || !catalogEcho.sonatas.includes(sonata) || !isMainStatAllowed(cost as Echo['cost'], mainKey)) {
-        continue
-      }
-      const subStats: StatLine[] = []
-      let invalid = false
-      for (let index = 1; index <= 5; index++) {
-        const type = source[`echoSubStatsType${index}`]
-        const amount = source[`echoSubStatsValue${index}`]
-        if ((type == null || (typeof type === 'string' && key(type) === 'none')) && (amount == null || amount === 0)) continue
-        const statKey = typeof type === 'string' ? statKeys[key(type)] : undefined
-        if (!statKey || typeof amount !== 'number' || !Number.isFinite(amount) || subStats.some((stat) => stat.key === statKey)) { invalid = true; break }
-        subStats.push({ key: statKey, value: amount })
-      }
-      if (invalid || !subStats.length) continue
-      if (subStats.length * 5 > maxLevelByRarity[rarity as Echo['rarity']]) {
-        continue
-      }
-      const level = subStats.length * 5
       const id = `external-account:${encodeURIComponent(characterName)}:${variant.active ? '' : `${encodeURIComponent(String(variant.build?.id ?? variantIndex))}:`}${slot}`
       const existing = currentEchoes.get(id)
-      const echo: Echo = {
-        id, name: catalogEcho.name, cost: cost as Echo['cost'], rarity: rarity as Echo['rarity'], level,
-        sonata, mainStat: { key: mainKey, value: 0 }, subStats,
-        locked: existing?.locked ?? false, excluded: existing?.excluded ?? false,
-        equippedBy: existing?.equippedBy, equippedByName: existing?.equippedByName,
-        createdAt: existing?.createdAt ?? createdAt + echoes.length,
-        source: 'import'
-      }
-      echo.mainStat = normalizeEchoMainStat(echo)
+      const echo = parseSourceEcho(source, id, existing, createdAt + echoes.length)
+      if (!echo) continue
       const identity = echoStatIdentity(echo)
       const matchingEcho = characterEchoes.get(identity) ?? importedEchoesByStats.get(identity)
       if (saveSecondBuild && existing && !matchingEcho && echoStatIdentity(existing) !== identity) {
@@ -215,6 +214,7 @@ export async function convertExternalAccountExport(value: RecordValue, addAsNewB
       if (!echoes.some((entry) => entry.id === chosenEcho.id)) echoes.push(matchingEcho ? { ...matchingEcho, source: 'import' } : echo)
       if (!matchingEcho) characterEchoes.set(identity, echo)
       importedEchoesByStats.set(identity, chosenEcho)
+      if (typeof source.echoId === 'string') importedSourceEchoIds.add(source.echoId)
       const chosenId = chosenEcho.id
       if (!echoIds.includes(chosenId)) echoIds.push(chosenId)
     }
@@ -271,6 +271,21 @@ export async function convertExternalAccountExport(value: RecordValue, addAsNewB
     return !catalogId || ![...ownedCharacters, ...characters].some((entry) => entry.catalogId === catalogId)
   })
   if (missingCharacters.length) throw new Error(`Could not account for ${missingCharacters.length} of ${Object.keys(characterData.characters).length} imported characters: ${missingCharacters.join(', ')}.`)
+  if (typeof data.inventory === 'string') {
+    let inventoryData: unknown
+    try { inventoryData = JSON.parse(data.inventory) } catch { throw new Error('The inventory data inside this external account export is invalid JSON.') }
+    if (!record(inventoryData) || !Array.isArray(inventoryData.echoes)) throw new Error('This external account export has no Echo inventory.')
+    let skippedEchoes = 0
+    for (const source of inventoryData.echoes) {
+      if (!record(source) || typeof source.echoId !== 'string' || !source.echoId || importedSourceEchoIds.has(source.echoId)) continue
+      const id = `external-account:inventory:${encodeURIComponent(source.echoId)}`
+      const echo = parseSourceEcho(source, id, currentEchoes.get(id), createdAt + echoes.length)
+      if (!echo) { skippedEchoes++; continue }
+      echoes.push(echo)
+      importedSourceEchoIds.add(source.echoId)
+    }
+    if (skippedEchoes) notices.push(`${skippedEchoes} inventory Echo${skippedEchoes === 1 ? '' : 'es'} could not be imported because required details were missing or unsupported.`)
+  }
   let rotationData: unknown
   if (typeof data.teamRotations === 'string') {
     try { rotationData = JSON.parse(data.teamRotations) } catch { notices.push('Team rotations could not be read from this export.') }

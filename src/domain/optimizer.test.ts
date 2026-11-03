@@ -27,6 +27,7 @@ describe('optimizer', () => {
     const results = optimizeBuilds(request(echoes))
     expect(results[0].echoIds.sort()).toEqual(['2', '3', '4', '5', '6'])
     expect(results[0].complete).toBe(true)
+    expect(results[0].calculationMethod).toBe('stat')
   })
 
   it('keeps locked Echoes optimizer-eligible while honoring exclusions and constraints', () => {

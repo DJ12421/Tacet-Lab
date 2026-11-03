@@ -583,7 +583,8 @@ function runOptimizerTasks(
     progress.tested += 1
     progress.processed += 1
     const plotValue = stats[profile?.plotStat ?? 'atk']
-    const result: OptimizerResult = { ...partial, score, plot: plotValue, targetId:request.rotation?.targetId ?? request.combat?.target.id }
+    const result: OptimizerResult = { ...partial, score, plot: plotValue, targetId:request.rotation?.targetId ?? request.combat?.target.id,
+      calculationMethod: request.objective === 'normal' || request.objective === 'critical' || request.objective === 'expected' ? 'formula' : 'stat' }
     insertResult(results, result, request.limit)
     if (progress.tested % sampleEvery === 0 && plot.length < 48) plot.push({ x: plotValue, y: score, echoIds: result.echoIds, mainEchoId: main.id, stats })
   }

@@ -12,7 +12,7 @@ import { LiveTutorial } from './LiveTutorial'
 import { guideFor, type GuideCounts, type GuideId } from './guide-content'
 import { Icon, PageHeader, Panel } from './primitives'
 import { PwaUpdatePrompt } from './PwaUpdatePrompt'
-import { TacetLabLogo } from './TacetLabLogo'
+import { TacetLabLogo, TacetMark } from './TacetLabLogo'
 import { useAppData } from './useAppData'
 import { useBodyScrollLock } from './useDismissableLayer'
 import { usePageFocused } from './usePageFocused'
@@ -153,7 +153,7 @@ export default function App() {
   const settingsBaselineRef = useRef('')
   const [themePreview, setThemePreview] = useState<AppSettings['theme'] | null>(null)
   const [customPreview, setCustomPreview] = useState<CustomThemeColors | null>(null)
-  const [importOpen, setImportOpen] = useState(false)
+  const [importOpen, setImportOpen] = useState(() => new URLSearchParams(window.location.search).get('import') === '1')
   const [exportOpen, setExportOpen] = useState(false)
   const [mobileMoreOpen, setMobileMoreOpen] = useState(false)
   const mobileMoreRef = useRef<HTMLDialogElement>(null)
@@ -423,7 +423,7 @@ export default function App() {
     <main>
       <div className="topbar"><div className="topbar-brand"><TacetLabLogo/></div><div>{contextualGuideId && <button type="button" className="topbar-tutorial" aria-label="Start live tutorial for this section" title="Guide me through this section" onClick={() => startTutorial(contextualGuideId)}><Icon name="info"/><span>Guide me</span></button>}<button type="button" aria-label="Import data" onClick={() => setImportOpen(true)}><Icon name="upload"/><span>Import</span></button><button type="button" aria-label="Export data" onClick={() => setExportOpen(true)}><Icon name="download"/><span>Export</span></button><a className="discord-button donation-button" href="https://payments.cashfree.com/forms/tacet-lab-support" target="_blank" rel="noreferrer" aria-label="Support Tacet Lab (opens Cashfree payment page)" title="Support Tacet Lab"><Icon name="donations"/></a><a className="discord-button" href="https://discord.gg/fy66NmapWb" target="_blank" rel="noreferrer" aria-label="Join the Tacet Lab Discord" title="Join the Tacet Lab Discord"><Icon name="discord"/></a></div></div>
       <div className={`content${view === 'teams' ? ' teams-content' : ''}`}>
-        <Suspense key={view} fallback={<Panel>Loading…</Panel>}>
+        <Suspense key={view} fallback={<div className="view-loading" role="status"><TacetMark/><span>Loading…</span></div>}>
         {view === 'dashboard' && <HomeView echoes={data.echoes} characters={data.characters} weapons={data.weapons} builds={data.builds} teams={data.teams} roverGender={data.settings.roverGender} navigate={setView}/>}
         {view === 'archive' && <ArchiveView roverGender={data.settings.roverGender} tab={route.archiveTab ?? 'characters'} onTabChange={(archiveTab) => setRoute({ view: 'archive', archiveTab })}/>}
         {view === 'scanner' && <ScannerView echoes={data.echoes} refresh={data.refresh} onSessionRiskChange={setScannerSessionAtRisk}/>}

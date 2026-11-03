@@ -1,5 +1,5 @@
 import { afterAll, beforeEach, describe, expect, it } from 'vitest'
-import { characterCatalog, weaponSummaries } from '../game-data'
+import { characterCatalog, echoCatalog, weaponSummaries } from '../game-data'
 import { db, importAccount } from './database'
 import { convertExternalAccountExport } from './import-external-account'
 
@@ -68,6 +68,34 @@ describe('external account build and team imports', () => {
     const repeated = await convertExternalAccountExport({ ...source, data: { character: JSON.stringify(changed) } })
     expect(repeated.document.characters).toHaveLength(0)
     expect(repeated.document.weapons).toHaveLength(0)
+  })
+
+  it('imports distinct unequipped inventory Echoes without duplicating a character slot', async () => {
+    const catalogEcho = echoCatalog.find((entry) => entry.cost === 1)!
+    const sourceEcho = { echo: catalogEcho.name, echoSet: catalogEcho.sonatas[0], type: 1, rank: 5,
+      stat: 'ATK', echoSubStatsType1: 'CritRate', echoSubStatsValue1: 10.5 }
+    const source = { meta: { version: '9', source: 'external' }, data: {
+      character: JSON.stringify({ characters: { Lucy: { echoes: [{ ...sourceEcho, echoId: 'equipped' }] } } }),
+      inventory: JSON.stringify({ echoes: [
+        { ...sourceEcho, echoId: 'equipped' },
+        { ...sourceEcho, echoId: 'spare-1', locked: true },
+        { ...sourceEcho, echoId: 'spare-2' },
+        { ...sourceEcho, echoId: 'invalid', stat: null }
+      ] })
+    } }
+
+    const converted = await convertExternalAccountExport(source)
+    expect(converted.document.echoes).toHaveLength(3)
+    expect(converted.document.echoes.filter((echo) => echo.id.startsWith('external-account:inventory:'))).toMatchObject([
+      { id: 'external-account:inventory:spare-1', locked: true, equippedBy: undefined },
+      { id: 'external-account:inventory:spare-2', equippedBy: undefined }
+    ])
+    expect(converted.notices).toContain('1 inventory Echo could not be imported because required details were missing or unsupported.')
+
+    await importAccount(converted.document)
+    const repeated = await convertExternalAccountExport(source)
+    await importAccount(repeated.document)
+    expect(await db.echoes.count()).toBe(3)
   })
 
   it('stops before preview when source characters cannot be accounted for', async () => {

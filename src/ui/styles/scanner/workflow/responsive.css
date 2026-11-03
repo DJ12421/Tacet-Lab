@@ -48,6 +48,9 @@
 }
 
 @media (max-width:900px) {
+  .scanner-source-picker {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+  }
   .scanner-start-actions {
     grid-template-columns: 1fr 1fr;
   }
@@ -81,8 +84,11 @@
   .scanner-source-picker {
     grid-template-columns: 1fr;
   }
-  .scanner-source-picker>button {
+  .scanner-source-picker>button,.scanner-source-picker>a {
     min-height: 56px;
+  }
+  .scanner-source-picker>a {
+    min-height: 68px;
   }
   .scanner-compare-tip {
     align-items: flex-start;

@@ -424,15 +424,16 @@
 :root[data-theme='light'] .scanner-final-step>small,
 :root[data-theme='light'] .scanner-inline-status,
 :root[data-theme='light'] .scanner-advanced>summary { color: var(--theme-text); }
-:root[data-theme='light'] :is(.scanner-source-picker>button,.scanner-format-select select,.scanner-controls,.scanner-controls select,.video-scan-controls select,.calibration-toolbar input,.scanner-layout-picker summary,.scanner-layout-picker>div,.scanner-layout-picker button,.batch-review-toolbar,.batch-review-toolbar>div button,.scanned-loadout-card,.scan-error-card) {
+:root[data-theme='light'] :is(.scanner-source-picker>button,.scanner-source-picker>a,.scanner-format-select select,.scanner-controls,.scanner-controls select,.video-scan-controls select,.calibration-toolbar input,.scanner-layout-picker summary,.scanner-layout-picker>div,.scanner-layout-picker button,.batch-review-toolbar,.batch-review-toolbar>div button,.scanned-loadout-card,.scan-error-card) {
   border-color: var(--line);
   background: var(--surface);
   color: var(--theme-text);
 }
 :root[data-theme='light'] .scanner-source-picker>button:is(:hover,.active),
+:root[data-theme='light'] .scanner-source-picker>a:hover,
 :root[data-theme='light'] .scanner-layout-picker button:is(:hover,.active),
 :root[data-theme='light'] .batch-review-toolbar>div button.active { background: color-mix(in srgb,var(--theme-gold) 11%,var(--surface)); }
-:root[data-theme='light'] .scanner-source-icon,
+:root[data-theme='light'] .scanner-source-picker>button .scanner-source-icon,
 :root[data-theme='light'] .scanner-image-action-icon { filter: brightness(0); opacity: .7; }
 :root[data-theme='light'] .scanner-drop-overlay { background: rgba(251,252,250,.95); color: var(--theme-text); }
 :root[data-theme='light'] .scanned-weapon-card { background: linear-gradient(145deg,color-mix(in srgb,var(--weapon-accent) 10%,var(--surface)),var(--surface) 72%); }
@@ -469,15 +470,14 @@
   color: var(--theme-text);
   box-shadow: 0 25px 70px rgba(24,40,34,.2);
 }
-:root[data-theme='light'] :is(.import-file-row>div,.import-guardrails>div,.import-json-input textarea,.import-message,.import-build-choices label,.import-summary-strip,.import-collection-grid article,.export-data-intro,.export-data-list>div,.export-data-note:last-child) {
+:root[data-theme='light'] :is(.import-file-row>div,.import-supported>div,.import-json-input textarea,.import-message,.import-build-choices label,.import-summary-strip,.import-collection-grid article,.export-data-intro,.export-data-list>div,.export-data-note:last-child) {
   border-color: var(--line);
   background: var(--surface-2);
   color: var(--theme-text);
 }
 :root[data-theme='light'] .import-build-choices label:focus-within { background: color-mix(in srgb,var(--mint) 10%,var(--surface)); }
 :root[data-theme='light'] .import-data-header .close,
-:root[data-theme='light'] .import-collection-grid dd,
-:root[data-theme='light'] .import-collection-grid .merged dd { color: var(--theme-text); }
+:root[data-theme='light'] .import-collection-grid dd { color: var(--theme-text); }
 :root[data-theme='light'] .import-json-input,
 :root[data-theme='light'] .import-summary-strip span { color: var(--muted); }
 :root[data-theme='light'] .import-repair-notice { background: #fff7e6; color: var(--theme-text); }
