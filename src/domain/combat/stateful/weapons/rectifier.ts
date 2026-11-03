@@ -1,0 +1,304 @@
+/** Signature Rectifier weapons. Stringmaster (Encore's own, standard/permanent-availability)
+ *  lives here too since it isn't part of any named tier. Each export is the weapon's five
+ *  refinements, R1 first (gear.ts's own `refinements()`); a number that grows with rank is
+ *  written as its five values. */
+import { WeaponType, Stat, Attribute, Type, Subtype, Cast, BuffTarget } from "../engine/stats.js";
+import { Buff, Debuff, Weapon, refinements } from "../engine/gear.js";
+import {
+  addStat,
+  frozenStacks,
+  isHeld,
+  applyCurrent,
+  applyTeam,
+  revokeCurrent,
+  casting,
+  isType,
+  isActive,
+  applied,
+  stacksOfEnemy,
+  onCast,
+  onType,
+  onInflict,
+  onApplied,
+  either,
+  both,
+  inflicting,
+  addGain,
+} from "../engine/context.js";
+import { GLACIO_CHAFE, FUSION_BURST, HEALS, ELECTRO_FLARE, SPECTRO_FRAZZLE } from "../shared/status.js";
+import { TUNE_STRAIN_SHIFTING } from "../shared/tunebreak.js";
+import { unisonResponse } from "../shared/unison.js";
+
+/** Rime-Draped Sprouts, Zhezhi's sig. +12% ATK flat. On field, Resonance Skill grants +12%
+ *  Basic Attack DMG Bonus a stack, up to 3, 6s. At 3+ stacks, her Outro spends them all for
+ *  +52% Basic Attack DMG Bonus, 27s, permanent uptime. */
+export const RIME_DRAPED_SPROUTS = refinements((r, rank) => {
+  const PANORAMA_OFFIELD = new Buff({
+    name: `Rime-Draped Sprouts: Panorama${rank} (outro)`,
+    duration: 60 * 27,
+    stats: [[Stat.DmgBonus, [52, 65, 78, 91, 104][r]!, Type.Basic]], when: () => !isActive(),
+  });
+  const PANORAMA_STACKS: Buff = new Buff({
+    name: `Rime-Draped Sprouts: Panorama${rank} (skill)`, maxStacks: 3, duration: 60 * 6,
+    stats: [[Stat.DmgBonus, [12, 15, 18, 21, 24][r]!, Type.Basic]], perStack: true,
+    // on outro: 3+ stacks convert into the off-field version; short of 3 the outro leaves them be
+    updateBuffs: () => {
+      if (casting(Cast.Outro) && frozenStacks() >= 3) {
+        applyCurrent(PANORAMA_OFFIELD, 1);
+        revokeCurrent(PANORAMA_STACKS);
+      }
+    },
+  });
+  return new Weapon({
+    id: 21050026,
+    weaponType: WeaponType.Rectifier, name: `Rime-Draped Sprouts${rank}`,
+    stats: [[Stat.BaseAtk, 500], [Stat.CritDmg, 72], [Stat.BonusAtk, [12, 15, 18, 21, 24][r]!]],
+    grants: [{ on: onCast(Cast.Skill), buff: PANORAMA_STACKS }],
+  });
+});
+
+/** Stringmaster: Electric Amplification. +12% Attribute DMG Bonus flat, +12% ATK on any
+ *  inactive action. Skill DMG stacks ATK twice over (12% a stack). Encore's own weapon. */
+export const STRINGMASTER = refinements((r, rank) => {
+  const STRINGMASTER_STACKS = new Buff({
+    name: `Stringmaster: Electric Amplification${rank}`, maxStacks: 2, duration: 60 * 5,
+    applyStats: () => {
+      if (!isActive()) addStat(Stat.BonusAtk, [12, 15, 18, 21, 24][r]!);
+      addStat(Stat.BonusAtk, [12, 15, 18, 21, 24][r]! * frozenStacks());
+    },
+  });
+  return new Weapon({
+    id: 21050016,
+    weaponType: WeaponType.Rectifier, name: `Stringmaster${rank}`,
+    stats: [[Stat.BaseAtk, 500], [Stat.CritRate, 36], [Stat.DmgBonus, [12, 15, 18, 21, 24][r]!]],
+    grants: [{ on: onType(Type.Skill), buff: STRINGMASTER_STACKS, onHit: true }],
+  });
+});
+
+/** Whispers of Sirens, Cantarella's sig: From the Deep. +12% ATK flat. Gentle Dream: an Echo
+ *  Skill cast within 10s of an Intro/Basic grants a stack, up to two. Stack 1 pays +40% Basic
+ *  Attack DMG Bonus, stack 2 also ignores 12% Havoc RES. Lost entirely if switched off field. */
+export const WHISPERS_OF_SIRENS = refinements((r, rank) => {
+  const GENTLE_DREAM: Buff = new Buff({
+    name: `Whispers of Sirens: Gentle Dream${rank}`, maxStacks: 2, duration: 60 * 10, lostOnSwap: true,
+    // one stack is the Basic Attack DMG Bonus, the second adds the Havoc RES ignore on top
+    applyStats: () => {
+      addStat(Stat.DmgBonus, [40, 50, 60, 70, 80][r]!, Type.Basic);
+      if (frozenStacks() >= 2) addStat(Stat.ResIgnore, [12, 15, 18, 21, 24][r]!, Attribute.Havoc);
+    },
+  });
+  return new Weapon({
+    id: 21050056,
+    weaponType: WeaponType.Rectifier, name: `Whispers of Sirens${rank}`,
+    stats: [[Stat.BaseAtk, 500], [Stat.CritDmg, 72], [Stat.BonusAtk, [12, 15, 18, 21, 24][r]!]],
+    // Every Echo Skill cast banks a stack, her own kit's included — Cantarella's Skill, her Forte
+    // press and her Liberation all cast one (`subcast: Cast.Echo`), so the two stacks come off
+    // different casts rather than off pressing one echo twice. The "within 10s of an Intro or a
+    // Basic" window is always open in a rotation that opens on Basics. Swapping out ends it.
+    grants: [{ on: onCast(Cast.Echo), buff: GENTLE_DREAM }],
+  });
+});
+
+/** Lethean Elegy, Phrolova's sig: Underworld Requiem. +12% ATK flat. Dealing Echo Skill DMG
+ *  grants +32% Skill DMG Bonus, +32% Echo Skill DMG Amp, 8% DEF ignore for 12s. Base ATK/Crit
+ *  Rate never change with rank; only the passive's own numbers scale. */
+export const LETHEAN_ELEGY = refinements((r, rank) => {
+  const UNDERWORLD_REQUIEM = new Buff({
+    name: `Lethean Elegy: Underworld Requiem${rank}`,
+    duration: 60 * 12,
+    stats: [
+      [Stat.DmgBonus, [32, 40, 48, 56, 64][r]!, Type.Skill],
+      [Stat.Amp, [32, 40, 48, 56, 64][r]!, Type.Echo],
+      [Stat.DefIgnoreOld, [8, 10, 12, 14, 16][r]!],
+    ],
+  });
+  return new Weapon({
+    id: 21050066,
+    weaponType: WeaponType.Rectifier, name: `Lethean Elegy${rank}`,
+    stats: [[Stat.BaseAtk, 587.5], [Stat.CritRate, 24.3], [Stat.BonusAtk, [12, 15, 18, 21, 24][r]!]],
+    grants: [{ on: onType(Type.Echo), buff: UNDERWORLD_REQUIEM, onHit: true }],
+  });
+});
+
+/** Freeze Frame, Lucilla's sig ("Light's Offering"): +12% ATK flat. After inflicting Glacio
+ *  Chafe, the wielder gets +30% Glacio DMG Bonus for 12s and the whole team gets +24% ATK for
+ *  30s (permanent uptime). Reacts to the wielder's *own* chafe, so it works on anyone equipping it. */
+export const FREEZE_FRAME = refinements((r, rank) => {
+  const FREEZE_FRAME_SELF = new Buff({
+    name: `Freeze Frame: Light's Offering${rank}`,
+    duration: 60 * 12,
+    stats: [[Stat.DmgBonus, [30, 37.5, 45, 52.5, 60][r]!, Attribute.Glacio]],
+  });
+  const FREEZE_FRAME_TEAM = new Buff({
+    name: `Freeze Frame: Light's Offering${rank} (team)`,
+    duration: 60 * 30,
+    stats: [[Stat.BonusAtk, [24, 30, 36, 42, 48][r]!]],
+  });
+  return new Weapon({
+    id: 21050086,
+    weaponType: WeaponType.Rectifier, name: `Freeze Frame${rank}`,
+    stats: [[Stat.BaseAtk, 587.5], [Stat.CritRate, 24.3], [Stat.BonusAtk, [12, 15, 18, 21, 24][r]!]],
+    grants: [
+      { on: onInflict(GLACIO_CHAFE), buff: FREEZE_FRAME_SELF },
+      { on: onInflict(GLACIO_CHAFE), buff: FREEZE_FRAME_TEAM, to: BuffTarget.Team },
+    ],
+  });
+});
+
+/** Stellar Symphony, Shorekeeper's sig: 12% HP to herself, 14% attack to the team, and 8
+ *  Concerto on a Liberation cast, once every 20s — the charge works like Variation's Ceaseless
+ *  Aria: held from the start of the fight, spent by the cast, handed back by the wielder's Outro. */
+export const SK_SIG = refinements((r, rank) => {
+  const SK_SIG_TEAM = new Buff({
+    name: `Stellar Symphony: Astral Evolvement${rank} (team)`,
+    duration: 60 * 30,
+    stats: [[Stat.BonusAtk, [14, 17.5, 21, 24.5, 28][r]!]],
+  });
+  /** The charge the Liberation spends — the same shape as Ceaseless Aria's: held from the moment
+   *  the weapon is equipped, gone the cast it pays for, back on the wielder's own Outro. */
+  const SK_SIG_CHARGE: Buff = new Buff({
+    name: `Stellar Symphony: Astral Evolvement${rank}`,
+    updateBuffs: () => {
+      if (!casting(Cast.Liberation)) return;
+      addGain({ concerto: [800, 1000, 1200, 1400, 1600][r]! });
+      revokeCurrent(SK_SIG_CHARGE);
+    },
+  });
+  return new Weapon({
+    id: 21050036,
+    weaponType: WeaponType.Rectifier, name: `Stellar Symphony${rank}`,
+    stats: [[Stat.BaseAtk, 412.5], [Stat.ER, 77.04], [Stat.BonusHp, [12, 15, 18, 21, 24][r]!]],
+    combatStart: () => applyCurrent(SK_SIG_CHARGE, 1),
+    grants: [
+      { on: both(onCast(Cast.Skill), onApplied(HEALS)), buff: SK_SIG_TEAM, to: BuffTarget.Team },
+      { on: onCast(Cast.Outro), buff: SK_SIG_CHARGE },
+    ],
+  });
+});
+
+/** Luminous Hymn, Phoebe's sig: Homebuilder's Anthem. +12% ATK flat. Hitting a target that holds
+ *  Spectro Frazzle grants +14% Basic Attack and +14% Heavy Attack DMG Bonus a stack, up to 3, 6s —
+ *  short, re-earned by every hit while the Frazzle stands. The Outro
+ *  amplifies the target's own Spectro Frazzle DMG 30% for 30s (permanent uptime): that half is
+ *  target-side, so it rides on the enemy and pays whoever is dealing the tick, not just the
+ *  wielder. */
+export const LUMINOUS_HYMN = refinements((r, rank) => {
+  const HOMEBUILDERS_STACKS = new Buff({
+    name: `Luminous Hymn: Homebuilder's Anthem${rank}`, maxStacks: 3, duration: 60 * 6,
+    stats: [
+      [Stat.DmgBonus, [14, 17.5, 21, 24.5, 28][r]!, Type.Basic],
+      [Stat.DmgBonus, [14, 17.5, 21, 24.5, 28][r]!, Type.Heavy],
+    ], perStack: true,
+  });
+  const HOMEBUILDERS_FRAZZLE = new Debuff({
+    name: `Luminous Hymn: Homebuilder's Anthem${rank} (frazzle)`,
+    duration: 60 * 30,
+    stats: [[Stat.Amp, [30, 37.5, 45, 52.5, 60][r]!, Subtype.SpectroFrazzle]],
+  });
+  return new Weapon({
+    id: 21050046,
+    weaponType: WeaponType.Rectifier, name: `Luminous Hymn${rank}`,
+    stats: [[Stat.BaseAtk, 500], [Stat.CritRate, 36], [Stat.BonusAtk, [12, 15, 18, 21, 24][r]!]],
+    grants: [
+      { on: () => stacksOfEnemy(SPECTRO_FRAZZLE) > 0, buff: HOMEBUILDERS_STACKS, onHit: true },
+      { on: onCast(Cast.Outro), buff: HOMEBUILDERS_FRAZZLE, to: BuffTarget.Enemy },
+    ],
+  });
+});
+
+/** Forged Dwarf Star, Denia's sig: Dissolution. +12% ATK flat. The wielder inflicting Fusion
+ *  Burst or Tune Strain - Shifting (either applied during her cast) puts up +36% Resonance
+ *  Liberation DMG Bonus for 5s — short and her own. While that's up, any
+ *  team member's own such cast hands the whole team +24% ATK for 15s — a short team window, so
+ *  lost on the wielder's next intro. Same name doesn't stack. */
+export const FORGED_DWARF_STAR = refinements((r, rank) => {
+  const DISSOLUTION_TEAM = new Buff({
+    name: `Forged Dwarf Star: Dissolution${rank} (team)`,
+    duration: 60 * 15,
+    stats: [[Stat.BonusAtk, [24, 30, 36, 42, 48][r]!]],
+  });
+  const DISSOLUTION_LIB = new Buff({
+    name: `Forged Dwarf Star: Dissolution${rank}`,
+    duration: 60 * 5,
+    stats: [[Stat.DmgBonus, [36, 45, 54, 63, 72][r]!, Type.Liberation]],
+    // the team half reacts to *anyone's* infliction, so it watches from hitGlobal (runs every hit
+    // for a locally-held buff) rather than the wielder's own hooks
+    hitGlobal: () => { if (applied(FUSION_BURST) || applied(TUNE_STRAIN_SHIFTING)) applyTeam(DISSOLUTION_TEAM, 1); },
+  });
+  return new Weapon({
+    id: 21050076,
+    weaponType: WeaponType.Rectifier, name: `Forged Dwarf Star${rank}`,
+    stats: [[Stat.BaseAtk, 500], [Stat.CritRate, 36], [Stat.BonusAtk, [12, 15, 18, 21, 24][r]!]],
+    grants: [{ on: onInflict(FUSION_BURST, TUNE_STRAIN_SHIFTING), buff: DISSOLUTION_LIB }],
+  });
+});
+
+/** Firstlight's Herald, Suisui's sig: Spring Wreath. +12% Max HP flat, and 8 Concerto on a
+ *  Resonance Liberation once every 20s — the charge works like Stellar Symphony's above: held from
+ *  the start of the fight, spent by the cast, handed back by the wielder's own Outro. The
+ *  rest is two 6s marks: inflicting Glacio Chafe leaves Snow Taint, healing leaves Ripples, and
+ *  holding both is +20% ATK for the whole team, re-granted every action both stand and lapsing
+ *  6s after. The wielder's own Outro renews both marks for another 6s while both are held. */
+export const FIRSTLIGHTS_HERALD = refinements((r, rank) => {
+  /** The charge the Liberation spends — the same shape as Ceaseless Aria's: held from the moment
+   *  the weapon is equipped, gone the cast it pays for, back on the wielder's own Outro. */
+  const SPRING_WREATH: Buff = new Buff({
+    name: `Firstlight's Herald: Spring Wreath${rank}`,
+    updateBuffs: () => {
+      if (!casting(Cast.Liberation)) return;
+      addGain({ concerto: [800, 1000, 1200, 1400, 1600][r]! });
+      revokeCurrent(SPRING_WREATH);
+    },
+  });
+  const SNOW_TAINT = new Buff({ name: `Firstlight's Herald: Snow Taint${rank}`, duration: 60 * 6 });
+  const RIPPLES = new Buff({ name: `Firstlight's Herald: Ripples${rank}`, duration: 60 * 6 });
+  const SPRING_WREATH_TEAM = new Buff({
+    name: `Firstlight's Herald: Spring Wreath${rank} (team)`, duration: 60 * 6,
+    stats: [[Stat.BonusAtk, [20, 25, 30, 35, 40][r]!]],
+  });
+  const bothMarks = (): boolean => isHeld(SNOW_TAINT) && isHeld(RIPPLES);
+  return new Weapon({
+    id: 21050096,
+    weaponType: WeaponType.Rectifier, name: `Firstlight's Herald${rank}`,
+    stats: [[Stat.BaseAtk, 412.5], [Stat.ER, 77.04], [Stat.BonusHp, [12, 15, 18, 21, 24][r]!]],
+    combatStart: () => applyCurrent(SPRING_WREATH, 1),
+    grants: [
+      { on: onInflict(GLACIO_CHAFE), buff: SNOW_TAINT },
+      { on: onApplied(HEALS), buff: RIPPLES },
+      // read after the marks land, wherever the inflicting was
+      { on: inflicting(bothMarks), buff: SPRING_WREATH_TEAM, to: BuffTarget.Team },
+      { on: () => casting(Cast.Outro) && bothMarks(), buff: SNOW_TAINT },
+      { on: () => casting(Cast.Outro) && bothMarks(), buff: RIPPLES },
+      { on: onCast(Cast.Outro), buff: SPRING_WREATH },
+    ],
+  });
+});
+
+/** Blooming Jadehaven: Hundredfold Artifice. +12% All-Attribute DMG Bonus flat (plain Dmg
+ *  Bonus, no tag). Inflicting Electro Flare or triggering Unison Response pays +36% Resonance
+ *  Skill DMG Amplification and 10% Electro RES ignore on Skill DMG — no duration stated, so it
+ *  stands once granted. While the wielder is on field, Electro Flare DMG is amplified 30% for 30s:
+ *  a Flare tick resolves on its applier's slot, so `isActive` is the on-field check. */
+export const BLOOMING_JADEHAVEN = refinements((r, rank) => {
+  const HUNDREDFOLD_ARTIFICE = new Buff({
+    name: `Blooming Jadehaven: Hundredfold Artifice${rank}`,
+    stats: [[Stat.Amp, [36, 45, 54, 63, 72][r]!, Type.Skill]],
+    applyStats: () => {
+      if (isType(Type.Skill)) addStat(Stat.ResIgnore, [10, 13.5, 17, 20.5, 24][r]!, Attribute.Electro);
+      if (isActive()) addStat(Stat.Amp, [30, 37.5, 45, 52.5, 60][r]!, Subtype.ElectroFlare);
+    },
+  });
+  const HUNDREDFOLD_ARTIFICE_FLARE = new Buff({
+    name: `Blooming Jadehaven: Hundredfold Artifice${rank} (flare)`, duration: 60 * 30,
+    stats: [[Stat.Amp, [30, 37.5, 45, 52.5, 60][r]!, Subtype.ElectroFlare]], when: isActive,
+  });
+  return new Weapon({
+    id: 21050116,
+    weaponType: WeaponType.Rectifier, name: `Blooming Jadehaven${rank}`,
+    stats: [[Stat.BaseAtk, 587.5], [Stat.CritRate, 24.3], [Stat.DmgBonus, [12, 15, 18, 21, 24][r]!]],
+    grants: [
+      { on: either(onInflict(ELECTRO_FLARE), unisonResponse), buff: HUNDREDFOLD_ARTIFICE },
+      { on: either(onInflict(ELECTRO_FLARE), unisonResponse), buff: HUNDREDFOLD_ARTIFICE_FLARE },
+    ],
+  });
+});

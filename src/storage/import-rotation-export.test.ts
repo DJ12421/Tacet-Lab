@@ -48,4 +48,10 @@ describe('rotation export import', () => {
     const { document } = convertRotationExport(longer, empty)
     expect(document.teams[0].actions[0].duration).toBe(51 / 60)
   })
+
+  it('preserves timing in version 2 exports and rejects malformed timing', () => {
+    const timed = { ...source, schemaVersion: 2, actions: [{ ...source.actions[0], cancel: 'normal', cancelFrame: 8, swapFrame: 12 }] }
+    expect(convertRotationExport(timed, empty).document.teams[0].actions[0]).toMatchObject({ cancel: 'normal', cancelFrame: 8, swapFrame: 12 })
+    expect(() => convertRotationExport({ ...timed, actions: [{ ...timed.actions[0], cancelFrame: -1 }] }, empty)).toThrow('invalid action')
+  })
 })

@@ -2,6 +2,8 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import type { CSSProperties, DragEvent as ReactDragEvent, MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent, ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { combatEffectDefinitions, formatDamage, resolveCombatTarget, type CombatEffectDefinition } from '../domain/combat/runtime'
+import type { StatefulPreview } from '../domain/combat/stateful/preview'
+import type { RotationPreviewResponse } from '../workers/rotation.worker'
 import { applicableTeamStatusEffects, negativeStatusActions, negativeStatusMotionValues } from '../game-data/combat/negative-status'
 import { importedCharacterBuffs } from '../game-data/combat/imported-buffs'
 import { resolveCharacterSubstatProfile } from '../domain/character-substat-score'
@@ -29,7 +31,7 @@ import { usePageFocused } from './usePageFocused'
 import { confirmDiscardChanges, useUnsavedChanges } from './useUnsavedChanges'
 import { statIconSource, weaponStatIconSource } from './stat-icons'
 import {
-  compactAttackLabel, echoArtwork, formatWorkspaceStat, resolveTeamWorkspace, rotationActionsForTarget, teamBuffLabel, TEAM_LOOP_TARGET_ID, TEAM_ROTATION_TARGET_ID,
+  automaticRotationEnvironment, compactAttackLabel, echoArtwork, formatWorkspaceStat, resolveTeamWorkspace, rotationActionsForTarget, teamBuffLabel, TEAM_LOOP_TARGET_ID, TEAM_ROTATION_TARGET_ID,
   type TeamActionModel, type TeamAttackGroup, type TeamAttackModel, type TeamMemberModel, type TeamWorkspaceInput, type TeamWorkspaceModel
 } from './team-workspace-model'
 import { defaultEnabledSkillTreeBonusIds, inherentSkillBonusId, skillTreeBonusId } from './character-showcase-model'
@@ -705,6 +707,39 @@ type TimelineGesture =
 interface TimelineMenu { actionId: string; x: number; y: number }
 
 function RotationWorkspace({ model, updateTeam, saveChanges, discardChanges, hasChanges, saving, saveError, focusBuildId }: { model: TeamWorkspaceModel; updateTeam: (patch: Partial<Team>) => Promise<void>; saveChanges: () => Promise<void>; discardChanges: () => void; hasChanges: boolean; saving: boolean; saveError: string | null; focusBuildId?: string }) {
+  const [statefulSnapshot, setStatefulSnapshot] = useState<{ model: TeamWorkspaceModel; value: StatefulPreview | undefined } | null>(null)
+  const [statefulPending, setStatefulPending] = useState(false)
+  const [statefulError, setStatefulError] = useState(false)
+  const stateful = statefulSnapshot?.model === model ? statefulSnapshot.value : undefined
+  useEffect(() => {
+    let cancelled = false
+    let worker: Worker | undefined
+    setStatefulSnapshot(null)
+    setStatefulError(false)
+    if (!model.actions.length) { setStatefulPending(false); return }
+    setStatefulPending(true)
+    const timer = window.setTimeout(() => {
+      try {
+        worker = new Worker(new URL('../workers/rotation.worker.ts', import.meta.url), { type: 'module' })
+        worker.onmessage = (event: MessageEvent<RotationPreviewResponse>) => {
+          if (!cancelled) { setStatefulSnapshot({ model, value: event.data.value }); setStatefulPending(false) }
+          worker?.terminate()
+        }
+        worker.onerror = () => {
+          if (!cancelled) { setStatefulError(true); setStatefulPending(false) }
+          worker?.terminate()
+        }
+        const team = automaticRotationEnvironment(model.team)
+        const rows = model.actions.map((row) => ({ action: { ...row.action, inputs: undefined }, attack: row.attack && { id: row.attack.id, group: row.attack.group } }))
+        worker.postMessage({ team, members: model.members.flatMap((member) => member.build && member.character && member.resolvedWeapon
+          ? [{ build: member.build, character: member.character, weapon: member.resolvedWeapon, echoes: member.resolvedEchoes }] : []), rows })
+      } catch {
+        if (!cancelled) { setStatefulError(true); setStatefulPending(false) }
+        worker?.terminate()
+      }
+    }, 100)
+    return () => { cancelled = true; window.clearTimeout(timer); worker?.terminate() }
+  }, [model])
   const forteGroupLabel = (group: TeamAttackGroup) => ROTATION_ATTACK_GROUPS.find((entry) => entry.id === group)?.label ?? group
   const damageSourceLabel = (type: DamageType) => type === 'basic' ? 'Basic DMG'
     : type === 'heavy' ? 'Heavy DMG'
@@ -1111,6 +1146,7 @@ function RotationWorkspace({ model, updateTeam, saveChanges, discardChanges, has
   const selectedTarget = damageTarget === 'loop' && model.team.loop ? TEAM_LOOP_TARGET_ID : TEAM_ROTATION_TARGET_ID
   const analysisRows = rotationActionsForTarget(model, selectedTarget).filter((row) => row.resultKind === 'damage')
   const rotationTotal = analysisRows.reduce((total, row) => total + row[resultMode], 0)
+  const automaticTotal = selectedTarget === TEAM_ROTATION_TARGET_ID && stateful?.complete ? stateful[resultMode] : undefined
   const members = model.members.filter((member): member is TeamMemberModel & { build: Build } => Boolean(member.build))
   const memberDamage = (buildId: string, type?: DamageType) => analysisRows.reduce((total, row) => total + (row.action.buildId === buildId && (!type || row.attack?.type === type) ? row[resultMode] : 0), 0)
   const typeDamage = (type: DamageType) => analysisRows.reduce((total, row) => total + (row.attack?.type === type ? row[resultMode] : 0), 0)
@@ -1161,7 +1197,7 @@ function RotationWorkspace({ model, updateTeam, saveChanges, discardChanges, has
   const damageTimeTicks = Array.from({ length: 5 }, (_, index) => model.team.rotationDuration * index / 4)
   const rulerTicks = Array.from({ length: Math.floor(model.team.rotationDuration) + 1 }, (_, index) => index)
 
-  return <section className="tw-panel tw-rotation"><header><div><span className="eyebrow">Team sequence</span><h2>Rotation</h2><p>Changes update damage live. Save them to keep them when you leave Rotation. Bundled damage values remain unverified against the current English in-game UI.</p></div><div className="tw-rotation-save-controls"><label className="tw-rotation-window"><span>Rotation time</span><BoundedNumberInput min={1} max={600} step="any" value={model.team.rotationDuration} onChange={(rotationDuration) => void updateTeam({ rotationDuration, loop: model.team.loop && model.team.loop.start < rotationDuration ? { start: model.team.loop.start, end: Math.min(model.team.loop.end, rotationDuration) } : undefined })}/>s</label><button type="button" onClick={discardChanges} disabled={!hasChanges || saving}>Discard changes</button><button type="button" className="primary" onClick={() => void saveChanges()} disabled={!hasChanges || saving}>{saving ? 'Saving…' : 'Save changes'}</button>{saveError && <span className="tw-rotation-save-error" role="alert">{saveError}</span>}</div></header>
+  return <section className="tw-panel tw-rotation"><header><div><span className="eyebrow">Team sequence</span><h2>Rotation</h2><p>Automatic kit damage updates from saved casts when every action is covered. Save changes to keep them when you leave Rotation. Bundled damage values remain unverified against the current English in-game UI.</p></div><div className="tw-rotation-save-controls"><label className="tw-rotation-window"><span>Rotation time</span><BoundedNumberInput min={1} max={600} step="any" value={model.team.rotationDuration} onChange={(rotationDuration) => void updateTeam({ rotationDuration, loop: model.team.loop && model.team.loop.start < rotationDuration ? { start: model.team.loop.start, end: Math.min(model.team.loop.end, rotationDuration) } : undefined })}/>s</label><button type="button" onClick={discardChanges} disabled={!hasChanges || saving}>Discard changes</button><button type="button" className="primary" onClick={() => void saveChanges()} disabled={!hasChanges || saving}>{saving ? 'Saving…' : 'Save changes'}</button>{saveError && <span className="tw-rotation-save-error" role="alert">{saveError}</span>}</div></header>
     <section className="tw-sequencer" aria-label="Interactive rotation timeline">
       <header className="tw-sequencer-toolbar">
         <div className="tw-transport" role="group" aria-label="Playback controls">
@@ -1169,7 +1205,7 @@ function RotationWorkspace({ model, updateTeam, saveChanges, discardChanges, has
           <button type="button" className={isPlaying ? 'is-active' : ''} onClick={togglePlayback} aria-label={isPlaying ? 'Pause timeline' : 'Play timeline'}>{isPlaying ? 'Ⅱ' : '▶'}</button>
           <span><b ref={playheadReadoutRef}>{playhead.toFixed(2)}s</b><small>/ {model.team.rotationDuration.toFixed(2)}s</small></span>
         </div>
-        <div className="tw-playback-readout" aria-live="polite"><span><small>Now</small><b ref={playbackNowRef}>{activeRows.length ? activeRows.map((row) => compactAttackLabel(row.action.label ?? row.attack?.name ?? 'Missing attack')).join(' + ') : 'Ready'}</b></span><span><small>Active effects</small><b ref={playbackEffectsRef}>{activeEffectCount}</b></span><span><small>Current DMG</small><b ref={playbackDamageRef}>{activeRows.some((row) => row.resultKind === 'damage') ? formatDamage(currentDamage) : '—'}</b></span></div>
+        <div className="tw-playback-readout" aria-live="polite"><span><small>Now</small><b ref={playbackNowRef}>{activeRows.length ? activeRows.map((row) => compactAttackLabel(row.action.label ?? row.attack?.name ?? 'Missing attack')).join(' + ') : 'Ready'}</b></span><span><small>Authored buffs</small><b ref={playbackEffectsRef}>{activeEffectCount}</b></span><span><small>Formula DMG</small><b ref={playbackDamageRef}>{activeRows.some((row) => row.resultKind === 'damage') ? formatDamage(currentDamage) : '—'}</b></span></div>
         <div className="tw-loop-controls" role="group" aria-label="Loop markers"><button type="button" onClick={() => { const time = livePlayhead(); void updateTeam({ loop: { start: Math.min(time, model.team.rotationDuration - 0.01), end: Math.max(model.team.loop?.end ?? model.team.rotationDuration, Math.min(time, model.team.rotationDuration - 0.01) + 0.01) } }) }}>Set start</button><button type="button" onClick={() => { const time = livePlayhead(); void updateTeam({ loop: { start: Math.min(model.team.loop?.start ?? 0, Math.max(0, time - 0.01)), end: Math.max(0.01, time) } }) }}>Set stop</button>{model.team.loop && <><label>Start <BoundedNumberInput min={0} max={model.team.loop.end - 0.01} step="any" value={model.team.loop.start} onChange={(start) => void updateTeam({ loop: { ...model.team.loop!, start } })}/></label><label>Stop <BoundedNumberInput min={model.team.loop.start + 0.01} max={model.team.rotationDuration} step="any" value={model.team.loop.end} onChange={(end) => void updateTeam({ loop: { ...model.team.loop!, end } })}/></label><button type="button" onClick={() => void updateTeam({ loop: undefined })}>Clear loop</button></>}</div>
         <div className="tw-edit-controls" role="group" aria-label="Timeline editing controls">
           <button type="button" onClick={undoTimeline} disabled={!undoStackRef.current.length} title="Undo (Ctrl+Z)">Undo</button>
@@ -1229,7 +1265,16 @@ function RotationWorkspace({ model, updateTeam, saveChanges, discardChanges, has
     </section>
     <div className="tw-rotation-layout">
       <section className="tw-rotation-editor" aria-label="Rotation editor">
-        <div className="tw-rotation-sequence-head"><span>Play order</span><b>{model.actions.length} {model.actions.length === 1 ? 'action' : 'actions'}</b></div>
+        {statefulPending && <p role="status">Calculating automatic kit estimate…</p>}
+        {statefulError && <p role="alert">Automatic kit calculation could not load.</p>}
+        {stateful && <div className="tw-stateful-preview" role="status">
+          <strong>{stateful.complete ? 'Stateful kit estimate · all saved casts covered' : 'Stateful kit estimate · partial coverage'}</strong>
+          <span>{stateful.complete ? `${formatDamage(stateful[resultMode])} ${resultMode} DMG from all ${stateful.totalActions} saved casts` : `${stateful.coveredActions}/${stateful.totalActions} saved casts covered; no automatic total available`}</span>
+          <small>{stateful.complete ? 'The automatic kit estimate is shown as the rotation total. Formula breakdowns below are separate estimates.' : 'Automatic timing could not cover this rotation. Formula breakdowns below are separate estimates.'} Saved manual buffs do not affect the automatic estimate. Bundled damage values are unverified against the current English in-game UI.</small>
+          {stateful.warnings.length > 0 && <details><summary>{stateful.warnings.length} coverage {stateful.warnings.length === 1 ? 'limit' : 'limits'}</summary><ul>{stateful.warnings.map((warning, index) => <li key={`${index}:${warning}`}>{warning}</li>)}</ul></details>}
+        </div>}
+        {statefulSnapshot?.model === model && !stateful && <p>Automatic kit calculation is unavailable for this team. The formula breakdowns below are separate estimates.</p>}
+        <div className="tw-rotation-sequence-head"><span>Play order · formula estimates per card</span><b>{model.actions.length} {model.actions.length === 1 ? 'action' : 'actions'}</b></div>
         <div className="tw-rotation-timeline" ref={rotationCardsRef}>{model.actions.map((row, index) => {
           const value = row[resultMode]
           const trace = row.traces?.[resultMode]
@@ -1266,15 +1311,15 @@ function RotationWorkspace({ model, updateTeam, saveChanges, discardChanges, has
       <button type="button" className="tw-analysis-handle" aria-label="Show rotation analysis">Analysis</button>
       <aside className="tw-rotation-analysis" aria-label="Rotation analysis">
           <div className="tw-chart-toggle" role="group" aria-label="Damage range"><button type="button" aria-pressed={selectedTarget === TEAM_ROTATION_TARGET_ID} onClick={() => setDamageTarget('rotation')}>Rotation</button><button type="button" aria-pressed={selectedTarget === TEAM_LOOP_TARGET_ID} disabled={!model.team.loop} onClick={() => setDamageTarget('loop')}>Loop</button></div>
-          <div className="tw-rotation-kpis"><div><span>{resultMode === 'expected' ? 'Average' : resultMode === 'normal' ? 'Non-crit' : 'Critical'} {selectedTarget === TEAM_LOOP_TARGET_ID ? 'loop' : 'rotation'}</span><CalculatedValue detail={sumDetail(selectedTarget === TEAM_LOOP_TARGET_ID ? 'Loop total' : 'Rotation total', rotationTotal, analysisRows.map((row) => ({ label: `${row.action.timestamp.toFixed(2)}s · ${compactAttackLabel(row.action.label ?? row.attack?.name ?? 'Missing attack')}`, value: row[resultMode] })))}><strong>{formatDamage(rotationTotal)}</strong></CalculatedValue></div><div><span>DPS</span><strong>{formatDamage(rotationTotal / (selectedTarget === TEAM_LOOP_TARGET_ID && model.team.loop ? model.team.loop.end - model.team.loop.start : model.team.rotationDuration))}</strong></div><div><span>Window</span><strong>{(selectedTarget === TEAM_LOOP_TARGET_ID && model.team.loop ? model.team.loop.end - model.team.loop.start : model.team.rotationDuration).toFixed(2)}s</strong></div></div>
-          {selectedTarget === TEAM_LOOP_TARGET_ID && <p>Loop damage counts clips fully between the start and stop markers.</p>}
-        <section className="tw-analysis-card tw-damage-chart"><header><div><span className="eyebrow">Damage distribution</span><h3>{analysisMode === 'character' ? 'Team contribution' : 'Damage types'}</h3></div><div className="tw-chart-toggle" role="group" aria-label="Chart grouping"><button type="button" aria-pressed={analysisMode === 'character'} onClick={() => setAnalysisMode('character')}>Character</button><button type="button" aria-pressed={analysisMode === 'type'} onClick={() => setAnalysisMode('type')}>Damage type</button></div></header>
+          <div className="tw-rotation-kpis"><div><span>Automatic {resultMode === 'expected' ? 'average' : resultMode === 'normal' ? 'non-crit' : 'critical'} {selectedTarget === TEAM_LOOP_TARGET_ID ? 'loop' : 'rotation'}</span><strong>{automaticTotal === undefined ? !model.actions.length ? 'No casts' : statefulPending && selectedTarget === TEAM_ROTATION_TARGET_ID ? 'Calculating…' : 'Unavailable' : formatDamage(automaticTotal)}</strong></div><div><span>DPS</span><strong>{automaticTotal === undefined ? '—' : formatDamage(automaticTotal / model.team.rotationDuration)}</strong></div><div><span>Window</span><strong>{(selectedTarget === TEAM_LOOP_TARGET_ID && model.team.loop ? model.team.loop.end - model.team.loop.start : model.team.rotationDuration).toFixed(2)}s</strong></div></div>
+          {selectedTarget === TEAM_LOOP_TARGET_ID && <p>Automatic loop damage is unavailable; the separate formula breakdown counts clips fully between the start and stop markers.</p>}
+        <section className="tw-analysis-card tw-damage-chart"><header><div><span className="eyebrow">Formula damage distribution</span><h3>{analysisMode === 'character' ? 'Team contribution' : 'Damage types'}</h3></div><div className="tw-chart-toggle" role="group" aria-label="Chart grouping"><button type="button" aria-pressed={analysisMode === 'character'} onClick={() => setAnalysisMode('character')}>Character</button><button type="button" aria-pressed={analysisMode === 'type'} onClick={() => setAnalysisMode('type')}>Damage type</button></div></header>
           <div className="tw-donut-layout"><div className="tw-donut" style={chartStyle} role="img" aria-label={rotationTotal ? `${analysisMode} damage distribution` : 'No calculated damage'}><div><strong>{formatDamage(rotationTotal)}</strong><span>Total damage</span></div></div><div className="tw-donut-legend">{segments.map((segment) => <div key={segment.label}><i style={{ background: segment.color }}/><span>{segment.label}</span><b>{percent(segment.value, rotationTotal)}</b><small>{formatDamage(segment.value)}</small></div>)}{!segments.length && <p>No calculated damage yet.</p>}</div></div>
         </section>
-        <section className="tw-analysis-card tw-damage-matrix"><header><div><span className="eyebrow">Damage split</span><h3>Type by character</h3></div></header>
+        <section className="tw-analysis-card tw-damage-matrix"><header><div><span className="eyebrow">Formula damage split</span><h3>Type by character</h3></div></header>
           {damageTypes.length && members.length ? <div className="tw-damage-table-scroll"><table><thead><tr><th>Type</th>{members.map((member) => <th key={member.build.id}>{teamMemberName(member)}</th>)}<th>Total</th></tr></thead><tbody>{damageTypes.map((type) => <tr key={type}><th>{DAMAGE_TYPE_LABELS[type]}</th>{members.map((member) => <td key={member.build.id}>{memberDamage(member.build.id, type) ? formatDamage(memberDamage(member.build.id, type)) : '—'}</td>)}<td><b>{formatDamage(typeDamage(type))}</b><small>{percent(typeDamage(type), rotationTotal)}</small></td></tr>)}<tr className="tw-damage-total"><th>Total</th>{members.map((member) => <td key={member.build.id}><b>{formatDamage(memberDamage(member.build.id))}</b></td>)}<td><b>{formatDamage(rotationTotal)}</b></td></tr></tbody></table></div> : <p className="tw-analysis-empty">Damage rows will appear when the selected range contains calculated attacks.</p>}
         </section>
-        <section className="tw-analysis-card tw-damage-over-time"><header><div><span className="eyebrow">Timeline analysis</span><h3>Damage over time</h3></div><b>Peak {compactDamage(peakActiveDamage)}</b></header>
+        <section className="tw-analysis-card tw-damage-over-time"><header><div><span className="eyebrow">Formula timeline analysis</span><h3>Damage over time</h3></div><b>Peak {compactDamage(peakActiveDamage)}</b></header>
           <div className="tw-damage-time-chart" role="group" aria-label={`Stacked action damage across the ${model.team.rotationDuration.toFixed(2)} second rotation`}>
             <div className="tw-damage-y-axis">{damageAxisTicks.map((tick, index) => <span style={{ top: `${index / (damageAxisTicks.length - 1) * 100}%` }} key={tick}>{compactDamage(tick)}</span>)}</div>
             <div className="tw-damage-plot">
@@ -1918,7 +1963,7 @@ export function TeamsView({ echoes, builds, equippedLoadouts, theorycraftBuilds,
   const rotationTeam = useMemo(() => team && draftPatch ? { ...team, ...draftPatch } : team, [team, draftPatch])
   const includeTraces = typeof tab === 'number' && (memberSection === 'overview' || memberSection === 'forte' || memberSection === 'rotation')
   const includeFormulaRows = tab !== 'settings' && memberSection !== 'rotation'
-  const model = useMemo(() => rotationTeam && (!showGallery || route?.team) ? resolveTeamWorkspace({ team: rotationTeam, builds, equippedLoadouts, theorycraftBuilds, characters, weapons, echoes, roverGender, includeTraces, formulaTargetIds: includeFormulaRows ? undefined : [] }) : undefined, [rotationTeam, showGallery, route?.team, builds, equippedLoadouts, theorycraftBuilds, characters, weapons, echoes, roverGender, includeTraces, includeFormulaRows])
+  const model = useMemo(() => rotationTeam && (!showGallery || route?.team) ? resolveTeamWorkspace({ team: rotationTeam, builds, equippedLoadouts, theorycraftBuilds, characters, weapons, echoes, roverGender, includeTraces, rotationMode: rotationActive, formulaTargetIds: includeFormulaRows ? undefined : [] }) : undefined, [rotationTeam, showGallery, route?.team, builds, equippedLoadouts, theorycraftBuilds, characters, weapons, echoes, roverGender, includeTraces, includeFormulaRows, rotationActive])
 
   useEffect(() => {
     if (rotationActive && rotationDraft?.teamId === team?.id) return

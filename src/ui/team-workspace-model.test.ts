@@ -1,8 +1,8 @@
 import { expect, it } from 'vitest'
-import { combatTargets } from '../domain/combat/runtime'
+import { combatInputDefinitions, combatTargets } from '../domain/combat/runtime'
 import type { Build, OwnedCharacter, OwnedWeapon, Team } from '../domain/types'
 import { characterCatalog, weaponCatalog } from '../game-data'
-import { resolveTeamWorkspace, rotationActionsForTarget, rotationDamageByMode, TEAM_LOOP_TARGET_ID, type TeamActionModel } from './team-workspace-model'
+import { automaticRotationEnvironment, resolveTeamWorkspace, rotationActionsForTarget, rotationDamageByMode, TEAM_LOOP_TARGET_ID, type TeamActionModel } from './team-workspace-model'
 
 it('keeps team damage results while omitting unused calculation traces', () => {
   const catalog = characterCatalog.find((entry) => combatTargets(entry.id).some((target) => target.kind === 'damage'))!
@@ -30,6 +30,50 @@ it('keeps team damage results while omitting unused calculation traces', () => {
   expect(selectedTarget.members[0].formulaRows).toEqual(lean.members[0].formulaRows.filter((row) => row.target.id === target.id))
   expect(rotationOnly.members.every((member) => member.formulaRows.length === 0)).toBe(true)
   expect(rotationOnly.actions.map(({ normal, critical, expected }) => [normal, critical, expected])).toEqual(lean.actions.map(({ normal, critical, expected }) => [normal, critical, expected]))
+})
+
+it('ignores manual combat selections in rotation mode without changing the saved team', () => {
+  const catalog = characterCatalog.find((entry) => {
+    const ownedWeapon = weaponCatalog.find((weapon) => weapon.type.toLowerCase() === entry.weaponType.toLowerCase())
+    return ownedWeapon && combatTargets(entry.id).some((target) => target.kind === 'damage')
+      && combatInputDefinitions(entry.id, ownedWeapon.id, 0, 1, []).length > 0
+  })!
+  const weaponCatalogEntry = weaponCatalog.find((entry) => entry.type.toLowerCase() === catalog.weaponType.toLowerCase())!
+  const character: OwnedCharacter = { id: 'character', catalogId: catalog.id, level: 90, sequence: 0, locked: false, skillLevels: [10, 10, 10, 10, 10], createdAt: 1 }
+  const weapon: OwnedWeapon = { id: 'weapon', catalogId: weaponCatalogEntry.id, level: 90, rank: 1, locked: false, createdAt: 1 }
+  const build: Build = { id: 'build', name: 'Test build', characterId: character.id, resonatorId: catalog.id, weaponId: weapon.id, echoIds: [], level: 90, skillLevel: 10 }
+  const attackId = combatTargets(catalog.id).find((entry) => entry.kind === 'damage')!.id
+  const conditionId = combatInputDefinitions(catalog.id, weapon.catalogId, 0, 1, [])[0]!.id
+  const selections = { [conditionId]: true }
+  const action = { id: 'action', timestamp: 0, buildId: build.id, attackId, inputs: selections }
+  const team: Team = { id: 'team', name: 'Test team', buildIds: [build.id], enemy: { level: 90, resistance: 10, damageReduction: 0 }, rotationDuration: 2, actions: [action],
+    scenario: { resultMode: 'expected', memberConditions: { [build.id]: selections }, enemyConditions: selections, selectedTargetByBuild: {} } }
+  const input = { team, builds: [build], characters: [character], weapons: [weapon], echoes: [], formulaTargetIds: [] }
+  const selected = resolveTeamWorkspace({ ...input, rotationMode: true })
+  const clear = resolveTeamWorkspace({ ...input, team: { ...team, scenario: undefined, actions: [{ ...action, inputs: undefined }] }, rotationMode: true })
+  expect(automaticRotationEnvironment(team).scenario?.memberConditions).toEqual({})
+  expect(automaticRotationEnvironment(team).scenario?.enemyConditions).toEqual({})
+  expect(selected.actions.map(({ normal, expected, critical }) => [normal, expected, critical])).toEqual(clear.actions.map(({ normal, expected, critical }) => [normal, expected, critical]))
+  expect(selected.team.scenario).toBe(team.scenario)
+  expect(selected.team.actions[0]?.inputs).toBe(action.inputs)
+})
+
+it('starts a rotation without manually preset enemy statuses', () => {
+  const catalog = characterCatalog.find((entry) => entry.id === '1610')!
+  const weaponCatalogEntry = weaponCatalog.find((entry) => entry.type.toLowerCase() === catalog.weaponType.toLowerCase())!
+  const character: OwnedCharacter = { id: 'character', catalogId: catalog.id, level: 90, sequence: 0, locked: false, skillLevels: [10, 10, 10, 10, 10], createdAt: 1 }
+  const weapon: OwnedWeapon = { id: 'weapon', catalogId: weaponCatalogEntry.id, level: 90, rank: 1, locked: false, createdAt: 1 }
+  const build: Build = { id: 'build', name: 'Test build', characterId: character.id, resonatorId: catalog.id, weaponId: weapon.id, echoIds: [], level: 90, skillLevel: 10 }
+  const attackId = combatTargets(catalog.id).find((entry) => entry.kind === 'damage')!.id
+  const action = { id: 'action', timestamp: 0, buildId: build.id, attackId }
+  const enemy = { level: 90, resistance: 10, damageReduction: 0, havocBaneStacks: 3, statusStacks: { 'aero-erosion': 2 } }
+  const team: Team = { id: 'team', name: 'Test team', buildIds: [build.id], enemy, rotationDuration: 2, actions: [action] }
+  const input = { team, builds: [build], characters: [character], weapons: [weapon], echoes: [], formulaTargetIds: [] }
+  const selected = resolveTeamWorkspace({ ...input, rotationMode: true })
+  const clear = resolveTeamWorkspace({ ...input, team: { ...team, enemy: { ...enemy, havocBaneStacks: 0, statusStacks: {} } }, rotationMode: true })
+  expect(automaticRotationEnvironment(team).enemy).toMatchObject({ havocBaneStacks: 0, statusStacks: {} })
+  expect(selected.actions.map(({ normal, expected, critical }) => [normal, expected, critical])).toEqual(clear.actions.map(({ normal, expected, critical }) => [normal, expected, critical]))
+  expect(selected.team.enemy).toBe(enemy)
 })
 
 it('counts only complete damage clips between loop markers', () => {
@@ -61,4 +105,9 @@ it('refreshes a repeated custom buff and expires it at its duration boundary', (
   const model = resolveTeamWorkspace({ team, builds: [build], characters: [character], weapons: [weapon], echoes: [], formulaTargetIds: [] })
   expect(model.actions.map((row) => row.activeBuffs.length)).toEqual([0, 1, 1, 0])
   expect(model.actions[0].traces?.expected).not.toBe(model.actions[1].traces?.expected)
+  const automatic = resolveTeamWorkspace({ team, builds: [build], characters: [character], weapons: [weapon], echoes: [], rotationMode: true, formulaTargetIds: [] })
+  const withoutBuff = resolveTeamWorkspace({ team: { ...team, buffs: [] }, builds: [build], characters: [character], weapons: [weapon], echoes: [], rotationMode: true, formulaTargetIds: [] })
+  expect(automatic.actions.map((row) => row.activeBuffs.length + row.activates.length)).toEqual([0, 0, 0, 0])
+  expect(automatic.actions.map((row) => row.expected)).toEqual(withoutBuff.actions.map((row) => row.expected))
+  expect(automatic.team.buffs).toBe(team.buffs)
 })

@@ -39,6 +39,7 @@ export interface TheorycraftBuild {
 export interface Team { id: string; name: string; /** Stable member IDs in schema v7; legacy backups contain saved-build IDs and are migrated. */ buildIds: string[]; members?: TeamMember[]; enemy: EnemyConfig; rotationDuration: number; actions: RotationAction[]; loop?: { start: number; end: number }; rotationPresets?: import('./rotation-presets').RotationPresetDocument[]; buffs?: BuffEffect[]; scenario?: TeamScenario }
 export type ScenarioValue = number | string | boolean
 export type FormulaResultMode = 'normal' | 'expected' | 'critical'
+export type CalculationMethod = 'formula' | 'stateful' | 'stat'
 export interface TeamScenario {
   resultMode: FormulaResultMode
   memberConditions: Record<string, Record<string, ScenarioValue>>
@@ -46,7 +47,8 @@ export interface TeamScenario {
   selectedTargetByBuild: Record<string, string>
   compareBuildId?: string
 }
-export interface RotationAction { id: string; timestamp: number; duration?: number; multiplier?: number; buildId: string; attackId: string; label?: string; formulaTargetId?: string; inputs?: Record<string, ScenarioValue> }
+export type RotationCancel = 'normal' | 'idash' | 'icancel' | 'jump' | 'walk'
+export interface RotationAction { id: string; timestamp: number; duration?: number; multiplier?: number; buildId: string; attackId: string; label?: string; formulaTargetId?: string; inputs?: Record<string, ScenarioValue>; cancel?: RotationCancel; cancelFrame?: number; swapFrame?: number }
 export interface BuffEffect { id: string; name: string; sourceBuildId: string; target: 'self' | 'next' | 'team'; triggerAttackId: string; duration: number; stat: StatKey | 'amplify'; value: number; stackingGroup: string }
 export interface EnemyConfig {
   level: number
@@ -169,6 +171,8 @@ export interface OptimizerResult {
   plot?: number
   stats: AggregatedStats
   damage: DamageResult
+  /** Optional for optimizer runs saved before method labels were introduced. */
+  calculationMethod?: CalculationMethod
   complete?: boolean
   evaluations?: number
   targetId?: string

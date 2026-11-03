@@ -1,0 +1,621 @@
+/**
+ * Rebecca — an Electro Pistols sub-DPS, and the first half of the Cyberpunk collab pair. Filed
+ * under Lahairoi with Lucy and their shared echo, the era they released alongside, rather than
+ * a region of their own.
+ *
+ * She is the first kit in the project built on the *Hack* branch of the Tune Break variants (see
+ * tunebreak.ts), and she works both ends of it: her Intros, either Fervor finisher and BOOM!
+ * Fireworks! all lay Hack - Shifting, and she answers Hack - Interfered with Meltdown, a
+ * 2358.89% tune-scaled hit. Tune damage reads Tune Break Boost and nothing else, which is why her
+ * own Tag, You're It! hands +30 of it to whoever laid the Shifting.
+ *
+ * Three gauges, all real numbers off the actions:
+ * - **Fervor** (forte1, 0-120): banked by every Normal Attack and Resonance Skill, and by 50 the
+ *   moment A Girl Gets What She Wants! triggers off an Intro. At 120 the plain Heavy Attack is
+ *   replaced by its finisher — Rat-tat-tat!: Huntress or Bang-bang-bang!: Guts by mode — which
+ *   spends the whole bar.
+ * - **Hot Hand** (forte2, 0-120): regenerates 10/s on its own clock (HOT_HAND_REGEN), on field or
+ *   off, and starts the fight full; A Girl Gets What She Wants! locks it and drains it 10/s instead.
+ *   The finisher's own +40 is declared on the action.
+ *
+ * Overload is not tracked: it only ever gates BOOM! Fireworks!, which the mode fires by itself
+ * either way. It caps late enough that the detonation lands after she has already swapped out, so
+ * BOOM! is deferred behind the next resonator's Intro and is inactive — her hit, not her field time.
+ *
+ * **Switch Gears!** is the mode pair: Huntress (+30% Crit. DMG) and Guts (15% DEF ignore), swapped
+ * by every Resonance Skill and Intro Skill — each of which exists in a Huntress form and a Guts
+ * form, so which she casts *is* which mode she is in. She starts in Huntress. A Girl Gets What She
+ * Wants! grants whichever of the two she is not currently in, for 12s.
+ *
+ * MVs off nanoka.cc (character 1308), per-hit x hit count as CLAUDE.md describes, with the flat
+ * Concerto Regen rows folded in (Liberation 20, both Intros 10). Energy/concerto/off-tune and the
+ * per-action Fervor are wuwalab's frame data (api.wuwalab.com/api/app/characters/rebecca) summed
+ * the same way, cross-checked against the migrated sheet. The Mk. 31 HMG has no published fire
+ * rate; the sheet's own 5 standard / 5 first-enhancement / 10 second-enhancement split is what
+ * reaches 90 Overload exactly, so each tier is one action of that many shots, all on its frame 0. Her dodge counters are left
+ * out: nanoka gives their motion values but no source gives their Fervor, and neither rotation
+ * plays one.
+ */
+import { Stat, Attribute, WeaponType, Type, Cast, Node, Scaling, BuffTarget, Position } from "../../engine/stats.js";
+import { Buff, Talent, Inherent, Sequence, Resonator, Loadout, EchoLoadout, coordinatedBuff } from "../../engine/gear.js";
+import {
+  addBuff,
+  addStat,
+  applyCurrent,
+  applyEnemy,
+  applyTeam,
+  basicDmgBonus,
+  casting,
+  currentHit,
+  onAction,
+  runningAction,
+  currentTeam,
+  isHeld,
+  queue,
+  queueQTE,
+  revokeCurrent,
+  forte2,
+  setForte2,
+  isActive,
+  addGain,
+  saveChain,
+  previousPress,
+} from "../../engine/context.js";
+import { ActionGroup, Action, Cooldown, Rotation, ActionField } from "../../engine/rotation.js";
+import { applied, inflicting } from "../../engine/context.js";
+import { applyHack, tuneHackResponse, TUNE_HACK_SHIFTING, TUNE_SHIFTABLE } from "../../shared/tunebreak.js";
+import { SKULL_THRASHER } from "../../weapons/pistol.js";
+import { NEW_STD_PISTOL, STATIC_MIST } from "../../weapons/standard.js";
+import { THUNDERBOLT, SOLAR_FLAME } from "../../weapons/battlepass.js";
+import { HERON, STONEWALL_BRACER, MOONLIT_CLOUDS_5PC, LINGERING_TUNES_2PC, VOID_THUNDER_2PC, MOONLIT_CLOUDS_2PC, ACTION_HERON, ACTION_STONEWALL_BRACER_1 } from "../../echoes/jinzhou.js";
+import { ADAM_SMASHER, SHATTERED_DREAMS_1PC, HYVATIA, NEONLIGHT_LEAP_5PC, REEL_2PC, ACTION_ADAM_SMASHER_REBECCA, ACTION_HYVATIA } from "../../echoes/lahairoi.js";
+import { mainstatOptions, Mainstat } from "../../shared/mainstats.js";
+import { Echoes } from "../../shared/echoes.js";
+import { substats, highSubs, Substat } from "../../shared/substats.js";
+import { LUCY_RESONATOR } from "../spectro/lucy.js";
+import { JINGRAN_RESONATOR } from "../fusion/jingran.js";
+import { SWORN_VIGIL_2PC } from "../../echoes/mengzhou.js";
+
+/* ----------------------------------------------------------------------------------- actions */
+
+function rebeccaAction(id: string, def: object): Action {
+  return new Action(id, { element: Attribute.Electro, scaling: Scaling.Atk, ...def });
+}
+
+/** Switch Gears!: the two modes. Which one she holds decides which Intro and which Resonance
+ *  Skill she casts (each mode's presses require it), and every one of those casts swaps her into
+ *  the other on its own cast, after the cast's condition has read the mode she started it in. */
+const HUNTRESS = new Buff({ name: "Rebecca: Huntress", stats: [[Stat.CritDmg, 30]] });
+const GUTS = new Buff({ name: "Rebecca: Guts", stats: [[Stat.DefIgnoreNew, 15]] });
+
+/** Mk. 31 HMG mode: opened by Party 'til Dawn! for 9.5s, ended by BOOM! Fireworks!. Its tiers and
+ *  BOOM! only exist inside it. */
+const MK31_HMG = new Buff({ name: "Rebecca: Mk. 31 HMG", duration: 60 * 9.5 });
+
+// --- Mix-'n'-Match, the Huntress half. Heavy Attack - Huntress is the held burst, which counts as
+//     Basic Attack DMG; releasing it turns into Eat Lead!, which does not.
+const HBA1 = rebeccaAction("Basic - Huntress 1", { requireBuff: HUNTRESS, animFrames: 26, castPriority: 2, node: Node.Normal, cast: Cast.Basic, type: Type.Basic, bullets: [
+    { hitFrame: 8, mv: 3676, energy: 55, concerto: 109, offtune: 1740, forte1: 353 },
+    { hitFrame: 22, mv: 3676, energy: 55, concerto: 109, offtune: 1740, forte1: 353 },
+  ]});
+const HBA2 = rebeccaAction("Basic - Huntress 2", { chains: [HBA1], requireBuff: HUNTRESS, animFrames: 40, castPriority: 2, node: Node.Normal, cast: Cast.Basic, type: Type.Basic, bullets: [
+    { hitFrame: 12, mv: 1913, energy: 29, concerto: 57, offtune: 906, forte1: 184 },
+    { hitFrame: 13, commitFrame: 12, mv: 1913, energy: 29, concerto: 57, offtune: 906, forte1: 184 },
+    { hitFrame: 14, commitFrame: 12, mv: 1913, energy: 29, concerto: 57, offtune: 906, forte1: 184 },
+    { hitFrame: 16, commitFrame: 12, mv: 1913, energy: 29, concerto: 57, offtune: 906, forte1: 184 },
+    { hitFrame: 30, mv: 1913, energy: 29, concerto: 57, offtune: 906, forte1: 184 },
+  ]});
+const HBA3 = rebeccaAction("Basic - Huntress 3", { chains: [HBA2], requireBuff: HUNTRESS, animFrames: 42, castPriority: 2, node: Node.Normal, cast: Cast.Basic, type: Type.Basic, bullets: [{ hitFrame: 18, mv: 10985, energy: 163, concerto: 325, offtune: 5200, forte1: 1054 }]});
+const HHA = rebeccaAction("Heavy - Huntress", { requireBuff: HUNTRESS, animFrames: 32, castPriority: 4, node: Node.Normal, cast: Cast.Heavy, type: Type.Basic, bullets: [
+    { hitFrame: 26, mv: 1690, energy: 25, concerto: 50, offtune: 800, forte1: 179 },
+    { hitFrame: 32, mv: 1690, energy: 25, concerto: 50, offtune: 800, forte1: 179 },
+  ]});
+// released out of the held Heavy Attack - Huntress
+const EatLead = rebeccaAction("Heavy - Eat Lead!: Huntress", { chains: [HHA], requireBuff: HUNTRESS, animFrames: 36, animPriority: { 36: 1 }, castPriority: 4, node: Node.Normal, cast: Cast.Heavy, type: Type.Heavy, bullets: [
+    { hitFrame: 0, mv: 6084, energy: 90, concerto: 180, offtune: 2880, forte1: 584 },
+    { hitFrame: 13, mv: 6084, energy: 90, concerto: 180, offtune: 2880, forte1: 584 },
+  ]});
+const HMA = rebeccaAction("Mid-air - Huntress Plunge", { castPosition: Position.Midair, endPosition: Position.Grounded, requireBuff: HUNTRESS, animFrames: 43, animPriority: { 0: 6, 32: 2 }, castPriority: 3, node: Node.Normal, cast: Cast.Basic, type: Type.Basic, bullets: [{ hitFrame: 34, mv: 13604, energy: 202, concerto: 403, offtune: 6440, forte1: 1305 }]});
+// "Can be cast during the following actions (while on the ground)": those presses, any Skill or Intro
+const HTD: Action = rebeccaAction("Dodge - Tactical Dodge: Huntress", {
+  chains: () => [HBA1, HBA2, HBA3, HHA, EatLead, CominInHot, HTD, Skill, ESkill, Intro, EIntro], castPosition: Position.Grounded, requireBuff: HUNTRESS, animFrames: 36, animPriority: { 36: 2 }, castPriority: 7, node: Node.Normal, cast: Cast.Dodge, type: Type.Basic, bullets: [
+    { hitFrame: 6, mv: 1690, energy: 25, concerto: 50, offtune: 800, forte1: 179 },
+    { hitFrame: 10, mv: 1690, energy: 25, concerto: 50, offtune: 800, forte1: 179 },
+    { hitFrame: 16, mv: 1690, energy: 25, concerto: 50, offtune: 800, forte1: 179 },
+    { hitFrame: 20, mv: 1690, energy: 25, concerto: 50, offtune: 800, forte1: 179 },
+    { hitFrame: 30, mv: 1690, energy: 25, concerto: 50, offtune: 800, forte1: 179 },
+  ]});
+// the somersault: no damage row of its own on nanoka and no gauges anywhere, and the one thing it
+// grants — the Heavy Attack - Huntress held out of it costing no STA — is stamina, which is unmodelled.
+// Pressed "when close to the ground" after Come 'n' Get Me!: "Somersault in mid-air and land"
+const CominInHot = rebeccaAction("Basic - Comin' in Hot!: Huntress", { chains: () => [ESkill, EIntro], castPosition: Position.Midair, endPosition: Position.Grounded, castPriority: 2, requireBuff: HUNTRESS, node: Node.Normal, cast: Cast.Basic });
+
+// --- the Guts half: fewer, heavier shots, and its Heavy Attack is a real Heavy.
+// custom frames for first hit
+const GBA1 = rebeccaAction("Basic - Guts 1", { requireBuff: GUTS, animFrames: 56, castPriority: 2, node: Node.Normal, cast: Cast.Basic, type: Type.Basic, bullets: [
+    { hitFrame: 14, mv: 6169, energy: 92, concerto: 183, offtune: 2920, forte1: 681 },
+    { hitFrame: 31, mv: 6169, energy: 92, concerto: 183, offtune: 2920, forte1: 681 },
+  ]});
+const GBA2 = rebeccaAction("Basic - Guts 2", { chains: [GBA1], requireBuff: GUTS, animFrames: 33, castPriority: 2, node: Node.Normal, cast: Cast.Basic, type: Type.Basic, bullets: [{ hitFrame: 11, mv: 8450, energy: 125, concerto: 250, offtune: 4000, forte1: 932 }]});
+const GBA3 = rebeccaAction("Basic - Guts 3", { chains: [GBA2], requireBuff: GUTS, animFrames: 85, castPriority: 2, node: Node.Normal, cast: Cast.Basic, type: Type.Basic, bullets: [
+    { hitFrame: 13, mv: 3377, energy: 50, concerto: 100, offtune: 1599, forte1: 373 },
+    { hitFrame: 23, mv: 3377, energy: 50, concerto: 100, offtune: 1599, forte1: 373 },
+    { hitFrame: 58, mv: 15757, energy: 234, concerto: 467, offtune: 7460, forte1: 1738 },
+  ]});
+const GHA = rebeccaAction("Heavy - Guts", { requireBuff: GUTS, animFrames: 68, animPriority: { 69: 2 }, castPriority: 4, node: Node.Normal, cast: Cast.Heavy, type: Type.Heavy, bullets: [{ hitFrame: 50, mv: 20279, energy: 300, concerto: 600, offtune: 9600, forte1: 1945 }]});
+const GMA = rebeccaAction("Mid-air - Guts Plunge", { castPosition: Position.Midair, endPosition: Position.Grounded, requireBuff: GUTS, animFrames: 57, animPriority: { 0: 6, 32: 2 }, castPriority: 3, node: Node.Normal, cast: Cast.Basic, type: Type.Basic, bullets: [{ hitFrame: 34, mv: 10478, energy: 155, concerto: 310, offtune: 4960, forte1: 1005 }]});
+// cast out of its own list of ground presses, and it "does not reset [the] Basic Attack ... attack
+// cycle": the Basic before it stays the one the next follows
+const GTD: Action = rebeccaAction("Dodge - Tactical Dodge: Guts", {
+  chains: () => [GBA1, GBA2, GBA3, GTD, Skill, ESkill, Intro, EIntro], castPosition: Position.Grounded,
+  requireBuff: GUTS, animFrames: 40, animPriority: { 40: 2 }, castPriority: 7, node: Node.Normal, cast: Cast.Dodge, type: Type.Basic, bullets: [{ hitFrame: 6, mv: 10140, energy: 150, concerto: 300, offtune: 4800, forte1: 973 }],
+  updateBuffs: () => saveChain(previousPress()),
+});
+
+/** The ground presses each Tactical Dodge can be cast out of (`ResonatorDef.dodge`). */
+const HUNTRESS_DODGES = new Set<Action>([HBA1, HBA2, HBA3, HHA, EatLead, CominInHot, HTD]);
+const GUTS_DODGES = new Set<Action>([GBA1, GBA2, GBA3, GTD]);
+
+// --- Tactical Tweaks: one Resonance Skill per mode, each ending in the other one.
+// the mode swap lands in convertStats(), after the cast that made it has already paid out under
+// the old mode
+// on cast (`updateBuffs`): the form she is in by the time a dash cutting the cast is made
+const TO_GUTS = { updateBuffs: () => { revokeCurrent(HUNTRESS); applyCurrent(GUTS, 1); } };
+const TO_HUNTRESS = { updateBuffs: () => { revokeCurrent(GUTS); applyCurrent(HUNTRESS, 1); } };
+/** Both skill forms share one 1s cooldown. */
+const SKILL_CD = new Cooldown({ frames: 60 });
+const Skill = rebeccaAction("Skill - It's Big Boomin' Time!", { requireBuff: HUNTRESS, animFrames: 87, animPriority: { 87: 2 }, castPriority: 4, cooldown: SKILL_CD, node: Node.Skill, cast: Cast.Skill, type: Type.Skill, bullets: [
+    { hitFrame: 30, mv: 2366, energy: 35, concerto: 70, offtune: 1120, forte1: 227 },
+    { hitFrame: 32, mv: 2366, energy: 35, concerto: 70, offtune: 1120, forte1: 227 },
+    { hitFrame: 34, mv: 2366, energy: 35, concerto: 70, offtune: 1120, forte1: 227 },
+    { hitFrame: 36, mv: 2366, energy: 35, concerto: 70, offtune: 1120, forte1: 227 },
+    { hitFrame: 38, mv: 3549, energy: 53, concerto: 105, offtune: 1680, forte1: 341 },
+    { hitFrame: 40, mv: 3549, energy: 53, concerto: 105, offtune: 1680, forte1: 341 },
+    { hitFrame: 42, mv: 3549, energy: 53, concerto: 105, offtune: 1680, forte1: 341 },
+    { hitFrame: 60, mv: 3549, energy: 53, concerto: 105, offtune: 1680, forte1: 341 },
+  ], ...TO_GUTS });
+// the recoil leaves her airborne for Comin' in Hot! "when close to the ground"
+const ESkill = rebeccaAction("Skill - Come 'n' Get Me!", { endPosition: Position.Midair, requireBuff: GUTS, animFrames: 110, animPriority: { 90: 2 }, castPriority: 4, cooldown: SKILL_CD, node: Node.Skill, cast: Cast.Skill, type: Type.Skill, bullets: [
+    { hitFrame: 12, mv: 2366, energy: 35, concerto: 70, offtune: 1120, forte1: 227 },
+    { hitFrame: 36, mv: 474, energy: 7, concerto: 14, offtune: 224, forte1: 46 },
+    { hitFrame: 62, mv: 2366, energy: 35, concerto: 70, offtune: 1120, forte1: 227 },
+    { hitFrame: 64, mv: 2366, energy: 35, concerto: 70, offtune: 1120, forte1: 227 },
+    { hitFrame: 66, mv: 13722, energy: 203, concerto: 406, offtune: 6496, forte1: 1317 },
+    { hitFrame: 68, mv: 1183, energy: 18, concerto: 35, offtune: 560, forte1: 114 },
+    { hitFrame: 70, mv: 1183, energy: 18, concerto: 35, offtune: 560, forte1: 114 },
+  ], ...TO_HUNTRESS });
+
+// --- Gloves Are Comin' Off!: the Fervor finishers. Both count as Basic Attack DMG, both spend the
+//     whole 120 and restore 40 Hot Hand, and both lay Hack - Shifting.
+/** "Inflicts Hack - Shifting upon dealing damage ... The same skill can trigger this effect once
+ *  every 3s": each listed skill hacks on any of its hits through its own 3s window. */
+function hacksEvery3s(skill: string): { updateDebuffs: () => void } {
+  const icd = new Buff({ name: `Rebecca: ${skill} (Hack cooldown)`, duration: 60 * 3 });
+  return {
+    updateDebuffs: () => {
+      if (isHeld(icd)) return;
+      applyCurrent(icd, 1);
+      applyHack();
+    },
+  };
+}
+const FHAHunt = rebeccaAction("Forte Heavy - Rat-tat-tat!: Huntress", { requireBuff: HUNTRESS, minForte1: 12000, animFrames: 110, animPriority: { 0: 5, 110: 1 }, castPriority: 6, node: Node.Forte, cast: Cast.Heavy, type: Type.Basic, bullets: [
+    { hitFrame: 12, mv: 1989, energy: 75, concerto: 100, offtune: 2216 },
+    { hitFrame: 46, mv: 1989, energy: 75, concerto: 100, offtune: 2216 },
+    { hitFrame: 50, mv: 1989, energy: 75, concerto: 100, offtune: 2216 },
+    { hitFrame: 56, mv: 1989, energy: 75, concerto: 100, offtune: 2216 },
+    { hitFrame: 84, mv: 31810, energy: 1200, concerto: 1600, offtune: 35456, forte2: 40 },
+  ], castForte1: -12000, ...hacksEvery3s("Rat-tat-tat!") });
+const FHAGuts = rebeccaAction("Forte Heavy - Bang-bang-bang!: Guts", { requireBuff: GUTS, minForte1: 12000, animFrames: 90, animPriority: { 0: 5, 90: 2 }, castPriority: 6, node: Node.Forte, cast: Cast.Heavy, type: Type.Basic, bullets: [{ hitFrame: 64, mv: 27834, energy: 1500, concerto: 2000, offtune: 44320, forte2: 40 }], castForte1: -12000, ...hacksEvery3s("Bang-bang-bang!") });
+
+// --- Party 'til Dawn!: the Liberation opens Mk. 31 HMG mode, which fires itself for 9.5s and
+//     banks Overload as it goes. The three tiers are one action apiece (see the file
+//     comment); the button press itself deals no damage, so its cost and its 20 Concerto Regen
+//     ride the first burst. Every hit of the mode is Basic Attack DMG.
+// Party 'til Dawn! is only the button press; the mode then fires itself through its three
+// firepower tiers, and BOOM! Fireworks! goes off once Overload caps — late enough that it lands
+// on the next resonator's time, so it is deferred behind their Intro (still on Rebecca's slot)
+const Lib1 = rebeccaAction("Liberation - Party 'til Dawn!", {
+  animFrames: 180, castPriority: 10, timestop: [0, 180], motionStop: [0, 180], cooldown: 60 * 25,
+  node: Node.Liberation, cast: Cast.Liberation, castEnergy: -12500, castConcerto: 2000,
+  updateBuffs: () => applyCurrent(MK31_HMG, 1),
+});
+// the tiers in order: firing starts on the mode, each enhancement "after Rebecca starts firing"
+const Lib2 = rebeccaAction("Liberation - Mk. 31 HMG x5", { chains: [Lib1], requireBuff: MK31_HMG,
+  animFrames: 0, castPriority: 10, 
+  node: Node.Liberation, type: Type.Basic, cast: Cast.Liberation, bullets: [
+    { hitFrame: 0, mv: 2430, concerto: 56, offtune: 1609 },
+    { hitFrame: 0, mv: 2430, concerto: 56, offtune: 1609 },
+    { hitFrame: 0, mv: 2430, concerto: 56, offtune: 1609 },
+    { hitFrame: 0, mv: 2430, concerto: 56, offtune: 1609 },
+    { hitFrame: 0, mv: 2430, concerto: 56, offtune: 1609 },
+  ],
+});
+const Lib3 = rebeccaAction("Liberation - Mk. 31 HMG 1st Enhancement x5", { chains: [Lib2], requireBuff: MK31_HMG,
+  animFrames: 0, castPriority: 10,
+  node: Node.Liberation, type: Type.Basic, cast: Cast.Liberation, bullets: [
+    { hitFrame: 0, mv: 4860, concerto: 112, offtune: 3218 },
+    { hitFrame: 0, mv: 4860, concerto: 112, offtune: 3218 },
+    { hitFrame: 0, mv: 4860, concerto: 112, offtune: 3218 },
+    { hitFrame: 0, mv: 4860, concerto: 112, offtune: 3218 },
+    { hitFrame: 0, mv: 4860, concerto: 112, offtune: 3218 },
+  ],
+});
+const Lib4 = rebeccaAction("Liberation - Mk. 31 HMG 2nd Enhancement x10", { chains: [Lib3], requireBuff: MK31_HMG,
+  animFrames: 0, castPriority: 10, 
+  node: Node.Liberation, type: Type.Basic, cast: Cast.Liberation, bullets: [
+    { hitFrame: 0, mv: 7290, concerto: 167, offtune: 4826 },
+    { hitFrame: 0, mv: 7290, concerto: 167, offtune: 4826 },
+    { hitFrame: 0, mv: 7290, concerto: 167, offtune: 4826 },
+    { hitFrame: 0, mv: 7290, concerto: 167, offtune: 4826 },
+    { hitFrame: 0, mv: 7290, concerto: 167, offtune: 4826 },
+    { hitFrame: 0, mv: 7290, concerto: 167, offtune: 4826 },
+    { hitFrame: 0, mv: 7290, concerto: 167, offtune: 4826 },
+    { hitFrame: 0, mv: 7290, concerto: 167, offtune: 4826 },
+    { hitFrame: 0, mv: 7290, concerto: 167, offtune: 4826 },
+    { hitFrame: 0, mv: 7290, concerto: 167, offtune: 4826 },
+  ],
+});
+const Boom = rebeccaAction("Liberation - BOOM! Fireworks!", { requireBuff: MK31_HMG,
+  animFrames: 133, animPriority: { 133: 2 }, castPriority: 11,
+  node: Node.Liberation, type: Type.Basic, cast: Cast.Liberation, bullets: [
+    { hitFrame: 66, mv: 6362, energy: 200, concerto: 100, offtune: 3103 },
+    { hitFrame: 79, mv: 57258, energy: 1800, concerto: 900, offtune: 27922 },
+  ],
+  ...hacksEvery3s("BOOM! Fireworks!"),
+  updateBuffs: () => revokeCurrent(MK31_HMG),
+});
+
+// --- My Turn!: one Intro per mode, each ending in the other one, each worth 50 Fervor through A
+//     Girl Gets What She Wants! (see A_GIRL) rather than on the action itself.
+const Intro = rebeccaAction("Intro - Yo, It's Big Boomin' Time!", { endPosition: Position.Grounded, requireBuff: HUNTRESS, animFrames: 96, noSwapFrames: 96, animPriority: { 96: 2 }, castPriority: 11, motionStop: [4, 93], node: Node.Intro, cast: Cast.Intro, type: Type.Intro, bullets: [
+    { hitFrame: 44, mv: 2704, energy: 100, offtune: 1280 },
+    { hitFrame: 46, mv: 2704, energy: 100, offtune: 1280 },
+    { hitFrame: 48, mv: 2704, energy: 100, offtune: 1280 },
+    { hitFrame: 50, mv: 2704, energy: 100, offtune: 1280 },
+    { hitFrame: 52, mv: 2704, energy: 100, offtune: 1280 },
+    { hitFrame: 54, mv: 2704, energy: 100, offtune: 1280 },
+    { hitFrame: 56, mv: 4056, energy: 150, offtune: 1920 },
+    { hitFrame: 72, mv: 6760, energy: 250, offtune: 3200 },
+  ], castConcerto: 1000, ...hacksEvery3s("Yo, It's Big Boomin' Time!"), ...TO_GUTS });
+// airborne like the Skill it mirrors: Comin' in Hot! follows it "when close to the ground"
+const EIntro = rebeccaAction("Intro - Hey, Leadhead, Come 'n' Get Me!", { endPosition: Position.Midair, requireBuff: GUTS, animFrames: 89, noSwapFrames: 63, animPriority: { 69: 2 }, castPriority: 11, motionStop: [4, 61], node: Node.Intro, cast: Cast.Intro, type: Type.Intro, bullets: [
+    { hitFrame: 29, mv: 1014, energy: 50, offtune: 480 },
+    { hitFrame: 53, mv: 3042, energy: 150, offtune: 1440 },
+    { hitFrame: 54, mv: 4056, energy: 200, offtune: 1920 },
+    { hitFrame: 55, mv: 4056, energy: 200, offtune: 1920 },
+    { hitFrame: 57, mv: 4056, energy: 200, offtune: 1920 },
+    { hitFrame: 59, mv: 4056, energy: 200, offtune: 1920 },
+  ], castConcerto: 1000, ...hacksEvery3s("Hey, Leadhead, Come 'n' Get Me!"), ...TO_HUNTRESS });
+
+/** Preem Choom (Outro): the turret is the pair of windows below — the outro row itself deals
+ *  nothing any more. Handing to Lucy, she enhances it: +250% DMG Multiplier at 4s on field
+ *  instead of 14 — a different window with its own boosted tick, the same 175% total either way
+ *  (14 x 12.5, or 4 x 12.5 x 3.5). */
+// her Outro hands the Bonds over; Hot Hand refills on its own clock while she is off field, which is
+// what arms A Girl Gets What She Wants! on her next Intro
+const Outro = rebeccaAction("Outro - Preem Choom", {
+  animFrames: 0,
+  cast: Cast.Outro, type: Type.Outro, minConcerto: 10000, castConcerto: -10000,
+  updateBuffs: () => {
+    // whoever this outro hands the field to is who decides which turret stands — Lucy enhances it
+    const st = currentTeam();
+    const next = st.slots[(st.active + st.outroDir + st.slots.length) % st.slots.length]!;
+    if (next.resonator?.name === "Lucy") applyTeam(REBECCA_TURRET_LUCY, 4);
+    else applyTeam(REBECCA_TURRET, 14);
+    queueQTE(EDGERUNNER_BONDS);
+  },
+});
+/** One turret shot at 2.5% — five of them per action-second of the turret's fire, each its own
+ *  row so the field grouping counts them — and the Lucy-enhanced shot beside it, the same
+ *  shot at +250% DMG Multiplier. */
+const TURRET_FIELD = new ActionField("Rebecca: Outro Turret");
+const TurretTick = rebeccaAction("Outro - Preem Choom: Turret", { type: Type.Outro, bullets: [{ hitFrame: 0, mv: 250 }], field: TURRET_FIELD });
+const TurretTickLucy = TurretTick.variant("Outro - Preem Choom: Turret (Enhanced)", {
+  applyStats: () => addStat(Stat.MulMv, 250),
+});
+/** The turret itself: a team-held window of its seconds, firing a volley each of them — hers or
+ *  anyone's turn, and never ended by a swap. */
+const REBECCA_TURRET = coordinatedBuff("Rebecca: Outro Turret", 14, () => REBECCA_RESONATOR, TurretTick, { hits: 5 });
+const REBECCA_TURRET_LUCY = coordinatedBuff("Rebecca: Outro Turret (Lucy)", 4, () => REBECCA_RESONATOR, TurretTickLucy, { hits: 5 });
+
+/** Her answer to a Hack break — tune-scaled, so it reads Tune Break Boost and nothing else.
+ *  Queued by the break rather than played, and capped in-game at one per target every 8s, which
+ *  this engine has no clock to enforce. An ordinary active cast, like every Tune Break response:
+ *  it is her own hit, and marking it inactive would have every "lost on switching out" buff she
+ *  holds revoke itself the moment a break went off. */
+const Meltdown = rebeccaAction("Tune Hack Response - Meltdown", {
+  animFrames: 0,
+  node: Node.Forte, cast: Cast.TuneBreak, type: Type.Hack, scaling: Scaling.Tune, bullets: [{ hitFrame: 0, mv: 235889 }],
+});
+
+/* ------------------------------------------------------------------------------------- buffs */
+
+/** A Girl Gets What She Wants!: at 120 Hot Hand, a Resonance Skill or Intro Skill grants both
+ *  modes' stat bonuses at once for 12s — so it pays whichever of the two she is not already in.
+ *  Hot Hand cannot be restored while it is up, so a finisher's own +40 is cancelled back out, and
+ *  it is consumed 10 a second (a point every 6 frames), the full 120 over the 12s. The Intro that triggers it also restores
+ *  50 Fervor. */
+const A_GIRL = new Buff({
+  name: "Rebecca: A Girl Gets What She Wants!",
+  duration: 60 * 12,
+  tick: { every: 6, fire: () => addGain({ forte2: -1 }) },
+  applyStats: () => {
+    // both modes' bonuses at once — and at S4 each at 160% of itself, so the mode she is already
+    // in gains the other 60% on top of its own
+    const k = isHeld(RB_S4) ? 1.6 : 1;
+    if (!isHeld(HUNTRESS)) addStat(Stat.CritDmg, 30 * k);
+    else if (k > 1) addStat(Stat.CritDmg, 30 * (k - 1));
+    if (!isHeld(GUTS)) addStat(Stat.DefIgnoreNew, 15 * k);
+    else if (k > 1) addStat(Stat.DefIgnoreNew, 15 * (k - 1));
+  },
+  updateDebuffs: () => {
+    const hotHand = currentHit().forte2;
+    if (hotHand > 0) addGain({ forte2: -hotHand });
+  },
+});
+
+/** Hot Hand's own 10 a second, a point every 6 frames up to its 120, held from combat start —
+ *  locked while A Girl Gets What She Wants! is up. */
+const HOT_HAND_REGEN = new Buff({
+  name: "Rebecca: Hot Hand (regen)",
+  tick: {
+    every: 6,
+    fire: () => { if (!isHeld(A_GIRL) && forte2() < 120) addGain({ forte2: 1 }); },
+  },
+});
+
+/** Tag, You're It! (Inherent Skill), the ATK half: +10% for 12s on triggering A Girl Gets What She
+ *  Wants! or casting either Fervor finisher, 2 stacks. */
+const TAG_YOURE_IT = new Buff({
+  name: "Inherent: Tag, You're It!", maxStacks: 2, duration: 60 * 12,
+  stats: [[Stat.BonusAtk, 10]], perStack: true,
+});
+
+/** The other half: whichever resonator inflicts Hack - Shifting gets +30 Tune Break Boost for 30s
+ *  — permanent uptime, and theirs alone rather than the team's (see RB_INHERENT_1 for the watch). */
+const TAG_TBB = new Buff({
+  name: "Inherent: Tag, You're It! (team)",
+  duration: 60 * 30,
+  stats: [[Stat.TBB, 30]],
+});
+
+/** Left an Opening! (Inherent Skill): her Liberation gives every nearby resonator +20% ATK for
+ *  30s — permanent uptime, and "nearby" rather than "active", so it pays on inactive actions too.
+ *  The interruption-resistance half carries no stat. */
+const LEFT_AN_OPENING = new Buff({
+  name: "Inherent: Left an Opening!",
+  duration: 60 * 30,
+  stats: [[Stat.BonusAtk, 20]],
+});
+
+/** Preem Choom (Outro): the incoming resonator gets Edgerunner Bonds, +15% All DMG Amplification
+ *  for 14s, and with it Overlimit — a stack every 0.2s, each +0.5% Heavy Attack DMG Amplification
+ *  up to +35%. Lucy is handed the cap the instant the Bonds land; anyone else ramps to it on the
+ *  Bonds' own clock across the full 14s. Both end early on switching out. */
+const EDGERUNNER_BONDS = new Buff({
+  name: "Rebecca: Outro - Edgerunner Bonds",
+  duration: 60 * 14,
+  stats: [[Stat.Amp, 15]],
+  updateBuffs: () => { if (isHeld(LUCY_RESONATOR)) applyCurrent(OVERLIMIT, 70); },
+  tick: { every: 12, fire: () => applyCurrent(OVERLIMIT, 1) },
+  lostOnSwap: true,
+});
+
+const OVERLIMIT = new Buff({
+  name: "Rebecca: Outro - Overlimit", maxStacks: 70,
+  lostOnSwap: true,
+  stats: [[Stat.Amp, 0.5, Type.Heavy]], perStack: true,
+});
+
+/* --------------------------------------------------------------------------- resonance chain */
+
+/** S1: +50% multiplier on the plain shots of both modes — the three-stage Basics, Heavy Attack -
+ *  Huntress (the held burst, not Eat Lead!) and both Tactical Dodges. The Street Smarts stamina
+ *  refund and the Liberation's interruption immunity carry no number here. */
+const RB_S1 = new Sequence({
+  name: "Rebecca S1: Try Not to Get in the Way!",
+  applyStats: () => {
+    if (runningAction(HBA1) || runningAction(HBA2) || runningAction(HBA3) || runningAction(HHA) || runningAction(HTD) || runningAction(GBA1) || runningAction(GBA2) || runningAction(GBA3) || runningAction(GTD)) addStat(Stat.MulMv, 50);
+  },
+});
+
+/** S2: either Intro or the Liberation press gives the team +20% All-Attribute DMG Bonus for 30s —
+ *  permanent, and "all Resonators in the team" so it pays off field too. And whoever inflicts
+ *  Hack - Shifting gets +15% All DMG Amplification for 30s, theirs alone — watched from her own
+ *  node the way Tag, You're It! watches for the Tune Break Boost. */
+const OH_HEY_CHOOM_TEAM = new Buff({
+  name: "Rebecca S2: Oh, Hey Choom! (intro/lib)",
+  duration: 60 * 30,
+  stats: [[Stat.DmgBonus, 20]],
+});
+const OH_HEY_CHOOM_HACK = new Buff({
+  name: "Rebecca S2: Oh, Hey Choom! (hack)",
+  duration: 60 * 30,
+  stats: [[Stat.Amp, 15]],
+});
+const RB_S2 = new Sequence({
+  name: "Rebecca S2: Oh, Hey Choom!",
+  hitGlobal: () => {
+    const acting = currentTeam().slot.resonator;
+    if (acting && applied(TUNE_HACK_SHIFTING)) addBuff(acting, OH_HEY_CHOOM_HACK, 1);
+  },
+  updateBuffs: () => { if (runningAction(Intro) || runningAction(EIntro) || runningAction(Lib1)) applyTeam(OH_HEY_CHOOM_TEAM, 1); },
+});
+
+/** S3: +60% multiplier on everything Party 'til Dawn! fires — the Mk. 31 HMG tiers and BOOM!
+ *  Fireworks! — and 120 Hot Hand on either Intro. Hot Hand cannot be restored while A Girl Gets
+ *  What She Wants! is up, and the Intro is what triggers it, so the grant only lands on an Intro
+ *  that didn't (never, off a full bar). The explosion range carries no number. */
+const RB_S3 = new Sequence({
+  name: "Rebecca S3: Don't Sweat Your Six!",
+  applyStats: () => {
+    if (runningAction(Lib2) || runningAction(Lib3) || runningAction(Lib4) || runningAction(Boom)) addStat(Stat.MulMv, 60);
+  },
+  // an Intro that didn't trigger A Girl Gets What She Wants! off a full bar
+  updateBuffs: () => {
+    if (casting(Cast.Intro) && !isHeld(A_GIRL) && forte2() < 120) addGain({ forte2: 120 });
+  },
+});
+
+/** S4: A Girl Gets What She Wants! grants 60% more — read by the buff itself (see A_GIRL). */
+const RB_S4 = new Sequence({ name: "Rebecca S4: Got Ya Covered!" });
+
+/** S5: +20% Basic Attack DMG Bonus for 8s on inflicting Hack - Shifting — off her own active
+ *  casts (an Intro or a Fervor finisher; BOOM! lands after she has left), refreshed by each and
+ * . */
+const DREAMIN_ON_THE_EDGE = new Buff({
+  name: "Rebecca S5: Dreamin' on the Edge",
+  duration: 60 * 8,
+  stats: [[Stat.DmgBonus, 20, Type.Basic]],
+});
+const RB_S5 = new Sequence({
+  name: "Rebecca S5: Dreamin' on the Edge",
+  grants: [{ on: inflicting(() => isActive() && applied(TUNE_HACK_SHIFTING) > 0), buff: DREAMIN_ON_THE_EDGE }],
+});
+
+/** S6: her Basic Attack DMG Bonus from every source is 40% higher — a conversion off the
+ *  Basic-scoped bonus the action already counted (`basicDmgBonus()`), taken late so every other
+ *  conversion has landed first. Either Fervor finisher also deals one more 900% ATK hit, Basic
+ *  Attack DMG, queued behind it, and restores 20 more Hot Hand (blocked, like the finisher's own
+ *  40, while A Girl Gets What She Wants! is up). The revive and out-of-combat Fervor carry nothing. */
+const S6Hunt = rebeccaAction("Forte Heavy - Rat-tat-tat!: Huntress (S6 Strike)", { node: Node.Forte, type: Type.Basic, bullets: [{ hitFrame: 0, mv: 90000 }] });
+const S6Guts = rebeccaAction("Forte Heavy - Bang-bang-bang!: Guts (S6 Strike)", { node: Node.Forte, type: Type.Basic, bullets: [{ hitFrame: 0, mv: 90000 }] });
+const RB_S6 = new Sequence({
+  name: "Rebecca S6: Maybe, Just Maybe...",
+  updateDebuffs: () => {
+    if ((runningAction(FHAHunt) || runningAction(FHAGuts)) && !isHeld(A_GIRL)) addGain({ forte2: 20 });
+  },
+  lateConvertStats: () => { addStat(Stat.DmgBonus, 0.4 * basicDmgBonus(), Type.Basic); },
+  updateBuffs: () => {
+    if (runningAction(FHAHunt)) queue(S6Hunt);
+    if (runningAction(FHAGuts)) queue(S6Guts);
+  },
+});
+
+/* --------------------------------------------------------------------------- kit and loadout */
+
+const RB_INHERENT_1 = new Inherent({
+  name: "Inherent: Tag, You're It!",
+  // Watched from her own inherent rather than through a team-wide marker: the Tune Break Boost is
+  // the *inflicter's*, so it has to land on whoever is actually acting — and hitGlobal's own
+  // currentSlot is Rebecca (this gear's holder), not them, so it goes through the acting slot's
+  // resonator instead of applySelf.
+  hitGlobal: () => {
+    const acting = currentTeam().slot.resonator;
+    if (acting && applied(TUNE_HACK_SHIFTING)) addBuff(acting, TAG_TBB, 1);
+  },
+  updateBuffs: () => {
+    if (applied(A_GIRL) || runningAction(FHAHunt) || runningAction(FHAGuts)) applyCurrent(TAG_YOURE_IT, 1);
+  },
+});
+
+const RB_INHERENT_2 = new Inherent({
+  name: "Inherent: Left an Opening!",
+  grants: [{ on: onAction(Lib1), buff: LEFT_AN_OPENING, to: BuffTarget.Team }],
+});
+
+const REBECCA_TALENTS = new Talent({
+  name: "Rebecca: Talents",
+  stats: [[Stat.BonusAtk, 11.9999997], [Stat.CritRate, 8]],
+});
+
+const REBECCA_RESONATOR = new Resonator({
+  id: 1308,
+  name: "Rebecca",
+  talent: REBECCA_TALENTS,
+  inherent1: RB_INHERENT_1,
+  inherent2: RB_INHERENT_2,
+  element: Attribute.Electro,
+  weapon: WeaponType.Pistols,
+  // whichever mode she is in decides which Intro she has; her loop always ends in Huntress
+  color: "#abebda",
+  // resolved when its row is reached: whichever Intro the kit's state calls for there
+  intro: () => (isHeld(GUTS) ? EIntro : Intro),
+  swapIn: () => (isHeld(GUTS) ? GBA1 : HBA1),
+  swapInAir: () => (isHeld(GUTS) ? GMA : HMA),
+  // her Tactical Dodges, each off its own mode's ground presses; a Skill or Intro dodges in whichever
+  // mode it switched her into
+  dodge: (after) => {
+    if (after.cast === Cast.Skill || after.cast === Cast.Intro) return isHeld(GUTS) ? GTD : HTD;
+    return HUNTRESS_DODGES.has(after) ? HTD : GUTS_DODGES.has(after) ? GTD : null;
+  },
+  maxEnergy: 12500,
+  forteScale: [0.01, 1, 1, 1, 1],
+  maxForte1: 12000,
+  maxForte2: 120,
+
+  // she starts in Huntress with a full Hot Hand bar
+  combatStart: () => {
+    applyCurrent(HUNTRESS, 1);
+    setForte2(120);
+    applyCurrent(HOT_HAND_REGEN, 1);
+    applyEnemy(TUNE_SHIFTABLE, 1);
+  },
+
+  hitGlobal: () => tuneHackResponse(Meltdown),
+
+  // at a full Hot Hand bar, a Resonance Skill or Intro Skill opens the 12s window, which drains the
+  // bar itself; the Fervor rides on the trigger, an Intro
+  updateBuffs: () => {
+    if (forte2() >= 120 && !isHeld(A_GIRL) && (casting(Cast.Skill) || casting(Cast.Intro))) {
+      applyCurrent(A_GIRL, 1);
+      if (casting(Cast.Intro)) addGain({ forte1: 5000 });
+    }
+  },
+
+  stats: [
+    [Stat.BaseHp, 11600], [Stat.BaseAtk, 400], [Stat.BaseDef, 1173.3312],
+    // the flat 10 every tune-break-era resonator carries (nanoka's own weakness_mastery)
+    [Stat.TBB, 10],
+  ],
+});
+
+/* ---------------------------------------------------------------------------------- rotation */
+const GBA23 = new ActionGroup("Basic - Guts 23", [GBA2, GBA3]);
+const Lib1234 = new ActionGroup("Liberation - Party 'til Dawn! + Mk. 31 HMG", [Lib1, Lib2, Lib3, Lib4]);
+const RB_ROTATION = new Rotation([
+  Intro.firstIntro(), EIntro.firstIntro(), GBA1.hitDodge(), GBA23.cancel(),
+  GHA.holdCancel(), 
+  FHAGuts, 
+  GHA.cancel(),
+  ACTION_ADAM_SMASHER_REBECCA.instaCancel(), ACTION_HYVATIA.instaCancel(), ACTION_HERON.instaDodge(), ACTION_STONEWALL_BRACER_1.instaDodge(),Lib1234, Boom.instaSwap(), Outro,
+
+  Intro.jumpCancel(), EIntro.jumpCancel(), HMA, // cancel is too slow
+  Skill.hitDodge(),
+  GBA1.cancel(),
+  FHAGuts, 
+  GHA.cancel(),
+  ACTION_ADAM_SMASHER_REBECCA.instaCancel(), ACTION_HYVATIA.instaCancel(), ACTION_HERON.instaDodge(), ACTION_STONEWALL_BRACER_1.instaDodge(),Lib1234, Boom.instaSwap(), Outro,
+]);
+
+/** Adam Smasher carries its own 1pc set, so the other four echoes run two ordinary 2-piece sets
+ *  instead of a 5pc — ATK and Electro. The other two builds are the classic handoff sets, which
+ *  she can run instead since everything she gives Lucy is a handoff anyway. */
+const RB_ECHOES = [
+  new EchoLoadout(ADAM_SMASHER, SHATTERED_DREAMS_1PC, LINGERING_TUNES_2PC, VOID_THUNDER_2PC),
+  new EchoLoadout(ADAM_SMASHER, SHATTERED_DREAMS_1PC, LINGERING_TUNES_2PC, REEL_2PC),
+  new EchoLoadout(ADAM_SMASHER, SHATTERED_DREAMS_1PC, SWORN_VIGIL_2PC, VOID_THUNDER_2PC),
+
+  new EchoLoadout(ADAM_SMASHER, SHATTERED_DREAMS_1PC, LINGERING_TUNES_2PC, MOONLIT_CLOUDS_2PC),
+  new EchoLoadout(ADAM_SMASHER, SHATTERED_DREAMS_1PC, MOONLIT_CLOUDS_2PC, VOID_THUNDER_2PC),
+
+  new EchoLoadout(HYVATIA, NEONLIGHT_LEAP_5PC),
+  new EchoLoadout(HERON, MOONLIT_CLOUDS_5PC),
+  // worn for the shield, which Jingran's Trace the Vestige feeds on
+  new EchoLoadout(STONEWALL_BRACER, MOONLIT_CLOUDS_5PC).requires(JINGRAN_RESONATOR),
+];
+
+export const REBECCA = new Loadout({
+  id: 13081,
+  resonator: REBECCA_RESONATOR,
+  sequences: [RB_S1, RB_S2, RB_S3, RB_S4, RB_S5, RB_S6],
+  weapons: [SKULL_THRASHER, NEW_STD_PISTOL, STATIC_MIST, THUNDERBOLT, SOLAR_FLAME],
+  echoes: new Echoes({
+    sets: RB_ECHOES,
+    mainstats: mainstatOptions(Mainstat.CR4, Mainstat.CD4, Mainstat.ER3, Mainstat.ATK3, Mainstat.Electro3, Mainstat.ATK1),
+    substats: substats(Substat.CritRate, Substat.CritDmg, Substat.Basic, Substat.AtkPct, Substat.FlatAtk, Substat.Heavy),
+    highSubstats: highSubs(Substat.CritRate, Substat.CritDmg, Substat.Basic, Substat.AtkPct, Substat.FlatAtk, Substat.Heavy, Substat.Skill),
+  }),
+    rotation: RB_ROTATION,
+});

@@ -1,0 +1,320 @@
+/**
+ * Verina, ported to the new engine. `Tier.Standard` — a standard 5-star, costed at S2,
+ * with S3-S6 opening rows of their own once that role's Sequences box is. Every node is its own
+ * gear piece: S2 Sprouting Reflections, S4 Blossoming Embrace (permanent +15% Spectro DMG once
+ * granted), S6 Joyous Harvest (+20% Starflower Blooms DMG plus a Coordinated Attack). S1 adds Blossom's 30s of heals (the HEALS marker only); S3/S5 are healing-only do-nothing pieces.
+ *
+ * Photosynthesis Energy (forte1, max 4) builds off Basic 5/Skill/Intro; a held Heavy or Mid-air
+ * Attack at 1+ becomes a Starflower Blooms variant, spending a stack. Liberation places
+ * Photosynthesis Mark on the enemy at 12 stacks — the 12s duration *as* the stacks: every active,
+ * non-triggered action anyone takes at the marked target draws one real Coordinated Attack tick
+ * and spends one stack, same treatment as Zhezhi's Inklit Spirit/Cantarella's Diffusion.
+ *
+ * Gift of Nature (Inherent Skill): +20% ATK, team-wide, on either Starflower Blooms variant,
+ * Liberation, or Outro. Real duration 20s, but explicitly lost on her own *next* Intro instead of
+ * outro — it keeps paying the team the whole time she's off field.
+ *
+ * Numbers from nanoka.cc (character 1503) — she has no migrated-sheet row, so this is nanoka's own
+ * Skill Attributes table throughout; anything not exposed there stays 0, flagged rather than guessed.
+ */
+import { Tier, Stat, Attribute, WeaponType, Type, Subtype, Cast, Node, Scaling, Position } from "../../engine/stats.js";
+import { Buff, Talent, Inherent, Sequence, Resonator, Loadout, EchoLoadout, coordinatedBuff } from "../../engine/gear.js";
+import {
+  applyTeam,
+  revokeTeam,
+  applyEnemy,
+  isHeld,
+  casting,
+  runningAction,
+  addStat,
+  queue,
+  applyCurrent,
+  addGain,
+} from "../../engine/context.js";
+import { Action, Rotation, SWAPIN, ActionField, ActionGroup, DODGE } from "../../engine/rotation.js";
+import { HEALS, heal } from "../../shared/status.js";
+import { VARIATION } from "../../weapons/standard.js";
+import { REJUV_5PC, ACTION_FALLACY } from "../../echoes/jinzhou.js";
+import { FALLACY } from "../../echoes/jinzhou.js";
+import { mainstats, Mainstat } from "../../shared/mainstats.js";
+import { Echoes } from "../../shared/echoes.js";
+import { substats, highSubs, Substat } from "../../shared/substats.js";
+import { SPACETREK_EXPLORER, STARRY_RADIANCE_5PC, ACTION_SPACETREK } from "../../echoes/lahairoi.js";
+import { FORMRENDER, TINGED_YEARNING_5PC, ACTION_FORMRENDER } from "../../echoes/mengzhou.js";
+import { JINGRAN_RESONATOR } from "../fusion/jingran.js";
+import { JINHSI_RESONATOR } from "./jinhsi.js";
+import { SUOMING_RESONATOR } from "../electro/suoming.js";
+import { HSIN_RESONATOR } from "../electro/hsin.js";
+
+/* ----------------------------------------------------------------------------------- actions */
+
+function verinaAction(id: string, def: object): Action {
+  return new Action(id, { element: Attribute.Spectro, scaling: Scaling.Atk, ...def });
+}
+
+// energy/concerto/offtune come off nanoka's own Damage Data table; BA3/MA3 are each multiple
+// repeated hits folded into one action, same as their own mv already was.
+const BA1 = verinaAction("Basic - Cultivation 1", { animFrames: 29, castPriority: 2, node: Node.Normal, cast: Cast.Basic, type: Type.Basic, bullets: [{ hitFrame: 14, mv: 3786, energy: 95, concerto: 304, offtune: 7600 }]});
+const BA2 = verinaAction("Basic - Cultivation 2", { chains: [BA1], animFrames: 35, castPriority: 2, node: Node.Normal, cast: Cast.Basic, type: Type.Basic, bullets: [{ hitFrame: 20, mv: 5116, energy: 128, concerto: 411, offtune: 10200 }]});
+const BA3 = verinaAction("Basic - Cultivation 3", { chains: [BA2], animFrames: 43, castPriority: 2, node: Node.Normal, cast: Cast.Basic, type: Type.Basic, bullets: [
+    { hitFrame: 20, mv: 2558, energy: 64, concerto: 205, offtune: 5100 },
+    { hitFrame: 24, commitFrame: 20, mv: 2558, energy: 64, concerto: 205, offtune: 5100 },
+  ]});
+const BA4 = verinaAction("Basic - Cultivation 4", { chains: [BA3], animFrames: 43, castPriority: 2, node: Node.Normal, cast: Cast.Basic, type: Type.Basic, bullets: [{ hitFrame: 10, mv: 6732, energy: 169, concerto: 541, offtune: 13600 }]});
+const BA5 = verinaAction("Basic - Cultivation 5", { chains: [BA4], animFrames: 58, castPriority: 2, node: Node.Normal, cast: Cast.Basic, type: Type.Basic, bullets: [{ hitFrame: 10, mv: 7162, energy: 180, concerto: 576, offtune: 14400, forte1: 1 }]});
+const HA = verinaAction("Heavy - Cultivation", { animFrames: 48, animPriority: { 24: 1 }, castPriority: 5, node: Node.Normal, cast: Cast.Heavy, type: Type.Heavy, bullets: [{ hitFrame: 9, mv: 9941, energy: 250, concerto: 800, offtune: 20000 }]});
+const MA1 = verinaAction("Mid-air - Cultivation 1", { castPosition: Position.Midair, animFrames: 21, castPriority: 2, node: Node.Normal, cast: Cast.Basic, type: Type.Basic, bullets: [{ hitFrame: 15, mv: 5637, energy: 141, concerto: 453, offtune: 11340 }]});
+const MA2 = verinaAction("Mid-air - Cultivation 2", { chains: () => [MA1, ForteMidair1], castPosition: Position.Midair, animFrames: 18, castPriority: 2, node: Node.Normal, cast: Cast.Basic, type: Type.Basic, bullets: [{ hitFrame: 12, mv: 5319, energy: 133, concerto: 428, offtune: 10700 }]});
+const MA3 = verinaAction("Mid-air - Cultivation 3", { chains: () => [MA2, ForteMidair2], castPosition: Position.Midair, animFrames: 33, castPriority: 2, node: Node.Normal, cast: Cast.Basic, type: Type.Basic, bullets: [
+    { hitFrame: 24, mv: 2542, energy: 63, concerto: 204, offtune: 5114 },
+    { hitFrame: 28, commitFrame: 24, mv: 2542, energy: 63, concerto: 204, offtune: 5114 },
+    { hitFrame: 32, commitFrame: 24, mv: 2542, energy: 63, concerto: 204, offtune: 5114 },
+  ]});
+// a Plunging Attack: it lands
+const MHA = verinaAction("Heavy - Cultivation (Mid-air)", { castPosition: Position.Midair, endPosition: Position.Grounded, animFrames: 36, animPriority: { 29: 3 }, castPriority: 6, node: Node.Normal, cast: Cast.Heavy, type: Type.Heavy, bullets: [{ hitFrame: 28, mv: 6164, energy: 51, concerto: 100, offtune: 12400 }]});
+const DC = verinaAction("Dodge Counter - Cultivation", { chains: [DODGE], animFrames: 20, animPriority: { 18: 2 }, castPriority: 8, node: Node.Normal, cast: Cast.DodgeCounter, type: Type.Basic, bullets: [{ hitFrame: 14, mv: 12923, energy: 325, concerto: 560, offtune: 14000 }], castConcerto: 1000});
+
+// base gain only — S2's own extra Photosynthesis Energy/Energy is traced separately (VERINA_S2)
+const Skill = verinaAction("Skill - Botany Experiment", { animFrames: 65, animPriority: { 64: 2 }, castPriority: 4, cooldown: 60 * 12, node: Node.Skill, cast: Cast.Skill, type: Type.Skill, bullets: [
+    { hitFrame: 24, mv: 3579, energy: 300, offtune: 5320 },
+    { hitFrame: 27, commitFrame: 24, mv: 3579, energy: 300, offtune: 5320 },
+    { hitFrame: 30, commitFrame: 24, mv: 3579, energy: 300, offtune: 5320 },
+    { hitFrame: 45, commitFrame: 24, mv: 7158, energy: 600, offtune: 10640 },
+  ], castConcerto: 3000, castForte1: 1});
+
+/** Starflower Blooms spends a Photosynthesis Energy stack "to recover Concerto Energy" — the
+ *  Forte Circuit's own `"Photosynthesis Energy" Concerto Regen = 12` row, which has no damage row
+ *  of its own to hang off so nanoka's per-hit figures never carry it. Once per Starflower cast,
+ *  not once per mid-air stage: the gauge is spent once for the whole combo (see the actions'
+ *  own note), so only the Heavy and the mid-air's own stage 1 pay out. */
+const STARFLOWER_CONCERTO = { updateDebuffs: () => addGain({ concerto: 1200 }) };
+
+// Starflower Blooms spends 1 Photosynthesis Energy either way, heals; the Heavy leaves her in mid-air
+// ("Mid-air Attack: Starflower Blooms ... by using Basic Attack after casting Heavy Attack: Starflower Blooms")
+const StarflowerHeavy = verinaAction("Forte Heavy - Starflower Blooms", { endPosition: Position.Midair, minForte1: 1, animFrames: 48, animPriority: { 30: 1 }, castPriority: 5, node: Node.Forte, cast: Cast.Heavy, type: Type.Heavy, bullets: [
+    { hitFrame: 9, mv: 6495, energy: 116, concerto: 186, offtune: 5840,
+      ...STARFLOWER_CONCERTO },
+    { hitFrame: 20, mv: 9742, energy: 175, concerto: 280, offtune: 8760 },
+  ], castForte1: -1});
+// Mid-air Starflower Blooms is its own 3-stage combo (same shape as the MA1-3 chain it replaces);
+// each stage is a Mid-air Attack cast "if Verina carries Photosynthesis Energy", spending one.
+const ForteMidair1 = verinaAction("Forte Mid-air - Starflower Blooms 1",
+    { castPosition: Position.Midair, minForte1: 1, animFrames: 21, castPriority: 2, node: Node.Forte, cast: Cast.Basic, type: Type.Basic, bullets: [{ hitFrame: 15, mv: 6764, energy: 141, concerto: 453, offtune: 11340 }], castForte1: -1, ...STARFLOWER_CONCERTO });
+const ForteMidair2 = verinaAction("Forte Mid-air - Starflower Blooms 2",
+    { chains: [ForteMidair1, MA1], castPosition: Position.Midair, minForte1: 1, animFrames: 18, castPriority: 2, node: Node.Forte, cast: Cast.Basic, type: Type.Basic, bullets: [{ hitFrame: 12, mv: 6382, energy: 133, concerto: 428, offtune: 10700 }], castForte1: -1, ...STARFLOWER_CONCERTO });
+const ForteMidair3 = verinaAction("Forte Mid-air - Starflower Blooms 3",
+    { chains: [ForteMidair2, MA2], castPosition: Position.Midair, minForte1: 1, animFrames: 33, castPriority: 2, node: Node.Forte, cast: Cast.Basic, type: Type.Basic, bullets: [
+    { hitFrame: 24, mv: 3050, energy: 63, concerto: 204, offtune: 5114,
+      ...STARFLOWER_CONCERTO },
+    { hitFrame: 28, commitFrame: 24, mv: 3050, energy: 63, concerto: 204, offtune: 5114 },
+    { hitFrame: 32, commitFrame: 24, mv: 3050, energy: 63, concerto: 204, offtune: 5114 },
+  ], castForte1: -1});
+
+// Arboreal Flourish places Photosynthesis Mark on the enemy (see file header), heals
+const Liberation = verinaAction("Liberation - Arboreal Flourish", {
+  animFrames: 150, castPriority: 10, timestop: [0, 106], motionStop: [0, 59], cooldown: 60 * 25,
+  node: Node.Liberation, cast: Cast.Liberation, type: Type.Liberation, bullets: [
+    { hitFrame: 58, mv: 19881 },
+    // the team heal, 27f behind the hit (wuwalab)
+    { hitFrame: 85, element: null, type: null, subtype: null, updateDebuffs: () => applyCurrent(HEALS, 1) },
+  ], castConcerto: 2000, castEnergy: -17500,
+  updateBuffs: () => applyEnemy(PHOTOSYNTHESIS_MARK, 12),
+});
+/** One Coordinated Attack tick — the mark's own per-action proc, and S6's single-hit reuse. It
+ *  banks nothing: nanoka's damage row (1503031013) and wuwalab's per-hit entry both give 0
+ *  energy/concerto/off-tune — the 1.46/4.04/20000 the old x12 lump declared match neither source
+ *  and are dropped, not divided up. Each tick heals, on its own hit. */
+const PHOTOSYNTHESIS_FIELD = new ActionField("Verina: Photosynthesis Mark");
+const PhotosynthesisTick = verinaAction("Liberation - Photosynthesis Mark", {
+  node: Node.Liberation, type: Type.Basic, subtype: Subtype.Coordinated, field: PHOTOSYNTHESIS_FIELD,
+  bullets: [{ hitFrame: 22, mv: 995, updateDebuffs: () => applyCurrent(HEALS, 1) }],
+});
+/** S6's one-off reuse of the same hit — her own follow-up off her own combo, not the mark's, so
+ *  this copy names no field and stays out of the report's field row. wuwalab lands it at 32f. */
+const S6Tick = PhotosynthesisTick.variant("Liberation - Photosynthesis Mark (S6)", { field: null,
+  bullets: [{ hitFrame: 32, commitFrame: 0, mv: 995, updateDebuffs: () => applyCurrent(HEALS, 1) }],
+});
+
+const Intro = verinaAction("Intro - Verdant Growth", { endPosition: Position.Grounded, qteFrames: 52, animFrames: 98, noSwapFrames: 83, animPriority: { 52: 4, 76: 1 }, castPriority: 11, motionStop: [4, 54], node: Node.Intro, cast: Cast.Intro, type: Type.Intro, bullets: [{ hitFrame: 62, mv: 9941, energy: 1000, offtune: 11230 }], castConcerto: 1000, castForte1: 1});
+/** Blossom: no damage of its own, just the outro handoff, the Gift of Nature/S4 trigger and its
+ *  heals on the incoming resonator — the first on cast, five more a second apart (wuwalab 0-300f). */
+const Outro = verinaAction("Outro - Blossom", {
+  animFrames: 0,
+  cast: Cast.Outro, minConcerto: 10000, castConcerto: -10000,
+  updateBuffs: () => {
+    applyTeam(VERINA_OUTRO, 1);
+    applyTeam(BLOSSOM_HEALS, BLOSSOM_HEALS.maxStacks);
+    // S1 heals once more on cast, then every 5s (wuwalab 0-1500f)
+    if (isHeld(VERINA_S1)) {
+      applyCurrent(HEALS, 1);
+      applyTeam(S1_HEALS, S1_HEALS.maxStacks);
+    }
+  },
+});
+/** Blossom's heals after its first, each her healing marker. */
+const BLOSSOM_HEALS = coordinatedBuff("Verina: Blossom (heals)", 5, () => VERINA_RESONATOR, heal);
+
+/* ------------------------------------------------------------------------------------ buffs */
+
+/** Gift of Nature (Inherent Skill) — see the file header for why this ends on her own next Intro
+ *  rather than outro. Still pays out on that Intro itself: afterAction() revokes once its hits are in. */
+const GIFT_OF_NATURE = new Buff({
+  name: "Inherent: Gift of Nature",
+  duration: 60 * 20,
+  stats: [[Stat.BonusAtk, 20]],
+  // granted from VERINA_RESONATOR's own updateBuffs() below since a global buff's own updateBuffs() can't fire before
+  // it's held once, and the Resonator itself is always self-held from team setup
+  afterAction: () => { if (casting(Cast.Intro) && isHeld(VERINA_RESONATOR)) revokeTeam(GIFT_OF_NATURE); },
+});
+/** Gift of Nature's own trigger — always-equipped Inherent Skill piece. */
+const VR_INHERENT_1 = new Inherent({
+  name: "Inherent: Gift of Nature",
+  updateBuffs: () => {
+    if (runningAction(StarflowerHeavy) || runningAction(ForteMidair1) || runningAction(Liberation) || runningAction(Outro)) applyTeam(GIFT_OF_NATURE, 1);
+  },
+});
+
+const VR_INHERENT_2 = new Inherent({ name: "Inherent: Grace of Life" }); // revive teammate
+
+
+/** Blossom's own team-wide DMG Amp — 30s is past the 21s permanent-uptime threshold, so it's
+ *  granted once and never revoked. Its heals are BLOSSOM_HEALS. */
+const VERINA_OUTRO = new Buff({
+  name: "Verina: Blossom",
+  duration: 60 * 30,
+  stats: [[Stat.Amp, 15]],
+});
+
+/** Photosynthesis Mark: a genuine debuff on the enemy, 12 stacks that are the mark's own 12s —
+ *  one Coordinated tick drawn per qualifying action at the marked target. */
+const PHOTOSYNTHESIS_MARK = coordinatedBuff("Verina: Photosynthesis Mark", 12, () => VERINA_RESONATOR, PhotosynthesisTick);
+
+/** S2 Sprouting Reflections: Botany Experiment's own +1 Photosynthesis Energy/+10 Energy on top
+ *  of its base gain. */
+const VERINA_S2 = new Sequence({
+  name: "Verina S2: Sprouting Reflections",
+  updateBuffs: () => {
+    if (runningAction(Skill)) addGain({ forte1: 1, concerto: 1000 });
+  },
+});
+
+/** S4 Blossoming Embrace: the trigger lives here; the payout is `S4_TEAM` (permanent uptime once
+ *  granted, per the standing duration rule). */
+const VERINA_S4 = new Sequence({
+  name: "Verina S4: Blossoming Embrace",
+  updateBuffs: () => {
+    // ForteMidair1 stands in for "cast Starflower Blooms (Mid-Air)" — only needs to trigger once
+    if (runningAction(StarflowerHeavy) || runningAction(ForteMidair1) || runningAction(Liberation) || runningAction(Outro)) applyTeam(S4_TEAM, 1);
+  },
+});
+const S4_TEAM = new Buff({
+  name: "Verina S4: Blossoming Embrace", duration: 60 * 24, stats: [[Stat.DmgBonus, 15, Attribute.Spectro]],
+});
+
+/** S6 Joyous Harvest: Starflower Blooms deals +20% more DMG and also triggers one Coordinated
+ *  Attack — the same single-hit value Photosynthesis Mark's own periodic proc has. */
+const VERINA_S6 = new Sequence({
+  name: "Verina S6: Joyous Harvest",
+  // the DMG boost lands on every hit of every Starflower press; the Coordinated Attack once a press
+  updateBuffs: () => {
+    if (runningAction(StarflowerHeavy) || runningAction(ForteMidair1) || runningAction(ForteMidair2) || runningAction(ForteMidair3)) queue(S6Tick);
+  },
+  applyStats: () => {
+    if (runningAction(StarflowerHeavy) || runningAction(ForteMidair1) || runningAction(ForteMidair2) || runningAction(ForteMidair3)) addStat(Stat.DmgBonus, 20);
+  },
+});
+
+/** S1 Moment of Emergence: Blossom heals the incoming resonator every 5s for 30s — her healing
+ *  marker per tick; the first lands on the Outro's cast, these are the five after it. */
+const VERINA_S1 = new Sequence({ name: "Verina S1: Moment of Emergence" });
+const S1_HEALS = coordinatedBuff("Verina S1: Moment of Emergence (heals)", 25, () => VERINA_RESONATOR, heal, { every: 5 });
+
+// S3 The Choice to Flourish, S5 Miraculous Blooms — healing-only, do-nothing gear pieces held for
+// the name only (see file header)
+const VERINA_S3 = new Sequence({ name: "Verina S3: The Choice to Flourish" });
+const VERINA_S5 = new Sequence({ name: "Verina S5: Miraculous Blooms" });
+
+// stat-tree bonus alone — Healing Bonus+ unused by the formula (healing out of scope), kept for
+// completeness only
+const VERINA_TALENTS = new Talent({
+  name: "Verina: Talents",
+  stats: [[Stat.BonusAtk, 11.9999997], [Stat.HealingBonus, 12]],
+});
+
+/** Her, as a Resonator: name/element/weapon, every grant/spend/queue rule her kit needs, and her
+ *  own base stat line. `Tier.Standard` — see the file header. */
+const VERINA_RESONATOR = new Resonator({
+  id: 1503,
+  name: "Verina",
+  stats: [[Stat.BaseHp, 14237.5], [Stat.BaseAtk, 337.5], [Stat.BaseDef, 1099.998]],
+  talent: VERINA_TALENTS,
+  inherent1: VR_INHERENT_1,
+  inherent2: VR_INHERENT_2,
+  element: Attribute.Spectro,
+  weapon: WeaponType.Rectifier,
+  color: "#cfee7a",
+  intro: Intro,
+  // her no-Intro chain opens on Basic 3
+  swapIn: BA3,
+  swapInAir: MA1,
+  maxEnergy: 17500, // her own real 175%, not the generic 125% default — matches Shorekeeper's own
+  maxForte1: 4,
+
+  tier: Tier.Standard,
+
+  // her healing marker, read by every healing sonata and weapon (statuses.ts): every Starflower press
+  // heals on its cast (wuwalab 0f), the Outro too; the Liberation's and the mark's sit on their bullets
+  updateBuffs: () => {
+    if (runningAction(StarflowerHeavy) || runningAction(ForteMidair1) || runningAction(ForteMidair2) || runningAction(ForteMidair3) || runningAction(Outro)) applyCurrent(HEALS, 1);
+  },
+
+});
+
+const BA345 = new ActionGroup("Basic - Cultivation 345", [BA3, BA4, BA5]);
+
+const VR_LOOP = new Rotation([
+  SWAPIN, BA345.cancel(), Liberation, 
+  Skill.jumpCancel(), ForteMidair1, ForteMidair2,
+  ACTION_FALLACY.instaSwap(), ACTION_SPACETREK.instaSwap(), ACTION_FORMRENDER.instaSwap(), Outro,
+
+  Intro, Liberation,
+  Skill.jumpCancel(), ForteMidair1, ForteMidair2,
+  ACTION_FALLACY.instaSwap(), ACTION_SPACETREK.instaSwap(), ACTION_FORMRENDER.instaSwap(), Outro,
+]);
+
+const VR_S2 = new Rotation([
+  SWAPIN, BA3.instaCancel(), Liberation, 
+  Skill.jumpCancel(), ForteMidair1, ForteMidair2,
+  ACTION_FALLACY.instaSwap(), ACTION_SPACETREK.instaSwap(), ACTION_FORMRENDER.instaSwap(), Outro,
+
+  Intro, Liberation,
+  Skill.jumpCancel(), ForteMidair1, ForteMidair2,
+  ACTION_FALLACY.instaSwap(), ACTION_SPACETREK.instaSwap(), ACTION_FORMRENDER.instaSwap(), Outro,
+]);
+
+/* ----------------------------------------------------------------------------------- loadout */
+
+// her real support/healer spread rather than the usual 43311 crit build; both Inherent Skills +
+// every sequence node (Tier.Standard — see file header) alongside resonator + talents
+export const VERINA = new Loadout({
+  id: 15031,
+  resonator: VERINA_RESONATOR,
+  weapons: [VARIATION],
+  echoes: new Echoes({
+    sets: [
+    new EchoLoadout(FALLACY, REJUV_5PC),
+    // worn for Spacetrek's shield, which Jingran's Trace the Vestige feeds on; Tinged Yearning for a Unison
+    new EchoLoadout(SPACETREK_EXPLORER, STARRY_RADIANCE_5PC).requires(JINGRAN_RESONATOR),
+    new EchoLoadout(FORMRENDER, TINGED_YEARNING_5PC).requires(JINHSI_RESONATOR, SUOMING_RESONATOR, HSIN_RESONATOR),
+    //new EchoLoadout(BELL_BORNE_GEOCHELONE, MOONLIT_CLOUDS_5PC),
+    //new EchoLoadout(HERON, MOONLIT_CLOUDS_5PC),
+    ],
+    mainstats: [mainstats(Mainstat.ATK4, Mainstat.ER3, Mainstat.ER3, Mainstat.ATK1, Mainstat.ATK1)],
+    substats: substats(Substat.Er, Substat.CritRate, Substat.CritDmg, Substat.Liberation, Substat.AtkPct, Substat.Basic),
+    highSubstats: highSubs(Substat.CritRate, Substat.CritDmg, Substat.Er, Substat.Liberation, Substat.AtkPct, Substat.Basic, Substat.Heavy),
+  }),
+    // S2 loop disabled for now: dropping BA345 from the window costs every teammate ~3.1 ER and
+    // loses her own damage too. Re-point at VR_S2 once that rotation is settled.
+    rotation: VR_LOOP,
+  sequences: [VERINA_S1, VERINA_S2, VERINA_S3, VERINA_S4, VERINA_S5, VERINA_S6],
+});

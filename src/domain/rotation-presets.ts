@@ -1,7 +1,8 @@
 import { createLocalId } from './id'
 import type { RotationAction, ScenarioValue, Team } from './types'
+import { validRotationTiming } from './rotation-timing'
 
-export const ROTATION_PRESET_SCHEMA_VERSION = 1 as const
+export const ROTATION_PRESET_SCHEMA_VERSION = 2 as const
 
 export interface RotationPresetAction {
   slot: number
@@ -10,10 +11,13 @@ export interface RotationPresetAction {
   duration?: number
   multiplier?: number
   inputs?: Record<string, ScenarioValue>
+  cancel?: RotationAction['cancel']
+  cancelFrame?: number
+  swapFrame?: number
 }
 
 export interface RotationPresetDocument {
-  schemaVersion: typeof ROTATION_PRESET_SCHEMA_VERSION
+  schemaVersion: 1 | typeof ROTATION_PRESET_SCHEMA_VERSION
   id: string
   name: string
   description?: string
@@ -45,7 +49,7 @@ function finiteNumber(value: unknown): value is number {
 export function parseRotationPresetDocument(value: unknown): RotationPresetDocument {
   if (!value || typeof value !== 'object') throw new Error('Rotation preset must be a JSON object.')
   const candidate = value as Partial<RotationPresetDocument>
-  if (candidate.schemaVersion !== ROTATION_PRESET_SCHEMA_VERSION) throw new Error(`Unsupported rotation preset version: ${String(candidate.schemaVersion)}.`)
+  if (candidate.schemaVersion !== 1 && candidate.schemaVersion !== ROTATION_PRESET_SCHEMA_VERSION) throw new Error(`Unsupported rotation preset version: ${String(candidate.schemaVersion)}.`)
   if (!candidate.id || !candidate.name || !finiteNumber(candidate.duration) || candidate.duration <= 0) throw new Error('Rotation preset identity or duration is invalid.')
   if (candidate.description !== undefined && typeof candidate.description !== 'string') throw new Error('Rotation preset description is invalid.')
   if (!Array.isArray(candidate.characters) || !Array.isArray(candidate.actions)) throw new Error('Rotation preset characters and actions are required.')
@@ -56,6 +60,7 @@ export function parseRotationPresetDocument(value: unknown): RotationPresetDocum
     if (!Number.isInteger(action?.slot) || !characterSlots.has(action.slot) || !action.attackId || !finiteNumber(action.timestamp) || action.timestamp < 0 || action.timestamp > candidate.duration) throw new Error('Rotation preset contains an invalid action.')
     if (action.duration !== undefined && (!finiteNumber(action.duration) || action.duration <= 0 || action.timestamp + action.duration > candidate.duration)) throw new Error('Rotation preset contains an invalid action duration.')
     if (action.multiplier !== undefined && (!Number.isInteger(action.multiplier) || action.multiplier < 1 || action.multiplier > 99)) throw new Error('Rotation preset contains an invalid action multiplier.')
+    if (!validRotationTiming(action, (candidate.duration - action.timestamp) * 60)) throw new Error('Rotation preset contains invalid cancel or swap timing.')
     if (action.inputs !== undefined && (!action.inputs || typeof action.inputs !== 'object' || Array.isArray(action.inputs) || !Object.values(action.inputs).every((input) => finiteNumber(input) || typeof input === 'string' || typeof input === 'boolean'))) throw new Error('Rotation preset contains invalid action inputs.')
   }
   return { ...candidate, source: candidate.source === 'bundled' ? 'bundled' : 'user' } as RotationPresetDocument
@@ -71,7 +76,8 @@ export function createRotationPreset(team: Team, members: RotationPresetMember[]
     characters: members.map(({ slot, catalogId, name: memberName }) => ({ slot, catalogId, name: memberName })),
     actions: team.actions.flatMap((action) => {
       const slot = slotByBuild.get(action.buildId)
-      return slot === undefined ? [] : [{ slot, attackId: action.attackId, timestamp: action.timestamp, duration: action.duration, multiplier: action.multiplier, inputs: action.inputs }]
+      return slot === undefined ? [] : [{ slot, attackId: action.attackId, timestamp: action.timestamp, duration: action.duration, multiplier: action.multiplier, inputs: action.inputs,
+        cancel: action.cancel, cancelFrame: action.cancelFrame, swapFrame: action.swapFrame }]
     }),
     source: 'user',
     createdAt: Date.now()
@@ -100,7 +106,10 @@ export function previewRotationPreset(preset: RotationPresetDocument, members: R
       timestamp: Math.min(preset.duration, action.timestamp),
       duration: action.duration,
       multiplier: action.multiplier,
-      inputs: action.inputs
+      inputs: action.inputs,
+      cancel: action.cancel,
+      cancelFrame: action.cancelFrame,
+      swapFrame: action.swapFrame
     }]
   })
   return { actions, warnings: [...new Set(warnings)], compatible: warnings.length === 0 }

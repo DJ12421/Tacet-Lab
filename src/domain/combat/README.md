@@ -1,9 +1,19 @@
-# Clean-room combat calculation module
+# Combat calculation module
 
 Status: reviewed 3.7 mechanics are integrated into Teams, rotations, build
 previews, the optimizer worker, and the Theorizer. Pending mechanics are marked
 TBA in the Archive and calculation views; reviewed actions and effects remain available.
 The former damage module and general-purpose formula engine have been removed.
+
+A stateful kit preview now lives in `stateful/`. It resolves authored casts at
+saved timestamps, including queued hits, gauges, cooldowns, buffs, and enemy
+debuffs for mapped kit casts. The preview is separately labeled in the
+Rotation editor. The formula total still drives team totals and optimizer rankings.
+The Theorizer uses stateful rotation scoring when every suggestion is covered
+and formula scoring for the entire ranking otherwise. Unsupported gear,
+skill levels, enemy modifiers, cast timing, and actions are reported rather than
+being silently treated as zero. The preview is unverified against current
+English in-game values.
 
 ## Decision
 
@@ -12,9 +22,8 @@ will calculate individual actions and rotations. Rotation calculation must use
 the same action implementation; the optimizer and Theorizer must use that same
 implementation without traces.
 
-This is a clean-room replacement. The module must not import, wrap, call, copy,
-compare against as an oracle, or fall back to either of the existing damage
-calculation implementations.
+The public calculator remains the stable formula interface. The stateful kit
+preview is internal and must not mix its partial result into formula totals.
 
 ## Goals
 

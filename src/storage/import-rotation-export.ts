@@ -3,6 +3,7 @@ import { createLocalId } from '../domain/id'
 import { characterCatalog, echoCatalog, GAME_DATA_VERSION, sonataCatalog, weaponCatalog } from '../game-data'
 import { resolveRotationActionId } from '../game-data/combat/rotation-action-mapping'
 import { importedAbilityForAction } from '../game-data/combat/imported-actions'
+import { validRotationTiming } from '../domain/rotation-timing'
 
 type RecordValue = Record<string, unknown>
 const record = (value: unknown): value is RecordValue => Boolean(value) && typeof value === 'object' && !Array.isArray(value)
@@ -37,6 +38,9 @@ interface RotationExportAction {
   attackName: string
   attackId: string | null
   timestamp: number
+  cancel?: RotationAction['cancel']
+  cancelFrame?: number
+  swapFrame?: number
 }
 interface RotationExport {
   schemaVersion: number
@@ -75,7 +79,7 @@ function availableId<T extends { id: string }>(base: string, current: T[], make:
 
 export function convertRotationExport(value: RecordValue, current: AccountDocument) {
   const source = value as unknown as RotationExport
-  if (source.schemaVersion !== 1 || !record(source.source) || source.source.site !== 'wuwalab' || !Number.isSafeInteger(source.source.rotationId) ||
+  if (![1, 2].includes(source.schemaVersion) || !record(source.source) || source.source.site !== 'wuwalab' || !Number.isSafeInteger(source.source.rotationId) ||
       !['loop', 'full'].includes(source.source.segment) || typeof source.name !== 'string' || !source.name.trim() ||
       !Number.isFinite(source.duration) || source.duration <= 0 || source.duration > 600 ||
       !Array.isArray(source.characters) || source.characters.length < 1 || source.characters.length > 3 ||
@@ -90,7 +94,7 @@ export function convertRotationExport(value: RecordValue, current: AccountDocume
   if (source.actions.some((action) => !record(action) || !Number.isInteger(action.slot) || action.slot < 0 || action.slot >= characters.length ||
       typeof action.attackName !== 'string' || !action.attackName ||
       (action.attackId !== null && typeof action.attackId !== 'string') ||
-      !Number.isFinite(action.timestamp) || action.timestamp < 0 || action.timestamp >= source.duration)) {
+      !Number.isFinite(action.timestamp) || action.timestamp < 0 || action.timestamp >= source.duration || !validRotationTiming(action, (source.duration - action.timestamp) * 60))) {
     throw new Error('The rotation contains an invalid action.')
   }
 
@@ -99,7 +103,7 @@ export function convertRotationExport(value: RecordValue, current: AccountDocume
   const builds: TheorycraftBuild[] = []
   const notices = [
     'Echoes are imported as theorycraft gear; owned Echoes, weapons, and existing character progression stay unchanged. Echo rarity 5 and level 25 are assumed.',
-    'The rotation export contains cast times but not combat buffs, status state, enemy settings, or character and weapon levels. The imported team uses Tacet Lab defaults; review these before comparing damage.'
+    'The rotation export contains cast times but may omit cancel or swap details. It does not include combat buffs, status state, enemy settings, or character and weapon levels. The imported team uses Tacet Lab defaults; review these before comparing damage.'
   ]
   const members: NonNullable<Team['members']> = []
   for (const member of characters) {
@@ -155,7 +159,8 @@ export function convertRotationExport(value: RecordValue, current: AccountDocume
         id: `${id}:action:${index}`, buildId: teamMembers[action.slot].memberId,
         attackId: attackId ?? `wuwalab:${encodeURIComponent(action.attackName)}`,
         label: action.attackName, timestamp: action.timestamp,
-        duration: Math.min(frames && frames > 0 ? frames / 60 : 0.8, source.duration - action.timestamp)
+        duration: Math.min(frames && frames > 0 ? frames / 60 : 0.8, source.duration - action.timestamp),
+        cancel: action.cancel, cancelFrame: action.cancelFrame, swapFrame: action.swapFrame
       }
     })
     return {

@@ -21,3 +21,14 @@
 @import './team-workspace/theorizer.css';
 @import './team-workspace/formation-console.css';
 @import './team-workspace/equipment-buff-settings.css';
+.tw-stateful-preview {
+  display: grid;
+  gap: .3rem;
+  margin-bottom: 1rem;
+  padding: .85rem 1rem;
+  border: 1px solid var(--accent, #8dc7bd);
+  border-radius: .8rem;
+  background: rgba(83, 152, 139, .09);
+}
+
+.tw-stateful-preview small { opacity: .8; }

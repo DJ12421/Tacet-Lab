@@ -1,0 +1,282 @@
+/**
+ * The damage formula, transcribed from Calculator!BY:CI (see FINDINGS.md §3 step 5).
+ *
+ * Inputs arrive in the authoring units — ratio stats in percent, motion values in percent —
+ * so everything is scaled here. The floors are load-bearing: the TUNETEST sheet's observed
+ * in-game numbers only line up with the rounding in place.
+ *
+ * dot and tune scalings deliberately bypass damage bonus, res/def ignore and crit. Dot also
+ * bypasses total damage, and every amplification but the kind scoped to the Negative Status it is
+ * — that one scope is the whole of what a status's own damage scales with.
+ */
+import type { Action } from "./rotation.js";
+import { Stat, EnemyStat, Scaling, MV_UNIT } from "./stats.js";
+import { PANEL_INDEX } from "./state.js";
+import type { StatRow } from "./state.js";
+import { ctx } from "./runtime.js";
+import { negativeStatusLevels } from '../../../../game-data/combat/negative-status';
+import { tuneBreakLevelBases } from '../../../../game-data/tune-break';
+
+/** A resolved action snapshot, from `State.resolve()` — everything the formula reads off it. */
+export interface Snapshot {
+  action: Action;
+  stat(key: Stat | EnemyStat): number;
+  /** `stat()`'s own backing array, indexed by the stat itself — what the formula below reads. */
+  stats: StatRow;
+  atk: number;
+  hp: number;
+  def: number;
+  amp: number;
+  /** The part of `amp` that came in scoped to a `Subtype` — all a dot hit reads (see `ampFactor`). */
+  subtypeAmp: number;
+  /** The parts of Crit Rate/Crit DMG scoped to a `Subtype` — the only crit a dot or tune hit has. */
+  subtypeCritRate: number;
+  subtypeCritDmg: number;
+  /** The parts of Total Damage / Damage Taken scoped to a `Subtype` — all a dot hit reads of either. */
+  subtypeTotalDmg: number;
+  subtypeDamageTaken: number;
+  dmgBonus: number;
+  /** The enemy's own current resistance to this action's element, and current defence — both
+   *  read off `Enemy` at resolve time (base plus whatever debuffs contributed this pass). */
+  enemyRes: number;
+  enemyDef: number;
+  enemyDamageReduction: number;
+  chain?: string | null;
+  chainOf?: string | null;
+}
+
+/** Fallback level for direct engine callers that do not supply an owned character level. */
+export const RESONATOR_LEVEL = 90;
+const tuneLevelStat = () => Math.floor((tuneBreakLevelBases[ctx.slot?.level ?? RESONATOR_LEVEL] ?? NaN) * 14);
+
+/**
+ * The action's motion value after everything that changes it, in percent:
+ *
+ *     (base + added) x (1 + bonus) x (1 + special bonus)
+ *
+ * The addition happens first and in the action's own units, so a kit that adds motion value
+ * outright does not have to be re-expressed as a multiplier of whatever the action started at.
+ */
+export const mvPercent = (snapshot: Snapshot): number =>
+  (snapshot.action.mv + snapshot.stats[Stat.AddMv]!)
+  * (1 + snapshot.stats[Stat.MulMv]! / 100);
+
+/** Dot damage bypasses ignore and shred; both helpers below need to know. */
+const notDotFor = (snapshot: Snapshot): number =>
+  (snapshot.action.scaling !== Scaling.Dot ? 1 : 0);
+
+/** The scalar forms of the enemy-side terms, off the figures alone: `damageFactorsInto()` (the search's
+ *  per-variant path, which has no Snapshot object) and the Snapshot forms below share them, so the
+ *  two can't drift. */
+const shredOf = (stats: StatRow, notDot: number, base: number): number =>
+  1 - ((1 - notDot * stats[Stat.DefIgnoreNew]! / 100)
+    * Math.floor(base * (1 - stats[EnemyStat.DefReduce]! / 100 - notDot * stats[Stat.DefIgnoreOld]! / 100))) / base;
+const resOf = (stats: StatRow, notDot: number, enemyRes: number): number =>
+  (enemyRes / 100 - stats[Stat.ResIgnore]! / 100 * notDot - stats[EnemyStat.ResReduce]! / 100) * 100;
+const resFactorFrom = (finalRes: number): number =>
+  (finalRes < 0 ? 1 - finalRes / 2
+    : finalRes < 0.8 ? 1 - finalRes
+    : 1 / (1 + 5 * finalRes));
+export const OWN_DEF = 800 + RESONATOR_LEVEL * 8;
+const defFactorFrom = (finalDef: number): number => {
+  const ownDef = 800 + (ctx.slot?.level ?? RESONATOR_LEVEL) * 8;
+  return ownDef / (ownDef + finalDef);
+};
+
+/**
+ * How much of the enemy's defence ignore, reduce and shred strip away, **as a fraction of its
+ * base** — 0 means untouched, 0.3 means it is defending with 30% less than it started the fight
+ * with. The base itself (`snapshot.enemyDef`) already carries the enemy's own level and any
+ * debuffs on it.
+ */
+export function effectiveShred(snapshot: Snapshot): number {
+  return shredOf(snapshot.stats, notDotFor(snapshot), snapshot.enemyDef);
+}
+
+/** The enemy's resistance after ignore and shred, in percent units. May go negative. */
+export function effectiveRes(snapshot: Snapshot): number {
+  return resOf(snapshot.stats, notDotFor(snapshot), snapshot.enemyRes);
+}
+
+/** The enemy's resistance turned into the multiplier the formula uses. */
+export function resFactorOf(snapshot: Snapshot): number {
+  return resFactorFrom(effectiveRes(snapshot) / 100);
+}
+
+/** The enemy's defence turned into the multiplier the formula uses. */
+export function defFactorOf(snapshot: Snapshot): number {
+  // the ratio the table shows, back out to the absolute defence the formula divides by
+  return defFactorFrom((1 - effectiveShred(snapshot)) * snapshot.enemyDef);
+}
+
+export interface DamageFactors {
+  scaling: Scaling | null;
+  finalMv: number;
+  finalStat: number;
+  ampFactor: number;
+  bonusFactor: number;
+  tbbFactor: number;
+  resFactor: number;
+  defFactor: number;
+  dealtFactor: number;
+  takenFactor: number;
+  critFactor: number;
+  critMult: number;
+  noCrit: number;
+  crit: number;
+  avg: number;
+}
+
+/**
+ * Every term of the damage formula, kept apart so the table can show the whole product rather
+ * than only its result.
+ *
+ * @returns each multiplier, plus the `avg` they come to
+ */
+export function damageFactors(snapshot: Snapshot): DamageFactors {
+  const { action } = snapshot;
+  const s = (k: Stat) => snapshot.stats[k]! / 100;   // ratio stats
+  const { scaling } = action;
+
+  // A rotation marker rather than a cast (rotation.ts's own INTRO and friends): no scaling, and
+  // the Action constructor forbids that on anything carrying a motion value, so there is nothing
+  // to multiply and every term is reported as the neutral value it would have been.
+  if (scaling === null) {
+    return {
+      scaling: null, finalMv: 0, finalStat: 0,
+      ampFactor: 1, bonusFactor: 1, tbbFactor: 1, resFactor: 1, defFactor: 1, dealtFactor: 1, takenFactor: 1,
+      critFactor: 1, critMult: 1,
+      noCrit: 0, crit: 0, avg: 0,
+    };
+  }
+
+  // Fixed reads no stat and takes no buff — its own mv is the damage, full stop. Every other
+  // factor is reported as a neutral 1 so the table still has something to show per term.
+  if (scaling === Scaling.Fixed) {
+    return {
+      scaling, finalMv: action.mv / MV_UNIT, finalStat: 100,
+      ampFactor: 1, bonusFactor: 1, tbbFactor: 1, resFactor: 1, defFactor: 1, dealtFactor: 1, takenFactor: 1,
+      critFactor: 1, critMult: 1,
+      noCrit: Math.floor(action.mv / MV_UNIT), crit: Math.floor(action.mv / MV_UNIT), avg: Math.floor(action.mv / MV_UNIT),
+    };
+  }
+
+  const notDot = scaling !== Scaling.Dot ? 1 : 0;
+  const notTune = scaling !== Scaling.Tune ? 1 : 0;
+
+  const finalStat = Math.floor(
+    scaling === Scaling.Atk ? snapshot.atk
+    : scaling === Scaling.Hp ? snapshot.hp
+    : scaling === Scaling.Def ? snapshot.def
+    : scaling === Scaling.Dot ? negativeStatusLevels[ctx.slot?.level ?? RESONATOR_LEVEL] ?? NaN
+    : scaling === Scaling.Tune ? tuneLevelStat()
+    : NaN
+  );
+
+  // motion values are held in hundredths of a percent, so 30734 is a 3.0734x multiplier
+  const finalMv = mvPercent(snapshot) / (100 * MV_UNIT);
+
+  // Amplification is the one thing a dot hit does read (the migrated sheet's own `specialAmp`
+  // column) — but only the part scoped to the Negative Status it is, never plain or element-scoped
+  // amplification. That split can't be made from `amp` here, since every matching scope is already
+  // summed into it, so evaluate.ts keeps the scoped part alongside (see `subtypeAmp` there).
+  const ampFactor = 1 + ((notDot ? snapshot.amp : snapshot.subtypeAmp) / 100) * notTune;
+  const bonusFactor = 1 + (snapshot.dmgBonus / 100) * notDot * notTune;
+  // Tune break boost multiplies tune damage and nothing else. It is part of the formula rather
+  // than something the tune break converts into amplification on itself: the ordinary damage
+  // bonus and amplification are both gated off for tune, so this is the multiplier tune has.
+  // ...and it divides its own points down rather than going through `s()`: Tune Break Boost is
+  // not a ratio stat (see stats.ts's own PERCENT_STATS), it is a count that happens to buy 1% each.
+  const tbbFactor = 1 + (snapshot.stats[Stat.TBB]! / 100) * (1 - notTune);
+  const resFactor = resFactorOf(snapshot);
+  const defFactor = defFactorOf(snapshot);
+  // Total Damage and Damage Taken read like amplification on a dot: only the part scoped to the
+  // Negative Status it is, never plain or element-scoped — a status's own damage is the target's,
+  // and nothing the attacker stacks onto their own hits carries into it. Damage Taken is the
+  // target-side half of the same line ("targets take N% more DMG from X") and is a factor of its
+  // own: the two multiply rather than summing.
+  const dealtFactor = 1 + (notDot ? s(Stat.TotalDmg) : snapshot.subtypeTotalDmg / 100);
+  const takenFactor = (1 + (notDot ? s(Stat.DamageTaken) : snapshot.subtypeDamageTaken / 100))
+    * (1 - snapshot.enemyDamageReduction / 100);
+
+  // dot and tune crit only off the Negative-Status-scoped crit (Hsin's S6) — with none, a flat 1
+  const special = !(notDot * notTune);
+  const critMult = special ? (snapshot.subtypeCritDmg ? snapshot.subtypeCritDmg / 100 : 1) : s(Stat.CritDmg);
+  const cr = special ? snapshot.subtypeCritRate / 100 : s(Stat.CritRate);
+  // what an average hit is worth: every hit crits above 100% rate, otherwise the blend
+  const critFactor = cr >= 1 ? critMult : (1 - cr) + critMult * cr;
+
+  const noCrit = finalMv * finalStat * ampFactor * bonusFactor * tbbFactor
+    * resFactor * defFactor * dealtFactor * takenFactor;
+
+  // the game floors the damage number it deals, so every figure leaving here is a whole one —
+  // the factors above stay exact, and a trace's product can sit a fraction off what it totals to
+  return {
+    scaling, finalMv, finalStat,
+    ampFactor, bonusFactor, tbbFactor, resFactor, defFactor, dealtFactor, takenFactor, critFactor, critMult,
+    noCrit: Math.floor(noCrit),
+    crit: Math.floor(noCrit * critMult),
+    avg: Math.floor(noCrit * critFactor),
+  };
+}
+
+/**
+ * `floor(base) + panel + floor(floor(base) x combat%) + flat` — the one fold ATK, HP and DEF each
+ * come out of the totals by, and the only place that formula is written. The panel shares are
+ * already points (state.ts's `PANEL_INDEX`); the combat % (`bonus`) is every applyStats/convertStats
+ * % summed, floored once off the floored base. The base is the resonator's own base line plus the
+ * weapon's. All of it stays unscoped.
+ */
+export const foldStat = (stats: StatRow, base: Stat, bonus: Stat, flat: Stat): number => {
+  const b = Math.floor(stats[base]!);
+  return b + stats[PANEL_INDEX + base]! + Math.floor(b * stats[bonus]! / 100) + stats[flat]!;
+};
+
+/** Where each of a row's factors sits in its stretch of `FACTOR_COUNT` (`damageFactorsInto()`). */
+const F_ADD_MV = 0, F_MUL_MV = 1, F_STAT = 2, F_AMP = 3, F_BONUS = 4, F_TBB = 5, F_RES = 6, F_DEF = 7, F_DEALT = 8, F_TAKEN = 9, F_CRIT = 10;
+export const FACTOR_COUNT = 11;
+
+/** `damageFactors()` off the figures, split at the motion value, same expressions in the same order:
+ *  every factor but the motion value into `out[at...]`, which `avgFromFactors()` then heads. */
+export function damageFactorsInto(
+  out: Float64Array, at: number, scaling: Scaling | null, stats: StatRow, atk: number, hp: number, def: number,
+  amp: number, subtypeAmp: number, dmgBonus: number, subtypeCritRate: number, subtypeCritDmg: number,
+  subtypeTotalDmg: number, subtypeDamageTaken: number, enemyRes: number, enemyDef: number, enemyDamageReduction: number,
+): void {
+  if (scaling === null || scaling === Scaling.Fixed) return;
+  const notDot = scaling !== Scaling.Dot ? 1 : 0;
+  const notTune = scaling !== Scaling.Tune ? 1 : 0;
+  out[at + F_STAT] = Math.floor(
+    scaling === Scaling.Atk ? atk
+    : scaling === Scaling.Hp ? hp
+    : scaling === Scaling.Def ? def
+    : scaling === Scaling.Dot ? negativeStatusLevels[ctx.slot?.level ?? RESONATOR_LEVEL] ?? NaN
+    : scaling === Scaling.Tune ? tuneLevelStat()
+    : NaN
+  );
+  out[at + F_ADD_MV] = stats[Stat.AddMv]!;
+  out[at + F_MUL_MV] = 1 + stats[Stat.MulMv]! / 100;
+  out[at + F_AMP] = 1 + ((notDot ? amp : subtypeAmp) / 100) * notTune;
+  out[at + F_BONUS] = 1 + (dmgBonus / 100) * notDot * notTune;
+  out[at + F_TBB] = 1 + (stats[Stat.TBB]! / 100) * (1 - notTune);
+  out[at + F_RES] = resFactorFrom(resOf(stats, notDot, enemyRes) / 100);
+  out[at + F_DEF] = defFactorFrom((1 - shredOf(stats, notDot, enemyDef)) * enemyDef);
+  out[at + F_DEALT] = 1 + (notDot ? stats[Stat.TotalDmg]! : subtypeTotalDmg) / 100;
+  out[at + F_TAKEN] = (1 + (notDot ? stats[Stat.DamageTaken]! : subtypeDamageTaken) / 100)
+    * (1 - enemyDamageReduction / 100);
+  const special = !(notDot * notTune);
+  const critMult = special ? (subtypeCritDmg ? subtypeCritDmg / 100 : 1) : stats[Stat.CritDmg]! / 100;
+  const cr = special ? subtypeCritRate / 100 : stats[Stat.CritRate]! / 100;
+  out[at + F_CRIT] = cr >= 1 ? critMult : (1 - cr) + critMult * cr;
+}
+
+/** The average hit of motion value `mv` off a row's factors (`damageFactorsInto()`). */
+export function avgFromFactors(f: Float64Array, at: number, scaling: Scaling | null, mv: number): number {
+  if (scaling === null) return 0;
+  if (scaling === Scaling.Fixed) return Math.floor(mv / MV_UNIT);
+  const finalMv = (mv + f[at + F_ADD_MV]!) * f[at + F_MUL_MV]! / (100 * MV_UNIT);
+  const noCrit = finalMv * f[at + F_STAT]! * f[at + F_AMP]! * f[at + F_BONUS]! * f[at + F_TBB]!
+    * f[at + F_RES]! * f[at + F_DEF]! * f[at + F_DEALT]! * f[at + F_TAKEN]!;
+  return Math.floor(noCrit * f[at + F_CRIT]!);
+}
+

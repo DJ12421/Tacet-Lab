@@ -267,7 +267,7 @@ export function TheorizerWorkspace({ member, model, echoes, builds, characters, 
   const [buffSettingsOpen, setBuffSettingsOpen] = useState(false)
   const [targetId, setTargetId] = useWorkspacePreference(`theorizer:${preferenceKey}:target`, TEAM_ROTATION_TARGET_ID)
   const [selectedId, setSelectedId] = useState('')
-  const [ranking, setRanking] = useState<Pick<TheorizerRankingResponse, 'baselineScore' | 'baselineStats' | 'results'>>({ baselineScore: 0, results: [] })
+  const [ranking, setRanking] = useState<Pick<TheorizerRankingResponse, 'calculationMethod' | 'baselineScore' | 'baselineStats' | 'results'>>({ calculationMethod: 'formula', baselineScore: 0, results: [] })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const resultMode: FormulaResultMode = model.team.scenario?.resultMode ?? 'expected'
@@ -318,12 +318,12 @@ export function TheorizerWorkspace({ member, model, echoes, builds, characters, 
     if (!activeTargetId) {
       setLoading(false)
       setError('No calculable action is available for this character.')
-      setRanking({ baselineScore: 0, results: [] })
+      setRanking({ calculationMethod: 'formula', baselineScore: 0, results: [] })
       return () => { current = false }
     }
     setLoading(true)
     setError('')
-    if (mode !== 'substats') setRanking({ baselineScore: 0, results: [] })
+    if (mode !== 'substats') setRanking({ calculationMethod: 'formula', baselineScore: 0, results: [] })
     void rankTheorizer({
       team: model.team,
       echoes,
@@ -362,7 +362,7 @@ export function TheorizerWorkspace({ member, model, echoes, builds, characters, 
 
   return <section className="tw-theorizer tw-panel">
     <header className="tw-theorizer-header"><h2>Theorizer</h2><button type="button" className="equipment-buff-trigger" aria-haspopup="dialog" onClick={() => setBuffSettingsOpen(true)}>Buff settings</button></header>
-    <div className="tw-theorizer-toolbar"><div className="tw-theorizer-modes" role="tablist" aria-label="Suggestion type">{MODES.map((entry) => <button type="button" role="tab" aria-selected={mode === entry.id} className={mode === entry.id ? 'active' : ''} onClick={() => { setMode(entry.id); setSelectedId('') }} key={entry.id}>{entry.label}</button>)}</div><label><span>Rank for</span><select value={activeTargetId} onChange={(event) => { setTargetId(event.target.value); setSelectedId('') }}>{targetGroups.map(([group, entries]) => <optgroup label={compactAttackLabel(group)} key={group}>{entries.map((target) => <option value={target.id} key={target.id}>{target.label}</option>)}</optgroup>)}</select></label></div>
+    <div className="tw-theorizer-toolbar"><div className="tw-theorizer-modes" role="tablist" aria-label="Suggestion type">{MODES.map((entry) => <button type="button" role="tab" aria-selected={mode === entry.id} className={mode === entry.id ? 'active' : ''} onClick={() => { setMode(entry.id); setSelectedId('') }} key={entry.id}>{entry.label}</button>)}</div><label><span>Rank for</span><select value={activeTargetId} onChange={(event) => { setTargetId(event.target.value); setSelectedId('') }}>{targetGroups.map(([group, entries]) => <optgroup label={compactAttackLabel(group)} key={group}>{entries.map((target) => <option value={target.id} key={target.id}>{target.label}</option>)}</optgroup>)}</select></label><small>{loading ? 'Calculating scores' : `${ranking.calculationMethod === 'stateful' ? 'Stateful' : 'Formula'} scoring`}</small></div>
     {mode === 'substats' ? <>{error ? <p className="tw-empty-state">{error}</p> : <SubstatStepTable entries={ranked} baselineScore={ranking.baselineScore} resultModeLabel={resultModeLabel} loading={loading}/>}</> : <>
     <div className="tw-theorizer-list-heading"><span>{mode === 'sonatas' ? 'Set plans' : modeLabel} ({ranked.length})</span><b>Ranked by {resultModeLabel}</b></div>
     <div className="tw-theorizer-list">{loading ? <div className="tw-empty-state tw-theorizer-loading" role="status" aria-label={`Calculating every valid ${modeLabel.toLowerCase()} option`}><TacetMark/></div> : error ? <p className="tw-empty-state">{error}</p> : ranked.length ? ranked.map((entry, index) => {

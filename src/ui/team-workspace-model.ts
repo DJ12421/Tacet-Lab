@@ -29,6 +29,7 @@ export function compactAttackLabel(label: string) {
 
 export interface TeamWorkspaceInput {
   team: Team
+  rotationMode?: boolean
   includeTraces?: boolean
   formulaTargetIds?: readonly string[]
   disabledEffectIdsByMember?: Record<string, string[]>
@@ -264,7 +265,18 @@ export function teamBuffLabel(effect: BuffEffect) {
   return `${effect.name} · ${effect.value.toFixed(1)}% ${stat}`
 }
 
+export function automaticRotationEnvironment(team: Team): Team {
+  return {
+    ...team,
+    buffs: [],
+    enemy: { ...team.enemy, statusStacks: {}, havocBaneStacks: 0, electroRageStacks: 0, strainStacks: 0 },
+    scenario: team.scenario && { ...team.scenario, memberConditions: {}, enemyConditions: {}, selectedTargetByBuild: {} }
+  }
+}
+
 export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceModel {
+  const calculationTeam = input.rotationMode ? automaticRotationEnvironment(input.team) : input.team
+  const scenario = calculationTeam.scenario
   const collections = { builds: input.builds, characters: input.characters, weapons: input.weapons, echoes: input.echoes, equippedLoadouts: input.equippedLoadouts ?? [], theorycraftBuilds: input.theorycraftBuilds ?? [] }
   const resolvedMembers = Array.from({ length: 3 }, (_, slot) => {
     const member = input.team.members?.[slot]
@@ -314,11 +326,11 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
 
   const applicableStatuses = applicableTeamStatusEffects(baseMembers.flatMap((member) => member.character ? [member.character.catalogId] : []))
   const effectiveEnemy = {
-    ...input.team.enemy,
-    strainStacks:applicableStatuses.has('tune-strain') ? input.team.enemy.strainStacks : 0,
-    havocBaneStacks:applicableStatuses.has('havoc-bane') ? input.team.enemy.havocBaneStacks : 0,
-    electroRageStacks:applicableStatuses.has('electro-rage') ? input.team.enemy.electroRageStacks : 0,
-    statusStacks:Object.fromEntries(negativeStatusActions.map(({ status }) => [status, applicableStatuses.has(status) ? input.team.enemy.statusStacks?.[status] ?? 0 : 0]))
+    ...calculationTeam.enemy,
+    strainStacks:applicableStatuses.has('tune-strain') ? calculationTeam.enemy.strainStacks : 0,
+    havocBaneStacks:applicableStatuses.has('havoc-bane') ? calculationTeam.enemy.havocBaneStacks : 0,
+    electroRageStacks:applicableStatuses.has('electro-rage') ? calculationTeam.enemy.electroRageStacks : 0,
+    statusStacks:Object.fromEntries(negativeStatusActions.map(({ status }) => [status, applicableStatuses.has(status) ? calculationTeam.enemy.statusStacks?.[status] ?? 0 : 0]))
   }
 
   const combatTeamMembers = baseMembers.flatMap((member) => member.build && member.character && member.showcase?.weapon
@@ -327,14 +339,14 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
 
   for (const member of baseMembers) {
     if (!member.build) continue
-    member.appliedBuffs = (input.team.buffs ?? []).filter((effect) => effect.sourceBuildId === member.build?.id)
-    member.receivedBuffs = (input.team.buffs ?? []).filter((effect) => buffAppliesTo(effect, member))
+    member.appliedBuffs = (calculationTeam.buffs ?? []).filter((effect) => effect.sourceBuildId === member.build?.id)
+    member.receivedBuffs = (calculationTeam.buffs ?? []).filter((effect) => buffAppliesTo(effect, member))
     const ownedWeapon = member.showcase?.weapon?.owned
     if (member.character && member.build && ownedWeapon) {
       const statResult = calculateBuildStats({
         build:member.build, character:member.character, weapon:ownedWeapon,
         echoes:member.build.echoIds.map((id) => runtimeEchoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)),
-        enemy:effectiveEnemy, scenario:input.team.scenario, buffs:member.receivedBuffs, teamMembers:combatTeamMembers, disabledEffectIdsByMember:input.disabledEffectIdsByMember
+        enemy:effectiveEnemy, scenario, buffs:member.receivedBuffs, teamMembers:combatTeamMembers, disabledEffectIdsByMember:input.disabledEffectIdsByMember
       })
       if (statResult.ok) member.conditionedStats = statResult.stats
       else member.warnings.push(...statResult.errors.map((error) => error.message))
@@ -344,7 +356,7 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
         const result = calculateBuildModes({
           build: member.build!, character: member.character!, weapon: ownedWeapon,
           echoes: member.build!.echoIds.map((id) => runtimeEchoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)),
-          enemy: effectiveEnemy, scenario: input.team.scenario, buffs: member.receivedBuffs, targetId: target.id, trace:input.includeTraces !== false, teamMembers:combatTeamMembers, disabledEffectIdsByMember:input.disabledEffectIdsByMember
+          enemy: effectiveEnemy, scenario, buffs: member.receivedBuffs, targetId: target.id, trace:input.includeTraces !== false, teamMembers:combatTeamMembers, disabledEffectIdsByMember:input.disabledEffectIdsByMember
         })
         member.warnings.push(...result.warnings)
         const fallback: CalculationTrace = { stage:'unavailable', value:0, children:[] }
@@ -367,8 +379,8 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
     if (!attack) warnings.push(action.label ? `${action.label} is not in Tacet Lab's attack data.` : 'Character attack data is missing for this action.')
     if (action.timestamp < 0 || action.timestamp > input.team.rotationDuration) warnings.push('Timestamp is outside the rotation duration.')
     if (action.duration !== undefined && action.timestamp + action.duration > input.team.rotationDuration) warnings.push('Clip extends past the rotation duration.')
-    const activeBuffs = activeBuffsAt(input.team, sortedActions, index).filter((effect) => member ? buffAppliesTo(effect, member) : false)
-    const activates = (input.team.buffs ?? []).filter((effect) => effect.sourceBuildId === action.buildId && effect.triggerAttackId === action.attackId)
+    const activeBuffs = activeBuffsAt(calculationTeam, sortedActions, index).filter((effect) => member ? buffAppliesTo(effect, member) : false)
+    const activates = (calculationTeam.buffs ?? []).filter((effect) => effect.sourceBuildId === action.buildId && effect.triggerAttackId === action.attackId)
     const formulaTargetId = mappedId && attack && member?.catalog ? `${member.catalog.id}:${attack.id}`
       : action.formulaTargetId ?? (member?.catalog && attack ? `${member.catalog.id}:${attack.id}` : undefined)
     const target = formulaTargetId && member?.catalog ? resolveCombatTarget(member.catalog.id, formulaTargetId, member.resolvedEchoes) : undefined
@@ -376,13 +388,13 @@ export function resolveTeamWorkspace(input: TeamWorkspaceInput): TeamWorkspaceMo
     let formulaResult: { normal: number; critical: number; expected: number; trace?: CalculationTrace; traces?: Record<'normal' | 'critical' | 'expected', CalculationTrace> } | undefined
     const ownedWeapon = member?.showcase?.weapon?.owned
     if (target && target.kind !== 'utility' && member?.build && member.character && ownedWeapon) {
-      const calculationKey = JSON.stringify([member.build.id, target.id, activeBuffs, action.inputs])
+      const calculationKey = JSON.stringify([member.build.id, target.id, activeBuffs, input.rotationMode ? undefined : action.inputs])
       let calculated = actionCalculations.get(calculationKey)
       if (!calculated) {
         calculated = calculateBuildModes({
           build: member.build, character: member.character, weapon: ownedWeapon,
           echoes: member.build.echoIds.map((id) => runtimeEchoes.find((echo) => echo.id === id)).filter((echo): echo is Echo => Boolean(echo)),
-          enemy: effectiveEnemy, scenario: input.team.scenario, buffs: activeBuffs, actionInputs: action.inputs, targetId: target.id, trace:input.includeTraces !== false, teamMembers:combatTeamMembers, disabledEffectIdsByMember:input.disabledEffectIdsByMember
+          enemy: effectiveEnemy, scenario, buffs: activeBuffs, actionInputs: input.rotationMode ? undefined : action.inputs, targetId: target.id, trace:input.includeTraces !== false, teamMembers:combatTeamMembers, disabledEffectIdsByMember:input.disabledEffectIdsByMember
         })
         actionCalculations.set(calculationKey, calculated)
       }

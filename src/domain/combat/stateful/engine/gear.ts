@@ -1,0 +1,1002 @@
+/**
+ * Every equippable thing and the containers that name a build: the `Gear` class tree
+ * (`Buff`/`Debuff`/`Talent`/`Inherent`/`Sequence`/`ResonanceMode`/the sonata sets/`Mainslot`/
+ * `Weapon`/`Resonator`), plus `EchoLoadout` and `Loadout`. Definitions only — what a piece
+ * *does* is the hooks it declares, which `evaluate.ts` runs.
+ */
+import { Stat, EnemyStat, Attribute, WeaponType, Tier, Cast, BuffTarget, ActionTag, FULL_CONCERTO } from "./stats.js";
+import type { Tag } from "./stats.js";
+import type { Rotation, Action, ActionField } from "./rotation.js";
+import { ctx } from "./runtime.js";
+import type { ErSpread, Spread } from "../shared/substats.js";
+import type { MainstatBuild } from "../shared/mainstats.js";
+import type { Echoes } from "../shared/echoes.js";
+// the one edge back up the stack: a Resonator's own combatStart banks its base stats through
+// the ordinary API. Both names are function declarations, so the import cycle is inert at load.
+import { addStat, compileLines, payLines, frozenStacks, casting, applyCurrent, applyTeam, applyEnemy, queueOutro, revokeCurrent, currentMember, currentTeam, queue, queueOn, applyOn, stacksOf, stacksOfTeam, removeStack, removeStackTeam, removeStackEnemy } from "./context.js";
+
+/** One stat line as a kit writes it: `[stat, value]`, or `[stat, value, tag]` scoped to an
+ *  element or damage type. On a piece of gear these are its constant stats; on a `Buff` they are
+ *  what it contributes while held (see `BuffDef.stats`). */
+export type StatLine = readonly [Stat | EnemyStat, number] | readonly [Stat | EnemyStat, number, Tag];
+/** A condition read off the action being evaluated — `onCast(Cast.Skill)`, `onType(Type.Basic)`,
+ *  `onInflict(STATUS)` (context.ts), or any predicate over the kit API. */
+/** `inflicts`: the trigger reads what the action put on the target (`onInflict`/`onApplied`), so
+ *  its grant fires in whichever half of the press did the inflicting, cast or hit. */
+export type Trigger = (() => boolean) & { inflicts?: boolean };
+/** "On `on`, grant `stacks` of `buff`": to the wielder (`self`, the default), the team, the enemy
+ *  (a `Debuff`), or `next` — published for whoever intros next (`queueOutro`). `stacks` may read
+ *  the action (`() => applied(SHIELD)`). `buff` left out means the declaring Buff itself — a buff
+ *  that stacks itself up on a trigger; a thunk (`() => LATER_BUFF`) reaches one declared further
+ *  down the file. `onHit` grants after every hit lands, once its damage is dealt — a "when X hits /
+ *  upon dealing Y DMG" clause; the default is the cast phase (updateBuffs). */
+export interface Grant { on: Trigger; buff?: Buff | (() => Buff); stacks?: number | (() => number); to?: BuffTarget; onHit?: boolean }
+
+export interface GearDef {
+  /** Its own id: the game's, where the piece is one (a resonator, mainslot or weapon, which must
+   *  name it), else one of ours, 0 where it has none. */
+  id?: number;
+  /** Unset on a hidden buff: a nameless one stays out of the held-buff popovers (engine
+   *  machinery, a cooldown marker). A Gear whose display name is computed sets `toString` instead. */
+  name?: string;
+  /** Runs once, the moment this Gear is `equip()`-ped during team setup — never mid-fight.
+   *  For anything that happens on entering combat, not on a specific cast (Phrolova's Octet:
+   *  10 Aftersound the instant she's on the team, regardless of when she first acts). */
+  combatStart?: () => void;
+  /** The hit phase's first hook: what the hit *inflicts* — the enemy debuffs (Tune Shifting, the
+   *  elemental Negative Statuses) and the shield marker (see statuses.ts) it puts up. Runs on every
+   *  hit, ahead of `hitGlobal` and the stat phases — an action's own too; an infliction a press makes
+   *  once goes on the hit that makes it (`BulletDef.updateDebuffs`). Never a stat. */
+  updateDebuffs?: () => void;
+  /** The cast's watcher over the whole team: same shape as `updateBuffs`, but run for this Gear
+   *  whoever casts — every slot's own held gear, not just the caster's. What a self-held buff needs
+   *  to react to a *teammate's* cast without being made team-wide (an Echo Skill cast anywhere on
+   *  the team). Runs ahead of `updateBuffs`. Its hit-side twin is `hitGlobal`. */
+  updateGlobal?: () => void;
+  /** `updateGlobal` on the hit: run for this Gear whoever's hit lands, after every `updateDebuffs`,
+   *  so what that hit inflicted (a teammate's Shifting, status or shield) is visible. */
+  hitGlobal?: () => void;
+  /** The cast phase: grant/revoke/queue/spend — never a stat contribution. Runs across every held
+   *  Gear as the press is cast, after `updateGlobal`, the clock on the frame the press started. */
+  updateBuffs?: () => void;
+  /** A stat contribution that depends on nothing but what the action *is* — `addStat()` calls,
+   *  plain or scoped to an element/type, and nothing else: no stacks, no gauges, no `casting()`
+   *  or `applied()`, no reading another stat. The engine calls this once per distinct action
+   *  tag-set a slot ever sees and caches the sum of every held Gear's own, so a weapon's base ATK
+   *  or a substat spread costs nothing per action after the first. Anything conditional belongs
+   *  in `applyStats` below, which runs every action. Contributes in the applyStats phase, ahead of
+   *  every `applyStats`. */
+  constantStats?: () => void;
+  /** A flat stat contribution, on every hit. A cast runs no stat: what it banks is flat. */
+  applyStats?: () => void;
+  /** Reads a total applyStats() already built this action (an ER threshold, an HP fold). */
+  convertStats?: () => void;
+  /** Runs last of all, after this action's own energy/concerto/off-tune/forte have banked — the
+   *  only phase that sees the gauges as the action actually leaves them. For machinery reacting to
+   *  a gauge crossing a threshold rather than to the action itself: tunebreak.ts's own watcher
+   *  fires the break from here, which is why the engine needs no idea the mechanic exists. Grant/
+   *  revoke/queue only, never a stat — stats are long since resolved by now. Runs once the press
+   *  ends — its animation, or its cut's commit frame plus the cut — after every hit it landed. */
+  afterAction?: () => void;
+  /** After each hit's damage and banking, beside the `onHit` grants: a reaction to the hit that
+   *  pays from the next one on (Snowfall's crit off Liberation DMG). Never a stat. */
+  afterHit?: () => void;
+  /** Same shape as `convertStats`, one phase later — for a conversion that reads a stat *another*
+   *  gear's convertStats() grants, which it would otherwise race (the roster runs the acting slot's
+   *  own gear before team buffs, so a team buff's grant would land too late). Tune Strain's own
+   *  payout is the case: it scales off Tune Break Boost, which Denia's Etched Colors hands the team
+   *  from its own convertStats(). Runs last of all. */
+  lateConvertStats?: () => void;
+  /** How this Gear names itself wherever the report shows it — the source on every stat entry it
+   *  contributes, and its row in the resonator popover. Defaults to its `name`, plus " xN" once
+   *  it stacks; override for a Gear whose useful name isn't fixed (Shorekeeper's Stellarealm
+   *  naming its own stage: "Inner Stellarealm" rather than "Stellarealm x2"; Jingran's HP folds
+   *  naming how many 1000-HP steps they converted). Called with this Gear current, so `frozenStacks()`
+   *  and the stat readers all work inside it.
+   *  Named `display`, not `toString`: every plain object already inherits a `toString` from
+   *  `Object.prototype`, so `def.toString` is never actually `undefined` when a kit leaves it
+   *  unset — it silently reads as `Object.prototype.toString`, and Gear's own toString() below
+   *  would call that instead of falling back to its default name, printing "[object Object]"
+   *  everywhere. A same-named field can't tell "not provided" apart from "inherited". */
+  display?: () => string;
+  /** The field this Gear opens, for a Buff that *is* a field standing (rotation.ts's own
+   *  `ActionField`): granting it is what puts the summon out, so the row that grants it is the row
+   *  the report files the field's whole run of hits under. The hits name the same field on their
+   *  own action. Nothing else in the engine reads it — a field is a report grouping, not a rule. */
+  field?: ActionField | null;
+  /** Flat, unconditional stat lines — the data form of `constantStats` (on a `Buff`, of
+   *  `applyStats`, since a buff comes and goes). Both may be given; the lines land first. */
+  stats?: StatLine[];
+  /** What this Gear grants, and when: on the cast (after any closure `updateBuffs`), on the hit
+   *  ahead of its damage (`onHit`), or — a trigger reading inflictions — wherever the inflicting was. */
+  grants?: Grant[];
+}
+
+/** The six per-action phases a `Pool` sorts a held Gear's hooks into, in the order
+ *  `evaluate()` runs them (updateGlobal is not one: it walks every slot's `globalHooks` instead). */
+const PHASE_DEBUFFS = 1, PHASE_BUFFS = 2, PHASE_APPLY = 4, PHASE_CONVERT = 8, PHASE_LATE = 16, PHASE_AFTER = 32;
+/** Not a phase of its own: constantStats contributes inside the applyStats phase, but it is
+ *  listed like one so a `Pool` can hand `evaluate()` exactly the Gear that declares it. */
+const PHASE_CONST = 64;
+/** The hit's infliction-triggered grants, once every `updateDebuffs`/`hitGlobal` has landed. */
+const PHASE_HIT_GRANTS = 128;
+/** The `onHit` grants, after each hit's damage. */
+const PHASE_ON_HIT = 256;
+export const PHASE_COUNT = 9;
+/** A Gear's two watchers over the whole team, as the pools hold it (`globalHooks`): one shape for every
+ *  kind of Gear, so the walk over them reads no Gear itself. A side it has none of is undefined. */
+export interface GlobalHook { gear: Gear; cast: (() => void) | undefined; hit: (() => void) | undefined }
+/** A Gear with only a `hitGlobal` still sits in its pool's `globalHooks` through this stand-in. */
+const NO_GLOBAL = (): void => {};
+
+let nextGearId = 1;
+
+/** Base for anything held/stacking/per-slot-tracked — kit passives, weapons, echoes, and
+ *  eventually the resonator itself (TODO_ENGINE.md). `Buff` is a plain named subclass, same
+ *  reasoning the old engine used for Debuff/GlobalBuff/Mode. */
+export class Gear {
+  name: string;
+  /** How many stacks of this can be held at once. Only a `Buff` ever declares one (see `BuffDef`)
+   *  — every other Gear is a single equipped piece, so 1. The field lives here rather than on
+   *  Buff because the engine's own stack machinery (`addStack`/`setStacks`/`enemyMax`) reads it
+   *  off a plain Gear: `equip()` puts a Resonator/weapon/echo onto a slot through exactly the
+   *  same path a buff goes through. */
+  maxStacks = 1;
+  /** See `BuffDef.duration` — frames a grant of this stands for, 0 for unlimited. On Gear rather
+   *  than Buff because a pool holds every kind of Gear and reads it off each entry it stamps. */
+  duration = 0;
+  durationFn?: (stacks: number) => number;
+  /** The buffs that end with this one on its holder (`BuffDef.lostWith`). */
+  lostWithThis: Gear[] = [];
+  /** See `BuffDef.tick` — the cadence in frames, and what fires on it. */
+  tickEvery?: () => number;
+  tickFn?: (n: number) => void;
+  /** See `BuffDef.tick.skipMotionStop`. */
+  tickSkipsMotionStop = false;
+  /** Whose off-field clock the tick runs on, for a window held by the team or the target
+   *  (`coordinatedBuff`'s owner); a member's own gear runs on its holder's. */
+  tickOwner?: () => Resonator;
+  /** See `GearDef.field` — the field this Gear's own presence stands for, or null. */
+  field: ActionField | null;
+  combatStartFn?: () => void;
+  updateDebuffsFn?: () => void;
+  updateGlobalFn?: () => void;
+  hitGlobalFn?: () => void;
+  /** `updateGlobalFn`/`hitGlobalFn` as the pools hold them; null without either. */
+  globalEntry: GlobalHook | null;
+  updateBuffsFn?: () => void;
+  constantStatsFn?: () => void;
+  applyStatsFn?: () => void;
+  convertStatsFn?: () => void;
+  afterActionFn?: () => void;
+  lateConvertStatsFn?: () => void;
+  hitGrantsFn?: () => void;
+  onHitFn?: () => void;
+  displayFn?: () => string;
+  /** Which of the six per-action phases this Gear has a hook for, one bit each (see `PHASE_*`),
+   *  fixed here since the hooks themselves are — a `Pool` reads this one field to sort a
+   *  held Gear into its phase lists, rather than `evaluate()` probing six optional properties on
+   *  every held Gear every action. */
+  hookMask = 0;
+  /** `GearDef.id`, 0 where it has none. */
+  id: number;
+  /** A small integer unique to this Gear — what a variant dry run hashes a mutation by, to tell
+   *  whether it would have changed the fight (see `noteMutation()`). Engine-owned, unlike `id`. */
+  engineId: number;
+  /** A dense index the pools file this Gear under (`Pool.at`), handed out the first time any pool
+   *  holds it; -1 until then. Engine-owned. */
+  poolIdx = -1;
+  /** The same six hooks by phase index (bit order of `PHASE_*`), for `runPhase()` to call one
+   *  phase's hook without naming the field — only the phases set in `hookMask` are ever read. */
+  hookFns: ((() => void) | undefined)[] = [];
+
+  constructor(def: GearDef) {
+    this.engineId = nextGearId++;
+    this.id = def.id ?? 0;
+    this.name = def.name ?? "";
+    this.field = def.field ?? null;
+    this.combatStartFn = def.combatStart;
+    this.updateDebuffsFn = def.updateDebuffs;
+    this.hitGlobalFn = def.hitGlobal;
+    this.updateGlobalFn = def.updateGlobal ?? (def.hitGlobal ? NO_GLOBAL : undefined);
+    this.globalEntry = this.updateGlobalFn ? { gear: this, cast: def.updateGlobal, hit: this.hitGlobalFn } : null;
+    this.updateBuffsFn = def.updateBuffs;
+    this.constantStatsFn = def.constantStats;
+    this.applyStatsFn = def.applyStats;
+    this.convertStatsFn = def.convertStats;
+    this.afterActionFn = def.afterAction;
+    this.onHitFn = def.afterHit;
+    this.lateConvertStatsFn = def.lateConvertStats;
+    this.displayFn = def.display;
+    this.decl = { stats: def.stats ?? [], grants: def.grants ?? [] };
+    // the data half compiles into the same hook slots the closures use, so the engine runs both alike
+    if (def.stats?.length && !(this instanceof Buff)) {
+      const lines = def.stats, own = def.constantStats;
+      this.constantStatsFn = () => { for (const line of lines) addStat(line[0] as Stat, line[1], line[2]); own?.(); };
+    }
+    if (def.grants?.length) {
+      const fire = (grants: Grant[]): void => {
+        for (const g of grants) {
+          if (!g.on()) continue;
+          const n = typeof g.stacks === "function" ? g.stacks() : g.stacks ?? 1;
+          if (n <= 0) continue;
+          const buff = typeof g.buff === "function" ? g.buff() : g.buff ?? (this as Buff);
+          if (g.to === BuffTarget.Team) applyTeam(buff, n);
+          else if (g.to === BuffTarget.Enemy) applyEnemy(buff as Debuff, n);
+          else if (g.to === BuffTarget.Next) queueOutro(buff);
+          else applyCurrent(buff, n);
+        }
+      };
+      // on-cast grants land in the cast phase, on-hit ones after each hit (`PHASE_ON_HIT`), and one
+      // on an infliction wherever it was: a split press's cast, else its hit (`PHASE_HIT_GRANTS`)
+      const onHit = def.grants.filter((g) => g.onHit);
+      const onInflict = def.grants.filter((g) => !g.onHit && g.on.inflicts);
+      const onCast = def.grants.filter((g) => !g.onHit && !g.on.inflicts);
+      this.fireGrantsFn = () => {
+        fire(onCast);
+        fire(onInflict);
+      };
+      if (onCast.length || onInflict.length) {
+        const own = def.updateBuffs;
+        this.updateBuffsFn = () => {
+          own?.();
+          fire(onCast);
+          // with no hit of its own to come, the cast fires them itself
+          if (ctx.act!.half === "cast" || !ctx.act!.bullets.length) fire(onInflict);
+        };
+      }
+      if (onInflict.length) this.hitGrantsFn = () => fire(onInflict);
+      if (onHit.length) this.onHitFn = () => {
+        def.afterHit?.();
+        fire(onHit);
+      };
+    }
+    this.wire();
+  }
+  /** What the data half of this Gear's def declared — kept for the engine to introspect. */
+  decl: { stats: StatLine[]; grants: Grant[] };
+  /** Its declared on-cast grants, fired wherever their triggers hold — for a status landing outside
+   *  any press (context.ts's `fireHeldGrants()`, a heal tick's). Unset without grants. */
+  fireGrantsFn?: () => void;
+  /** `hookMask`/`hookFns` off whatever hooks stand now — called once every compiled hook is in place. */
+  protected wire(): void {
+    this.hookMask = (this.updateDebuffsFn ? PHASE_DEBUFFS : 0) | (this.updateBuffsFn ? PHASE_BUFFS : 0)
+      | (this.applyStatsFn ? PHASE_APPLY : 0) | (this.convertStatsFn ? PHASE_CONVERT : 0)
+      | (this.lateConvertStatsFn ? PHASE_LATE : 0) | (this.afterActionFn ? PHASE_AFTER : 0)
+      | (this.constantStatsFn ? PHASE_CONST : 0) | (this.hitGrantsFn ? PHASE_HIT_GRANTS : 0)
+      | (this.onHitFn ? PHASE_ON_HIT : 0);
+    this.hookFns = [this.updateDebuffsFn, this.updateBuffsFn, this.applyStatsFn, this.convertStatsFn, this.lateConvertStatsFn, this.afterActionFn,
+      this.constantStatsFn, this.hitGrantsFn, this.onHitFn];
+  }
+  /** Whether all this Gear does is its constant stats — no other hook, grant, clock or field: a run
+   *  can stand one such piece in for another without its fight changing (teamrun.ts's variants). */
+  get constantOnly(): boolean {
+    return this.hookMask === PHASE_CONST && !this.combatStartFn && !this.globalEntry && !this.tickFn && !this.field;
+  }
+  /** "Name xN" for anything that stacks — by its own declared cap, or in fact: a debuff declared at 1
+   *  can be standing at 2 or 3 once a kit's `maxStackIncrease()` raised the target's own ceiling
+   *  (Tune Strain - Interfered under its responders), and that count is what the reader wants. */
+  toString(): string {
+    if (this.displayFn) return this.displayFn();
+    const n = frozenStacks();
+    return this.maxStacks > 1 || n > 1 ? `${this.name} x${n}` : this.name;
+  }
+}
+
+/** A Buff is the only Gear that stacks, so it's the only one that can declare a ceiling — every
+ *  other piece is either equipped once or cast once. Split out of `GearDef` so a Weapon/Mainslot/
+ *  Sequence/Action def can't offer a `maxStacks` that nothing would ever raise past 1. */
+export interface BuffDef extends GearDef {
+  /** How many stacks this can be held at once; 1 (the default) for a plain on/off buff. Every
+   *  grant path clamps to it, so a kit never has to check for overflow itself. For an enemy
+   *  `Debuff` this is only the *base* ceiling — a kit can raise it for the fight with
+   *  `maxStackIncrease()` (see `State.enemyMax`). */
+  maxStacks?: number;
+  /** `stats` multiplied by the held stack count. */
+  perStack?: boolean;
+  /** `stats` pay only while this holds (`() => isActive()`, say). */
+  when?: Trigger;
+  /** "Lost on switching out": revoked by the action that takes its holder off field — before that
+   *  action pays, bar a swap form, whose hit lands on field and pays first (`lostOnSwap()`). */
+  lostOnSwap?: boolean;
+  /** How long this stands once granted, in frames at 60 a second (`60 * 30` for thirty seconds).
+   *  Every grant refreshes it, and it is dropped ahead of the first action that starts at or past
+   *  its end (evaluate.ts's expiry pass). 0, the default, is unlimited. Independent of `lostWith`:
+   *  whichever comes first ends the buff. A function is read at each grant, after the stacks have
+   *  landed and with the count it landed on, for a length that depends on the moment ("extended
+   *  to 30s at max stacks", a window whose stacks are its seconds). */
+  duration?: number | ((stacks: number) => number);
+  /** A state that only stands inside another (a window inside a stance): it ends whenever that
+   *  buff ends on the same holder, so a cast needing both requires this one alone. */
+  lostWith?: Gear;
+  /** A clock of the buff's own: `fire` runs every `every` frames of fight time it stands, with
+   *  the tick's ordinal since the grant, on whichever action's press carries the clock past it —
+   *  a field's summons, a status's own damage, a stack gained every 0.2s. Fired as the clock
+   *  advances (state.ts's `runTicks()`), with the "current" pointers on the holder for a member's
+   *  own buff and on whoever is acting for the team's and the enemy's. `every` as a function is
+   *  read each span, and 0 from it holds the clock still for that span (a dance that pauses while
+   *  its owner is on field). A refresh does not restart the cadence. */
+  tick?: { every: number | (() => number); fire: (n: number) => void; skipMotionStop?: boolean };
+  /** See `Gear.tickOwner`. */
+  tickOwner?: () => Resonator;
+}
+
+export class Buff extends Gear {
+  constructor(def: BuffDef) {
+    super(def);
+    this.maxStacks = def.maxStacks ?? 1;
+    if (typeof def.duration === "function") this.durationFn = def.duration;
+    else this.duration = def.duration ?? 0;
+    if (def.lostWith) def.lostWith.lostWithThis.push(this);
+    if (def.tick) {
+      const every = def.tick.every;
+      this.tickEvery = typeof every === "function" ? every : () => every;
+      this.tickFn = def.tick.fire;
+      this.tickSkipsMotionStop = !!def.tick.skipMotionStop;
+      this.tickOwner = def.tickOwner;
+    }
+    if (def.stats?.length) {
+      const lines = compileLines(def.stats), when = def.when, perStack = !!def.perStack;
+      const pay = (): void => {
+        if (when && !when()) return;
+        payLines(lines, perStack, perStack ? frozenStacks() : 1);
+      };
+      const own = def.applyStats;
+      this.applyStatsFn = own ? () => {
+        pay();
+        own();
+      } : pay;
+    }
+    if (def.lostOnSwap) {
+      const own = this.updateBuffsFn;
+      this.updateBuffsFn = () => {
+        if (ctx.act!.swapOut) revokeCurrent(this);
+        own?.();
+      };
+    }
+    this.wire();
+  }
+}
+export class Debuff extends Buff {}
+/** A resonator's own stat-tree Talents bonus — one per kit, always equipped. */
+export class Talent extends Gear {}
+/** One of a resonator's two Inherent Skill slots — an always-equipped piece. A flat unconditional
+ *  stat it grants lives directly in its own applyStats(); a conditional/stacking payout it triggers
+ *  stays a separate Buff, granted from this piece's own updateBuffs(). */
+export class Inherent extends Gear {}
+/** One resonance-chain sequence node (S1-S6) — a loadout can carry up to six. */
+export class Sequence extends Gear {}
+
+/** The resonance-chain level a resonator's build is costed at with that role's Sequences box shut
+ *  — the baseline every other level is compared against. See `Tier` for why each is what it is.
+ *  Capped by however many nodes the loadout actually declares. */
+export const baseSequence = (r: Resonator): number =>
+  ({ [Tier.Limited]: 0, [Tier.Standard]: 0, [Tier.Free]: 6, [Tier.FreeS2]: 2 })[r.tier];
+
+/** A resonator's own Resonance Mode — a fixed stance a loadout commits to for the whole fight
+ *  (Lucilla's Echo/Glacio Chafe split), not something toggled mid-rotation. Other pieces of that
+ *  kit read `isHeld()` on the specific mode equipped, same as checking a Sequence. */
+export class ResonanceMode extends Gear {}
+/** A resonance-chain level, S0 to S6 — what a loadout's rotation map is keyed by. */
+export type SequenceLevel = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+export interface SetDef extends GearDef {
+  /** Every echo of the set that can be its mainslot: all its 4-costs, and the 3-costs a kit wears.
+   *  A thunk reaches one declared further down the file. */
+  echoes: Mainslot[] | (() => Mainslot[]);
+}
+/** A set's `echoes`, read where a thunk names them. */
+const echoesOf = (def: SetDef): (() => Mainslot[]) => {
+  const echoes = def.echoes;
+  return typeof echoes === "function" ? echoes : () => echoes;
+};
+/** An echo sonata set's 2-piece bonus — worn on its own beside a 3pc/1pc set, or carried along by
+ *  its own set's 5pc (see `Sonata`). The `size` literals below are what tell the set shapes apart
+ *  for `EchoLoadout`'s constructor: structurally they would otherwise all be a bare Gear. */
+export class Sonata2pc extends Gear {
+  readonly size = 2 as const;
+  private readonly echoesFn: () => Mainslot[];
+  constructor(def: SetDef) { super(def); this.echoesFn = echoesOf(def); }
+  get echoes(): Mainslot[] { return this.echoesFn(); }
+}
+export interface SonataDef extends GearDef {
+  /** The set's own 2-piece bonus — five of a set is always two of it too, so the 5pc equips this
+   *  alongside itself rather than a loadout having to name it separately. */
+  sonata2pc: Sonata2pc;
+}
+/** An echo sonata set's 5-piece bonus, its own 2pc riding along. Its echoes are its 2pc's. */
+export class Sonata extends Gear {
+  readonly size = 5 as const;
+  sonata2pc: Sonata2pc;
+  constructor(def: SonataDef) { super(def); this.sonata2pc = def.sonata2pc; }
+  get echoes(): Mainslot[] { return this.sonata2pc.echoes; }
+}
+/** A 3-piece set (Septimont's) — worn beside one ordinary 2pc. */
+export class Sonata3pc extends Gear {
+  readonly size = 3 as const;
+  private readonly echoesFn: () => Mainslot[];
+  constructor(def: SetDef) { super(def); this.echoesFn = echoesOf(def); }
+  get echoes(): Mainslot[] { return this.echoesFn(); }
+}
+/** A 1-piece set (Shadow of Shattered Dreams) — worn beside two ordinary 2pcs. */
+export class Sonata1pc extends Gear {
+  readonly size = 1 as const;
+  private readonly echoesFn: () => Mainslot[];
+  constructor(def: SetDef) { super(def); this.echoesFn = echoesOf(def); }
+  get echoes(): Mainslot[] { return this.echoesFn(); }
+}
+/** A resonator's own Matrix — equipped only in Matrix Mode (see shared/matrix.ts). */
+export class Matrix extends Gear {}
+
+/**
+ * Matrices — one optional piece per kit, worn only in Matrix Mode (the comparison table's own
+ * box; see gear.ts's `Loadout.matrix`). Matrix Mode itself already hands every resonator a flat
+ * +20% total DMG, so a Matrix's own "deal 25% more total DMG" is worth (1.20 + 0.25) / 1.20 over
+ * that baseline, not a full 1.25x — which is `pct / 1.2` as an additive Total Damage stat: 20.83%
+ * for a 25% Matrix, 16.67% for a 20% one. Teams without a single Matrix are left exactly as they
+ * were, since the baseline cancels out of every comparison.
+ */
+
+/** `<resonator>: Matrix` — `totalDmg` is the listed "deal N% more total DMG", rebased onto Matrix
+ *  Mode's own +20%. Anything else the Matrix does (a Liberation-triggered team buff) goes in `def`.
+ *  0 is for a Matrix carrying no total-DMG line at all (Lucy's Function Cracking, which is only its
+ *  own effect): worth (1.20 + 0) / 1.20 over the baseline, i.e. nothing, and contributed as nothing
+ *  rather than as a 0 the report would carry a row for. */
+export const matrix = (resonator: string, totalDmg: number, def: Omit<GearDef, "name" | "constantStats"> = {}): Matrix =>
+  new Matrix({
+    name: `${resonator}: Matrix Buff`,
+    constantStats: () => { if (totalDmg) addStat(Stat.TotalDmg, totalDmg / 1.2); },
+    ...def,
+  });
+
+/* ------------------------------------------------------------------------------ buff shapes */
+
+/**
+ * The 15s Outro→Intro handoffs that carry no "lost on switching out" clause — Impermanence Heron,
+ * Moonlit Clouds, Hyvatia, Glommoth, Trickster, Voidwing Moth, and Wishes of Quiet Snowfall's own
+ * outro branch.
+ *
+ * Fifteen seconds of real time outlast the receiver's own visit, so one of these does not stop at
+ * their Outro the way a "lost on swap" handoff does (Pact of Neonlight Leap, which keeps plain
+ * `lostOnSwap()`): it also covers everything that Outro triggers, the incoming resonator's Intro,
+ * and everything *that* triggers — Phrolova's two Unfinished Piece notes, drawn on the incoming
+ * Intro, land inside it. Only from the first ordinary press of the next visit is it gone.
+ */
+
+/** The window, as a two-state count: one stack is the ordinary visit, the second is "the holder
+ *  has swapped out and the handoff is closing". Watched from updateGlobal() because the holder is
+ *  off field for most of it — their local hooks only run on their own queued follow-ups, which
+ *  are the rows to keep, never the row that ends it. */
+function handoffWindow(buff: Buff): void {
+  // `mine`: is the row being evaluated this holder's own? True on their presses, and true again
+  // on a follow-up queued back onto their slot, which run() makes the active slot for it.
+  const mine = currentTeam().slot === currentMember();
+  // their own Outro opens the closing window; every row before it is an ordinary visit — and the
+  // stack gate is what keeps a *teammate's* off-field follow-up mid-visit from ending it early
+  if (frozenStacks() < 2) {
+    if (mine && casting(Cast.Outro)) applyCurrent(buff, 1);
+    return;
+  }
+  // inside it: the follow-ups that Outro queues back onto the holder's slot, the incoming Intro,
+  // and the follow-ups that Intro queues back onto it too (queued from updateGlobal, so they
+  // splice in ahead of anything the Intro's own hooks queue). The first row belonging to somebody
+  // else is the next visit proper — the handoff is over.
+  if (!mine && !casting(Cast.Intro)) revokeCurrent(buff);
+}
+
+/** One of those handoffs: a name and whatever it grants, with the window above wired on. The
+ *  seconds are the text's own ("for 15s", every one of them so far); the window still closes it
+ *  at the next visit's first press where that comes sooner. */
+export function handoff(name: string, applyStats: () => void, seconds = 15): Buff {
+  const buff: Buff = new Buff({
+    name, maxStacks: 2, applyStats, duration: 60 * seconds,
+    // the second stack is bookkeeping, not a doubled payout — no "x2" in the report
+    display: () => name,
+    updateGlobal: () => handoffWindow(buff),
+  });
+  return buff;
+}
+
+/**
+ * A Coordinated-Attack window as the clock it is: whatever opens it (a Liberation, a mark on the
+ * target, an echo press) banks the summons it has left as its stacks — `seconds / every` of them
+ * for a full window (`maxStacks`), fewer where a kit grants a shorter one (Zhezhi's 21 of 27
+ * spirits) — and every `every` seconds of the fight clock it summons one `tick` and spends a
+ * stack, always on the slot the window belongs to, however far the field has moved on, until the
+ * last. A grant on a standing window adds to what it has left (up to `maxStacks`); the cadence
+ * runs on from where it was. The kits' own "damage dealt by the summon does not
+ * trigger this" comes free: a summon is a queued follow-up, and the clock reads only the frames
+ * a press takes.
+ *
+ * Three places the window can live:
+ * - team-held (the default — Zhezhi's Inklit Spirits, Cantarella's Diffusion): granted with
+ *   `applyTeam`, ticks onto `owner`'s slot. `owner` is a thunk purely for declaration order —
+ *   these sit in a kit's buffs section, above the Resonator const they name.
+ * - on the target (Verina's Photosynthesis Mark, Yinlin's Punishment Mark): granted with
+ *   `applyEnemy`, nothing else about it differs.
+ * - `owner: null` — held by the wearer themselves (Jué's Blessing of Time, granted with
+ *   `applyCurrent` by an echo any build can carry, so there is no resonator to name): the ticks
+ *   fire with the "current" pointers on the holder, so a plain queue() lands them on them.
+ *
+ * `applyStats` rides along for a window that is also a buff while it stands — held means it has
+ * time left, so it needs no gate of its own (Blessing of Time's own +16% Resonance Skill DMG).
+ *
+ * `tick` may be a function rather than a summon: then nothing is queued and nothing gets a row —
+ * each tick runs it on the owner at its own frame (`applyOn()`), a heal window's heal.
+ *
+ * `hits` is how many rows one summon fires — for a summon whose single volley is several real
+ * hits (Rebecca's turret, 5 shots), fired individually so the detail table's field grouping
+ * counts them right.
+ *
+ * `every` is the summon's own cadence in seconds, fractional where it is (Ciaccona's Tonics, one
+ * per 1.65s across thirty-three; Suoming's crests at 4/3s). `onTick` runs after each summon with
+ * its ordinal, for a node that counts them (Zhezhi's S5, every third spirit).
+ */
+export function coordinatedBuff(name: string, seconds: number, owner: (() => Resonator) | null, tick: Action | (() => void), { hits = 1, every = 1, applyStats, onTick }: { hits?: number; every?: number; applyStats?: () => void; onTick?: (n: number) => void } = {}): Buff {
+  // Its stacks are the summons it has left: granted at `maxStacks` (a full window), one spent a
+  // tick, and gone with the last. The cadence is the pool's own per-buff tick clock.
+  const window: Buff = new Buff({
+    name, maxStacks: Math.floor(seconds / every + 1e-9), applyStats,
+    // the window *is* the field standing, so granting it is what the report files the summons
+    // under — named off the tick's own declaration rather than asked for twice
+    field: typeof tick === "function" ? null : tick.field,
+    tickOwner: owner ?? undefined,
+    tick: {
+      every: Math.round(60 * every),
+      fire: (n) => {
+        for (let k = 0; k < hits; k++) {
+          // a function tick is no summon: it runs on the owner, at the tick's own frame (a heal)
+          if (typeof tick === "function") applyOn(owner?.() ?? null, tick);
+          else if (owner === null) queue(tick);
+          else queueOn(owner(), tick);
+        }
+        onTick?.(n);
+        // spent from wherever it is held: its wearer, the team, or the target
+        if (stacksOf(window)) removeStack(window, 1);
+        else if (stacksOfTeam(window)) removeStackTeam(window, 1);
+        else removeStackEnemy(window as Debuff, 1);
+      },
+    },
+  });
+  return window;
+}
+
+/** One echo choice — a mainslot plus one of the three shapes five echoes can make: a 5pc (its
+ *  2pc implied), a 3pc + 2pc, or a 1pc + 2pc + 2pc. `sets` is the shape as a build reads it, one
+ *  entry per set actually named — what the comparison table and gear hover list, a line each —
+ *  while `pieces()` is the mainslot and every set equipped, the 5pc's own 2pc included. A loadout's
+ *  `Echoes` names a list of these (most kits just the one); the comparison table runs every
+ *  weapon×echo combination its loadout allows, not just one hardcoded pick. */
+export class EchoLoadout {
+  mainslot: Mainslot;
+  sonata: Sonata | Sonata3pc | Sonata1pc;
+  sets: (Sonata | Sonata3pc | Sonata2pc | Sonata1pc)[];
+  /** The resonators a team must field one of for this pick to be tried in it; none = any team. */
+  prerequisite: Resonator[] = [];
+  constructor(mainslot: Mainslot, sonata: Sonata);
+  constructor(mainslot: Mainslot, sonata: Sonata3pc, pc2: Sonata2pc);
+  constructor(mainslot: Mainslot, sonata: Sonata1pc, pc2a: Sonata2pc, pc2b: Sonata2pc);
+  constructor(mainslot: Mainslot, sonata: Sonata | Sonata3pc | Sonata1pc, ...pc2: Sonata2pc[]) {
+    this.mainslot = mainslot;
+    this.sonata = sonata;
+    this.sets = [sonata, ...pc2];
+    if (!this.sets.some((s) => s.echoes.includes(mainslot))) {
+      throw new Error(`${mainslot.name} is no echo of ${this.sets.map((s) => s.name).join(" or ")}`);
+    }
+  }
+  /** The distinct 4-cost echoes its sets offer between them: how many 4-cost slots a build can fill.
+   *  One listed by two of its sets is still one echo. */
+  get fours(): number {
+    return (this.foursMade ??= new Set(this.sets.flatMap((s) => s.echoes).filter((e) => e.cost === 4)).size);
+  }
+  private foursMade?: number;
+  pieces(): Gear[] {
+    return [this.mainslot, ...this.sets, ...(this.sonata instanceof Sonata ? [this.sonata.sonata2pc] : [])];
+  }
+  /** Only tried in a team fielding one of `resonators`: a pick whose payoff is a teammate's kit. */
+  requires(...resonators: Resonator[]): this {
+    this.prerequisite = resonators;
+    return this;
+  }
+  fits(team: Resonator[]): boolean {
+    return !this.prerequisite.length || this.prerequisite.some((r) => team.includes(r));
+  }
+}
+
+/** Everything a `Loadout` is built from, labeled — see the class itself for what each field is.
+ *  `sequences` is the resonance chain S1 up, as many nodes as the kit actually declares: six for
+ *  anything that isn't a limited 5-star (see `Tier`), left unset for most limited kits. `mode` is
+ *  for the rare kit built around a Resonance Mode (Lucilla, Lynae). */
+export interface LoadoutDef {
+  /** This build's own id: its resonator's game id x10 plus its place among that kit's loadouts,
+   *  from 1 (13121 Suoming's first). Never reused — a team code names a loadout by it. */
+  id: number;
+  resonator: Resonator;
+  /** Each entry is either a weapon's whole five-refinement list (see `refinements()`) — run at R1
+   *  unless that resonator's Refines are compared, when every rank gets a row — or one rank
+   *  picked out of it (`MARCATO[4]`), which is then the only rank the build ever runs. */
+  weapons: (Weapon | Weapon[])[];
+  /** The set picks, main-stat builds and substat spreads, and the five echoes each combination makes
+   *  (shared/echoes.ts). The run picks a spread's ER tier off the member's own ER requirement. */
+  echoes: Echoes;
+  /** One rotation for every sequence level, or a map from the level a rotation takes over at to
+   *  that rotation — `{ 0: base, 3: withStrawCape }` — S0 always named; a level not named runs the
+   *  nearest one declared below it. */
+  rotation: Rotation | Partial<Record<SequenceLevel, Rotation>>;
+  sequences?: Sequence[];
+  mode?: ResonanceMode;
+  /** The Energy Regen the character screen must show at least, whatever the rotation's own bar asks
+   *  — a kit whose kit text scales off ER (Shorekeeper's 240%). Folded into the ER requirement. */
+  minEr?: number;
+  /** The Crit Rate the character screen must show at least (Qiuyuan's 65%). A build short of it is
+   *  dropped like one whose bar never fills. */
+  minCritRate?: number;
+}
+
+/** A resonator's real build — every resonator file's own `_LOADOUT` export is one of these, not a
+ *  loose array, so a loadout has to actually name every viable weapon and echo choice, not just
+ *  hand over "some Gear" (see `LoadoutDef`). Forte Circuit logic lives directly on each
+ *  resonator's own Resonator definition, not a separate loadout slot — and so do the stat-tree
+ *  Talents and both Inherent Skills, which are the kit itself rather than anything a build picks.
+ *
+ *  `weapons`/`echoLoadouts`/`mainstats` are lists, not a single pick: the comparison table runs every
+ *  combination of them (crossed with every other member's own combinations too — see index.ts's
+ *  own `runTeam()`), one row per combo, rather than this file committing to just one. The
+ *  `rotation` lives here too now, not a separate export — the scheduler reads its chains and
+ *  decides whose turn it is (rotation.ts). */
+export class Loadout {
+  /** `LoadoutDef.id`. */
+  id: number;
+  resonator: Resonator;
+  /** The rank of each listed weapon this build runs by default — the first of its `refinements`
+   *  entry: R1 for a whole list, the one rank given for a single weapon. */
+  weapons: Weapon[];
+  /** Per listed weapon, every rank a Refines compare may run it at (`LoadoutDef.weapons`). */
+  refinements: Weapon[][];
+  echoes: Echoes;
+  /** This build's whole rotation, already compiled into the up-to-three action chains the
+   *  scheduler schedules — start of combat, opener, and the Intro chain every visit after
+   *  (rotation.ts). One field, not an opener/loop pair: the chains share a body, so splitting
+   *  them across two lists only ever duplicated it. Every distinct one this build declares, for
+   *  whoever has to check them all (teams.ts's playability pass); `rotationAt()` picks per level. */
+  rotations: Rotation[];
+  /** The lowest chain level this build declares a rotation for: below it there is none, so a
+   *  build at a lower level has no rows (solver.ts's `sequenceLevels()`). */
+  minSequence: number;
+  private readonly rotationByLevel: (Rotation | null)[];
+  /** This loadout's own resonance-chain nodes, S1 first — as many as it actually declares, which
+   *  is six for anything a build is costed above S0 at (see `Tier`) and none for most
+   *  limited kits. */
+  sequences: Sequence[];
+  mode?: ResonanceMode;
+  /** See `LoadoutDef.minEr` / `minCritRate`; 0 where the kit names none. */
+  minEr: number;
+  minCritRate: number;
+
+  constructor(def: LoadoutDef) {
+    this.id = def.id;
+    this.resonator = def.resonator;
+    this.refinements = def.weapons.map((w) => (Array.isArray(w) ? w : [w]));
+    this.weapons = this.refinements.map((w) => w[0]!);
+    this.echoes = def.echoes;
+    if (this.echoLoadouts.every((e) => e.prerequisite.length)) throw new Error(`${def.resonator.name}: every echo pick has a prerequisite, so some team could try none`);
+    for (const e of this.echoLoadouts) {
+      if (!this.mainstats.some((m) => this.echoes.fits(e, m))) throw new Error(`${def.resonator.name}: no main-stat build fits ${e.sets.map((s) => s.name).join(" + ")} on ${e.mainslot.name}`);
+    }
+    // a bare Rotation carries an Intro chain; a level map never does. A level takes the nearest
+    // declared rotation below it, and the levels under the lowest declared one have none
+    const declared: Partial<Record<SequenceLevel, Rotation>> = "mains" in def.rotation ? { 0: def.rotation as Rotation } : def.rotation as Partial<Record<SequenceLevel, Rotation>>;
+    this.rotationByLevel = [];
+    for (let n = 0; n <= 6; n++) this.rotationByLevel[n] = declared[n as SequenceLevel] ?? this.rotationByLevel[n - 1] ?? null;
+    this.minSequence = this.rotationByLevel.findIndex(Boolean);
+    if (this.minSequence < 0) throw new Error(`${def.resonator.name}: a loadout's rotation map declares no rotation`);
+    this.rotations = [...new Set(this.rotationByLevel.filter((r): r is Rotation => r !== null))];
+    for (const r of this.rotations) if (r.error) throw new Error(`${def.resonator.name}: ${r.error.message}`);
+    this.sequences = def.sequences ?? [];
+    this.mode = def.mode;
+    this.minEr = def.minEr ?? 0;
+    this.minCritRate = def.minCritRate ?? 0;
+  }
+
+  /** The set picks, main-stat builds and substat spreads, as `echoes` holds them. */
+  get echoLoadouts(): EchoLoadout[] { return this.echoes.sets; }
+  /** Every main-stat build this loadout is willing to run (see mainstats.ts's own
+   *  `mainstatOptions()`) — a list for the same reason `weapons`/`echoLoadouts` are, the table
+   *  runs one row per combination. A pure support names just the one. */
+  get mainstats(): MainstatBuild[] { return this.echoes.mainstats; }
+  get substat(): ErSpread { return this.echoes.substat; }
+  get highSubstat(): ErSpread { return this.echoes.highSubstat; }
+  /** Whether set pick `echo` can be worn over main-stat build `mainstat`, both indices (`Echoes.fits`). */
+  fits(echo: number, mainstat: number): boolean {
+    return this.echoes.fits(this.echoLoadouts[echo]!, this.mainstats[mainstat]!);
+  }
+
+  /** The rotation a build at `sequenceLevel` runs: the one declared for that level, else the
+   *  nearest declared below it. */
+  rotationAt(sequenceLevel: number): Rotation {
+    const r = this.rotationByLevel[Math.min(6, sequenceLevel)];
+    if (!r) throw new Error(`${this.resonator.name} declares no rotation below S${this.minSequence}`);
+    return r;
+  }
+
+  /** Every piece for one specific weapon/echo/main-stat/sequence-level combo, flattened into the
+   *  plain array `equip()` actually walks — the order matches how each resonator file's own loadout
+   *  comment already reads (resonator, talent, both inherents, weapon, echoes, mainstat/substat,
+   *  sequences, mode). `sequenceLevel` is how many nodes are actually held, S1 up: 0 for a build at
+   *  S0, 6 for the full chain — the comparison table runs one row per level so the gain from each
+   *  can be read off (see index.ts's own combos). `matrix` is whether Matrix Mode is on — the
+   *  piece only goes on when it is *and* this resonator has one. `highSubs` swaps the substat
+   *  piece for the high-investment one (that role's own box); `erRolls` is how many ER rolls this
+   *  member's rotation turned out to need, which picks the ChemX32 tier. */
+  /** The substat piece this build wears: the tier `erRolls` asks for. ChemX32 carries its single
+   *  ER roll whatever the bar costs — it is one of the eight the spread does not name. The high
+   *  spread spends that slot on the sixth stat instead where the Liberation costs nothing. */
+  spread(highSubs: boolean, erRolls: number): Spread {
+    if (!highSubs) return this.substat.at(erRolls);
+    return this.resonator.maxEnergy ? this.highSubstat.at(erRolls) : (this.highSubstat.noEr ?? this.highSubstat.at(0));
+  }
+
+  pieces(weapon: Weapon, echo: EchoLoadout, mainstat: MainstatBuild, sequenceLevel: number, matrix = false, highSubs = false, erRolls = 1): Gear[] {
+    const r = this.resonator;
+    return [
+      r, r.talent, r.inherent1, r.inherent2,
+      weapon, ...this.echoes.pieces(echo, mainstat, this.spread(highSubs, erRolls)),
+      ...this.sequences.slice(0, sequenceLevel),
+      this.mode,
+      matrix ? r.matrix : undefined,
+    ].filter((g): g is Gear => g != null);
+  }
+}
+
+export interface ResonatorDef extends GearDef {
+  /** The game's own id (nanoka's links, encore's `Id`): 1205 Changli. 0 only on the Tune Break dummy. */
+  id: number;
+  matrix?: Matrix;
+  element: Attribute;
+  /** This kit's own stat-tree Talents bonus and both Inherent Skills — part of the resonator
+   *  rather than of any one build, since every build runs the same three. Each stays its own piece
+   *  of Gear so the report can trace a stat back to which of them granted it. Optional only for
+   *  the enemy dummy (`enemy` below), which is no kit; every real resonator names all three, and
+   *  the constructor throws if one is missing. */
+  talent?: Talent;
+  inherent1?: Inherent;
+  inherent2?: Inherent;
+  /** Which of the five weapon categories this resonator wields — decides which weapon files
+   *  (src/weapons/) their loadout can actually equip. */
+  weapon: WeaponType;
+  /** The Energy bar's ceiling, which the Liberation that pays for it spends as its own
+   *  `castEnergy` (-12500 for 125). 0, the default, is for a kit whose Liberation genuinely costs
+   *  no Resonance Energy at all (Phrolova, Lucilla), not "not yet filled in". The bar banks past it
+   *  freely, like every gauge (rotation.ts's `bank`). */
+  maxEnergy?: number;
+  /** What one unit each forte gauge is held in reads as (`forteN` and every figure around it are
+   *  whole numbers in those units): 1 by default, 0.01 for a gauge kept in hundredths. One number
+   *  for every gauge, or one per gauge. */
+  forteScale?: number | [number, number, number, number, number];
+  /** The cap on each forte gauge — Suoming's 800 Delusion, Hsin's 100 Answering Heart — declared
+   *  once here, like `maxEnergy`. A gauge banks past it freely; the cap only bites when a cast
+   *  spends from it, which starts from the cap rather than the overrun (evaluate.ts). Below 0
+   *  after a spend is flagged red in the report. Every gauge a kit uses declares one. */
+  maxForte1?: number;
+  maxForte2?: number;
+  maxForte3?: number;
+  maxForte4?: number;
+  maxForte5?: number;
+  /** This resonator's own colour — the comparison table's member column, row wash, and gear/
+   *  damage popovers all key off it, read straight off the Resonator rather than re-declared per
+   *  team in index.ts. */
+  color: string;
+  /** The Intro this resonator casts — the kit's Intro, or where it has more than one, which comes
+   *  out as it is reached (`() => (isHeld(X) ? IntroB : Intro)`): what picks the Intro chain an
+   *  arrival plays, and the one that chain's entry casts. */
+  intro?: Action | (() => Action);
+  /** The press a swap-in (arriving with no Intro) must open on, coming in grounded / in mid-air —
+   *  as `intro`, a function where it depends on state. */
+  swapIn?: Action | (() => Action);
+  swapInAir?: Action | (() => Action);
+  /** This resonator's own Tune Break, where it isn't their weapon class's (Qingxiao's) — an Intro
+   *  Resolver-style `resolve` where it depends on their form. Unset is the class's (tunebreak.ts). */
+  tuneBreak?: Action;
+  /** The dash this resonator makes, where it has one of its own (Jingran's Shadow Step) — or the
+   *  one it makes cutting `after` short, read when the dash is reached (Hiyuki's Iai Stance flash);
+   *  null, or unset, is the plain DODGE. */
+  dodge?: Action | ((after: Action) => Action | null);
+  /** The same for a jump. */
+  jump?: Action | ((after: Action) => Action | null);
+  /** A wait the resonator handing this one the field must play before `next` (the arrival's first
+   *  cast; an Outro asks with the Intro) — Phrolova's Hecate. Asked again after it; null goes ahead. */
+  holdBefore?: (next: Action) => Action | null;
+  /** Made to leave the field by a teammate (Augusta's Everbright Protector, `sendOthersOff()`):
+   *  whatever this resonator still has going beside the fight ends, hits already out landing. */
+  sentOff?: () => void;
+  /** The enemy's own, on the frame `behind` is cut by `cut` (a dodge, swap, plain, on-hit or insta
+   *  cancel), ahead of its bullets still to land: what is ready there for `takesCut` to act on, the
+   *  cut's delay after it being only the input. */
+  atCut?: (behind: Action, cut: ActionTag) => void;
+  /** The enemy's own: read on the frame a plain dodge would be cast, or the rotation's next step
+   *  after a swap form or a plain, on-hit or insta cancel, `behind` the press its `cut` cut short
+   *  — it may `replaceCut()` and queue what plays there (tunebreak.ts's ready break). */
+  takesCut?: (behind: Action, cut: ActionTag) => void;
+  /** How hard this resonator is to own, which is what sets the resonance-chain level their build
+   *  is costed at — see stats.ts's own `Tier` and `baseSequence()`. Unset means `Tier.Limited`. */
+  tier?: Tier;
+  /** The one Resonator that is the enemy rather than a member (tunebreak.ts's Tune Break): it is
+   *  `equipEnemy()`-ped onto `State.enemy`, and carries none of the four starting stats every real
+   *  resonator gets — those would land in the enemy pool and pay into every action. */
+  enemy?: boolean;
+  /** The enemy's own off-tune ceiling (tunebreak.ts), held the way a member holds `maxEnergy`. */
+  maxOfftune?: number;
+}
+
+/** No gauge capped: energy, concerto, forte 1-5, as `Resonator.caps` reads. */
+export const NO_CAPS: readonly number[] = [0, 0, 0, 0, 0, 0, 0];
+
+/** A resonator: a Gear like any other (TODO_ENGINE.md — "Resonator extends Gear"), plus its own
+ *  name/element/weapon type/colour/intro-choice, and the three pieces every build of it runs
+ *  regardless — the stat-tree Talents (e.g. `"Phrolova: Talents"`) and both Inherent Skills. Each
+ *  of those stays a separate piece of Gear rather than being folded into this one's own
+ *  `constantStats`, so the report still names which of them a stat came from. */
+export class Resonator extends Gear {
+  element: Attribute;
+  weapon: WeaponType;
+  /** Undefined only on the enemy dummy — see `ResonatorDef`. */
+  talent?: Talent;
+  inherent1?: Inherent;
+  inherent2?: Inherent;
+  /** This kit's Matrix, if it has one — worn only when the table's Matrix Mode box is on
+   *  (`Loadout.pieces()`), and the resonator's own the way their Talents are. */
+  matrix?: Matrix;
+  maxEnergy: number;
+  /** Every resonator's Concerto ceiling, the full bar. */
+  maxConcerto = FULL_CONCERTO;
+  /** `maxForte1`-`maxForte5` as one array, indexed the way `TeamMember.forte` is. */
+  maxForte: [number, number, number, number, number];
+  /** Every cap of a member's own bars in one array — energy, concerto, forte 1-5 — the way a
+   *  cast's condition and `bankBar` index them. */
+  caps: readonly number[];
+  maxOfftune: number;
+  forteScale: [number, number, number, number, number];
+  color: string;
+  /** `ResonatorDef.intro`, read as it is reached. */
+  intro?: () => Action;
+  /** `ResonatorDef.swapIn`/`swapInAir`, read as a swap-in reaches them. */
+  swapIn?: () => Action;
+  swapInAir?: () => Action;
+  tuneBreak?: Action;
+  dodgeFn?: (after: Action) => Action | null;
+  jumpFn?: (after: Action) => Action | null;
+  holdFn?: (next: Action) => Action | null;
+  sentOff?: () => void;
+  atCut?: (behind: Action, cut: ActionTag) => void;
+  takesCut?: (behind: Action, cut: ActionTag) => void;
+  tier: Tier;
+  constructor(def: ResonatorDef) {
+    super({
+      ...def,
+      // The four every resonator in the game starts with, applied here so no kit has to restate
+      // them: 5% Crit. Rate, 150% Crit. DMG, 100% Energy Regen and a 100% Off-Tune Buildup Rate.
+      // Off-tune is the one worth spelling out — the rate is a plain multiplier on what a cast
+      // banks (see `evaluate()`), so 100 is the neutral baseline the way 100% ER is, and a kit
+      // granting "+50% Buildup Rate" (Mornye's Syntony Field) adds 50 on top of it for x1.5.
+      // A kit's own constantStats runs after, so its Base HP/ATK/DEF and anything else land on top.
+      constantStats: () => {
+        if (!def.enemy) {
+          addStat(Stat.CritRate, 5);
+          addStat(Stat.CritDmg, 150);
+          addStat(Stat.ER, 100);
+          addStat(Stat.OfftuneBuildup, 100);
+        }
+        def.constantStats?.();
+      },
+      combatStart: () => {
+        ctx.slot!.resonator = this;
+        // the enemy member is nameless until its resonator lands: the bucket the break's damage
+        // reports under, and the hue it wears, are read off it from then on
+        if (def.enemy) ctx.slot!.name = this.name;
+        // the Energy bar starts a fight already filled: the opening Liberation is free
+        ctx.slot!.energy = this.maxEnergy;
+        ctx.slot!.shownEnergy = this.maxEnergy;
+        def.combatStart?.();
+      },
+    });
+    this.element = def.element;
+    this.weapon = def.weapon;
+    if (!def.enemy && (!def.talent || !def.inherent1 || !def.inherent2)) {
+      throw new Error(`${def.name}: a resonator names its Talents and both Inherent Skills`);
+    }
+    this.talent = def.talent;
+    this.matrix = def.matrix;
+    this.inherent1 = def.inherent1;
+    this.inherent2 = def.inherent2;
+    this.maxEnergy = def.maxEnergy ?? 0;
+    this.maxForte = [def.maxForte1 ?? 0, def.maxForte2 ?? 0, def.maxForte3 ?? 0, def.maxForte4 ?? 0, def.maxForte5 ?? 0];
+    this.caps = [this.maxEnergy, this.maxConcerto, ...this.maxForte];
+    this.maxOfftune = def.maxOfftune ?? 0;
+    const scale = def.forteScale ?? 1;
+    this.forteScale = Array.isArray(scale) ? scale : [scale, scale, scale, scale, scale];
+    this.color = def.color;
+    const { intro, dodge, jump, swapIn, swapInAir } = def;
+    this.intro = typeof intro === "function" ? intro : intro && (() => intro);
+    this.swapIn = typeof swapIn === "function" ? swapIn : swapIn && (() => swapIn);
+    this.swapInAir = typeof swapInAir === "function" ? swapInAir : swapInAir && (() => swapInAir);
+    this.tuneBreak = def.tuneBreak;
+    this.dodgeFn = typeof dodge === "function" ? dodge : dodge && (() => dodge);
+    this.holdFn = def.holdBefore;
+    this.sentOff = def.sentOff;
+    this.atCut = def.atCut;
+    this.takesCut = def.takesCut;
+    this.jumpFn = typeof jump === "function" ? jump : jump && (() => jump);
+    this.tier = def.tier ?? Tier.Limited;
+  }
+}
+
+export interface MainslotDef extends GearDef {
+  /** The game's own echo id (nanoka's links, encore's `Id`), the base 6000xxx one. */
+  id: number;
+  /** The echo's cost: which of the build's echoes it is, and so which main stat it wears. */
+  cost: 4 | 3;
+}
+
+/** A mainslot echo: the piece held by whoever equips it. Every build equips exactly one. Its cast is
+ *  an Action of its own that names it (`ActionDef.mainslot`, echoes/echo.ts), playing only while
+ *  it is worn. */
+export class Mainslot extends Gear {
+  cost: 4 | 3;
+  /** Its constant stats, run by the build's echo it is (shared/echoes.ts) so they join that echo's
+   *  panel entry; the mainslot itself carries none. */
+  echoStatsFn?: () => void;
+  constructor(def: MainslotDef) {
+    super(def);
+    this.cost = def.cost;
+    this.echoStatsFn = this.constantStatsFn;
+    this.constantStatsFn = undefined;
+    this.wire();
+  }
+}
+
+export interface WeaponDef extends GearDef {
+  /** The game's own weapon id (nanoka's links, encore's `Id`): 21010016 Verdant Summit. */
+  id: number;
+  /** Which of the five weapon categories this is — must match the wielder's own `Resonator.weapon`. */
+  weaponType: WeaponType;
+  /** How the weapon is come by, the same three tiers a resonator has (stats.ts's own `Tier`):
+   *  `Limited` a signature, `Standard` one of the permanent 5-stars (Stormy Resolution and the
+   *  new standard set), `Free` a 4-star anyone can craft — Ceaseless Aria, Bloodpact's Pledge.
+   *  Every tier runs at R1 unless a loadout names a higher rank outright (`LoadoutDef.weapons`).
+   *  Unset means `Tier.Limited`.
+   *  The comparison table's own Allow R1 MDPS/Supports checkboxes key off it: unchecked restricts
+   *  that role to the non-limited tiers, on the assumption a signature is only ever owned at R1. */
+  tier?: Tier;
+}
+
+/** All five refinements of one weapon, R1 first. `build` is called once per rank with `r` 0-4 and
+ *  reads its own numbers off five-entry lists (`[12, 15, 18, 21, 24][r]`); every buff the weapon
+ *  grants is built inside the same call, so each rank carries its own instances and a team buff
+ *  pays the applier's rank. `rank` is the " R3" every name in that call ends with, weapon and
+ *  buffs alike, so the table and the buff lists say which rank is being run. */
+export function refinements(build: (r: number, rank: string) => Weapon): Weapon[] {
+  return [0, 1, 2, 3, 4].map((r) => { const w = build(r, ` R${r + 1}`); w.refinement = r + 1; return w; });
+}
+
+/** A weapon: gear that also carries which of the five categories it belongs to. Every top-level
+ *  weapon export in src/weapons/ is one of these, not a plain Gear — the secondary proc buffs a
+ *  weapon grants (Ad Veritatem, Panorama, etc.) stay plain Buff. */
+export class Weapon extends Gear {
+  weaponType: WeaponType;
+  tier: Tier;
+  /** Which rank this instance is, 1-5 — stamped by `refinements()`. */
+  refinement = 1;
+  constructor(def: WeaponDef) {
+    super(def);
+    this.weaponType = def.weaponType;
+    this.tier = def.tier ?? Tier.Limited;
+  }
+}
+
+/** An Action is a Gear (see the class below), so every hook `GearDef` declares is available here
+ *  too — an action that *does* something declares it directly instead of a held Gear branching on
+ *  `runningAction(X)`. The one that doesn't apply is `combatStart`: an Action is cast, never
+ *  equipped, so nothing ever fires it. */
+/* Action/ActionGroup/ActionDef live in rotation.ts, beside the markers and the rotation-flavoured
+ * forms (`cancel()`, `swap()`). This module names them through `import type` only — that erased
+ * import is what keeps it free of any runtime edge back into rotation.ts, so rotation.ts (whose
+ * markers construct Actions, whose Action extends Gear) always evaluates after this one. */

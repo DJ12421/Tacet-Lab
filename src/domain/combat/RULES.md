@@ -1,13 +1,14 @@
 # Combat calculation rules and baseline ledger
 
-Status: Step 1 baseline for the clean-room combat module.
+Status: Historical baseline for the formula calculator. The separately labeled
+stateful kit preview has its own coverage gates in `stateful/preview.ts`.
 
 This document defines the accepted calculation behavior that may be turned into
 fixtures and implementation. Step 2.5 converted the supported formula choices
 into a static project baseline.
 
-Existing Tacet Lab calculators are recorded only as legacy implementations to
-delete. Their results and tests are not evidence for this document.
+The formula calculator remains active for team totals and worker scoring. Its
+results and tests are not evidence for this historical rules document.
 
 ## Rule statuses
 
@@ -18,8 +19,8 @@ delete. Their results and tests are not evidence for this document.
 | `user-rule` | Explicit product direction that overrides the comparison baseline | Yes |
 | `deferred` | Not sufficiently specified for implementation | No |
 
-The baseline is project-owned static data and equations. The combat module must
-not contact, import, execute, or depend on another calculator at runtime.
+The baseline is project-owned static data and equations. Formula calculator
+results remain separate from partial stateful kit results.
 
 ## Units and representation
 

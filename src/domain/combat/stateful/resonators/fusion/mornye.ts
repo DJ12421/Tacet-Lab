@@ -1,0 +1,495 @@
+/**
+ * Mornye, ported to the new engine — a Fusion Broadblade support/sub-DPS, and the second kit built
+ * on the Tune Break variants (see tunebreak.ts).
+ *
+ * Unlike Lynae she never *inflicts* a Shifting; she only answers one, so she wants a Shifter beside
+ * her. Both halves of Decoupling are the same shape as Lynae's Spectral Analysis:
+ *
+ * - **Rupture**: any teammate's break resolving as a Rupture queues her Particle Jet (298.22%).
+ * - **Strain**: each stack of Tune Strain - Interfered turns every point of her Tune Break Boost
+ *   into +0.12% of her total damage. She carries only the flat 10 every tune-break-era resonator
+ *   has (nanoka's own `stats_weakness.weakness_mastery`) — her kit adds none of its own.
+ *
+ * Her real contribution is the **Syntony Field**: +50% Off-Tune Buildup Rate to the whole team,
+ * which is what fills the shared bar faster and so lands more breaks for everyone (the engine banks
+ * off-tune through `Stat.OfftuneBuildup`, see evaluate()). The Liberation upgrades it to a High
+ * Syntony Field, which keeps that and adds +20% team DEF.
+ *
+ * Her Liberation and her healing scale off DEF; everything else is ATK (nanoka's own
+ * `related_property` per hit). MVs and energy/concerto/off-tune off nanoka.cc (character 1209,
+ * https://ww.nanoka.cc/character/1209), read the way CLAUDE.md describes.
+ */
+import { Stat, Attribute, WeaponType, Type, Cast, Node, Scaling, Position } from "../../engine/stats.js";
+import { Buff, Talent, Inherent, Resonator, Loadout, EchoLoadout, Debuff, Sequence, coordinatedBuff } from "../../engine/gear.js";
+import {
+  cancelHits,
+  addStat,
+  getStat,
+  applyCurrent,
+  applyTeam,
+  runningAction,
+  queue,
+  revokeCurrent,
+  stacksOfTeam,
+  maxStackIncrease,
+  applyEnemy,
+  revokeEnemy,
+  stacksOfEnemy,
+  currentTeam,
+  revokeTeam,
+  reduceCooldown,
+  addGain,
+  addStatAs,
+} from "../../engine/context.js";
+import { ActionGroup, Action, Rotation, SWAPIN, START_LAST, DODGE } from "../../engine/rotation.js";
+import { HEALS, heal } from "../../shared/status.js";
+import {
+  TUNE_BREAK, TUNE_RUPTURE_INTERFERED, TUNE_STRAIN_INTERFERED, tuneRuptureResponse, strainPayout,
+} from "../../shared/tunebreak.js";
+import { STARFIELD_CALIBRATOR } from "../../weapons/broadblade.js";
+import { DISCORD } from "../../weapons/standard.js";
+import { REACTOR_HUSK, SPACETREK_EXPLORER, STARRY_RADIANCE_5PC, ACTION_REACTOR_HUSK, ACTION_SPACETREK } from "../../echoes/lahairoi.js";
+import { JINGRAN_RESONATOR } from "./jingran.js";
+import { mainstats, Mainstat } from "../../shared/mainstats.js";
+import { Echoes } from "../../shared/echoes.js";
+import { substats, highSubs, Substat } from "../../shared/substats.js";
+
+/* ----------------------------------------------------------------------------------- actions */
+
+function mornyeAction(id: string, def: object): Action {
+  return new Action(id, { element: Attribute.Fusion, scaling: Scaling.Atk, ...def });
+}
+
+/** Wide Field Observation Mode: 30s, entered by her Intro and Geopotential Shift, ended by
+ *  switching out. Its Basic chain, Dodge Counter, Distributed Array and Inversion are cast in it. */
+const WIDE_FIELD = new Buff({ name: "Mornye: Wide Field Observation Mode", duration: 60 * 30, lostOnSwap: true });
+
+/** Expectation Error's Parry state: being attacked in it casts Optimal Solution, and pressing
+ *  Normal Attack leaves it for Basic Attack Stage 2. Switching out ends it. */
+const PARRY = new Buff({ name: "Mornye: Parry", lostOnSwap: true });
+
+// --- Baseline Mode, the ground chain she opens from
+const BA1 = mornyeAction("Basic - Ground State Calibration 1", { animFrames: 25, castPriority: 2, node: Node.Normal, cast: Cast.Basic, type: Type.Basic, bullets: [
+    { hitFrame: 10, mv: 1671, energy: 27, concerto: 84, offtune: 840 },
+    { hitFrame: 13, mv: 2227, energy: 35, concerto: 112, offtune: 1120 },
+    { hitFrame: 25, mv: 1671, energy: 27, concerto: 84, offtune: 840 },
+  ], castForte1: 2000});
+// the Dodge Counter, and Expectation Error's "press Normal Attack to exit the state and cast Basic Attack Stage 2"
+const BA2 = mornyeAction("Basic - Ground State Calibration 2", { chains: () => [BA1, DC, Skill], updateBuffs: () => revokeCurrent(PARRY), animFrames: 49, castPriority: 2, node: Node.Normal, cast: Cast.Basic, type: Type.Basic, bullets: [
+    { hitFrame: 11, mv: 2386, energy: 38, concerto: 120, offtune: 1200 },
+    { hitFrame: 26, mv: 2386, energy: 38, concerto: 120, offtune: 1200 },
+    { hitFrame: 40, commitFrame: 34, mv: 1790, energy: 29, concerto: 90, offtune: 900 },
+    { hitFrame: 49, commitFrame: 34, mv: 1790, energy: 29, concerto: 90, offtune: 900 },
+    { hitFrame: 58, commitFrame: 34, mv: 1790, energy: 29, concerto: 90, offtune: 900 },
+    { hitFrame: 67, commitFrame: 34, mv: 1790, energy: 29, concerto: 90, offtune: 900 },
+  ], castForte1: 4300});
+// the plunge: "Press Normal Attack within a certain time afterward to cast Basic Attack Stage 3"
+const BA3 = mornyeAction("Basic - Ground State Calibration 3", { chains: () => [BA2, MA], animFrames: 49, castPriority: 2, node: Node.Normal, cast: Cast.Basic, type: Type.Basic, bullets: [
+    { hitFrame: 24, mv: 4136, energy: 65, concerto: 208, offtune: 2080 },
+    { hitFrame: 40, mv: 1034, energy: 17, concerto: 52, offtune: 520 },
+    { hitFrame: 49, commitFrame: 40, mv: 1034, energy: 17, concerto: 52, offtune: 520 },
+    { hitFrame: 58, commitFrame: 40, mv: 1034, energy: 17, concerto: 52, offtune: 520 },
+    { hitFrame: 67, commitFrame: 40, mv: 1034, energy: 17, concerto: 52, offtune: 520 },
+    { hitFrame: 76, commitFrame: 40, mv: 1034, energy: 17, concerto: 52, offtune: 520 },
+    { hitFrame: 85, commitFrame: 40, mv: 1034, energy: 17, concerto: 52, offtune: 520 },
+  ], castForte1: 3700});
+const BA4 = mornyeAction("Basic - Ground State Calibration 4", { chains: [BA3], animFrames: 116, castPriority: 2, node: Node.Normal, cast: Cast.Basic, type: Type.Basic, bullets: [{ hitFrame: 51, mv: 13520, energy: 213, concerto: 680, offtune: 6800 }], castForte1: 10000});
+const HA = mornyeAction("Heavy - Ground State Calibration", { maxForte1: 9999, animFrames: 95, castPriority: 2, node: Node.Normal, cast: Cast.Heavy, type: Type.Heavy, bullets: [
+    { hitFrame: 19, mv: 1110, energy: 24, concerto: 75, offtune: 744 },
+    { hitFrame: 40, mv: 1110, energy: 24, concerto: 75, offtune: 744 },
+    { hitFrame: 70, mv: 1480, energy: 31, concerto: 100, offtune: 992 },
+  ], castForte1: 2000});
+const MA = mornyeAction("Mid-air - Ground State Calibration Plunge", { castPosition: Position.Midair, endPosition: Position.Grounded, animFrames: 42, animPriority: { 42: 2 }, castPriority: 5, node: Node.Normal, cast: Cast.Basic, type: Type.Basic, bullets: [{ hitFrame: 36, mv: 9861, energy: 155, concerto: 496, offtune: 4960 }]});
+const DC = mornyeAction("Dodge Counter - Ground State Calibration", { chains: [DODGE], animFrames: 26, animPriority: { 0: 2 }, castPriority: 8, node: Node.Normal, cast: Cast.DodgeCounter, type: Type.Basic, bullets: [{ hitFrame: 9, mv: 16223, energy: 255, concerto: 816, offtune: 8160 }], castForte1: 2000, castConcerto: 1000});
+
+// --- Wide Field Observation Mode, the airborne state the Syntony Field lives in: "The state also ends
+//     when Mornye is no longer airborne", so every press cast in it is cast in mid-air
+const WBA1 = mornyeAction("Basic - Wide Field Observation 1", { castPosition: Position.Midair, requireBuff: WIDE_FIELD, maxForte2: 9999, animFrames: 21, castPriority: 2, node: Node.Normal, cast: Cast.Basic, type: Type.Basic, bullets: [
+    { hitFrame: 26, commitFrame: 14, mv: 1392, energy: 22, concerto: 35, offtune: 700, forte2: 250 },
+    { hitFrame: 34, commitFrame: 14, mv: 1392, energy: 22, concerto: 35, offtune: 700, forte2: 250 },
+    { hitFrame: 42, commitFrame: 14, mv: 1392, energy: 22, concerto: 35, offtune: 700, forte2: 250 },
+    { hitFrame: 49, commitFrame: 14, mv: 1392, energy: 22, concerto: 35, offtune: 700, forte2: 250 },
+  ]});
+const WBA2 = mornyeAction("Basic - Wide Field Observation 2", { chains: [WBA1], castPosition: Position.Midair, requireBuff: WIDE_FIELD, maxForte2: 9999, animFrames: 39, castPriority: 2, node: Node.Normal, cast: Cast.Basic, type: Type.Basic, bullets: [
+    { hitFrame: 17, mv: 2585, energy: 41, concerto: 64, offtune: 1300, forte2: 300 },
+    { hitFrame: 33, commitFrame: 17, mv: 2585, energy: 41, concerto: 64, offtune: 1300, forte2: 300 },
+    { hitFrame: 49, commitFrame: 17, mv: 2585, energy: 41, concerto: 64, offtune: 1300, forte2: 300 },
+    { hitFrame: 65, commitFrame: 17, mv: 2585, energy: 41, concerto: 64, offtune: 1300, forte2: 300 },
+  ]});
+// and its Dodge Counter: "Within a certain time afterward, press Normal Attack to cast ... Stage 3"
+const WBA3 = mornyeAction("Basic - Wide Field Observation 3", { chains: () => [WBA2, WDC], castPosition: Position.Midair, requireBuff: WIDE_FIELD, maxForte2: 9999, animFrames: 41, castPriority: 2, node: Node.Normal, cast: Cast.Basic, type: Type.Basic, bullets: [
+    { hitFrame: 31, commitFrame: 13, mv: 931, energy: 15, concerto: 23, offtune: 468, forte2: 900 },
+    { hitFrame: 34, commitFrame: 13, mv: 931, energy: 15, concerto: 23, offtune: 468, forte2: 450 },
+    { hitFrame: 41, commitFrame: 13, mv: 931, energy: 15, concerto: 23, offtune: 468, forte2: 450 },
+    { hitFrame: 62, commitFrame: 13, mv: 3309, energy: 52, concerto: 82, offtune: 1664 },
+    { hitFrame: 67, commitFrame: 13, mv: 931, energy: 15, concerto: 23, offtune: 468 },
+    { hitFrame: 100, commitFrame: 13, mv: 3309, energy: 52, concerto: 82, offtune: 1664 },
+  ]});
+const WDC = mornyeAction("Dodge Counter - Wide Field Observation", { chains: [DODGE], castPosition: Position.Midair, requireBuff: WIDE_FIELD, animFrames: 41, animPriority: { 0: 5, 38: 2 }, castPriority: 8, node: Node.Normal, cast: Cast.DodgeCounter, type: Type.Basic, bullets: [
+    { hitFrame: 17, mv: 2585, energy: 41, concerto: 64, offtune: 1300, forte1: 300 },
+    { hitFrame: 33, commitFrame: 17, mv: 2585, energy: 41, concerto: 64, offtune: 1300, forte1: 300 },
+    { hitFrame: 49, commitFrame: 17, mv: 2585, energy: 41, concerto: 64, offtune: 1300, forte1: 300 },
+    { hitFrame: 65, commitFrame: 17, mv: 2585, energy: 41, concerto: 64, offtune: 1300, forte2: 1200, forte1: 300 },
+  ], castConcerto: 1000});
+
+// --- Forte Circuit. Geopotential Shift is what banks Rest Mass Energy into the airborne state;
+//     Inversion is the payoff once Relative Momentum tops out.
+// her Intro is what puts her airborne; the field comes up where wuwalab's generate_syntony_field
+// does — 70f into the Intro (sure from 38f), 58f into the Heavy, which spends Rest Mass Energy there
+// "Afterward, Mornye jumps into mid-air"
+const GeopotentialShift = mornyeAction("Forte Heavy - Geopotential Shift", { endPosition: Position.Midair, minForte1: 10000, animFrames: 92, castPriority: 5, node: Node.Forte, cast: Cast.Heavy, type: Type.Heavy, bullets: [
+    { hitFrame: 22, mv: 4414, energy: 93, concerto: 296, offtune: 2960 },
+    { hitFrame: 58, element: null, type: null, subtype: null, forte1: -10000, updateDebuffs: raiseSyntonyField },
+    { hitFrame: 80, mv: 9902, energy: 208, concerto: 665, offtune: 6640 },
+  ],
+  updateBuffs: () => applyCurrent(WIDE_FIELD, 1),
+});
+const Inversion = mornyeAction("Forte Heavy - Inversion", { castPosition: Position.Midair, minForte2: 10000, requireBuff: WIDE_FIELD,
+  animFrames: 76, castPriority: 6, noSwapFrames: 76, motionStop: [0, 76],
+  node: Node.Forte, cast: Cast.Heavy, type: Type.Heavy, bullets: [{ hitFrame: 76, mv: 25846, energy: 325, concerto: 1196, offtune: 10400 }], castForte2: -10000,
+  updateDebuffs: () => applyEnemy(OBSERVATION_MARKER, 1),
+});
+
+/** The field's own damage, counted as Resonance Liberation DMG by the kit page: 5 ticks of 39.77%,
+ *  all certain once it is raised — queued by the bullet that raises it, so the first lands at once. */
+/** One field at a time: a fresh one cuts off whatever hits the last had left. */
+function raiseSyntonyField(): void {
+  cancelHits(SYNTONY_FIELDS);
+  queue(SyntonyFieldHit);
+}
+const SyntonyFieldHit = mornyeAction("Forte - Syntony Field", {
+  animFrames: 0,
+  node: Node.Forte, type: Type.Liberation, bullets: [
+    { hitFrame: 0, mv: 3977 },
+    { hitFrame: 27, commitFrame: 0, mv: 3977 },
+    { hitFrame: 54, commitFrame: 0, mv: 3977 },
+    { hitFrame: 81, commitFrame: 0, mv: 3977 },
+    { hitFrame: 108, commitFrame: 0, mv: 3977 },
+  ],
+  updateBuffs: () => {
+    // a field re-raised under a High one leaves it High, refreshed
+    if (stacksOfTeam(HIGH_SYNTONY_FIELD)) applyTeam(HIGH_SYNTONY_FIELD, 1);
+    else applyTeam(SYNTONY_FIELD, 1);
+    applyTeam(SYNTONY_HEALS, SYNTONY_HEALS.maxStacks);
+  },
+});
+const SYNTONY_FIELDS = new Set<Action>([SyntonyFieldHit]);
+
+/** The field's heal, once every 3s for its 25s — her healing marker (statuses.ts), landed on her
+ *  own slot the way her Skill's is, so every "on heal" piece she wears sees each tick. */
+const SYNTONY_HEALS = coordinatedBuff("Mornye: Syntony Field (heals)", 25, () => MORNYE_RESONATOR, heal, { every: 3 });
+
+// --- Resolution. Expectation Error is the baseline Resonance Skill and does nothing but heal
+//     (94 + 24.94% of her DEF); it carries no motion value, energy, concerto or off-tune of its
+//     own. The Parry state it opens is purely defensive and holds no stat, so it is not modelled —
+//     and being attacked out of it is what casts Optimal Solution, which this calculator has no
+//     incoming attacks to trigger, so a rotation names that directly.
+// updateDebuffs on both skills is her own healing marker, read by every healing sonata and weapon
+// (statuses.ts) — applied to the healer alone, never the team
+const SKILL_HEAL = { updateDebuffs: () => applyCurrent(HEALS, 1) };
+// no hit of its own to heal on: the cast does
+const Skill = mornyeAction("Skill - Expectation Error", { animFrames: 21, animPriority: { 17: 2 }, castPriority: 5, cooldown: 60 * 5, node: Node.Skill, cast: Cast.Skill,
+  updateBuffs: () => {
+    applyCurrent(PARRY, 1);
+    applyCurrent(HEALS, 1);
+  },
+});
+// takes 2s off Expectation Error's cooldown
+const OptimalSolution = mornyeAction("Skill - Optimal Solution", {
+  animFrames: 110, animPriority: { 0: 5, 47: 1 }, castPriority: 6, node: Node.Skill, cast: Cast.Skill, type: Type.Skill, bullets: [{ hitFrame: 44, mv: 17973, energy: 396, concerto: 904, offtune: 9040, forte1: 10000 }],
+  requireBuff: PARRY,
+  updateBuffs: () => {
+    revokeCurrent(PARRY);
+    reduceCooldown(Skill, 60 * 2);
+  },
+});
+const DistributedArray = mornyeAction("Skill - Distributed Array", { castPosition: Position.Midair, requireBuff: WIDE_FIELD, animFrames: 60, castPriority: 4, cooldown: 60 * 16, node: Node.Skill, cast: Cast.Skill, type: Type.Skill, bullets: [
+    // wuwalab heals at 0f, ahead of the first damage
+    { hitFrame: 0, element: null, type: null, subtype: null, ...SKILL_HEAL },
+    { hitFrame: 46, commitFrame: 22, mv: 3977, energy: 463, offtune: 2000, forte2: 1500 },
+    { hitFrame: 46, commitFrame: 22, mv: 3977, energy: 463, offtune: 2000, forte2: 1500 },
+    { hitFrame: 60, commitFrame: 36, mv: 3977, energy: 463, offtune: 2000, forte2: 1500 },
+    { hitFrame: 60, commitFrame: 36, mv: 3977, energy: 463, offtune: 2000, forte2: 1500 },
+  ], castConcerto: 1000});
+
+/** Critical Protocol scales off DEF, not ATK. */
+const Liberation = mornyeAction("Liberation - Critical Protocol", {
+  animFrames: 300, castPriority: 10, timestop: [0, 300], motionStop: [0, 300], cooldown: 60 * 25,
+  node: Node.Liberation, cast: Cast.Liberation, type: Type.Liberation, scaling: Scaling.Def,
+  bullets: [{ hitFrame: 272, mv: 52233, offtune: 72000 }], castConcerto: 2000, castEnergy: -17500,
+  // trades the field up to its High stage, if one is standing
+  updateBuffs: () => {
+    applyCurrent(CRITICAL_PROTOCOL, 1);
+    if (stacksOfTeam(SYNTONY_FIELD) || stacksOfTeam(HIGH_SYNTONY_FIELD)) {
+      revokeTeam(SYNTONY_FIELD);
+      applyTeam(HIGH_SYNTONY_FIELD, 1);
+      applyTeam(SYNTONY_HEALS, SYNTONY_HEALS.maxStacks);
+    }
+  },
+});
+
+// "Attack the target to deal Fusion DMG, then jump into mid-air"
+const Intro = mornyeAction("Intro - Convergence", { endPosition: Position.Midair, qteFrames: 35, animFrames: 105, animPriority: { 80: 6 }, castPriority: 11, motionStop: [4, 79], node: Node.Intro, cast: Cast.Intro, type: Type.Intro, bullets: [
+    { hitFrame: 38, mv: 20279, energy: 1000, offtune: 13600 },
+    { hitFrame: 70, commitFrame: 38, element: null, type: null, subtype: null, updateDebuffs: raiseSyntonyField },
+  ], castConcerto: 1000,
+  // "clearing all Rest Mass Energy"
+  resetForte1: true,
+  updateBuffs: () => applyCurrent(WIDE_FIELD, 1),
+});
+const Outro = mornyeAction("Outro - Recursion", {
+  animFrames: 0,
+  cast: Cast.Outro, minConcerto: 10000, castConcerto: -10000,
+  updateBuffs: () => applyTeam(RECURSION)
+});
+
+/** Her answer to a Rupture break, queued by the engine's own break (see MORNYE_RESONATOR's hitGlobal())
+ *  rather than played. An ordinary active cast, like every Tune Break response: it is her own hit,
+ *  and marking it inactive would have every "lost on switching out" buff she holds revoke itself
+ *  the moment a break went off. */
+const ParticleJet = mornyeAction("Tune Rupture Response - Particle Jet", {
+  animFrames: 0,
+  node: Node.Forte, cast: Cast.TuneBreak, type: Type.Rupture, bullets: [{ hitFrame: 0, mv: 29822 }], scaling: Scaling.Tune,
+});
+
+/* ------------------------------------------------------------------------------------- buffs */
+
+/** Syntony Field: 25s, so permanent uptime. The +50% Off-Tune Buildup Rate is the whole point —
+ *  it is what makes the team's shared bar fill faster and so lands more Tune Breaks, which is what
+ *  both her own halves and any Shifter beside her are paid in. Team-wide but field-bound, so it
+ *  only counts for whoever is actually on field. Two stages, one buff each: the field, and the
+ *  High Syntony Field the Liberation trades it up to — the same rate plus +20% team DEF — never
+ *  standing together (the Liberation swaps one for the other). */
+const syntonyField = (name: string, high: boolean): Buff => new Buff({
+  name, duration: 60 * 25,
+  stats: [[Stat.OfftuneBuildup, 50]],
+  applyStats: () => {
+    if (high) addStat(Stat.BonusDef, 20);
+    // S2's own +20% on top, read off her slot: the node is her local gear, this pays the team
+    if (currentTeam().slots.find((m) => m.resonator === MORNYE_RESONATOR)?.isHeld(MO_S2)) {
+      addStatAs(MO_S2, Stat.OfftuneBuildup, 20);
+    }
+  },
+});
+const SYNTONY_FIELD = syntonyField("Mornye: Syntony Field", false);
+const HIGH_SYNTONY_FIELD = syntonyField("Mornye: High Syntony Field", true);
+
+/** Recursion (Outro): +25% All DMG Amplification to the team for 30s. */
+const RECURSION = new Buff({
+  name: "Mornye: Outro",
+  duration: 60 * 30,
+  stats: [[Stat.Amp, 25]],
+});
+
+/** Critical Protocol's own conversion: every 1% of ER past 100% is +0.5% Crit. Rate and +1% Crit.
+ *  DMG *on that skill only*, capped at +80% and +160%. Read off the ER she actually holds as the
+ *  Liberation lands, buffs included — her own build (an ER weapon, two ER 3-costs, ER rolls) clears
+ *  the 260% the cap wants on its own, so the caps are what she reads, and a run that somehow holds
+ *  less pays less rather than being handed the cap anyway. */
+const CRITICAL_PROTOCOL = new Buff({
+  name: "Mornye: Critical Protocol",
+  convertStats: () => {
+    if (!runningAction(Liberation)) return;
+    const converted = getStat(Stat.ER) - 100;
+    addStat(Stat.CritRate, Math.min(80, 0.5 * converted));
+    addStat(Stat.CritDmg, Math.min(160, converted));
+  },
+  // the Liberation's own hits only, so it goes once that press runs out
+  afterAction: () => { if (runningAction(Liberation)) revokeCurrent(CRITICAL_PROTOCOL); },
+});
+
+/** Observation Marker: left on the target by Inversion for 30s — permanent uptime — and what arms
+ *  the chain: any teammate's Tune Break DMG against the marked target has Mornye inflict the
+ *  Interfered Marker below. Watching from the debuff itself, so it only reacts while inflicted,
+ *  and the applyEnemy() inside inherits this debuff's own source — her doing, whoever broke. */
+const OBSERVATION_MARKER = new Debuff({
+  name: "Mornye: Observation Marker",
+  duration: 60 * 30,
+  // cleared before it goes back on: the marker counts its own 8s off in its stacks (tunebreak.ts),
+  // and unlike a Rupture/Hack Interfered it can be re-marked inside that window — a break that
+  // leaves a Strain, or none at all, is held off by nothing — so a fresh one starts the count over
+  // rather than pushing the old one along.
+  hitGlobal: () => {
+    if (!runningAction(TUNE_BREAK)) return;
+    revokeEnemy(INTERFERED_MARKER);
+    applyEnemy(INTERFERED_MARKER, 1);
+  },
+});
+
+/** Interfered Marker: while the target is under Tune Rupture/Strain - Interfered, whoever's on
+ *  field deals +0.25% DMG per 1% of Mornye's ER past 100%, up to 40% — taken at the cap, same
+ *  260%-ER build call as Critical Protocol above. 8s, the same window every Interfered runs on,
+ *  refreshed by every break the marker answers
+ *  — written out here instead of through `interferedWindow()` because S1 both stretches that
+ *  window to 20s and drops the Interfered requirement. */
+const INTERFERED_MARKER: Debuff = new Debuff({
+  name: "Mornye: Interfered Marker", duration: () => (currentTeam().slots.find((m) => m.resonator === MORNYE_RESONATOR)?.isHeld(MO_S1) ? 60 * 20 : 60 * 8),
+  // pays out on whoever's active; both sequences are her own local gear, so they are read off her
+  // own slot specifically, found by resonator identity
+  applyStats: () => {
+    const her = currentTeam().slots.find((m) => m.resonator === MORNYE_RESONATOR);
+    // S1 makes the bonus unconditional, so the half it adds over the base reading is its own
+    const interfered = stacksOfEnemy(TUNE_RUPTURE_INTERFERED) > 0 || stacksOfEnemy(TUNE_STRAIN_INTERFERED) > 0;
+    if (interfered) addStat(Stat.DmgBonus, 40);
+    else if (her?.isHeld(MO_S1)) addStatAs(MO_S1, Stat.DmgBonus, 40);
+    if (her?.isHeld(MO_S2)) addStatAs(MO_S2, Stat.CritDmg, 32);
+  },
+});
+
+/* --------------------------------------------------------------------------------- sequences */
+
+/** S1: the Interfered Marker lasts 20s instead of 8 and pays whether or not the target is actually
+ *  under an Interfered — both read off this node by the marker itself — and Inversion's Observation
+ *  Marker now lays the Interfered Marker with it rather than waiting for a break. */
+const MO_S1 = new Sequence({
+  name: "Mornye S1: The Silent Observer",
+  updateDebuffs: () => {
+    if (!runningAction(Inversion)) return;
+    revokeEnemy(INTERFERED_MARKER);
+    applyEnemy(INTERFERED_MARKER, 1);
+  },
+});
+
+/** S2: +0.2% Crit. DMG per 1% of her ER past 100% against a marked target, capped at 32% — taken
+ *  at the cap, the same 260%-ER build call as the marker — and +20% more Off-Tune Buildup Rate on
+ *  top of whichever stage of the field is standing. Both are team-wide, so neither can pay out of
+ *  this node (a Sequence's own stats reach only her turns): the marker and the field each read it
+ *  off her slot and pay it themselves. */
+const MO_S2 = new Sequence({ name: "Mornye S2: Morning Star of Entropy" });
+
+/** S3: Distributed Array also hands her 25 Concerto and a full 100 Relative Momentum, once every
+ *  25s — once a loop, so it fires on every cast the rotation makes. The Momentum is what pays for
+ *  Inversion on its own, which is why the S3 rotation drops the Wide Field chain entirely. */
+const MO_S3 = new Sequence({
+  name: "Mornye S3: Blueprint of Recursion",
+  updateBuffs: () => {
+    if (runningAction(DistributedArray)) addGain({ concerto: 2500, forte2: 10000 });
+  },
+});
+
+/** S4 is healing only — held for the name. */
+const MO_S4 = new Sequence({ name: "Mornye S4: Latent Variables of the Cosmos" });
+
+/** S5: +40% DMG Multiplier on Critical Protocol, +160% on Particle Jet. */
+const MO_S5 = new Sequence({
+  name: "Mornye S5: Time Dilation Effect",
+  applyStats: () => {
+    if (runningAction(Liberation)) addStat(Stat.MulMv, 40);
+    if (runningAction(ParticleJet)) addStat(Stat.MulMv, 160);
+  },
+});
+
+/** S6: Critical Protocol deals 400% more DMG. Its other half refills her Resonance Energy while
+ *  she is off field, which changes nothing here — she already casts the Liberation every loop. */
+const MO_S6 = new Sequence({
+  name: "Mornye S6: To the Far Shores of the Stars",
+  applyStats: () => { if (runningAction(Liberation)) addStat(Stat.DmgBonus, 400); },
+});
+
+const MO_SEQUENCES = [MO_S1, MO_S2, MO_S3, MO_S4, MO_S5, MO_S6];
+
+/* --------------------------------------------------------------------------- kit and loadout */
+
+/** Blueprint: +10% ER flat, plus 20 Concerto on her Intro and on Wide Field stage 3 — both once
+ *  every 20s, which over a 2-minute rotation is once each per loop. */
+const MO_INHERENT_1 = new Inherent({
+  name: "Inherent: Blueprint",
+  stats: [[Stat.ER, 10]],
+  updateBuffs: () => {
+    if (runningAction(Intro) || runningAction(WBA3)) addGain({ concerto: 2000 });
+  },
+});
+
+/** Boundedness is a damage-taken cap and a revive — no damage of its own, so it is here as the
+ *  piece of gear it is and contributes nothing. */
+const MO_INHERENT_2 = new Inherent({ name: "Inherent: Boundedness" });
+
+const MORNYE_TALENTS = new Talent({
+  name: "Mornye: Talents",
+  stats: [[Stat.BonusDef, 15.1999999], [Stat.HealingBonus, 12]],
+});
+
+/** This kit's own carrier for the Tune Strain payout (tunebreak.ts's `strainPayout`). */
+const MO_STRAIN_PAYOUT = strainPayout();
+
+const MORNYE_RESONATOR = new Resonator({
+  id: 1209,
+  name: "Mornye",
+  talent: MORNYE_TALENTS,
+  inherent1: MO_INHERENT_1,
+  inherent2: MO_INHERENT_2,
+  element: Attribute.Fusion,
+  weapon: WeaponType.Broadblade,
+  color: "#d2d4ff",
+  intro: Intro,
+  // Wide Field Observation Mode ends on a swap, so she always arrives in Baseline Mode; no mid-air chain, only the plunge
+  swapIn: BA1,
+  swapInAir: MA,
+  maxEnergy: 17500,
+  forteScale: [0.01, 0.01, 1, 1, 1],
+  maxForte1: 10000,
+  maxForte2: 10000,
+
+  hitGlobal: () => tuneRuptureResponse(ParticleJet),
+  combatStart: () => { maxStackIncrease(TUNE_STRAIN_INTERFERED, 1); applyCurrent(MO_STRAIN_PAYOUT, 1); },
+
+  stats: [
+    [Stat.BaseHp, 15375], [Stat.BaseAtk, 287.5], [Stat.BaseDef, 1356.6642],
+    // the flat 10 every tune-break-era resonator carries (nanoka's own weakness_mastery)
+    [Stat.TBB, 10],
+  ],
+});
+
+/* ---------------------------------------------------------------------------------- rotation */
+
+const BA123 = new ActionGroup("Basic - Ground State Calibration 123", [BA1, BA2, BA3]);
+const WBA123 = new ActionGroup("Basic - Wide Field Observation 123", [WBA1, WBA2, WBA3]);
+
+const MO_ROTATION = new Rotation([
+  START_LAST, BA1.instaCancel(), Skill.instaSwap(),
+  SWAPIN, BA123, GeopotentialShift, 
+
+  Intro.mashCancel(), Liberation, 
+  WBA123.cancel(), DistributedArray, Inversion,
+  ACTION_REACTOR_HUSK.instaSwap(), ACTION_SPACETREK.instaSwap(), Outro,
+]);
+
+/** From S3 on, Distributed Array alone fills Relative Momentum, so every loop drops the Wide Field
+ *  chain and goes straight from it into Inversion — the Concerto that chain carried comes back off
+ *  S3. The opener alone ends 1.4 Concerto short of its Outro — it has no Intro paying it 30. */
+const MO_ROTATION_S3 = new Rotation([
+  START_LAST, BA1.instaCancel(), Skill.instaSwap(),
+
+  SWAPIN, BA123, GeopotentialShift, 
+
+  Intro.mashCancel(), Liberation,
+  DistributedArray, Inversion, 
+  ACTION_REACTOR_HUSK.instaSwap(), ACTION_SPACETREK.instaSwap(), Outro,
+]);
+
+/** ER is the build: her Liberation converts everything past 100% into crit, so the sig's 77% and
+ *  Reactor Husk's own 10% are both doing real work. */
+const MO_ECHOES = [
+  new EchoLoadout(REACTOR_HUSK, STARRY_RADIANCE_5PC),
+  new EchoLoadout(SPACETREK_EXPLORER, STARRY_RADIANCE_5PC).requires(JINGRAN_RESONATOR),
+];
+
+export const MORNYE = new Loadout({
+  id: 12091,
+  // 260% Energy Regen on the character screen at least, Blueprint's own +10% counted in it
+  minEr: 260,
+  resonator: MORNYE_RESONATOR,
+  weapons: [STARFIELD_CALIBRATOR, DISCORD],
+  echoes: new Echoes({
+    sets: MO_ECHOES,
+    mainstats: [mainstats(Mainstat.DEF4, Mainstat.ER3, Mainstat.ER3, Mainstat.DEF1, Mainstat.DEF1)],
+    substats: substats(Substat.Er, Substat.CritDmg, Substat.CritRate, Substat.Liberation, Substat.DefPct, Substat.Basic),
+    highSubstats: highSubs(Substat.CritRate, Substat.CritDmg, Substat.Er, Substat.Liberation, Substat.DefPct, Substat.Basic, Substat.Heavy),
+  }),
+  // the two ER 3-costs are the build, not a pick: Critical Protocol pays out of ER, and so does
+  // the Liberation she needs back every loop — the same fixed spread every ER support here runs
+  // S3 loop disabled for now: dropping Wide Field out of the looping window costs her 8.4 ER and
+  // ~2 more on each teammate for less damage than S2. Re-point at MO_ROTATION_S3 once it settles.
+  rotation: MO_ROTATION,
+  sequences: MO_SEQUENCES,
+});

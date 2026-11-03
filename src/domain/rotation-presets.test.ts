@@ -8,7 +8,7 @@ const members = [{ slot: 0, buildId: 'build', catalogId: 'character', name: 'Cha
 describe('rotation presets', () => {
   it('round-trips stable character and attack identities', () => {
     const preset = createRotationPreset(team, members, 'Preset')
-    expect(parseRotationPresetDocument(JSON.parse(JSON.stringify(preset)))).toMatchObject({ schemaVersion: 1, name: 'Preset' })
+    expect(parseRotationPresetDocument(JSON.parse(JSON.stringify(preset)))).toMatchObject({ schemaVersion: 2, name: 'Preset' })
     expect(previewRotationPreset(preset, members)).toMatchObject({ compatible: true, actions: [{ buildId: 'build', attackId: 'attack' }] })
   })
 
@@ -18,7 +18,16 @@ describe('rotation presets', () => {
   })
 
   it('rejects unknown schema versions', () => {
-    expect(() => parseRotationPresetDocument({ schemaVersion: 2 })).toThrow('Unsupported rotation preset version')
+    expect(() => parseRotationPresetDocument({ schemaVersion: 3 })).toThrow('Unsupported rotation preset version')
+  })
+
+  it('reads old presets and preserves cancel and swap timing in new ones', () => {
+    const old = { ...createRotationPreset(team, members, 'Old'), schemaVersion: 1 }
+    expect(parseRotationPresetDocument(old).schemaVersion).toBe(1)
+    const timed = createRotationPreset({ ...team, actions: [{ ...team.actions[0], cancel: 'normal', cancelFrame: 8, swapFrame: 12 }] }, members, 'Timed')
+    const parsed = parseRotationPresetDocument(JSON.parse(JSON.stringify(timed)))
+    expect(previewRotationPreset(parsed, members).actions[0]).toMatchObject({ cancel: 'normal', cancelFrame: 8, swapFrame: 12 })
+    expect(() => parseRotationPresetDocument({ ...timed, actions: [{ ...timed.actions[0], cancelFrame: 8, cancel: undefined }] })).toThrow('invalid cancel or swap timing')
   })
 
   it('rejects duplicate slots and actions outside the preset duration', () => {

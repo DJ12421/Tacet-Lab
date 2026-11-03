@@ -1,11 +1,11 @@
 # Combat baseline comparison
 
-Status: Step 2.5 complete.
+Status: Historical formula baseline. Partial stateful kit results have separate
+coverage and do not replace this formula baseline's totals.
 
 This ledger converts the completed formula comparison into project-owned,
-static behavior. It records equations and observable outcomes only: no outside
-source code, package, network call, adapter, generated import, or runtime lookup
-is part of the combat module.
+static behavior. It records equations and observable outcomes for the formula
+calculator. The stateful kit preview is a separate internal path.
 
 ## Resolution policy
 
@@ -58,5 +58,5 @@ is part of the combat module.
 - Every supported Step 2 formula maps to an independent fixture.
 - Comparison disagreements are resolved as either a product rule or a deferred
   mechanic; none remain ambiguous.
-- No external calculator identifier or integration is part of the project.
+- The formula calculator remains a distinct method until stateful coverage is complete.
 - Step 3 implements the accepted rows above through the public combat seam.
