@@ -220,11 +220,6 @@ main {
   height: 20px;
 }
 
-.topbar .donation-button:disabled {
-  opacity: 1;
-  cursor: default;
-}
-
 .pulse {
   display: inline-block;
   width: 5px;

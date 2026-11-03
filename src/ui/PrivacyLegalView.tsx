@@ -44,6 +44,7 @@ export function PrivacyLegalView() {
               <li><strong>Catalog and asset providers</strong> supply game data, artwork, and selected character portrait files.</li>
               <li><strong>Google Fonts</strong> provides the Cinzel typeface.</li>
               <li><strong>Tesseract.js distribution hosts</strong> may provide the OCR worker, WebAssembly runtime, and English language model on first use.</li>
+              <li><strong>Cashfree</strong> hosts the optional support page. It handles the payment and information you enter there under its own policies; Tacet Lab does not process your payment details.</li>
             </ul>
             <p>The analytics beacon does not receive Echo inventory, builds, screenshots, shared-window frames, OCR results, preferences, or exported files. Other providers may receive standard connection information such as your IP address, browser details, and the requested resource under their own policies. Tacet Lab does not combine that information with your locally stored data. Previously requested resources may be kept in normal browser or PWA caches.</p>
           </div>
