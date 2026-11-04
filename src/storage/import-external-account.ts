@@ -71,6 +71,13 @@ function sourceGearScore(character: RecordValue) {
     + Number(Boolean(character.weapon || (record(activeBuild) && activeBuild.weapon)))
 }
 
+function hasSourceGear(character: RecordValue) {
+  const sources = [character, ...(Array.isArray(character.builds) ? character.builds.filter(record) : [])]
+  return sources.some((source) => (typeof source.weapon === 'string' && Boolean(source.weapon.trim()))
+    || (Array.isArray(source.echoes) ? source.echoes : record(source.echoes) ? Object.values(source.echoes) : [])
+      .some((echo) => record(echo) && typeof echo.echo === 'string' && Boolean(echo.echo.trim())))
+}
+
 export interface ExternalCharacterChoice {
   catalogId: string
   name: string
@@ -112,14 +119,14 @@ export async function convertExternalAccountExport(value: RecordValue, addAsNewB
   const activeRefs = new Map<string, LoadoutSourceRef>()
   const buildRefs = new Map<string, LoadoutSourceRef>()
   const preferredRoverSources = new Map<string, { name: string; score: number }>()
-  for (const [name, character] of Object.entries(characterData.characters)) {
+  const sourceCharacters = Object.entries(characterData.characters).filter((entry): entry is [string, RecordValue] => record(entry[1]) && hasSourceGear(entry[1]))
+  for (const [name, character] of sourceCharacters) {
     const roverType = roverTypeKey(name)
-    if (!roverTypes.has(roverType) || !record(character)) continue
+    if (!roverTypes.has(roverType)) continue
     const score = sourceGearScore(character)
     if (score > (preferredRoverSources.get(roverType)?.score ?? -1)) preferredRoverSources.set(roverType, { name, score })
   }
-  for (const [characterName, character] of Object.entries(characterData.characters)) {
-    if (!record(character)) continue
+  for (const [characterName, character] of sourceCharacters) {
     const roverType = roverTypeKey(characterName)
     const roverVariants = roverTypes.get(roverType)
     if (roverVariants && preferredRoverSources.get(roverType)?.name !== characterName) continue
@@ -265,12 +272,12 @@ export async function convertExternalAccountExport(value: RecordValue, addAsNewB
     }
     }
   }
-  const missingCharacters = Object.keys(characterData.characters).filter((name) => {
+  const missingCharacters = sourceCharacters.map(([name]) => name).filter((name) => {
     const roverType = roverTypeKey(name)
     const catalogId = characterCatalogIds.get(key(name)) ?? (roverTypes.has(roverType) ? characterCatalogIds.get(roverType) : undefined)
     return !catalogId || ![...ownedCharacters, ...characters].some((entry) => entry.catalogId === catalogId)
   })
-  if (missingCharacters.length) throw new Error(`Could not account for ${missingCharacters.length} of ${Object.keys(characterData.characters).length} imported characters: ${missingCharacters.join(', ')}.`)
+  if (missingCharacters.length) throw new Error(`Could not account for ${missingCharacters.length} of ${sourceCharacters.length} imported characters: ${missingCharacters.join(', ')}.`)
   if (typeof data.inventory === 'string') {
     let inventoryData: unknown
     try { inventoryData = JSON.parse(data.inventory) } catch { throw new Error('The inventory data inside this external account export is invalid JSON.') }

@@ -98,12 +98,28 @@ describe('external account build and team imports', () => {
     expect(await db.echoes.count()).toBe(3)
   })
 
+  it('ignores opened characters with no gear while keeping gear on a saved build', async () => {
+    const lucy = characterCatalog.find((entry) => entry.name === 'Lucy')!
+    const empty = characterCatalog.find((entry) => entry.name !== lucy.name && !entry.name.startsWith('Rover: '))!
+    const weapon = weaponSummaries.find((entry) => entry.type === lucy.weaponType)!
+    const source = { meta: { version: '9' }, data: { character: JSON.stringify({ characters: {
+      [empty.name]: {},
+      UnknownCharacter: {},
+      [lucy.name]: { builds: [{ id: 'saved', weapon: weapon.name }] }
+    } }) } }
+
+    const converted = await convertExternalAccountExport(source)
+    expect(converted.document.characters).toHaveLength(1)
+    expect(converted.document.weapons[0].catalogId).toBe(weapon.id)
+    expect(converted.choices).toHaveLength(1)
+  })
+
   it('stops before preview when source characters cannot be accounted for', async () => {
     const source = {
       meta: { version: '9', source: 'external' },
       data: { character: JSON.stringify({ characters: {
         Lucy: { echoes: Array.from({ length: 6 }, () => ({ echo: 'unknown', type: 1 })) },
-        UnknownCharacter: {}
+        UnknownCharacter: { weapon: 'Unknown weapon' }
       } }) }
     }
 
