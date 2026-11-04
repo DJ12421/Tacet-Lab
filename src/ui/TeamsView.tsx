@@ -2069,7 +2069,7 @@ export function TeamsView({ echoes, builds, equippedLoadouts, theorycraftBuilds,
       {model && typeof tab === 'number' && memberSection !== 'rotation' && model.members[tab]?.catalog && <nav className="tw-subnav" aria-label={`${model.members[tab].catalog?.name ?? 'Character'} sections`} role="tablist">
         {MEMBER_SECTIONS.map((item) => <button key={item.id} role="tab" className={memberSection === item.id ? 'active' : ''} aria-selected={memberSection === item.id} onClick={() => setMemberSectionRoute(item.id)}>{item.label}</button>)}
         <div className="tw-nav-result-modes" role="group" aria-label="Damage result mode">
-          {DAMAGE_RESULT_MODES.map((mode) => <button type="button" aria-pressed={(model.team.scenario?.resultMode ?? 'expected') === mode.id} className={(model.team.scenario?.resultMode ?? 'expected') === mode.id ? 'active' : ''} key={mode.id} onClick={() => void (memberSection === 'rotation' ? updateRotation : updateTeam)({ scenario: { ...(model.team.scenario ?? { memberConditions: {}, enemyConditions: {}, selectedTargetByBuild: {} }), resultMode: mode.id } })}>{mode.label}</button>)}
+          {DAMAGE_RESULT_MODES.map((mode) => <button type="button" aria-pressed={(model.team.scenario?.resultMode ?? 'expected') === mode.id} className={(model.team.scenario?.resultMode ?? 'expected') === mode.id ? 'active' : ''} key={mode.id} onClick={() => void updateTeam({ scenario: { ...(model.team.scenario ?? { memberConditions: {}, enemyConditions: {}, selectedTargetByBuild: {} }), resultMode: mode.id } })}>{mode.label}</button>)}
         </div>
       </nav>}
     </div>
