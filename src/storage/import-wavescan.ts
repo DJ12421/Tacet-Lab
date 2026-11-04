@@ -27,6 +27,7 @@ export async function convertWavescanExport(value: Row): Promise<{ document: Acc
       typeof value.meta.scannedAt !== 'string' || Number.isNaN(Date.parse(value.meta.scannedAt))) {
     throw new Error('This WaveScan export is invalid or has an unsupported version.')
   }
+  const scannedAt = value.meta.scannedAt
   const current = new Map((await db.echoes.toArray()).map((echo) => [echo.id, echo]))
   const ids = new Set<string>()
   const echoes = value.echoes.map((source, index): Echo => {
@@ -51,7 +52,7 @@ export async function convertWavescanExport(value: Row): Promise<{ document: Acc
       return { key: statKey, value: line.value }
     })
     if (new Set(subStats.map((line) => line.key)).size !== subStats.length) return invalid()
-    const id = `wavescan:${encodeURIComponent(value.meta.scannedAt as string)}:${encodeURIComponent(source.scanId)}`
+    const id = `wavescan:${encodeURIComponent(scannedAt)}:${encodeURIComponent(source.scanId)}`
     const existing = current.get(id)
     const echo: Echo = {
       id, name: catalog.name, cost: catalog.cost, rarity: source.rank as Echo['rarity'], level: source.level as number,
@@ -64,7 +65,7 @@ export async function convertWavescanExport(value: Row): Promise<{ document: Acc
     return echo
   })
   return {
-    document: { schemaVersion: 7, gameDataVersion: GAME_DATA_VERSION, exportedAt: value.meta.scannedAt as string,
+    document: { schemaVersion: 7, gameDataVersion: GAME_DATA_VERSION, exportedAt: scannedAt,
       echoes, characters: [], weapons: [], builds: [], equippedLoadouts: [], theorycraftBuilds: [], teams: [], settings: defaultSettings },
     notices: ['WaveScan equipment names are not applied to characters; assign imported Echoes in Tacet Lab after merging.']
   }
