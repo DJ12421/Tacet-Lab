@@ -381,10 +381,26 @@
   overflow-x: clip;
 }
 
-.section-rotation .tw-sequencer {
-  position: sticky;
-  top: 116px;
-  z-index: 40;
+.section-rotation .tw-rotation-layout {
+  height: max(700px, 75dvh);
+  margin-top: 0;
+}
+
+.section-rotation .tw-rotation-editor {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  height: 100%;
+  min-height: 0;
+  padding-right: 0;
+}
+
+.section-rotation .tw-rotation-timeline {
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.section-rotation .tw-rotation-composer {
+  position: static;
 }
 
 .tw-subnav > button,
