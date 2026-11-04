@@ -48,9 +48,12 @@ export function ImportDataModal({ onClose, onImported }: ImportDataModalProps) {
 
   const prepare = async (parsed: unknown, analysisId: number, choices: Record<string, boolean> = {}) => {
     const rotationExport = isRotationExport(parsed)
+    const wavescanExport = isWavescanExport(parsed)
+    const externalExport = !rotationExport && !wavescanExport && isExternalAccountExport(parsed)
+    const external = externalExport ? await convertExternalAccountExport(parsed, choices) : undefined
     const converted = rotationExport ? convertRotationExport(parsed, await exportAccount())
-      : isWavescanExport(parsed) ? await convertWavescanExport(parsed)
-        : isExternalAccountExport(parsed) ? await convertExternalAccountExport(parsed, choices) : undefined
+      : wavescanExport ? await convertWavescanExport(parsed)
+        : external
     const prepared = prepareAccountBackup(converted?.document ?? parsed)
     const native = converted ? undefined : await prepareNativeBuildChoices(prepared.document, choices)
     const document = native?.document ?? prepared.document
@@ -60,9 +63,9 @@ export function ImportDataModal({ onClose, onImported }: ImportDataModalProps) {
     setPreview(nextPreview)
     setRepairs(prepared.repairs)
     setSourceNotices(converted?.notices ?? [])
-    setSourceLabel(rotationExport ? 'Rotation export' : isWavescanExport(parsed) ? 'WaveScan export' : converted ? 'WutheringTools account' : '')
-    setSourceCharacters(converted && 'choices' in converted ? converted.choices : native?.choices ?? [])
-    setExternalAccountSource(isExternalAccountExport(parsed) ? parsed : undefined)
+    setSourceLabel(rotationExport ? 'Rotation export' : wavescanExport ? 'WaveScan export' : converted ? 'WutheringTools account' : '')
+    setSourceCharacters(external?.choices ?? native?.choices ?? [])
+    setExternalAccountSource(externalExport ? parsed : undefined)
     setNativeSource(converted ? undefined : parsed)
   }
 
