@@ -21,7 +21,7 @@ const eliteNormal = ranges([3.7, 9.6], [4, 14], [4.5, 18.9], [6, 30])
 const primaryRanges: Record<Echo['cost'], Partial<Record<StatKey, Ranges>>> = {
   1: commonPercent,
   3: { hpPercent: eliteNormal, atkPercent: eliteNormal, defPercent: ranges([4.7, 12.3], [5, 17], [5.7, 23.9], [7.6, 38]), glacioDamage: eliteNormal, fusionDamage: eliteNormal, electroDamage: eliteNormal, aeroDamage: eliteNormal, spectroDamage: eliteNormal, havocDamage: eliteNormal, energyRegen: ranges([3.8, 10], [4.2, 14.2], [4.8, 20.1], [6.4, 32]) },
-  4: { hpPercent: ranges([4.1, 10.6], [4.3, 14.6], [4.9, 20.5], [6.6, 33]), atkPercent: ranges([4.1, 10.6], [4.3, 14.6], [4.9, 20.5], [6.6, 33]), defPercent: ranges([5.2, 13.5], [5.5, 18.7], [6.2, 26], [8.3, 41.5]), critRate: ranges([2.7, 7.1], [2.9, 9.8], [3.3, 13.8], [4.4, 22]), critDamage: ranges([5.4, 14.3], [5.8, 19.7], [6.6, 27.7], [8.8, 44]), healingBonus: ranges([3.3, 8.5], [3.5, 11.9], [3.9, 16.3], [5.2, 26.4]) }
+  4: { hpPercent: ranges([4.1, 10.6], [4.3, 14.6], [4.9, 20.5], [6.6, 33]), atkPercent: ranges([4.1, 10.6], [4.3, 14.6], [4.9, 20.5], [6.6, 33]), defPercent: ranges([5.2, 13.5], [5.5, 18.7], [6.2, 26], [8.3, 41.8]), critRate: ranges([2.7, 7.1], [2.9, 9.8], [3.3, 13.8], [4.4, 22]), critDamage: ranges([5.4, 14.3], [5.8, 19.7], [6.6, 27.7], [8.8, 44]), healingBonus: ranges([3.3, 8.5], [3.5, 11.9], [3.9, 16.3], [5.2, 26.4]) }
 }
 const secondaryRanges: Record<Echo['cost'], Ranges> = {
   1: ranges([114, 296], [152, 516], [228, 957], [456, 2280]),
