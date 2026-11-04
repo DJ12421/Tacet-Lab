@@ -467,7 +467,10 @@ function TeamWorkspaceHeader({ team, model, onBack, onRename, onDelete }: {
   const readyMembers = model.members.filter((member) => member.build && member.showcase?.weapon && member.showcase.equippedEchoes.length === 5 && member.showcase.totalEchoCost <= 12).length
   return <header className="tw-workspace-header tw-panel">
     <button type="button" className="tw-back-to-gallery" onClick={onBack}><span aria-hidden="true">←</span> Teams</button>
-    <label className="tw-workspace-name"><span>Team name</span><input value={name} onChange={(event) => setName(event.target.value)} onBlur={commitName} onKeyDown={(event) => { if (event.key === 'Enter') event.currentTarget.blur(); if (event.key === 'Escape') { setName(team.name); event.currentTarget.blur() } }}/></label>
+    <div className="tw-workspace-identity">
+      <label className="tw-workspace-name"><span>Team name</span><input value={name} onChange={(event) => setName(event.target.value)} onBlur={commitName} onKeyDown={(event) => { if (event.key === 'Enter') event.currentTarget.blur(); if (event.key === 'Escape') { setName(team.name); event.currentTarget.blur() } }}/></label>
+      <p className="tw-workspace-notice">Work in progress—expect bugs. Report any you find on <a href="https://discord.gg/fy66NmapWb" target="_blank" rel="noreferrer">Discord</a>.</p>
+    </div>
     <div className="tw-workspace-status" aria-label="Team status">
       <span><small>Builds ready</small><b>{readyMembers} of 3</b></span>
       <span><small>Rotation</small><b>{team.actions.length ? `${team.actions.length} actions` : 'Not set'}</b></span>

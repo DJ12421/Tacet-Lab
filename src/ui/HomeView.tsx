@@ -42,6 +42,7 @@ const quickStarts = [
 ]
 
 const changelogEntries = [
+  { hash: '', date: 'Nov 4, 2026', title: 'Show a work in progress notice and bug reporting link in Team workspaces' },
   { hash: '', date: 'Oct 21, 2026', title: 'Refresh character build cards with adjustable glass panels, Echo roll tracks, and updated skill and Sequence visuals' },
   { hash: '', date: 'Oct 21, 2026', title: 'Pause animated character portraits and preserve their framing and glass effects in card exports' },
   { hash: '', date: 'Oct 21, 2026', title: 'Page through large scanner review batches and the Weapon Archive' },

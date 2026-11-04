@@ -107,6 +107,20 @@
   background: rgba(255, 255, 255, .025);
 }
 
+.tw-workspace-identity {
+  min-width: 0;
+}
+
+.tw-workspace-notice {
+  margin: 0 12px;
+  color: var(--tw-console-muted);
+  font-size: var(--font-size-caption);
+}
+
+.tw-workspace-notice a {
+  color: var(--mint);
+}
+
 .tw-workspace-status {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1268,7 +1282,7 @@
     color: #d8dfdd;
   }
 
-  .tw-workspace-name {
+  .tw-workspace-identity {
     grid-column: 2;
   }
 
