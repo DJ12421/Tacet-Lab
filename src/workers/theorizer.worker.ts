@@ -1,8 +1,7 @@
 /// <reference lib="webworker" />
 import { isSonataAvailableToCharacter, theorycraftRollValue, theorycraftSonataPlanKey, theorycraftSubstatLines } from '../domain/loadouts'
 import { disabledEquipmentEffectIds, equipmentBuffConditions } from '../domain/combat/runtime'
-import { statefulPreview } from '../domain/combat/stateful/preview'
-import type { AggregatedStats, CalculationMethod, Echo, StatKey, TheorycraftBuild } from '../domain/types'
+import type { AggregatedStats, Echo, StatKey, TheorycraftBuild } from '../domain/types'
 import { echoCatalog, sonataCatalog, statLabels, weaponCatalog } from '../game-data'
 import { mainStatKeysByCost } from '../game-data/echo-main-stats'
 import { tunableRolls } from '../game-data/tunable-rolls'
@@ -12,7 +11,7 @@ export type TheorizerMode = 'mainStats' | 'substats' | 'sonatas' | 'weapons'
 export type TheorizerRankingRequest = TeamWorkspaceInput & { requestId: number; mode: TheorizerMode; baseline: TheorycraftBuild; memberSlot: number; targetId: string; resultMode: 'normal' | 'critical' | 'expected'; scalesWith: 'atk' | 'hp' | 'def'; element: string; weaponType?: string; substatDraft?: TheorycraftBuild; disabledEquipmentBuffKeys?: string[] }
 export interface TheorizerComparisonStats { hp: number; atk: number; def: number; critRate: number; critDamage: number; energyRegen: number; healingBonus: number; typeDamage: Record<'basic' | 'heavy' | 'skill' | 'liberation', number>; elementalDamage: Record<'spectro' | 'fusion' | 'glacio' | 'electro' | 'aero' | 'havoc', number> }
 export interface TheorizerRankingEntry { id: string; rank?: number; label: string; detail: string; image?: string; draft: TheorycraftBuild; score: number; delta: number; candidateStats?: TheorizerComparisonStats }
-export type TheorizerRankingResponse = { requestId: number; calculationMethod: CalculationMethod; baselineScore: number; baselineStats?: TheorizerComparisonStats; results: TheorizerRankingEntry[] }
+export type TheorizerRankingResponse = { requestId: number; baselineScore: number; baselineStats?: TheorizerComparisonStats; results: TheorizerRankingEntry[] }
 type DraftSuggestion = Omit<TheorizerRankingEntry, 'score' | 'delta' | 'candidateStats'>
 type MainStatChoice = { cost: Echo['cost']; key: StatKey }
 const unique = <T,>(values: T[]) => [...new Set(values)]
@@ -80,7 +79,7 @@ function comparisonStats(stats: AggregatedStats | undefined): TheorizerCompariso
   return { hp: stats.hp, atk: stats.atk, def: stats.def, critRate: stats.critRate, critDamage: stats.critDamage, energyRegen: stats.energyRegen, healingBonus: stats.healingBonus, typeDamage: { basic: stats.basicDamage, heavy: stats.heavyDamage, skill: stats.skillDamage, liberation: stats.liberationDamage }, elementalDamage: { spectro: stats.spectroDamage, fusion: stats.fusionDamage, glacio: stats.glacioDamage, electro: stats.electroDamage, aero: stats.aeroDamage, havoc: stats.havocDamage } }
 }
 
-function resolveCandidate(input: TheorizerRankingRequest, draft: TheorycraftBuild, tryStateful: boolean) {
+function resolveCandidate(input: TheorizerRankingRequest, draft: TheorycraftBuild) {
   const members = [...(input.team.members ?? [])], record = members[input.memberSlot]
   if (!record) return undefined
   members[input.memberSlot] = { ...record, loadoutSource: { type: 'theorycraft', theorycraftBuildId: draft.id } }
@@ -92,31 +91,19 @@ function resolveCandidate(input: TheorizerRankingRequest, draft: TheorycraftBuil
   const score = input.targetId === TEAM_ROTATION_TARGET_ID || input.targetId === TEAM_LOOP_TARGET_ID
     ? rotationDamageByMode(model, input.targetId)[input.resultMode]
     : member.formulaRows.find((row) => row.target.id === input.targetId)?.[input.resultMode] ?? 0
-  const preview = tryStateful && input.targetId === TEAM_ROTATION_TARGET_ID && !input.disabledEquipmentBuffKeys?.length
-    ? statefulPreview({ ...model.team, scenario: input.team.scenario }, model.members.flatMap((entry) =>
-      entry.build && entry.character && entry.resolvedWeapon
-        ? [{ build: entry.build, character: entry.character, weapon: entry.resolvedWeapon, echoes: entry.resolvedEchoes }] : []), model.actions)
-    : undefined
-  return { score, stateful: preview?.complete ? preview : undefined, stats: comparisonStats(member.conditionedStats) }
+  return { score, stats: comparisonStats(member.conditionedStats) }
 }
 
 function insertTopNine(results: TheorizerRankingEntry[], entry: TheorizerRankingEntry) { const index = results.findIndex((candidate) => entry.score > candidate.score); if (index >= 0) results.splice(index, 0, entry); else if (results.length < 9) results.push(entry); if (results.length > 9) results.length = 9 }
 
 self.onmessage = (event: MessageEvent<TheorizerRankingRequest>) => {
-  const input = event.data, baseline = resolveCandidate(input, input.baseline, true)
-  const candidates = suggestionsFor(input).flatMap((suggestion) => {
-    const candidate = resolveCandidate(input, suggestion.draft, Boolean(baseline?.stateful))
-    return candidate ? [{ suggestion, candidate }] : []
-  })
-  const calculationMethod: CalculationMethod = baseline?.stateful && candidates.every(({ candidate }) => candidate.stateful) ? 'stateful' : 'formula'
-  const scoreOf = (candidate: NonNullable<typeof baseline>) => calculationMethod === 'stateful' ? candidate.stateful![input.resultMode] : candidate.score
-  const baselineScore = baseline ? scoreOf(baseline) : 0
+  const input = event.data, baseline = resolveCandidate(input, input.baseline), baselineScore = baseline?.score ?? 0
   const results: TheorizerRankingEntry[] = []
   let betterThanBaseline = 0
-  for (const { suggestion, candidate } of candidates) { const score = scoreOf(candidate); if (score > baselineScore) betterThanBaseline += 1; const entry = { ...suggestion, score, delta: score - baselineScore, candidateStats: candidate.stats }; if (input.mode === 'substats') results.push(entry); else insertTopNine(results, entry) }
+  for (const suggestion of suggestionsFor(input)) { const candidate = resolveCandidate(input, suggestion.draft); if (!candidate) continue; if (candidate.score > baselineScore) betterThanBaseline += 1; const entry = { ...suggestion, score: candidate.score, delta: candidate.score - baselineScore, candidateStats: candidate.stats }; if (input.mode === 'substats') results.push(entry); else insertTopNine(results, entry) }
   if (input.mode === 'substats') results.sort((left, right) => right.delta - left.delta)
   const baselineRank = betterThanBaseline + 1, weapon = weaponCatalog.find((entry) => entry.id === input.baseline.weapon.catalogId)
   const baselineEntry: TheorizerRankingEntry = { id: `${input.mode}:baseline`, rank: baselineRank, label: input.mode === 'mainStats' ? input.baseline.slots.map((slot) => statLabels[slot.mainStatKey]).join(' / ') : 'Current equipped build', detail: 'Current equipped option (base)', image: input.mode === 'weapons' ? weapon?.iconSourceUrl : undefined, draft: input.baseline, score: baselineScore, delta: 0, candidateStats: baseline?.stats }
   if (baselineRank <= 10) results.splice(Math.min(baselineRank - 1, results.length), 0, baselineEntry); else results.push(baselineEntry)
-  self.postMessage({ requestId: input.requestId, calculationMethod, baselineScore, baselineStats: baseline?.stats, results } satisfies TheorizerRankingResponse)
+  self.postMessage({ requestId: input.requestId, baselineScore, baselineStats: baseline?.stats, results } satisfies TheorizerRankingResponse)
 }

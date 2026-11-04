@@ -229,11 +229,7 @@ describe('local account persistence', () => {
       schemaVersion:1 as const, id:'preset', name:'Preset', duration:20, characters:[], actions:[], source:'user' as const, createdAt:1
     }] }
     expect(validateAccount({ ...base, teams:[team] })).toBe(true)
-    expect(validateAccount({ ...base, teams:[{ ...team, rotationPresets:[{ ...team.rotationPresets[0], schemaVersion:2 }] }] })).toBe(true)
-    expect(validateAccount({ ...base, teams:[{ ...team, rotationPresets:[{ ...team.rotationPresets[0], schemaVersion:3 }] }] })).toBe(false)
-    const action = { id: 'timed', buildId: 'member', attackId: 'skill', timestamp: 1, cancel: 'normal', cancelFrame: 8, swapFrame: 12 }
-    expect(validateAccount({ ...base, teams: [{ ...team, actions: [action] }] })).toBe(true)
-    expect(validateAccount({ ...base, teams: [{ ...team, actions: [{ ...action, cancelFrame: -1 }] }] })).toBe(false)
+    expect(validateAccount({ ...base, teams:[{ ...team, rotationPresets:[{ ...team.rotationPresets[0], schemaVersion:2 }] }] })).toBe(false)
   })
 
   it('requests persistent browser storage when it is not already granted', async () => {
