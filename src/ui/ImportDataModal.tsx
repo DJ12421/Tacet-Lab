@@ -149,7 +149,7 @@ export function ImportDataModal({ onClose, onImported }: ImportDataModalProps) {
         <div className="import-supported" aria-label="Supported imports">
           <div><strong>Tacet Lab backup</strong><small>Account data</small></div>
           <div><strong>WaveScan</strong><small>Echoes</small></div>
-          <div><strong>WutheringTools account</strong><small>v9 · Characters, gear, teams</small></div>
+          <div><strong>WutheringTools account</strong><small>Characters, gear, teams</small></div>
           <div><strong>WuWa Lab rotation</strong><small>Team and rotation</small></div>
         </div>
         <div className="import-file-row">

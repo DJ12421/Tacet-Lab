@@ -1,7 +1,7 @@
 import { afterAll, beforeEach, describe, expect, it } from 'vitest'
 import { characterCatalog, echoCatalog, weaponSummaries } from '../game-data'
 import { db, importAccount } from './database'
-import { convertExternalAccountExport } from './import-external-account'
+import { convertExternalAccountExport, isExternalAccountExport } from './import-external-account'
 
 describe('external account build and team imports', () => {
   beforeEach(async () => {
@@ -15,7 +15,7 @@ describe('external account build and team imports', () => {
     const lucy = characterCatalog.find((entry) => entry.name === 'Lucy')!
     const [firstWeapon, secondWeapon] = weaponSummaries.filter((weapon) => weapon.type === lucy.weaponType)
     const source = {
-      meta: { version: '9', source: 'external' },
+      meta: { version: '10', source: 'WutheringTools' },
       data: {
         character: JSON.stringify({ characters: { Lucy: {
           weapon: firstWeapon.name, activeBuildId: 'main', builds: [
@@ -30,6 +30,7 @@ describe('external account build and team imports', () => {
       }
     }
 
+    expect(isExternalAccountExport(source)).toBe(true)
     const converted = await convertExternalAccountExport(source)
     expect(converted.document.equippedLoadouts).toHaveLength(1)
     expect(converted.document.builds).toMatchObject([{ name: 'Alternate' }])
@@ -75,7 +76,7 @@ describe('external account build and team imports', () => {
     const sourceEcho = { echo: catalogEcho.name, echoSet: catalogEcho.sonatas[0], type: 1, rank: 5,
       stat: 'ATK', echoSubStatsType1: 'CritRate', echoSubStatsValue1: 10.5 }
     const source = { meta: { version: '9', source: 'external' }, data: {
-      character: JSON.stringify({ characters: { Lucy: { echoes: [{ ...sourceEcho, echoId: 'equipped' }] } } }),
+      character: JSON.stringify({ characters: { Lucy: { echoes: [{ echoId: 'equipped' }] } } }),
       inventory: JSON.stringify({ echoes: [
         { ...sourceEcho, echoId: 'equipped' },
         { ...sourceEcho, echoId: 'spare-1', locked: true },
@@ -86,6 +87,8 @@ describe('external account build and team imports', () => {
 
     const converted = await convertExternalAccountExport(source)
     expect(converted.document.echoes).toHaveLength(3)
+    expect(converted.document.equippedLoadouts).toHaveLength(1)
+    expect(converted.document.equippedLoadouts[0].echoIds).toHaveLength(1)
     expect(converted.document.echoes.filter((echo) => echo.id.startsWith('external-account:inventory:'))).toMatchObject([
       { id: 'external-account:inventory:spare-1', locked: true, equippedBy: undefined },
       { id: 'external-account:inventory:spare-2', equippedBy: undefined }
@@ -96,6 +99,32 @@ describe('external account build and team imports', () => {
     const repeated = await convertExternalAccountExport(source)
     await importAccount(repeated.document)
     expect(await db.echoes.count()).toBe(3)
+  })
+
+  it('imports WutheringTools presets as theorycraft builds with an equipped weapon', async () => {
+    const lucy = characterCatalog.find((entry) => entry.name === 'Lucy')!
+    const weapon = weaponSummaries.find((entry) => entry.type === lucy.weaponType)!
+    const catalogEcho = echoCatalog.find((entry) => entry.cost === 1)!
+    const sourceEcho = { echo: catalogEcho.name, echoSet: catalogEcho.sonatas[0], type: 1,
+      stat: 'ATK', echoSubStatsType1: 'CritRate', echoSubStatsValue1: 10.5 }
+    const source = { meta: { version: '10' }, data: { character: JSON.stringify({ characters: { Lucy: {
+      weapon: weapon.name, echoPresetSource: { name: 'Standard build', author: 'Tester' },
+      echoes: Array.from({ length: 5 }, () => sourceEcho), builds: [{ id: 'preset', createdAt: 123 }], activeBuildId: 'preset'
+    } } }) } }
+
+    const converted = await convertExternalAccountExport(source)
+    expect(converted.document.theorycraftBuilds).toMatchObject([{ name: 'Standard build', characterId: converted.document.characters[0].id,
+      weapon: { catalogId: weapon.id }, slots: Array.from({ length: 5 }, () => ({ cost: 1, rarity: 5, level: 25, mainStatKey: 'atkPercent' })),
+      sonatas: [{ name: catalogEcho.sonatas[0], pieces: 5 }] }])
+    expect(converted.document.echoes).toHaveLength(0)
+    expect(converted.document.weapons).toMatchObject([{ catalogId: weapon.id, equippedBy: converted.document.characters[0].id }])
+    expect(converted.document.equippedLoadouts).toMatchObject([{
+      characterId: converted.document.characters[0].id, weaponId: converted.document.weapons[0].id, echoIds: []
+    }])
+    await importAccount(converted.document)
+    const loadout = await db.equippedLoadouts.get(converted.document.equippedLoadouts[0].id)
+    expect(loadout?.weaponId).toBe(converted.document.weapons[0].id)
+    expect((await db.weapons.get(loadout!.weaponId))?.equippedBy).toBe(converted.document.characters[0].id)
   })
 
   it('ignores opened characters with no gear while keeping gear on a saved build', async () => {
