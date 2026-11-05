@@ -88,7 +88,7 @@ describe('external account build and team imports', () => {
     const converted = await convertExternalAccountExport(source)
     expect(converted.document.echoes).toHaveLength(3)
     expect(converted.document.equippedLoadouts).toHaveLength(1)
-    expect(converted.document.equippedLoadouts[0].echoIds).toHaveLength(1)
+    expect(converted.document.equippedLoadouts![0].echoIds).toHaveLength(1)
     expect(converted.document.echoes.filter((echo) => echo.id.startsWith('external-account:inventory:'))).toMatchObject([
       { id: 'external-account:inventory:spare-1', locked: true, equippedBy: undefined },
       { id: 'external-account:inventory:spare-2', equippedBy: undefined }
@@ -122,7 +122,7 @@ describe('external account build and team imports', () => {
       characterId: converted.document.characters[0].id, weaponId: converted.document.weapons[0].id, echoIds: []
     }])
     await importAccount(converted.document)
-    const loadout = await db.equippedLoadouts.get(converted.document.equippedLoadouts[0].id)
+    const loadout = await db.equippedLoadouts.get(converted.document.equippedLoadouts![0].id)
     expect(loadout?.weaponId).toBe(converted.document.weapons[0].id)
     expect((await db.weapons.get(loadout!.weaponId))?.equippedBy).toBe(converted.document.characters[0].id)
   })
