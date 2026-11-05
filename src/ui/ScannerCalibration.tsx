@@ -67,6 +67,7 @@ export function ScannerCalibration({ imageDataUrl, profile, showScanBoxes, onCha
     const url = URL.createObjectURL(blob), link = document.createElement('a')
     link.href = url; link.download = `tacet-lab-calibrations-${profile.sourceWidth}x${profile.sourceHeight}.json`; link.click()
     URL.revokeObjectURL(url); setProfileMessage('Character Menu, Backpack, and all six build-card profiles exported')
+    if (window.confirm('Calibration exported. Share this file in our Discord so we can turn it into a preset for everyone. Open Discord now?')) window.open('https://discord.gg/fy66NmapWb', '_blank', 'noopener,noreferrer')
   }
 
   const importProfile = async (file?: File) => {
