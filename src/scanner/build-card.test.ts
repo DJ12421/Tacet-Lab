@@ -79,7 +79,7 @@ describe('Landscape card sequence stars', () => {
 describe('Wide card card layout and sequence icons', () => {
   it('uses one label for all sizes and includes sequence and Echo name regions', () => {
     for (const id of ['wide-card', 'wide-card-1580', 'wide-card-1272', 'wide-card-1377'] as const) {
-      expect(buildCardFormat(id).label).toBe('Wide card')
+      expect(buildCardFormat(id).label).toBe('WuWaFlex')
       expect(buildCardFormatRegions(id).some((region) => region.id === 'sequence')).toBe(true)
       expect(buildCardFormatRegions(id).filter((region) => /^echo-\d+-name$/.test(region.id))).toHaveLength(5)
     }

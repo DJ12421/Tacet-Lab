@@ -19,7 +19,7 @@ import { useDismissableLayer } from './useDismissableLayer'
 
 export { Icon, PageHeader, Panel } from './primitives'
 
-export function SingleSelect({ label, value, options, onChange }: { label: string; value: string; options: Array<{ value: string; label: string; icon?: string }>; onChange: (value: string) => void }) {
+export function SingleSelect({ label, value, options, onChange }: { label: string; value: string; options: Array<{ value: string; label: string; icon?: string; badge?: string }>; onChange: (value: string) => void }) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const selectedOption = options.find((option) => option.value === value)
@@ -32,7 +32,7 @@ export function SingleSelect({ label, value, options, onChange }: { label: strin
   }, [open])
   return <div className="echo-single-select" ref={ref} onClick={(event) => event.stopPropagation()} onKeyDown={(event) => { event.stopPropagation(); if (event.key === 'Escape' && open) { setOpen(false); ref.current?.querySelector<HTMLButtonElement>('.multi-select-trigger')?.focus() } }}>
     <button type="button" className="multi-select-trigger" aria-label={label} aria-haspopup="true" aria-expanded={open} onClick={() => setOpen((current) => !current)}><span className="multi-select-values">{selectedOption?.icon && <img src={selectedOption.icon} alt=""/>}<em>{selectedOption?.label ?? value}</em></span><strong aria-hidden="true">⌄</strong></button>
-    {open && <div className="echo-single-select-menu" aria-label={label}>{options.map((option) => <button type="button" className={option.value === value ? 'active' : ''} aria-pressed={option.value === value} onClick={() => { onChange(option.value); setOpen(false); ref.current?.querySelector<HTMLButtonElement>('.multi-select-trigger')?.focus() }} key={option.value}>{option.icon && <img src={option.icon} alt=""/>}<span>{option.label}</span></button>)}</div>}
+    {open && <div className="echo-single-select-menu" aria-label={label}>{options.map((option) => <button type="button" className={option.value === value ? 'active' : ''} aria-pressed={option.value === value} onClick={() => { onChange(option.value); setOpen(false); ref.current?.querySelector<HTMLButtonElement>('.multi-select-trigger')?.focus() }} key={option.value}>{option.icon && <img src={option.icon} alt=""/>}<span>{option.label}</span>{option.badge && <i className="select-option-badge">{option.badge}</i>}</button>)}</div>}
   </div>
 }
 

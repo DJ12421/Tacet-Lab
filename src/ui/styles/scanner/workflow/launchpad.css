@@ -181,23 +181,90 @@
   text-transform: uppercase;
 }
 
-.scanner-format-select select {
-  min-height: 34px;
-  padding: 0 30px 0 10px;
+.scanner-format-select .echo-single-select {
+  position: relative;
+  width: 220px;
+  color: #e8efec;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.scanner-format-select .multi-select-trigger {
+  min-height: 38px;
+  padding: 4px 8px;
   border: 1px solid rgba(var(--gold-rgb),.32);
   background: #090d0e;
   color: #e8efec;
+}
+
+.scanner-format-select .multi-select-values>em {
+  overflow: hidden;
+  color: inherit;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scanner-format-select .echo-single-select-menu {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + 4px);
+  left: 0;
+  width: 100%;
+  padding: 5px;
+  border: 1px solid var(--gold-soft);
+  background: var(--surface);
+  box-shadow: 0 18px 45px rgba(0,0,0,.5);
+}
+
+.scanner-format-select .echo-single-select-menu button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 36px;
+  gap: 8px;
+  padding: 4px 8px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  text-align: left;
+  cursor: pointer;
+}
+
+.scanner-format-select .echo-single-select-menu button>span {
+  min-width: 0;
+  flex: 1;
+}
+
+.scanner-format-select .echo-single-select-menu button:is(:hover,:focus-visible,.active) {
+  background: rgba(var(--mint-rgb),.12);
+  color: var(--mint);
+}
+
+.select-option-badge {
+  flex: none;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: rgba(var(--gold-rgb),.16);
+  color: var(--gold);
+  font-size: var(--font-size-caption);
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
 }
 
 .scanner-format-info {
   position: static;
 }
 
-.scanner-step:has(.scanner-format-info[open]) {
+.scanner-step:has(.scanner-format-info[open]),
+.scanner-step:has(.echo-single-select-menu) {
   z-index: 2;
 }
 
-.scanner-launchpad:has(.scanner-format-info[open]) {
+.scanner-launchpad:has(.scanner-format-info[open]),
+.scanner-launchpad:has(.echo-single-select-menu) {
   overflow: visible;
 }
 

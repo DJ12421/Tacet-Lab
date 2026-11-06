@@ -67,7 +67,7 @@ const wideCardCurrentEchoes: BuildCardEchoLayout[] = [.276, .417, .561, .705, .8
 }))
 
 const wideCard1272 = {
-  id: 'wide-card-1272', label: 'Wide card', aspectRatio: 2724 / 1272,
+  id: 'wide-card-1272', label: 'WuWaFlex', aspectRatio: 2724 / 1272,
   character: { x: .32, y: .04, width: .16, height: .04 },
   characterLevel: { x: .32, y: .09, width: .1, height: .04 },
   sequence: { x: .291, y: .157, width: .028, height: .346 },
@@ -87,7 +87,7 @@ const wideCard1272 = {
 const wideCard1377Scale = 1272 / 1377
 const wideCard1377Rect = (rect: ScanRect): ScanRect => ({ ...rect, y: rect.y * wideCard1377Scale, height: rect.height * wideCard1377Scale })
 const wideCard1377: BuildCardFormat = {
-  ...wideCard1272, id: 'wide-card-1377', label: 'Wide card', aspectRatio: 2724 / 1377,
+  ...wideCard1272, id: 'wide-card-1377', label: 'WuWaFlex', aspectRatio: 2724 / 1377,
   character: wideCard1377Rect(wideCard1272.character),
   characterLevel: wideCard1377Rect(wideCard1272.characterLevel),
   sequence: wideCard1377Rect(wideCard1272.sequence),
@@ -106,7 +106,7 @@ const wideCard1377: BuildCardFormat = {
 }
 
 const wideCard1600 = {
-  id: 'wide-card', label: 'Wide card', aspectRatio: 3416 / 1600,
+  id: 'wide-card', label: 'WuWaFlex', aspectRatio: 3416 / 1600,
   character: { x: .35, y: .035, width: .16, height: .045 },
   characterLevel: { x: .35, y: .08, width: .09, height: .035 },
   sequence: { x: .278, y: .13, width: .028, height: .372 },
@@ -146,7 +146,7 @@ const wideCard1580: BuildCardFormat = {
 
 export const buildCardFormats: BuildCardFormat[] = [
   {
-    id: 'landscape-card', label: 'Landscape card', aspectRatio: 16 / 9,
+    id: 'landscape-card', label: 'Discord Bot', aspectRatio: 16 / 9,
     character: { x: .03, y: .012, width: .19, height: .062 },
     weapon: { x: .825, y: .416, width: .15, height: .045 },
     weaponLevel: { x: .846, y: .468, width: .075, height: .043 },
@@ -164,7 +164,7 @@ export const buildCardFormats: BuildCardFormat[] = [
   wideCard1272,
   wideCard1377,
   {
-    id: 'horizontal-card', label: 'Horizontal card', aspectRatio: 1920 / 1160,
+    id: 'horizontal-card', label: 'WuWa Optimizer', aspectRatio: 1920 / 1160,
     weapon: { x: .21, y: .395, width: .22, height: .035 },
     weaponLevel: { x: .30, y: .4, width: .08, height: .03 },
     weaponRank: { x: .35, y: .4, width: .05, height: .03 },
@@ -176,7 +176,7 @@ export const buildCardFormats: BuildCardFormat[] = [
     echoes: horizontalEchoes([.009, .205, .402, .599, .796], .195, { artY: .57, artHeight: .105, nameY: .56, nameHeight: .035, statsY: .675, statsHeight: .22 })
   },
   {
-    id: 'compact-card', label: 'Compact card', aspectRatio: 1984 / 1440,
+    id: 'compact-card', label: 'The WuWa Calculator', aspectRatio: 1984 / 1440,
     character: { x: .015, y: .545, width: .18, height: .045 },
     characterLevel: { x: .09, y: .59, width: .08, height: .035 },
     weapon: { x: .085, y: .635, width: .17, height: .04 },
