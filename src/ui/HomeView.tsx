@@ -42,6 +42,9 @@ const quickStarts = [
 ]
 
 const changelogEntries = [
+  { hash: '', date: 'Nov 6, 2026', title: 'Choose whether imports update matches, remove missing gear or characters, or completely replace local data' },
+  { hash: '', date: 'Nov 6, 2026', title: 'Import WutheringTools v10 equipped gear and theorycraft builds while skipping empty character entries' },
+  { hash: '', date: 'Nov 6, 2026', title: 'Correct the maximum four-cost DEF main stat and improve scanner calibration sharing' },
   { hash: '', date: 'Nov 4, 2026', title: 'Show a work in progress notice and bug reporting link in Team workspaces' },
   { hash: '', date: 'Oct 21, 2026', title: 'Refresh character build cards with adjustable glass panels, Echo roll tracks, and updated skill and Sequence visuals' },
   { hash: '', date: 'Oct 21, 2026', title: 'Pause animated character portraits and preserve their framing and glass effects in card exports' },

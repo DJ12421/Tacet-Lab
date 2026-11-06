@@ -436,14 +436,17 @@ export default function App() {
         {view === 'legal' && <PrivacyLegalView/>}
         </Suspense>
       </div>
-      <footer className="site-footer"><span>This is an independent fan project not affiliated with/endorsed by Wuthering Waves or Kuro Games.</span><span>Site version: 2.7</span></footer>
+      <footer className="site-footer"><span>This is an independent fan project not affiliated with/endorsed by Wuthering Waves or Kuro Games.</span><span>Site version: 3.7.1</span></footer>
     </main>
     <dialog ref={mobileMoreRef} className="mobile-more-sheet" aria-labelledby="mobile-more-title" onClose={() => setMobileMoreOpen(false)} onMouseDown={(event) => { if (event.target === event.currentTarget) setMobileMoreOpen(false) }}>
       <div className="mobile-more-handle" aria-hidden="true"/>
       <header><div><span className="eyebrow">Navigation</span><h2 id="mobile-more-title">More</h2></div><button type="button" className="close" aria-label="Close navigation menu" onClick={() => setMobileMoreOpen(false)}>×</button></header>
       <nav aria-label="More destinations">{mobileMoreNav.map((item) => <button key={item.view} type="button" aria-current={view === item.view ? 'page' : undefined} className={view === item.view ? 'active' : ''} onClick={() => navigateFromShell(item.view)}><NavIcon item={item}/><span><strong>{item.label}</strong>{item.view === 'scanner' && <small>Upload or enter Echoes manually on mobile</small>}</span></button>)}<button type="button" className={view === 'partnerships' ? 'active' : ''} aria-current={view === 'partnerships' ? 'page' : undefined} onClick={() => navigateFromShell('partnerships')}><Icon name="team"/><span><strong>Partnerships</strong><small>Community and creator spotlights</small></span></button><button type="button" className={view === 'guides' ? 'active' : ''} aria-current={view === 'guides' ? 'page' : undefined} onClick={() => navigateFromShell('guides')}><Icon name="info"/><span><strong>Guides</strong><small>Tutorials and Privacy &amp; Legal</small></span></button><button type="button" onClick={() => { setMobileMoreOpen(false); setSettingsOpen(true) }}><Icon name="settings"/><span><strong>Settings</strong><small>Appearance, build cards, and local data</small></span></button></nav>
     </dialog>
-    {importOpen && <ImportDataModal onClose={() => setImportOpen(false)} onImported={async (preview) => { await data.refresh(); notify(`Import merged: ${preview.added} new, ${preview.updated} updated, ${preview.duplicates} duplicates skipped`) }}/>} 
+    {importOpen && <ImportDataModal
+      onClose={() => setImportOpen(false)}
+      onImported={async (preview, options) => { await data.refresh(); notify(options.overwrite ? 'Import replaced all account data' : `Import applied: ${preview.added} new, ${preview.updated} updated, ${preview.removed} removed, ${preview.duplicates} duplicates skipped`) }}
+    />}
     {exportOpen && <ExportDataModal onClose={() => setExportOpen(false)} onExported={() => notify('Backup download started')}/>}
     {tutorialId && <LiveTutorial key={tutorialId} id={tutorialId} counts={guideCounts} firstVisit={tutorialFirstVisit} onClose={closeTutorial}/>}
     {settingsOpen && <div className="modal-backdrop settings-backdrop" onMouseDown={closeSettings}><Panel className="settings-modal" role="dialog" aria-modal="true" aria-labelledby="settings-title" onMouseDown={(event) => event.stopPropagation()}>

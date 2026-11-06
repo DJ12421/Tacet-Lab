@@ -181,7 +181,7 @@ describe('local account persistence', () => {
     expect((await exportAccount()).teams[0].actions[1]).toMatchObject({ timestamp: 1.2, duration: 0.8 })
   })
 
-  it('previews duplicates and appends imports without deleting current data or preferences', async () => {
+  it('merges by default and replaces all account data when requested', async () => {
     await ensureSeedData()
     const echo = (id: string, locked = false) => ({
       id, name: 'Fusion Drake', cost: 1 as const, rarity: 5 as const, level: 25, sonata: 'Windward Pilgrimage',
@@ -204,6 +204,32 @@ describe('local account persistence', () => {
     expect(await db.echoes.get('local-only')).toBeDefined()
     expect((await db.echoes.get('update'))?.locked).toBe(true)
     expect((await exportAccount()).settings.displayName).not.toBe('Imported name')
+
+    expect((await previewAccountImport(incoming, { overwrite: true })).collections.find((entry) => entry.key === 'echoes')).toMatchObject({ current: 4, incoming: 3, result: 3 })
+    await importAccount(incoming, { overwrite: true })
+    expect(await db.echoes.count()).toBe(3)
+    expect(await db.echoes.get('local-only')).toBeUndefined()
+    expect((await exportAccount()).settings.displayName).toBe('Imported name')
+
+    await db.echoes.add(echo('local-only'))
+    expect((await previewAccountImport(incoming, { deleteMissingGear: true })).removed).toBe(1)
+    await importAccount(incoming, { deleteMissingGear: true })
+    expect(await db.echoes.get('local-only')).toBeUndefined()
+
+    await db.echoes.update('update', { locked: false })
+    await importAccount(incoming, { updateExisting: false })
+    expect((await db.echoes.get('update'))?.locked).toBe(false)
+
+    const [keptCatalog, removedCatalog] = characterCatalog
+    const keptCharacter = { id: 'kept-character', catalogId: keptCatalog.id, level: 90, sequence: 0, locked: false, createdAt: 1 }
+    const removedCharacter = { id: 'removed-character', catalogId: removedCatalog.id, level: 90, sequence: 0, locked: false, createdAt: 2 }
+    await db.characters.bulkAdd([keptCharacter, removedCharacter])
+    await db.equippedLoadouts.add({ id: 'equipped:removed-character', characterId: removedCharacter.id, weaponId: '', echoIds: [], updatedAt: 2 })
+    const characterImport = { ...await exportAccount(), characters: [keptCharacter], equippedLoadouts: [] }
+    expect((await previewAccountImport(characterImport, { deleteMissingCharacters: true })).removed).toBe(2)
+    await importAccount(characterImport, { deleteMissingCharacters: true })
+    expect(await db.characters.get(removedCharacter.id)).toBeUndefined()
+    expect(await db.equippedLoadouts.get('equipped:removed-character')).toBeUndefined()
   })
 
   it('accepts schema-2 teams and preserves calculation scenarios in the current schema', async () => {

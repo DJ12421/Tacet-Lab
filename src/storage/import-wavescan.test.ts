@@ -36,6 +36,9 @@ describe('WaveScan import', () => {
     await importAccount(repeated.document)
     expect(await db.echoes.count()).toBe(1)
     expect(await db.echoes.get(echoId)).toMatchObject({ locked: true, equippedBy: 'local-character' })
+
+    const replacement = await convertWavescanExport(source, true)
+    expect(replacement.document.echoes[0]).toMatchObject({ locked: false, equippedBy: undefined })
   })
 
   it('rejects unsupported stats before showing a merge preview', async () => {

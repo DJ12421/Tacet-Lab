@@ -22,13 +22,13 @@ export function isWavescanExport(value: unknown): value is Row {
   return isRow(value) && value.format === 'WutheringToolsScan'
 }
 
-export async function convertWavescanExport(value: Row): Promise<{ document: AccountDocument; notices: string[] }> {
+export async function convertWavescanExport(value: Row, overwrite = false): Promise<{ document: AccountDocument; notices: string[] }> {
   if (value.version !== 1 || !Array.isArray(value.echoes) || !isRow(value.meta) ||
       typeof value.meta.scannedAt !== 'string' || Number.isNaN(Date.parse(value.meta.scannedAt))) {
     throw new Error('This WaveScan export is invalid or has an unsupported version.')
   }
   const scannedAt = value.meta.scannedAt
-  const current = new Map((await db.echoes.toArray()).map((echo) => [echo.id, echo]))
+  const current = new Map<string, Echo>(overwrite ? [] : (await db.echoes.toArray()).map((echo) => [echo.id, echo]))
   const ids = new Set<string>()
   const echoes = value.echoes.map((source, index): Echo => {
     const invalid = () => { throw new Error(`WaveScan Echo ${index + 1} has missing or unsupported details.`) }
@@ -67,6 +67,6 @@ export async function convertWavescanExport(value: Row): Promise<{ document: Acc
   return {
     document: { schemaVersion: 7, gameDataVersion: GAME_DATA_VERSION, exportedAt: scannedAt,
       echoes, characters: [], weapons: [], builds: [], equippedLoadouts: [], theorycraftBuilds: [], teams: [], settings: defaultSettings },
-    notices: ['WaveScan equipment names are not applied to characters; assign imported Echoes in Tacet Lab after merging.']
+    notices: ['WaveScan equipment names are not applied to characters; assign imported Echoes in Tacet Lab after import.']
   }
 }

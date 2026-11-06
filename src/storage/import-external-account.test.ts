@@ -69,6 +69,10 @@ describe('external account build and team imports', () => {
     const repeated = await convertExternalAccountExport({ ...source, data: { character: JSON.stringify(changed) } })
     expect(repeated.document.characters).toHaveLength(0)
     expect(repeated.document.weapons).toHaveLength(0)
+
+    const replacement = await convertExternalAccountExport({ ...source, data: { character: JSON.stringify(changed) } }, {}, true)
+    expect(replacement.document.characters[0]).toMatchObject({ level: 90, skillLevels: [6, 10, 10, 7, 5] })
+    expect(replacement.document.weapons[0]).toMatchObject({ rank: 5 })
   })
 
   it('imports distinct unequipped inventory Echoes without duplicating a character slot', async () => {

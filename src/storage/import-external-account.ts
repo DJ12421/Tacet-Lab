@@ -140,7 +140,7 @@ export function isExternalAccountExport(value: unknown): value is RecordValue {
     && record(value.data) && typeof value.data.character === 'string'
 }
 
-export async function convertExternalAccountExport(value: RecordValue, addAsNewBuild: Record<string, boolean> = {}): Promise<{ document: AccountDocument; notices: string[]; choices: ExternalCharacterChoice[] }> {
+export async function convertExternalAccountExport(value: RecordValue, addAsNewBuild: Record<string, boolean> = {}, overwrite = false): Promise<{ document: AccountDocument; notices: string[]; choices: ExternalCharacterChoice[] }> {
   const data = value.data
   if (!record(data) || typeof data.character !== 'string') throw new Error('This external account export has no character data.')
   let characterData: unknown
@@ -155,9 +155,10 @@ export async function convertExternalAccountExport(value: RecordValue, addAsNewB
   }
   const inventoryEchoesById = new Map(inventorySources.flatMap((source) => record(source) && typeof source.echoId === 'string' ? [[source.echoId, source] as const] : []))
 
-  const [ownedCharacters, ownedWeapons, currentBuilds, currentLoadouts, ownedEchoes, currentTeams] = await Promise.all([
+  const current = await Promise.all([
     db.characters.toArray(), db.weapons.toArray(), db.builds.toArray(), db.equippedLoadouts.toArray(), db.echoes.toArray(), db.teams.toArray()
   ])
+  const [ownedCharacters, ownedWeapons, currentBuilds, currentLoadouts, ownedEchoes, currentTeams] = overwrite ? [[], [], [], [], [], []] as typeof current : current
   const currentEchoes = new Map(ownedEchoes.map((echo) => [echo.id, echo]))
   const importedEchoesByStats = new Map<string, Echo>()
   const importedSourceEchoIds = new Set<string>()
@@ -437,7 +438,7 @@ export async function convertExternalAccountExport(value: RecordValue, addAsNewB
     }
   }
   notices.unshift(characters.length || weapons.length || echoes.length || builds.length || equippedLoadouts.length || theorycraftBuilds.length || teams.length
-    ? 'New characters and weapons use exported levels, talents, and refinement when available; missing values default to level 90, skills 10, S0, and R1. Existing progression is preserved. Missing weapons use a matching 1-star Training weapon. Echo levels are inferred from substats; WutheringTools presets are imported as theorycraft builds. Character buffs and other calculator settings are not imported.'
+    ? `${overwrite ? 'Characters and weapons' : 'New characters and weapons'} use exported levels, talents, and refinement when available; missing values default to level 90, skills 10, S0, and R1.${overwrite ? '' : ' Existing progression is preserved.'} Missing weapons use a matching 1-star Training weapon. Echo levels are inferred from substats; WutheringTools presets are imported as theorycraft builds. Character buffs and other calculator settings are not imported.`
     : 'No character, build, or team data was found; no account data will change.')
   const document: AccountDocument = {
     schemaVersion: 7, gameDataVersion: GAME_DATA_VERSION, exportedAt: new Date().toISOString(),

@@ -495,6 +495,7 @@ export interface AccountImportCollectionSummary {
   added: number
   updated: number
   duplicates: number
+  removed: number
   result: number
 }
 
@@ -506,7 +507,17 @@ export interface AccountImportPreview {
   added: number
   updated: number
   duplicates: number
+  removed: number
 }
+
+export interface AccountImportOptions {
+  updateExisting: boolean
+  deleteMissingGear: boolean
+  deleteMissingCharacters: boolean
+  overwrite: boolean
+}
+
+const defaultAccountImportOptions: AccountImportOptions = { updateExisting: true, deleteMissingGear: false, deleteMissingCharacters: false, overwrite: false }
 
 type ImportEntity = Echo | OwnedCharacter | OwnedWeapon | Build | EquippedLoadout | TheorycraftBuild | Team
 type ImportEntityWithId = ImportEntity & { id: string }
@@ -514,6 +525,7 @@ type ImportIdMaps = Record<AccountImportCollectionKey, Map<string, string>>
 interface PlannedCollection<T extends ImportEntityWithId> {
   summary: AccountImportCollectionSummary
   records: T[]
+  incomingRecords: T[]
 }
 
 const importCollectionLabels: Record<AccountImportCollectionKey, string> = {
@@ -563,16 +575,19 @@ function planImportCollection<T extends ImportEntityWithId>(
   incoming: T[],
   ids: Map<string, string>,
   remap: (record: T) => T,
-  comparisonIgnoredKeys: string[] = ['id']
+  comparisonIgnoredKeys: string[] = ['id'],
+  updateExisting = true
 ): PlannedCollection<T> {
   const working = new Map(current.map((record) => [record.id, record]))
   const records: T[] = []
+  const incomingRecords: T[] = []
   let added = 0
   let updated = 0
   let duplicates = 0
 
   for (const source of incoming) {
     const record = { ...remap(source), id: ids.get(source.id) ?? source.id }
+    incomingRecords.push(record)
     const existing = working.get(record.id)
     if (!existing) {
       added += 1
@@ -584,14 +599,16 @@ function planImportCollection<T extends ImportEntityWithId>(
       duplicates += 1
       continue
     }
-    updated += 1
-    records.push(record)
-    working.set(record.id, record)
+    if (updateExisting) {
+      updated += 1
+      records.push(record)
+      working.set(record.id, record)
+    } else duplicates += 1
   }
 
   return {
-    summary: { key, label: importCollectionLabels[key], current: current.length, incoming: incoming.length, added, updated, duplicates, result: current.length + added },
-    records
+    summary: { key, label: importCollectionLabels[key], current: current.length, incoming: incoming.length, added, updated, duplicates, removed: 0, result: current.length + added },
+    records, incomingRecords
   }
 }
 
@@ -616,8 +633,11 @@ function remapTeam(team: Team, buildIds: Map<string, string>): Team {
   }
 }
 
-async function createAccountImportPlan(document: AccountDocument) {
-  const current = await exportAccount()
+async function createAccountImportPlan(document: AccountDocument, requested: Partial<AccountImportOptions> = {}) {
+  const options = { ...defaultAccountImportOptions, ...requested }
+  const overwrite = options.overwrite
+  const stored = await exportAccount()
+  const current = overwrite ? { ...stored, echoes: [], characters: [], weapons: [], builds: [], equippedLoadouts: [], theorycraftBuilds: [], teams: [] } : stored
   const incomingEchoes = document.echoes.map((echo) => ({ ...echo, mainStat: normalizeEchoMainStat(echo), subStats: dedupeBySubstatKey(effectiveSubStats(echo), (stat) => stat.key).values, source: 'import' as const }))
   const incomingCharacters = document.characters ?? []
   const incomingWeapons = document.weapons ?? []
@@ -658,17 +678,46 @@ async function createAccountImportPlan(document: AccountDocument) {
           const owner = incomingCharacters.find((character) => character.catalogId === ownerBuild?.resonatorId)
           return owner ? maps.characters.get(owner.id) ?? owner.id : undefined
         })()
-  }), ['id', 'source'])
-  const characters = planImportCollection('characters', current.characters, incomingCharacters, maps.characters, (character) => character)
+  }), ['id', 'source'], options.updateExisting)
+  const characters = planImportCollection('characters', current.characters, incomingCharacters, maps.characters, (character) => character, ['id'], options.updateExisting)
   const weapons = planImportCollection('weapons', current.weapons, incomingWeapons, maps.weapons, (weapon) => ({
     ...weapon,
     equippedBy: remapOptionalId(maps.characters, weapon.equippedBy)
-  }))
-  const builds = planImportCollection('builds', current.builds, incomingBuilds, maps.builds, remapBuild)
-  const equippedLoadouts = planImportCollection('equippedLoadouts', current.equippedLoadouts ?? [], incomingEquippedLoadouts, maps.equippedLoadouts, (loadout) => ({ ...loadout, characterId: maps.characters.get(loadout.characterId) ?? loadout.characterId, weaponId: maps.weapons.get(loadout.weaponId) ?? loadout.weaponId, echoIds: loadout.echoIds.map((id) => maps.echoes.get(id) ?? id) }))
-  const theorycraftBuilds = planImportCollection('theorycraftBuilds', current.theorycraftBuilds ?? [], incomingTheorycraftBuilds, maps.theorycraftBuilds, remapTheorycraft)
-  const teams = planImportCollection('teams', current.teams, remappedTeams, maps.teams, (team) => team)
+  }), ['id'], options.updateExisting)
+  const builds = planImportCollection('builds', current.builds, incomingBuilds, maps.builds, remapBuild, ['id'], options.updateExisting)
+  const equippedLoadouts = planImportCollection('equippedLoadouts', current.equippedLoadouts ?? [], incomingEquippedLoadouts, maps.equippedLoadouts, (loadout) => ({ ...loadout, characterId: maps.characters.get(loadout.characterId) ?? loadout.characterId, weaponId: maps.weapons.get(loadout.weaponId) ?? loadout.weaponId, echoIds: loadout.echoIds.map((id) => maps.echoes.get(id) ?? id) }), ['id'], options.updateExisting)
+  const theorycraftBuilds = planImportCollection('theorycraftBuilds', current.theorycraftBuilds ?? [], incomingTheorycraftBuilds, maps.theorycraftBuilds, remapTheorycraft, ['id'], options.updateExisting)
+  const teams = planImportCollection('teams', current.teams, remappedTeams, maps.teams, (team) => team, ['id'], options.updateExisting)
   const collections = [echoes, characters, weapons, builds, equippedLoadouts, theorycraftBuilds, teams]
+  const incomingIds = Object.fromEntries(collections.map((collection) => [collection.summary.key, new Set(collection.incomingRecords.map((record) => record.id))])) as Record<AccountImportCollectionKey, Set<string>>
+  const removedCharacterIds = options.deleteMissingCharacters ? stored.characters.filter((record) => !incomingIds.characters.has(record.id)).map((record) => record.id) : []
+  const removedEchoIds = options.deleteMissingGear ? stored.echoes.filter((record) => !incomingIds.echoes.has(record.id)).map((record) => record.id) : []
+  const removedWeaponIds = options.deleteMissingGear ? stored.weapons.filter((record) => !incomingIds.weapons.has(record.id)).map((record) => record.id) : []
+  const removedCharacterCatalogIds = new Set(stored.characters.filter((record) => removedCharacterIds.includes(record.id)).map((record) => record.catalogId))
+  const removedBuildIds = stored.builds.filter((record) => !incomingIds.builds.has(record.id) && (removedCharacterIds.includes(record.characterId ?? '') || removedCharacterCatalogIds.has(record.resonatorId) || removedWeaponIds.includes(record.weaponId) || record.echoIds.some((id) => removedEchoIds.includes(id)))).map((record) => record.id)
+  const removedLoadoutIds = (stored.equippedLoadouts ?? []).filter((record) => !incomingIds.equippedLoadouts.has(record.id) && removedCharacterIds.includes(record.characterId)).map((record) => record.id)
+  const removedTheorycraftIds = (stored.theorycraftBuilds ?? []).filter((record) => !incomingIds.theorycraftBuilds.has(record.id) && removedCharacterIds.includes(record.characterId)).map((record) => record.id)
+  const sourceWasRemoved = (source?: LoadoutSourceRef) => source?.type === 'saved' ? removedBuildIds.includes(source.buildId)
+    : source?.type === 'theorycraft' ? removedTheorycraftIds.includes(source.theorycraftBuildId) : false
+  const removedTeamIds = stored.teams.filter((record) => !incomingIds.teams.has(record.id) && (record.members?.some((member) => removedCharacterIds.includes(member.characterId) || sourceWasRemoved(member.loadoutSource) || sourceWasRemoved(member.compareSource)) || record.buildIds.some((id) => removedBuildIds.includes(id)))).map((record) => record.id)
+  const removedTeamMemberIds = stored.teams.filter((record) => removedTeamIds.includes(record.id)).flatMap((record) => record.members?.map((member) => member.memberId) ?? record.buildIds)
+  const removedIds: Record<AccountImportCollectionKey, string[]> = { echoes: removedEchoIds, characters: removedCharacterIds, weapons: removedWeaponIds, builds: removedBuildIds, equippedLoadouts: removedLoadoutIds, theorycraftBuilds: removedTheorycraftIds, teams: removedTeamIds }
+  for (const collection of collections) {
+    collection.summary.removed = removedIds[collection.summary.key].length
+    collection.summary.result -= collection.summary.removed
+  }
+  if (overwrite) {
+    const currentCounts: Record<AccountImportCollectionKey, number> = {
+      echoes: stored.echoes.length, characters: stored.characters.length, weapons: stored.weapons.length,
+      builds: stored.builds.length, equippedLoadouts: stored.equippedLoadouts?.length ?? 0,
+      theorycraftBuilds: stored.theorycraftBuilds?.length ?? 0, teams: stored.teams.length
+    }
+    for (const collection of collections) {
+      collection.summary.current = currentCounts[collection.summary.key]
+      collection.summary.removed = collection.summary.current
+      collection.summary.result = collection.records.length
+    }
+  }
   const preview: AccountImportPreview = {
     schemaVersion: document.schemaVersion,
     gameDataVersion: document.gameDataVersion,
@@ -676,20 +725,31 @@ async function createAccountImportPlan(document: AccountDocument) {
     collections: collections.map((collection) => collection.summary),
     added: collections.reduce((sum, collection) => sum + collection.summary.added, 0),
     updated: collections.reduce((sum, collection) => sum + collection.summary.updated, 0),
-    duplicates: collections.reduce((sum, collection) => sum + collection.summary.duplicates, 0)
+    duplicates: collections.reduce((sum, collection) => sum + collection.summary.duplicates, 0),
+    removed: collections.reduce((sum, collection) => sum + collection.summary.removed, 0)
   }
-  return { preview, echoes, characters, weapons, builds, equippedLoadouts, theorycraftBuilds, teams }
+  return { preview, echoes, characters, weapons, builds, equippedLoadouts, theorycraftBuilds, teams, removedIds, removedProfileReferences: [...removedBuildIds, ...removedCharacterIds, ...removedTheorycraftIds, ...removedTeamMemberIds] }
 }
 
-export async function previewAccountImport(document: AccountDocument): Promise<AccountImportPreview> {
+export async function previewAccountImport(document: AccountDocument, options: Partial<AccountImportOptions> = {}): Promise<AccountImportPreview> {
   if (!validateAccount(document)) throw new Error(accountBackupError(document) ?? 'The account backup is invalid.')
-  return (await createAccountImportPlan(document)).preview
+  return (await createAccountImportPlan(document, options)).preview
 }
 
-export async function importAccount(document: AccountDocument): Promise<AccountImportPreview> {
+export async function importAccount(document: AccountDocument, options: Partial<AccountImportOptions> = {}): Promise<AccountImportPreview> {
   if (!validateAccount(document)) throw new Error(accountBackupError(document) ?? 'The account backup is invalid.')
-  const plan = await createAccountImportPlan(document)
-  await db.transaction('rw', [db.echoes, db.characters, db.weapons, db.builds, db.equippedLoadouts, db.theorycraftBuilds, db.teams], async () => {
+  const settings = { ...defaultAccountImportOptions, ...options }
+  const plan = await createAccountImportPlan(document, settings)
+  await db.transaction('rw', [db.echoes, db.characters, db.weapons, db.builds, db.equippedLoadouts, db.theorycraftBuilds, db.teams, db.optimizerProfiles, db.optimizerRuns, db.settings], async () => {
+    if (settings.overwrite) await Promise.all([db.echoes.clear(), db.characters.clear(), db.weapons.clear(), db.builds.clear(), db.equippedLoadouts.clear(), db.theorycraftBuilds.clear(), db.teams.clear(), db.optimizerProfiles.clear(), db.optimizerRuns.clear(), db.settings.clear()])
+    else {
+      await Promise.all([db.echoes.bulkDelete(plan.removedIds.echoes), db.characters.bulkDelete(plan.removedIds.characters), db.weapons.bulkDelete(plan.removedIds.weapons), db.builds.bulkDelete(plan.removedIds.builds), db.equippedLoadouts.bulkDelete(plan.removedIds.equippedLoadouts), db.theorycraftBuilds.bulkDelete(plan.removedIds.theorycraftBuilds), db.teams.bulkDelete(plan.removedIds.teams)])
+      if (plan.removedProfileReferences.length) {
+        const profileIds = await db.optimizerProfiles.where('buildId').anyOf(plan.removedProfileReferences).primaryKeys()
+        await db.optimizerProfiles.bulkDelete(profileIds)
+        await Promise.all([db.optimizerRuns.where('buildId').anyOf(plan.removedProfileReferences).delete(), profileIds.length ? db.optimizerRuns.where('profileId').anyOf(profileIds).delete() : Promise.resolve(0)])
+      }
+    }
     await db.echoes.bulkPut(plan.echoes.records)
     await db.characters.bulkPut(plan.characters.records)
     await db.weapons.bulkPut(plan.weapons.records)
@@ -697,6 +757,7 @@ export async function importAccount(document: AccountDocument): Promise<AccountI
     await db.equippedLoadouts.bulkPut(plan.equippedLoadouts.records)
     await db.theorycraftBuilds.bulkPut(plan.theorycraftBuilds.records)
     await db.teams.bulkPut(plan.teams.records)
+    if (settings.overwrite) await db.settings.put({ id: 'settings', ...document.settings })
   })
   await ensureSchemaSevenRelations()
   await removeRedundantImportedBuilds()
