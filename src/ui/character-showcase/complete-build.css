@@ -151,10 +151,5 @@
 }
 
 .cs-weapon-picker-card .wv-card-footer {
-  grid-template-columns: minmax(0,1fr);
-}
-
-.cs-weapon-picker-owner i {
-  font-size: var(--font-size-caption);
-  font-weight: 700;
+  grid-template-columns: minmax(0,1fr) 35px;
 }

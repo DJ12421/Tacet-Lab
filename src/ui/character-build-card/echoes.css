@@ -471,7 +471,7 @@
   border-radius: 50%;
   background: var(--cbc-accent);
   box-shadow: 0 0 10px color-mix(in srgb,var(--cbc-accent) 22%,transparent);
-  color: #07100f;
+  color: #fff;
   font-size: 9px;
   font-weight: 900;
 }

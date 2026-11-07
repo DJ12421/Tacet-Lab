@@ -45,14 +45,14 @@ function wavePath(time: number, wave: Wave) {
 
 const initialPaths = waves.map((wave) => wavePath(0, wave))
 
-export function EchoWaveform({ element }: { element?: string } = {}) {
+export function EchoWaveform({ element, paused = false }: { element?: string; paused?: boolean } = {}) {
   const svgRef = useRef<SVGSVGElement>(null)
   const elapsedRef = useRef(0)
   const pageFocused = usePageFocused()
   const style = element ? { '--wave-accent': elementColors[element] ?? '#d1aa4c' } as CSSProperties : undefined
 
   useEffect(() => {
-    if (!pageFocused || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return
+    if (paused || !pageFocused || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return
     const paths = svgRef.current?.querySelectorAll<SVGPathElement>('path')
     if (!paths?.length) return
     let frame = 0
@@ -67,7 +67,7 @@ export function EchoWaveform({ element }: { element?: string } = {}) {
     }
     frame = requestAnimationFrame(render)
     return () => cancelAnimationFrame(frame)
-  }, [pageFocused])
+  }, [pageFocused, paused])
 
   return <svg ref={svgRef} className="cs-echo-waveform" style={style} viewBox={`0 0 ${WIDTH} ${HEIGHT}`} preserveAspectRatio="none" fill="none" aria-hidden="true">
     <path d={`${initialPaths[2]} L${WIDTH},${HEIGHT} L0,${HEIGHT} Z`} className="cs-echo-wave-fill"/>

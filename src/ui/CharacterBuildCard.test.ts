@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { characterCatalog } from '../game-data'
 import type { CharacterSubstatProfile } from '../domain/character-substat-score'
-import { echoRollBreakdown, prioritizedBuildCardStats } from './CharacterBuildCard'
+import { echoRollBreakdown, echoRollGradeClass, prioritizedBuildCardStats } from './CharacterBuildCard'
 
 const lucy = characterCatalog.find((entry) => entry.name === 'Lucy')!
 
@@ -37,6 +37,12 @@ describe('echoRollBreakdown', () => {
 
   it('marks values outside the legal roll table as unknown', () => {
     expect(echoRollBreakdown({ key: 'critDamage', value: 17 })).toMatchObject({ tier: 0, tierCount: 8, valid: false })
+  })
+})
+
+describe('echoRollGradeClass', () => {
+  it('always colors flat HP, ATK, and DEF as three-point blue rolls', () => {
+    expect((['hp', 'atk', 'def'] as const).map((key) => echoRollGradeClass({ key, value: 50 }))).toEqual(['roll-color-blue', 'roll-color-blue', 'roll-color-blue'])
   })
 })
 

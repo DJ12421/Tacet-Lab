@@ -7,7 +7,7 @@ import { baseTuneBreakBoost, characterCatalog, echoCatalog, sonataNames, statLab
 import { pendingMechanics } from '../game-data/review-status.generated'
 import { characterSubstatScoreKeys } from '../game-data/character-substat-preferences'
 import { generatedSonataIconSources } from '../game-data/sonatas.generated'
-import { effectiveSubStats } from '../game-data/echo-main-stats'
+import { effectiveSubStats, mainStatKeysByCost } from '../game-data/echo-main-stats'
 import { echoRollRating } from '../domain/echo-grade'
 import { resolveCharacterSubstatProfile, scoreCharacterSubstats } from '../domain/character-substat-score'
 import { setEchoSlot as assignEchoSlot } from '../domain/echo-slots'
@@ -25,6 +25,7 @@ import { showcaseStatDetail } from './calculation-detail-model'
 import { CharacterBuildCard, prioritizedBuildCardStats, type BuildCardStatKey } from './CharacterBuildCard'
 import { defaultEnabledSkillTreeBonusIds, inherentSkillBonusId, resolveCharacterShowcaseModel, skillTreeBonusId } from './character-showcase-model'
 import { WeaponInventoryCard, weaponBuildCharacterIds, weaponBuildLabels } from './WeaponInventoryCard'
+import { WeaponDetail } from './OwnedInventoryView'
 import { MultiSelect } from './InventoryView'
 import { statIconSource } from './stat-icons'
 import { confirmDiscardChanges, useUnsavedChanges } from './useUnsavedChanges'
@@ -185,9 +186,10 @@ function savedSelection<T extends string | number>(value: unknown, allowed: read
   return Array.isArray(value) ? value.filter((item): item is T => allowed.includes(item as T)) : fallback
 }
 
-function WeaponPicker({ character, characters, catalog, weapons, builds, equippedLoadouts, refresh, onClose }: { character: OwnedCharacter; characters: OwnedCharacter[]; catalog: CharacterCatalogEntry; weapons: OwnedWeapon[]; builds: Build[]; equippedLoadouts: EquippedLoadout[]; refresh: () => Promise<void>; onClose: () => void }) {
+export function WeaponPicker({ character, characters, catalog, weapons, builds, equippedLoadouts, refresh, onClose }: { character: OwnedCharacter; characters: OwnedCharacter[]; catalog: CharacterCatalogEntry; weapons: OwnedWeapon[]; builds: Build[]; equippedLoadouts: EquippedLoadout[]; refresh: () => Promise<void>; onClose: () => void }) {
   const preferences = useMemo(() => readPickerPreferences(character.id, 'weapon'), [character.id])
   const [adding, setAdding] = useState(false)
+  const [editingWeaponId, setEditingWeaponId] = useState<string>()
   const [query, setQuery] = useState(() => typeof preferences.query === 'string' ? preferences.query : '')
   const [rarities, setRarities] = useState(() => savedSelection(preferences.rarities, weaponRarities, weaponRarities))
   useEffect(() => savePickerPreferences(character.id, 'weapon', { query, rarities }), [character.id, query, rarities])
@@ -203,6 +205,7 @@ function WeaponPicker({ character, characters, catalog, weapons, builds, equippe
   const equippedWeaponOwners = new Map<string, string>()
   for (const loadout of equippedLoadouts) if (loadout.weaponId) equippedWeaponOwners.set(loadout.weaponId, loadout.characterId)
   const visibleCatalog = eligibleCatalog.filter(matches).sort((left, right) => right.rarity - left.rarity || left.name.localeCompare(right.name))
+  const editingWeapon = weapons.find((weapon) => weapon.id === editingWeaponId)
   const equip = async (weapon: OwnedWeapon) => {
     await setOwnedWeaponOwner(weapon.id, character.id)
     await refresh()
@@ -213,17 +216,18 @@ function WeaponPicker({ character, characters, catalog, weapons, builds, equippe
     await db.weapons.add(weapon)
     await equip(weapon)
   }
-  return createPortal(<div className={`catalog-picker-backdrop cs-picker-backdrop cs-element-${catalog.element.toLowerCase()}`} onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}><section className="catalog-picker cs-picker cs-weapon-picker" role="dialog" aria-modal="true" aria-label="Equip weapon"><header><div><span className="eyebrow">{catalog.weaponType} inventory</span><h2>{adding ? 'Add and equip weapon' : 'Equip weapon'}</h2></div><button type="button" className="close" aria-label="Close weapon picker" onClick={onClose}>×</button></header>
+  return <>{createPortal(<div className={`catalog-picker-backdrop cs-picker-backdrop cs-element-${catalog.element.toLowerCase()}`} onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}><section className="catalog-picker cs-picker cs-weapon-picker" role="dialog" aria-modal="true" aria-label="Equip weapon"><header><div><span className="eyebrow">{catalog.weaponType} inventory</span><h2>{adding ? 'Add and equip weapon' : 'Equip weapon'}</h2></div><button type="button" className="close" aria-label="Close weapon picker" onClick={onClose}>×</button></header>
     <div className="cs-weapon-picker-toolbar wv-toolbar"><label className="search search-field"><Icon name="scan"/><input data-search="" autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Find a weapon"/><span className="search-count" aria-live="polite">{adding ? visibleCatalog.length : visibleOwned.length}/{adding ? eligibleCatalog.length : eligibleOwned.length}</span><kbd>Ctrl K</kbd></label><FilterChips label="Rarity" hideLabel values={weaponRarities} selected={rarities} onChange={setRarities} renderValue={(value) => `${value} ★`}/>{adding ? <button type="button" className="secondary" onClick={() => setAdding(false)}>← Owned weapons</button> : <button type="button" className="primary" onClick={() => setAdding(true)}><Icon name="plus"/>Add weapon</button>}</div>
     <div className={adding ? 'catalog-picker-grid cs-weapon-picker-grid' : 'wv-grid cs-weapon-picker-grid'}>
-    {!adding && visibleOwned.map(({ owned, entry }) => { const owner = characters.find((candidate) => candidate.id === equippedWeaponOwners.get(owned.id)); const ownerCatalog = characterCatalog.find((candidate) => candidate.id === owner?.catalogId); const buildLabel = buildLabels.get(owned.id)?.join(', '); const referenced = characters.filter((candidate) => candidate.id === owner?.id || buildCharacterIds.get(owned.id)?.includes(candidate.id)).flatMap((candidate) => { const catalog = characterCatalog.find((entry) => entry.id === candidate.catalogId); return catalog ? [{ id: candidate.id, catalog }] : [] }); const shared = referenced.length > 1; const displayName = shared ? referenced.map(({ catalog }) => catalog.name).join(', ') : buildLabel ?? ownerCatalog?.name ?? 'Unequipped'; return <WeaponInventoryCard weapon={owned} catalog={entry} className="cs-weapon-picker-card" ariaLabel={`Equip ${entry.name}`} onClick={() => void equip(owned)} footer={<button type="button" className={`character-equip-trigger cs-weapon-picker-owner${shared ? ' multiple-characters' : buildLabel && !ownerCatalog ? ' no-character-icon' : ''}`} title={displayName} onClick={() => void equip(owned)}>{shared ? <span className="character-owner-stack" aria-hidden="true">{referenced.map(({ id, catalog }) => <img src={catalog.iconSourceUrl} alt="" key={id}/>)}</span> : ownerCatalog ? <img src={ownerCatalog.iconSourceUrl} alt=""/> : !buildLabel && <span className="equip-empty">—</span>}<b>{displayName}</b><i>Equip</i></button>} key={owned.id}/> })}
+    {!adding && visibleOwned.map(({ owned, entry }) => { const owner = characters.find((candidate) => candidate.id === equippedWeaponOwners.get(owned.id)); const ownerCatalog = characterCatalog.find((candidate) => candidate.id === owner?.catalogId); const buildLabel = buildLabels.get(owned.id)?.join(', '); const referenced = characters.filter((candidate) => candidate.id === owner?.id || buildCharacterIds.get(owned.id)?.includes(candidate.id)).flatMap((candidate) => { const catalog = characterCatalog.find((entry) => entry.id === candidate.catalogId); return catalog ? [{ id: candidate.id, catalog }] : [] }); const shared = referenced.length > 1; const displayName = shared ? referenced.map(({ catalog }) => catalog.name).join(', ') : buildLabel ?? ownerCatalog?.name ?? 'Unequipped'; return <WeaponInventoryCard weapon={owned} catalog={entry} className="cs-weapon-picker-card" ariaLabel={`Equip ${entry.name}`} onClick={() => void equip(owned)} footer={<><button type="button" className={`character-equip-trigger cs-weapon-picker-owner${shared ? ' multiple-characters' : buildLabel && !ownerCatalog ? ' no-character-icon' : ''}`} aria-label={`Equip ${entry.name}. ${displayName}`} title={displayName} onClick={() => void equip(owned)}>{shared ? <span className="character-owner-stack" aria-hidden="true">{referenced.map(({ id, catalog }) => <img src={catalog.iconSourceUrl} alt="" key={id}/>)}</span> : ownerCatalog ? <img src={ownerCatalog.iconSourceUrl} alt=""/> : !buildLabel && <span className="equip-empty">—</span>}<b>{displayName}</b></button><button type="button" className="wv-icon-action" aria-label={`Edit ${entry.name}`} title="Edit weapon" onClick={() => setEditingWeaponId(owned.id)}><Icon name="edit"/></button></>} key={owned.id}/> })}
     {adding && visibleCatalog.map((entry) => <button className={`catalog-choice weapon-choice rarity-${entry.rarity}`} key={entry.id} onClick={() => void add(entry)}><img src={entry.iconSourceUrl} alt=""/><span><strong>{entry.name}</strong><small>{entry.type}</small><Stars rarity={entry.rarity}/></span></button>)}
     {(adding ? visibleCatalog.length : visibleOwned.length) === 0 && <div className="wv-empty compact"><h3>No matching weapons</h3><button type="button" className="text-button" onClick={() => { setQuery(''); setRarities(weaponRarities) }}>Clear filters</button></div>}
-  </div></section></div>, document.body)
+  </div></section></div>, document.body)}{editingWeapon && <WeaponDetail weapon={editingWeapon} characters={characters} refresh={refresh} onClose={() => setEditingWeaponId(undefined)}/>}</>
 }
 
 const echoCostOptions = [1, 3, 4]
 const echoRarityOptions = [5, 4, 3, 2]
+const echoMainStatOptions = [...new Set(Object.values(mainStatKeysByCost).flat())]
 
 export function EchoPicker({ slot, characterId, currentIds, echoes, accentClass, refresh, onClose, onSelect }: { slot: number; characterId: string; currentIds: string[]; echoes: Echo[]; accentClass: string; refresh: () => Promise<void>; onClose: () => void; onSelect?: (echoIds: string[], next?: Echo) => Promise<boolean | void> }) {
   const pageSize = 30
@@ -236,7 +240,7 @@ export function EchoPicker({ slot, characterId, currentIds, echoes, accentClass,
   const [costs, setCosts] = useState(() => savedSelection(preferences.costs, echoCostOptions, echoCostOptions))
   const [rarities, setRarities] = useState(() => savedSelection(preferences.rarities, echoRarityOptions, echoRarityOptions))
   const [sonatas, setSonatas] = useState(() => savedSelection(preferences.sonatas, sonataNames, []))
-  const [mainStats, setMainStats] = useState(() => savedSelection(preferences.mainStats, statKeys, []))
+  const [mainStats, setMainStats] = useState(() => savedSelection(preferences.mainStats, echoMainStatOptions, []))
   const [subStats, setSubStats] = useState(() => savedSelection(preferences.subStats, statKeys, []))
   const [lockState, setLockState] = useState<'all' | 'locked' | 'unlocked'>(() => preferences.lockState === 'locked' || preferences.lockState === 'unlocked' ? preferences.lockState : 'all')
   const [assignment, setAssignment] = useState<'all' | 'equipped' | 'unequipped'>(() => preferences.assignment === 'equipped' || preferences.assignment === 'unequipped' ? preferences.assignment : 'all')
@@ -309,7 +313,7 @@ export function EchoPicker({ slot, characterId, currentIds, echoes, accentClass,
           <div className="filter-group echo-cost-filter" role="group" aria-label="Cost"><FilterChips label="Cost" hideLabel values={echoCostOptions} selected={costs} onChange={setCosts} renderValue={(value) => `${value} cost`}/></div>
           <div className="filter-group echo-rarity-filter" role="group" aria-label="Rarity"><FilterChips label="Rarity" hideLabel values={echoRarityOptions} selected={rarities} onChange={setRarities} renderValue={(value) => `${value} ★`}/></div>
           <MultiSelect label="Sonata" hideLabel values={sonatas} options={sonataNames.map((name) => ({ value: name, label: name }))} emptyLabel="All Sonatas" onChange={setSonatas} icon={(name) => <img src={generatedSonataIconSources[name]} alt=""/>} open={openMultiFilter === 'sonata'} onToggle={() => setOpenMultiFilter((current) => current === 'sonata' ? null : 'sonata')}/>
-          <MultiSelect label="Main stat" hideLabel values={mainStats} options={statKeys.map((key) => ({ value: key, label: statLabels[key] }))} emptyLabel="Any main stat" onChange={setMainStats} icon={statIcon} open={openMultiFilter === 'mainStat'} onToggle={() => setOpenMultiFilter((current) => current === 'mainStat' ? null : 'mainStat')}/>
+          <MultiSelect label="Main stat" hideLabel values={mainStats} options={echoMainStatOptions.map((key) => ({ value: key, label: statLabels[key] }))} emptyLabel="Any main stat" onChange={setMainStats} icon={statIcon} open={openMultiFilter === 'mainStat'} onToggle={() => setOpenMultiFilter((current) => current === 'mainStat' ? null : 'mainStat')}/>
           <MultiSelect label="Substat" hideLabel values={subStats} options={statKeys.map((key) => ({ value: key, label: statLabels[key] }))} emptyLabel="Any substat" onChange={setSubStats} icon={statIcon} open={openMultiFilter === 'subStat'} onToggle={() => setOpenMultiFilter((current) => current === 'subStat' ? null : 'subStat')}/>
           <div className="echo-single-filter"><SingleSelect label="Lock state" value={lockState} options={[{ value: 'all', label: 'All' }, { value: 'locked', label: 'Locked' }, { value: 'unlocked', label: 'Unlocked' }]} onChange={(value) => setLockState(value as typeof lockState)}/></div>
           <div className="echo-single-filter"><SingleSelect label="Equipped" value={assignment} options={[{ value: 'all', label: 'All' }, { value: 'equipped', label: 'Equipped' }, { value: 'unequipped', label: 'Unequipped' }]} onChange={(value) => setAssignment(value as typeof assignment)}/></div>
@@ -320,7 +324,7 @@ export function EchoPicker({ slot, characterId, currentIds, echoes, accentClass,
       <div className="echo-picker-list" ref={listRef}>
         {error && <div className="notice error">{error}</div>}
         {pagination}
-        <div className="echo-grid">{pageOptions.map((echo) => <EchoMiniCard key={echo.id} echo={echo} selected={echo.id === currentId} rollRating={echoMeta.get(echo.id)?.rollRating} onClick={() => void choose(echo)} equipment={<button type="button" aria-label={`Edit ${echo.name}`} title="Edit Echo" onClick={(event) => { event.stopPropagation(); setEditingEcho(echo) }} onKeyDown={(event) => event.stopPropagation()}><Icon name="edit"/></button>}/>)}</div>
+        <div className="echo-grid">{pageOptions.map((echo) => <EchoMiniCard key={echo.id} echo={echo} selected={echo.id === currentId} rollRating={echoMeta.get(echo.id)?.rollRating} staticWaveform onClick={() => void choose(echo)} equipment={<button type="button" aria-label={`Edit ${echo.name}`} title="Edit Echo" onClick={(event) => { event.stopPropagation(); setEditingEcho(echo) }} onKeyDown={(event) => event.stopPropagation()}><Icon name="edit"/></button>}/>)}</div>
         {pageCount > 1 && pagination}
       </div>
     </section>

@@ -426,7 +426,7 @@
 }
 
 .cbc-weapon h2 {
-  margin: 5px 0 6px;
+  margin: 0 0 6px;
   overflow: hidden;
   color: #fff;
   font-size: 22px;
@@ -446,7 +446,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 6px;
-  margin: 12px 0 0;
+  margin: 8px 0 0;
 }
 
 .cbc-weapon dl>div {
@@ -464,10 +464,11 @@
 }
 
 .cbc-weapon dd {
-  margin: 2px 0 0;
+  margin: 3px 0 0;
   color: #fff;
-  font-size: 15px;
+  font-size: 21px;
   font-weight: 800;
+  line-height: 1.1;
 }
 
 .cbc-weapon>button {

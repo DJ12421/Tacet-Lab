@@ -2,6 +2,7 @@ import { forwardRef, useEffect, useMemo, useRef, useState, type CSSProperties, t
 import { createPortal } from 'react-dom'
 import type { AppSettings, Echo, OwnedCharacter, StatKey } from '../domain/types'
 import { scoreCharacterBuildSubstats, scoreCharacterSubstats, type CharacterSubstatProfile } from '../domain/character-substat-score'
+import { substatTierPoints } from '../domain/echo-roll-tier'
 import { effectiveSubStats, fixedSecondaryMainStat } from '../game-data/echo-main-stats'
 import { echoCatalog, sonataCatalog, statLabels, type CharacterCatalogEntry } from '../game-data'
 import { generatedSonataIconSources } from '../game-data/sonatas.generated'
@@ -311,7 +312,8 @@ function RollBreakdown({ stat }: { stat: { key: StatKey; value: number } }) {
   </span>
 }
 
-function echoRollGradeClass(stat: { key: StatKey; value: number }) {
+export function echoRollGradeClass(stat: { key: StatKey; value: number }) {
+  if (substatTierPoints(stat.key, stat.value) === 3) return 'roll-color-blue'
   const breakdown = echoRollBreakdown(stat)
   if (!breakdown.valid || breakdown.tierCount < 2) return 'roll-color-unknown'
   const quality = breakdown.tier / breakdown.tierCount

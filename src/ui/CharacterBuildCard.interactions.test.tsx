@@ -1,12 +1,13 @@
 import { createRef } from 'react'
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import type { Echo, OwnedCharacter } from '../domain/types'
+import type { Echo, OwnedCharacter, OwnedWeapon } from '../domain/types'
 import { resolveCharacterSubstatProfile } from '../domain/character-substat-score'
-import { characterCatalog, defaultSettings } from '../game-data'
+import { characterCatalog, defaultSettings, statLabels, weaponCatalog } from '../game-data'
+import { mainStatKeysByCost } from '../game-data/echo-main-stats'
 import type { AnimatedCharacterPortraitHandle } from './AnimatedCharacterPortrait'
 import { CharacterBuildCard, prioritizedBuildCardStats } from './CharacterBuildCard'
-import { EchoPicker } from './CharacterShowcase'
+import { EchoPicker, WeaponPicker } from './CharacterShowcase'
 import { defaultEnabledSkillTreeBonusIds, resolveCharacterShowcaseModel } from './character-showcase-model'
 
 vi.mock('./AnimatedCharacterPortrait', () => ({ AnimatedCharacterPortrait: ({ paused }: { paused: boolean }) => <div data-testid="live-character-art" data-paused={paused}/> }))
@@ -256,6 +257,27 @@ describe('CharacterBuildCard direct editing', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Edit Hooscamp' }))
     expect(screen.getByTestId('echo-editor')).toHaveTextContent('Hooscamp')
     expect(onSelect).not.toHaveBeenCalled()
+  })
+
+  it('lists only legal primary stats in the main-stat filter', () => {
+    render(<EchoPicker slot={0} characterId={character.id} currentIds={[]} echoes={[]} accentClass="" refresh={vi.fn()} onClose={vi.fn()}/>)
+    fireEvent.click(screen.getByRole('button', { name: 'Main stat' }))
+    const filter = screen.getByText('Main stat').closest('label')!
+    const labels = [...filter.querySelectorAll('.multi-select-options button span')].map((option) => option.textContent)
+    const expected = [...new Set(Object.values(mainStatKeysByCost).flat())].map((key) => statLabels[key])
+    expect(labels).toEqual(expected)
+  })
+
+  it('opens the shared weapon editor without equipping from the edit button', () => {
+    const weaponCatalogEntry = weaponCatalog.find((entry) => entry.type.toLowerCase() === catalog.weaponType.toLowerCase())!
+    const weapon: OwnedWeapon = { id: 'weapon-1', catalogId: weaponCatalogEntry.id, level: 90, rank: 1, locked: false, createdAt: 1 }
+    const onClose = vi.fn()
+    render(<WeaponPicker character={character} characters={[character]} catalog={catalog} weapons={[weapon]} builds={[]} equippedLoadouts={[]} refresh={vi.fn()} onClose={onClose}/>)
+
+    fireEvent.click(screen.getByRole('button', { name: `Edit ${weaponCatalogEntry.name}` }))
+
+    expect(screen.getByRole('dialog', { name: `Configure ${weaponCatalogEntry.name}` })).toBeInTheDocument()
+    expect(onClose).not.toHaveBeenCalled()
   })
 
   it('restores Echo filters for the same character without sharing them with another', () => {
