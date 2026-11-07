@@ -12,6 +12,11 @@ const progression = (value: unknown, min: number, max: number, fallback: number)
   const parsed = typeof value === 'string' && value.trim() ? Number(value) : value
   return typeof parsed === 'number' && Number.isInteger(parsed) && parsed >= min && parsed <= max ? parsed : fallback
 }
+const sourceSequence = (character: RecordValue) => progression(character.sequence, 0, 6, Math.max(0, ...Object.entries(record(character.resonanceChains) ? character.resonanceChains : {})
+  .flatMap(([name, state]) => {
+    const match = name.match(/^(?:SequenceNode|Sequence|S)([1-6])/i)
+    return record(state) && state.isEnabled === true && match ? [Number(match[1])] : []
+  })))
 
 const statKeys: Record<string, StatKey> = {
   hp: 'hpPercent', atk: 'atkPercent', def: 'defPercent', hpflat: 'hp', atkflat: 'atk', defflat: 'def',
@@ -206,9 +211,11 @@ export async function convertExternalAccountExport(value: RecordValue, addAsNewB
     if (roverVariants) { characterIds.set(roverType, characterId); characterCatalogIds.set(roverType, catalogId) }
     const currentLoadout = currentLoadouts.find((entry) => entry.characterId === characterId)
     const characterLevel = progression(character.characterLevel, 1, 90, 90)
+    const characterSequence = sourceSequence(character)
     const talents: RecordValue = record(character.talents) ? character.talents : {}
     const skillLevels = ['basic', 'skill', 'forte', 'liberation', 'intro'].map((name) => progression(talents[name], 1, 10, 10))
     const theorycraft = sourceTheorycraftBuild(character, activeBuild, characterId, catalogId, catalogCharacter.weaponType, createdAt)
+    if (ownedCharacter && characterSequence > ownedCharacter.sequence) characters.push({ ...ownedCharacter, sequence: characterSequence })
     if (record(character.echoPresetSource)) {
       if (!theorycraft) { notices.push(`${characterName}: theorycraft preset skipped because its gear data is incomplete or unsupported.`); continue }
       const currentWeapon = currentLoadout?.weaponId ? ownedWeapons.find((weapon) => weapon.id === currentLoadout.weaponId) : undefined
@@ -224,7 +231,7 @@ export async function convertExternalAccountExport(value: RecordValue, addAsNewB
         else if (!existingWeapon.equippedBy) weapons.push({ ...existingWeapon, equippedBy: characterId })
         equippedLoadouts.push({ id: currentLoadout?.id ?? `equipped:${characterId}`, characterId, weaponId, echoIds: [...(currentLoadout?.echoIds ?? [])], updatedAt: createdAt })
       }
-      if (!ownedCharacter) characters.push({ id: characterId, catalogId, level: characterLevel, sequence: progression(character.sequence, 0, 6, 0), locked: false, skillLevels, createdAt: theorycraft.createdAt })
+      if (!ownedCharacter) characters.push({ id: characterId, catalogId, level: characterLevel, sequence: characterSequence, locked: false, skillLevels, createdAt: theorycraft.createdAt })
       theorycraftBuilds.push(theorycraft)
       const ref: LoadoutSourceRef = { type: 'theorycraft', theorycraftBuildId: theorycraft.id }
       activeRefs.set(sourceKey, ref)
@@ -260,7 +267,7 @@ export async function convertExternalAccountExport(value: RecordValue, addAsNewB
     if (variant.active) choices.push({ catalogId, name: catalogCharacter.name, existing: hasCurrentBuild, addAsNewBuild: saveSecondBuild })
     const now = createdAt + choices.length + variantIndex
     if (!ownedCharacter && !characters.some((entry) => entry.id === characterId)) characters.push({
-      id: characterId, catalogId, level: characterLevel, sequence: progression(character.sequence, 0, 6, 0), locked: false,
+      id: characterId, catalogId, level: characterLevel, sequence: characterSequence, locked: false,
       skillLevels, createdAt: now
     })
     const importedWeaponId = `external-account:weapon:${catalogId}:${catalogWeapon.id}`
@@ -438,7 +445,7 @@ export async function convertExternalAccountExport(value: RecordValue, addAsNewB
     }
   }
   notices.unshift(characters.length || weapons.length || echoes.length || builds.length || equippedLoadouts.length || theorycraftBuilds.length || teams.length
-    ? `${overwrite ? 'Characters and weapons' : 'New characters and weapons'} use exported levels, talents, and refinement when available; missing values default to level 90, skills 10, S0, and R1.${overwrite ? '' : ' Existing progression is preserved.'} Missing weapons use a matching 1-star Training weapon. Echo levels are inferred from substats; WutheringTools presets are imported as theorycraft builds. Character buffs and other calculator settings are not imported.`
+    ? `${overwrite ? 'Characters and weapons' : 'New characters and weapons'} use exported levels, talents, sequences, and refinement when available; missing values default to level 90, skills 10, S0, and R1.${overwrite ? '' : ' Existing levels, talents, and refinement are preserved; higher exported sequences are updated.'} Missing weapons use a matching 1-star Training weapon. Echo levels are inferred from substats; WutheringTools presets are imported as theorycraft builds. Character buffs and other calculator settings are not imported.`
     : 'No character, build, or team data was found; no account data will change.')
   const document: AccountDocument = {
     schemaVersion: 7, gameDataVersion: GAME_DATA_VERSION, exportedAt: new Date().toISOString(),

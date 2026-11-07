@@ -46,13 +46,15 @@ describe('external account build and team imports', () => {
     expect(repeated.document.teams[0]?.id).toBe(converted.document.teams[0].id)
   })
 
-  it('uses exported progression for new ownership and preserves it on reimport', async () => {
+  it('imports resonance chain progression and updates only sequence on reimport', async () => {
     const lucy = characterCatalog.find((entry) => entry.name === 'Lucy')!
     const weapon = weaponSummaries.find((entry) => entry.type === lucy.weaponType)!
     const source = {
-      meta: { version: '9', source: 'external' },
+      meta: { version: '10', source: 'WutheringTools' },
       data: { character: JSON.stringify({ characters: { Lucy: {
-        characterLevel: '70', sequence: '2', talents: { basic: '6', skill: '8', forte: '10', liberation: '7', intro: '5' },
+        characterLevel: '70', resonanceChains: {
+          SequenceNode1First: { isEnabled: true }, SequenceNode2Second: { isEnabled: true }, SequenceNode3Third: { isEnabled: false }
+        }, talents: { basic: '6', skill: '8', forte: '10', liberation: '7', intro: '5' },
         weapon: weapon.name, weapons: { [weapon.name]: { weaponLevel: '80', refinement: '3' } }
       } } }) }
     }
@@ -64,14 +66,15 @@ describe('external account build and team imports', () => {
     await importAccount(converted.document)
     const changed = JSON.parse(source.data.character)
     changed.characters.Lucy.characterLevel = '90'
+    changed.characters.Lucy.resonanceChains.SequenceNode3Third.isEnabled = true
     changed.characters.Lucy.talents.skill = '10'
     changed.characters.Lucy.weapons[weapon.name].refinement = '5'
     const repeated = await convertExternalAccountExport({ ...source, data: { character: JSON.stringify(changed) } })
-    expect(repeated.document.characters).toHaveLength(0)
+    expect(repeated.document.characters).toMatchObject([{ level: 70, sequence: 3, skillLevels: [6, 8, 10, 7, 5] }])
     expect(repeated.document.weapons).toHaveLength(0)
 
     const replacement = await convertExternalAccountExport({ ...source, data: { character: JSON.stringify(changed) } }, {}, true)
-    expect(replacement.document.characters[0]).toMatchObject({ level: 90, skillLevels: [6, 10, 10, 7, 5] })
+    expect(replacement.document.characters[0]).toMatchObject({ level: 90, sequence: 3, skillLevels: [6, 10, 10, 7, 5] })
     expect(replacement.document.weapons[0]).toMatchObject({ rank: 5 })
   })
 
