@@ -458,7 +458,9 @@
 
 .cbc-weapon dt {
   color: #8f9d9a;
-  font-size: 11px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
 }
 
 .cbc-weapon dd {

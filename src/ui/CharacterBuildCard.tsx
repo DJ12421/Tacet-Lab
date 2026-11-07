@@ -116,7 +116,7 @@ interface SavedDebugLayoutCollection {
 }
 
 const DEFAULT_PANEL_TRANSPARENCY = 50
-const defaultDebugLayout = (): SavedDebugLayout => ({ layoutVersion: 3, rects: {}, hidden: [], echoLayout: 'straight', accentColor: null, panelTransparency: DEFAULT_PANEL_TRANSPARENCY, colorEchoGrades: true, showRollTracks: true })
+const defaultDebugLayout = (): SavedDebugLayout => ({ layoutVersion: 3, rects: {}, hidden: [], echoLayout: 'straight', accentColor: null, panelTransparency: DEFAULT_PANEL_TRANSPARENCY, colorEchoGrades: true, showRollTracks: false })
 
 const parseSavedDebugLayout = (value: unknown): SavedDebugLayout | null => {
   if (!value || typeof value !== 'object') return null
@@ -131,7 +131,7 @@ const parseSavedDebugLayout = (value: unknown): SavedDebugLayout | null => {
   const echoLayout = parsed.echoLayout === 'curved' || parsed.echoLayout === 'straight' ? parsed.echoLayout : Object.keys(result).length ? null : 'straight'
   const accentColor = typeof parsed.accentColor === 'string' && /^#[0-9a-f]{6}$/i.test(parsed.accentColor) ? parsed.accentColor : null
   const panelTransparency = typeof parsed.panelTransparency === 'number' && Number.isFinite(parsed.panelTransparency) ? Math.max(0, Math.min(100, Math.round(parsed.panelTransparency))) : DEFAULT_PANEL_TRANSPARENCY
-  return { layoutVersion: parsed.layoutVersion === 3 ? 3 : parsed.layoutVersion === 2 ? 2 : 1, rects: result, hidden: (parsed.hidden ?? []).filter((key): key is DebugSectionKey => validKeys.has(key as DebugSectionKey)), echoLayout, accentColor, panelTransparency, colorEchoGrades: parsed.colorEchoGrades !== false, showRollTracks: parsed.showRollTracks !== false }
+  return { layoutVersion: parsed.layoutVersion === 3 ? 3 : parsed.layoutVersion === 2 ? 2 : 1, rects: result, hidden: (parsed.hidden ?? []).filter((key): key is DebugSectionKey => validKeys.has(key as DebugSectionKey)), echoLayout, accentColor, panelTransparency, colorEchoGrades: parsed.colorEchoGrades !== false, showRollTracks: parsed.showRollTracks === true }
 }
 
 const readDebugLayoutCollection = (): SavedDebugLayoutCollection | null => {
@@ -402,7 +402,7 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
   const [customAccent, setCustomAccent] = useState<string | null>(() => savedDebugLayoutRef.current?.accentColor ?? null)
   const [panelTransparency, setPanelTransparency] = useState(() => savedDebugLayoutRef.current?.panelTransparency ?? DEFAULT_PANEL_TRANSPARENCY)
   const [colorEchoGrades, setColorEchoGrades] = useState(() => savedDebugLayoutRef.current?.colorEchoGrades ?? true)
-  const [showRollTracks, setShowRollTracks] = useState(() => savedDebugLayoutRef.current?.showRollTracks ?? true)
+  const [showRollTracks, setShowRollTracks] = useState(() => savedDebugLayoutRef.current?.showRollTracks ?? false)
   const [highlightedStat, setHighlightedStat] = useState<BuildCardStatKey | null>(null)
   const [customizeOpen, setCustomizeOpen] = useState(true)
   const [debugCalibrationEnabled, setDebugCalibrationEnabled] = useState(false)
@@ -562,7 +562,7 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
     setCustomAccent(null)
     setPanelTransparency(DEFAULT_PANEL_TRANSPARENCY)
     setColorEchoGrades(true)
-    setShowRollTracks(true)
+    setShowRollTracks(false)
   }
   const beginDebugPositioning = () => {
     debugLayoutSnapshotRef.current = {

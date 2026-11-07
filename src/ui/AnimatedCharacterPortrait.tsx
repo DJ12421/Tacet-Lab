@@ -4,15 +4,16 @@ import { Application, Assets, BaseTexture } from 'pixi.js'
 
 type PortraitStatus = 'idle' | 'loading' | 'ready' | 'error' | 'reduced-motion'
 
-// These source textures are 2048px squares, while their atlases were authored
-// against smaller canvases. Match the source viewer by restoring the authored
-// atlas dimensions before the Spine runtime creates its mesh regions.
-const NORMALIZED_ATLAS_FOLDERS = [
-  'Portraits_Kanteleila',
-  'Portraits_Female',
-  'Portraits_Male',
-  'Portraits_Xiangliyao',
-  'Portraits_Zanni'
+// Some source textures do not match their authored atlas dimensions. Restore
+// those dimensions before the Spine runtime creates its mesh regions.
+const NORMALIZED_ATLAS_PATHS = [
+  '/portraits/Portraits_Kanteleila/',
+  '/portraits/Portraits_Female/',
+  '/portraits/Portraits_Male/',
+  '/portraits/Portraits_Xiangliyao/',
+  '/portraits/Portraits_Zanni/',
+  '/Character/C_Xin_01/',
+  '/Character/C_SuoMing_01/'
 ]
 
 interface AnimatedCharacterPortraitProps {
@@ -43,7 +44,7 @@ function atlasPageSizes(atlasText: string) {
 }
 
 function needsAtlasNormalization(atlasSourceUrl: string) {
-  return NORMALIZED_ATLAS_FOLDERS.some((folder) => atlasSourceUrl.includes(`/portraits/${folder}/`))
+  return NORMALIZED_ATLAS_PATHS.some((path) => atlasSourceUrl.includes(path))
 }
 
 function portraitResolution(renderScale: number) {

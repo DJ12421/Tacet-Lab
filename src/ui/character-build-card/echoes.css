@@ -264,6 +264,7 @@
   font-size: 11px;
   line-height: 1;
   text-align: right;
+  transform: translateX(-12px);
   white-space: normal;
 }
 

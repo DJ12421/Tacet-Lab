@@ -24,7 +24,8 @@
   border-radius: 6px;
 }
 .cbc-echo-row .cbc-stat-source.is-unweighted {
-  opacity: .72;
+  opacity: .4;
+  filter: saturate(.3);
 }
 .cbc-stat-source {
   transition: opacity .17s ease,filter .17s ease,border-color .17s ease,background .17s ease,box-shadow .17s ease;
