@@ -436,7 +436,7 @@ export default function App() {
         {view === 'legal' && <PrivacyLegalView/>}
         </Suspense>
       </div>
-      <footer className="site-footer"><span>This is an independent fan project not affiliated with/endorsed by Wuthering Waves or Kuro Games.</span><span>Site version: 3.7.1</span></footer>
+      <footer className="site-footer"><span>This is an independent fan project not affiliated with/endorsed by Wuthering Waves or Kuro Games.</span><span>Site version: 3.7.2</span></footer>
     </main>
     <dialog ref={mobileMoreRef} className="mobile-more-sheet" aria-labelledby="mobile-more-title" onClose={() => setMobileMoreOpen(false)} onMouseDown={(event) => { if (event.target === event.currentTarget) setMobileMoreOpen(false) }}>
       <div className="mobile-more-handle" aria-hidden="true"/>

@@ -14,6 +14,7 @@ const waves = [
   { offset: 5.2, amplitude: 1.5, detail: .7, cycles: 3, detailCycles: 7, speed: .00023, phase: 5.2 },
 ] as const
 const colors = ['cs-echo-wave-gold-dark', 'cs-echo-wave-gold', 'cs-echo-wave-gold-light', 'cs-echo-wave-gold-mid', 'cs-echo-wave-white']
+const strokes = ['color-mix(in srgb,var(--cbc-accent) 48%,#07090a)', 'color-mix(in srgb,var(--cbc-accent) 72%,#d7d2c6)', 'color-mix(in srgb,var(--cbc-accent) 88%,#fff)', 'var(--cbc-accent)', 'color-mix(in srgb,var(--cbc-accent) 36%,#fff)']
 const widths = [1, 1.2, 1.5, 1.1, 1]
 const opacities = [.5, .65, 1, .65, .5]
 
@@ -56,6 +57,6 @@ export function SkillCircleWave() {
   }, [pageFocused])
 
   return <svg ref={svgRef} className="cbc-skill-circle-wave" viewBox="0 0 100 100" fill="none" aria-hidden="true">
-    {initialPaths.map((path, index) => <path key={colors[index]} d={path} className={colors[index]} strokeWidth={widths[index]} vectorEffect="non-scaling-stroke" strokeLinecap="round" opacity={opacities[index]}/>)}
+    {initialPaths.map((path, index) => <path key={colors[index]} d={path} className={colors[index]} stroke={strokes[index]} strokeWidth={widths[index]} vectorEffect="non-scaling-stroke" strokeLinecap="round" opacity={opacities[index]}/>)}
   </svg>
 }

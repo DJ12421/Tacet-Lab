@@ -111,6 +111,10 @@
   transform: translate(-50%,-50%);
 }
 
+.candy-title-card.has-title-card img[src*="/TitleDesc/CardBg/"] {
+  transform: translate(-50%,-50%) scale(.9);
+}
+
 .candy-title-card.has-title-card h2 {
   justify-self: stretch;
   width: 100%;

@@ -68,10 +68,14 @@ export const AnimatedCharacterPortrait = forwardRef<AnimatedCharacterPortraitHan
     captureFrame: () => {
       const app = appRef.current
       if (!app) return
+      const previewResolution = app.renderer.resolution
       try {
+        app.renderer.resolution = Math.max(previewResolution, 1)
         return app.renderer.extract.canvas(app.stage, app.screen).toDataURL?.('image/png')
       } catch {
         return
+      } finally {
+        app.renderer.resolution = previewResolution
       }
     }
   }), [])
