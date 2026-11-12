@@ -1,6 +1,6 @@
 {
   "name": "tacet-lab",
-  "version": "0.1.0",
+  "version": "3.8.0",
   "license": "GPL-3.0-only",
   "private": true,
   "type": "module",

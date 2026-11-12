@@ -596,6 +596,17 @@ export const generatedWeaponSummaries:GeneratedWeaponSummary[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21050066_UI.webp"
   },
   {
+    "id": "21030076",
+    "name": "Lullaby",
+    "rarity": 5,
+    "type": "Pistols",
+    "baseAtk": 412,
+    "secondaryStat": "Energy Regen",
+    "secondaryStatValue": "77%",
+    "articleUrl": "https://ww.nanoka.cc/weapon/21030076",
+    "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21030076_UI.webp"
+  },
+  {
     "id": "21020074",
     "name": "Lumingloss",
     "rarity": 4,

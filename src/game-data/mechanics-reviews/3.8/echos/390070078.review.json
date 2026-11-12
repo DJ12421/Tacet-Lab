@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.8",
+  "entityKind": "echo",
+  "entityId": "390070078",
+  "entityName": "Baby Viridblaze Saurian",
+  "sourceFingerprint": "828e333ad629569c4cc4448d470181f3a803555cf6cc0bbe25e5a65e5ccdd2b7",
+  "reviewedAt": "2026-09-22T19:04:26.555Z",
+  "sections": {
+    "skill": {
+      "status": "approved-empty",
+      "sourceFingerprint": "89a76c22144419141208de89e538ae4d8f0e87ef1a054641f0189130ad6bc114",
+      "approvedData": {
+        "attacks": [],
+        "cooldownSeconds": 8
+      }
+    },
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.7"
+}

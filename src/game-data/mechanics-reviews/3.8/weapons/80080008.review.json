@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.8",
+  "entityKind": "weapon",
+  "entityId": "80080008",
+  "entityName": "Projection: Ocean's Gift",
+  "sourceFingerprint": "83e82da14ec78ea1c3f7b77b8da3e6c910be0106d76ce2dee161aa678c2890b6",
+  "reviewedAt": "2026-09-05T10:14:52.741Z",
+  "sections": {
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.7"
+}

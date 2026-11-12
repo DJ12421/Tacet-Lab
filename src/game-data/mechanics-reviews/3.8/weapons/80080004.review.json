@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.8",
+  "entityKind": "weapon",
+  "entityId": "80080004",
+  "entityName": "Projection: Formless Pistol",
+  "sourceFingerprint": "043e69a37fdb5108ab5e072649ca604af6194c7d187c4bdc9b623542e5061f20",
+  "reviewedAt": "2026-09-05T10:15:07.188Z",
+  "sections": {
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.7"
+}

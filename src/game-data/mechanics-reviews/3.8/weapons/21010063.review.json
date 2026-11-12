@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.8",
+  "entityKind": "weapon",
+  "entityId": "21010063",
+  "entityName": "Beguiling Melody",
+  "sourceFingerprint": "71b8f459a8bb377f842564a8e3939c8d4c78f601a0b8e2d82da8756898a04a5d",
+  "reviewedAt": "2026-09-09T05:04:34.803Z",
+  "sections": {
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "e35b4c6d2c51b1d70c8cef0f5cbfb122e5def4b0b0949d97d45a3dbad155fc3c",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.7"
+}

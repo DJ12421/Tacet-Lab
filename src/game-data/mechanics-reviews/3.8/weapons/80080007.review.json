@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.8",
+  "entityKind": "weapon",
+  "entityId": "80080007",
+  "entityName": "Projection - Peach Blossom",
+  "sourceFingerprint": "857a2edb17b8323166a303eede5a69d6cc271a51a62c0280c3c250ef16e36f78",
+  "reviewedAt": "2026-09-05T10:14:48.740Z",
+  "sections": {
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.7"
+}

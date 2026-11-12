@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.8",
+  "entityKind": "weapon",
+  "entityId": "21020024",
+  "entityName": "Overture",
+  "sourceFingerprint": "3cdd584f95f701a1652b7694ca78aae63c1bfa9671bf8e304602d1fbdee5edfe",
+  "reviewedAt": "2026-09-09T05:21:29.091Z",
+  "sections": {
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "a8021eea1925710bb4e7fa4c5c23a7a40be6917d620fea5a5166f2e2ff111d9d",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.7"
+}

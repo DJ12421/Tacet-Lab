@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.8",
+  "entityKind": "weapon",
+  "entityId": "21020053",
+  "entityName": "Guardian Sword",
+  "sourceFingerprint": "4dce864b662b32e0feb94aa7e15f71c79b373d122f3f7d48cf51e06263f85ff7",
+  "reviewedAt": "2026-09-09T05:31:45.501Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "ff74683017f096332bcfc747fedba2b49e3ead26f0c0968483e81f8f72dfdd22",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020053:effect:0",
+            "sourceName": "Unified",
+            "text": "Resonance Skill DMG Bonus is increased by 12%.",
+            "refinementTexts": [
+              "Resonance Skill DMG Bonus is increased by 12%.",
+              "Resonance Skill DMG Bonus is increased by 15%.",
+              "Resonance Skill DMG Bonus is increased by 18%.",
+              "Resonance Skill DMG Bonus is increased by 21%.",
+              "Resonance Skill DMG Bonus is increased by 24%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "skillDamage",
+                  "operation": "addPercent",
+                  "value": 12
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 12
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 15
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 21
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "skillDamage",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.7"
+}

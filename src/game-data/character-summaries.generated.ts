@@ -366,6 +366,20 @@ export const generatedCharacterSummaries:GeneratedCharacterSummary[]=[
     "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_jiyan_UI.webp"
   },
   {
+    "id": "1512",
+    "name": "Lily",
+    "title": "Dream Weaving",
+    "nickname": "",
+    "rarity": 5,
+    "element": "Spectro",
+    "weaponType": "Pistols",
+    "role": "Support and Healer",
+    "gender": "female",
+    "articleUrl": "https://ww.nanoka.cc/character/1512",
+    "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_77_UI.webp",
+    "portraitSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Lili_UI.webp"
+  },
+  {
     "id": "1104",
     "name": "Lingyang",
     "title": "Frosty Gusto",

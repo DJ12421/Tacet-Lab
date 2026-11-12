@@ -1,0 +1,543 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.8",
+  "entityKind": "weapon",
+  "entityId": "21020107",
+  "entityName": "Unspoken Rue",
+  "sourceFingerprint": "2a1564dcf394592269ca3aedeba6feba7a983d91c400e67d8f14b2cbd0ac66d1",
+  "reviewedAt": "2026-10-01T08:36:18.074Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "493a4e35aa74866dd9b550ac6f8d3eeb4364a7cd5617222117da4d8967d00fe8",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21020107:effect:0",
+            "sourceName": "Locked Thunder, Trapped Rain",
+            "text": "ATK is increased by 12%.",
+            "refinementTexts": [
+              "ATK is increased by 12%.",
+              "ATK is increased by 15%.",
+              "ATK is increased by 18%.",
+              "ATK is increased by 21%.",
+              "ATK is increased by 24%."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 12,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 15,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 18,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 21,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21020107:effect:1",
+            "sourceName": "Locked Thunder, Trapped Rain",
+            "text": "When the wielder gains Unison while not already having it, they gain 30% Electro DMG Bonus for 30s.",
+            "refinementTexts": [
+              "When the wielder gains Unison while not already having it, they gain 30% Electro DMG Bonus for 30s.",
+              "When the wielder gains Unison while not already having it, they gain 37.5% Electro DMG Bonus for 30s.",
+              "When the wielder gains Unison while not already having it, they gain 45% Electro DMG Bonus for 30s.",
+              "When the wielder gains Unison while not already having it, they gain 52.5% Electro DMG Bonus for 30s.",
+              "When the wielder gains Unison while not already having it, they gain 60% Electro DMG Bonus for 30s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Upon gaining Unison",
+              "durationSeconds": 30,
+              "modifiers": [
+                {
+                  "stat": "Electro",
+                  "operation": "addPercent",
+                  "value": 30,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Upon gaining Unison",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "Electro",
+                    "operation": "addPercent",
+                    "value": 30,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Upon gaining Unison",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "Electro",
+                    "operation": "addPercent",
+                    "value": 37.5,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Upon gaining Unison",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "Electro",
+                    "operation": "addPercent",
+                    "value": 45,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Upon gaining Unison",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "Electro",
+                    "operation": "addPercent",
+                    "value": 52.5,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Upon gaining Unison",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "Electro",
+                    "operation": "addPercent",
+                    "value": 60,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21020107:effect:2",
+            "sourceName": "Locked Thunder, Trapped Rain",
+            "text": "When the wielder gains Unison while not already having it, they remove Yearning Mind and grant all Resonators in the team the Binding Mind effect, granting 24% Electro DMG Bonus for 30s.",
+            "refinementTexts": [
+              "When the wielder gains Unison while not already having it, they remove Yearning Mind and grant all Resonators in the team the Binding Mind effect, granting 24% Electro DMG Bonus for 30s.",
+              "When the wielder gains Unison while not already having it, they remove Yearning Mind and grant all Resonators in the team the Binding Mind effect, granting 30% Electro DMG Bonus for 30s.",
+              "When the wielder gains Unison while not already having it, they remove Yearning Mind and grant all Resonators in the team the Binding Mind effect, granting 36% Electro DMG Bonus for 30s.",
+              "When the wielder gains Unison while not already having it, they remove Yearning Mind and grant all Resonators in the team the Binding Mind effect, granting 42% Electro DMG Bonus for 30s.",
+              "When the wielder gains Unison while not already having it, they remove Yearning Mind and grant all Resonators in the team the Binding Mind effect, granting 48% Electro DMG Bonus for 30s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Upon gaining Unison",
+              "durationSeconds": 30,
+              "modifiers": [
+                {
+                  "stat": "Electro",
+                  "operation": "addPercent",
+                  "value": 24,
+                  "scope": "team"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "exclusiveGroup": "unspoken-rue-mind"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Upon gaining Unison",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "Electro",
+                    "operation": "addPercent",
+                    "value": 24,
+                    "scope": "team"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "exclusiveGroup": "unspoken-rue-mind"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Upon gaining Unison",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "Electro",
+                    "operation": "addPercent",
+                    "value": 30,
+                    "scope": "team"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "exclusiveGroup": "unspoken-rue-mind"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Upon gaining Unison",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "Electro",
+                    "operation": "addPercent",
+                    "value": 36,
+                    "scope": "team"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "exclusiveGroup": "unspoken-rue-mind"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Upon gaining Unison",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "Electro",
+                    "operation": "addPercent",
+                    "value": 42,
+                    "scope": "team"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "exclusiveGroup": "unspoken-rue-mind"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Upon gaining Unison",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "Electro",
+                    "operation": "addPercent",
+                    "value": 48,
+                    "scope": "team"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "exclusiveGroup": "unspoken-rue-mind"
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21020107:effect:3",
+            "sourceName": "Locked Thunder, Trapped Rain",
+            "text": "Effects with the same name cannot stack.",
+            "refinementTexts": [
+              "Effects with the same name cannot stack.",
+              "Effects with the same name cannot stack.",
+              "Effects with the same name cannot stack.",
+              "Effects with the same name cannot stack.",
+              "Effects with the same name cannot stack."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "stacks",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence.",
+                "Stack maximum was not explicit and requires review."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21020107:effect:4",
+            "sourceName": "Locked Thunder, Trapped Rain",
+            "text": "When the wielder consumes fewer than 100 points of Concerto Energy, they remove Binding Mind from all Resonators on the team and gain the Yearning Mind effect, additionally gaining 40% Electro DMG Bonus for 14s.",
+            "refinementTexts": [
+              "When the wielder consumes fewer than 100 points of Concerto Energy, they remove Binding Mind from all Resonators on the team and gain the Yearning Mind effect, additionally gaining 40% Electro DMG Bonus for 14s.",
+              "When the wielder consumes fewer than 100 points of Concerto Energy, they remove Binding Mind from all Resonators on the team and gain the Yearning Mind effect, additionally gaining 50% Electro DMG Bonus for 14s.",
+              "When the wielder consumes fewer than 100 points of Concerto Energy, they remove Binding Mind from all Resonators on the team and gain the Yearning Mind effect, additionally gaining 60% Electro DMG Bonus for 14s.",
+              "When the wielder consumes fewer than 100 points of Concerto Energy, they remove Binding Mind from all Resonators on the team and gain the Yearning Mind effect, additionally gaining 70% Electro DMG Bonus for 14s.",
+              "When the wielder consumes fewer than 100 points of Concerto Energy, they remove Binding Mind from all Resonators on the team and gain the Yearning Mind effect, additionally gaining 80% Electro DMG Bonus for 14s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "When the wielder consumes Concerto Energy",
+              "durationSeconds": 14,
+              "modifiers": [
+                {
+                  "stat": "Electro",
+                  "operation": "addPercent",
+                  "value": 40,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "exclusiveGroup": "unspoken-rue-mind"
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "When the wielder consumes Concerto Energy",
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "Electro",
+                    "operation": "addPercent",
+                    "value": 40,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "exclusiveGroup": "unspoken-rue-mind"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "When the wielder consumes Concerto Energy",
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "Electro",
+                    "operation": "addPercent",
+                    "value": 50,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "exclusiveGroup": "unspoken-rue-mind"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "When the wielder consumes Concerto Energy",
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "Electro",
+                    "operation": "addPercent",
+                    "value": 60,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "exclusiveGroup": "unspoken-rue-mind"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "When the wielder consumes Concerto Energy",
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "Electro",
+                    "operation": "addPercent",
+                    "value": 70,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "exclusiveGroup": "unspoken-rue-mind"
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "When the wielder consumes Concerto Energy",
+                "durationSeconds": 14,
+                "modifiers": [
+                  {
+                    "stat": "Electro",
+                    "operation": "addPercent",
+                    "value": 80,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": [],
+                "exclusiveGroup": "unspoken-rue-mind"
+              }
+            ],
+            "sourceType": "weapon",
+            "reviewStatus": "include"
+          },
+          {
+            "id": "weapon:21020107:effect:5",
+            "sourceName": "Locked Thunder, Trapped Rain",
+            "text": "Switching to another Resonator ends this effect early.",
+            "refinementTexts": [
+              "Switching to another Resonator ends this effect early.",
+              "Switching to another Resonator ends this effect early.",
+              "Switching to another Resonator ends this effect early.",
+              "Switching to another Resonator ends this effect early.",
+              "Switching to another Resonator ends this effect early."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "review",
+              "warnings": [
+                "No supported numeric modifier was parsed from this sentence."
+              ]
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.7"
+}

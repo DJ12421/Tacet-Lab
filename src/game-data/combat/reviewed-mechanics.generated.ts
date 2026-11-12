@@ -1,7 +1,7 @@
-// Generated from locally reviewed 3.7 mechanics. Do not edit.
+// Generated from locally reviewed 3.8 mechanics. Do not edit.
 import type { ReviewedMechanicsCatalog } from '../../domain/combat'
 export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
-  "dataVersion": "3.7",
+  "dataVersion": "3.8",
   "characters": {
     "1102": {
       "id": "1102",
@@ -165390,7 +165390,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
     "1311": {
       "id": "1311",
       "sourceId": "character:1311",
-      "reviewFingerprint": "ed8dcf09c339453bfaa7ebee6b3233272a4e676f83720365051d4980fd146572:32596886b791088ba8727f0878f3686311d2183833c6f798296ab6c0aa091e8e:b7020a4476c4b2a6746510e8ed89bd3c8ca1313c840ee860737d0c4cfcb93ecf:a7aad9d54cb8a9fbf2f35a12dff75c6174b2cfaffec46ee43211925dd802ad15:eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a",
+      "reviewFingerprint": "ed8dcf09c339453bfaa7ebee6b3233272a4e676f83720365051d4980fd146572:32596886b791088ba8727f0878f3686311d2183833c6f798296ab6c0aa091e8e:eac789fb6c0a16e5295256386b1eee522b50e8f5de3498363bfcae98476cc05a:a7aad9d54cb8a9fbf2f35a12dff75c6174b2cfaffec46ee43211925dd802ad15:d03f2ef7eeb6a490b388d923d418cc5bb09f42e0cbb2e2267c3e487eb6773350",
       "actions": {
         "1311:1:0": {
           "id": "1311:1:0",
@@ -177573,7 +177573,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "name": "Tides of Succession",
           "description": "While in Resonance Mode - Electro Flare, after Resonators in the team inflict Electro Flare, Hsin gains 25% Electro DMG Bonus, stacking up to 2 times.",
           "sourceId": "character:1311:1311:4:effect:2",
-          "reviewFingerprint": "b7020a4476c4b2a6746510e8ed89bd3c8ca1313c840ee860737d0c4cfcb93ecf",
+          "reviewFingerprint": "d03f2ef7eeb6a490b388d923d418cc5bb09f42e0cbb2e2267c3e487eb6773350",
           "activation": {
             "kind": "stacks",
             "input": "character:1311:1311:4:effect:2",
@@ -311455,6 +311455,5343 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
         }
       ]
     },
+    "1512": {
+      "id": "1512",
+      "sourceId": "character:1512",
+      "reviewFingerprint": "45f2e061772c1c6d14b3b02263993e80ef836629667190d9a45f84e2bb8e545b:6d6775e147a865b9f5e16c36c6a64b4425816b802acfd720cda6ae509cc5e565:f4b13a4911e282a53079ce85e80461a85db08f8c5aafea1f53aa9285dcaefca7:26bd6855969ec02e8897ad6f09da0636a5504b80e55e443713e9c70210ff67de:7cf1fa43ef8feac7c69ef3f0a8092859196a918bfb7c21e45ebfb4cdfa1dc2b4",
+      "actions": {
+        "1512:1:0": {
+          "id": "1512:1:0",
+          "name": "Mend and Cleanse - Basic Attack Stage 1 DMG",
+          "group": "Normal Attack",
+          "sourceId": "character:1512:1512:1:0",
+          "reviewFingerprint": "45f2e061772c1c6d14b3b02263993e80ef836629667190d9a45f84e2bb8e545b",
+          "kind": "damage",
+          "damageType": "basic",
+          "element": "spectro",
+          "tags": [
+            "normal-chain"
+          ],
+          "skillLevelIndex": 0,
+          "formulas": {
+            "1": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.32
+              ],
+              "canCrit": true
+            },
+            "2": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.34630000000000005
+              ],
+              "canCrit": true
+            },
+            "3": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.3725
+              ],
+              "canCrit": true
+            },
+            "4": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.4093
+              ],
+              "canCrit": true
+            },
+            "5": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.4355
+              ],
+              "canCrit": true
+            },
+            "6": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.4657
+              ],
+              "canCrit": true
+            },
+            "7": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.5077
+              ],
+              "canCrit": true
+            },
+            "8": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.5496
+              ],
+              "canCrit": true
+            },
+            "9": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.5916
+              ],
+              "canCrit": true
+            },
+            "10": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.6362
+              ],
+              "canCrit": true
+            },
+            "11": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.6887000000000001
+              ],
+              "canCrit": true
+            },
+            "12": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.7412000000000001
+              ],
+              "canCrit": true
+            },
+            "13": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.7937000000000001
+              ],
+              "canCrit": true
+            },
+            "14": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.8462000000000001
+              ],
+              "canCrit": true
+            },
+            "15": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.8986
+              ],
+              "canCrit": true
+            },
+            "16": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.9511
+              ],
+              "canCrit": true
+            },
+            "17": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.0036
+              ],
+              "canCrit": true
+            },
+            "18": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.0561
+              ],
+              "canCrit": true
+            },
+            "19": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.1086
+              ],
+              "canCrit": true
+            },
+            "20": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.161
+              ],
+              "canCrit": true
+            }
+          }
+        },
+        "1512:1:1": {
+          "id": "1512:1:1",
+          "name": "Mend and Cleanse - Basic Attack Stage 2 DMG",
+          "group": "Normal Attack",
+          "sourceId": "character:1512:1512:1:1",
+          "reviewFingerprint": "45f2e061772c1c6d14b3b02263993e80ef836629667190d9a45f84e2bb8e545b",
+          "kind": "damage",
+          "damageType": "basic",
+          "element": "spectro",
+          "tags": [
+            "normal-chain"
+          ],
+          "skillLevelIndex": 0,
+          "formulas": {
+            "1": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.1466,
+                0.1466,
+                0.1466,
+                0.1466
+              ],
+              "canCrit": true
+            },
+            "2": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.15869999999999998,
+                0.15869999999999998,
+                0.15869999999999998,
+                0.15869999999999998
+              ],
+              "canCrit": true
+            },
+            "3": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.1707,
+                0.1707,
+                0.1707,
+                0.1707
+              ],
+              "canCrit": true
+            },
+            "4": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.1875,
+                0.1875,
+                0.1875,
+                0.1875
+              ],
+              "canCrit": true
+            },
+            "5": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.19949999999999998,
+                0.19949999999999998,
+                0.19949999999999998,
+                0.19949999999999998
+              ],
+              "canCrit": true
+            },
+            "6": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.2134,
+                0.2134,
+                0.2134,
+                0.2134
+              ],
+              "canCrit": true
+            },
+            "7": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.23260000000000003,
+                0.23260000000000003,
+                0.23260000000000003,
+                0.23260000000000003
+              ],
+              "canCrit": true
+            },
+            "8": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.2518,
+                0.2518,
+                0.2518,
+                0.2518
+              ],
+              "canCrit": true
+            },
+            "9": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.2711,
+                0.2711,
+                0.2711,
+                0.2711
+              ],
+              "canCrit": true
+            },
+            "10": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.2915,
+                0.2915,
+                0.2915,
+                0.2915
+              ],
+              "canCrit": true
+            },
+            "11": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.3155,
+                0.3155,
+                0.3155,
+                0.3155
+              ],
+              "canCrit": true
+            },
+            "12": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.3396,
+                0.3396,
+                0.3396,
+                0.3396
+              ],
+              "canCrit": true
+            },
+            "13": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.3636,
+                0.3636,
+                0.3636,
+                0.3636
+              ],
+              "canCrit": true
+            },
+            "14": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.38770000000000004,
+                0.38770000000000004,
+                0.38770000000000004,
+                0.38770000000000004
+              ],
+              "canCrit": true
+            },
+            "15": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.4117,
+                0.4117,
+                0.4117,
+                0.4117
+              ],
+              "canCrit": true
+            },
+            "16": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.43579999999999997,
+                0.43579999999999997,
+                0.43579999999999997,
+                0.43579999999999997
+              ],
+              "canCrit": true
+            },
+            "17": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.4598,
+                0.4598,
+                0.4598,
+                0.4598
+              ],
+              "canCrit": true
+            },
+            "18": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.4838,
+                0.4838,
+                0.4838,
+                0.4838
+              ],
+              "canCrit": true
+            },
+            "19": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.5079,
+                0.5079,
+                0.5079,
+                0.5079
+              ],
+              "canCrit": true
+            },
+            "20": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.5318999999999999,
+                0.5318999999999999,
+                0.5318999999999999,
+                0.5318999999999999
+              ],
+              "canCrit": true
+            }
+          }
+        },
+        "1512:1:2": {
+          "id": "1512:1:2",
+          "name": "Mend and Cleanse - Basic Attack Stage 3 DMG",
+          "group": "Normal Attack",
+          "sourceId": "character:1512:1512:1:2",
+          "reviewFingerprint": "45f2e061772c1c6d14b3b02263993e80ef836629667190d9a45f84e2bb8e545b",
+          "kind": "damage",
+          "damageType": "basic",
+          "element": "spectro",
+          "tags": [
+            "normal-chain"
+          ],
+          "skillLevelIndex": 0,
+          "formulas": {
+            "1": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.48
+              ],
+              "canCrit": true
+            },
+            "2": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.5194
+              ],
+              "canCrit": true
+            },
+            "3": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.5588000000000001
+              ],
+              "canCrit": true
+            },
+            "4": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.6139
+              ],
+              "canCrit": true
+            },
+            "5": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.6531999999999999
+              ],
+              "canCrit": true
+            },
+            "6": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.6984999999999999
+              ],
+              "canCrit": true
+            },
+            "7": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.7615000000000001
+              ],
+              "canCrit": true
+            },
+            "8": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.8244
+              ],
+              "canCrit": true
+            },
+            "9": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.8874
+              ],
+              "canCrit": true
+            },
+            "10": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.9543
+              ],
+              "canCrit": true
+            },
+            "11": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.0331000000000001
+              ],
+              "canCrit": true
+            },
+            "12": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.1118000000000001
+              ],
+              "canCrit": true
+            },
+            "13": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.1905
+              ],
+              "canCrit": true
+            },
+            "14": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.2692
+              ],
+              "canCrit": true
+            },
+            "15": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.3478999999999999
+              ],
+              "canCrit": true
+            },
+            "16": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.4266999999999999
+              ],
+              "canCrit": true
+            },
+            "17": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.5053999999999998
+              ],
+              "canCrit": true
+            },
+            "18": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.5841
+              ],
+              "canCrit": true
+            },
+            "19": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.6628
+              ],
+              "canCrit": true
+            },
+            "20": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.7415
+              ],
+              "canCrit": true
+            }
+          }
+        },
+        "1512:1:3": {
+          "id": "1512:1:3",
+          "name": "Mend and Cleanse - Basic Attack Stage 4 DMG",
+          "group": "Normal Attack",
+          "sourceId": "character:1512:1512:1:3",
+          "reviewFingerprint": "45f2e061772c1c6d14b3b02263993e80ef836629667190d9a45f84e2bb8e545b",
+          "kind": "damage",
+          "damageType": "basic",
+          "element": "spectro",
+          "tags": [
+            "normal-chain"
+          ],
+          "skillLevelIndex": 0,
+          "formulas": {
+            "1": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.1934,
+                0.1934,
+                0.1934,
+                0.1934
+              ],
+              "canCrit": true
+            },
+            "2": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.20929999999999999,
+                0.20929999999999999,
+                0.20929999999999999,
+                0.20929999999999999
+              ],
+              "canCrit": true
+            },
+            "3": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.22519999999999998,
+                0.22519999999999998,
+                0.22519999999999998,
+                0.22519999999999998
+              ],
+              "canCrit": true
+            },
+            "4": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.24739999999999998,
+                0.24739999999999998,
+                0.24739999999999998,
+                0.24739999999999998
+              ],
+              "canCrit": true
+            },
+            "5": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.2632,
+                0.2632,
+                0.2632,
+                0.2632
+              ],
+              "canCrit": true
+            },
+            "6": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.2815,
+                0.2815,
+                0.2815,
+                0.2815
+              ],
+              "canCrit": true
+            },
+            "7": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.3068,
+                0.3068,
+                0.3068,
+                0.3068
+              ],
+              "canCrit": true
+            },
+            "8": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.3322,
+                0.3322,
+                0.3322,
+                0.3322
+              ],
+              "canCrit": true
+            },
+            "9": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.3576,
+                0.3576,
+                0.3576,
+                0.3576
+              ],
+              "canCrit": true
+            },
+            "10": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.3845,
+                0.3845,
+                0.3845,
+                0.3845
+              ],
+              "canCrit": true
+            },
+            "11": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.4163,
+                0.4163,
+                0.4163,
+                0.4163
+              ],
+              "canCrit": true
+            },
+            "12": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.44799999999999995,
+                0.44799999999999995,
+                0.44799999999999995,
+                0.44799999999999995
+              ],
+              "canCrit": true
+            },
+            "13": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.4797,
+                0.4797,
+                0.4797,
+                0.4797
+              ],
+              "canCrit": true
+            },
+            "14": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.5114,
+                0.5114,
+                0.5114,
+                0.5114
+              ],
+              "canCrit": true
+            },
+            "15": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.5431,
+                0.5431,
+                0.5431,
+                0.5431
+              ],
+              "canCrit": true
+            },
+            "16": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.5749,
+                0.5749,
+                0.5749,
+                0.5749
+              ],
+              "canCrit": true
+            },
+            "17": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.6065999999999999,
+                0.6065999999999999,
+                0.6065999999999999,
+                0.6065999999999999
+              ],
+              "canCrit": true
+            },
+            "18": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.6383,
+                0.6383,
+                0.6383,
+                0.6383
+              ],
+              "canCrit": true
+            },
+            "19": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.67,
+                0.67,
+                0.67,
+                0.67
+              ],
+              "canCrit": true
+            },
+            "20": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.7017,
+                0.7017,
+                0.7017,
+                0.7017
+              ],
+              "canCrit": true
+            }
+          }
+        },
+        "1512:1:4": {
+          "id": "1512:1:4",
+          "name": "Mend and Cleanse - Plunging Attack DMG",
+          "group": "Normal Attack",
+          "sourceId": "character:1512:1512:1:4",
+          "reviewFingerprint": "45f2e061772c1c6d14b3b02263993e80ef836629667190d9a45f84e2bb8e545b",
+          "kind": "damage",
+          "damageType": "basic",
+          "element": "spectro",
+          "tags": [
+            "plunge"
+          ],
+          "skillLevelIndex": 0,
+          "formulas": {
+            "1": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.5760000000000001
+              ],
+              "canCrit": true
+            },
+            "2": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.6233
+              ],
+              "canCrit": true
+            },
+            "3": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.6705
+              ],
+              "canCrit": true
+            },
+            "4": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.7365999999999999
+              ],
+              "canCrit": true
+            },
+            "5": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.7839
+              ],
+              "canCrit": true
+            },
+            "6": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.8382
+              ],
+              "canCrit": true
+            },
+            "7": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.9138
+              ],
+              "canCrit": true
+            },
+            "8": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.9893000000000001
+              ],
+              "canCrit": true
+            },
+            "9": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.0649
+              ],
+              "canCrit": true
+            },
+            "10": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.1452
+              ],
+              "canCrit": true
+            },
+            "11": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.2397
+              ],
+              "canCrit": true
+            },
+            "12": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.3341
+              ],
+              "canCrit": true
+            },
+            "13": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.4286
+              ],
+              "canCrit": true
+            },
+            "14": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.5231000000000001
+              ],
+              "canCrit": true
+            },
+            "15": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.6175
+              ],
+              "canCrit": true
+            },
+            "16": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.712
+              ],
+              "canCrit": true
+            },
+            "17": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.8063999999999998
+              ],
+              "canCrit": true
+            },
+            "18": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.9009
+              ],
+              "canCrit": true
+            },
+            "19": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.9953999999999998
+              ],
+              "canCrit": true
+            },
+            "20": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                2.0898
+              ],
+              "canCrit": true
+            }
+          }
+        },
+        "1512:1:5": {
+          "id": "1512:1:5",
+          "name": "Mend and Cleanse - Dodge Counter DMG",
+          "group": "Normal Attack",
+          "sourceId": "character:1512:1512:1:5",
+          "reviewFingerprint": "45f2e061772c1c6d14b3b02263993e80ef836629667190d9a45f84e2bb8e545b",
+          "kind": "damage",
+          "damageType": "basic",
+          "element": "spectro",
+          "tags": [
+            "dodge-counter"
+          ],
+          "skillLevelIndex": 0,
+          "formulas": {
+            "1": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.2
+              ],
+              "canCrit": true
+            },
+            "2": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.2984
+              ],
+              "canCrit": true
+            },
+            "3": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.3968
+              ],
+              "canCrit": true
+            },
+            "4": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.5346000000000002
+              ],
+              "canCrit": true
+            },
+            "5": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.633
+              ],
+              "canCrit": true
+            },
+            "6": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.7462
+              ],
+              "canCrit": true
+            },
+            "7": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.9036000000000002
+              ],
+              "canCrit": true
+            },
+            "8": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                2.061
+              ],
+              "canCrit": true
+            },
+            "9": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                2.2185
+              ],
+              "canCrit": true
+            },
+            "10": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                2.3858
+              ],
+              "canCrit": true
+            },
+            "11": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                2.5826
+              ],
+              "canCrit": true
+            },
+            "12": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                2.7794
+              ],
+              "canCrit": true
+            },
+            "13": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                2.9762
+              ],
+              "canCrit": true
+            },
+            "14": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                3.173
+              ],
+              "canCrit": true
+            },
+            "15": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                3.3698
+              ],
+              "canCrit": true
+            },
+            "16": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                3.5666
+              ],
+              "canCrit": true
+            },
+            "17": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                3.7634
+              ],
+              "canCrit": true
+            },
+            "18": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                3.9602
+              ],
+              "canCrit": true
+            },
+            "19": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                4.157
+              ],
+              "canCrit": true
+            },
+            "20": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                4.3538
+              ],
+              "canCrit": true
+            }
+          }
+        },
+        "1512:2:0": {
+          "id": "1512:2:0",
+          "name": "Dream Blend - Resonance Skill - Reverie Blend DMG",
+          "group": "Resonance Skill",
+          "sourceId": "character:1512:1512:2:0",
+          "reviewFingerprint": "45f2e061772c1c6d14b3b02263993e80ef836629667190d9a45f84e2bb8e545b",
+          "kind": "damage",
+          "damageType": "skill",
+          "element": "spectro",
+          "skillLevelIndex": 1,
+          "formulas": {
+            "1": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.8
+              ],
+              "canCrit": true
+            },
+            "2": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.8656
+              ],
+              "canCrit": true
+            },
+            "3": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.9312
+              ],
+              "canCrit": true
+            },
+            "4": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.0231000000000001
+              ],
+              "canCrit": true
+            },
+            "5": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.0887
+              ],
+              "canCrit": true
+            },
+            "6": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.1641
+              ],
+              "canCrit": true
+            },
+            "7": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.2691
+              ],
+              "canCrit": true
+            },
+            "8": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.374
+              ],
+              "canCrit": true
+            },
+            "9": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.479
+              ],
+              "canCrit": true
+            },
+            "10": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.5905
+              ],
+              "canCrit": true
+            },
+            "11": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.7216999999999998
+              ],
+              "canCrit": true
+            },
+            "12": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.8529
+              ],
+              "canCrit": true
+            },
+            "13": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.9841
+              ],
+              "canCrit": true
+            },
+            "14": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                2.1153
+              ],
+              "canCrit": true
+            },
+            "15": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                2.2465
+              ],
+              "canCrit": true
+            },
+            "16": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                2.3777
+              ],
+              "canCrit": true
+            },
+            "17": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                2.5088999999999997
+              ],
+              "canCrit": true
+            },
+            "18": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                2.6401
+              ],
+              "canCrit": true
+            },
+            "19": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                2.7713
+              ],
+              "canCrit": true
+            },
+            "20": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                2.9025
+              ],
+              "canCrit": true
+            }
+          }
+        },
+        "1512:3:0": {
+          "id": "1512:3:0",
+          "name": "Into the Dream Cradle - Slumberland Healing",
+          "group": "Resonance Liberation",
+          "sourceId": "character:1512:1512:3:0",
+          "reviewFingerprint": "45f2e061772c1c6d14b3b02263993e80ef836629667190d9a45f84e2bb8e545b",
+          "kind": "healing",
+          "skillLevelIndex": 3,
+          "formulas": {
+            "1": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0052,
+              "flatValue": 287
+            },
+            "2": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0054,
+              "flatValue": 321
+            },
+            "3": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.005600000000000001,
+              "flatValue": 359
+            },
+            "4": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0059,
+              "flatValue": 402
+            },
+            "5": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0063,
+              "flatValue": 454
+            },
+            "6": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0068000000000000005,
+              "flatValue": 503
+            },
+            "7": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0075,
+              "flatValue": 511
+            },
+            "8": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0084,
+              "flatValue": 523
+            },
+            "9": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.009399999999999999,
+              "flatValue": 531
+            },
+            "10": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0109,
+              "flatValue": 546
+            },
+            "11": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0118,
+              "flatValue": 591
+            },
+            "12": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0128,
+              "flatValue": 636
+            },
+            "13": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0137,
+              "flatValue": 681
+            },
+            "14": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0146,
+              "flatValue": 726
+            },
+            "15": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0155,
+              "flatValue": 771
+            },
+            "16": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.016399999999999998,
+              "flatValue": 816
+            },
+            "17": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0173,
+              "flatValue": 861
+            },
+            "18": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0182,
+              "flatValue": 906
+            },
+            "19": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0191,
+              "flatValue": 951
+            },
+            "20": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.02,
+              "flatValue": 996
+            }
+          }
+        },
+        "1512:6:0": {
+          "id": "1512:6:0",
+          "name": "Blooming Dream - Intro Skill - First Bloom DMG",
+          "group": "Intro Skill",
+          "sourceId": "character:1512:1512:6:0",
+          "reviewFingerprint": "45f2e061772c1c6d14b3b02263993e80ef836629667190d9a45f84e2bb8e545b",
+          "kind": "damage",
+          "damageType": "intro",
+          "element": "spectro",
+          "skillLevelIndex": 4,
+          "formulas": {
+            "1": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.2734,
+                0.2734,
+                0.2734,
+                0.2734
+              ],
+              "canCrit": true
+            },
+            "2": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.2959,
+                0.2959,
+                0.2959,
+                0.2959
+              ],
+              "canCrit": true
+            },
+            "3": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.31829999999999997,
+                0.31829999999999997,
+                0.31829999999999997,
+                0.31829999999999997
+              ],
+              "canCrit": true
+            },
+            "4": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.3497,
+                0.3497,
+                0.3497,
+                0.3497
+              ],
+              "canCrit": true
+            },
+            "5": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.3721,
+                0.3721,
+                0.3721,
+                0.3721
+              ],
+              "canCrit": true
+            },
+            "6": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.3979,
+                0.3979,
+                0.3979,
+                0.3979
+              ],
+              "canCrit": true
+            },
+            "7": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.4337,
+                0.4337,
+                0.4337,
+                0.4337
+              ],
+              "canCrit": true
+            },
+            "8": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.4696,
+                0.4696,
+                0.4696,
+                0.4696
+              ],
+              "canCrit": true
+            },
+            "9": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.5055,
+                0.5055,
+                0.5055,
+                0.5055
+              ],
+              "canCrit": true
+            },
+            "10": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.5436,
+                0.5436,
+                0.5436,
+                0.5436
+              ],
+              "canCrit": true
+            },
+            "11": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.5884,
+                0.5884,
+                0.5884,
+                0.5884
+              ],
+              "canCrit": true
+            },
+            "12": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.6333,
+                0.6333,
+                0.6333,
+                0.6333
+              ],
+              "canCrit": true
+            },
+            "13": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.6781,
+                0.6781,
+                0.6781,
+                0.6781
+              ],
+              "canCrit": true
+            },
+            "14": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.7229000000000001,
+                0.7229000000000001,
+                0.7229000000000001,
+                0.7229000000000001
+              ],
+              "canCrit": true
+            },
+            "15": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.7678,
+                0.7678,
+                0.7678,
+                0.7678
+              ],
+              "canCrit": true
+            },
+            "16": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.8126000000000001,
+                0.8126000000000001,
+                0.8126000000000001,
+                0.8126000000000001
+              ],
+              "canCrit": true
+            },
+            "17": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.8575,
+                0.8575,
+                0.8575,
+                0.8575
+              ],
+              "canCrit": true
+            },
+            "18": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.9023,
+                0.9023,
+                0.9023,
+                0.9023
+              ],
+              "canCrit": true
+            },
+            "19": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.9470999999999999,
+                0.9470999999999999,
+                0.9470999999999999,
+                0.9470999999999999
+              ],
+              "canCrit": true
+            },
+            "20": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.992,
+                0.992,
+                0.992,
+                0.992
+              ],
+              "canCrit": true
+            }
+          }
+        },
+        "1512:6:1": {
+          "id": "1512:6:1",
+          "name": "Blooming Dream - Intro Skill - Eternal Bloom DMG",
+          "group": "Intro Skill",
+          "sourceId": "character:1512:1512:6:1",
+          "reviewFingerprint": "45f2e061772c1c6d14b3b02263993e80ef836629667190d9a45f84e2bb8e545b",
+          "kind": "damage",
+          "damageType": "intro",
+          "element": "spectro",
+          "skillLevelIndex": 4,
+          "formulas": {
+            "1": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.1816
+              ],
+              "canCrit": true
+            },
+            "2": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.19649999999999998
+              ],
+              "canCrit": true
+            },
+            "3": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.2114
+              ],
+              "canCrit": true
+            },
+            "4": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.2322
+              ],
+              "canCrit": true
+            },
+            "5": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.24710000000000001
+              ],
+              "canCrit": true
+            },
+            "6": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.2642
+              ],
+              "canCrit": true
+            },
+            "7": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.28800000000000003
+              ],
+              "canCrit": true
+            },
+            "8": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.3118
+              ],
+              "canCrit": true
+            },
+            "9": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.3357
+              ],
+              "canCrit": true
+            },
+            "10": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.361
+              ],
+              "canCrit": true
+            },
+            "11": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.3907
+              ],
+              "canCrit": true
+            },
+            "12": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.4205
+              ],
+              "canCrit": true
+            },
+            "13": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.45030000000000003
+              ],
+              "canCrit": true
+            },
+            "14": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.48009999999999997
+              ],
+              "canCrit": true
+            },
+            "15": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.5097999999999999
+              ],
+              "canCrit": true
+            },
+            "16": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.5396
+              ],
+              "canCrit": true
+            },
+            "17": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.5694
+              ],
+              "canCrit": true
+            },
+            "18": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.5991
+              ],
+              "canCrit": true
+            },
+            "19": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.6289
+              ],
+              "canCrit": true
+            },
+            "20": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.6587000000000001
+              ],
+              "canCrit": true
+            }
+          }
+        },
+        "1512:7:0": {
+          "id": "1512:7:0",
+          "name": "Dreamland of Flowers - Heavy Attack - Woven Fairytale Healing",
+          "group": "Forte Circuit",
+          "sourceId": "character:1512:1512:7:0",
+          "reviewFingerprint": "45f2e061772c1c6d14b3b02263993e80ef836629667190d9a45f84e2bb8e545b",
+          "kind": "healing",
+          "tags": [
+            "forte"
+          ],
+          "skillLevelIndex": 2,
+          "formulas": {
+            "1": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0033,
+              "flatValue": 185
+            },
+            "2": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0034999999999999996,
+              "flatValue": 207
+            },
+            "3": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0036,
+              "flatValue": 231
+            },
+            "4": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0038,
+              "flatValue": 259
+            },
+            "5": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0040999999999999995,
+              "flatValue": 292
+            },
+            "6": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0043,
+              "flatValue": 323
+            },
+            "7": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0048,
+              "flatValue": 329
+            },
+            "8": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0054,
+              "flatValue": 336
+            },
+            "9": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.006,
+              "flatValue": 342
+            },
+            "10": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.006999999999999999,
+              "flatValue": 351
+            },
+            "11": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0076,
+              "flatValue": 380
+            },
+            "12": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.008199999999999999,
+              "flatValue": 409
+            },
+            "13": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0088,
+              "flatValue": 438
+            },
+            "14": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.009399999999999999,
+              "flatValue": 467
+            },
+            "15": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.009899999999999999,
+              "flatValue": 496
+            },
+            "16": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0105,
+              "flatValue": 525
+            },
+            "17": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0111,
+              "flatValue": 554
+            },
+            "18": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.011699999999999999,
+              "flatValue": 583
+            },
+            "19": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0123,
+              "flatValue": 612
+            },
+            "20": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0129,
+              "flatValue": 641
+            }
+          }
+        },
+        "1512:7:1": {
+          "id": "1512:7:1",
+          "name": "Dreamland of Flowers - Heavy Attack - Woven Phantasm Healing",
+          "group": "Forte Circuit",
+          "sourceId": "character:1512:1512:7:1",
+          "reviewFingerprint": "45f2e061772c1c6d14b3b02263993e80ef836629667190d9a45f84e2bb8e545b",
+          "kind": "healing",
+          "tags": [
+            "forte"
+          ],
+          "skillLevelIndex": 2,
+          "formulas": {
+            "1": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0033,
+              "flatValue": 185
+            },
+            "2": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0034999999999999996,
+              "flatValue": 207
+            },
+            "3": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0036,
+              "flatValue": 231
+            },
+            "4": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0038,
+              "flatValue": 259
+            },
+            "5": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0040999999999999995,
+              "flatValue": 292
+            },
+            "6": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0043,
+              "flatValue": 323
+            },
+            "7": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0048,
+              "flatValue": 329
+            },
+            "8": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0054,
+              "flatValue": 336
+            },
+            "9": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.006,
+              "flatValue": 342
+            },
+            "10": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.006999999999999999,
+              "flatValue": 351
+            },
+            "11": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0076,
+              "flatValue": 380
+            },
+            "12": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.008199999999999999,
+              "flatValue": 409
+            },
+            "13": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0088,
+              "flatValue": 438
+            },
+            "14": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.009399999999999999,
+              "flatValue": 467
+            },
+            "15": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.009899999999999999,
+              "flatValue": 496
+            },
+            "16": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0105,
+              "flatValue": 525
+            },
+            "17": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0111,
+              "flatValue": 554
+            },
+            "18": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.011699999999999999,
+              "flatValue": 583
+            },
+            "19": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0123,
+              "flatValue": 612
+            },
+            "20": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0129,
+              "flatValue": 641
+            }
+          }
+        },
+        "1512:7:2": {
+          "id": "1512:7:2",
+          "name": "Dreamland of Flowers - Heavy Attack - Woven Fairytale DMG",
+          "group": "Forte Circuit",
+          "sourceId": "character:1512:1512:7:2",
+          "reviewFingerprint": "45f2e061772c1c6d14b3b02263993e80ef836629667190d9a45f84e2bb8e545b",
+          "kind": "damage",
+          "damageType": "heavy",
+          "element": "spectro",
+          "tags": [
+            "forte"
+          ],
+          "skillLevelIndex": 2,
+          "formulas": {
+            "1": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125,
+                0.125
+              ],
+              "canCrit": true
+            },
+            "2": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.1353,
+                0.1353,
+                0.1353,
+                0.1353,
+                0.1353,
+                0.1353,
+                0.1353,
+                0.1353,
+                0.1353,
+                0.1353,
+                0.1353,
+                0.1353,
+                0.1353,
+                0.1353,
+                0.1353,
+                0.1353,
+                0.1353,
+                0.1353,
+                0.1353,
+                0.1353
+              ],
+              "canCrit": true
+            },
+            "3": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.14550000000000002,
+                0.14550000000000002,
+                0.14550000000000002,
+                0.14550000000000002,
+                0.14550000000000002,
+                0.14550000000000002,
+                0.14550000000000002,
+                0.14550000000000002,
+                0.14550000000000002,
+                0.14550000000000002,
+                0.14550000000000002,
+                0.14550000000000002,
+                0.14550000000000002,
+                0.14550000000000002,
+                0.14550000000000002,
+                0.14550000000000002,
+                0.14550000000000002,
+                0.14550000000000002,
+                0.14550000000000002,
+                0.14550000000000002
+              ],
+              "canCrit": true
+            },
+            "4": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.15990000000000001,
+                0.15990000000000001,
+                0.15990000000000001,
+                0.15990000000000001,
+                0.15990000000000001,
+                0.15990000000000001,
+                0.15990000000000001,
+                0.15990000000000001,
+                0.15990000000000001,
+                0.15990000000000001,
+                0.15990000000000001,
+                0.15990000000000001,
+                0.15990000000000001,
+                0.15990000000000001,
+                0.15990000000000001,
+                0.15990000000000001,
+                0.15990000000000001,
+                0.15990000000000001,
+                0.15990000000000001,
+                0.15990000000000001
+              ],
+              "canCrit": true
+            },
+            "5": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.17010000000000003,
+                0.17010000000000003,
+                0.17010000000000003,
+                0.17010000000000003,
+                0.17010000000000003,
+                0.17010000000000003,
+                0.17010000000000003,
+                0.17010000000000003,
+                0.17010000000000003,
+                0.17010000000000003,
+                0.17010000000000003,
+                0.17010000000000003,
+                0.17010000000000003,
+                0.17010000000000003,
+                0.17010000000000003,
+                0.17010000000000003,
+                0.17010000000000003,
+                0.17010000000000003,
+                0.17010000000000003,
+                0.17010000000000003
+              ],
+              "canCrit": true
+            },
+            "6": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.1819,
+                0.1819,
+                0.1819,
+                0.1819,
+                0.1819,
+                0.1819,
+                0.1819,
+                0.1819,
+                0.1819,
+                0.1819,
+                0.1819,
+                0.1819,
+                0.1819,
+                0.1819,
+                0.1819,
+                0.1819,
+                0.1819,
+                0.1819,
+                0.1819,
+                0.1819
+              ],
+              "canCrit": true
+            },
+            "7": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.19829999999999998,
+                0.19829999999999998,
+                0.19829999999999998,
+                0.19829999999999998,
+                0.19829999999999998,
+                0.19829999999999998,
+                0.19829999999999998,
+                0.19829999999999998,
+                0.19829999999999998,
+                0.19829999999999998,
+                0.19829999999999998,
+                0.19829999999999998,
+                0.19829999999999998,
+                0.19829999999999998,
+                0.19829999999999998,
+                0.19829999999999998,
+                0.19829999999999998,
+                0.19829999999999998,
+                0.19829999999999998,
+                0.19829999999999998
+              ],
+              "canCrit": true
+            },
+            "8": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.2147,
+                0.2147,
+                0.2147,
+                0.2147,
+                0.2147,
+                0.2147,
+                0.2147,
+                0.2147,
+                0.2147,
+                0.2147,
+                0.2147,
+                0.2147,
+                0.2147,
+                0.2147,
+                0.2147,
+                0.2147,
+                0.2147,
+                0.2147,
+                0.2147,
+                0.2147
+              ],
+              "canCrit": true
+            },
+            "9": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.2311,
+                0.2311,
+                0.2311,
+                0.2311,
+                0.2311,
+                0.2311,
+                0.2311,
+                0.2311,
+                0.2311,
+                0.2311,
+                0.2311,
+                0.2311,
+                0.2311,
+                0.2311,
+                0.2311,
+                0.2311,
+                0.2311,
+                0.2311,
+                0.2311,
+                0.2311
+              ],
+              "canCrit": true
+            },
+            "10": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.2486,
+                0.2486,
+                0.2486,
+                0.2486,
+                0.2486,
+                0.2486,
+                0.2486,
+                0.2486,
+                0.2486,
+                0.2486,
+                0.2486,
+                0.2486,
+                0.2486,
+                0.2486,
+                0.2486,
+                0.2486,
+                0.2486,
+                0.2486,
+                0.2486,
+                0.2486
+              ],
+              "canCrit": true
+            },
+            "11": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.2691,
+                0.2691,
+                0.2691,
+                0.2691,
+                0.2691,
+                0.2691,
+                0.2691,
+                0.2691,
+                0.2691,
+                0.2691,
+                0.2691,
+                0.2691,
+                0.2691,
+                0.2691,
+                0.2691,
+                0.2691,
+                0.2691,
+                0.2691,
+                0.2691,
+                0.2691
+              ],
+              "canCrit": true
+            },
+            "12": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.2896,
+                0.2896,
+                0.2896,
+                0.2896,
+                0.2896,
+                0.2896,
+                0.2896,
+                0.2896,
+                0.2896,
+                0.2896,
+                0.2896,
+                0.2896,
+                0.2896,
+                0.2896,
+                0.2896,
+                0.2896,
+                0.2896,
+                0.2896,
+                0.2896,
+                0.2896
+              ],
+              "canCrit": true
+            },
+            "13": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.31010000000000004,
+                0.31010000000000004,
+                0.31010000000000004,
+                0.31010000000000004,
+                0.31010000000000004,
+                0.31010000000000004,
+                0.31010000000000004,
+                0.31010000000000004,
+                0.31010000000000004,
+                0.31010000000000004,
+                0.31010000000000004,
+                0.31010000000000004,
+                0.31010000000000004,
+                0.31010000000000004,
+                0.31010000000000004,
+                0.31010000000000004,
+                0.31010000000000004,
+                0.31010000000000004,
+                0.31010000000000004,
+                0.31010000000000004
+              ],
+              "canCrit": true
+            },
+            "14": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.3306,
+                0.3306,
+                0.3306,
+                0.3306,
+                0.3306,
+                0.3306,
+                0.3306,
+                0.3306,
+                0.3306,
+                0.3306,
+                0.3306,
+                0.3306,
+                0.3306,
+                0.3306,
+                0.3306,
+                0.3306,
+                0.3306,
+                0.3306,
+                0.3306,
+                0.3306
+              ],
+              "canCrit": true
+            },
+            "15": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.35109999999999997,
+                0.35109999999999997,
+                0.35109999999999997,
+                0.35109999999999997,
+                0.35109999999999997,
+                0.35109999999999997,
+                0.35109999999999997,
+                0.35109999999999997,
+                0.35109999999999997,
+                0.35109999999999997,
+                0.35109999999999997,
+                0.35109999999999997,
+                0.35109999999999997,
+                0.35109999999999997,
+                0.35109999999999997,
+                0.35109999999999997,
+                0.35109999999999997,
+                0.35109999999999997,
+                0.35109999999999997,
+                0.35109999999999997
+              ],
+              "canCrit": true
+            },
+            "16": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.3716,
+                0.3716,
+                0.3716,
+                0.3716,
+                0.3716,
+                0.3716,
+                0.3716,
+                0.3716,
+                0.3716,
+                0.3716,
+                0.3716,
+                0.3716,
+                0.3716,
+                0.3716,
+                0.3716,
+                0.3716,
+                0.3716,
+                0.3716,
+                0.3716,
+                0.3716
+              ],
+              "canCrit": true
+            },
+            "17": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.3921,
+                0.3921,
+                0.3921,
+                0.3921,
+                0.3921,
+                0.3921,
+                0.3921,
+                0.3921,
+                0.3921,
+                0.3921,
+                0.3921,
+                0.3921,
+                0.3921,
+                0.3921,
+                0.3921,
+                0.3921,
+                0.3921,
+                0.3921,
+                0.3921,
+                0.3921
+              ],
+              "canCrit": true
+            },
+            "18": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.41259999999999997,
+                0.41259999999999997,
+                0.41259999999999997,
+                0.41259999999999997,
+                0.41259999999999997,
+                0.41259999999999997,
+                0.41259999999999997,
+                0.41259999999999997,
+                0.41259999999999997,
+                0.41259999999999997,
+                0.41259999999999997,
+                0.41259999999999997,
+                0.41259999999999997,
+                0.41259999999999997,
+                0.41259999999999997,
+                0.41259999999999997,
+                0.41259999999999997,
+                0.41259999999999997,
+                0.41259999999999997,
+                0.41259999999999997
+              ],
+              "canCrit": true
+            },
+            "19": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.43310000000000004,
+                0.43310000000000004,
+                0.43310000000000004,
+                0.43310000000000004,
+                0.43310000000000004,
+                0.43310000000000004,
+                0.43310000000000004,
+                0.43310000000000004,
+                0.43310000000000004,
+                0.43310000000000004,
+                0.43310000000000004,
+                0.43310000000000004,
+                0.43310000000000004,
+                0.43310000000000004,
+                0.43310000000000004,
+                0.43310000000000004,
+                0.43310000000000004,
+                0.43310000000000004,
+                0.43310000000000004,
+                0.43310000000000004
+              ],
+              "canCrit": true
+            },
+            "20": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.4536,
+                0.4536,
+                0.4536,
+                0.4536,
+                0.4536,
+                0.4536,
+                0.4536,
+                0.4536,
+                0.4536,
+                0.4536,
+                0.4536,
+                0.4536,
+                0.4536,
+                0.4536,
+                0.4536,
+                0.4536,
+                0.4536,
+                0.4536,
+                0.4536,
+                0.4536
+              ],
+              "canCrit": true
+            }
+          }
+        },
+        "1512:7:3": {
+          "id": "1512:7:3",
+          "name": "Dreamland of Flowers - Heavy Attack - Woven Phantasm DMG",
+          "group": "Forte Circuit",
+          "sourceId": "character:1512:1512:7:3",
+          "reviewFingerprint": "45f2e061772c1c6d14b3b02263993e80ef836629667190d9a45f84e2bb8e545b",
+          "kind": "damage",
+          "damageType": "heavy",
+          "element": "spectro",
+          "tags": [
+            "forte"
+          ],
+          "skillLevelIndex": 2,
+          "formulas": {
+            "1": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.10869999999999999,
+                0.10869999999999999,
+                0.10869999999999999,
+                0.10869999999999999,
+                0.10869999999999999,
+                0.10869999999999999,
+                0.10869999999999999,
+                0.10869999999999999,
+                0.10869999999999999,
+                0.10869999999999999,
+                0.10869999999999999,
+                0.10869999999999999,
+                0.10869999999999999,
+                0.10869999999999999,
+                0.10869999999999999,
+                0.10869999999999999,
+                0.10869999999999999,
+                0.10869999999999999,
+                0.10869999999999999,
+                0.10869999999999999,
+                0.10869999999999999,
+                0.10869999999999999,
+                0.10869999999999999
+              ],
+              "canCrit": true
+            },
+            "2": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.1177,
+                0.1177,
+                0.1177,
+                0.1177,
+                0.1177,
+                0.1177,
+                0.1177,
+                0.1177,
+                0.1177,
+                0.1177,
+                0.1177,
+                0.1177,
+                0.1177,
+                0.1177,
+                0.1177,
+                0.1177,
+                0.1177,
+                0.1177,
+                0.1177,
+                0.1177,
+                0.1177,
+                0.1177,
+                0.1177
+              ],
+              "canCrit": true
+            },
+            "3": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.1266,
+                0.1266,
+                0.1266,
+                0.1266,
+                0.1266,
+                0.1266,
+                0.1266,
+                0.1266,
+                0.1266,
+                0.1266,
+                0.1266,
+                0.1266,
+                0.1266,
+                0.1266,
+                0.1266,
+                0.1266,
+                0.1266,
+                0.1266,
+                0.1266,
+                0.1266,
+                0.1266,
+                0.1266,
+                0.1266
+              ],
+              "canCrit": true
+            },
+            "4": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.139,
+                0.139,
+                0.139,
+                0.139,
+                0.139,
+                0.139,
+                0.139,
+                0.139,
+                0.139,
+                0.139,
+                0.139,
+                0.139,
+                0.139,
+                0.139,
+                0.139,
+                0.139,
+                0.139,
+                0.139,
+                0.139,
+                0.139,
+                0.139,
+                0.139,
+                0.139
+              ],
+              "canCrit": true
+            },
+            "5": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.14800000000000002,
+                0.14800000000000002,
+                0.14800000000000002,
+                0.14800000000000002,
+                0.14800000000000002,
+                0.14800000000000002,
+                0.14800000000000002,
+                0.14800000000000002,
+                0.14800000000000002,
+                0.14800000000000002,
+                0.14800000000000002,
+                0.14800000000000002,
+                0.14800000000000002,
+                0.14800000000000002,
+                0.14800000000000002,
+                0.14800000000000002,
+                0.14800000000000002,
+                0.14800000000000002,
+                0.14800000000000002,
+                0.14800000000000002,
+                0.14800000000000002,
+                0.14800000000000002,
+                0.14800000000000002
+              ],
+              "canCrit": true
+            },
+            "6": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.1582,
+                0.1582,
+                0.1582,
+                0.1582,
+                0.1582,
+                0.1582,
+                0.1582,
+                0.1582,
+                0.1582,
+                0.1582,
+                0.1582,
+                0.1582,
+                0.1582,
+                0.1582,
+                0.1582,
+                0.1582,
+                0.1582,
+                0.1582,
+                0.1582,
+                0.1582,
+                0.1582,
+                0.1582,
+                0.1582
+              ],
+              "canCrit": true
+            },
+            "7": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.1725,
+                0.1725,
+                0.1725,
+                0.1725,
+                0.1725,
+                0.1725,
+                0.1725,
+                0.1725,
+                0.1725,
+                0.1725,
+                0.1725,
+                0.1725,
+                0.1725,
+                0.1725,
+                0.1725,
+                0.1725,
+                0.1725,
+                0.1725,
+                0.1725,
+                0.1725,
+                0.1725,
+                0.1725,
+                0.1725
+              ],
+              "canCrit": true
+            },
+            "8": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.1867,
+                0.1867,
+                0.1867,
+                0.1867,
+                0.1867,
+                0.1867,
+                0.1867,
+                0.1867,
+                0.1867,
+                0.1867,
+                0.1867,
+                0.1867,
+                0.1867,
+                0.1867,
+                0.1867,
+                0.1867,
+                0.1867,
+                0.1867,
+                0.1867,
+                0.1867,
+                0.1867,
+                0.1867,
+                0.1867
+              ],
+              "canCrit": true
+            },
+            "9": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.201,
+                0.201,
+                0.201,
+                0.201,
+                0.201,
+                0.201,
+                0.201,
+                0.201,
+                0.201,
+                0.201,
+                0.201,
+                0.201,
+                0.201,
+                0.201,
+                0.201,
+                0.201,
+                0.201,
+                0.201,
+                0.201,
+                0.201,
+                0.201,
+                0.201,
+                0.201
+              ],
+              "canCrit": true
+            },
+            "10": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.2161,
+                0.2161,
+                0.2161,
+                0.2161,
+                0.2161,
+                0.2161,
+                0.2161,
+                0.2161,
+                0.2161,
+                0.2161,
+                0.2161,
+                0.2161,
+                0.2161,
+                0.2161,
+                0.2161,
+                0.2161,
+                0.2161,
+                0.2161,
+                0.2161,
+                0.2161,
+                0.2161,
+                0.2161,
+                0.2161
+              ],
+              "canCrit": true
+            },
+            "11": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.23399999999999999,
+                0.23399999999999999,
+                0.23399999999999999,
+                0.23399999999999999,
+                0.23399999999999999,
+                0.23399999999999999,
+                0.23399999999999999,
+                0.23399999999999999,
+                0.23399999999999999,
+                0.23399999999999999,
+                0.23399999999999999,
+                0.23399999999999999,
+                0.23399999999999999,
+                0.23399999999999999,
+                0.23399999999999999,
+                0.23399999999999999,
+                0.23399999999999999,
+                0.23399999999999999,
+                0.23399999999999999,
+                0.23399999999999999,
+                0.23399999999999999,
+                0.23399999999999999,
+                0.23399999999999999
+              ],
+              "canCrit": true
+            },
+            "12": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.2518,
+                0.2518,
+                0.2518,
+                0.2518,
+                0.2518,
+                0.2518,
+                0.2518,
+                0.2518,
+                0.2518,
+                0.2518,
+                0.2518,
+                0.2518,
+                0.2518,
+                0.2518,
+                0.2518,
+                0.2518,
+                0.2518,
+                0.2518,
+                0.2518,
+                0.2518,
+                0.2518,
+                0.2518,
+                0.2518
+              ],
+              "canCrit": true
+            },
+            "13": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.2696,
+                0.2696,
+                0.2696,
+                0.2696,
+                0.2696,
+                0.2696,
+                0.2696,
+                0.2696,
+                0.2696,
+                0.2696,
+                0.2696,
+                0.2696,
+                0.2696,
+                0.2696,
+                0.2696,
+                0.2696,
+                0.2696,
+                0.2696,
+                0.2696,
+                0.2696,
+                0.2696,
+                0.2696,
+                0.2696
+              ],
+              "canCrit": true
+            },
+            "14": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.2875,
+                0.2875,
+                0.2875,
+                0.2875,
+                0.2875,
+                0.2875,
+                0.2875,
+                0.2875,
+                0.2875,
+                0.2875,
+                0.2875,
+                0.2875,
+                0.2875,
+                0.2875,
+                0.2875,
+                0.2875,
+                0.2875,
+                0.2875,
+                0.2875,
+                0.2875,
+                0.2875,
+                0.2875,
+                0.2875
+              ],
+              "canCrit": true
+            },
+            "15": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.3053,
+                0.3053,
+                0.3053,
+                0.3053,
+                0.3053,
+                0.3053,
+                0.3053,
+                0.3053,
+                0.3053,
+                0.3053,
+                0.3053,
+                0.3053,
+                0.3053,
+                0.3053,
+                0.3053,
+                0.3053,
+                0.3053,
+                0.3053,
+                0.3053,
+                0.3053,
+                0.3053,
+                0.3053,
+                0.3053
+              ],
+              "canCrit": true
+            },
+            "16": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.3231,
+                0.3231,
+                0.3231,
+                0.3231,
+                0.3231,
+                0.3231,
+                0.3231,
+                0.3231,
+                0.3231,
+                0.3231,
+                0.3231,
+                0.3231,
+                0.3231,
+                0.3231,
+                0.3231,
+                0.3231,
+                0.3231,
+                0.3231,
+                0.3231,
+                0.3231,
+                0.3231,
+                0.3231,
+                0.3231
+              ],
+              "canCrit": true
+            },
+            "17": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.34090000000000004,
+                0.34090000000000004,
+                0.34090000000000004,
+                0.34090000000000004,
+                0.34090000000000004,
+                0.34090000000000004,
+                0.34090000000000004,
+                0.34090000000000004,
+                0.34090000000000004,
+                0.34090000000000004,
+                0.34090000000000004,
+                0.34090000000000004,
+                0.34090000000000004,
+                0.34090000000000004,
+                0.34090000000000004,
+                0.34090000000000004,
+                0.34090000000000004,
+                0.34090000000000004,
+                0.34090000000000004,
+                0.34090000000000004,
+                0.34090000000000004,
+                0.34090000000000004,
+                0.34090000000000004
+              ],
+              "canCrit": true
+            },
+            "18": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.3588,
+                0.3588,
+                0.3588,
+                0.3588,
+                0.3588,
+                0.3588,
+                0.3588,
+                0.3588,
+                0.3588,
+                0.3588,
+                0.3588,
+                0.3588,
+                0.3588,
+                0.3588,
+                0.3588,
+                0.3588,
+                0.3588,
+                0.3588,
+                0.3588,
+                0.3588,
+                0.3588,
+                0.3588,
+                0.3588
+              ],
+              "canCrit": true
+            },
+            "19": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.3766,
+                0.3766,
+                0.3766,
+                0.3766,
+                0.3766,
+                0.3766,
+                0.3766,
+                0.3766,
+                0.3766,
+                0.3766,
+                0.3766,
+                0.3766,
+                0.3766,
+                0.3766,
+                0.3766,
+                0.3766,
+                0.3766,
+                0.3766,
+                0.3766,
+                0.3766,
+                0.3766,
+                0.3766,
+                0.3766
+              ],
+              "canCrit": true
+            },
+            "20": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.3944,
+                0.3944,
+                0.3944,
+                0.3944,
+                0.3944,
+                0.3944,
+                0.3944,
+                0.3944,
+                0.3944,
+                0.3944,
+                0.3944,
+                0.3944,
+                0.3944,
+                0.3944,
+                0.3944,
+                0.3944,
+                0.3944,
+                0.3944,
+                0.3944,
+                0.3944,
+                0.3944,
+                0.3944,
+                0.3944
+              ],
+              "canCrit": true
+            }
+          }
+        },
+        "1512:7:4": {
+          "id": "1512:7:4",
+          "name": "Dreamland of Flowers - Heavy Attack - Fairytale's Finale DMG",
+          "group": "Forte Circuit",
+          "sourceId": "character:1512:1512:7:4",
+          "reviewFingerprint": "45f2e061772c1c6d14b3b02263993e80ef836629667190d9a45f84e2bb8e545b",
+          "kind": "damage",
+          "damageType": "heavy",
+          "element": "spectro",
+          "tags": [
+            "forte"
+          ],
+          "skillLevelIndex": 2,
+          "formulas": {
+            "1": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.18
+              ],
+              "canCrit": true
+            },
+            "2": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.1948
+              ],
+              "canCrit": true
+            },
+            "3": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.2096
+              ],
+              "canCrit": true
+            },
+            "4": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.2302
+              ],
+              "canCrit": true
+            },
+            "5": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.245
+              ],
+              "canCrit": true
+            },
+            "6": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.262
+              ],
+              "canCrit": true
+            },
+            "7": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.28559999999999997
+              ],
+              "canCrit": true
+            },
+            "8": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.30920000000000003
+              ],
+              "canCrit": true
+            },
+            "9": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.3328
+              ],
+              "canCrit": true
+            },
+            "10": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.3579
+              ],
+              "canCrit": true
+            },
+            "11": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.3874
+              ],
+              "canCrit": true
+            },
+            "12": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.4169
+              ],
+              "canCrit": true
+            },
+            "13": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.4465
+              ],
+              "canCrit": true
+            },
+            "14": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.47600000000000003
+              ],
+              "canCrit": true
+            },
+            "15": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.5055
+              ],
+              "canCrit": true
+            },
+            "16": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.535
+              ],
+              "canCrit": true
+            },
+            "17": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.5645
+              ],
+              "canCrit": true
+            },
+            "18": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.5941
+              ],
+              "canCrit": true
+            },
+            "19": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.6236
+              ],
+              "canCrit": true
+            },
+            "20": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.6531
+              ],
+              "canCrit": true
+            }
+          }
+        },
+        "1512:7:5": {
+          "id": "1512:7:5",
+          "name": "Dreamland of Flowers - Heavy Attack - Phantasm's End DMG",
+          "group": "Forte Circuit",
+          "sourceId": "character:1512:1512:7:5",
+          "reviewFingerprint": "45f2e061772c1c6d14b3b02263993e80ef836629667190d9a45f84e2bb8e545b",
+          "kind": "damage",
+          "damageType": "heavy",
+          "element": "spectro",
+          "tags": [
+            "forte"
+          ],
+          "skillLevelIndex": 2,
+          "formulas": {
+            "1": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.18
+              ],
+              "canCrit": true
+            },
+            "2": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.1948
+              ],
+              "canCrit": true
+            },
+            "3": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.2096
+              ],
+              "canCrit": true
+            },
+            "4": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.2302
+              ],
+              "canCrit": true
+            },
+            "5": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.245
+              ],
+              "canCrit": true
+            },
+            "6": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.262
+              ],
+              "canCrit": true
+            },
+            "7": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.28559999999999997
+              ],
+              "canCrit": true
+            },
+            "8": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.30920000000000003
+              ],
+              "canCrit": true
+            },
+            "9": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.3328
+              ],
+              "canCrit": true
+            },
+            "10": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.3579
+              ],
+              "canCrit": true
+            },
+            "11": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.3874
+              ],
+              "canCrit": true
+            },
+            "12": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.4169
+              ],
+              "canCrit": true
+            },
+            "13": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.4465
+              ],
+              "canCrit": true
+            },
+            "14": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.47600000000000003
+              ],
+              "canCrit": true
+            },
+            "15": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.5055
+              ],
+              "canCrit": true
+            },
+            "16": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.535
+              ],
+              "canCrit": true
+            },
+            "17": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.5645
+              ],
+              "canCrit": true
+            },
+            "18": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.5941
+              ],
+              "canCrit": true
+            },
+            "19": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.6236
+              ],
+              "canCrit": true
+            },
+            "20": {
+              "kind": "damage",
+              "scaling": {
+                "hp": 1
+              },
+              "hits": [
+                0.6531
+              ],
+              "canCrit": true
+            }
+          }
+        },
+        "1512:2:review:nightmare-blend": {
+          "id": "1512:2:review:nightmare-blend",
+          "name": "Dream Blend - Resonance Skill - Nightmare Blend DMG",
+          "group": "Resonance Skill",
+          "sourceId": "character:1512:1512:2:review:nightmare-blend",
+          "reviewFingerprint": "45f2e061772c1c6d14b3b02263993e80ef836629667190d9a45f84e2bb8e545b",
+          "kind": "damage",
+          "damageType": "skill",
+          "element": "spectro",
+          "skillLevelIndex": 1,
+          "formulas": {
+            "1": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.8
+              ],
+              "canCrit": true
+            },
+            "2": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.8656
+              ],
+              "canCrit": true
+            },
+            "3": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.9312
+              ],
+              "canCrit": true
+            },
+            "4": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.0231000000000001
+              ],
+              "canCrit": true
+            },
+            "5": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.0887
+              ],
+              "canCrit": true
+            },
+            "6": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.1641
+              ],
+              "canCrit": true
+            },
+            "7": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.2691
+              ],
+              "canCrit": true
+            },
+            "8": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.374
+              ],
+              "canCrit": true
+            },
+            "9": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.479
+              ],
+              "canCrit": true
+            },
+            "10": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.5905
+              ],
+              "canCrit": true
+            },
+            "11": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.7216999999999998
+              ],
+              "canCrit": true
+            },
+            "12": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.8529
+              ],
+              "canCrit": true
+            },
+            "13": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                1.9841
+              ],
+              "canCrit": true
+            },
+            "14": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                2.1153
+              ],
+              "canCrit": true
+            },
+            "15": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                2.2465
+              ],
+              "canCrit": true
+            },
+            "16": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                2.3777
+              ],
+              "canCrit": true
+            },
+            "17": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                2.5088999999999997
+              ],
+              "canCrit": true
+            },
+            "18": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                2.6401
+              ],
+              "canCrit": true
+            },
+            "19": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                2.7713
+              ],
+              "canCrit": true
+            },
+            "20": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                2.9025
+              ],
+              "canCrit": true
+            }
+          }
+        },
+        "1512:3:review:dreambind": {
+          "id": "1512:3:review:dreambind",
+          "name": "Into the Dream Cradle - Dreambind Continuous DMG",
+          "group": "Resonance Liberation",
+          "sourceId": "character:1512:1512:3:review:dreambind",
+          "reviewFingerprint": "45f2e061772c1c6d14b3b02263993e80ef836629667190d9a45f84e2bb8e545b",
+          "kind": "damage",
+          "damageType": "liberation",
+          "element": "spectro",
+          "skillLevelIndex": 3,
+          "formulas": {
+            "1": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.1
+              ],
+              "canCrit": true
+            },
+            "2": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.1082
+              ],
+              "canCrit": true
+            },
+            "3": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.1164
+              ],
+              "canCrit": true
+            },
+            "4": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.12789999999999999
+              ],
+              "canCrit": true
+            },
+            "5": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.1361
+              ],
+              "canCrit": true
+            },
+            "6": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.1456
+              ],
+              "canCrit": true
+            },
+            "7": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.15869999999999998
+              ],
+              "canCrit": true
+            },
+            "8": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.1718
+              ],
+              "canCrit": true
+            },
+            "9": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.18489999999999998
+              ],
+              "canCrit": true
+            },
+            "10": {
+              "kind": "damage",
+              "scaling": {
+                "atk": 1
+              },
+              "hits": [
+                0.1989
+              ],
+              "canCrit": true
+            }
+          }
+        },
+        "1512:7:review:fairytale-wish-healing": {
+          "id": "1512:7:review:fairytale-wish-healing",
+          "name": "Dreamland of Flowers - Heavy Attack - Woven Fairytale Healing with Wish of Praying Dream",
+          "group": "Forte Circuit",
+          "sourceId": "character:1512:1512:7:review:fairytale-wish-healing",
+          "reviewFingerprint": "45f2e061772c1c6d14b3b02263993e80ef836629667190d9a45f84e2bb8e545b",
+          "kind": "healing",
+          "tags": [
+            "forte"
+          ],
+          "skillLevelIndex": 2,
+          "formulas": {
+            "1": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0168,
+              "flatValue": 925
+            },
+            "2": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0175,
+              "flatValue": 1036
+            },
+            "3": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0182,
+              "flatValue": 1157
+            },
+            "4": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0192,
+              "flatValue": 1295
+            },
+            "5": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.020499999999999997,
+              "flatValue": 1462
+            },
+            "6": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0219,
+              "flatValue": 1619
+            },
+            "7": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.024399999999999998,
+              "flatValue": 1647
+            },
+            "8": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0273,
+              "flatValue": 1684
+            },
+            "9": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.030299999999999997,
+              "flatValue": 1712
+            },
+            "10": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0353,
+              "flatValue": 1758
+            }
+          }
+        },
+        "1512:7:review:phantasm-wish-healing": {
+          "id": "1512:7:review:phantasm-wish-healing",
+          "name": "Dreamland of Flowers - Heavy Attack - Woven Phantasm Healing with Wish of Praying Dream",
+          "group": "Forte Circuit",
+          "sourceId": "character:1512:1512:7:review:phantasm-wish-healing",
+          "reviewFingerprint": "45f2e061772c1c6d14b3b02263993e80ef836629667190d9a45f84e2bb8e545b",
+          "kind": "healing",
+          "tags": [
+            "forte"
+          ],
+          "skillLevelIndex": 2,
+          "formulas": {
+            "1": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0168,
+              "flatValue": 925
+            },
+            "2": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0175,
+              "flatValue": 1036
+            },
+            "3": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0182,
+              "flatValue": 1157
+            },
+            "4": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0192,
+              "flatValue": 1295
+            },
+            "5": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.020499999999999997,
+              "flatValue": 1462
+            },
+            "6": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0219,
+              "flatValue": 1619
+            },
+            "7": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.024399999999999998,
+              "flatValue": 1647
+            },
+            "8": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0273,
+              "flatValue": 1684
+            },
+            "9": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.030299999999999997,
+              "flatValue": 1712
+            },
+            "10": {
+              "kind": "healing",
+              "scaling": {
+                "hp": 1
+              },
+              "motionValue": 0.0353,
+              "flatValue": 1758
+            }
+          }
+        }
+      },
+      "effects": [
+        {
+          "id": "character:1512:1512:5:effect:0",
+          "name": "Flowers for You",
+          "description": "While a nearby active Resonator has 50% or more HP, Lily grants them 10% DMG Reduction.",
+          "sourceId": "character:1512:1512:5:effect:0",
+          "reviewFingerprint": "f4b13a4911e282a53079ce85e80461a85db08f8c5aafea1f53aa9285dcaefca7",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1512:1512:5:effect:0"
+          },
+          "operations": [
+            {
+              "kind": "reduce-damage-taken",
+              "value": 0.1,
+              "recipient": "next"
+            }
+          ]
+        },
+        {
+          "id": "character:1512:1512:6:effect:6",
+          "name": "Blooming Dream",
+          "description": "For every 1% of Lily's Energy Regen exceeding 100%, this skill gains 0.5% Crit. Rate, up to 80%, and 1% Crit. DMG, up to 160%.",
+          "sourceId": "character:1512:1512:6:effect:6",
+          "reviewFingerprint": "f4b13a4911e282a53079ce85e80461a85db08f8c5aafea1f53aa9285dcaefca7",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1512:1512:6:effect:6"
+          },
+          "operations": [
+            {
+              "kind": "add-derived-stat",
+              "stat": "critRate",
+              "mode": "percent",
+              "sourceStat": "energyRegen",
+              "threshold": 100,
+              "value": 0.005,
+              "filter": {
+                "actionIds": [
+                  "1512:6:1"
+                ]
+              },
+              "maximumValue": 0.8
+            },
+            {
+              "kind": "add-derived-stat",
+              "stat": "critDamage",
+              "mode": "percent",
+              "sourceStat": "energyRegen",
+              "threshold": 100,
+              "value": 0.01,
+              "filter": {
+                "actionIds": [
+                  "1512:6:1"
+                ]
+              },
+              "maximumValue": 1.6
+            }
+          ]
+        },
+        {
+          "id": "character:1512:1512:7:effect:21",
+          "name": "Dreamland of Flowers",
+          "description": "For every 1% of Lily's Energy Regen exceeding 100%, this skill gains 0.5% Crit. Rate, up to 80%, and 1% Crit. DMG, up to 160%.",
+          "sourceId": "character:1512:1512:7:effect:21",
+          "reviewFingerprint": "f4b13a4911e282a53079ce85e80461a85db08f8c5aafea1f53aa9285dcaefca7",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1512:1512:7:effect:21"
+          },
+          "operations": [
+            {
+              "kind": "add-derived-stat",
+              "stat": "critRate",
+              "mode": "percent",
+              "sourceStat": "energyRegen",
+              "threshold": 100,
+              "value": 0.005,
+              "filter": {
+                "actionIds": [
+                  "1512:7:4",
+                  "1512:7:5"
+                ]
+              },
+              "maximumValue": 0.8
+            },
+            {
+              "kind": "add-derived-stat",
+              "stat": "critDamage",
+              "mode": "percent",
+              "sourceStat": "energyRegen",
+              "threshold": 100,
+              "value": 0.01,
+              "filter": {
+                "actionIds": [
+                  "1512:7:4",
+                  "1512:7:5"
+                ]
+              },
+              "maximumValue": 1.6
+            }
+          ]
+        },
+        {
+          "id": "character:1512:1512:7:effect:38",
+          "name": "Dreamland of Flowers",
+          "description": "For every 1% of Lily's Energy Regen exceeding 100%, this skill gains 0.5% Crit. Rate, up to 80%, and 1% Crit. DMG, up to 160%.",
+          "sourceId": "character:1512:1512:7:effect:38",
+          "reviewFingerprint": "f4b13a4911e282a53079ce85e80461a85db08f8c5aafea1f53aa9285dcaefca7",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1512:1512:7:effect:38"
+          },
+          "operations": [
+            {
+              "kind": "add-derived-stat",
+              "stat": "critRate",
+              "mode": "percent",
+              "sourceStat": "energyRegen",
+              "threshold": 100,
+              "value": 0.005,
+              "filter": {
+                "actionIds": [
+                  "1512:7:4",
+                  "1512:7:5"
+                ]
+              },
+              "maximumValue": 0.8
+            },
+            {
+              "kind": "add-derived-stat",
+              "stat": "critDamage",
+              "mode": "percent",
+              "sourceStat": "energyRegen",
+              "threshold": 100,
+              "value": 0.01,
+              "filter": {
+                "actionIds": [
+                  "1512:7:4",
+                  "1512:7:5"
+                ]
+              },
+              "maximumValue": 1.6
+            }
+          ]
+        },
+        {
+          "id": "character:1512:1512:7:effect:45",
+          "name": "Dreamland of Flowers",
+          "description": "When the Resonator with this effect is the active Resonator and can trigger Unison Response, each stack of Unison Boon on the team increases their ATK by 0.1% for every 1% of Lily's Energy Regen exceeding 190%, up to 7%, counting up to 4 stacks of Unison Boon.",
+          "sourceId": "character:1512:1512:7:effect:45",
+          "reviewFingerprint": "f4b13a4911e282a53079ce85e80461a85db08f8c5aafea1f53aa9285dcaefca7",
+          "activation": {
+            "kind": "stacks",
+            "input": "character:1512:silvered-dream-boon",
+            "minimum": 0,
+            "maximum": 4
+          },
+          "operations": [
+            {
+              "kind": "add-derived-stat",
+              "stat": "atk",
+              "mode": "percent",
+              "sourceStat": "energyRegen",
+              "threshold": 190,
+              "value": 0.001,
+              "recipient": "team",
+              "maximumValue": 0.07
+            }
+          ]
+        },
+        {
+          "id": "character:1512:1512:7:effect:47",
+          "name": "Dreamland of Flowers",
+          "description": "For every 0.7% of Lily's Energy Regen exceeding 190%, the Crit. Rate of Echo Skill DMG is increased by 0.1%, up to 10%, and the Crit. DMG of Echo Skill DMG is increased by 0.2%, up to 20%.",
+          "sourceId": "character:1512:1512:7:effect:47",
+          "reviewFingerprint": "f4b13a4911e282a53079ce85e80461a85db08f8c5aafea1f53aa9285dcaefca7",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1512:1512:7:effect:47"
+          },
+          "operations": [
+            {
+              "kind": "add-derived-stat",
+              "stat": "critRate",
+              "mode": "percent",
+              "sourceStat": "energyRegen",
+              "threshold": 190,
+              "value": 0.0014285714285714288,
+              "recipient": "team",
+              "filter": {
+                "damageTypes": [
+                  "echo"
+                ]
+              },
+              "maximumValue": 0.1
+            },
+            {
+              "kind": "add-derived-stat",
+              "stat": "critDamage",
+              "mode": "percent",
+              "sourceStat": "energyRegen",
+              "threshold": 190,
+              "value": 0.0028571428571428576,
+              "recipient": "team",
+              "filter": {
+                "damageTypes": [
+                  "echo"
+                ]
+              },
+              "maximumValue": 0.2
+            }
+          ]
+        },
+        {
+          "id": "character:1512:1512:7:effect:52",
+          "name": "Dreamland of Flowers",
+          "description": "Receiving damage from an enemy target consumes 1 stack of Dream Shelter to grant Lily immunity to interruption and reduce the DMG taken by 60% for 1s.",
+          "sourceId": "character:1512:1512:7:effect:52",
+          "reviewFingerprint": "f4b13a4911e282a53079ce85e80461a85db08f8c5aafea1f53aa9285dcaefca7",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1512:1512:7:effect:52"
+          },
+          "operations": [
+            {
+              "kind": "reduce-damage-taken",
+              "value": 0.6
+            }
+          ]
+        },
+        {
+          "id": "character:1512:1512:9:effect:0",
+          "name": "Healing Bonus+",
+          "description": "Healing Bonus increased by 1.80%.",
+          "sourceId": "character:1512:1512:9:effect:0",
+          "reviewFingerprint": "f4b13a4911e282a53079ce85e80461a85db08f8c5aafea1f53aa9285dcaefca7",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-flat-stat",
+              "stat": "healingBonus",
+              "value": 0.018000000000000002
+            }
+          ]
+        },
+        {
+          "id": "character:1512:1512:10:effect:0",
+          "name": "HP+",
+          "description": "HP increased by 1.80%.",
+          "sourceId": "character:1512:1512:10:effect:0",
+          "reviewFingerprint": "f4b13a4911e282a53079ce85e80461a85db08f8c5aafea1f53aa9285dcaefca7",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-percent-stat",
+              "stat": "hp",
+              "value": 0.018000000000000002
+            }
+          ]
+        },
+        {
+          "id": "character:1512:1512:11:effect:0",
+          "name": "HP+",
+          "description": "HP increased by 1.80%.",
+          "sourceId": "character:1512:1512:11:effect:0",
+          "reviewFingerprint": "f4b13a4911e282a53079ce85e80461a85db08f8c5aafea1f53aa9285dcaefca7",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-percent-stat",
+              "stat": "hp",
+              "value": 0.018000000000000002
+            }
+          ]
+        },
+        {
+          "id": "character:1512:1512:12:effect:0",
+          "name": "Healing Bonus+",
+          "description": "Healing Bonus increased by 1.80%.",
+          "sourceId": "character:1512:1512:12:effect:0",
+          "reviewFingerprint": "f4b13a4911e282a53079ce85e80461a85db08f8c5aafea1f53aa9285dcaefca7",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-flat-stat",
+              "stat": "healingBonus",
+              "value": 0.018000000000000002
+            }
+          ]
+        },
+        {
+          "id": "character:1512:1512:13:effect:0",
+          "name": "Healing Bonus+",
+          "description": "Healing Bonus increased by 4.20%.",
+          "sourceId": "character:1512:1512:13:effect:0",
+          "reviewFingerprint": "f4b13a4911e282a53079ce85e80461a85db08f8c5aafea1f53aa9285dcaefca7",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-flat-stat",
+              "stat": "healingBonus",
+              "value": 0.042
+            }
+          ]
+        },
+        {
+          "id": "character:1512:1512:14:effect:0",
+          "name": "HP+",
+          "description": "HP increased by 4.20%.",
+          "sourceId": "character:1512:1512:14:effect:0",
+          "reviewFingerprint": "f4b13a4911e282a53079ce85e80461a85db08f8c5aafea1f53aa9285dcaefca7",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-percent-stat",
+              "stat": "hp",
+              "value": 0.042
+            }
+          ]
+        },
+        {
+          "id": "character:1512:1512:15:effect:0",
+          "name": "HP+",
+          "description": "HP increased by 4.20%.",
+          "sourceId": "character:1512:1512:15:effect:0",
+          "reviewFingerprint": "f4b13a4911e282a53079ce85e80461a85db08f8c5aafea1f53aa9285dcaefca7",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-percent-stat",
+              "stat": "hp",
+              "value": 0.042
+            }
+          ]
+        },
+        {
+          "id": "character:1512:1512:16:effect:0",
+          "name": "Healing Bonus+",
+          "description": "Healing Bonus increased by 4.20%.",
+          "sourceId": "character:1512:1512:16:effect:0",
+          "reviewFingerprint": "f4b13a4911e282a53079ce85e80461a85db08f8c5aafea1f53aa9285dcaefca7",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-flat-stat",
+              "stat": "healingBonus",
+              "value": 0.042
+            }
+          ]
+        },
+        {
+          "id": "character:1512:1512:3:effect:22",
+          "name": "Into the Dream Cradle",
+          "description": "Each stack increases the ATK of all Resonators in the team by 0.1% for every 1% of Lily's Energy Regen exceeding 190%, up to 7%.",
+          "sourceId": "character:1512:1512:3:effect:22",
+          "reviewFingerprint": "7cf1fa43ef8feac7c69ef3f0a8092859196a918bfb7c21e45ebfb4cdfa1dc2b4",
+          "activation": {
+            "kind": "stacks",
+            "input": "character:1512:dream-aroma-stacks",
+            "minimum": 0,
+            "maximum": 4
+          },
+          "operations": [
+            {
+              "kind": "add-derived-stat",
+              "stat": "atk",
+              "mode": "percent",
+              "sourceStat": "energyRegen",
+              "threshold": 190,
+              "value": 0.001,
+              "recipient": "team",
+              "maximumValue": 0.07
+            }
+          ]
+        },
+        {
+          "id": "character:1512:1512:8:effect:0",
+          "name": "Blooming Fragrance",
+          "description": "Resonators in the team gain 25% All DMG Amplification for 30s.",
+          "sourceId": "character:1512:1512:8:effect:0",
+          "reviewFingerprint": "7cf1fa43ef8feac7c69ef3f0a8092859196a918bfb7c21e45ebfb4cdfa1dc2b4",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1512:1512:8:effect:0"
+          },
+          "operations": [
+            {
+              "kind": "amplify-damage",
+              "value": 0.25,
+              "recipient": "team"
+            }
+          ]
+        },
+        {
+          "id": "character:1512:1512:sequence:2:0",
+          "name": "Listen, a Requiem from the Dream Cradle",
+          "description": "While Cradle Lullaby is active, when a Resonator in the team other than Lily casts an Intro Skill, each stack of Dream Aroma additionally increases Crit. Rate by 2% and Crit. DMG by 6%.",
+          "sourceId": "character:1512:1512:sequence:2:0",
+          "reviewFingerprint": "26bd6855969ec02e8897ad6f09da0636a5504b80e55e443713e9c70210ff67de",
+          "activation": {
+            "kind": "stacks",
+            "input": "character:1512:dream-aroma-stacks",
+            "minimum": 0,
+            "maximum": 4
+          },
+          "operations": [
+            {
+              "kind": "add-flat-stat",
+              "stat": "critRate",
+              "value": 0.02,
+              "stacking": "per-stack",
+              "recipient": "team"
+            },
+            {
+              "kind": "add-flat-stat",
+              "stat": "critDamage",
+              "value": 0.06,
+              "stacking": "per-stack",
+              "recipient": "team"
+            }
+          ],
+          "minimumSequence": 2
+        },
+        {
+          "id": "character:1512:1512:sequence:4:0",
+          "name": "May Your Past Sink into Silence",
+          "description": "Slumberland's healing is increased by 30%.",
+          "sourceId": "character:1512:1512:sequence:4:0",
+          "reviewFingerprint": "26bd6855969ec02e8897ad6f09da0636a5504b80e55e443713e9c70210ff67de",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1512:1512:sequence:4:0"
+          },
+          "operations": [
+            {
+              "kind": "add-flat-stat",
+              "stat": "healingBonus",
+              "value": 0.3,
+              "filter": {
+                "actionIds": [
+                  "1512:3:0"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 4
+        },
+        {
+          "id": "character:1512:1512:sequence:6:0",
+          "name": "May My Reverie Never End",
+          "description": "The Spectro DMG dealt by Heavy Attack - Fairytale's Finale and Heavy Attack - Phantasm's End is increased by 100%.\nThe Spectro DMG dealt by Intro Skill - Eternal Bloom is increased by 700%.",
+          "sourceId": "character:1512:1512:sequence:6:0",
+          "reviewFingerprint": "26bd6855969ec02e8897ad6f09da0636a5504b80e55e443713e9c70210ff67de",
+          "activation": {
+            "kind": "toggle",
+            "input": "character:1512:1512:sequence:6:0"
+          },
+          "operations": [
+            {
+              "kind": "increase-motion-value",
+              "value": 1,
+              "filter": {
+                "actionIds": [
+                  "1512:7:4",
+                  "1512:7:5"
+                ]
+              }
+            },
+            {
+              "kind": "increase-motion-value",
+              "value": 7,
+              "filter": {
+                "actionIds": [
+                  "1512:6:1"
+                ]
+              }
+            }
+          ],
+          "minimumSequence": 6
+        }
+      ]
+    },
     "1601": {
       "id": "1601",
       "sourceId": "character:1601",
@@ -369978,14 +375315,14 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
     "21020107": {
       "id": "21020107",
       "sourceId": "weapon:21020107",
-      "reviewFingerprint": "a37c8387d698145c834ca87997679f059dc034047dd5469564ae5fc1e829e5ba",
+      "reviewFingerprint": "493a4e35aa74866dd9b550ac6f8d3eeb4364a7cd5617222117da4d8967d00fe8",
       "effects": [
         {
           "id": "weapon:21020107:weapon:21020107:effect:0:rank-1",
           "name": "Locked Thunder, Trapped Rain",
           "description": "ATK is increased by 12%.",
           "sourceId": "weapon:21020107:weapon:21020107:effect:0",
-          "reviewFingerprint": "a37c8387d698145c834ca87997679f059dc034047dd5469564ae5fc1e829e5ba",
+          "reviewFingerprint": "493a4e35aa74866dd9b550ac6f8d3eeb4364a7cd5617222117da4d8967d00fe8",
           "activation": {
             "kind": "always"
           },
@@ -370004,7 +375341,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "name": "Locked Thunder, Trapped Rain",
           "description": "ATK is increased by 12%.",
           "sourceId": "weapon:21020107:weapon:21020107:effect:0",
-          "reviewFingerprint": "a37c8387d698145c834ca87997679f059dc034047dd5469564ae5fc1e829e5ba",
+          "reviewFingerprint": "493a4e35aa74866dd9b550ac6f8d3eeb4364a7cd5617222117da4d8967d00fe8",
           "activation": {
             "kind": "always"
           },
@@ -370023,7 +375360,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "name": "Locked Thunder, Trapped Rain",
           "description": "ATK is increased by 12%.",
           "sourceId": "weapon:21020107:weapon:21020107:effect:0",
-          "reviewFingerprint": "a37c8387d698145c834ca87997679f059dc034047dd5469564ae5fc1e829e5ba",
+          "reviewFingerprint": "493a4e35aa74866dd9b550ac6f8d3eeb4364a7cd5617222117da4d8967d00fe8",
           "activation": {
             "kind": "always"
           },
@@ -370042,7 +375379,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "name": "Locked Thunder, Trapped Rain",
           "description": "ATK is increased by 12%.",
           "sourceId": "weapon:21020107:weapon:21020107:effect:0",
-          "reviewFingerprint": "a37c8387d698145c834ca87997679f059dc034047dd5469564ae5fc1e829e5ba",
+          "reviewFingerprint": "493a4e35aa74866dd9b550ac6f8d3eeb4364a7cd5617222117da4d8967d00fe8",
           "activation": {
             "kind": "always"
           },
@@ -370061,7 +375398,7 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
           "name": "Locked Thunder, Trapped Rain",
           "description": "ATK is increased by 12%.",
           "sourceId": "weapon:21020107:weapon:21020107:effect:0",
-          "reviewFingerprint": "a37c8387d698145c834ca87997679f059dc034047dd5469564ae5fc1e829e5ba",
+          "reviewFingerprint": "493a4e35aa74866dd9b550ac6f8d3eeb4364a7cd5617222117da4d8967d00fe8",
           "activation": {
             "kind": "always"
           },
@@ -370078,9 +375415,9 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
         {
           "id": "weapon:21020107:weapon:21020107:effect:1:rank-1",
           "name": "Locked Thunder, Trapped Rain",
-          "description": "Upon gaining Unison, the wielder gains 30% Electro DMG Bonus for 30s.",
+          "description": "When the wielder gains Unison while not already having it, they gain 30% Electro DMG Bonus for 30s.",
           "sourceId": "weapon:21020107:weapon:21020107:effect:1",
-          "reviewFingerprint": "a37c8387d698145c834ca87997679f059dc034047dd5469564ae5fc1e829e5ba",
+          "reviewFingerprint": "493a4e35aa74866dd9b550ac6f8d3eeb4364a7cd5617222117da4d8967d00fe8",
           "activation": {
             "kind": "toggle",
             "input": "weapon:21020107:weapon:21020107:effect:1"
@@ -370102,9 +375439,9 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
         {
           "id": "weapon:21020107:weapon:21020107:effect:1:rank-2",
           "name": "Locked Thunder, Trapped Rain",
-          "description": "Upon gaining Unison, the wielder gains 30% Electro DMG Bonus for 30s.",
+          "description": "When the wielder gains Unison while not already having it, they gain 30% Electro DMG Bonus for 30s.",
           "sourceId": "weapon:21020107:weapon:21020107:effect:1",
-          "reviewFingerprint": "a37c8387d698145c834ca87997679f059dc034047dd5469564ae5fc1e829e5ba",
+          "reviewFingerprint": "493a4e35aa74866dd9b550ac6f8d3eeb4364a7cd5617222117da4d8967d00fe8",
           "activation": {
             "kind": "toggle",
             "input": "weapon:21020107:weapon:21020107:effect:1"
@@ -370126,9 +375463,9 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
         {
           "id": "weapon:21020107:weapon:21020107:effect:1:rank-3",
           "name": "Locked Thunder, Trapped Rain",
-          "description": "Upon gaining Unison, the wielder gains 30% Electro DMG Bonus for 30s.",
+          "description": "When the wielder gains Unison while not already having it, they gain 30% Electro DMG Bonus for 30s.",
           "sourceId": "weapon:21020107:weapon:21020107:effect:1",
-          "reviewFingerprint": "a37c8387d698145c834ca87997679f059dc034047dd5469564ae5fc1e829e5ba",
+          "reviewFingerprint": "493a4e35aa74866dd9b550ac6f8d3eeb4364a7cd5617222117da4d8967d00fe8",
           "activation": {
             "kind": "toggle",
             "input": "weapon:21020107:weapon:21020107:effect:1"
@@ -370150,9 +375487,9 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
         {
           "id": "weapon:21020107:weapon:21020107:effect:1:rank-4",
           "name": "Locked Thunder, Trapped Rain",
-          "description": "Upon gaining Unison, the wielder gains 30% Electro DMG Bonus for 30s.",
+          "description": "When the wielder gains Unison while not already having it, they gain 30% Electro DMG Bonus for 30s.",
           "sourceId": "weapon:21020107:weapon:21020107:effect:1",
-          "reviewFingerprint": "a37c8387d698145c834ca87997679f059dc034047dd5469564ae5fc1e829e5ba",
+          "reviewFingerprint": "493a4e35aa74866dd9b550ac6f8d3eeb4364a7cd5617222117da4d8967d00fe8",
           "activation": {
             "kind": "toggle",
             "input": "weapon:21020107:weapon:21020107:effect:1"
@@ -370174,9 +375511,9 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
         {
           "id": "weapon:21020107:weapon:21020107:effect:1:rank-5",
           "name": "Locked Thunder, Trapped Rain",
-          "description": "Upon gaining Unison, the wielder gains 30% Electro DMG Bonus for 30s.",
+          "description": "When the wielder gains Unison while not already having it, they gain 30% Electro DMG Bonus for 30s.",
           "sourceId": "weapon:21020107:weapon:21020107:effect:1",
-          "reviewFingerprint": "a37c8387d698145c834ca87997679f059dc034047dd5469564ae5fc1e829e5ba",
+          "reviewFingerprint": "493a4e35aa74866dd9b550ac6f8d3eeb4364a7cd5617222117da4d8967d00fe8",
           "activation": {
             "kind": "toggle",
             "input": "weapon:21020107:weapon:21020107:effect:1"
@@ -370198,9 +375535,9 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
         {
           "id": "weapon:21020107:weapon:21020107:effect:2:rank-1",
           "name": "Locked Thunder, Trapped Rain",
-          "description": "Upon gaining Unison, the wielder removes Yearning Mind and grants all Resonators in the team the Binding Mind effect: gain 24% Electro DMG Bonus for 30s.",
+          "description": "When the wielder gains Unison while not already having it, they remove Yearning Mind and grant all Resonators in the team the Binding Mind effect, granting 24% Electro DMG Bonus for 30s.",
           "sourceId": "weapon:21020107:weapon:21020107:effect:2",
-          "reviewFingerprint": "a37c8387d698145c834ca87997679f059dc034047dd5469564ae5fc1e829e5ba",
+          "reviewFingerprint": "493a4e35aa74866dd9b550ac6f8d3eeb4364a7cd5617222117da4d8967d00fe8",
           "activation": {
             "kind": "toggle",
             "input": "weapon:21020107:weapon:21020107:effect:2"
@@ -370224,9 +375561,9 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
         {
           "id": "weapon:21020107:weapon:21020107:effect:2:rank-2",
           "name": "Locked Thunder, Trapped Rain",
-          "description": "Upon gaining Unison, the wielder removes Yearning Mind and grants all Resonators in the team the Binding Mind effect: gain 24% Electro DMG Bonus for 30s.",
+          "description": "When the wielder gains Unison while not already having it, they remove Yearning Mind and grant all Resonators in the team the Binding Mind effect, granting 24% Electro DMG Bonus for 30s.",
           "sourceId": "weapon:21020107:weapon:21020107:effect:2",
-          "reviewFingerprint": "a37c8387d698145c834ca87997679f059dc034047dd5469564ae5fc1e829e5ba",
+          "reviewFingerprint": "493a4e35aa74866dd9b550ac6f8d3eeb4364a7cd5617222117da4d8967d00fe8",
           "activation": {
             "kind": "toggle",
             "input": "weapon:21020107:weapon:21020107:effect:2"
@@ -370250,9 +375587,9 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
         {
           "id": "weapon:21020107:weapon:21020107:effect:2:rank-3",
           "name": "Locked Thunder, Trapped Rain",
-          "description": "Upon gaining Unison, the wielder removes Yearning Mind and grants all Resonators in the team the Binding Mind effect: gain 24% Electro DMG Bonus for 30s.",
+          "description": "When the wielder gains Unison while not already having it, they remove Yearning Mind and grant all Resonators in the team the Binding Mind effect, granting 24% Electro DMG Bonus for 30s.",
           "sourceId": "weapon:21020107:weapon:21020107:effect:2",
-          "reviewFingerprint": "a37c8387d698145c834ca87997679f059dc034047dd5469564ae5fc1e829e5ba",
+          "reviewFingerprint": "493a4e35aa74866dd9b550ac6f8d3eeb4364a7cd5617222117da4d8967d00fe8",
           "activation": {
             "kind": "toggle",
             "input": "weapon:21020107:weapon:21020107:effect:2"
@@ -370276,9 +375613,9 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
         {
           "id": "weapon:21020107:weapon:21020107:effect:2:rank-4",
           "name": "Locked Thunder, Trapped Rain",
-          "description": "Upon gaining Unison, the wielder removes Yearning Mind and grants all Resonators in the team the Binding Mind effect: gain 24% Electro DMG Bonus for 30s.",
+          "description": "When the wielder gains Unison while not already having it, they remove Yearning Mind and grant all Resonators in the team the Binding Mind effect, granting 24% Electro DMG Bonus for 30s.",
           "sourceId": "weapon:21020107:weapon:21020107:effect:2",
-          "reviewFingerprint": "a37c8387d698145c834ca87997679f059dc034047dd5469564ae5fc1e829e5ba",
+          "reviewFingerprint": "493a4e35aa74866dd9b550ac6f8d3eeb4364a7cd5617222117da4d8967d00fe8",
           "activation": {
             "kind": "toggle",
             "input": "weapon:21020107:weapon:21020107:effect:2"
@@ -370302,9 +375639,9 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
         {
           "id": "weapon:21020107:weapon:21020107:effect:2:rank-5",
           "name": "Locked Thunder, Trapped Rain",
-          "description": "Upon gaining Unison, the wielder removes Yearning Mind and grants all Resonators in the team the Binding Mind effect: gain 24% Electro DMG Bonus for 30s.",
+          "description": "When the wielder gains Unison while not already having it, they remove Yearning Mind and grant all Resonators in the team the Binding Mind effect, granting 24% Electro DMG Bonus for 30s.",
           "sourceId": "weapon:21020107:weapon:21020107:effect:2",
-          "reviewFingerprint": "a37c8387d698145c834ca87997679f059dc034047dd5469564ae5fc1e829e5ba",
+          "reviewFingerprint": "493a4e35aa74866dd9b550ac6f8d3eeb4364a7cd5617222117da4d8967d00fe8",
           "activation": {
             "kind": "toggle",
             "input": "weapon:21020107:weapon:21020107:effect:2"
@@ -370328,9 +375665,9 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
         {
           "id": "weapon:21020107:weapon:21020107:effect:4:rank-1",
           "name": "Locked Thunder, Trapped Rain",
-          "description": "When the wielder consumes Concerto Energy, they remove Binding Mind from all Resonators in the team and gain the Yearning Mind effect: the wielder additionally gains 40% Electro DMG Bonus for 14s.",
+          "description": "When the wielder consumes fewer than 100 points of Concerto Energy, they remove Binding Mind from all Resonators on the team and gain the Yearning Mind effect, additionally gaining 40% Electro DMG Bonus for 14s.",
           "sourceId": "weapon:21020107:weapon:21020107:effect:4",
-          "reviewFingerprint": "a37c8387d698145c834ca87997679f059dc034047dd5469564ae5fc1e829e5ba",
+          "reviewFingerprint": "493a4e35aa74866dd9b550ac6f8d3eeb4364a7cd5617222117da4d8967d00fe8",
           "activation": {
             "kind": "toggle",
             "input": "weapon:21020107:weapon:21020107:effect:4"
@@ -370353,9 +375690,9 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
         {
           "id": "weapon:21020107:weapon:21020107:effect:4:rank-2",
           "name": "Locked Thunder, Trapped Rain",
-          "description": "When the wielder consumes Concerto Energy, they remove Binding Mind from all Resonators in the team and gain the Yearning Mind effect: the wielder additionally gains 40% Electro DMG Bonus for 14s.",
+          "description": "When the wielder consumes fewer than 100 points of Concerto Energy, they remove Binding Mind from all Resonators on the team and gain the Yearning Mind effect, additionally gaining 40% Electro DMG Bonus for 14s.",
           "sourceId": "weapon:21020107:weapon:21020107:effect:4",
-          "reviewFingerprint": "a37c8387d698145c834ca87997679f059dc034047dd5469564ae5fc1e829e5ba",
+          "reviewFingerprint": "493a4e35aa74866dd9b550ac6f8d3eeb4364a7cd5617222117da4d8967d00fe8",
           "activation": {
             "kind": "toggle",
             "input": "weapon:21020107:weapon:21020107:effect:4"
@@ -370378,9 +375715,9 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
         {
           "id": "weapon:21020107:weapon:21020107:effect:4:rank-3",
           "name": "Locked Thunder, Trapped Rain",
-          "description": "When the wielder consumes Concerto Energy, they remove Binding Mind from all Resonators in the team and gain the Yearning Mind effect: the wielder additionally gains 40% Electro DMG Bonus for 14s.",
+          "description": "When the wielder consumes fewer than 100 points of Concerto Energy, they remove Binding Mind from all Resonators on the team and gain the Yearning Mind effect, additionally gaining 40% Electro DMG Bonus for 14s.",
           "sourceId": "weapon:21020107:weapon:21020107:effect:4",
-          "reviewFingerprint": "a37c8387d698145c834ca87997679f059dc034047dd5469564ae5fc1e829e5ba",
+          "reviewFingerprint": "493a4e35aa74866dd9b550ac6f8d3eeb4364a7cd5617222117da4d8967d00fe8",
           "activation": {
             "kind": "toggle",
             "input": "weapon:21020107:weapon:21020107:effect:4"
@@ -370403,9 +375740,9 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
         {
           "id": "weapon:21020107:weapon:21020107:effect:4:rank-4",
           "name": "Locked Thunder, Trapped Rain",
-          "description": "When the wielder consumes Concerto Energy, they remove Binding Mind from all Resonators in the team and gain the Yearning Mind effect: the wielder additionally gains 40% Electro DMG Bonus for 14s.",
+          "description": "When the wielder consumes fewer than 100 points of Concerto Energy, they remove Binding Mind from all Resonators on the team and gain the Yearning Mind effect, additionally gaining 40% Electro DMG Bonus for 14s.",
           "sourceId": "weapon:21020107:weapon:21020107:effect:4",
-          "reviewFingerprint": "a37c8387d698145c834ca87997679f059dc034047dd5469564ae5fc1e829e5ba",
+          "reviewFingerprint": "493a4e35aa74866dd9b550ac6f8d3eeb4364a7cd5617222117da4d8967d00fe8",
           "activation": {
             "kind": "toggle",
             "input": "weapon:21020107:weapon:21020107:effect:4"
@@ -370428,9 +375765,9 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
         {
           "id": "weapon:21020107:weapon:21020107:effect:4:rank-5",
           "name": "Locked Thunder, Trapped Rain",
-          "description": "When the wielder consumes Concerto Energy, they remove Binding Mind from all Resonators in the team and gain the Yearning Mind effect: the wielder additionally gains 40% Electro DMG Bonus for 14s.",
+          "description": "When the wielder consumes fewer than 100 points of Concerto Energy, they remove Binding Mind from all Resonators on the team and gain the Yearning Mind effect, additionally gaining 40% Electro DMG Bonus for 14s.",
           "sourceId": "weapon:21020107:weapon:21020107:effect:4",
-          "reviewFingerprint": "a37c8387d698145c834ca87997679f059dc034047dd5469564ae5fc1e829e5ba",
+          "reviewFingerprint": "493a4e35aa74866dd9b550ac6f8d3eeb4364a7cd5617222117da4d8967d00fe8",
           "activation": {
             "kind": "toggle",
             "input": "weapon:21020107:weapon:21020107:effect:4"
@@ -374264,6 +379601,338 @@ export const reviewedMechanicsCatalog: ReviewedMechanicsCatalog = {
               "filter": {
                 "damageTypes": [
                   "skill"
+                ]
+              }
+            }
+          ],
+          "minimumRank": 5,
+          "maximumRank": 5
+        }
+      ]
+    },
+    "21030076": {
+      "id": "21030076",
+      "sourceId": "weapon:21030076",
+      "reviewFingerprint": "71a5b904b09cddfe9b982fce52bbeacc1b2aa90d8fd1eb4b6e1660c3a7f9d82e",
+      "effects": [
+        {
+          "id": "weapon:21030076:weapon:21030076:effect:0:rank-1",
+          "name": "Dreamland Solace",
+          "description": "Increases Max HP by 12%.",
+          "sourceId": "weapon:21030076:weapon:21030076:effect:0",
+          "reviewFingerprint": "71a5b904b09cddfe9b982fce52bbeacc1b2aa90d8fd1eb4b6e1660c3a7f9d82e",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-percent-stat",
+              "stat": "hp",
+              "value": 0.12
+            }
+          ],
+          "minimumRank": 1,
+          "maximumRank": 1
+        },
+        {
+          "id": "weapon:21030076:weapon:21030076:effect:0:rank-2",
+          "name": "Dreamland Solace",
+          "description": "Increases Max HP by 12%.",
+          "sourceId": "weapon:21030076:weapon:21030076:effect:0",
+          "reviewFingerprint": "71a5b904b09cddfe9b982fce52bbeacc1b2aa90d8fd1eb4b6e1660c3a7f9d82e",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-percent-stat",
+              "stat": "hp",
+              "value": 0.15
+            }
+          ],
+          "minimumRank": 2,
+          "maximumRank": 2
+        },
+        {
+          "id": "weapon:21030076:weapon:21030076:effect:0:rank-3",
+          "name": "Dreamland Solace",
+          "description": "Increases Max HP by 12%.",
+          "sourceId": "weapon:21030076:weapon:21030076:effect:0",
+          "reviewFingerprint": "71a5b904b09cddfe9b982fce52bbeacc1b2aa90d8fd1eb4b6e1660c3a7f9d82e",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-percent-stat",
+              "stat": "hp",
+              "value": 0.18
+            }
+          ],
+          "minimumRank": 3,
+          "maximumRank": 3
+        },
+        {
+          "id": "weapon:21030076:weapon:21030076:effect:0:rank-4",
+          "name": "Dreamland Solace",
+          "description": "Increases Max HP by 12%.",
+          "sourceId": "weapon:21030076:weapon:21030076:effect:0",
+          "reviewFingerprint": "71a5b904b09cddfe9b982fce52bbeacc1b2aa90d8fd1eb4b6e1660c3a7f9d82e",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-percent-stat",
+              "stat": "hp",
+              "value": 0.21
+            }
+          ],
+          "minimumRank": 4,
+          "maximumRank": 4
+        },
+        {
+          "id": "weapon:21030076:weapon:21030076:effect:0:rank-5",
+          "name": "Dreamland Solace",
+          "description": "Increases Max HP by 12%.",
+          "sourceId": "weapon:21030076:weapon:21030076:effect:0",
+          "reviewFingerprint": "71a5b904b09cddfe9b982fce52bbeacc1b2aa90d8fd1eb4b6e1660c3a7f9d82e",
+          "activation": {
+            "kind": "always"
+          },
+          "operations": [
+            {
+              "kind": "add-percent-stat",
+              "stat": "hp",
+              "value": 0.24
+            }
+          ],
+          "minimumRank": 5,
+          "maximumRank": 5
+        },
+        {
+          "id": "weapon:21030076:weapon:21030076:effect:3:rank-1",
+          "name": "Dreamland Solace",
+          "description": "When Soothed Soul is active, if a Resonator in the team gains Unison or triggers Unison Response, that Resonator gains 16% ATK increase for 30s. This effect is removed when Soothed Soul ends.",
+          "sourceId": "weapon:21030076:weapon:21030076:effect:3",
+          "reviewFingerprint": "71a5b904b09cddfe9b982fce52bbeacc1b2aa90d8fd1eb4b6e1660c3a7f9d82e",
+          "activation": {
+            "kind": "toggle",
+            "input": "weapon:21030076:weapon:21030076:effect:3"
+          },
+          "operations": [
+            {
+              "kind": "add-percent-stat",
+              "stat": "atk",
+              "value": 0.16,
+              "recipient": "team"
+            }
+          ],
+          "minimumRank": 1,
+          "maximumRank": 1
+        },
+        {
+          "id": "weapon:21030076:weapon:21030076:effect:3:rank-2",
+          "name": "Dreamland Solace",
+          "description": "When Soothed Soul is active, if a Resonator in the team gains Unison or triggers Unison Response, that Resonator gains 16% ATK increase for 30s. This effect is removed when Soothed Soul ends.",
+          "sourceId": "weapon:21030076:weapon:21030076:effect:3",
+          "reviewFingerprint": "71a5b904b09cddfe9b982fce52bbeacc1b2aa90d8fd1eb4b6e1660c3a7f9d82e",
+          "activation": {
+            "kind": "toggle",
+            "input": "weapon:21030076:weapon:21030076:effect:3"
+          },
+          "operations": [
+            {
+              "kind": "add-percent-stat",
+              "stat": "atk",
+              "value": 0.2,
+              "recipient": "team"
+            }
+          ],
+          "minimumRank": 2,
+          "maximumRank": 2
+        },
+        {
+          "id": "weapon:21030076:weapon:21030076:effect:3:rank-3",
+          "name": "Dreamland Solace",
+          "description": "When Soothed Soul is active, if a Resonator in the team gains Unison or triggers Unison Response, that Resonator gains 16% ATK increase for 30s. This effect is removed when Soothed Soul ends.",
+          "sourceId": "weapon:21030076:weapon:21030076:effect:3",
+          "reviewFingerprint": "71a5b904b09cddfe9b982fce52bbeacc1b2aa90d8fd1eb4b6e1660c3a7f9d82e",
+          "activation": {
+            "kind": "toggle",
+            "input": "weapon:21030076:weapon:21030076:effect:3"
+          },
+          "operations": [
+            {
+              "kind": "add-percent-stat",
+              "stat": "atk",
+              "value": 0.24,
+              "recipient": "team"
+            }
+          ],
+          "minimumRank": 3,
+          "maximumRank": 3
+        },
+        {
+          "id": "weapon:21030076:weapon:21030076:effect:3:rank-4",
+          "name": "Dreamland Solace",
+          "description": "When Soothed Soul is active, if a Resonator in the team gains Unison or triggers Unison Response, that Resonator gains 16% ATK increase for 30s. This effect is removed when Soothed Soul ends.",
+          "sourceId": "weapon:21030076:weapon:21030076:effect:3",
+          "reviewFingerprint": "71a5b904b09cddfe9b982fce52bbeacc1b2aa90d8fd1eb4b6e1660c3a7f9d82e",
+          "activation": {
+            "kind": "toggle",
+            "input": "weapon:21030076:weapon:21030076:effect:3"
+          },
+          "operations": [
+            {
+              "kind": "add-percent-stat",
+              "stat": "atk",
+              "value": 0.28,
+              "recipient": "team"
+            }
+          ],
+          "minimumRank": 4,
+          "maximumRank": 4
+        },
+        {
+          "id": "weapon:21030076:weapon:21030076:effect:3:rank-5",
+          "name": "Dreamland Solace",
+          "description": "When Soothed Soul is active, if a Resonator in the team gains Unison or triggers Unison Response, that Resonator gains 16% ATK increase for 30s. This effect is removed when Soothed Soul ends.",
+          "sourceId": "weapon:21030076:weapon:21030076:effect:3",
+          "reviewFingerprint": "71a5b904b09cddfe9b982fce52bbeacc1b2aa90d8fd1eb4b6e1660c3a7f9d82e",
+          "activation": {
+            "kind": "toggle",
+            "input": "weapon:21030076:weapon:21030076:effect:3"
+          },
+          "operations": [
+            {
+              "kind": "add-percent-stat",
+              "stat": "atk",
+              "value": 0.32,
+              "recipient": "team"
+            }
+          ],
+          "minimumRank": 5,
+          "maximumRank": 5
+        },
+        {
+          "id": "weapon:21030076:weapon:21030076:effect:4:rank-1",
+          "name": "Dreamland Solace",
+          "description": "When the wielder provides healing with Heavy Attack, the active Resonator also gains 24% Echo Skill DMG Bonus for 30s.",
+          "sourceId": "weapon:21030076:weapon:21030076:effect:4",
+          "reviewFingerprint": "71a5b904b09cddfe9b982fce52bbeacc1b2aa90d8fd1eb4b6e1660c3a7f9d82e",
+          "activation": {
+            "kind": "toggle",
+            "input": "weapon:21030076:weapon:21030076:effect:4"
+          },
+          "operations": [
+            {
+              "kind": "add-damage-bonus",
+              "value": 0.24,
+              "recipient": "next",
+              "filter": {
+                "damageTypes": [
+                  "echo"
+                ]
+              }
+            }
+          ],
+          "minimumRank": 1,
+          "maximumRank": 1
+        },
+        {
+          "id": "weapon:21030076:weapon:21030076:effect:4:rank-2",
+          "name": "Dreamland Solace",
+          "description": "When the wielder provides healing with Heavy Attack, the active Resonator also gains 24% Echo Skill DMG Bonus for 30s.",
+          "sourceId": "weapon:21030076:weapon:21030076:effect:4",
+          "reviewFingerprint": "71a5b904b09cddfe9b982fce52bbeacc1b2aa90d8fd1eb4b6e1660c3a7f9d82e",
+          "activation": {
+            "kind": "toggle",
+            "input": "weapon:21030076:weapon:21030076:effect:4"
+          },
+          "operations": [
+            {
+              "kind": "add-damage-bonus",
+              "value": 0.3,
+              "recipient": "next",
+              "filter": {
+                "damageTypes": [
+                  "echo"
+                ]
+              }
+            }
+          ],
+          "minimumRank": 2,
+          "maximumRank": 2
+        },
+        {
+          "id": "weapon:21030076:weapon:21030076:effect:4:rank-3",
+          "name": "Dreamland Solace",
+          "description": "When the wielder provides healing with Heavy Attack, the active Resonator also gains 24% Echo Skill DMG Bonus for 30s.",
+          "sourceId": "weapon:21030076:weapon:21030076:effect:4",
+          "reviewFingerprint": "71a5b904b09cddfe9b982fce52bbeacc1b2aa90d8fd1eb4b6e1660c3a7f9d82e",
+          "activation": {
+            "kind": "toggle",
+            "input": "weapon:21030076:weapon:21030076:effect:4"
+          },
+          "operations": [
+            {
+              "kind": "add-damage-bonus",
+              "value": 0.36,
+              "recipient": "next",
+              "filter": {
+                "damageTypes": [
+                  "echo"
+                ]
+              }
+            }
+          ],
+          "minimumRank": 3,
+          "maximumRank": 3
+        },
+        {
+          "id": "weapon:21030076:weapon:21030076:effect:4:rank-4",
+          "name": "Dreamland Solace",
+          "description": "When the wielder provides healing with Heavy Attack, the active Resonator also gains 24% Echo Skill DMG Bonus for 30s.",
+          "sourceId": "weapon:21030076:weapon:21030076:effect:4",
+          "reviewFingerprint": "71a5b904b09cddfe9b982fce52bbeacc1b2aa90d8fd1eb4b6e1660c3a7f9d82e",
+          "activation": {
+            "kind": "toggle",
+            "input": "weapon:21030076:weapon:21030076:effect:4"
+          },
+          "operations": [
+            {
+              "kind": "add-damage-bonus",
+              "value": 0.42,
+              "recipient": "next",
+              "filter": {
+                "damageTypes": [
+                  "echo"
+                ]
+              }
+            }
+          ],
+          "minimumRank": 4,
+          "maximumRank": 4
+        },
+        {
+          "id": "weapon:21030076:weapon:21030076:effect:4:rank-5",
+          "name": "Dreamland Solace",
+          "description": "When the wielder provides healing with Heavy Attack, the active Resonator also gains 24% Echo Skill DMG Bonus for 30s.",
+          "sourceId": "weapon:21030076:weapon:21030076:effect:4",
+          "reviewFingerprint": "71a5b904b09cddfe9b982fce52bbeacc1b2aa90d8fd1eb4b6e1660c3a7f9d82e",
+          "activation": {
+            "kind": "toggle",
+            "input": "weapon:21030076:weapon:21030076:effect:4"
+          },
+          "operations": [
+            {
+              "kind": "add-damage-bonus",
+              "value": 0.48,
+              "recipient": "next",
+              "filter": {
+                "damageTypes": [
+                  "echo"
                 ]
               }
             }

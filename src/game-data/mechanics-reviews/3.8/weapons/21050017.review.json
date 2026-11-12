@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.8",
+  "entityKind": "weapon",
+  "entityId": "21050017",
+  "entityName": "Call of the Abyss",
+  "sourceFingerprint": "f328207b0345cff254d65d37bdc53715cd6de9ace84f283f07163b42f8c9ba56",
+  "reviewedAt": "2026-09-09T07:56:04.558Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "c58e14b34f392f295ab04544db53b1195b0748d4f220a92df0c6a6c49edcab07",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21050017:effect:0",
+            "sourceName": "Pole of the Celestial Dome",
+            "text": "Casting Resonance Liberation increases the Resonator's Healing Bonus by 16% for 15s.",
+            "refinementTexts": [
+              "Casting Resonance Liberation increases the Resonator's Healing Bonus by 16% for 15s.",
+              "Casting Resonance Liberation increases the Resonator's Healing Bonus by 20% for 15s.",
+              "Casting Resonance Liberation increases the Resonator's Healing Bonus by 24% for 15s.",
+              "Casting Resonance Liberation increases the Resonator's Healing Bonus by 28% for 15s.",
+              "Casting Resonance Liberation increases the Resonator's Healing Bonus by 32% for 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Liberation used",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "healingBonus",
+                  "operation": "addPercent",
+                  "value": 16
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "healingBonus",
+                    "operation": "addPercent",
+                    "value": 16
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "healingBonus",
+                    "operation": "addPercent",
+                    "value": 20
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "healingBonus",
+                    "operation": "addPercent",
+                    "value": 24
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "healingBonus",
+                    "operation": "addPercent",
+                    "value": 28
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Liberation cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "healingBonus",
+                    "operation": "addPercent",
+                    "value": 32
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.7"
+}

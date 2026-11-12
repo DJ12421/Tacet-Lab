@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.8",
+  "entityKind": "sonata",
+  "entityId": "5",
+  "entityName": "Celestial Light",
+  "sourceFingerprint": "3116c5884fc2077906bd586a5d54885b89a49bed757356e70deda09f0a48202c",
+  "reviewedAt": "2026-09-05T10:07:34.112Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "15dd686784ca80e1edf7d7022ff711a7991f11f4c647d818b902ee3b6410b8d5",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:5:2:0",
+            "sourceName": "Celestial Light",
+            "text": "Spectro DMG + 10%.",
+            "refinementTexts": [
+              "Spectro DMG + 10%."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Spectro",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2
+          },
+          {
+            "id": "sonata:5:5:0",
+            "sourceName": "Celestial Light",
+            "text": "Spectro DMG + 30% for 15s after releasing Intro Skill.",
+            "refinementTexts": [
+              "Spectro DMG + 30% for 15s after releasing Intro Skill."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Intro Skill casted",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "Spectro",
+                  "operation": "addPercent",
+                  "value": 30
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 5
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.7"
+}

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.8",
+  "entityKind": "sonata",
+  "entityId": "32",
+  "entityName": "Shadow of Shattered Dreams",
+  "sourceFingerprint": "8c3e6f3576d0a293f166104d81d993db1e01208d21d877bcbdf68346ee5bb64b",
+  "reviewedAt": "2026-09-05T10:03:12.102Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "f048b14a7e67df2f14b20eae606023760463644c3fac39681dd30fdbfa3ef425",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:32:1:0",
+            "sourceName": "Shadow of Shattered Dreams",
+            "text": "Inflicting Hack - Shifting on the target grants 35% Basic Attack DMG Bonus and Heavy Attack DMG Bonus for 15s.",
+            "refinementTexts": [
+              "Inflicting Hack - Shifting on the target grants 35% Basic Attack DMG Bonus and Heavy Attack DMG Bonus for 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "basicDamage",
+                  "operation": "addPercent",
+                  "value": 35
+                },
+                {
+                  "stat": "heavyDamage",
+                  "operation": "addPercent",
+                  "value": 35
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Hack - Shifting inflicted"
+            },
+            "sourceType": "sonata",
+            "pieces": 1
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.7"
+}

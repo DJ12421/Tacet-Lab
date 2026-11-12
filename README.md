@@ -52,7 +52,7 @@ The app downloads catalog artwork and the selected character's animated portrait
 - Live scanning is designed for 1920x1080 and 2560x1440 16:9 layouts on desktop Chrome or Edge.
 - Mobile supports browsing and editing, but not live game-window capture.
 - Real 1080p and 1440p fixtures have not yet demonstrated the 95% OCR target. Every result must be reviewed.
-- Formula coverage is pinned to the versioned 3.6 catalog: 62 characters, 122 weapons, 34 Sonatas, and 181 Echoes are classified, and generated character attack parameters drive the result sheets.
+- Formula coverage is pinned to the versioned 3.8 catalog: 65 characters, 125 weapons, 37 Sonatas, and 187 Echoes are classified, and generated character attack parameters drive the result sheets.
 - Catalog images and animated character portraits require a network connection unless the browser already cached them. The first OCR run also requires network access.
 
 ## Local development

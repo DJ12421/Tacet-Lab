@@ -142,6 +142,15 @@ describe('combat Step 4 reviewed effects', () => {
     expectClose(result.stats.critRate, 0.7)
   })
 
+  it('applies an Energy Regen derived bonus once per selected stack', () => {
+    const bonus = effect('aroma', {
+      activation:{ kind:'stacks', input:'aroma-stacks', minimum:0, maximum:4 },
+      operations:[{ kind:'add-derived-stat', stat:'atk', mode:'percent', sourceStat:'energyRegen', threshold:190, value:0.001, maximumValue:0.07, stacking:'per-stack' }]
+    })
+    const result = valueOf(fixture({ actorConditionStats:{ energyRegen:250 }, characterEffects:[bonus], selections:{ 'aroma-stacks':3 } }))
+    expectClose(result.stats.atk, 1180)
+  })
+
   it('applies Mornye Critical Protocol crit bonuses only to its Liberation and caps them', () => {
     const criticalProtocol = mechanicsRegistry.characters['1209'].effects?.find((entry) => entry.id === 'character:1209:1209:3:effect:1')
     expect(criticalProtocol).toBeDefined()

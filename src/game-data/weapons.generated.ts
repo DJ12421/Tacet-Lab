@@ -3890,6 +3890,78 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21050066_UI.webp"
   },
   {
+    "id": "21030076",
+    "name": "Lullaby",
+    "description": "So close to crumbling, the flower gave itself to the softness of dreams. There, its thoughts froze and its hopes set, until it withered in the lovely dream cradle.\nIt waits, and waits... It waits on for a prayer, an accident, a chance to bloom again and find its peace.",
+    "rarity": 5,
+    "type": "Pistols",
+    "baseAtk": 412,
+    "secondaryStat": "Energy Regen",
+    "secondaryStatValue": "77%",
+    "levelStats": [
+      {
+        "level": 1,
+        "baseAtk": 33,
+        "secondaryStatValue": "17.1%"
+      },
+      {
+        "level": 10,
+        "baseAtk": 58,
+        "secondaryStatValue": "23.7%"
+      },
+      {
+        "level": 20,
+        "baseAtk": 107,
+        "secondaryStatValue": "30.4%"
+      },
+      {
+        "level": 30,
+        "baseAtk": 135,
+        "secondaryStatValue": "37%"
+      },
+      {
+        "level": 40,
+        "baseAtk": 185,
+        "secondaryStatValue": "43.7%"
+      },
+      {
+        "level": 50,
+        "baseAtk": 235,
+        "secondaryStatValue": "50.4%"
+      },
+      {
+        "level": 60,
+        "baseAtk": 285,
+        "secondaryStatValue": "57%"
+      },
+      {
+        "level": 70,
+        "baseAtk": 334,
+        "secondaryStatValue": "63.7%"
+      },
+      {
+        "level": 80,
+        "baseAtk": 384,
+        "secondaryStatValue": "70.3%"
+      },
+      {
+        "level": 90,
+        "baseAtk": 412,
+        "secondaryStatValue": "77%"
+      }
+    ],
+    "passiveName": "Dreamland Solace",
+    "passiveEffects": [
+      "Increases Max HP by 12%. Casting Resonance Liberation restores 8 points of Concerto Energy, triggered once every 20s. All Resonators in the team gain Soothed Soul for 30s when the wielder provides healing with Heavy Attack. When Soothed Soul is active, if a Resonator in the team gains Unison or triggers Unison Response, that Resonator gains 16% ATK increase for 30s. This effect is removed when Soothed Soul ends. When the wielder provides healing with Heavy Attack, the active Resonator also gains 24% Echo Skill DMG Bonus for 30s. Effects of the same name do not stack.",
+      "Increases Max HP by 15%. Casting Resonance Liberation restores 10 points of Concerto Energy, triggered once every 20s. All Resonators in the team gain Soothed Soul for 30s when the wielder provides healing with Heavy Attack. When Soothed Soul is active, if a Resonator in the team gains Unison or triggers Unison Response, that Resonator gains 20% ATK increase for 30s. This effect is removed when Soothed Soul ends. When the wielder provides healing with Heavy Attack, the active Resonator also gains 30% Echo Skill DMG Bonus for 30s. Effects of the same name do not stack.",
+      "Increases Max HP by 18%. Casting Resonance Liberation restores 12 points of Concerto Energy, triggered once every 20s. All Resonators in the team gain Soothed Soul for 30s when the wielder provides healing with Heavy Attack. When Soothed Soul is active, if a Resonator in the team gains Unison or triggers Unison Response, that Resonator gains 24% ATK increase for 30s. This effect is removed when Soothed Soul ends. When the wielder provides healing with Heavy Attack, the active Resonator also gains 36% Echo Skill DMG Bonus for 30s. Effects of the same name do not stack.",
+      "Increases Max HP by 21%. Casting Resonance Liberation restores 14 points of Concerto Energy, triggered once every 20s. All Resonators in the team gain Soothed Soul for 30s when the wielder provides healing with Heavy Attack. When Soothed Soul is active, if a Resonator in the team gains Unison or triggers Unison Response, that Resonator gains 28% ATK increase for 30s. This effect is removed when Soothed Soul ends. When the wielder provides healing with Heavy Attack, the active Resonator also gains 42% Echo Skill DMG Bonus for 30s. Effects of the same name do not stack.",
+      "Increases Max HP by 24%. Casting Resonance Liberation restores 16 points of Concerto Energy, triggered once every 20s. All Resonators in the team gain Soothed Soul for 30s when the wielder provides healing with Heavy Attack. When Soothed Soul is active, if a Resonator in the team gains Unison or triggers Unison Response, that Resonator gains 32% ATK increase for 30s. This effect is removed when Soothed Soul ends. When the wielder provides healing with Heavy Attack, the active Resonator also gains 48% Echo Skill DMG Bonus for 30s. Effects of the same name do not stack."
+    ],
+    "articleUrl": "https://ww.nanoka.cc/weapon/21030076",
+    "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21030076_UI.webp"
+  },
+  {
     "id": "21020074",
     "name": "Lumingloss",
     "description": "This Sword is a ceremonial weapon used in Huanglong's Magistrate Inauguration Ceremonies. The golden ginkgo leaf pattern symbolizes Huanglong's resilience, thriving in a world that has left it behind.",
@@ -8344,11 +8416,11 @@ export const generatedWeaponCatalog:GeneratedWeaponCatalogEntry[]=[
     ],
     "passiveName": "Locked Thunder, Trapped Rain",
     "passiveEffects": [
-      "ATK is increased by 12%. Upon gaining Unison, the wielder gains 30% Electro DMG Bonus for 30s.\nUpon gaining Unison, the wielder removes Yearning Mind and grants all Resonators in the team the Binding Mind effect: gain 24% Electro DMG Bonus for 30s. Effects of the same name cannot stack.\nWhen the wielder consumes Concerto Energy, they remove Binding Mind from all Resonators in the team and gain the Yearning Mind effect: the wielder additionally gains 40% Electro DMG Bonus for 14s. Switching to another Resonator ends this effect early.",
-      "ATK is increased by 15%. Upon gaining Unison, the wielder gains 37.5% Electro DMG Bonus for 30s.\nUpon gaining Unison, the wielder removes Yearning Mind and grants all Resonators in the team the Binding Mind effect: gain 30% Electro DMG Bonus for 30s. Effects of the same name cannot stack.\nWhen the wielder consumes Concerto Energy, they remove Binding Mind from all Resonators in the team and gain the Yearning Mind effect: the wielder additionally gains 50% Electro DMG Bonus for 14s. Switching to another Resonator ends this effect early.",
-      "ATK is increased by 18%. Upon gaining Unison, the wielder gains 45% Electro DMG Bonus for 30s.\nUpon gaining Unison, the wielder removes Yearning Mind and grants all Resonators in the team the Binding Mind effect: gain 36% Electro DMG Bonus for 30s. Effects of the same name cannot stack.\nWhen the wielder consumes Concerto Energy, they remove Binding Mind from all Resonators in the team and gain the Yearning Mind effect: the wielder additionally gains 60% Electro DMG Bonus for 14s. Switching to another Resonator ends this effect early.",
-      "ATK is increased by 21%. Upon gaining Unison, the wielder gains 52.5% Electro DMG Bonus for 30s.\nUpon gaining Unison, the wielder removes Yearning Mind and grants all Resonators in the team the Binding Mind effect: gain 42% Electro DMG Bonus for 30s. Effects of the same name cannot stack.\nWhen the wielder consumes Concerto Energy, they remove Binding Mind from all Resonators in the team and gain the Yearning Mind effect: the wielder additionally gains 70% Electro DMG Bonus for 14s. Switching to another Resonator ends this effect early.",
-      "ATK is increased by 24%. Upon gaining Unison, the wielder gains 60% Electro DMG Bonus for 30s.\nUpon gaining Unison, the wielder removes Yearning Mind and grants all Resonators in the team the Binding Mind effect: gain 48% Electro DMG Bonus for 30s. Effects of the same name cannot stack.\nWhen the wielder consumes Concerto Energy, they remove Binding Mind from all Resonators in the team and gain the Yearning Mind effect: the wielder additionally gains 80% Electro DMG Bonus for 14s. Switching to another Resonator ends this effect early."
+      "ATK is increased by 12%. When the wielder gains Unison while not already having it, they gain 30% Electro DMG Bonus for 30s.\nWhen the wielder gains Unison while not already having it, they remove Yearning Mind and grant all Resonators in the team the Binding Mind effect, granting 24% Electro DMG Bonus for 30s. Effects with the same name cannot stack.\nWhen the wielder consumes fewer than 100 points of Concerto Energy, they remove Binding Mind from all Resonators on the team and gain the Yearning Mind effect, additionally gaining 40% Electro DMG Bonus for 14s. Switching to another Resonator ends this effect early.",
+      "ATK is increased by 15%. When the wielder gains Unison while not already having it, they gain 37.5% Electro DMG Bonus for 30s.\nWhen the wielder gains Unison while not already having it, they remove Yearning Mind and grant all Resonators in the team the Binding Mind effect, granting 30% Electro DMG Bonus for 30s. Effects with the same name cannot stack.\nWhen the wielder consumes fewer than 100 points of Concerto Energy, they remove Binding Mind from all Resonators on the team and gain the Yearning Mind effect, additionally gaining 50% Electro DMG Bonus for 14s. Switching to another Resonator ends this effect early.",
+      "ATK is increased by 18%. When the wielder gains Unison while not already having it, they gain 45% Electro DMG Bonus for 30s.\nWhen the wielder gains Unison while not already having it, they remove Yearning Mind and grant all Resonators in the team the Binding Mind effect, granting 36% Electro DMG Bonus for 30s. Effects with the same name cannot stack.\nWhen the wielder consumes fewer than 100 points of Concerto Energy, they remove Binding Mind from all Resonators on the team and gain the Yearning Mind effect, additionally gaining 60% Electro DMG Bonus for 14s. Switching to another Resonator ends this effect early.",
+      "ATK is increased by 21%. When the wielder gains Unison while not already having it, they gain 52.5% Electro DMG Bonus for 30s.\nWhen the wielder gains Unison while not already having it, they remove Yearning Mind and grant all Resonators in the team the Binding Mind effect, granting 42% Electro DMG Bonus for 30s. Effects with the same name cannot stack.\nWhen the wielder consumes fewer than 100 points of Concerto Energy, they remove Binding Mind from all Resonators on the team and gain the Yearning Mind effect, additionally gaining 70% Electro DMG Bonus for 14s. Switching to another Resonator ends this effect early.",
+      "ATK is increased by 24%. When the wielder gains Unison while not already having it, they gain 60% Electro DMG Bonus for 30s.\nWhen the wielder gains Unison while not already having it, they remove Yearning Mind and grant all Resonators in the team the Binding Mind effect, granting 48% Electro DMG Bonus for 30s. Effects with the same name cannot stack.\nWhen the wielder consumes fewer than 100 points of Concerto Energy, they remove Binding Mind from all Resonators on the team and gain the Yearning Mind effect, additionally gaining 80% Electro DMG Bonus for 14s. Switching to another Resonator ends this effect early."
     ],
     "articleUrl": "https://ww.nanoka.cc/weapon/21020107",
     "iconSourceUrl": "https://static.nanoka.cc/assets/ww/UIResources/Common/Image/IconWeapon/T_IconWeapon21020107_UI.webp"

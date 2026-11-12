@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.8",
+  "entityKind": "weapon",
+  "entityId": "21040074",
+  "entityName": "Stonard",
+  "sourceFingerprint": "e9dcaab11b8e15ec52da401816cbd6e36b2fb5cbbc2368d1d62b41ad57d82da3",
+  "reviewedAt": "2026-09-09T07:52:36.783Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "971d79693cfe042ffa25cf37c8ef7935bef02ae079bc397ad23c6e768c99ddf7",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21040074:effect:0",
+            "sourceName": "Wallbreaker",
+            "text": "Casting Resonance Skill increases the wielder's Resonance Liberation DMG Bonus by 18%, lasting for 15s.",
+            "refinementTexts": [
+              "Casting Resonance Skill increases the wielder's Resonance Liberation DMG Bonus by 18%, lasting for 15s.",
+              "Casting Resonance Skill increases the wielder's Resonance Liberation DMG Bonus by 27%, lasting for 15s.",
+              "Casting Resonance Skill increases the wielder's Resonance Liberation DMG Bonus by 36%, lasting for 15s.",
+              "Casting Resonance Skill increases the wielder's Resonance Liberation DMG Bonus by 45%, lasting for 15s.",
+              "Casting Resonance Skill increases the wielder's Resonance Liberation DMG Bonus by 54%, lasting for 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Resonance Skill used",
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "liberationDamage",
+                  "operation": "addPercent",
+                  "value": 18
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 18
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 27
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 36
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 45
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "scope": "self",
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "Resonance Skill cast",
+                "durationSeconds": 15,
+                "modifiers": [
+                  {
+                    "stat": "liberationDamage",
+                    "operation": "addPercent",
+                    "value": 54
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.7"
+}

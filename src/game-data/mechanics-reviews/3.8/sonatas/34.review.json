@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.8",
+  "entityKind": "sonata",
+  "entityId": "34",
+  "entityName": "Heart of Evil's Purge",
+  "sourceFingerprint": "8ef2b32f2d7d5fc148f0ae09c59c6e2b97d9b95ee5ecae107762cb94c8a98796",
+  "reviewedAt": "2026-09-05T10:06:03.375Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "c401a6bfc2673532436dd3545190184e322c67052b229d232fcdc669044253a6",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "sonata:34:2:0",
+            "sourceName": "Heart of Evil's Purge",
+            "text": "Aero DMG + 10%",
+            "refinementTexts": [
+              "Aero DMG + 10%"
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 10
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "sonata",
+            "pieces": 2
+          },
+          {
+            "id": "sonata:34:5:0",
+            "sourceName": "Heart of Evil's Purge",
+            "text": "Inflicting Tune Strain - Shifting increases Crit. DMG by 20% and Aero DMG Bonus 30% for 15s.",
+            "refinementTexts": [
+              "Inflicting Tune Strain - Shifting increases Crit. DMG by 20% and Aero DMG Bonus 30% for 15s."
+            ],
+            "parsed": {
+              "scope": "self",
+              "input": {
+                "kind": "toggle"
+              },
+              "durationSeconds": 15,
+              "modifiers": [
+                {
+                  "stat": "critDamage",
+                  "operation": "addPercent",
+                  "value": 20
+                },
+                {
+                  "stat": "Aero",
+                  "operation": "addPercent",
+                  "value": 30
+                }
+              ],
+              "confidence": "high",
+              "warnings": [],
+              "trigger": "Tune Strain - Shifting Inflicted"
+            },
+            "sourceType": "sonata",
+            "pieces": 5
+          }
+        ]
+      }
+    }
+  },
+  "carriedFromVersion": "3.7"
+}

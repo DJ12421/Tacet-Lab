@@ -49,19 +49,20 @@ interface DebugSectionRect { x: number; y: number; width: number; height: number
 const ECHO_DEBUG_SECTIONS: DebugSectionKey[] = ['echo0', 'echo1', 'echo2', 'echo3', 'echo4']
 const INITIAL_ART_RECT: DebugSectionRect = { x: 0, y: 0, width: CARD_WIDTH, height: CARD_HEIGHT }
 const SHARED_CHARACTER_ART_RECT: DebugSectionRect = { x: -183, y: 100, width: 2285, height: 1285 }
+const CURVED_BLOCK_PATH = 'M 180 18 H 660 C 450 245 450 800 660 1027 H 180 C -30 800 -30 245 180 18 Z M 1260 18 H 1740 C 1950 245 1950 800 1740 1027 H 1260 C 1470 800 1470 245 1260 18 Z'
 const DEFAULT_CURVED_SECTION_RECTS: Partial<Record<DebugSectionKey, DebugSectionRect>> = {
   art: { x: -954, y: -500, width: 3840, height: 2160 },
-  identity: { x: 19, y: 15, width: 450, height: 178 },
-  stats: { x: 19, y: 201, width: 450, height: 591 },
-  weapon: { x: 19, y: 802, width: 450, height: 225 },
+  identity: { x: 140, y: 18, width: 470, height: 185 },
+  stats: { x: 20, y: 203, width: 600, height: 594 },
+  weapon: { x: 130, y: 797, width: 480, height: 230 },
   sequences: { x: 620, y: 23, width: 680, height: 124 },
   skills: { x: 580, y: 673, width: 760, height: 352 },
-  echo0: { x: 1348, y: 15, width: 450, height: 187 },
-  echo1: { x: 1408, y: 209, width: 450, height: 187 },
-  echo2: { x: 1468, y: 403, width: 450, height: 187 },
-  echo3: { x: 1408, y: 597, width: 450, height: 187 },
-  echo4: { x: 1348, y: 791, width: 450, height: 187 },
-  sonatas: { x: 1450, y: 987, width: 450, height: 40 },
+  echo0: { x: 1345, y: 18, width: 440, height: 190 },
+  echo1: { x: 1415, y: 208, width: 440, height: 190 },
+  echo2: { x: 1438, y: 398, width: 440, height: 190 },
+  echo3: { x: 1425, y: 588, width: 440, height: 190 },
+  echo4: { x: 1370, y: 778, width: 440, height: 190 },
+  sonatas: { x: 1300, y: 968, width: 440, height: 59 },
   footer: { x: 19, y: 1037, width: 1882, height: 30 }
 }
 const DEFAULT_STRAIGHT_SECTION_RECTS: Partial<Record<DebugSectionKey, DebugSectionRect>> = {
@@ -418,7 +419,7 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
   const artworkInputRef = useRef<HTMLInputElement>(null)
   const [layoutTransferStatus, setLayoutTransferStatus] = useState<string | null>(null)
   const [artworkStatus, setArtworkStatus] = useState<string | null>(null)
-  const accentStyle = { '--cbc-accent': customAccent ?? elementAccent, '--cbc-panel-fill': `${100 - panelTransparency}%`, '--cbc-panel-opacity': (100 - panelTransparency) / 100 } as CSSProperties
+  const accentStyle = { '--cbc-accent': customAccent ?? elementAccent, '--cbc-panel-fill': `${100 - panelTransparency}%`, '--cbc-curved-fill': `${Math.min(100, (100 - panelTransparency) * 1.35)}%`, '--cbc-panel-opacity': (100 - panelTransparency) / 100 } as CSSProperties
   const debugSectionClass = (section: DebugSectionKey, className: string) => `${className} cbc-debug-section${hiddenDebugSections.has(section) ? ' is-debug-hidden' : ''}`
   const debugSectionStyle = (section: DebugSectionKey): CSSProperties | undefined => {
     const rect = debugSectionRects[section], initial = debugSectionOriginRectsRef.current[section]
@@ -723,7 +724,7 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
 
   return <div className="cbc-card-layout" style={accentStyle}>
     <div className="cbc-viewport" ref={viewportRef} style={{ height: CARD_HEIGHT * scale }}>
-    <div ref={forwardedRef} className={`cs-export-frame cbc-card cbc-debug-enabled${highlightedStat ? ' is-stat-highlighting' : ''}`} style={{ ...accentStyle, transform: `scale(${scale})` }}>
+    <div ref={forwardedRef} className={`cs-export-frame cbc-card cbc-debug-enabled${echoLayoutPreset === 'curved' ? ' is-curved-layout' : ''}${highlightedStat ? ' is-stat-highlighting' : ''}`} style={{ ...accentStyle, transform: `scale(${scale})` }}>
       <section className="cbc-art-stage" aria-label={`${catalog.name} character artwork`}>
         <div className={debugSectionClass('art', 'cbc-art-positioner')} data-debug-section="art" style={debugSectionStyle('art')}>
           <img ref={portraitRef} className={`cbc-character-art ${portraitFailed && !customArtworkUrl ? 'is-fallback' : ''} ${settings.liveCharacterArt && animatedPortraitReady && !customArtworkUrl ? 'is-live-hidden' : ''}`} src={customArtworkUrl ?? (portraitFailed ? catalog.iconSourceUrl : (catalog.portraitSourceUrl || catalog.iconSourceUrl))} alt={catalog.name} onError={onPortraitError}/>
@@ -733,6 +734,13 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
           </div>}
         </div>
       </section>
+      {echoLayoutPreset === 'curved' && <>
+        <div className="cbc-curved-glass cbc-glass" style={{ clipPath: `path("${CURVED_BLOCK_PATH}")` }} aria-hidden="true"/>
+        <svg className="cbc-curved-blocks" viewBox="0 0 1920 1080" aria-hidden="true" focusable="false">
+          <path className="cbc-curved-outline" d={CURVED_BLOCK_PATH}/>
+          <path className="cbc-curved-divider" d="M 73.8 203 H 553.8 M 37.5 701 H 517.5 M 59.4 797 H 539.4 M 1367.9 208 H 1847.9 M 1410.3 398 H 1890.3 M 1415.5 588 H 1895.5 M 1385.9 778 H 1865.9 M 1305.4 968 H 1785.4"/>
+        </svg>
+      </>}
 
       <section className={debugSectionClass('sequences', 'cbc-sequences')} data-debug-section="sequences" style={debugSectionStyle('sequences')} aria-label={`Sequence ${character.sequence}`}>{catalog.sequenceIcons.slice(0, 6).map((sequence) => { const sourceStat = bonusSourceStat(`sequence-${sequence.sequence}`); return <button type="button" key={sequence.sequence} aria-disabled={!editable} className={`${character.sequence >= sequence.sequence ? 'is-unlocked' : 'is-locked'} cbc-stat-source${bonusSourceContributes(`sequence-${sequence.sequence}`) ? ' is-contributing' : ''}`} onMouseEnter={() => sourceStat && setHighlightedStat(displayedStatKey(sourceStat))} onMouseLeave={() => setHighlightedStat(null)} onFocus={() => sourceStat && setHighlightedStat(displayedStatKey(sourceStat))} onBlur={() => setHighlightedStat(null)} onClick={() => { if (editable) onSetSequence(character.sequence === sequence.sequence ? sequence.sequence - 1 : sequence.sequence) }}>
         <span className="cbc-sequence-frame" style={{ '--cbc-sequence-mask': `url("${SEQUENCE_STAR_URL}")` } as CSSProperties}>
@@ -758,7 +766,7 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
       </section>
 
       <div className="cbc-left-column">
-        <section className={`${debugSectionClass('identity', 'cbc-identity cbc-glass')}${editable ? ' is-editable' : ''}`} data-debug-section="identity" style={debugSectionStyle('identity')} role={editable ? 'button' : undefined} tabIndex={editable ? 0 : undefined} onClick={editable ? () => setLevelOpen((open) => !open) : undefined} onKeyDown={editable ? (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setLevelOpen((open) => !open) } } : undefined}>
+        <section className={`${debugSectionClass('identity', `cbc-identity${echoLayoutPreset === 'curved' ? '' : ' cbc-glass'}`)}${editable ? ' is-editable' : ''}`} data-debug-section="identity" style={debugSectionStyle('identity')} role={editable ? 'button' : undefined} tabIndex={editable ? 0 : undefined} onClick={editable ? () => setLevelOpen((open) => !open) : undefined} onKeyDown={editable ? (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setLevelOpen((open) => !open) } } : undefined}>
           <div><h1 style={{ fontSize: `${Math.max(23, 38 - Math.max(0, catalog.name.length - 10) * 1.15)}px` }}>{catalog.name}</h1><div className="cbc-identity-owner"><span>{settings.displayName.trim() || 'Resonator'}</span><small>{settings.uid.trim() ? `${settings.uid.trim()}` : ''}</small></div></div>
           <p>{catalog.title}</p>
           <button type="button" className={editable ? 'is-editable' : ''} disabled={!editable} onClick={(event) => { event.stopPropagation(); setLevelOpen((open) => !open) }}><strong>Lv. {character.level}</strong><Stars rarity={catalog.rarity}/></button>
@@ -766,7 +774,7 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
           {levelOpen && editable && <div className="cbc-edit-popover cbc-level-popover" onClick={(event) => event.stopPropagation()}>{LEVELS.map((level) => <button type="button" className={level === character.level ? 'active' : ''} onClick={() => { onSetLevel(level); setLevelOpen(false) }} key={level}>{level}</button>)}</div>}
         </section>
 
-        <section className={`${debugSectionClass('stats', 'cbc-stats cbc-glass')}${editable ? ' is-editable' : ''}`} data-debug-section="stats" style={debugSectionStyle('stats')} role={editable ? 'button' : undefined} tabIndex={editable ? 0 : undefined} onClick={editable ? onEditPriorities : undefined} onKeyDown={editable ? (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onEditPriorities() } } : undefined}>
+        <section className={`${debugSectionClass('stats', `cbc-stats${echoLayoutPreset === 'curved' ? '' : ' cbc-glass'}`)}${editable ? ' is-editable' : ''}`} data-debug-section="stats" style={debugSectionStyle('stats')} role={editable ? 'button' : undefined} tabIndex={editable ? 0 : undefined} onClick={editable ? onEditPriorities : undefined} onKeyDown={editable ? (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onEditPriorities() } } : undefined}>
           <header><strong>Resonator statistics</strong><div className="cbc-stat-actions"><button type="button" title={editable ? 'Edit character stat priorities' : 'Stat priorities are read-only for this loadout'} disabled={!editable} onClick={(event) => { event.stopPropagation(); if (editable) onEditPriorities() }}><Icon name="settings"/></button></div></header>
           <div className="cbc-stat-list">{statRows.map(({ key, label }) => {
             const detail = statDetail(key, label)
@@ -776,7 +784,7 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
           <div className="cbc-build-score" onClick={(event) => event.stopPropagation()} onKeyDown={(event) => event.stopPropagation()}><EchoWaveform/><span>Build score</span><div><strong>{buildScore.grade ?? '—'}</strong><b title={buildScore.energyRequirementMet ? undefined : `Below ${energyRegenMinimum}% Energy Regen`}>{buildScore.label}</b><button type="button" className="cbc-build-score-info" aria-label="How Substat Score works" title="How Substat Score works" onClick={onShowScoreInfo}>?</button></div></div>
         </section>
 
-        <section className={`${debugSectionClass('weapon', `cbc-weapon cbc-glass ${editable ? 'is-editable' : ''}`)}${weaponContributes ? ' is-contributing-source-panel' : ''}`} data-debug-section="weapon" style={debugSectionStyle('weapon')} tabIndex={editable ? 0 : undefined} onClick={editable ? onOpenWeapon : undefined} onKeyDown={editable ? (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onOpenWeapon() } } : undefined}>
+        <section className={`${debugSectionClass('weapon', `cbc-weapon${echoLayoutPreset === 'curved' ? '' : ' cbc-glass'} ${editable ? 'is-editable' : ''}`)}${weaponContributes ? ' is-contributing-source-panel' : ''}`} data-debug-section="weapon" style={debugSectionStyle('weapon')} tabIndex={editable ? 0 : undefined} onClick={editable ? onOpenWeapon : undefined} onKeyDown={editable ? (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onOpenWeapon() } } : undefined}>
           {model.weapon ? <>
             <img src={model.weapon.catalog.iconSourceUrl} alt=""/>
             <div><h2>{model.weapon.catalog.name}</h2><Stars rarity={model.weapon.catalog.rarity}/><span>Lv. {model.weapon.owned.level} · R{model.weapon.owned.rank}</span><dl><div className={`cbc-stat-source${highlightedStat === 'atk' ? ' is-contributing' : ''}`} tabIndex={0} onMouseEnter={() => setHighlightedStat('atk')} onMouseLeave={() => setHighlightedStat(null)} onFocus={() => setHighlightedStat('atk')} onBlur={() => setHighlightedStat(null)}><dt><img className="weapon-stat-icon" src={statIconSource('atk')} alt="" aria-hidden="true"/>Base ATK</dt><dd>{model.weapon.levelStats.baseAtk}</dd></div><div className={`cbc-stat-source${model.weapon.secondaryStat && contributesToStat(model.weapon.secondaryStat.key, highlightedStat) ? ' is-contributing' : ''}`} tabIndex={0} onMouseEnter={() => model.weapon?.secondaryStat && setHighlightedStat(displayedStatKey(model.weapon.secondaryStat.key))} onMouseLeave={() => setHighlightedStat(null)} onFocus={() => model.weapon?.secondaryStat && setHighlightedStat(displayedStatKey(model.weapon.secondaryStat.key))} onBlur={() => setHighlightedStat(null)}><dt><img className="weapon-stat-icon" src={weaponStatIconSource(model.weapon.catalog.secondaryStat)} alt="" aria-hidden="true"/>{model.weapon.catalog.secondaryStat}</dt><dd>{model.weapon.levelStats.secondaryStatValue}</dd></div></dl></div>

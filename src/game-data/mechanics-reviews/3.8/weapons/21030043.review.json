@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.8",
+  "entityKind": "weapon",
+  "entityId": "21030043",
+  "entityName": "Pistols of Voyager",
+  "sourceFingerprint": "1bcb0ba43ad18aeceb7d563a43b359a0a8562517afab62ab099a71c2ca7f205e",
+  "reviewedAt": "2026-09-09T06:36:17.906Z",
+  "sections": {
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "079513131b893c304aad2320e9a441a5c934478cc8d6497290c1a6ca1bf5220f",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.7"
+}

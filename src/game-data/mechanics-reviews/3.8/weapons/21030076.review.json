@@ -1,0 +1,425 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.8",
+  "entityKind": "weapon",
+  "entityId": "21030076",
+  "entityName": "Lullaby",
+  "sourceFingerprint": "c62cdd4ea721c7f7a05d7439659d4d3399cdf83245eee6c036d9eb7693e6ce96",
+  "reviewedAt": "2026-11-12T21:52:00.475Z",
+  "sections": {
+    "effects": {
+      "status": "approved",
+      "sourceFingerprint": "71a5b904b09cddfe9b982fce52bbeacc1b2aa90d8fd1eb4b6e1660c3a7f9d82e",
+      "approvedData": {
+        "entries": [
+          {
+            "id": "weapon:21030076:effect:0",
+            "sourceName": "Dreamland Solace",
+            "text": "Increases Max HP by 12%.",
+            "refinementTexts": [
+              "Increases Max HP by 12%.",
+              "Increases Max HP by 15%.",
+              "Increases Max HP by 18%.",
+              "Increases Max HP by 21%.",
+              "Increases Max HP by 24%."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "always"
+              },
+              "modifiers": [
+                {
+                  "stat": "hpPercent",
+                  "operation": "addPercent",
+                  "value": 12,
+                  "scope": "self"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "hpPercent",
+                    "operation": "addPercent",
+                    "value": 12,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "hpPercent",
+                    "operation": "addPercent",
+                    "value": 15,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "hpPercent",
+                    "operation": "addPercent",
+                    "value": 18,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "hpPercent",
+                    "operation": "addPercent",
+                    "value": 21,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "always"
+                },
+                "modifiers": [
+                  {
+                    "stat": "hpPercent",
+                    "operation": "addPercent",
+                    "value": 24,
+                    "scope": "self"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21030076:effect:1",
+            "sourceName": "Dreamland Solace",
+            "text": "Casting Resonance Liberation restores 8 points of Concerto Energy, triggered once every 20s.",
+            "refinementTexts": [
+              "Casting Resonance Liberation restores 8 points of Concerto Energy, triggered once every 20s.",
+              "Casting Resonance Liberation restores 10 points of Concerto Energy, triggered once every 20s.",
+              "Casting Resonance Liberation restores 12 points of Concerto Energy, triggered once every 20s.",
+              "Casting Resonance Liberation restores 14 points of Concerto Energy, triggered once every 20s.",
+              "Casting Resonance Liberation restores 16 points of Concerto Energy, triggered once every 20s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21030076:effect:2",
+            "sourceName": "Dreamland Solace",
+            "text": "All Resonators in the team gain Soothed Soul for 30s when the wielder provides healing with Heavy Attack.",
+            "refinementTexts": [
+              "All Resonators in the team gain Soothed Soul for 30s when the wielder provides healing with Heavy Attack.",
+              "All Resonators in the team gain Soothed Soul for 30s when the wielder provides healing with Heavy Attack.",
+              "All Resonators in the team gain Soothed Soul for 30s when the wielder provides healing with Heavy Attack.",
+              "All Resonators in the team gain Soothed Soul for 30s when the wielder provides healing with Heavy Attack.",
+              "All Resonators in the team gain Soothed Soul for 30s when the wielder provides healing with Heavy Attack."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          },
+          {
+            "id": "weapon:21030076:effect:3",
+            "sourceName": "Dreamland Solace",
+            "text": "When Soothed Soul is active, if a Resonator in the team gains Unison or triggers Unison Response, that Resonator gains 16% ATK increase for 30s. This effect is removed when Soothed Soul ends.",
+            "refinementTexts": [
+              "When Soothed Soul is active, if a Resonator in the team gains Unison or triggers Unison Response, that Resonator gains 16% ATK increase for 30s. This effect is removed when Soothed Soul ends.",
+              "When Soothed Soul is active, if a Resonator in the team gains Unison or triggers Unison Response, that Resonator gains 20% ATK increase for 30s. This effect is removed when Soothed Soul ends.",
+              "When Soothed Soul is active, if a Resonator in the team gains Unison or triggers Unison Response, that Resonator gains 24% ATK increase for 30s. This effect is removed when Soothed Soul ends.",
+              "When Soothed Soul is active, if a Resonator in the team gains Unison or triggers Unison Response, that Resonator gains 28% ATK increase for 30s. This effect is removed when Soothed Soul ends.",
+              "When Soothed Soul is active, if a Resonator in the team gains Unison or triggers Unison Response, that Resonator gains 32% ATK increase for 30s. This effect is removed when Soothed Soul ends."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Soothed Soul and Unison active",
+              "durationSeconds": 30,
+              "modifiers": [
+                {
+                  "stat": "atkPercent",
+                  "operation": "addPercent",
+                  "value": 16,
+                  "scope": "team"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "When Soothed Soul is active",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 16,
+                    "scope": "team"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "When Soothed Soul is active",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 20,
+                    "scope": "team"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "When Soothed Soul is active",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 24,
+                    "scope": "team"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "When Soothed Soul is active",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 28,
+                    "scope": "team"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "When Soothed Soul is active",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "atkPercent",
+                    "operation": "addPercent",
+                    "value": 32,
+                    "scope": "team"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21030076:effect:4",
+            "sourceName": "Dreamland Solace",
+            "text": "When the wielder provides healing with Heavy Attack, the active Resonator also gains 24% Echo Skill DMG Bonus for 30s.",
+            "refinementTexts": [
+              "When the wielder provides healing with Heavy Attack, the active Resonator also gains 24% Echo Skill DMG Bonus for 30s.",
+              "When the wielder provides healing with Heavy Attack, the active Resonator also gains 30% Echo Skill DMG Bonus for 30s.",
+              "When the wielder provides healing with Heavy Attack, the active Resonator also gains 36% Echo Skill DMG Bonus for 30s.",
+              "When the wielder provides healing with Heavy Attack, the active Resonator also gains 42% Echo Skill DMG Bonus for 30s.",
+              "When the wielder provides healing with Heavy Attack, the active Resonator also gains 48% Echo Skill DMG Bonus for 30s."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "trigger": "Heavy Attack healing active Resonator",
+              "durationSeconds": 30,
+              "modifiers": [
+                {
+                  "stat": "echoDamage",
+                  "operation": "addPercent",
+                  "value": 24,
+                  "scope": "next"
+                }
+              ],
+              "confidence": "high",
+              "warnings": []
+            },
+            "parsedByRefinement": [
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "When the wielder provides healing with Heavy Attack",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "echoDamage",
+                    "operation": "addPercent",
+                    "value": 24,
+                    "scope": "next"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "When the wielder provides healing with Heavy Attack",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "echoDamage",
+                    "operation": "addPercent",
+                    "value": 30,
+                    "scope": "next"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "When the wielder provides healing with Heavy Attack",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "echoDamage",
+                    "operation": "addPercent",
+                    "value": 36,
+                    "scope": "next"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "When the wielder provides healing with Heavy Attack",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "echoDamage",
+                    "operation": "addPercent",
+                    "value": 42,
+                    "scope": "next"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              },
+              {
+                "input": {
+                  "kind": "toggle"
+                },
+                "trigger": "When the wielder provides healing with Heavy Attack",
+                "durationSeconds": 30,
+                "modifiers": [
+                  {
+                    "stat": "echoDamage",
+                    "operation": "addPercent",
+                    "value": 48,
+                    "scope": "next"
+                  }
+                ],
+                "confidence": "high",
+                "warnings": []
+              }
+            ],
+            "sourceType": "weapon"
+          },
+          {
+            "id": "weapon:21030076:effect:5",
+            "sourceName": "Dreamland Solace",
+            "text": "Effects of the same name do not stack.",
+            "refinementTexts": [
+              "Effects of the same name do not stack.",
+              "Effects of the same name do not stack.",
+              "Effects of the same name do not stack.",
+              "Effects of the same name do not stack.",
+              "Effects of the same name do not stack."
+            ],
+            "parsed": {
+              "input": {
+                "kind": "toggle"
+              },
+              "modifiers": [],
+              "confidence": "high",
+              "warnings": []
+            },
+            "sourceType": "weapon",
+            "reviewStatus": "no-mechanic"
+          }
+        ]
+      }
+    }
+  },
+  "reviewMethod": "Manual English Nanoka 3.8 review, cross-checked against WutheringTools 3.8 numeric reference. Energy and status setup have no direct damage calculation."
+}

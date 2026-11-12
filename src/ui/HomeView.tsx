@@ -42,6 +42,7 @@ const quickStarts = [
 ]
 
 const changelogEntries = [
+  { hash: '', date: 'Nov 13, 2026', title: 'Update to Version 3.8 with Lily live art, reviewed combat data, and refined character cards and team planning' },
   { hash: '', date: 'Nov 6, 2026', title: 'Choose whether imports update matches, remove missing gear or characters, or completely replace local data' },
   { hash: '', date: 'Nov 6, 2026', title: 'Import WutheringTools v10 equipped gear and theorycraft builds while skipping empty character entries' },
   { hash: '', date: 'Nov 6, 2026', title: 'Correct the maximum four-cost DEF main stat and improve scanner calibration sharing' },
@@ -77,7 +78,7 @@ const changelogEntries = [
   { hash: '89202c4', date: 'Oct 4, 2026', title: 'Remember workspace choices and refresh the app header and team controls' },
   { hash: '200bf5a', date: 'Oct 2, 2026', title: 'Update the character, weapon, Echo, Sonata, and scanner catalog for Version 3.7' },
   { hash: '200bf5a', date: 'Oct 2, 2026', title: 'Rework Teams with richer Formation, character, equipment, and stat views' },
-  { hash: '200bf5a', date: 'Oct 2, 2026', title: 'Mark pending 3.7 mechanics as TBA in the Archive and calculations' },
+  { hash: '200bf5a', date: 'Oct 2, 2026', title: 'Flag unreviewed 3.7 mechanics in the Archive and calculations' },
   { hash: '200bf5a', date: 'Oct 2, 2026', title: 'Edit or switch Echoes and manage builds directly from Teams' },
   { hash: '200bf5a', date: 'Oct 2, 2026', title: 'Add live Theorycraft previews and improve Echo picker filters and paging' },
   { hash: '200bf5a', date: 'Oct 2, 2026', title: 'Simplify Optimizer filters and group combat targets and Sonatas' },

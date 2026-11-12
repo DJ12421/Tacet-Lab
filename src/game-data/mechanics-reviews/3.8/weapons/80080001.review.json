@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.8",
+  "entityKind": "weapon",
+  "entityId": "80080001",
+  "entityName": "Projection: Somnoire Anchor",
+  "sourceFingerprint": "88fed92dbd68ff1c7b13b8d0031c4cab7692c7399ade29dd3ccef3f822c5565d",
+  "reviewedAt": "2026-09-05T10:14:34.543Z",
+  "sections": {
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.7"
+}

@@ -1,6 +1,6 @@
 import type { AppSettings, CustomThemeColors, StatKey } from '../domain/types'
 
-export const GAME_DATA_VERSION = 'catalog-3.7'
+export const GAME_DATA_VERSION = 'catalog-3.8'
 
 export const statLabels: Record<StatKey, string> = {
   hp: 'HP', hpPercent: 'HP %', atk: 'ATK', atkPercent: 'ATK %', def: 'DEF', defPercent: 'DEF %',

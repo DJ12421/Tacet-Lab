@@ -555,9 +555,16 @@
   margin-top: 0;
 }
 
-/* Keep long rotations scannable while the full editor remains one click away. */
+/* Keep the timeline above the editor and analysis as the page scrolls. */
 .tw-rotation-layout {
-  display: block;
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  align-items: start;
+  gap: 12px;
+}
+
+.tw-rotation-layout.without-analysis {
+  grid-template-columns: minmax(0,1fr);
 }
 
 .tw-rotation {
@@ -565,57 +572,35 @@
 }
 
 .tw-rotation-layout .tw-rotation-editor {
-  padding-right: 28px;
+  padding-right: 0;
   border-right: 0;
 }
 
-.tw-rotation-drawer .tw-rotation-analysis {
-  position: fixed;
-  z-index: 50;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  box-sizing: border-box;
-  width: min(860px,calc(100vw - 44px));
-  height: auto;
+.tw-rotation-layout .tw-rotation-analysis {
+  position: static;
   max-height: none;
-  overflow-y: auto;
-  padding: 12px 12px 20px;
-  border: 1px solid var(--tw-line-strong);
-  background: var(--tw-canvas,#050809);
-  box-shadow: -12px 0 32px rgba(0,0,0,.55);
-  overscroll-behavior: contain;
-  transform: translateX(100%);
+  overflow: visible;
 }
 
-.tw-rotation-drawer .tw-analysis-handle:hover + .tw-rotation-analysis,
-.tw-rotation-drawer .tw-analysis-handle:focus-visible + .tw-rotation-analysis,
-.tw-rotation-drawer .tw-rotation-analysis:hover,
-.tw-rotation-drawer .tw-rotation-analysis:focus-within {
-  transform: none;
+.tw-analysis-toggle {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
 }
 
-@media (hover: none) {
-  .tw-rotation-drawer .tw-analysis-handle:focus + .tw-rotation-analysis {
-    transform: none;
-  }
-}
-
-.tw-analysis-handle {
-  position: fixed;
-  z-index: 51;
-  top: calc(50% - 49px);
-  right: 0;
-  width: 24px;
-  height: 98px;
-  padding: 4px 0;
-  border: 1px solid var(--tw-line-strong);
-  border-right: 0;
+.tw-analysis-toggle button {
+  padding: 6px 10px;
+  border: 1px solid var(--tw-line);
   background: var(--tw-surface,#0b1112);
-  color: var(--mint);
+  color: var(--tw-console-muted,#c8d0ce);
   font-size: var(--font-size-caption);
-  writing-mode: vertical-rl;
   cursor: pointer;
+}
+
+@media (max-width:1120px) {
+  .tw-rotation-layout {
+    grid-template-columns: minmax(0,1fr);
+  }
 }
 
 .tw-rotation-layout .tw-rotation-timeline {

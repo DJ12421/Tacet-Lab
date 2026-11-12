@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "dataVersion": "3.8",
+  "entityKind": "weapon",
+  "entityId": "80080009",
+  "entityName": "Projection: Blade of a Thousand Arts",
+  "sourceFingerprint": "16447d0b36d3a815703734e29fa1ef7a42cea390b9888d24ff92e05b6d68259a",
+  "reviewedAt": "2026-09-05T10:15:13.692Z",
+  "sections": {
+    "effects": {
+      "status": "approved-empty",
+      "sourceFingerprint": "d801aa1fb7ddcc330a5e3173372ea6af4a3d08ec58074478e85aa5603e926658",
+      "approvedData": {
+        "entries": []
+      }
+    }
+  },
+  "carriedFromVersion": "3.7"
+}

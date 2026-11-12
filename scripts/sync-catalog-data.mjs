@@ -1,5 +1,5 @@
 import { writeFile } from 'node:fs/promises'
-const version='3.7',base=`https://static.nanoka.cc/ww/${version}`
+const version='3.8',base=`https://static.nanoka.cc/ww/${version}`
 const encoreBase='https://api-v2.encore.moe/api/en'
 const sources={characters:`${base}/character.json`,weapons:`${base}/weapon.json`,echoes:`${base}/echo.json`,titles:`${encoreBase}/title`}
 const names=['','Freezing Frost','Molten Rift','Void Thunder','Sierra Gale','Celestial Light','Havoc Eclipse','Rejuvenating Glow','Moonlit Clouds','Lingering Tunes','Frosty Resolve','Eternal Radiance','Midnight Veil','Empyrean Anthem','Tidebreaking Courage',,'Gusts of Welkin','Windward Pilgrimage','Flaming Clawprint','Dream of the Lost','Crown of Valor','Law of Harmony',"Flamewing's Shadow",'Thread of Severed Fate','Pact of Neonlight Leap','Halo of Starry Radiance','Rite of Gilded Revelation','Trailblazing Star','Chromatic Foam','Sound of True Name','Wishes of Quiet Snowfall','Reel of Spliced Memories','Shadow of Shattered Dreams','Song of Feathered Trace',"Heart of Evil's Purge",'Lamp of Nether Road','Heart of Sworn Vigil','Flash of Electric Reflection','Flower of Tinged Yearning']
@@ -28,7 +28,8 @@ const spineAsset=path=>{
 }
 const encoreLuckdraws={
   '1311':'C_Xin_01/c_xin_01',
-  '1312':'C_SuoMing_01/c_suoming_01'
+  '1312':'C_SuoMing_01/c_suoming_01',
+  '1512':'C_LiLi_01/c_lili_1'
 }
 const sonataIconFallbackBase='https://wuthering.gg/images/iconelement'
 const sonataAsset=async path=>{
@@ -129,8 +130,17 @@ const verifiedCharacterAttackScaling=new Map([
   ['1209:2:Distributed Array Healing','def'],
   ['1209:7:Syntony Field Healing','def'],
   ['1505:6:Discernment DMG','hp'],
+  ['1512:3:Slumberland Healing','hp'],
+  ['1512:7:Heavy Attack - Woven Fairytale Healing','hp'],
+  ['1512:7:Heavy Attack - Woven Phantasm Healing','hp'],
   ['1601:1:Strategic Parry Damage','def'],
   ['1601:7:Timed Counters Stage 2 DMG','def']
+])
+// Lily's source damage components do not follow the displayed Healing and DMG row order.
+const verifiedCharacterAttackTypes=new Map([
+  ['1512:7:Heavy Attack - Woven Fairytale Healing','healing'],
+  ['1512:7:Heavy Attack - Woven Phantasm Healing','healing'],
+  ['1512:7:Heavy Attack - Woven Phantasm DMG','heavy']
 ])
 const characterLevels=Array.from({length:90},(_,index)=>index+1)
 const characterStatsAtLevel=(detail,level)=>{
@@ -200,7 +210,7 @@ const characters=Object.entries(rawCharacters).map(([id,c])=>{
       const name=line?.name?`${skill.name} - ${line.name}`:skill.name
       if(fixedSkillValuePattern.test(name))return []
       const isHealing=components.length>0&&components.every(component=>Number(component.element)===0)
-      const type=isHealing?'healing':combatType(skill.type,name)
+      const type=verifiedCharacterAttackTypes.get(attackKey)??(isHealing?'healing':combatType(skill.type,name))
       return [{id:`${id}-${nodeId}-${attackIndex++}`,name,type,skillLevelIndex:skillLevelIndex(skill.type),scalesWith:verifiedCharacterAttackScaling.get(attackKey)??damage.related_property.toLowerCase(),multipliers,hitMultipliers}]
     })
   })

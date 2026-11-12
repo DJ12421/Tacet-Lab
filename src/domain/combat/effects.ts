@@ -314,7 +314,7 @@ export function resolveEffects(registry: MechanicsRegistry, request: ActionReque
         // shortcut: sourceOffset covers fixed reviewed ER buffs; derive from active provider effects when conditional ER sources need to feed this value.
         const sourceValue = provider.conditionStats?.[operation.sourceStat]
         if (typeof sourceValue !== 'number') fail({ code:'invalid-input', message:`${operation.sourceStat} is required for ${effect.id}.`, sourceId:effect.sourceId, actorId:request.actorId, actionId:request.actionId })
-        const amount = Math.min(Math.max(0, finite(sourceValue, operation.sourceStat, effect, request) + (operation.sourceOffset ?? 0) - operation.threshold) * finite(operation.value, 'Derived stat rate', effect, request), operation.maximumValue ?? Number.POSITIVE_INFINITY)
+        const amount = Math.min(Math.max(0, finite(sourceValue, operation.sourceStat, effect, request) + (operation.sourceOffset ?? 0) - operation.threshold) * finite(operation.value, 'Derived stat rate', effect, request), operation.maximumValue ?? Number.POSITIVE_INFINITY) * (operation.stacking === 'per-stack' ? factor : 1)
         const line = { stat:operation.stat, mode:operation.mode, value:amount }
         statLines.push(line)
         contributions.statLines.push({ label, value:line })
