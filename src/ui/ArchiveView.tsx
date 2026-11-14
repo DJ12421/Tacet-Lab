@@ -1,4 +1,4 @@
-import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { generatedCharacterCatalog as characterCatalog } from '../game-data/characters.generated'
 import { echoCatalog } from '../game-data/echoes'
@@ -10,7 +10,7 @@ import { ElementFilterIcon, FilterChips, Icon, PageHeader } from './components'
 import { SonataPicker } from './SonataPicker'
 import { statIconSource, weaponStatIconSource } from './stat-icons'
 import { weaponTypeIconSource } from './weapon-type-icons'
-import { useBodyScrollLock } from './useDismissableLayer'
+import { useBodyScrollLock, useDismissableLayer } from './useDismissableLayer'
 
 type ArchiveTab = 'characters' | 'weapons' | 'sonatas' | 'echoes'
 type SortMode = 'release-order' | 'name-asc' | 'name-desc' | 'rarity-desc' | 'cost-desc'
@@ -40,6 +40,13 @@ const tabs: Array<{ id: ArchiveTab; label: string; count: number; iconSource: st
 ]
 const weaponTypes = [...new Set(weaponCatalog.map((item) => item.type))]
 const characterElements = [...new Set(characterCatalog.map((item) => item.element))]
+const primaryRoles = ['Main Damage Dealer', 'Support and Healer', 'Concerto Efficiency']
+const characterRoles = [...new Set(characterCatalog.flatMap((item) => item.roles.length ? item.roles : [item.role]))]
+  .sort((a, b) => {
+    const aIndex = primaryRoles.indexOf(a)
+    const bIndex = primaryRoles.indexOf(b)
+    return aIndex === -1 && bIndex === -1 ? a.localeCompare(b) : aIndex === -1 ? 1 : bIndex === -1 ? -1 : aIndex - bIndex
+  })
 const weaponSecondaryStats = ['Crit. Rate', 'Crit. DMG', 'ATK', 'DEF', 'HP', 'Energy Regen'].filter((value) => weaponCatalog.some((item) => item.secondaryStat === value))
 const echoCosts = ['1 cost', '3 cost', '4 cost']
 const characterRarities = [5, 4]
@@ -157,6 +164,9 @@ export function ArchiveView({ roverGender, tab, onTabChange }: { roverGender: 'm
   const [rarities, setRarities] = useState<number[]>(() => rarityOptionsFor(tab))
   const [categories, setCategories] = useState<string[]>(() => categoryOptionsFor(tab))
   const [selectedWeaponTypes, setSelectedWeaponTypes] = useState<string[]>(weaponTypes)
+  const [selectedRoles, setSelectedRoles] = useState<string[]>([])
+  const [rolesOpen, setRolesOpen] = useState(false)
+  const [roleQuery, setRoleQuery] = useState('')
   const [sonata, setSonata] = useState('all')
   const [sort, setSort] = useState<SortMode>(() => tab === 'sonatas' ? 'release-order' : 'name-asc')
   const [sortOpen, setSortOpen] = useState(false)
@@ -164,6 +174,7 @@ export function ArchiveView({ roverGender, tab, onTabChange }: { roverGender: 'm
   const [weaponPage, setWeaponPage] = useState(1)
   const [activeDetail, setActiveDetail] = useState<ArchiveDetail | null>(null)
   const searchRef = useRef<HTMLInputElement>(null)
+  const rolePickerRef = useRef<HTMLDivElement>(null)
   const detailTriggerRef = useRef<HTMLButtonElement>(null)
   const deferredQuery = useDeferredValue(query.trim().toLowerCase())
   const categoryOptions = categoryOptionsFor(tab)
@@ -172,6 +183,8 @@ export function ArchiveView({ roverGender, tab, onTabChange }: { roverGender: 'm
   const sortOptions = sortOptionsFor(tab)
   const featuredElement = characterCatalog.find((item) => item.id === featuredCharacterId)?.element ?? 'Spectro'
   const featuredElementIcon = generatedSonataIconSources[elementSonatas[featuredElement]]
+  const closeRoles = useCallback(() => setRolesOpen(false), [])
+  useDismissableLayer(rolesOpen, rolePickerRef, closeRoles)
 
   useEffect(() => { void getSettings().then((settings) => setFeaturedCharacterId((settings as typeof settings & { homeFeaturedCharacterId?: string }).homeFeaturedCharacterId ?? '1506')) }, [])
 
@@ -180,6 +193,9 @@ export function ArchiveView({ roverGender, tab, onTabChange }: { roverGender: 'm
     setRarities(rarityOptionsFor(tab))
     setCategories(categoryOptionsFor(tab))
     setSelectedWeaponTypes(weaponTypes)
+    setSelectedRoles([])
+    setRolesOpen(false)
+    setRoleQuery('')
     setSonata('all')
     setSort(tab === 'sonatas' ? 'release-order' : 'name-asc')
     setSortOpen(false)
@@ -192,7 +208,7 @@ export function ArchiveView({ roverGender, tab, onTabChange }: { roverGender: 'm
   useEffect(() => {
     setVisibleLimit(PAGE_SIZE)
     setWeaponPage(1)
-  }, [deferredQuery, rarities, categories, selectedWeaponTypes, sonata, sort])
+  }, [deferredQuery, rarities, categories, selectedWeaponTypes, selectedRoles, sonata, sort])
 
   const results = useMemo(() => {
     const includesQuery = (text: string) => !deferredQuery || text.toLowerCase().includes(deferredQuery)
@@ -205,23 +221,24 @@ export function ArchiveView({ roverGender, tab, onTabChange }: { roverGender: 'm
       return a.name.localeCompare(b.name)
     })
 
-    if (tab === 'characters') return byName(characterCatalog.filter((item) => isSelectedGenderVariant(item, roverGender) && includesQuery(item.name) && includesRarity(item.rarity) && includesCategory(item.element) && selectedWeaponTypes.includes(item.weaponType)))
+    if (tab === 'characters') return byName(characterCatalog.filter((item) => isSelectedGenderVariant(item, roverGender) && includesQuery(item.name) && includesRarity(item.rarity) && includesCategory(item.element) && selectedWeaponTypes.includes(item.weaponType) && (selectedRoles.length === 0 || (item.roles.length ? item.roles : [item.role]).some((role) => selectedRoles.includes(role)))))
     if (tab === 'weapons') return byName(weaponCatalog.filter((item) => includesQuery(item.name) && includesRarity(item.rarity) && includesCategory(item.secondaryStat) && selectedWeaponTypes.includes(item.type)))
     if (tab === 'sonatas') return byName(sonataCatalog.filter((item) => includesQuery(item.name)))
     return byName(echoCatalog.filter((item) => includesQuery(item.name) && includesCategory(`${item.cost} cost`) && (sonata === 'all' || item.sonatas.includes(sonata))))
-  }, [categories, deferredQuery, rarities, roverGender, selectedWeaponTypes, sonata, sort, tab])
+  }, [categories, deferredQuery, rarities, roverGender, selectedWeaponTypes, selectedRoles, sonata, sort, tab])
 
   const weaponPageCount = Math.max(1, Math.ceil(results.length / WEAPON_PAGE_SIZE))
   const currentWeaponPage = Math.min(weaponPage, weaponPageCount)
   const visibleResults = tab === 'characters' ? results : tab === 'weapons'
     ? results.slice((currentWeaponPage - 1) * WEAPON_PAGE_SIZE, currentWeaponPage * WEAPON_PAGE_SIZE)
     : results.slice(0, visibleLimit)
-  const hasFilters = Boolean(query) || rarities.length !== rarityOptions.length || categories.length !== categoryOptions.length || selectedWeaponTypes.length !== weaponTypes.length || sonata !== 'all'
+  const hasFilters = Boolean(query) || rarities.length !== rarityOptions.length || categories.length !== categoryOptions.length || selectedWeaponTypes.length !== weaponTypes.length || selectedRoles.length > 0 || sonata !== 'all'
   const clearFilters = () => {
     setQuery('')
     setRarities(rarityOptionsFor(tab))
     setCategories(categoryOptionsFor(tab))
     setSelectedWeaponTypes(weaponTypes)
+    setSelectedRoles([])
     setSonata('all')
     searchRef.current?.focus()
   }
@@ -246,6 +263,15 @@ export function ArchiveView({ roverGender, tab, onTabChange }: { roverGender: 'm
     <section className="archive-controls" aria-label={`${currentTab.label} filters`}>
       <div className={`archive-toolbar-row archive-toolbar-${tab}`}>
         <label className="archive-search search-field"><Icon name="scan"/><input ref={searchRef} data-search="" aria-label={`Search ${currentTab.label}`} value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`Search ${currentTab.label.toLowerCase()}`}/>{query && <button type="button" aria-label="Clear search" onClick={() => setQuery('')}>×</button>}<kbd>Ctrl K</kbd></label>
+        {tab === 'characters' && <div className="sonata-picker archive-role-filter" ref={rolePickerRef} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setRolesOpen(false) }}>
+          <button type="button" className="sonata-picker-trigger" aria-label="Filter characters by roles" aria-expanded={rolesOpen} onClick={() => { setRolesOpen((open) => !open); setRoleQuery(''); setSortOpen(false) }}><span aria-hidden="true">◇</span><b>{selectedRoles.length === 0 ? 'All roles' : selectedRoles.length === 1 ? selectedRoles[0] : `${selectedRoles.length} roles`}</b><i aria-hidden="true">⌄</i></button>
+          {rolesOpen && <div className="sonata-picker-menu" aria-label="Character role options">
+            <span className="search-field"><Icon name="scan"/><input type="search" data-search="" autoFocus className="sonata-picker-search" aria-label="Search roles" value={roleQuery} onChange={(event) => setRoleQuery(event.target.value)} placeholder="Search roles..."/></span>
+            {!roleQuery && <button type="button" aria-pressed={selectedRoles.length === 0} className={selectedRoles.length === 0 ? 'active' : ''} onClick={() => { setSelectedRoles([]); setRolesOpen(false) }}><span aria-hidden="true">{selectedRoles.length === 0 ? '✓' : '◇'}</span><b>All roles</b></button>}
+            {characterRoles.filter((role) => role.toLowerCase().includes(roleQuery.trim().toLowerCase())).map((role) => <button type="button" aria-pressed={selectedRoles.includes(role)} className={selectedRoles.includes(role) ? 'active' : ''} onClick={() => setSelectedRoles((selected) => selected.includes(role) ? selected.filter((value) => value !== role) : [...selected, role])} key={role}><span aria-hidden="true">{selectedRoles.includes(role) ? '✓' : '◇'}</span><b>{role}</b></button>)}
+            {!characterRoles.some((role) => role.toLowerCase().includes(roleQuery.trim().toLowerCase())) && <p className="sonata-picker-empty">No roles match “{roleQuery}”</p>}
+          </div>}
+        </div>}
         <div className={`archive-sort${sortOpen ? ' open' : ''}`} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setSortOpen(false) }} onKeyDown={(event) => { if (event.key === 'Escape') { setSortOpen(false); event.currentTarget.querySelector<HTMLButtonElement>('.archive-sort-trigger')?.focus() } }}>
           <span>Sort</span><div className="archive-sort-picker">
             <button type="button" className="archive-sort-trigger" aria-label="Sort archive" aria-haspopup="true" aria-expanded={sortOpen} onClick={() => setSortOpen((open) => !open)}><b>{sortOptions.find((option) => option.value === sort)?.label}</b><strong aria-hidden="true">⌄</strong></button>

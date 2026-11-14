@@ -931,6 +931,14 @@
   flex: 1 1 280px;
 }
 
+.archive-browser .archive-toolbar-weapons>.owned-chip-filter:nth-child(3) {
+  flex: 0 1 250px;
+}
+
+.archive-browser .archive-toolbar-weapons>.owned-chip-filter:last-child {
+  flex: 2 1 450px;
+}
+
 .archive-browser .archive-toolbar-weapons>.owned-chip-filter .filter-chips {
   width: 100%;
 }

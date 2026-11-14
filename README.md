@@ -85,4 +85,6 @@ The production output is written to `dist/`. GitHub Actions runs the same checks
 
 Catalog metadata and artwork are imported with permission. The generated catalog records required source URLs and generation metadata in the repository.
 
+Rotation timing and supplemental combat values use [WuWaLab](https://wuwalab.com/) data. `npm run data:sync:wuwalab` refreshes a local snapshot of registered characters and regenerates the bundled combat data; review its diff before publishing. Bundled damage values remain unverified against the current English in-game UI.
+
 Do not claim the OCR accuracy target without the required fixture corpus.

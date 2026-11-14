@@ -49,19 +49,107 @@ interface DebugSectionRect { x: number; y: number; width: number; height: number
 const ECHO_DEBUG_SECTIONS: DebugSectionKey[] = ['echo0', 'echo1', 'echo2', 'echo3', 'echo4']
 const INITIAL_ART_RECT: DebugSectionRect = { x: 0, y: 0, width: CARD_WIDTH, height: CARD_HEIGHT }
 const SHARED_CHARACTER_ART_RECT: DebugSectionRect = { x: -183, y: 100, width: 2285, height: 1285 }
-const CURVED_BLOCK_PATH = 'M 180 18 H 660 C 450 245 450 800 660 1027 H 180 C -30 800 -30 245 180 18 Z M 1260 18 H 1740 C 1950 245 1950 800 1740 1027 H 1260 C 1470 800 1470 245 1260 18 Z'
+const CURVED_PANEL_OUTER_LEFT = 156
+const CURVED_PANEL_OUTER_RIGHT = CARD_WIDTH - CURVED_PANEL_OUTER_LEFT
+const CURVED_ECHO_SUBSTAT_START = 1 + 13 + 124 + 8 + 78 + 3
+const CURVED_CONTENT_EDGE_INSET = 6
+const CURVED_ECHO_ART_RIGHT = 13 + 124 + 8 - 3
+
+function curvedPanelArc(y: number) {
+  let low = 0, high = 1
+  for (let step = 0; step < 22; step++) {
+    const t = (low + high) / 2, u = 1 - t
+    const curveY = 18 * u ** 3 + 735 * u ** 2 * t + 2400 * u * t ** 2 + 1027 * t ** 3
+    if (curveY < y) low = t
+    else high = t
+  }
+  const t = (low + high) / 2, u = 1 - t
+  const slope = 630 * (1 - 2 * t) / (681 * u ** 2 + 3330 * u * t + 681 * t ** 2)
+  return { bulge: 630 * t * u, inset: 18 * Math.sqrt(1 + slope ** 2) }
+}
+
+function curvedPanelEdges(y: number, side: 'left' | 'right') {
+  const { bulge, inset } = curvedPanelArc(y)
+  return side === 'left'
+    ? { left: CURVED_PANEL_OUTER_LEFT - bulge + inset, right: 660 - bulge - inset }
+    : { left: 1260 + bulge + inset, right: CURVED_PANEL_OUTER_RIGHT + bulge - inset }
+}
+
+function curvedSectionEdges(y: number, side: 'left' | 'right', section: DebugSectionKey, rect: DebugSectionRect) {
+  const base = DEFAULT_CURVED_SECTION_RECTS[section]!
+  const edges = curvedPanelEdges(base.y + (y - rect.y) * base.height / rect.height, side)
+  const scaleX = rect.width / base.width
+  return { left: rect.x + (edges.left - base.x) * scaleX, right: rect.x + (edges.right - base.x) * scaleX }
+}
+
+function curvedPanelBand(rect: DebugSectionRect, section: DebugSectionKey, side: 'left' | 'right', originX = 0, originY = 0) {
+  const yTop = rect.y + 3, yBottom = rect.y + rect.height - 3
+  const localY = (y: number) => y - originY
+  const left = (y: number) => curvedSectionEdges(y, side, section, rect).left - originX
+  const right = (y: number) => curvedSectionEdges(y, side, section, rect).right - originX
+  const curve = (x: (y: number) => number, from: number, to: number) => {
+    const run = to - from
+    const startSlope = (x(from + .5) - x(from - .5))
+    const endSlope = (x(to + .5) - x(to - .5))
+    return `C ${x(from) + startSlope * run / 3} ${localY(from + run / 3)} ${x(to) - endSlope * run / 3} ${localY(from + 2 * run / 3)} ${x(to)} ${localY(to)}`
+  }
+  const radius = Math.min(12, (yBottom - yTop) / 4)
+  return `M ${left(yTop) + radius} ${localY(yTop)} H ${right(yTop) - radius} Q ${right(yTop)} ${localY(yTop)} ${right(yTop + radius)} ${localY(yTop + radius)} ${curve(right, yTop + radius, yBottom - radius)} Q ${right(yBottom)} ${localY(yBottom)} ${right(yBottom) - radius} ${localY(yBottom)} H ${left(yBottom) + radius} Q ${left(yBottom)} ${localY(yBottom)} ${left(yBottom - radius)} ${localY(yBottom - radius)} ${curve(left, yBottom - radius, yTop + radius)} Q ${left(yTop)} ${localY(yTop)} ${left(yTop) + radius} ${localY(yTop)} Z`
+}
+
+function curvedStatRowStyle(rect: DebugSectionRect, rowHeight: number, index: number): CSSProperties {
+  const y = rect.y + 56 + (index + .5) * rowHeight
+  const { left, right } = curvedSectionEdges(y, 'left', 'stats', rect)
+  return { marginLeft: left + 10 - rect.x, width: Math.max(0, right - left - 20) }
+}
+
+function curvedEchoArtShape(rect: DebugSectionRect, section: DebugSectionKey) {
+  const topY = rect.y + 5, bottomY = rect.y + rect.height - 5
+  const innerEdge = (y: number) => curvedSectionEdges(y, 'right', section, rect).left
+  const left = Math.floor(Math.min(innerEdge(topY), innerEdge((topY + bottomY) / 2), innerEdge(bottomY))) + 2
+  const right = rect.x + CURVED_ECHO_ART_RIGHT
+  const width = right - left
+  if (width <= 0) return undefined
+  const height = bottomY - topY
+  const edge = (y: number) => innerEdge(y) - left
+  const start = edge(topY), end = edge(bottomY)
+  const startSlope = edge(topY + .5) - edge(topY - .5)
+  const endSlope = edge(bottomY + .5) - edge(bottomY - .5)
+  const clipPath = `path("M ${start} 0 H ${width} V ${height} H ${end} C ${end - endSlope * height / 3} ${height * 2 / 3} ${start + startSlope * height / 3} ${height / 3} ${start} 0 Z")`
+  return { left: left - rect.x - 13, width, clipPath }
+}
+
+function curvedEchoSubstatShape(rect: DebugSectionRect, section: DebugSectionKey, index: number) {
+  const edge = (y: number) => {
+    return curvedSectionEdges(y, 'right', section, rect).right - rect.x - CURVED_ECHO_SUBSTAT_START - CURVED_CONTENT_EDGE_INSET
+  }
+  const verticalInset = 1 + 11
+  const gap = 3
+  const height = (rect.height - 2 * verticalInset - 4 * gap) / 5
+  const topY = rect.y + verticalInset + index * (height + gap)
+  const bottomY = topY + height
+  const top = edge(topY), bottom = edge(bottomY), middle = edge((topY + bottomY) / 2)
+  if (height <= 2 || Math.min(top, middle, bottom) <= 13) return undefined
+  const corner = Math.min(6, height / 3), upper = edge(topY + corner), lower = edge(bottomY - corner)
+  const run = height - 2 * corner
+  const upperSlope = (edge(topY + corner + .5) - edge(topY + corner - .5))
+  const lowerSlope = (edge(bottomY - corner + .5) - edge(bottomY - corner - .5))
+  const width = Math.ceil(Math.max(top, middle, bottom)) + 2
+  const path = `M 6 1 H ${top - corner} Q ${top} 1 ${upper} ${corner} C ${upper + upperSlope * run / 3} ${corner + run / 3} ${lower - lowerSlope * run / 3} ${corner + 2 * run / 3} ${lower} ${height - corner} Q ${bottom} ${height - 1} ${bottom - corner} ${height - 1} H 6 Q 1 ${height - 1} 1 ${height - corner} V ${corner} Q 1 1 6 1 Z`
+  return { width, height, path, rightInset: Math.ceil(width - middle + 8) }
+}
 const DEFAULT_CURVED_SECTION_RECTS: Partial<Record<DebugSectionKey, DebugSectionRect>> = {
   art: { x: -954, y: -500, width: 3840, height: 2160 },
   identity: { x: 140, y: 18, width: 470, height: 185 },
   stats: { x: 20, y: 203, width: 600, height: 594 },
   weapon: { x: 130, y: 797, width: 480, height: 230 },
-  sequences: { x: 620, y: 23, width: 680, height: 124 },
-  skills: { x: 580, y: 673, width: 760, height: 352 },
-  echo0: { x: 1345, y: 18, width: 440, height: 190 },
-  echo1: { x: 1415, y: 208, width: 440, height: 190 },
-  echo2: { x: 1438, y: 398, width: 440, height: 190 },
-  echo3: { x: 1425, y: 588, width: 440, height: 190 },
-  echo4: { x: 1370, y: 778, width: 440, height: 190 },
+  sequences: { x: 685, y: 23, width: 550, height: 124 },
+  skills: { x: 665, y: 673, width: 590, height: 352 },
+  echo0: { x: 1345, y: 18, width: 500, height: 190 },
+  echo1: { x: 1415, y: 208, width: 480, height: 190 },
+  echo2: { x: 1438, y: 398, width: 480, height: 190 },
+  echo3: { x: 1425, y: 588, width: 480, height: 190 },
+  echo4: { x: 1370, y: 778, width: 480, height: 190 },
   sonatas: { x: 1300, y: 968, width: 440, height: 59 },
   footer: { x: 19, y: 1037, width: 1882, height: 30 }
 }
@@ -81,7 +169,7 @@ const DEFAULT_STRAIGHT_SECTION_RECTS: Partial<Record<DebugSectionKey, DebugSecti
   sonatas: { x: 1450, y: 987, width: 450, height: 40 },
   footer: { x: 19, y: 1037, width: 1882, height: 30 }
 }
-const LAYOUT_PRESET_DEBUG_SECTIONS: DebugSectionKey[] = ['identity', 'stats', 'weapon', ...ECHO_DEBUG_SECTIONS, 'sonatas']
+const LAYOUT_PRESET_DEBUG_SECTIONS: DebugSectionKey[] = ['identity', 'stats', 'weapon', 'sequences', 'skills', ...ECHO_DEBUG_SECTIONS, 'sonatas']
 
 const clampDebugRect = (rect: DebugSectionRect, section?: DebugSectionKey): DebugSectionRect => {
   const isArt = section === 'art'
@@ -321,7 +409,7 @@ export function echoRollGradeClass(stat: { key: StatKey; value: number }) {
   return quality === 1 ? 'roll-color-red' : quality >= .75 ? 'roll-color-gold' : quality >= .5 ? 'roll-color-purple' : quality >= .375 ? 'roll-color-blue' : quality >= .25 ? 'roll-color-green' : 'roll-color-white'
 }
 
-function EchoRow({ echo, index, profile, editable, onOpen, debugSection, debugClassName, debugStyle, highlightedStat, setHighlightedStat, colorGrades, showRollTracks }: { echo?: Echo; index: number; profile: CharacterSubstatProfile; editable: boolean; onOpen: () => void; debugSection: DebugSectionKey; debugClassName: string; debugStyle?: CSSProperties; highlightedStat: BuildCardStatKey | null; setHighlightedStat: (stat: BuildCardStatKey | null) => void; colorGrades: boolean; showRollTracks: boolean }) {
+function EchoRow({ echo, index, profile, editable, onOpen, debugSection, debugClassName, debugStyle, curvedRect, highlightedStat, setHighlightedStat, colorGrades, showRollTracks }: { echo?: Echo; index: number; profile: CharacterSubstatProfile; editable: boolean; onOpen: () => void; debugSection: DebugSectionKey; debugClassName: string; debugStyle?: CSSProperties; curvedRect?: DebugSectionRect; highlightedStat: BuildCardStatKey | null; setHighlightedStat: (stat: BuildCardStatKey | null) => void; colorGrades: boolean; showRollTracks: boolean }) {
   if (!echo) return <button type="button" className={`cbc-echo-row cbc-echo-slot-${index} is-empty ${editable ? 'is-editable' : ''} ${debugClassName}`} data-debug-section={debugSection} data-echo-slot={index} style={debugStyle} disabled={!editable} onClick={editable ? onOpen : undefined}>
     <span>+</span><strong>Empty Echo slot</strong><small>{index === 0 ? 'Main Echo' : `Echo ${index + 1}`}</small>
   </button>
@@ -332,17 +420,26 @@ function EchoRow({ echo, index, profile, editable, onOpen, debugSection, debugCl
   const sonataIconSourceUrl = generatedSonataIconSources[echo.sonata]
   const scoreText = score.valid && score.grade ? `${score.grade} · ${score.percentage.toFixed(1)}%${score.provisional ? '*' : ''}` : profile.maximum > 0 ? 'Unverified' : 'Unconfigured'
   const scoreGradeClass = score.valid && score.grade ? `cbc-score-grade-${score.grade.toLowerCase()}` : ''
+  const artShape = curvedRect && curvedEchoArtShape(curvedRect, debugSection)
   return <article className={`cbc-echo-row cbc-echo-slot-${index} ${index === 0 ? 'is-main' : ''} ${editable ? 'is-editable' : ''} ${colorGrades ? 'is-grade-colored' : ''} ${showRollTracks ? '' : 'is-roll-track-hidden'} ${debugClassName}`} data-debug-section={debugSection} data-echo-slot={index} draggable={editable} style={debugStyle} role={editable ? 'button' : undefined} aria-label={editable ? `Switch ${echo.name}` : `${echo.name} Echo`} tabIndex={0} onClick={editable ? onOpen : undefined} onKeyDown={editable ? (event) => { if (event.target === event.currentTarget && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); onOpen() } } : undefined}>
     <div className="cbc-echo-center-surfaces" aria-hidden="true"><i/><i/><i/></div>
-    <div className="cbc-echo-visual">
-      <span className="cbc-echo-art">{catalog?.iconSourceUrl ? <img src={catalog.iconSourceUrl} alt=""/> : <b>◆</b>}</span>
+    <div className="cbc-echo-visual" style={artShape ? { left: artShape.left, width: artShape.width } : undefined}>
+      <span className="cbc-echo-art" style={artShape ? { clipPath: artShape.clipPath } : undefined}>{catalog?.iconSourceUrl ? <img src={catalog.iconSourceUrl} alt=""/> : <b>◆</b>}</span>
       {sonataIconSourceUrl && <img className="cbc-echo-sonata-icon" src={sonataIconSourceUrl} alt="" title={echo.sonata}/>} 
       <i className="cbc-echo-cost">{echo.cost}</i>
     </div>
     <div className="cbc-echo-main-stats">
       {[echo.mainStat, secondary].map((stat, statIndex) => <span className={`cbc-stat-source${isUnweightedStat(stat.key, stat.value, profile) ? ' is-unweighted' : ''}${contributesToStat(stat.key, highlightedStat) ? ' is-contributing' : ''}`} tabIndex={0} onMouseEnter={() => setHighlightedStat(displayedStatKey(stat.key))} onMouseLeave={() => setHighlightedStat(null)} onFocus={() => setHighlightedStat(displayedStatKey(stat.key))} onBlur={() => setHighlightedStat(null)} key={`${stat.key}-${statIndex}`}><small><img src={statIconSource(stat.key)} alt="" aria-hidden="true"/>{statLabels[stat.key]}</small><b>{formatStat(stat.key, stat.value)}</b></span>)}
     </div>
-    <div className="cbc-echo-substats">{substats.map((stat, statIndex) => <span className={`cbc-stat-source${isUnweightedStat(stat.key, stat.value, profile) ? ' is-unweighted' : ''}${contributesToStat(stat.key, highlightedStat) ? ' is-contributing' : ''}`} tabIndex={0} onMouseEnter={() => setHighlightedStat(displayedStatKey(stat.key))} onMouseLeave={() => setHighlightedStat(null)} onFocus={() => setHighlightedStat(displayedStatKey(stat.key))} onBlur={() => setHighlightedStat(null)} key={`${stat.key}-${statIndex}`}><small><img src={statIconSource(stat.key)} alt="" aria-hidden="true"/>{statLabels[stat.key]}</small><b className={colorGrades ? echoRollGradeClass(stat) : ''}>{formatStat(stat.key, stat.value)}</b>{showRollTracks && <RollBreakdown stat={stat}/>}</span>)}</div>
+    <div className="cbc-echo-substats">{substats.map((stat, statIndex) => {
+      const shape = curvedRect && curvedEchoSubstatShape(curvedRect, debugSection, statIndex)
+      return <span className={`cbc-stat-source${isUnweightedStat(stat.key, stat.value, profile) ? ' is-unweighted' : ''}${contributesToStat(stat.key, highlightedStat) ? ' is-contributing' : ''}`} style={shape ? { width: shape.width, paddingRight: shape.rightInset } : undefined} tabIndex={0} onMouseEnter={() => setHighlightedStat(displayedStatKey(stat.key))} onMouseLeave={() => setHighlightedStat(null)} onFocus={() => setHighlightedStat(displayedStatKey(stat.key))} onBlur={() => setHighlightedStat(null)} key={`${stat.key}-${statIndex}`}>
+        {shape && <svg className="cbc-echo-substat-shape" viewBox={`0 0 ${shape.width} ${shape.height}`} preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <path d={shape.path} fill="rgba(225,243,246,.04)" stroke="rgba(225,243,246,.075)" vectorEffect="non-scaling-stroke"/>
+        </svg>}
+        <small><img src={statIconSource(stat.key)} alt="" aria-hidden="true"/>{statLabels[stat.key]}</small><b className={colorGrades ? echoRollGradeClass(stat) : ''}>{formatStat(stat.key, stat.value)}</b>{showRollTracks && <RollBreakdown stat={stat}/>}
+      </span>
+    })}</div>
     <div className="cbc-echo-score" aria-label={`Substat score ${scoreText}`} title="Substat score"><strong className={scoreGradeClass}>{score.valid && score.grade ? score.grade : '—'}</strong><small>{score.valid && score.grade ? `${score.percentage.toFixed(1)}%${score.provisional ? '*' : ''}` : scoreText}</small></div>
   </article>
 }
@@ -419,11 +516,14 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
   const artworkInputRef = useRef<HTMLInputElement>(null)
   const [layoutTransferStatus, setLayoutTransferStatus] = useState<string | null>(null)
   const [artworkStatus, setArtworkStatus] = useState<string | null>(null)
-  const accentStyle = { '--cbc-accent': customAccent ?? elementAccent, '--cbc-panel-fill': `${100 - panelTransparency}%`, '--cbc-curved-fill': `${Math.min(100, (100 - panelTransparency) * 1.35)}%`, '--cbc-panel-opacity': (100 - panelTransparency) / 100 } as CSSProperties
+  const accentStyle = { '--cbc-accent': customAccent ?? elementAccent, '--cbc-panel-fill': `${100 - panelTransparency}%`, '--cbc-panel-opacity': (100 - panelTransparency) / 100 } as CSSProperties
   const debugSectionClass = (section: DebugSectionKey, className: string) => `${className} cbc-debug-section${hiddenDebugSections.has(section) ? ' is-debug-hidden' : ''}`
   const debugSectionStyle = (section: DebugSectionKey): CSSProperties | undefined => {
     const rect = debugSectionRects[section], initial = debugSectionOriginRectsRef.current[section]
     if (!rect || !initial) return undefined
+    if (section === 'sequences' || section === 'skills') {
+      return { left: rect.x - 1, top: rect.y - 1, bottom: 'auto', transform: 'none', width: rect.width, height: rect.height }
+    }
     return {
       '--cbc-debug-x': `${rect.x - initial.x}px`, '--cbc-debug-y': `${rect.y - initial.y}px`,
       width: rect.width, height: rect.height
@@ -511,7 +611,7 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
         if ((savedDebugLayoutRef.current?.layoutVersion ?? 1) < 3 && restored.sonatas && defaultSonata) restored.sonatas = { ...restored.sonatas, width: defaultSonata.width, height: defaultSonata.height }
         if (savedPreset) LAYOUT_PRESET_DEBUG_SECTIONS.forEach((section) => {
           const presetRect = (savedPreset === 'curved' ? DEFAULT_CURVED_SECTION_RECTS : DEFAULT_STRAIGHT_SECTION_RECTS)[section]
-          if (presetRect) restored[section] = { ...presetRect }
+          if (presetRect && (!savedDebugLayoutRef.current?.rects[section] || (savedDebugLayoutRef.current?.layoutVersion ?? 1) < 3)) restored[section] = { ...presetRect }
         })
         if (savedDebugLayoutRef.current) {
           if (!debugLayoutSnapshotRef.current) debugLayoutSnapshotRef.current = { ...savedDebugLayoutRef.current, rects: restored }
@@ -524,7 +624,6 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
   }, [catalog.id, settings.liveCharacterArt])
 
   const updateDebugSectionRect = (section: DebugSectionKey, rect: DebugSectionRect) => {
-    if (LAYOUT_PRESET_DEBUG_SECTIONS.includes(section)) setEchoLayoutPreset(null)
     setDebugSectionRects((current) => ({ ...current, [section]: clampDebugRect(rect, section) }))
   }
   const applyEchoLayoutPreset = (preset: EchoLayoutPreset) => {
@@ -553,9 +652,8 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
     window.addEventListener('pointermove', move); window.addEventListener('pointerup', end, { once: true })
   }
   const resetDebugSection = (section: DebugSectionKey) => {
-    const initial = defaultDebugSectionRectsRef.current[section]
+    const initial = (echoLayoutPreset === 'curved' && LAYOUT_PRESET_DEBUG_SECTIONS.includes(section) ? DEFAULT_CURVED_SECTION_RECTS[section] : undefined) ?? defaultDebugSectionRectsRef.current[section]
     if (initial) {
-      if (LAYOUT_PRESET_DEBUG_SECTIONS.includes(section)) setEchoLayoutPreset(null)
       setDebugSectionRects((current) => ({ ...current, [section]: { ...initial } }))
     }
   }
@@ -622,7 +720,11 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
     try {
       const imported = parseImportedLayout(JSON.parse(await file.text()))
       if (!imported) throw new Error('Unsupported layout file')
-      setDebugSectionRects({ ...defaultDebugSectionRectsRef.current, ...imported.rects })
+      const rects = { ...defaultDebugSectionRectsRef.current, ...imported.rects }
+      if (imported.echoLayout === 'curved') LAYOUT_PRESET_DEBUG_SECTIONS.forEach((section) => {
+        rects[section] = imported.rects[section] ?? DEFAULT_CURVED_SECTION_RECTS[section]
+      })
+      setDebugSectionRects(rects)
       setHiddenDebugSections(new Set(imported.hidden))
       setEchoLayoutPreset(imported.echoLayout)
       setCustomAccent(imported.accentColor)
@@ -721,6 +823,36 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
     }
     endEchoDrag()
   }
+  const curvedStatsRect = debugSectionRects.stats ?? DEFAULT_CURVED_SECTION_RECTS.stats!
+  const curvedWeaponRect = debugSectionRects.weapon ?? DEFAULT_CURVED_SECTION_RECTS.weapon!
+  const weaponStyle = debugSectionStyle('weapon')
+  const weaponTop = curvedWeaponRect.y + 14
+  const weaponBottom = curvedWeaponRect.y + curvedWeaponRect.height - 20
+  const weaponTopEdges = curvedSectionEdges(weaponTop, 'left', 'weapon', curvedWeaponRect)
+  const weaponBottomEdges = curvedSectionEdges(weaponBottom, 'left', 'weapon', curvedWeaponRect)
+  const weaponLeft = Math.max(weaponTopEdges.left, weaponBottomEdges.left)
+  const weaponRight = Math.min(weaponTopEdges.right, weaponBottomEdges.right)
+  const weaponRightPadding = Math.max(20, Math.ceil(curvedWeaponRect.x + curvedWeaponRect.width - weaponRight + CURVED_CONTENT_EDGE_INSET))
+  const weaponStatEdge = curvedSectionEdges(curvedWeaponRect.y + curvedWeaponRect.height / 2, 'left', 'weapon', curvedWeaponRect).right
+  const weaponStatPadding = Math.ceil(curvedWeaponRect.x + curvedWeaponRect.width - weaponStatEdge + CURVED_CONTENT_EDGE_INSET)
+  const curvedWeaponStyle = {
+    ...weaponStyle,
+    paddingLeft: Math.max(12, Math.ceil(weaponLeft - curvedWeaponRect.x + CURVED_CONTENT_EDGE_INSET)),
+    paddingRight: weaponRightPadding,
+    '--cbc-weapon-stat-extra-width': `${Math.max(0, weaponRightPadding - weaponStatPadding)}px`
+  } as CSSProperties
+  const weaponArtClip = echoLayoutPreset === 'curved' ? curvedPanelBand(
+    curvedWeaponRect, 'weapon', 'left', curvedWeaponRect.x, curvedWeaponRect.y
+  ) : undefined
+  const curvedStatRowHeight = Math.max(44, (curvedStatsRect.height - 56 - 96) / Math.max(1, statRows.length))
+  const curvedBands = (sections: DebugSectionKey[], side: 'left' | 'right') => sections
+    .filter((section) => !hiddenDebugSections.has(section))
+    .map((section) => ({ section, path: curvedPanelBand(debugSectionRects[section] ?? DEFAULT_CURVED_SECTION_RECTS[section]!, section, side) }))
+  const curvedSurfaces = echoLayoutPreset === 'curved' ? [
+    { kind: 'panel', bands: curvedBands(['identity', 'stats', 'weapon'], 'left') },
+    { kind: 'echo', bands: curvedBands(ECHO_DEBUG_SECTIONS, 'right') },
+    { kind: 'sonata', bands: curvedBands(['sonatas'], 'right') }
+  ] : []
 
   return <div className="cbc-card-layout" style={accentStyle}>
     <div className="cbc-viewport" ref={viewportRef} style={{ height: CARD_HEIGHT * scale }}>
@@ -735,15 +867,17 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
         </div>
       </section>
       {echoLayoutPreset === 'curved' && <>
-        <div className="cbc-curved-glass cbc-glass" style={{ clipPath: `path("${CURVED_BLOCK_PATH}")` }} aria-hidden="true"/>
+        {curvedSurfaces.filter(({ bands }) => bands.length > 0).map(({ kind, bands }) =>
+          <div className={`cbc-curved-glass cbc-curved-glass-${kind} cbc-glass`} style={{ clipPath: `path("${bands.map(({ path }) => path).join(' ')}")` }} aria-hidden="true" key={kind}/>
+        )}
         <svg className="cbc-curved-blocks" viewBox="0 0 1920 1080" aria-hidden="true" focusable="false">
-          <path className="cbc-curved-outline" d={CURVED_BLOCK_PATH}/>
-          <path className="cbc-curved-divider" d="M 73.8 203 H 553.8 M 37.5 701 H 517.5 M 59.4 797 H 539.4 M 1367.9 208 H 1847.9 M 1410.3 398 H 1890.3 M 1415.5 588 H 1895.5 M 1385.9 778 H 1865.9 M 1305.4 968 H 1785.4"/>
+          {curvedSurfaces.flatMap(({ bands }) => bands).map(({ section, path }) => <path className="cbc-curved-section-surface" data-curved-section={section} data-drop-target={dropEchoSlot !== null && section === ECHO_DEBUG_SECTIONS[dropEchoSlot] ? true : undefined} d={path} fill="none" stroke="var(--cbc-edge, rgba(240,240,240,.12))" key={section}/>)}
         </svg>
       </>}
 
       <section className={debugSectionClass('sequences', 'cbc-sequences')} data-debug-section="sequences" style={debugSectionStyle('sequences')} aria-label={`Sequence ${character.sequence}`}>{catalog.sequenceIcons.slice(0, 6).map((sequence) => { const sourceStat = bonusSourceStat(`sequence-${sequence.sequence}`); return <button type="button" key={sequence.sequence} aria-disabled={!editable} className={`${character.sequence >= sequence.sequence ? 'is-unlocked' : 'is-locked'} cbc-stat-source${bonusSourceContributes(`sequence-${sequence.sequence}`) ? ' is-contributing' : ''}`} onMouseEnter={() => sourceStat && setHighlightedStat(displayedStatKey(sourceStat))} onMouseLeave={() => setHighlightedStat(null)} onFocus={() => sourceStat && setHighlightedStat(displayedStatKey(sourceStat))} onBlur={() => setHighlightedStat(null)} onClick={() => { if (editable) onSetSequence(character.sequence === sequence.sequence ? sequence.sequence - 1 : sequence.sequence) }}>
         <span className="cbc-sequence-frame" style={{ '--cbc-sequence-mask': `url("${SEQUENCE_STAR_URL}")` } as CSSProperties}>
+          <span className="cbc-sequence-glow" aria-hidden="true"/>
           <img className="cbc-sequence-star" src={SEQUENCE_STAR_URL} alt=""/>
           <img className="cbc-sequence-icon" src={sequence.iconSourceUrl} alt=""/>
         </span><CardTooltip title={`S${sequence.sequence} · ${sequence.name}`}>{richDescription(sequence.description)}</CardTooltip>
@@ -776,17 +910,19 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
 
         <section className={`${debugSectionClass('stats', `cbc-stats${echoLayoutPreset === 'curved' ? '' : ' cbc-glass'}`)}${editable ? ' is-editable' : ''}`} data-debug-section="stats" style={debugSectionStyle('stats')} role={editable ? 'button' : undefined} tabIndex={editable ? 0 : undefined} onClick={editable ? onEditPriorities : undefined} onKeyDown={editable ? (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onEditPriorities() } } : undefined}>
           <header><strong>Resonator statistics</strong><div className="cbc-stat-actions"><button type="button" title={editable ? 'Edit character stat priorities' : 'Stat priorities are read-only for this loadout'} disabled={!editable} onClick={(event) => { event.stopPropagation(); if (editable) onEditPriorities() }}><Icon name="settings"/></button></div></header>
-          <div className="cbc-stat-list">{statRows.map(({ key, label }) => {
+          <div className="cbc-stat-list">{statRows.map(({ key, label }, index) => {
             const detail = statDetail(key, label)
             const value = key === 'tuneBreakBoost' ? Number(detail.value) : key === 'incomingHealingBonus' ? model.incomingHealingBonus : model.finalStats[key as keyof typeof model.finalStats] ?? 0
-            return <div className={`cbc-stat-row${highlightedStat === key ? ' is-active' : ''}`} key={key} tabIndex={0} onMouseEnter={() => setHighlightedStat(key)} onMouseLeave={() => setHighlightedStat(null)} onFocus={() => setHighlightedStat(key)} onBlur={() => setHighlightedStat(null)}><StatIcon stat={key}/><span>{label}</span><b>{key === 'tuneBreakBoost' ? Number(value).toFixed(1) : formatStat(key as StatKey, Number(value))}</b></div>
+            return <div className={`cbc-stat-row${highlightedStat === key ? ' is-active' : ''}`} style={echoLayoutPreset === 'curved' ? curvedStatRowStyle(curvedStatsRect, curvedStatRowHeight, index) : undefined} key={key} tabIndex={0} onMouseEnter={() => setHighlightedStat(key)} onMouseLeave={() => setHighlightedStat(null)} onFocus={() => setHighlightedStat(key)} onBlur={() => setHighlightedStat(null)}><StatIcon stat={key}/><span>{label}</span><b>{key === 'tuneBreakBoost' ? Number(value).toFixed(1) : formatStat(key as StatKey, Number(value))}</b></div>
           })}</div>
           <div className="cbc-build-score" onClick={(event) => event.stopPropagation()} onKeyDown={(event) => event.stopPropagation()}><EchoWaveform/><span>Build score</span><div><strong>{buildScore.grade ?? '—'}</strong><b title={buildScore.energyRequirementMet ? undefined : `Below ${energyRegenMinimum}% Energy Regen`}>{buildScore.label}</b><button type="button" className="cbc-build-score-info" aria-label="How Substat Score works" title="How Substat Score works" onClick={onShowScoreInfo}>?</button></div></div>
         </section>
 
-        <section className={`${debugSectionClass('weapon', `cbc-weapon${echoLayoutPreset === 'curved' ? '' : ' cbc-glass'} ${editable ? 'is-editable' : ''}`)}${weaponContributes ? ' is-contributing-source-panel' : ''}`} data-debug-section="weapon" style={debugSectionStyle('weapon')} tabIndex={editable ? 0 : undefined} onClick={editable ? onOpenWeapon : undefined} onKeyDown={editable ? (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onOpenWeapon() } } : undefined}>
+        <section className={`${debugSectionClass('weapon', `cbc-weapon${echoLayoutPreset === 'curved' ? '' : ' cbc-glass'} ${editable ? 'is-editable' : ''}`)}${weaponContributes ? ' is-contributing-source-panel' : ''}`} data-debug-section="weapon" style={echoLayoutPreset === 'curved' ? curvedWeaponStyle : weaponStyle} tabIndex={editable ? 0 : undefined} onClick={editable ? onOpenWeapon : undefined} onKeyDown={editable ? (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onOpenWeapon() } } : undefined}>
           {model.weapon ? <>
-            <img src={model.weapon.catalog.iconSourceUrl} alt=""/>
+            {weaponArtClip ? <div className="cbc-weapon-art" style={{ clipPath: `path("${weaponArtClip}")` }}>
+              <img src={model.weapon.catalog.iconSourceUrl} alt=""/>
+            </div> : <img src={model.weapon.catalog.iconSourceUrl} alt=""/>}
             <div><h2>{model.weapon.catalog.name}</h2><Stars rarity={model.weapon.catalog.rarity}/><span>Lv. {model.weapon.owned.level} · R{model.weapon.owned.rank}</span><dl><div className={`cbc-stat-source${highlightedStat === 'atk' ? ' is-contributing' : ''}`} tabIndex={0} onMouseEnter={() => setHighlightedStat('atk')} onMouseLeave={() => setHighlightedStat(null)} onFocus={() => setHighlightedStat('atk')} onBlur={() => setHighlightedStat(null)}><dt><img className="weapon-stat-icon" src={statIconSource('atk')} alt="" aria-hidden="true"/>Base ATK</dt><dd>{model.weapon.levelStats.baseAtk}</dd></div><div className={`cbc-stat-source${model.weapon.secondaryStat && contributesToStat(model.weapon.secondaryStat.key, highlightedStat) ? ' is-contributing' : ''}`} tabIndex={0} onMouseEnter={() => model.weapon?.secondaryStat && setHighlightedStat(displayedStatKey(model.weapon.secondaryStat.key))} onMouseLeave={() => setHighlightedStat(null)} onFocus={() => model.weapon?.secondaryStat && setHighlightedStat(displayedStatKey(model.weapon.secondaryStat.key))} onBlur={() => setHighlightedStat(null)}><dt><img className="weapon-stat-icon" src={weaponStatIconSource(model.weapon.catalog.secondaryStat)} alt="" aria-hidden="true"/>{model.weapon.catalog.secondaryStat}</dt><dd>{model.weapon.levelStats.secondaryStatValue}</dd></div></dl></div>
             <CardTooltip title={model.weapon.catalog.passiveName || model.weapon.catalog.name}>{model.weapon.catalog.passiveEffects[Math.max(0, model.weapon.owned.rank - 1)] || model.weapon.catalog.description}</CardTooltip>
           </> : <button type="button" disabled={!editable}><span>+</span><strong>No weapon equipped</strong><small>{catalog.weaponType}</small></button>}
@@ -800,7 +936,7 @@ export const CharacterBuildCard = forwardRef<HTMLDivElement, CharacterBuildCardP
       <div className="cbc-right-column">
         <section className={`cbc-echo-stage${dropEchoSlot !== null ? ` is-dropping-on-${dropEchoSlot}` : ''}`} onDragStart={startEchoDrag} onDragOver={overEchoSlot} onDrop={dropEcho} onDragEnd={endEchoDrag}>{model.echoSlots.map((echo, index) => {
           const debugSection = `echo${index}` as DebugSectionKey
-          return <EchoRow echo={echo} index={index} profile={profile} editable={editable} onOpen={() => onOpenEcho(index)} debugSection={debugSection} debugClassName={debugSectionClass(debugSection, '')} debugStyle={debugSectionStyle(debugSection)} highlightedStat={highlightedStat} setHighlightedStat={setHighlightedStat} colorGrades={colorEchoGrades} showRollTracks={showRollTracks} key={echo?.id ?? `empty-${index}`}/>
+          return <EchoRow echo={echo} index={index} profile={profile} editable={editable} onOpen={() => onOpenEcho(index)} debugSection={debugSection} debugClassName={debugSectionClass(debugSection, '')} debugStyle={debugSectionStyle(debugSection)} curvedRect={echoLayoutPreset === 'curved' ? (debugSectionRects[debugSection] ?? DEFAULT_CURVED_SECTION_RECTS[debugSection]) : undefined} highlightedStat={highlightedStat} setHighlightedStat={setHighlightedStat} colorGrades={colorEchoGrades} showRollTracks={showRollTracks} key={echo?.id ?? `empty-${index}`}/>
         })}</section>
         <section className="cbc-sonatas"><div className={debugSectionClass('sonatas', 'cbc-sonata-content')} data-debug-section="sonatas" style={debugSectionStyle('sonatas')}>{sonataDetails.length ? sonataDetails.map((sonata) => { const source = model.statBonusSources.find((entry) => entry.id.startsWith('sonata-') && entry.label.startsWith(`${sonata.name} `)); const sourceStat = source?.lines[0]?.key; return <button type="button" className={`cbc-stat-source${highlightedStat && source?.lines.some((line) => contributesToStat(line.key, highlightedStat)) ? ' is-contributing' : ''}`} onMouseEnter={() => sourceStat && setHighlightedStat(displayedStatKey(sourceStat))} onMouseLeave={() => setHighlightedStat(null)} onFocus={() => sourceStat && setHighlightedStat(displayedStatKey(sourceStat))} onBlur={() => setHighlightedStat(null)} key={sonata.name}><img src={sonata.iconSourceUrl || generatedSonataIconSources[sonata.name]} alt=""/><strong>{sonata.name}</strong><small>{sonata.count}</small><CardTooltip title={sonata.name}>{sonata.effects.length ? sonata.effects.map((effect) => <span key={effect.pieces}><b>{effect.pieces}-piece</b> {richDescription(effect.description)}</span>) : <>No active set threshold.</>}</CardTooltip></button> }) : <em>No active Sonata</em>}</div></section>
       </div>

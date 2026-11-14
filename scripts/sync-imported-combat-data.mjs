@@ -1,7 +1,11 @@
-import { readFile, readdir, writeFile } from 'node:fs/promises'
+import { readFile, writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 
 const source = resolve('.local-tools/combat-source')
+const roster = JSON.parse(await readFile(resolve(source, 'roster.json'), 'utf8'))
+const sourceFiles = roster.groups?.flatMap((group) => group.cards).filter((card) => card.registered).map((card) => `${card.slug}.json`)
+if (!sourceFiles?.length || sourceFiles.some((file) => !/^[a-z0-9-]+\.json$/.test(file)) ||
+    new Set(sourceFiles).size !== sourceFiles.length) throw new Error('Invalid WuWaLab roster')
 const catalogText = await readFile('src/game-data/characters.generated.ts', 'utf8')
 const catalog = JSON.parse(`[${catalogText.split('=[')[1]}`)
 const byId = new Map(catalog.map((character) => [character.id, character]))
@@ -25,7 +29,7 @@ const output = {}
 const buffs = {}
 const counts = { characters:0, abilities:0, direct:0, additional:0, unmappedCharacters:[] }
 
-for (const file of (await readdir(source)).filter((name) => name.endsWith('.json') && name !== 'roster.json').sort()) {
+for (const file of sourceFiles.sort()) {
   const raw = JSON.parse(await readFile(resolve(source, file), 'utf8'))
   const sourceId = String(raw.id)
   if (!Array.isArray(raw.abilities) || new Set(raw.abilities.map((ability) => ability.id)).size !== raw.abilities.length) throw new Error(`Invalid ability IDs in ${file}`)
@@ -47,13 +51,14 @@ for (const file of (await readdir(source)).filter((name) => name.endsWith('.json
     ].map((action) => [action.id.replaceAll(':', '-'), action])).values()]
     const used = new Set()
     let tuneBreakMapped = false
+    const namedTuneBreak = raw.abilities.some((ability) => ability.name.startsWith('Tune Break Skill -'))
     const abilities = raw.abilities.map((ability) => {
       if (!Number.isInteger(ability.id) || !Number.isInteger(ability.total_frames) || ability.total_frames < 0 || !Array.isArray(ability.hits)) throw new Error(`Invalid ability ${file}:${ability.id}`)
       for (const hit of ability.hits) if (!Number.isFinite(hit.motion_value) || !Number.isFinite(hit.frame) || hit.frame < 0) throw new Error(`Invalid hit ${file}:${ability.id}`)
       const total = sum(ability.hits.map((hit) => hit.motion_value)) / 10000
       const candidates = ability.hits.length ? actions.filter((action) => Math.abs(action.value - total) < 0.00011).map((action) => ({ ...action, score:similarity(ability.name, action.name) })).sort((left, right) => right.score - left.score) : []
       const chosen = candidates[0]?.score >= 0.34 && (candidates.length === 1 || candidates[0].score > candidates[1].score) ? candidates[0] : undefined
-      const genericTuneBreak = ability.name.startsWith('Tune Break Skill') && !tuneBreakMapped
+      const genericTuneBreak = ability.name.startsWith('Tune Break Skill') && !tuneBreakMapped && (!namedTuneBreak || ability.name !== 'Tune Break Skill')
       if (genericTuneBreak) tuneBreakMapped = true
       const knownUnsupported = characterId === '1508' && ability.name === 'S1: Unseen Snare Fixed DMG'
       const actionId = genericTuneBreak ? `${characterId}:tune-break` : knownUnsupported ? '1508:review:s1-unseen-snare-hit' : chosen && !used.has(chosen.id) ? chosen.id : undefined
@@ -66,7 +71,7 @@ for (const file of (await readdir(source)).filter((name) => name.endsWith('.json
   }
 }
 
-if (counts.characters !== 48 || counts.abilities !== 1217) throw new Error(`Unexpected source snapshot: ${JSON.stringify(counts)}`)
+if (counts.characters !== sourceFiles.length || counts.abilities === 0) throw new Error(`Unexpected source snapshot: ${JSON.stringify(counts)}`)
 const runtime = Object.fromEntries(Object.entries(output).map(([characterId, character]) => [characterId, {
   sourceId:character.sourceId, slug:character.slug, name:character.name,
   abilities:character.abilities.filter((ability) => ability.tacetActionId).map((ability) => ({

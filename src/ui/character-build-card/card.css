@@ -36,11 +36,11 @@
   background: linear-gradient(145deg,color-mix(in srgb,rgba(242,242,242,.1) var(--cbc-panel-fill),transparent),transparent 24%),linear-gradient(135deg,color-mix(in srgb,rgba(18,18,18,.56) var(--cbc-panel-fill),transparent),color-mix(in srgb,rgba(9,9,9,.76) var(--cbc-panel-fill),transparent));
 }
 
-.cbc-card:not(.is-exporting) .cbc-echo-row {
+.cbc-card:not(.is-exporting) :is(.cbc-echo-row, .cbc-curved-glass-echo) {
   background: linear-gradient(145deg,color-mix(in srgb,rgba(242,242,242,.1) var(--cbc-panel-fill),transparent),transparent 28%),linear-gradient(104deg,color-mix(in srgb,rgba(24,24,24,.54) var(--cbc-panel-fill),transparent),color-mix(in srgb,rgba(9,9,9,.78) var(--cbc-panel-fill),transparent) 70%);
 }
 
-.cbc-card:not(.is-exporting) .cbc-sonatas button {
+.cbc-card:not(.is-exporting) :is(.cbc-sonatas button, .cbc-curved-glass-sonata) {
   background: linear-gradient(145deg,color-mix(in srgb,rgba(26,26,26,.56) var(--cbc-panel-fill),transparent),color-mix(in srgb,rgba(9,9,9,.78) var(--cbc-panel-fill),transparent));
 }
 
@@ -418,6 +418,9 @@
   width: 205px;
   height: 190px;
   object-fit: contain;
+}
+
+:is(.cbc-weapon>img, .cbc-weapon-art img) {
   filter: drop-shadow(0 18px 18px rgba(0,0,0,.55));
 }
 
@@ -552,8 +555,7 @@
   filter: drop-shadow(0 6px 9px rgba(0,0,0,.62));
 }
 
-.cbc-sequence-frame::before {
-  content: "";
+.cbc-sequence-glow {
   position: absolute;
   z-index: 0;
   inset: 0;
@@ -600,7 +602,7 @@
   filter: drop-shadow(0 0 3px rgba(235,248,255,.38)) drop-shadow(0 0 14px color-mix(in srgb,var(--cbc-accent) 42%,transparent));
 }
 
-.cbc-sequences .is-unlocked .cbc-sequence-frame::before {
+.cbc-sequences .is-unlocked .cbc-sequence-glow {
   background: var(--cbc-accent);
   opacity: .68;
 }

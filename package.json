@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "data:sync:echoes": "node scripts/sync-catalog-data.mjs",
+    "data:sync:wuwalab": "node scripts/fetch-wuwalab-combat-data.mjs && node scripts/sync-imported-combat-data.mjs",
     "data:sync:scanner-signatures": "node scripts/generate-scanner-signatures.mjs",
     "dev": "vite",
     "build": "tsc -b && vite build",

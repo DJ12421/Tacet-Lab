@@ -1,23 +1,16 @@
-.cbc-curved-glass {
+.cbc-curved-glass.cbc-glass {
   position: absolute;
   z-index: 1;
   inset: 0;
-  isolation: auto;
+  overflow: hidden;
   border: 0;
   border-radius: 0;
   box-shadow: none;
-  background: linear-gradient(135deg, color-mix(in srgb, rgba(18,33,47,.88) var(--cbc-curved-fill), transparent), color-mix(in srgb, rgba(3,10,18,.98) var(--cbc-curved-fill), transparent))!important;
   pointer-events: none;
 }
 
-.cbc-card.is-curved-layout:not(.is-exporting) .cbc-curved-glass {
-  backdrop-filter: blur(26px) brightness(.72) saturate(1.2);
-  -webkit-backdrop-filter: blur(26px) brightness(.72) saturate(1.2);
-}
-
-.cbc-card.is-exporting .cbc-curved-glass.has-export-backdrop {
-  background: linear-gradient(135deg, color-mix(in srgb, rgba(18,33,47,.88) var(--cbc-curved-fill), transparent), color-mix(in srgb, rgba(3,10,18,.98) var(--cbc-curved-fill), transparent)), var(--cbc-export-backdrop-image)!important;
-  background-size: 100% 100%;
+:is(.cbc-curved-glass-echo, .cbc-curved-glass-sonata)::after {
+  content: none;
 }
 
 .cbc-curved-blocks {
@@ -26,20 +19,28 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  overflow: visible;
+  overflow: hidden;
   pointer-events: none;
 }
 
-.cbc-curved-outline {
-  fill: none;
-  stroke: color-mix(in srgb, var(--cbc-accent) 42%, rgba(240,240,240,.36));
-  stroke-width: 2.5;
+.cbc-curved-section-surface {
+  transition: stroke .16s ease;
 }
 
-.cbc-curved-divider {
-  fill: none;
-  stroke: color-mix(in srgb, var(--cbc-accent) 25%, rgba(240,240,240,.32));
-  stroke-width: 1.5;
+.cbc-card:has(.cbc-identity.is-editable:is(:hover, :focus-visible)) [data-curved-section="identity"],
+.cbc-card:has(.cbc-stats.is-editable:is(:hover, :focus-visible)) [data-curved-section="stats"],
+.cbc-card:has(.cbc-weapon:is(.is-contributing-source-panel, .is-editable:hover, :focus-visible)) [data-curved-section="weapon"],
+.cbc-card:has(.cbc-echo-slot-0:is(.is-main, .is-editable:hover, :focus-visible)) [data-curved-section="echo0"],
+.cbc-card:has(.cbc-echo-slot-1:is(.is-editable:hover, :focus-visible)) [data-curved-section="echo1"],
+.cbc-card:has(.cbc-echo-slot-2:is(.is-editable:hover, :focus-visible)) [data-curved-section="echo2"],
+.cbc-card:has(.cbc-echo-slot-3:is(.is-editable:hover, :focus-visible)) [data-curved-section="echo3"],
+.cbc-card:has(.cbc-echo-slot-4:is(.is-editable:hover, :focus-visible)) [data-curved-section="echo4"] {
+  stroke: color-mix(in srgb, var(--cbc-accent) 68%, white);
+}
+
+.cbc-card .cbc-curved-section-surface[data-drop-target] {
+  stroke: var(--cbc-accent);
+  stroke-width: 3;
 }
 
 .cbc-card.is-exporting-background > :is(.cbc-curved-glass, .cbc-curved-blocks) {
@@ -57,13 +58,48 @@
 }
 
 .cbc-card.is-curved-layout .cbc-echo-center-surfaces {
+  inset: 11px auto 11px 145px;
+  width: 78px;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.cbc-card.is-curved-layout .cbc-echo-row::before {
   display: none;
 }
 
 .cbc-card.is-curved-layout .cbc-identity {
   box-sizing: border-box;
-  padding: 20px 40px;
+  padding: 20px 36px 20px 60px;
 }
+
+.cbc-card.is-curved-layout .cbc-sequences {
+  left: 620px;
+  gap: 0;
+  transform: none;
+}
+
+.cbc-card.is-curved-layout .cbc-sequences::before {
+  left: 65px;
+  right: 65px;
+}
+
+.cbc-card.is-curved-layout .cbc-sequences>button,
+.cbc-card.is-curved-layout .cbc-sequence-frame {
+  width: 96px;
+  height: 96px;
+}
+
+.cbc-card.is-curved-layout .cbc-skills {
+  left: 580px;
+  padding-inline: 0;
+  transform: none;
+}
+
+.cbc-card.is-curved-layout .cbc-skill-column:nth-child(1) { transform: translate(-4px, 58px); }
+.cbc-card.is-curved-layout .cbc-skill-column:nth-child(2) { transform: translate(-2px, 21px); }
+.cbc-card.is-curved-layout .cbc-skill-column:nth-child(4) { transform: translate(2px, 21px); }
+.cbc-card.is-curved-layout .cbc-skill-column:nth-child(5) { transform: translate(4px, 58px); }
 
 .cbc-card.is-curved-layout .cbc-stats {
   box-sizing: border-box;
@@ -78,121 +114,236 @@
 
 .cbc-card.is-curved-layout .cbc-stats > header {
   box-sizing: border-box;
-  width: calc(100% - 160px);
+  width: 420px;
   height: 56px;
   align-items: center;
   margin: 0 0 0 70px;
-  padding: 0 10px;
+  padding: 0 12px;
 }
 
 .cbc-card.is-curved-layout .cbc-stat-list {
   width: 100%;
   flex: 1;
-  grid-auto-rows: minmax(43px, 1fr);
-  overflow-x: hidden;
-  clip-path: polygon(9% 0, 85% 0, 81% 50%, 83% 100%, 5% 100%, 0 50%);
+  grid-auto-rows: minmax(44px, 1fr);
+  overflow: visible;
 }
 
 .cbc-card.is-curved-layout .cbc-stat-row {
   box-sizing: border-box;
-  width: calc(100% - 160px);
   min-height: 43px;
-  margin-left: 20px;
+  grid-template-columns: 22px minmax(0, 1fr) auto;
 }
-
-.cbc-card.is-curved-layout .cbc-stat-row:nth-child(1) { margin-left: 54px; }
-.cbc-card.is-curved-layout .cbc-stat-row:nth-child(2) { margin-left: 43px; }
-.cbc-card.is-curved-layout .cbc-stat-row:nth-child(3) { margin-left: 35px; }
-.cbc-card.is-curved-layout .cbc-stat-row:nth-child(4) { margin-left: 30px; }
-.cbc-card.is-curved-layout .cbc-stat-row:nth-last-child(4) { margin-left: 28px; }
-.cbc-card.is-curved-layout .cbc-stat-row:nth-last-child(3) { margin-left: 32px; }
-.cbc-card.is-curved-layout .cbc-stat-row:nth-last-child(2) { margin-left: 36px; }
-.cbc-card.is-curved-layout .cbc-stat-row:last-child { margin-left: 39px; }
 
 .cbc-card.is-curved-layout .cbc-stats > .cbc-build-score {
   box-sizing: border-box;
-  width: calc(100% - 160px);
+  width: 440px;
   height: 96px;
-  margin: 0 0 0 52px;
-  padding: 12px 10px;
+  margin: 0 0 0 48px;
+  padding: 12px 16px;
+  gap: 18px;
 }
 
 .cbc-card.is-curved-layout .cbc-identity>div:first-child {
   justify-content: space-between;
-  width: calc(100% + 40px);
+  width: 100%;
+  gap: 16px;
+}
+
+.cbc-card.is-curved-layout .cbc-identity h1 {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cbc-card.is-curved-layout .cbc-identity-owner {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 170px;
+}
+
+.cbc-card.is-curved-layout .cbc-identity-owner>span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .cbc-card.is-curved-layout .cbc-identity-tags {
-  left: -30px;
-  right: 60px;
-  justify-content: space-between;
+  left: 0;
+  right: auto;
 }
 
 .cbc-card.is-curved-layout .cbc-weapon {
+  position: relative;
   box-sizing: border-box;
-  grid-template-columns: 180px minmax(0, 1fr);
-  padding: 0 20px;
+  grid-template-columns: min(38%, 145px) minmax(0, 1fr);
+  gap: 8px;
 }
 
-.cbc-card.is-curved-layout .cbc-weapon>img {
-  width: 160px;
-  transform: translateX(20px);
+.cbc-weapon-art {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
 }
 
-.cbc-card.is-curved-layout .cbc-weapon>div {
-  max-width: 260px;
+.cbc-weapon-art img {
+  width: min(45%, 190px);
+  height: 100%;
+  object-fit: contain;
+  object-position: left center;
+  transform: translateX(-14px);
+}
+
+.cbc-card.is-curved-layout .cbc-weapon>div:not(.cbc-weapon-art) {
+  position: relative;
+  grid-column: 2;
 }
 
 .cbc-card.is-curved-layout .cbc-weapon dl {
-  transform: translateX(20px);
+  width: calc(100% + var(--cbc-weapon-stat-extra-width, 0px));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  transform: none;
+}
+
+.cbc-card.is-curved-layout .cbc-weapon dt {
+  overflow-wrap: anywhere;
 }
 
 .cbc-card.is-curved-layout .cbc-echo-row {
-  grid-template-columns: 125px 75px minmax(0, 1fr);
+  min-height: 0;
+  outline: none;
+  grid-template-columns: 124px 78px minmax(0, 1fr);
+  gap: 8px;
+  padding: 11px 13px;
 }
 
 .cbc-card.is-curved-layout .cbc-echo-visual {
-  width: 150px;
+  align-self: stretch;
+  aspect-ratio: auto;
+  margin-block: -6px;
+}
+
+.cbc-card.is-curved-layout .cbc-echo-art {
+  overflow: hidden;
+  clip-path: none;
+}
+
+.cbc-card.is-curved-layout .cbc-echo-art img {
+  object-fit: cover;
+  transform: translate(8px, 5px) scale(0.9);
+}
+
+.cbc-card.is-curved-layout .cbc-echo-slot-2 .cbc-echo-art img {
+  transform: translateX(3px) scale(0.96);
 }
 
 .cbc-card.is-curved-layout .cbc-echo-main-stats {
-  margin-left: 20px;
+  margin-left: 0;
+  gap: 58px;
+  box-sizing: border-box;
+  padding: 0 3px 0 8px;
+  border-inline: 1px solid rgba(225,243,246,.18);
 }
+
+.cbc-card.is-curved-layout .cbc-echo-main-stats::before,
+.cbc-card.is-curved-layout .cbc-echo-main-stats::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(225,243,246,.18);
+  pointer-events: none;
+}
+
+.cbc-card.is-curved-layout .cbc-echo-main-stats::before { top: 33.333%; }
+.cbc-card.is-curved-layout .cbc-echo-main-stats::after { top: 66.666%; }
 
 .cbc-card.is-curved-layout .cbc-echo-score {
-  margin-left: 10px;
+  margin-left: 0;
 }
 
-.cbc-card.is-curved-layout:not(.is-stat-highlighting) .cbc-echo-row .cbc-stat-source.is-unweighted { opacity: .65; }
-.cbc-card.is-curved-layout .cbc-echo-substats small { font-size: 13px; }
-.cbc-card.is-curved-layout .cbc-echo-substats b { font-size: 14px; }
+.cbc-card.is-curved-layout .cbc-echo-main-stats small { transform: none; }
 
-.cbc-card.is-curved-layout .cbc-echo-slot-0 { --cbc-echo-rise: 30px; --cbc-echo-half-rise: 15px; }
-.cbc-card.is-curved-layout .cbc-echo-slot-1 { --cbc-echo-rise: 15px; --cbc-echo-half-rise: 7px; }
-.cbc-card.is-curved-layout .cbc-echo-slot-3 { --cbc-echo-fall: 15px; --cbc-echo-half-fall: 7px; }
-.cbc-card.is-curved-layout .cbc-echo-slot-4 { --cbc-echo-fall: 30px; --cbc-echo-half-fall: 15px; }
+.cbc-card.is-curved-layout .cbc-echo-sonata-icon { left: auto; right: -16px; top: 2px; width: 30px; height: 30px; }
+.cbc-card.is-curved-layout .cbc-echo-cost { left: auto; right: -16px; bottom: 2px; width: 32px; height: 32px; font-size: 18px; }
 
-.cbc-card.is-curved-layout .cbc-echo-substats>span { box-sizing: border-box; }
-.cbc-card.is-curved-layout :is(.cbc-echo-slot-0, .cbc-echo-slot-1) .cbc-echo-substats>span:first-child { width: calc(100% - var(--cbc-echo-rise)); }
-.cbc-card.is-curved-layout :is(.cbc-echo-slot-0, .cbc-echo-slot-1) .cbc-echo-substats>span:nth-child(2) { width: calc(100% - var(--cbc-echo-half-rise)); }
-.cbc-card.is-curved-layout :is(.cbc-echo-slot-0, .cbc-echo-slot-1) .cbc-echo-substats>span:nth-child(4) { transform: translateX(var(--cbc-echo-half-rise)); }
-.cbc-card.is-curved-layout :is(.cbc-echo-slot-0, .cbc-echo-slot-1) .cbc-echo-substats>span:nth-child(5) { transform: translateX(var(--cbc-echo-rise)); }
-.cbc-card.is-curved-layout :is(.cbc-echo-slot-3, .cbc-echo-slot-4) .cbc-echo-substats>span:first-child { transform: translateX(var(--cbc-echo-fall)); }
-.cbc-card.is-curved-layout :is(.cbc-echo-slot-3, .cbc-echo-slot-4) .cbc-echo-substats>span:nth-child(2) { transform: translateX(var(--cbc-echo-half-fall)); }
-.cbc-card.is-curved-layout :is(.cbc-echo-slot-3, .cbc-echo-slot-4) .cbc-echo-substats>span:nth-child(4) { width: calc(100% - var(--cbc-echo-half-fall)); }
-.cbc-card.is-curved-layout :is(.cbc-echo-slot-3, .cbc-echo-slot-4) .cbc-echo-substats>span:nth-child(5) { width: calc(100% - var(--cbc-echo-fall)); }
+.cbc-card.is-curved-layout .cbc-echo-substats {
+  gap: 3px;
+  margin-left: -5px;
+}
+
+.cbc-card.is-curved-layout .cbc-echo-substats>span {
+  box-sizing: border-box;
+  isolation: isolate;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.cbc-card.is-curved-layout .cbc-echo-substat-shape {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.cbc-card.is-curved-layout .cbc-echo-substats>span> :is(small, b, .cbc-roll-breakdown) {
+  position: relative;
+  z-index: 1;
+}
+
+.cbc-card.is-curved-layout .cbc-echo-row.is-empty {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  grid-template-rows: 1fr 1fr;
+  align-items: center;
+  justify-content: stretch;
+  column-gap: 18px;
+  padding: 20px 25px;
+  text-align: left;
+}
+
+.cbc-card.is-curved-layout .cbc-echo-row.is-empty>span {
+  grid-row: 1 / 3;
+  width: 120px;
+  height: 120px;
+  display: grid;
+  place-items: center;
+}
+
+.cbc-card.is-curved-layout .cbc-echo-row.is-empty strong { align-self: end; }
+.cbc-card.is-curved-layout .cbc-echo-row.is-empty small { align-self: start; margin-top: 7px; }
 
 .cbc-card.is-curved-layout .cbc-sonata-content {
   align-items: stretch;
+  gap: 8px;
   margin-top: 0;
 }
 
-.cbc-card.is-curved-layout :is(.cbc-identity, .cbc-stats, .cbc-weapon, .cbc-echo-row):hover {
+.cbc-card.is-curved-layout .cbc-sonatas button,
+.cbc-card.is-curved-layout .cbc-sonatas button:hover,
+.cbc-card.is-curved-layout .cbc-sonatas button:focus-visible {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.cbc-card.is-curved-layout .cbc-sonatas button:is(:hover, :focus-visible) {
+  border-color: color-mix(in srgb, var(--cbc-accent) 55%, white);
+}
+
+.cbc-card.is-curved-layout :is(.cbc-identity, .cbc-stats, .cbc-weapon, .cbc-echo-row):is(:hover, :focus-visible) {
   outline: none;
   box-shadow: none;
 }
 
-.cbc-card.is-curved-layout :is(.cbc-identity, .cbc-stats, .cbc-weapon, .cbc-echo-row):focus-visible {
-  outline: 2px solid var(--cbc-accent);
-  outline-offset: -2px;
-}
+.cbc-card.is-curved-layout .cbc-echo-row.is-editable:hover { transform: none; }

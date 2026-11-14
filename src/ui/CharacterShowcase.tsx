@@ -110,13 +110,16 @@ async function bakeExportGlassBackdrops(exportFrame: HTMLDivElement) {
     backgroundFrame.remove()
   }
 
-  const padding = EXPORT_BACKDROP_BLUR * 3
+  const isCurved = exportFrame.classList.contains('is-curved-layout')
+  const curvedGlass = exportFrame.querySelector<HTMLElement>('.cbc-curved-glass')
+  const blurRadius = isCurved ? 18 : EXPORT_BACKDROP_BLUR
+  const padding = blurRadius * 3
   const blurred = document.createElement('canvas')
   blurred.width = EXPORT_CARD_WIDTH + padding * 2
   blurred.height = EXPORT_CARD_HEIGHT + padding * 2
   const blurContext = blurred.getContext('2d')
   if (!blurContext) return
-  blurContext.filter = `blur(${EXPORT_BACKDROP_BLUR}px)`
+  blurContext.filter = `blur(${blurRadius}px)`
   blurContext.drawImage(backgroundCanvas, padding, padding, EXPORT_CARD_WIDTH, EXPORT_CARD_HEIGHT)
   backgroundCanvas.width = 0; backgroundCanvas.height = 0
 
@@ -124,7 +127,8 @@ async function bakeExportGlassBackdrops(exportFrame: HTMLDivElement) {
   if (!frameBounds.width || !frameBounds.height) { blurred.width = 0; blurred.height = 0; return }
   const scaleX = EXPORT_CARD_WIDTH / frameBounds.width
   const scaleY = EXPORT_CARD_HEIGHT / frameBounds.height
-  for (const panel of exportFrame.querySelectorAll<HTMLElement>(EXPORT_GLASS_SELECTOR)) {
+  const panels = isCurved ? (curvedGlass ? [curvedGlass] : []) : exportFrame.querySelectorAll<HTMLElement>(EXPORT_GLASS_SELECTOR)
+  for (const panel of panels) {
     const bounds = panel.getBoundingClientRect()
     const x = Math.round((bounds.left - frameBounds.left) * scaleX)
     const y = Math.round((bounds.top - frameBounds.top) * scaleY)
@@ -135,11 +139,25 @@ async function bakeExportGlassBackdrops(exportFrame: HTMLDivElement) {
     crop.height = height
     const cropContext = crop.getContext('2d')
     if (!cropContext) continue
+    if (isCurved) {
+      // Rasterize the clipped backdrop before html-to-image serializes the glass layers.
+      const paths = Array.from(exportFrame.querySelectorAll('.cbc-curved-section-surface'), (path) => path.getAttribute('d')).join(' ')
+      cropContext.clip(new Path2D(paths))
+    }
     cropContext.drawImage(blurred, x + padding, y + padding, width, height, 0, 0, width, height)
     const cropImage = crop.toDataURL('image/png')
     crop.width = 0; crop.height = 0
-    panel.style.setProperty('--cbc-export-backdrop-image', `url("${cropImage}")`)
-    panel.classList.add('has-export-backdrop')
+    if (isCurved) {
+      const image = document.createElement('img')
+      image.className = 'cbc-export-curved-backdrop'
+      image.alt = ''
+      image.src = cropImage
+      await image.decode()
+      panel.before(image)
+    } else {
+      panel.style.setProperty('--cbc-export-backdrop-image', `url("${cropImage}")`)
+      panel.classList.add('has-export-backdrop')
+    }
   }
   blurred.width = 0; blurred.height = 0
 }

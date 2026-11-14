@@ -42,6 +42,9 @@ const quickStarts = [
 ]
 
 const changelogEntries = [
+  { hash: '', date: 'Nov 15, 2026', title: 'Customize curved character cards and export them with frosted panels and unlocked Sequence glows' },
+  { hash: '', date: 'Nov 15, 2026', title: 'Filter characters in the Archive by role' },
+  { hash: '', date: 'Nov 15, 2026', title: 'Refresh bundled combat data and show WuWaLab as the source of rotation timing' },
   { hash: '', date: 'Nov 13, 2026', title: 'Update to Version 3.8 with Lily live art, reviewed combat data, and refined character cards and team planning' },
   { hash: '', date: 'Nov 6, 2026', title: 'Choose whether imports update matches, remove missing gear or characters, or completely replace local data' },
   { hash: '', date: 'Nov 6, 2026', title: 'Import WutheringTools v10 equipped gear and theorycraft builds while skipping empty character entries' },
