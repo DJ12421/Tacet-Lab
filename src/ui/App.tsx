@@ -62,7 +62,7 @@ const viewPaths: Record<AppView, string> = {
   legal: 'privacy'
 }
 type ArchiveTab = 'characters' | 'weapons' | 'sonatas' | 'echoes'
-type TeamSection = 'overview' | 'forte' | 'optimize' | 'theorizer' | 'rotation'
+type TeamSection = 'overview' | 'forte' | 'setup' | 'damage' | 'optimize' | 'theorizer' | 'rotation'
 interface AppRoute {
   view: AppView
   guide?: string
@@ -70,6 +70,7 @@ interface AppRoute {
   character?: string
   weapon?: string
   team?: string
+  teamLayout?: 'v2'
   teamCharacter?: string
   teamSection?: TeamSection
 }
@@ -85,7 +86,7 @@ const archivePathTabs: Record<string, ArchiveTab> = {
   sonatas: 'sonatas',
   echoes: 'echoes'
 }
-const teamSections = new Set<TeamSection>(['overview', 'forte', 'optimize', 'theorizer', 'rotation'])
+const teamSections = new Set<TeamSection>(['overview', 'forte', 'setup', 'damage', 'optimize', 'theorizer', 'rotation'])
 const routeHeads = new Set(['home', ...Object.values(viewPaths).filter(Boolean)])
 const initialUrl = new URL(window.location.href)
 const restoredRoute = initialUrl.searchParams.get('__route')
@@ -108,7 +109,7 @@ function routeSegments() {
 }
 
 function routeFromLocation(): AppRoute {
-  const [head = 'home', second, third, fourth] = routeSegments()
+  const [head = 'home', second, third, fourth, fifth] = routeSegments()
   if (head === 'privacy') return { view: 'guides', guide: 'privacy' }
   if (head === 'guides') return { view: 'guides', guide: second }
   if (head === 'archive') return { view: 'archive', archiveTab: archivePathTabs[second] ?? 'characters' }
@@ -116,9 +117,10 @@ function routeFromLocation(): AppRoute {
   if (head === 'weapons') return { view: 'weapons', weapon: second }
   if (head === 'teams') return {
     view: 'teams',
-    team: second,
-    teamCharacter: third,
-    teamSection: teamSections.has(fourth as TeamSection) ? fourth as TeamSection : undefined
+    teamLayout: second === 'v2' ? 'v2' : undefined,
+    team: second === 'v2' ? third : second,
+    teamCharacter: second === 'v2' ? fourth : third,
+    teamSection: teamSections.has((second === 'v2' ? fifth : fourth) as TeamSection) ? (second === 'v2' ? fifth : fourth) as TeamSection : undefined
   }
   const entry = Object.entries(viewPaths).find(([, path]) => path === head)
   return { view: entry?.[0] as AppView ?? 'dashboard' }
@@ -134,7 +136,7 @@ function routePath(route: AppRoute) {
   if (route.view === 'characters') return `characters${route.character ? `/${encodeURIComponent(route.character)}` : ''}`
   if (route.view === 'weapons') return `weapons${route.weapon ? `/${encodeURIComponent(route.weapon)}` : ''}`
   if (route.view === 'teams') {
-    const parts = ['teams', route.team, route.teamCharacter, route.teamSection].filter(Boolean)
+    const parts = ['teams', route.teamLayout, route.team, route.teamCharacter, route.teamSection].filter(Boolean)
     return parts.join('/')
   }
   return viewPaths[route.view]
@@ -249,6 +251,13 @@ export default function App() {
       ? { view: nextView, archiveTab: 'characters' }
       : { view: nextView }
     return setRoute(nextRoute)
+  }
+  const switchTeamsLayout = () => {
+    const toV2 = route.teamLayout !== 'v2'
+    let teamSection = route.teamCharacter ? route.teamSection : undefined
+    if (toV2 && (teamSection === 'overview' || teamSection === 'forte')) teamSection = 'setup'
+    if (!toV2 && (teamSection === 'setup' || teamSection === 'damage')) teamSection = 'overview'
+    return setRoute({ ...route, teamLayout: toV2 ? 'v2' : undefined, teamSection })
   }
   const navigateFromShell = (nextView: AppView) => {
     setMobileMoreOpen(false)
@@ -407,7 +416,7 @@ export default function App() {
 
   const guideCounts: GuideCounts = { echoes: data.echoes.length, weapons: data.weapons.length, characters: data.characters.length, teams: data.teams.length }
   const contextualGuideId: GuideId | undefined = view === 'teams' && route.teamCharacter
-    ? (route.teamSection === 'optimize' ? 'optimizer' : route.teamSection ?? 'overview')
+    ? (route.teamSection === 'damage' ? undefined : route.teamSection === 'setup' ? 'overview' : route.teamSection === 'optimize' ? 'optimizer' : route.teamSection ?? 'overview')
     : guideFor(view)?.id
   return <EchoEquipmentContext.Provider value={equipment}><div className={`app-shell ${view === 'dashboard' ? 'is-home' : ''} ${sidebarPinned ? 'sidebar-pinned' : ''} ${sidebarOpen ? 'sidebar-open' : ''} ${sidebarReserved ? 'sidebar-reserved' : ''}`}>
     <aside className="sidebar" aria-label="Primary navigation">
@@ -430,7 +439,17 @@ export default function App() {
         {view === 'echoes' && <InventoryView echoes={data.echoes} builds={data.builds} equippedLoadouts={data.equippedLoadouts} characters={data.characters} refresh={data.refresh} openScanner={() => setView('scanner')}/>}
         {view === 'weapons' && <WeaponInventory owned={data.weapons} characters={data.characters} builds={data.builds} equippedLoadouts={data.equippedLoadouts} refresh={data.refresh} weaponIdentifier={route.weapon} onWeaponChange={(weapon) => setRoute({ view: 'weapons', weapon: weapon?.id })}/>}
         {view === 'characters' && <CharacterInventory owned={data.characters} weapons={data.weapons} echoes={data.echoes} builds={data.builds} equippedLoadouts={data.equippedLoadouts} theorycraftBuilds={data.theorycraftBuilds} teams={data.teams} settings={data.settings} roverGender={data.settings.roverGender} refresh={data.refresh} characterIdentifier={route.character} onCharacterChange={(entry) => setRoute({ view: 'characters', character: entry ? characterSlug(entry.name) : undefined })}/>}
-        {view === 'teams' && <TeamsView echoes={data.echoes} builds={data.builds} equippedLoadouts={data.equippedLoadouts} theorycraftBuilds={data.theorycraftBuilds} teams={data.teams} characters={data.characters} weapons={data.weapons} refresh={data.refresh} openScanner={() => setView('scanner')} galleryRequest={teamsGalleryRequest} roverGender={data.settings.roverGender} route={{ team: route.team, character: route.teamCharacter, section: route.teamSection }} onRouteChange={(next) => setRoute({ view: 'teams', team: next.team, teamCharacter: next.character, teamSection: next.section })}/>} 
+        {view === 'teams' && <TeamsView
+          echoes={data.echoes} builds={data.builds} equippedLoadouts={data.equippedLoadouts} theorycraftBuilds={data.theorycraftBuilds}
+          teams={data.teams} characters={data.characters} weapons={data.weapons} refresh={data.refresh}
+          openScanner={() => setView('scanner')} galleryRequest={teamsGalleryRequest} roverGender={data.settings.roverGender}
+          route={{ team: route.team, character: route.teamCharacter, section: route.teamSection }} layout={route.teamLayout}
+          onLayoutChange={switchTeamsLayout}
+          onRouteChange={(next, historyMode) => setRoute(
+            { view: 'teams', teamLayout: route.teamLayout, team: next.team, teamCharacter: next.character, teamSection: next.section },
+            historyMode
+          )}
+        />}
         {view === 'guides' && <GuidesView document={route.guide} counts={guideCounts} isFirstVisit={isFirstVisit} onSelect={(guide) => setRoute({ view: 'guides', guide })} onStart={startTutorial}/>}
         {view === 'partnerships' && <PartnershipsView/>}
         {view === 'legal' && <PrivacyLegalView/>}

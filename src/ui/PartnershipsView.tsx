@@ -4,13 +4,6 @@ import { TacetLabLogo } from './TacetLabLogo'
 
 const partners = [
   {
-    name: 'Rover Waves',
-    label: 'Partnered server',
-    image: 'partners/rover-waves.webp',
-    description: 'Welcome to Rover Waves! A server dedicated to Rover and anything else related to the gameplay such as team building and much more!',
-    links: [{ label: 'Discord', icon: 'discord', url: 'https://discord.gg/ENk8XS38TY' }]
-  },
-  {
     name: 'Ultimate Gacha Hub',
     label: 'Partnered server',
     image: 'partners/ultimate-gacha-hub.gif',
