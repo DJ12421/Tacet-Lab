@@ -42,6 +42,7 @@ const quickStarts = [
 ]
 
 const changelogEntries = [
+  { hash: '', date: 'Nov 25, 2026', title: 'Import valid WaveScan Echoes even when others need correction, with support for Phantom Echo names and older exports' },
   { hash: '', date: 'Nov 25, 2026', title: 'Rework character Substat Score around a good-build reference, with grades beyond 100% and clearer Energy Regen guidance' },
   { hash: '', date: 'Nov 19, 2026', title: 'Try a new Teams layout with character setup, damage numbers, optimization, and rotation sections' },
   { hash: '', date: 'Nov 19, 2026', title: 'Remove Rover Waves from the partner directory' },

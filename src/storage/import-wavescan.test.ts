@@ -41,10 +41,36 @@ describe('WaveScan import', () => {
     expect(replacement.document.echoes[0]).toMatchObject({ locked: false, equippedBy: undefined })
   })
 
-  it('rejects unsupported stats before showing a merge preview', async () => {
+  it('rejects an export when no Echo can be imported', async () => {
     const source = { format: 'WutheringToolsScan', version: 1, meta: { scannedAt: '2026-10-11T21:54:21.518Z' },
       echoes: [{ scanId: '1', echo: 'unknown', echoSet: 'unknown', cost: 4, rank: 5, level: 25,
         stat: 'CritDMG', substats: [{ type: 'UnknownStat', value: 10 }] }] }
-    await expect(convertWavescanExport(source)).rejects.toThrow('WaveScan Echo 1 has missing or unsupported details.')
+    await expect(convertWavescanExport(source)).rejects.toThrow('No WaveScan Echoes could be imported.')
+  })
+
+  it('imports a phantom Echo and skips an unconfirmed set without losing the valid row', async () => {
+    const catalog = echoCatalog.find((echo) => echo.name === 'Fallacy of No Return')!
+    const valid = { scanId: 'phantom', echo: 'PhantomFallacyOfNoReturn', echoSet: catalog.sonatas[0],
+      cost: 4, rank: 5, level: 25, stat: 'CritDMG', substats: [] }
+    const source = { format: 'WaveScan', version: 1, meta: { scannedAt: '2026-10-11T21:54:21.518Z' },
+      echoes: [{ ...valid, scanId: 'unknown-set', echoSet: null }, valid] }
+    expect(isWavescanExport(source)).toBe(true)
+    const result = await convertWavescanExport(source)
+    expect(result.document.echoes).toHaveLength(1)
+    expect(result.document.echoes[0]).toMatchObject({ name: catalog.name, sonata: catalog.sonatas[0] })
+    expect(result.notices).toEqual(expect.arrayContaining([
+      expect.stringContaining('1 of 2 WaveScan Echoes were skipped'),
+      expect.stringContaining('Echo 1 (unknown-set) was skipped: Sonata set is unconfirmed.'),
+      expect.stringContaining('Phantom Fallacy of No Return was imported as Fallacy of No Return.')
+    ]))
+    await expect(convertWavescanExport(source, true)).rejects.toThrow('Turn off overwrite and cleanup options')
+  })
+
+  it('accepts the older Young Roseshroom export name', async () => {
+    const catalog = echoCatalog.find((echo) => echo.name === 'Baby Roseshroom')!
+    const source = { format: 'WutheringToolsScan', version: 1, meta: { scannedAt: '2026-10-11T21:54:21.518Z' },
+      echoes: [{ scanId: 'young', echo: 'YoungRoseshroom', echoSet: catalog.sonatas[0],
+        cost: catalog.cost, rank: 5, level: 25, stat: 'ATK', substats: [] }] }
+    expect((await convertWavescanExport(source)).document.echoes[0].name).toBe('Baby Roseshroom')
   })
 })
