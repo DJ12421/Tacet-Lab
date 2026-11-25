@@ -42,6 +42,7 @@ const quickStarts = [
 ]
 
 const changelogEntries = [
+  { hash: '', date: 'Nov 25, 2026', title: 'Rework character Substat Score around a good-build reference, with grades beyond 100% and clearer Energy Regen guidance' },
   { hash: '', date: 'Nov 19, 2026', title: 'Try a new Teams layout with character setup, damage numbers, optimization, and rotation sections' },
   { hash: '', date: 'Nov 19, 2026', title: 'Remove Rover Waves from the partner directory' },
   { hash: '', date: 'Nov 15, 2026', title: 'Customize curved character cards and export them with frosted panels and unlocked Sequence glows' },

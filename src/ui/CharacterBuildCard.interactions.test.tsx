@@ -195,7 +195,7 @@ describe('CharacterBuildCard direct editing', () => {
     expect(callbacks.onOpenEcho).toHaveBeenCalledWith(0)
     const substat = (label: string) => [...container.querySelectorAll('.cbc-echo-substats .cbc-stat-source')].find((row) => row.textContent?.includes(label))
     const statRow = (label: string) => [...container.querySelectorAll('.cbc-stat-row')].find((row) => row.textContent?.includes(label))
-    expect(container.querySelector('.cbc-stats > .cbc-build-score')).toHaveTextContent('Build score')
+    expect(container.querySelector('.cbc-stats > .cbc-build-score')).toHaveTextContent('Substat score')
     expect(substat('Energy Regen')).not.toHaveClass('is-unweighted')
     expect(substat('Spectro DMG')).not.toHaveClass('is-unweighted')
     expect(substat('Basic Attack')).toHaveClass('is-unweighted')

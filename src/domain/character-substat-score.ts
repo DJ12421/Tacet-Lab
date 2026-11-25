@@ -43,19 +43,30 @@ export interface CharacterBuildSubstatScore extends CharacterSubstatScore {
 }
 
 const gradeBands: ReadonlyArray<{ minimum: number; grade: CharacterSubstatGrade }> = [
-  { minimum: 75, grade: 'SSS' },
-  { minimum: 65, grade: 'SS' },
-  { minimum: 55, grade: 'S' },
-  { minimum: 45, grade: 'A' },
-  { minimum: 35, grade: 'B' },
-  { minimum: 25, grade: 'C' },
-  { minimum: 15, grade: 'D' },
+  { minimum: 110, grade: 'SSS' },
+  { minimum: 100, grade: 'SS' },
+  { minimum: 90, grade: 'S' },
+  { minimum: 70, grade: 'A' },
+  { minimum: 50, grade: 'B' },
+  { minimum: 30, grade: 'C' },
+  { minimum: 10, grade: 'D' },
   { minimum: 0, grade: 'E' }
 ]
 
 const gradeOrder: CharacterSubstatGrade[] = ['E', 'D', 'C', 'B', 'A', 'S', 'SS', 'SSS']
 const gradeFor = (percentage: number) => gradeBands.find((band) => percentage >= band.minimum)?.grade
 const lowerGrade = (grade: CharacterSubstatGrade) => gradeOrder[Math.max(0, gradeOrder.indexOf(grade) - 1)]
+
+// A fourth-tier roll is the good-build reference (100%). Higher legal tiers
+// can exceed it. Flat stats have no tier progression and keep their 3 points.
+function referencePoints(profile: CharacterSubstatProfile, slots: number): number {
+  return Object.entries(profile.weights)
+    .filter(([key, weight]) => key !== 'energyRegen' && weight > 0)
+    .map(([key, weight]) => (key === 'hp' || key === 'atk' || key === 'def' ? 3 : 4) * weight)
+    .sort((left, right) => right - left)
+    .slice(0, Math.max(0, slots))
+    .reduce((sum, value) => sum + value, 0)
+}
 
 export function resolveCharacterSubstatProfile(
   catalog: CharacterCatalogEntry,
@@ -69,17 +80,10 @@ export function resolveCharacterSubstatProfile(
     : preference.weights
   const flatStats = new Set<StatKey>(['hp', 'atk', 'def'])
   const scoringWeights = Object.entries(weights).filter(([key]) => key !== 'energyRegen')
-  const nonFlatWeights = scoringWeights
-    .filter(([key, weight]) => !flatStats.has(key as StatKey) && weight > 0)
-    .map(([, weight]) => weight)
-    .sort((left, right) => right - left)
-    .slice(0, 5)
-  const flatWeight = scoringWeights
-    .filter(([key, weight]) => flatStats.has(key as StatKey) && weight > 0)
-    .map(([, weight]) => weight)
-    .sort((left, right) => right - left)[0] ?? 0
-  const configuredWeightCount = nonFlatWeights.length + (flatWeight > 0 ? 1 : 0)
-  const customMaximum = scoringWeights
+  const configuredWeightCount = scoringWeights.filter(([, weight]) => weight > 0).length
+  // An Echo has only five distinct substat slots. Select the five largest
+  // attainable contributions for both bundled and customized priorities.
+  const maximum = scoringWeights
     .map(([key, weight]) => (flatStats.has(key as StatKey) ? 3 : 8) * weight)
     .sort((left, right) => right - left)
     .slice(0, 5)
@@ -88,9 +92,7 @@ export function resolveCharacterSubstatProfile(
     characterId: catalog.id,
     characterName: catalog.name,
     weights,
-    maximum: customWeights
-      ? customMaximum
-      : 8 * nonFlatWeights.reduce<number>((sum, weight) => sum + weight, 0) + 3 * flatWeight,
+    maximum,
     basis: configuredWeightCount
       ? customWeights ? 'Customized in local settings.' : 'Using bundled character recommendations.'
       : 'Not configured. Add weights in character-substat-preferences.ts.'
@@ -108,10 +110,10 @@ export function scoreCharacterSubstats(
     const weight = profile.weights[stat.key] ?? 0
     return { key: stat.key, tier, weight, points: tier * weight }
   })
-  const maximum = profile.maximum * (5 - energyRegenSubstatCount) / 5
+  const maximum = referencePoints(profile, 5 - energyRegenSubstatCount)
   const valid = maximum > 0 && subStats.length > 0 && contributions.length > 0 && contributions.every((entry) => entry.tier > 0)
   const points = contributions.reduce((sum, entry) => sum + entry.points, 0)
-  const percentage = valid ? Math.min(100, points / maximum * 100) : 0
+  const percentage = valid ? points / maximum * 100 : 0
   return {
     points,
     maximum,
@@ -129,7 +131,7 @@ export function scoreCharacterBuildSubstats(
   minimumEnergyRegen = 0,
   totalEnergyRegen = 0
 ): CharacterBuildSubstatScore {
-  const subStats = echoes.flatMap(effectiveSubStats)
+  const subStats = echoes.slice(0, 5).flatMap(effectiveSubStats)
   const energyRegenSubstatCount = subStats.filter((stat) => stat.key === 'energyRegen').length
   const contributions = subStats.filter((stat) => stat.key !== 'energyRegen').map((stat) => {
     const tier = substatTierPoints(stat.key, stat.value)
@@ -137,10 +139,16 @@ export function scoreCharacterBuildSubstats(
     return { key: stat.key, tier, weight, points: tier * weight }
   })
   const eligibleSubstatCount = 25 - energyRegenSubstatCount
-  const maximum = profile.maximum * 5 * eligibleSubstatCount / 25
+  // Utility rolls reduce only their own Echo's reference. Empty Echo slots
+  // retain the full reference so partial builds do not get a free boost.
+  const maximum = Array.from({ length: 5 }, (_, index) => {
+    const echo = echoes[index]
+    const erSlots = echo ? effectiveSubStats(echo).filter((stat) => stat.key === 'energyRegen').length : 0
+    return referencePoints(profile, 5 - erSlots)
+  }).reduce((sum, value) => sum + value, 0)
   const valid = maximum > 0 && echoes.length > 0 && contributions.length > 0 && contributions.every((entry) => entry.tier > 0)
   const points = contributions.reduce((sum, entry) => sum + entry.points, 0)
-  const percentage = valid ? Math.min(100, points / maximum * 100) : 0
+  const percentage = valid ? points / maximum * 100 : 0
   const earnedGrade = valid ? gradeFor(percentage) : undefined
   const energyRequirementMet = minimumEnergyRegen <= 0 || totalEnergyRegen >= minimumEnergyRegen
   return {
